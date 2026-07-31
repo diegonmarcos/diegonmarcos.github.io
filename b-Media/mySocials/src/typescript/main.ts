@@ -824,25 +824,30 @@ function renderTidal(): void {
     return h ? `${h}h ${m}m` : `${m} min`;
   };
 
-  const profileUrl = `https://tidal.com/@${esc(prof?.username || 'diegonmarcos')}`;
+  // All playlists live inside folders now — flatten once so the song-list
+  // modal can look one up by index without caring which folder it's in.
+  const allPlaylists: TidPlaylist[] = folders.length ? folders.flatMap(f => f.playlists) : lists;
   const playlistCard = (p: TidPlaylist, i: number) => {
     const media = p.cover
       ? `<img class="tid-card__img" src="${esc(p.cover)}" alt="${esc(p.name)}" loading="lazy">`
       : `<div class="tid-card__ph" style="background:${gradientFor(i)}">\u{266B}</div>`;
     return `
-    <a class="tid-card" href="${p.url ? esc(p.url) : profileUrl}" target="_blank" rel="noopener" title="${p.trackList ? esc(p.trackList.slice(0, 5).map(t => t.title).join(' · ')) : ''}">
+    <button class="tid-card" data-playlist-idx="${i}">
       <div class="tid-card__cover">${media}<span class="tid-card__play">▶</span></div>
       <div class="tid-card__name">${esc(p.name)}</div>
       <div class="tid-card__meta">${p.tracks} tracks${p.duration_s ? ' · ' + fmtDur(p.duration_s) : ''}</div>
-    </a>`;
+    </button>`;
   };
-  const cards = lists.map(playlistCard).join('');
+  let cursor = 0;
+  const cardsFor = (ps: TidPlaylist[]) => ps.map(p => playlistCard(p, cursor++)).join('');
 
   const folderSections = folders.map(f => `
     <section class="tid-folder-section">
       <h2 class="tid-folder-section__title">${esc(f.name)}<em>${f.playlists.length}</em></h2>
-      <div class="tid-grid">${f.playlists.map(playlistCard).join('') || '<p class="tid-empty">No playlists in this folder yet.</p>'}</div>
+      <div class="tid-grid">${cardsFor(f.playlists) || '<p class="tid-empty">No playlists in this folder yet.</p>'}</div>
     </section>`).join('');
+
+  const cards = folders.length ? '' : cardsFor(lists);
 
   view.innerHTML = `
     <nav class="tid-nav">
@@ -855,16 +860,48 @@ function renderTidal(): void {
     <div class="tid-main">
       <header class="tid-head">
         <div class="tid-head__title">My Playlists</div>
-        <div class="tid-head__sub">${prof?.playlists ?? lists.length} playlists · ${prof?.tracks ?? 0} tracks</div>
+        <div class="tid-head__sub">${prof?.playlists ?? allPlaylists.length} playlists · ${prof?.tracks ?? 0} tracks</div>
       </header>
       ${folderSections}
-      ${lists.length ? `
+      ${cards ? `
       <section class="tid-folder-section">
         <h2 class="tid-folder-section__title">All Playlists<em>${lists.length}</em></h2>
         <div class="tid-grid">${cards}</div>
       </section>` : ''}
       ${!folders.length && !lists.length ? '<p class="tid-empty">Playlists load once the Tidal profile ID is set.</p>' : ''}
+    </div>
+    <div class="tid-modal" id="tid-modal">
+      <div class="tid-modal__panel">
+        <button class="tid-modal__close" id="tid-modal-close" aria-label="Close">&times;</button>
+        <h2 class="tid-modal__title" id="tid-modal-title"></h2>
+        <p class="tid-modal__meta" id="tid-modal-meta"></p>
+        <ol class="tid-modal__tracks" id="tid-modal-tracks"></ol>
+      </div>
     </div>`;
+
+  const modal = document.getElementById('tid-modal') as HTMLElement;
+  const modalTitle = document.getElementById('tid-modal-title') as HTMLElement;
+  const modalMeta = document.getElementById('tid-modal-meta') as HTMLElement;
+  const modalTracks = document.getElementById('tid-modal-tracks') as HTMLElement;
+
+  const openPlaylist = (p: TidPlaylist) => {
+    modalTitle.textContent = p.name;
+    modalMeta.textContent = `${p.tracks} tracks`;
+    modalTracks.innerHTML = (p.trackList ?? [])
+      .map(t => `<li><span class="tid-modal__track-title">${esc(t.title)}</span><span class="tid-modal__track-artist">${esc(t.artist)}</span></li>`)
+      .join('') || '<li class="tid-empty">No track list for this playlist.</li>';
+    modal.classList.add('is-open');
+  };
+  const closePlaylist = () => modal.classList.remove('is-open');
+
+  view.querySelectorAll<HTMLElement>('[data-playlist-idx]').forEach(btn =>
+    btn.addEventListener('click', () => {
+      const p = allPlaylists[Number(btn.dataset.playlistIdx)];
+      if (p) openPlaylist(p);
+    }));
+  document.getElementById('tid-modal-close')?.addEventListener('click', closePlaylist);
+  modal.addEventListener('click', e => { if (e.target === modal) closePlaylist(); });
+  document.addEventListener('keydown', e => { if (e.key === 'Escape' && modal.classList.contains('is-open')) closePlaylist(); });
 }
 
 // ─── STRAVA VIEW (real activity feed) ─────────────────────────────────────────

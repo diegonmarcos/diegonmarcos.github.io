@@ -271,14 +271,12 @@ function renderInstagram(): void {
   const savedPane = d.saved.length ? d.saved.map(s => tile(s, '\u{1F516}')).join('') : '<p class="ig-empty">Nothing saved.</p>';
   const likedPane = d.liked.length ? d.liked.map(s => tile(s, '❤️')).join('') : '<p class="ig-empty">No likes.</p>';
 
-  // Posts pane: real photo(s) first (newest first), then a fabricated feed so the grid looks
-  // full like the app. Meta media filenames are Snowflake-style IDs — monotonically increasing
-  // with time — so sorting the trailing numeric ID descending reproduces newest-first order
-  // without needing a real per-post timestamp (the export doesn't capture one).
+  // Posts pane: real photos only, newest first. Meta media filenames are Snowflake-style
+  // IDs — monotonically increasing with time — so sorting the trailing numeric ID descending
+  // reproduces newest-first order without needing a real per-post timestamp (the export
+  // doesn't capture one).
   const mediaId = (url: string) => Number(url.match(/(\d+)(?=\.\w+$)/)?.[1] || 0);
   const sortedPosts = d.posts.slice().sort((a, b) => mediaId(b.media) - mediaId(a.media));
-  const POST_GRID = 30; // ~10 rows of a 3-col grid
-  const captions = [...d.saved, ...d.liked].map(s => s.caption).filter(Boolean);
   const realPosts = sortedPosts.map((post, i) => `
     <div class="ig-post-card">
       <a class="ig-tile" href="#" data-post-idx="${i}"><img src="${post.media}" alt="post" loading="lazy" decoding="async"></a>
@@ -305,24 +303,11 @@ function renderInstagram(): void {
       <h4 class="ig-loc-group__title">${IG_ICON.pin}<span>${esc(loc)}</span><em>${num(posts.length)}</em></h4>
       <div class="ig-grid">${posts.map(post => `<a class="ig-tile" href="#" data-post-idx="${sortedPosts.indexOf(post)}"><img src="${post.media}" alt="post" loading="lazy" decoding="async"></a>`).join('')}</div>
     </div>`).join('') : '<p class="ig-empty">No location data yet.</p>';
-  const fabricated = Array.from({ length: Math.max(0, POST_GRID - realPosts.length) }, (_, i) => `
-    <a class="ig-tile ig-tile--post" href="#" style="background:${gradientFor(i)}">
-      <span class="ig-tile__cap">${esc(captions[i % (captions.length || 1)] || '')}</span>
-    </a>`);
-  const postsPane = realPosts.length || fabricated.length
-    ? [...realPosts, ...fabricated].join('')
-    : '<p class="ig-empty">No posts yet.</p>';
+  const postsPane = realPosts.length ? realPosts.join('') : '<p class="ig-empty">No posts yet.</p>';
 
-  // Reels + Tagged panes — fabricated for the MVP (live-scrape via scrappers-api later).
-  const REEL_ICON = '<svg class="ig-tile__ov" viewBox="0 0 24 24"><polygon points="10 8 16 12 10 16 10 8" fill="currentColor" stroke="none"/></svg>';
-  const reelsPane = Array.from({ length: 12 }, (_, i) => `
-    <a class="ig-tile ig-tile--post" href="#" style="background:${gradientFor(i + 5)}">${REEL_ICON}
-      <span class="ig-tile__cap">${esc(captions[(i + 2) % (captions.length || 1)] || '')}</span>
-    </a>`).join('');
-  const taggedPane = Array.from({ length: 9 }, (_, i) => `
-    <a class="ig-tile ig-tile--post" href="#" style="background:${gradientFor(i + 9)}">
-      <span class="ig-tile__badge">@${esc(p.username)}</span>
-    </a>`).join('');
+  // Reels + Tagged — not scraped yet (live-scrape via scrappers-api later); show empty, not filler.
+  const reelsPane = '<p class="ig-empty">No reels yet.</p>';
+  const taggedPane = '<p class="ig-empty">No tagged photos yet.</p>';
 
   const commentsPane = d.comments.length
     ? d.comments.map(c => `
@@ -1968,7 +1953,18 @@ function setTheme(theme: Theme): void {
 
 // Swap in place AND update the address bar to the theme's real page, so
 // reload/share/back-forward all land on a real, bookmarkable file.
+//
+// Exception: the three Instagram accounts each bake their OWN PORTAL_DATA into
+// their own HTML file (instagram-<account>.html) and render #ig-view once at
+// init from that page's data-theme. Swapping data-theme in place does NOT
+// re-render #ig-view, so an in-place switch between accounts silently kept
+// showing the previous account's posts under the new account's URL/nav state.
+// A real page load is required here — same as any other bookmarkable link.
 function navigate(theme: Theme, push = true): void {
+  if (theme.startsWith('instagram-')) {
+    location.href = pageFor(theme);
+    return;
+  }
   setTheme(theme);
   if (push) history.pushState({ theme }, '', pageFor(theme));
 }

@@ -52,6 +52,18 @@
   &__arrow { color: var(--accent); font-size: 20px; }
 }
 
+.hub-section {
+  & + & { margin-top: $spacing-xl; }
+}
+.hub-section__label {
+  font-size: 13px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: #7d88a6;
+  margin-bottom: $spacing-sm;
+}
+
 // Pinterest-style masonry of cards, one per page on the site.
 .hub-grid {
   column-count: 2;

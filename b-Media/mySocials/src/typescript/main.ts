@@ -1218,18 +1218,38 @@ function renderMySocials(): void {
   const bio = ig?.profile.bio || '';
   const photo = li?.profile.photo || ig?.profile.photo;
 
-  const cards: { theme: Theme; label: string; meta: string; color: string; imgs: string[] }[] = [
-    { theme: 'linkedin', label: 'LinkedIn', meta: li ? `${li.profile.connections} connections · ${li.profile.followers.toLocaleString()} followers` : 'profile', color: '#0a66c2', imgs: li?.profile.photo ? [li.profile.photo] : [] },
-    { theme: 'instagram', label: 'Instagram', meta: ig ? `${ig.profile.followers.toLocaleString()} followers · ${ig.profile.posts} post${ig.profile.posts === 1 ? '' : 's'}` : 'profile', color: '#dc2743', imgs: (ig?.posts || []).slice(0, 3).map(p => p.media).filter(Boolean) },
-    { theme: 'pinterest', label: 'Pinterest', meta: 'boards & pins', color: '#e60023', imgs: (pin?.boards || []).slice(0, 3).map(b => b.cover).filter(Boolean) },
-    { theme: 'tidal', label: 'TIDAL', meta: tidalD ? `${tidalD.profile.playlists} playlists` : 'playlists', color: '#00ffff', imgs: [] },
-    { theme: 'strava', label: 'Strava', meta: 'activities & routes', color: '#fc5200', imgs: [] },
-    { theme: 'youtube', label: 'YouTube', meta: 'playlists & videos', color: '#ff0000', imgs: (yt?.playlists || []).slice(0, 3).map(p => p.videos?.[0]?.thumbnail).filter(Boolean) as string[] },
-    { theme: 'orkut', label: 'Orkut', meta: 'the classic profile', color: '#e9008c', imgs: [] },
-    { theme: 'icq', label: 'ICQ', meta: 'retro IM · user details', color: '#0a870a', imgs: [] },
-    { theme: 'shelf', label: 'Shelf', meta: 'book shelf · 3D', color: '#8b6914', imgs: (shelfD?.books || []).slice(0, 3).map(b => bookCover(b.isbn)) },
-    { theme: 'vinyl', label: 'Vinyl', meta: 'record store · 3D', color: '#c17f24', imgs: (vinylD?.vinyls || []).slice(0, 3).map(v => vinylCover(v.mbid)) },
+  type Card = { theme: Theme; label: string; meta: string; color: string; imgs: string[] };
+  const sections: { label: string; cards: Card[] }[] = [
+    { label: 'Media', cards: [
+      { theme: 'instagram', label: 'Instagram', meta: ig ? `${ig.profile.followers.toLocaleString()} followers · ${ig.profile.posts} post${ig.profile.posts === 1 ? '' : 's'}` : 'profile', color: '#dc2743', imgs: (ig?.posts || []).slice(0, 3).map(p => p.media).filter(Boolean) },
+      { theme: 'pinterest', label: 'Pinterest', meta: 'boards & pins', color: '#e60023', imgs: (pin?.boards || []).slice(0, 3).map(b => b.cover).filter(Boolean) },
+      { theme: 'youtube', label: 'YouTube', meta: 'playlists & videos', color: '#ff0000', imgs: (yt?.playlists || []).slice(0, 3).map(p => p.videos?.[0]?.thumbnail).filter(Boolean) as string[] },
+    ] },
+    { label: 'Music', cards: [
+      { theme: 'tidal', label: 'TIDAL', meta: tidalD ? `${tidalD.profile.playlists} playlists` : 'playlists', color: '#00ffff', imgs: [] },
+      { theme: 'vinyl', label: 'Vinyl', meta: 'record store · 3D', color: '#c17f24', imgs: (vinylD?.vinyls || []).slice(0, 3).map(v => vinylCover(v.mbid)) },
+    ] },
+    { label: 'Books', cards: [
+      { theme: 'shelf', label: 'Shelf', meta: 'book shelf · 3D', color: '#8b6914', imgs: (shelfD?.books || []).slice(0, 3).map(b => bookCover(b.isbn)) },
+    ] },
+    { label: 'Project', cards: [
+      { theme: 'linkedin', label: 'LinkedIn', meta: li ? `${li.profile.connections} connections · ${li.profile.followers.toLocaleString()} followers` : 'profile', color: '#0a66c2', imgs: li?.profile.photo ? [li.profile.photo] : [] },
+    ] },
+    { label: 'Others', cards: [
+      { theme: 'orkut', label: 'Orkut', meta: 'the classic profile', color: '#e9008c', imgs: [] },
+      { theme: 'icq', label: 'ICQ', meta: 'retro IM · user details', color: '#0a870a', imgs: [] },
+      { theme: 'strava', label: 'Strava', meta: 'activities & routes', color: '#fc5200', imgs: [] },
+    ] },
   ];
+
+  const cardHtml = (c: Card) => `
+          <button class="hub-card" data-goto="${c.theme}" style="--accent:${c.color}">
+            <span class="hub-card__media hub-card__media--${c.imgs.length}">
+              ${c.imgs.map(src => `<span class="hub-card__img" style="background-image:url('${esc(src)}')"></span>`).join('')}
+            </span>
+            <span class="hub-card__label">${c.label}</span>
+            <span class="hub-card__meta">${esc(c.meta)}</span>
+          </button>`;
 
   view.innerHTML = `
     <div class="me-hub">
@@ -1241,15 +1261,13 @@ function renderMySocials(): void {
         ${bio ? `<p class="me-bio">${esc(bio)}</p>` : ''}
       </div>
 
-      <div class="hub-grid">
-        ${cards.map(c => `
-          <button class="hub-card" data-goto="${c.theme}" style="--accent:${c.color}">
-            <span class="hub-card__media hub-card__media--${c.imgs.length}">
-              ${c.imgs.map(src => `<span class="hub-card__img" style="background-image:url('${esc(src)}')"></span>`).join('')}
-            </span>
-            <span class="hub-card__label">${c.label}</span>
-            <span class="hub-card__meta">${esc(c.meta)}</span>
-          </button>`).join('')}
+      ${sections.map(s => `
+        <div class="hub-section">
+          <h2 class="hub-section__label">${esc(s.label)}</h2>
+          <div class="hub-grid">
+            ${s.cards.map(cardHtml).join('')}
+          </div>
+        </div>`).join('')}
       </div>
     </div>`;
 

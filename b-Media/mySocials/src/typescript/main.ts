@@ -242,7 +242,9 @@ function padHandles(real: string[], total: number): string[] {
 function renderInstagram(): void {
   const view = document.getElementById('ig-view');
   if (!view) return;
-  const d = (globalThis as { PORTAL_DATA?: Record<string, IGData> }).PORTAL_DATA?.instagram;
+  const theme = document.documentElement.dataset.theme || 'instagram-diegonmarcos';
+  const igKey = theme === 'instagram-diegonmarcos' ? 'instagram' : theme;
+  const d = (globalThis as { PORTAL_DATA?: Record<string, IGData> }).PORTAL_DATA?.[igKey];
   if (!d) { view.innerHTML = '<p class="ig-empty">Instagram data not loaded.</p>'; return; }
 
   const p = d.profile;

@@ -1,9 +1,9 @@
-// GENERATED FROM instagram.json by front-data-json-js-wrapper.sh — DO NOT EDIT BY HAND.
+// GENERATED FROM instagram-diegocmarcos_.json by front-data-json-js-wrapper.sh — DO NOT EDIT BY HAND.
 // Re-generate with: bash a-Portals/linktree/src/data/build.sh
 (function () {
   var g = (typeof globalThis !== "undefined") ? globalThis : (typeof window !== "undefined" ? window : this);
   g.PORTAL_DATA = g.PORTAL_DATA || {};
-  g.PORTAL_DATA["instagram"] = {
+  g.PORTAL_DATA["instagram-diegocmarcos_"] = {
  "_description": "Instagram export (diegocmarcos_), media uploaded manually to front-assets-cdn.",
  "profile": {
   "username": "diegocmarcos_",

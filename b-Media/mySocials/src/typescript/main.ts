@@ -1212,6 +1212,12 @@ function renderMySocials(): void {
   const bookCover = (isbn: string) => `https://covers.openlibrary.org/b/isbn/${isbn}-M.jpg`;
   const vinylCover = (mbid: string) => `https://coverartarchive.org/release/${mbid}/front-250`;
 
+  const name = li?.profile.name || ig?.profile.name || 'Diego Nepomuceno Marcos';
+  const headline = li?.profile.headline || '';
+  const location = li?.profile.location || '';
+  const bio = ig?.profile.bio || '';
+  const photo = li?.profile.photo || ig?.profile.photo;
+
   const cards: { theme: Theme; label: string; meta: string; color: string; imgs: string[] }[] = [
     { theme: 'linkedin', label: 'LinkedIn', meta: li ? `${li.profile.connections} connections · ${li.profile.followers.toLocaleString()} followers` : 'profile', color: '#0a66c2', imgs: li?.profile.photo ? [li.profile.photo] : [] },
     { theme: 'instagram', label: 'Instagram', meta: ig ? `${ig.profile.followers.toLocaleString()} followers · ${ig.profile.posts} post${ig.profile.posts === 1 ? '' : 's'}` : 'profile', color: '#dc2743', imgs: (ig?.posts || []).slice(0, 3).map(p => p.media).filter(Boolean) },
@@ -1227,6 +1233,14 @@ function renderMySocials(): void {
 
   view.innerHTML = `
     <div class="me-hub">
+      <div class="me-card">
+        ${photo ? `<img class="me-avatar" src="${esc(photo)}" alt="${esc(name)}">` : `<div class="me-avatar"></div>`}
+        <h1 class="me-name">${esc(name)}</h1>
+        ${headline ? `<p class="me-headline">${esc(headline)}</p>` : ''}
+        ${location ? `<p class="me-loc">${esc(location)}</p>` : ''}
+        ${bio ? `<p class="me-bio">${esc(bio)}</p>` : ''}
+      </div>
+
       <div class="hub-grid">
         ${cards.map(c => `
           <button class="hub-card" data-goto="${c.theme}" style="--accent:${c.color}">

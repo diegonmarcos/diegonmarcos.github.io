@@ -809,8 +809,9 @@ function renderPinterest(): void {
 function renderTidal(): void {
   const view = document.getElementById('tid-view');
   if (!view) return;
-  interface TidPlaylist { name: string; tracks: number; duration_s?: number; description?: string; cover?: string; url?: string }
-  interface TidFolder { name: string; playlists: number }
+  interface TidTrack { title: string; artist: string; album: string }
+  interface TidPlaylist { name: string; tracks: number; trackList?: TidTrack[]; duration_s?: number; description?: string; cover?: string; url?: string }
+  interface TidFolder { name: string; playlists: TidPlaylist[] }
   interface TidData { profile: { username: string; playlists: number; tracks: number }; playlists: TidPlaylist[]; folders?: TidFolder[] }
   const d = (globalThis as { PORTAL_DATA?: Record<string, TidData> }).PORTAL_DATA?.tidal;
   const lists = d?.playlists ?? [];
@@ -824,31 +825,23 @@ function renderTidal(): void {
   };
 
   const profileUrl = `https://tidal.com/@${esc(prof?.username || 'diegonmarcos')}`;
-  const cards = lists.map((p, i) => {
+  const playlistCard = (p: TidPlaylist, i: number) => {
     const media = p.cover
       ? `<img class="tid-card__img" src="${esc(p.cover)}" alt="${esc(p.name)}" loading="lazy">`
       : `<div class="tid-card__ph" style="background:${gradientFor(i)}">\u{266B}</div>`;
     return `
-    <a class="tid-card" href="${p.url ? esc(p.url) : profileUrl}" target="_blank" rel="noopener">
+    <a class="tid-card" href="${p.url ? esc(p.url) : profileUrl}" target="_blank" rel="noopener" title="${p.trackList ? esc(p.trackList.slice(0, 5).map(t => t.title).join(' · ')) : ''}">
       <div class="tid-card__cover">${media}<span class="tid-card__play">▶</span></div>
       <div class="tid-card__name">${esc(p.name)}</div>
       <div class="tid-card__meta">${p.tracks} tracks${p.duration_s ? ' · ' + fmtDur(p.duration_s) : ''}</div>
     </a>`;
-  }).join('');
+  };
+  const cards = lists.map(playlistCard).join('');
 
-  // Folders are sections — each folder's real playlists/albums come later; for now
-  // each folder shows `folder.playlists` placeholder cards so the section layout can
-  // be reviewed before the real per-folder track data is filled in.
-  const placeholderCard = (i: number) => `
-    <div class="tid-card tid-card--placeholder">
-      <div class="tid-card__cover"><div class="tid-card__ph" style="background:${gradientFor(i)}">\u{266B}</div></div>
-      <div class="tid-card__name">Untitled</div>
-      <div class="tid-card__meta">placeholder</div>
-    </div>`;
-  const folderSections = folders.map((f, fi) => `
+  const folderSections = folders.map(f => `
     <section class="tid-folder-section">
-      <h2 class="tid-folder-section__title">${esc(f.name)}<em>${f.playlists}</em></h2>
-      <div class="tid-grid">${Array.from({ length: f.playlists }, (_, i) => placeholderCard(fi * 100 + i)).join('') || '<p class="tid-empty">No playlists in this folder yet.</p>'}</div>
+      <h2 class="tid-folder-section__title">${esc(f.name)}<em>${f.playlists.length}</em></h2>
+      <div class="tid-grid">${f.playlists.map(playlistCard).join('') || '<p class="tid-empty">No playlists in this folder yet.</p>'}</div>
     </section>`).join('');
 
   view.innerHTML = `

@@ -45,7 +45,6 @@
       "mod": "sw_register",
       "files": [
         "index.html",
-        "mysocials.html",
         "orkut.html",
         "instagram.html",
         "linkedin.html",
@@ -63,7 +62,6 @@
       "mod": "console_log",
       "files": [
         "index.html",
-        "mysocials.html",
         "orkut.html",
         "instagram.html",
         "linkedin.html",
@@ -85,7 +83,6 @@
       "target": "es2020",
       "hash_of": [
         "index.html",
-        "mysocials.html",
         "orkut.html",
         "instagram.html",
         "linkedin.html",
@@ -102,7 +99,6 @@
       "precache": [
         "./",
         "./index.html",
-        "./mysocials.html",
         "./orkut.html",
         "./instagram.html",
         "./linkedin.html",

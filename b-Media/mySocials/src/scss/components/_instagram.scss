@@ -281,7 +281,7 @@ $ig-gradient: linear-gradient(45deg, #f09433, #e6683c 25%, #dc2743 50%, #cc2366 
     display: flex;
     align-items: center;
     gap: 4px;
-    svg { width: 20px; height: 20px; }
+    svg { width: 20px; height: 20px; fill: currentColor; }
   }
 
   &__like.is-liked { color: #ed4956; }
@@ -306,7 +306,7 @@ $ig-gradient: linear-gradient(45deg, #f09433, #e6683c 25%, #dc2743 50%, #cc2366 
     color: $ig-text;
     font-size: 14px;
     margin: 0 0 10px;
-    svg { width: 18px; height: 18px; color: $ig-muted; }
+    svg { width: 18px; height: 18px; color: $ig-muted; fill: currentColor; }
     em { font-style: normal; color: $ig-muted; }
   }
 }
@@ -329,7 +329,7 @@ $ig-gradient: linear-gradient(45deg, #f09433, #e6683c 25%, #dc2743 50%, #cc2366 
     align-items: center;
     gap: 4px;
     font-size: 12px;
-    svg { width: 22px; height: 22px; }
+    svg { width: 22px; height: 22px; fill: currentColor; }
   }
 
   #ig-post-like.is-liked { color: #ed4956; }

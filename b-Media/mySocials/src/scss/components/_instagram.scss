@@ -273,7 +273,7 @@ $ig-gradient: linear-gradient(45deg, #f09433, #e6683c 25%, #dc2743 50%, #cc2366 
     padding: 6px 10px 10px;
   }
 
-  &__like, &__meta-btn {
+  &__like, &__meta-btn, &__comment-btn {
     background: none;
     border: none;
     color: $ig-text;
@@ -285,7 +285,14 @@ $ig-gradient: linear-gradient(45deg, #f09433, #e6683c 25%, #dc2743 50%, #cc2366 
   }
 
   &__like.is-liked { color: #ed4956; }
-  &__meta-btn { margin-left: auto; color: $ig-muted; font-size: 11px; }
+  &__meta-btn, &__comment-btn { color: $ig-muted; font-size: 11px; }
+  &__meta-btn { margin-left: auto; }
+
+  &__tags {
+    padding: 0 4px 6px;
+    font-size: 12px;
+    color: $ig-blue;
+  }
 }
 
 // Maps pane: posts grouped by location, list layout (not a real map yet).
@@ -334,7 +341,7 @@ $ig-gradient: linear-gradient(45deg, #f09433, #e6683c 25%, #dc2743 50%, #cc2366 
   display: none;
   position: fixed;
   inset: 0;
-  z-index: 60;
+  z-index: 120; // above .ig-post-modal (110) — metadata is often opened from within the photo lightbox
   background: rgba(0, 0, 0, 0.75);
   align-items: center;
   justify-content: center;

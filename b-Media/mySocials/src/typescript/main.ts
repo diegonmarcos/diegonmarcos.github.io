@@ -281,15 +281,17 @@ function renderInstagram(): void {
   const captions = [...d.saved, ...d.liked].map(s => s.caption).filter(Boolean);
   const realPosts = sortedPosts.map((post, i) => `
     <div class="ig-post-card">
-      <a class="ig-tile" href="#" data-post-idx="${i}"><img src="${post.media}" alt="post"></a>
+      <a class="ig-tile" href="#" data-post-idx="${i}"><img src="${post.media}" alt="post" loading="lazy" decoding="async"></a>
       ${post.caption ? `
       <div class="ig-post-card__cap">
         <span class="ig-post-card__cap-text">${esc(post.caption)}</span>
         <button class="ig-post-card__more" data-more-idx="${i}">more</button>
       </div>` : ''}
+      ${(post.caption.match(/#\w+/g) || []).length ? `<div class="ig-post-card__tags">${esc((post.caption.match(/#\w+/g) || []).join(' '))}</div>` : ''}
       <div class="ig-post-card__actions">
         <button class="ig-post-card__like" data-like-idx="${i}" aria-label="Like">${IG_ICON.heart}</button>
         <button class="ig-post-card__meta-btn" data-meta-idx="${i}" aria-label="Photo metadata">${IG_ICON.info}</button>
+        <button class="ig-post-card__comment-btn" data-post-idx="${i}" aria-label="Comments">${IG_ICON.comment}</button>
       </div>
     </div>`);
   const locGroups = new Map<string, typeof sortedPosts>();
@@ -301,7 +303,7 @@ function renderInstagram(): void {
   const mapsPane = locGroups.size ? [...locGroups.entries()].map(([loc, posts]) => `
     <div class="ig-loc-group">
       <h4 class="ig-loc-group__title">${IG_ICON.pin}<span>${esc(loc)}</span><em>${num(posts.length)}</em></h4>
-      <div class="ig-grid">${posts.map(post => `<a class="ig-tile" href="#" data-post-idx="${sortedPosts.indexOf(post)}"><img src="${post.media}" alt="post"></a>`).join('')}</div>
+      <div class="ig-grid">${posts.map(post => `<a class="ig-tile" href="#" data-post-idx="${sortedPosts.indexOf(post)}"><img src="${post.media}" alt="post" loading="lazy" decoding="async"></a>`).join('')}</div>
     </div>`).join('') : '<p class="ig-empty">No location data yet.</p>';
   const fabricated = Array.from({ length: Math.max(0, POST_GRID - realPosts.length) }, (_, i) => `
     <a class="ig-tile ig-tile--post" href="#" style="background:${gradientFor(i)}">
@@ -520,6 +522,8 @@ function renderInstagram(): void {
     }));
   view.querySelectorAll<HTMLElement>('.ig-post-card__meta-btn[data-meta-idx]').forEach(btn =>
     btn.addEventListener('click', () => openMeta(Number(btn.dataset.metaIdx))));
+  view.querySelectorAll<HTMLElement>('.ig-post-card__comment-btn[data-post-idx]').forEach(btn =>
+    btn.addEventListener('click', () => openPost(Number(btn.dataset.postIdx))));
   postLikeBtn.addEventListener('click', () => {
     if (currentPostIdx < 0) return;
     likedIdx.has(currentPostIdx) ? likedIdx.delete(currentPostIdx) : likedIdx.add(currentPostIdx);
@@ -537,6 +541,12 @@ function renderInstagram(): void {
   const closePost = () => postModal.classList.remove('is-open');
   view.querySelector('#ig-post-modal-close')!.addEventListener('click', closePost);
   postModal.addEventListener('click', e => { if (e.target === postModal) closePost(); });
+
+  document.addEventListener('keydown', e => {
+    if (e.key !== 'Escape') return;
+    if (metaModal.classList.contains('is-open')) closeMeta();
+    else if (postModal.classList.contains('is-open')) closePost();
+  });
 }
 
 // ─── LINKEDIN VIEW ───────────────────────────────────────────────────────────

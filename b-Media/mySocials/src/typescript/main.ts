@@ -1358,6 +1358,7 @@ function renderMySocials(): void {
   const cardHtml = (c: Card) => `
           <button class="hub-card" data-goto="${c.theme}" style="--accent:${c.color}">
             <span class="hub-card__media hub-card__media--${c.imgs.length}">
+              <canvas class="hub-card__fx3d" data-accent="${c.color}"></canvas>
               ${c.imgs.map(src => `<span class="hub-card__img" style="background-image:url('${esc(src)}')"></span>`).join('')}
             </span>
             <span class="hub-card__label">${c.label}</span>
@@ -1389,6 +1390,85 @@ function renderMySocials(): void {
     btn.addEventListener('click', () => navigate(btn.dataset.goto as Theme)));
 
   bootHero3D();
+  bootHubCards3D();
+}
+
+// Real three.js per card: a lit, tilting plane behind each hub card's media
+// area. Mouse position over the card drives the mesh tilt and light position;
+// intensity ramps up on hover. One WebGLRenderer per card (only ~10 on this
+// page), driven by a single shared rAF loop. Errors are swallowed — purely
+// decorative, must never break navigation.
+function bootHubCards3D(): void {
+  const canvases = document.querySelectorAll<HTMLCanvasElement>('.hub-card__fx3d');
+  if (!canvases.length) return;
+  try {
+    const T = THREE_NS as unknown as {
+      Scene: new () => { add(...o: object[]): void };
+      PerspectiveCamera: new (fov: number, asp: number, n: number, f: number) => { position: { set(x: number, y: number, z: number): void } };
+      WebGLRenderer: new (opts: object) => { setSize(w: number, h: number, updateStyle?: boolean): void; setPixelRatio(r: number): void; render(s: object, c: object): void };
+      PlaneGeometry: new (w: number, h: number) => object;
+      MeshStandardMaterial: new (opts: object) => object;
+      Mesh: new (g: object, m: object) => { rotation: { x: number; y: number } };
+      AmbientLight: new (c: string, i: number) => object;
+      PointLight: new (c: string, i: number, d: number) => { position: { set(x: number, y: number, z: number): void }; intensity: number };
+    };
+
+    type Rig = { renderer: InstanceType<typeof T.WebGLRenderer>; scene: InstanceType<typeof T.Scene>; camera: InstanceType<typeof T.PerspectiveCamera>; mesh: InstanceType<typeof T.Mesh>; light: InstanceType<typeof T.PointLight>; pointer: () => { mx: number; my: number; hover: boolean } };
+    const rigs: Rig[] = [];
+
+    canvases.forEach(canvas => {
+      const card = canvas.closest<HTMLElement>('.hub-card');
+      if (!card) return;
+      const accent = canvas.dataset.accent || '#8a94ac';
+      const W = canvas.clientWidth || 220;
+      const H = canvas.clientHeight || 275;
+
+      const scene = new T.Scene();
+      const camera = new T.PerspectiveCamera(35, W / H, 0.1, 20);
+      camera.position.set(0, 0, 3.2);
+
+      const renderer = new T.WebGLRenderer({ canvas, antialias: true, alpha: true });
+      renderer.setPixelRatio(Math.min(devicePixelRatio || 1, 2));
+      renderer.setSize(W, H, false);
+
+      const mesh = new T.Mesh(
+        new T.PlaneGeometry(2.4, 3),
+        new T.MeshStandardMaterial({ color: accent, metalness: 0.3, roughness: 0.45, transparent: true, opacity: 0.4 })
+      );
+      scene.add(mesh as unknown as object);
+      scene.add(new T.AmbientLight('#1a2030', 0.5) as unknown as object);
+
+      const light = new T.PointLight(accent, 4, 6);
+      light.position.set(0, 0, 2);
+      scene.add(light as unknown as object);
+
+      let mx = 0, my = 0, hover = false;
+      card.addEventListener('pointermove', (e: PointerEvent) => {
+        const r = card.getBoundingClientRect();
+        mx = ((e.clientX - r.left) / r.width) * 2 - 1;
+        my = ((e.clientY - r.top) / r.height) * 2 - 1;
+      });
+      card.addEventListener('pointerenter', () => { hover = true; });
+      card.addEventListener('pointerleave', () => { hover = false; mx = 0; my = 0; });
+
+      rigs.push({ renderer, scene, camera, mesh, light, pointer: () => ({ mx, my, hover }) });
+    });
+
+    const tick = () => {
+      rigs.forEach(rig => {
+        const p = rig.pointer();
+        rig.mesh.rotation.y += (p.mx * 0.5 - rig.mesh.rotation.y) * 0.12;
+        rig.mesh.rotation.x += (-p.my * 0.4 - rig.mesh.rotation.x) * 0.12;
+        rig.light.position.set(p.mx * 1.4, -p.my * 1.1, 1.6);
+        rig.light.intensity += ((p.hover ? 9 : 3) - rig.light.intensity) * 0.1;
+        rig.renderer.render(rig.scene as unknown as object, rig.camera as unknown as object);
+      });
+      requestAnimationFrame(tick);
+    };
+    tick();
+  } catch (err) {
+    console.error('[hub3d] boot failed', err);
+  }
 }
 
 // Static (single-frame, no animation loop) hero render: a lit object in a dark

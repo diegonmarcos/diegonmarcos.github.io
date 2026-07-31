@@ -3,7 +3,7 @@
   import * as THREE from 'three';
   import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
   import mapConfig from '$lib/data/map.json';
-  import { freeInput, climbTotal } from '$engine/freeInput';
+  import { freeInput, climbTotal, channelOwners } from '$engine/freeInput';
   import { stepDrive, stepVehicle } from '$engine/locomotion';
   import { stepAirplane, stepHelicopter, stepDrone } from '$engine/flight';
   import type { FlightState, FlightTelemetry } from '$engine/flight';
@@ -19,6 +19,8 @@
   const KMH = 1 / 3.6;
 
   let mapContainer: HTMLDivElement;
+  let minimapContainer: HTMLDivElement;
+  let minimapArrow: HTMLDivElement;
 
   const rider = mapConfig.rider;
   const j = rider.joystick;
@@ -32,7 +34,7 @@
     const size = driver.size ?? camCfg.refSize;
     const vmax = (driver.speed.max ?? 0) * KMH;
     const vRatio = vmax > 0 ? Math.min(1, (speedMs ?? 0) / vmax) : 0;
-    const z = cam.zoom + Math.log2(camCfg.refSize / size) - camCfg.speedZoom * vRatio;
+    const z = cam.zoom + Math.log2(camCfg.refSize / size) - camCfg.speedZoom * (cam.speedZoomMult ?? 1) * vRatio;
     return Math.max(camCfg.minZoom, Math.min(camCfg.maxZoom, z));
   }
 
@@ -73,11 +75,29 @@
   // silently if a frame throws before reaching that call) plus live input/driver
   // state. `debugNow` is refreshed from the always-on tick() rAF loop so the
   // LIVE/STALLED readout keeps updating even while render() itself is stalled.
-  let debugVisible = $state(false);
+  let debugVisible = $state(true);
+  // Minimap: north-up corner overlay, on by default (core navigation aid). No
+  // toggle UI wired yet — the $state flag is here for a future button/keybind.
+  let showMinimap = $state(true);
   let showMenu = $state(false);
   let showGraphStats = $state(false);
   let showAbout = $state(false);
   let showKeybindings = $state(false);
+  // New WASD/Arrows/Space/+-/1-7/Shift+1-8 scheme reference card, toggled by
+  // the 'k' key (see onKeyDown) — separate from the hamburger-menu
+  // `showKeybindings` panel above, which is data-driven off rider.keys.
+  let showKeybindsPanel = $state(false);
+  const keybindsList: { key: string; action: string }[] = [
+    { key: 'W A S D', action: 'Move (forward/back/left/right)' },
+    { key: 'Arrows / Mouse', action: 'Look direction' },
+    { key: 'Space', action: 'Speed up' },
+    { key: '+ / -', action: 'Altitude up/down' },
+    { key: '1 – 7', action: 'Camera select' },
+    { key: 'Shift+1 – 8', action: 'Driver select' },
+    { key: ',', action: 'Cycle camera' },
+    { key: '.', action: 'Cycle driver' },
+    { key: 'K', action: 'Toggle this panel' }
+  ];
   let showCameraPicker = $state(false);
   let showDriverPicker = $state(false);
   let terrain3d = $state(true);
@@ -196,6 +216,10 @@
   // writable from any closure in the component, including the onMount rAF loop.
   let flightThrottle = $state(0);
   let flightTelemetry = $state<FlightTelemetry | null>(null);
+  // Plain (non-reactive) snapshot of the last flight control-step's computed
+  // input axes, written every frame by the control branch below and read by
+  // the throttled debug dump in riderLayer.render — cheap, no rune overhead.
+  let lastFlightDebug: any = null;
   let flightAudioMuted = $state(false);
   // Reassigned once onMount creates the real map/flightAudio instances — same
   // pattern as mapZoomIn/mapToggleTerrain below (template needs a stable
@@ -373,8 +397,68 @@
 
     console.log(`[rider] mount: driver=${activeDriver.id} camera=${activeCamera.id} start=${rider.start}`);
 
+    // --- One-time init self-check. Always runs, regardless of debugVisible —
+    // this is a one-shot diagnostic, not a per-frame cost. Isolates "the
+    // physics function itself works" from "input isn't reaching it", which is
+    // the ambiguity that blocks diagnosing a dead joystick from the console
+    // alone. Defensive: must never be able to break the app. ---
+    try {
+      console.group('[rider] init self-check');
+
+      // Joystick channel-claim check: give the Joystick components time to
+      // mount and claim their channels before asserting.
+      setTimeout(() => {
+        try {
+          if (!channelOwners.drive) {
+            console.error('[rider] INIT FAILURE: drive joystick never claimed its channel — no stick input will reach flight/vehicle control');
+          }
+          if (!channelOwners.look) {
+            console.error('[rider] INIT FAILURE: look joystick never claimed its channel — no stick input will reach flight/vehicle control');
+          }
+          console.assert(!!channelOwners.drive, '[rider] channelOwners.drive is null 500ms after mount');
+          console.assert(!!channelOwners.look, '[rider] channelOwners.look is null 500ms after mount');
+        } catch (err) {
+          console.error('[rider] init self-check (channel claim check) threw', err);
+        }
+      }, 500);
+
+      // Pure synthetic smoke-test of stepAirplane on throwaway state/env —
+      // never touches real game state. Full throttle, level input, dt=1/60,
+      // 120 iterations (~2 simulated seconds); PASS iff speed increased.
+      try {
+        const airplaneDriver = rider.drivers.find((d) => (d as any).flight?.model === 'airplane') as any;
+        const aparams = airplaneDriver?.flight;
+        if (!aparams) {
+          console.warn('[rider] init self-check: no airplane driver config found in rider.drivers — skipping stepAirplane smoke test');
+        } else {
+          const smokeState = { heading: 0, bank: 0, pitch: 0, speed: 0, vspeed: 0, altASL: 1000 };
+          const smokeEnv = { groundElev: 0, dt: 1 / 60 };
+          const smokeInput = { pitchAxis: 0, rollAxis: 0, yawAxis: 0, throttle: 1, climbAxis: 0, gearDown: false, flaps: 0, brake: 0 };
+          const speedBefore = smokeState.speed;
+          for (let i = 0; i < 120; i++) stepAirplane(smokeState, smokeInput, aparams, smokeEnv);
+          const speedAfter = smokeState.speed;
+          const pass = speedAfter > speedBefore;
+          console.assert(pass, '[rider] stepAirplane smoke test: speed did not increase under full throttle');
+          console.log(`[rider] stepAirplane smoke test: ${pass ? 'PASS' : 'FAIL'} — speed ${speedBefore.toFixed(2)} -> ${speedAfter.toFixed(2)} over 120 steps (2s) @ full throttle`);
+          if (!pass) console.error('[rider] INIT FAILURE: stepAirplane physics smoke test failed — the flight-dynamics function itself is not producing acceleration; the bug is in physics, not input routing');
+        }
+      } catch (err) {
+        console.error('[rider] init self-check (stepAirplane smoke test) threw', err);
+      }
+
+      console.groupEnd();
+    } catch (err) {
+      console.error('[rider] init self-check failed entirely', err);
+    }
+
     // MapLibre is browser-only — must be imported inside onMount (no SSR).
     let map: import('maplibre-gl').Map | undefined;
+    // Minimap: a second, lightweight MapLibre instance (same hidden-instance
+    // pattern as street.ts's createMaskProvider) rendering a flat 2D north-up
+    // reference view centered on the rider. Never allowed to break the main
+    // map/frame loop — every touch point is try/catch-guarded.
+    let minimap: import('maplibre-gl').Map | undefined;
+    let minimapCenter: [number, number] | null = null;
     let stopMeshEffect: (() => void) | undefined;
     let disposed = false;
     let raf = 0;
@@ -421,7 +505,11 @@
     function recomputeMoveFromKeys() {
       const keys = rider.keys;
       let moveX = 0, moveY = 0, climb = 0;
-      if ([...heldKeys].some((k) => keys.forward.includes(k))) moveY += 1;
+      // Space is a speed-up nudge, not a movement key (rider.keys.forward is
+      // WASD-only) — fold it in here as a forward-equivalent so ground vehicle/
+      // character throttle (which reads freeInput.moveY) picks it up, without
+      // ever allowing it to cancel reverse (hence max(), not +=).
+      if ([...heldKeys].some((k) => keys.forward.includes(k)) || heldKeys.has(' ')) moveY += 1;
       if ([...heldKeys].some((k) => keys.back.includes(k))) moveY -= 1;
       if ([...heldKeys].some((k) => keys.left.includes(k))) moveX -= 1;
       if ([...heldKeys].some((k) => keys.right.includes(k))) moveX += 1;
@@ -431,26 +519,38 @@
       freeInput.moveY = moveY;
       freeInput.climbKeys = climb;
     }
+    // Arrow keys are the keyboard fallback for the look-direction channel that
+    // mouse-look/the right joystick already drive (freeInput.yawRate/pitchRate —
+    // see the Mode-2 flight remap below, which reassigns this same channel to
+    // roll/pitch while flying). Held, not discrete, mirroring recomputeMoveFromKeys.
+    function recomputeLookFromKeys() {
+      let yawRate = 0, pitchRate = 0;
+      if (heldKeys.has('ArrowLeft')) yawRate -= 1;
+      if (heldKeys.has('ArrowRight')) yawRate += 1;
+      if (heldKeys.has('ArrowUp')) pitchRate += 1;
+      if (heldKeys.has('ArrowDown')) pitchRate -= 1;
+      freeInput.yawRate = yawRate;
+      freeInput.pitchRate = pitchRate;
+    }
     // Mode-2 flight keyboard remap — reuses the SAME heldKeys Set as
     // recomputeMoveFromKeys above (no parallel key-tracking machinery), just a
     // different combinator read only while in a flight control mode. NOTE: this
-    // reads literal key strings ('a'/'d' vs 'ArrowLeft'/'ArrowRight') rather than
-    // rider.keys.left/right groups, because those groups deliberately fold both
-    // sets together for ground driving (see map.json) — the flight design calls
-    // for a/d and the arrow keys to drive DIFFERENT axes (roll vs yaw), which the
-    // grouped config cannot express. Flagged in the task report as a spec-vs-
-    // config mismatch; this is the pragmatic reading that keeps both intents.
+    // reads literal key strings ('a'/'d') rather than rider.keys.left/right
+    // groups, because those groups fold ground-driving aliases together (see
+    // map.json) while flight needs a/d isolated to roll. Arrow keys used to also
+    // drive yaw here, but they're now the look/right-stick channel (freeInput.
+    // yawRate/pitchRate, read a few lines below via kb.roll's sibling — see
+    // rawRoll/rawPitch in the flight branch), so binding them to yaw here too
+    // would double-assign the same physical keys to two different flight axes.
     function flightKeyAxes() {
-      let pitch = 0, roll = 0, yaw = 0, leftY = 0;
+      let pitch = 0, roll = 0, leftY = 0;
       if (heldKeys.has('w')) pitch += 1;
       if (heldKeys.has('s')) pitch -= 1;
       if (heldKeys.has('a')) roll -= 1;
       if (heldKeys.has('d')) roll += 1;
-      if (heldKeys.has('ArrowLeft')) yaw -= 1;
-      if (heldKeys.has('ArrowRight')) yaw += 1;
       if (heldKeys.has('q') || heldKeys.has(' ')) leftY += 1;
       if (heldKeys.has('e') || heldKeys.has('c')) leftY -= 1;
-      return { pitch, roll, yaw, leftY };
+      return { pitch, roll, leftY };
     }
     function matchAny(list: string[], key: string) {
       return list.includes(key);
@@ -473,15 +573,40 @@
         debugVisible = !debugVisible;
         return;
       }
+      if ((e.key === 'k' || e.key === 'K') && !e.repeat) {
+        e.preventDefault();
+        showKeybindsPanel = !showKeybindsPanel;
+        return;
+      }
+      // Camera 1-7 / Shift+driver 1-8 direct-select — instant on keydown edge
+      // (like the discrete cycle keys below), not a held state. Read via e.code
+      // (DigitN) rather than e.key: Shift+1 on a US layout delivers e.key === '!',
+      // not '1', so e.key can't reliably disambiguate camera-select from
+      // driver-select once Shift is factored in.
+      if (!e.repeat && e.code.startsWith('Digit')) {
+        const n = Number(e.code.slice(5));
+        if (e.shiftKey) {
+          if (n >= 1 && n <= rider.drivers.length) {
+            e.preventDefault();
+            activeDriver = rider.drivers[n - 1];
+          }
+        } else if (n >= 1 && n <= rider.cameras.length) {
+          e.preventDefault();
+          activeCamera = rider.cameras[n - 1];
+        }
+        return;
+      }
       const keys = rider.keys;
       // Normalize: a single-char key (e.g. 'w') can arrive as 'W' once Shift is
       // also held, so keydown's 'w' and keyup's 'W' silently desync — held-key
       // tracking must key off the same normalized string on both ends.
       const k = e.key.length === 1 ? e.key.toLowerCase() : e.key;
+      const isArrow = k === 'ArrowUp' || k === 'ArrowDown' || k === 'ArrowLeft' || k === 'ArrowRight';
       const isHeld =
         matchAny(keys.forward, k) || matchAny(keys.back, k) ||
         matchAny(keys.left, k) || matchAny(keys.right, k) ||
-        matchAny(keys.up, k) || matchAny(keys.down, k);
+        matchAny(keys.up, k) || matchAny(keys.down, k) ||
+        isArrow;
       const isDiscrete =
         matchAny(keys.cameraNext, k) || matchAny(keys.cameraPrev, k) ||
         matchAny(keys.driverNext, k) || matchAny(keys.driverPrev, k);
@@ -490,6 +615,7 @@
       if (isHeld) {
         heldKeys.add(k);
         recomputeMoveFromKeys();
+        if (isArrow) recomputeLookFromKeys();
       }
       if (isDiscrete && !e.repeat) {
         if (matchAny(keys.cameraNext, k)) activeCamera = cycle(rider.cameras, activeCamera, 1);
@@ -499,12 +625,13 @@
       }
     }
     function onKeyUp(e: KeyboardEvent) {
-      const keys = rider.keys;
       const k = e.key.length === 1 ? e.key.toLowerCase() : e.key;
+      const isArrow = k === 'ArrowUp' || k === 'ArrowDown' || k === 'ArrowLeft' || k === 'ArrowRight';
       if (heldKeys.has(k)) {
         e.preventDefault();
         heldKeys.delete(k);
         recomputeMoveFromKeys();
+        if (isArrow) recomputeLookFromKeys();
       }
     }
     // A held key with no matching keyup (alt-tab, OS grabbing focus, devtools)
@@ -512,11 +639,13 @@
     function onWindowBlur() {
       heldKeys.clear();
       recomputeMoveFromKeys();
+      recomputeLookFromKeys();
     }
     function onVisibilityChange() {
       if (document.hidden) {
         heldKeys.clear();
         recomputeMoveFromKeys();
+        recomputeLookFromKeys();
       }
     }
     window.addEventListener('keydown', onKeyDown);
@@ -524,10 +653,12 @@
     window.addEventListener('blur', onWindowBlur);
     document.addEventListener('visibilitychange', onVisibilityChange);
 
-    // --- Debug overlay (F8 toggles via onKeyDown above; ?debug=1 sets initial state) ---
-    debugVisible = new URLSearchParams(window.location.search).get('debug') === '1';
+    // --- Debug overlay: ON by default now (rich console diagnostics for input/physics
+    // debugging); F8 toggles via onKeyDown above, ?debug=0 explicitly disables, ?debug=1
+    // is still accepted (redundant with the default but kept for explicit links). ---
+    debugVisible = new URLSearchParams(window.location.search).get('debug') !== '0';
     if (debugVisible) {
-      console.info('[rider] debug mode ON — F8 toggles, throttled frame logs every 30 renders');
+      console.info('[rider] debug mode ON — F8 toggles, ?debug=0 disables, throttled frame logs every 30 renders');
       import('eruda').then((m) => {
         const eruda = m.default ?? m;
         eruda.init();
@@ -670,6 +801,28 @@
       (map as any).setCenterClampedToGround(false);
       map.setMaxPitch(look.mapMaxPitch);
 
+      // Minimap: flat 2D north-up reference view, same basemap style as the
+      // main map but no terrain/sky/3D — a cheap secondary instance, same
+      // spirit as street.ts's hidden mask map. Never allowed to break the
+      // main map or the frame loop if it fails to construct.
+      try {
+        if (minimapContainer) {
+          minimap = new maplibre.Map({
+            container: minimapContainer,
+            style: mapConfig.basemap,
+            center: mapConfig.center as [number, number],
+            zoom: 15,
+            pitch: 0,
+            bearing: 0,
+            interactive: false,
+            attributionControl: false
+          });
+        }
+      } catch (err) {
+        console.error('[rider] minimap init failed', err);
+        minimap = undefined;
+      }
+
       mapZoomIn = () => map?.zoomIn();
       mapZoomOut = () => map?.zoomOut();
       mapResetBearing = () => map?.resetNorth();
@@ -694,10 +847,10 @@
         console.error('[map] error event', e.error?.message ?? e.error ?? e);
       });
       map.on('sourcedataloading', (e) => {
-        if (e.sourceId) console.debug(`[map] source loading: ${e.sourceId}`);
+        if (debugVisible && e.sourceId) console.debug(`[map] source loading: ${e.sourceId}`);
       });
       map.on('dataabort', (e) => {
-        console.warn(`[map] data load aborted for source '${e.sourceId}'`);
+        if (debugVisible) console.warn(`[map] data load aborted for source '${e.sourceId}'`);
       });
 
       // The liberty basemap's sprite sheet doesn't cover every POI icon it
@@ -1028,6 +1181,7 @@
             renderer.render(natureScene, camera);
 
               if (debugVisible && renderFireCount % 30 === 0) {
+                console.groupCollapsed(`[rider] frame ${renderFireCount} — driver=${activeDriver.id}`);
                 console.debug('[rider]', {
                   fps: Math.round(fps),
                   renderCalls,
@@ -1036,6 +1190,30 @@
                   freeInput: { moveX: freeInput.moveX, moveY: freeInput.moveY, yawRate: freeInput.yawRate, pitchRate: freeInput.pitchRate, climb: climbTotal() },
                   frameState
                 });
+                if ((activeDriver as any).control === 'flight' && lastFlightDebug) {
+                  console.debug('[rider] channelOwners', lastFlightDebug.channelOwners);
+                  console.table({
+                    'raw.moveX': lastFlightDebug.raw.moveX,
+                    'raw.moveY': lastFlightDebug.raw.moveY,
+                    'raw.yawRate': lastFlightDebug.raw.yawRate,
+                    'raw.pitchRate': lastFlightDebug.raw.pitchRate,
+                    'key.leftY': lastFlightDebug.keyAxes?.leftY,
+                    'key.yaw': lastFlightDebug.keyAxes?.yaw,
+                    'key.pitch': lastFlightDebug.keyAxes?.pitch,
+                    'key.roll': lastFlightDebug.keyAxes?.roll,
+                    rawLeftY: lastFlightDebug.derived.rawLeftY,
+                    rawYaw: lastFlightDebug.derived.rawYaw,
+                    rawPitch: lastFlightDebug.derived.rawPitch,
+                    rawRoll: lastFlightDebug.derived.rawRoll,
+                    pitchAxis: lastFlightDebug.axes.pitchAxis,
+                    rollAxis: lastFlightDebug.axes.rollAxis,
+                    yawAxis: lastFlightDebug.axes.yawAxis,
+                    leftY: lastFlightDebug.axes.leftY,
+                    throttleOut: lastFlightDebug.axes.throttleOut
+                  });
+                  console.debug('[rider] telemetry', lastFlightDebug.telemetry, 'phase', lastFlightDebug.phase);
+                }
+                console.groupEnd();
               }
             } catch (err) {
               lastError = err instanceof Error ? `${err.message}\n${err.stack ?? ''}` : String(err);
@@ -1163,7 +1341,7 @@
               return (1 - e) * c + e * c * c * c;
             };
             const rawLeftY = clamp(freeInput.moveY + kb.leftY, -1, 1);
-            const rawYaw = clamp(freeInput.moveX + kb.yaw, -1, 1);
+            const rawYaw = clamp(freeInput.moveX, -1, 1);
             // right Y (pitchRate) inverted: stick-back (negative pitchRate, per
             // Joystick's invertY-less convention) reads as nose-up.
             const rawPitch = clamp(-freeInput.pitchRate + kb.pitch, -1, 1);
@@ -1201,6 +1379,18 @@
               stepDrone;
             const telemetry = stepFn(flightState, flightInput, fparams, flightEnv);
             flightTelemetry = telemetry;
+
+            // Snapshot for the throttled debug dump in riderLayer.render — see
+            // lastFlightDebug declaration for why this lives outside $state.
+            lastFlightDebug = {
+              raw: { moveX: freeInput.moveX, moveY: freeInput.moveY, yawRate: freeInput.yawRate, pitchRate: freeInput.pitchRate },
+              keyAxes: kb,
+              derived: { rawLeftY, rawYaw, rawPitch, rawRoll },
+              axes: { pitchAxis, rollAxis, yawAxis, leftY, throttleOut },
+              channelOwners: { ...channelOwners },
+              telemetry,
+              phase: gameState.phase
+            };
 
             // Chase/orbit flight views: free-look is gated off above, so instead
             // ease camBearing toward the aircraft heading (spring, using the
@@ -1305,7 +1495,12 @@
             );
           }
 
-          hudSpeed = (ride.speed ?? 0) / KMH; // ride.speed is m/s (params were *KMH); HUD is km/h
+          // ride.speed / flightState.speed are both m/s (params were *KMH); HUD is km/h.
+          // Flight branch never touches `ride`, so ride.speed is stale during flight —
+          // read the just-computed flight telemetry instead when airborne.
+          hudSpeed = (activeDriver as any).control === 'flight'
+            ? (flightTelemetry?.speed ?? 0) / KMH
+            : (ride.speed ?? 0) / KMH;
           hudAltitude = step.altitude;
 
           const merc = maplibre.MercatorCoordinate.fromLngLat(lngLat, groundElevation + step.altitude);
@@ -1335,7 +1530,13 @@
             zoom = clamp(orbitZoom.refZoom - Math.log2(Math.max(step.altitude, 1) / orbitZoom.refAltitude), 0.5, 6);
             elevation = 0;
           } else {
-            zoom = cameraZoomFor(activeDriver, activeCamera, ride.speed);
+            // ride.speed is stale during flight (flight never mutates `ride`) — use
+            // the current-frame flight telemetry (m/s, matches cameraZoomFor's speedMs)
+            // instead, same staleness class as the hudSpeed fix above.
+            const camSpeedMs = (activeDriver as any).control === 'flight'
+              ? (flightTelemetry?.speed ?? 0)
+              : ride.speed;
+            zoom = cameraZoomFor(activeDriver, activeCamera, camSpeedMs);
             const lift = (activeCamera as any).targetLift;
             const targetLift = lift === 'eye' ? driverAltitude.eyeHeight : typeof lift === 'number' ? lift : 0;
             elevation = groundElevation + step.altitude + targetLift;
@@ -1411,6 +1612,39 @@
             roll: jtRoll
           });
 
+          // Minimap: north-up corner widget, always centered on the rider (the
+          // player marker is a fixed CSS arrow at the div's center — no need to
+          // convert to pixel coords). Bearing stays 0 (north-up) rather than
+          // following camBearing/step.heading every frame — a heading-up minimap
+          // would need setBearing() every frame too, which is more render work
+          // for a small corner widget and fights the "cheap secondary map"
+          // pattern used elsewhere (street.ts). The marker itself still rotates
+          // to show heading (see minimapArrow below). Throttled to only touch
+          // the map when the position actually moved, matching the frame-loop's
+          // general "don't do redundant work" style.
+          if (minimap) {
+            try {
+              const moved =
+                !minimapCenter ||
+                Math.abs(minimapCenter[0] - lngLat[0]) > 1e-6 ||
+                Math.abs(minimapCenter[1] - lngLat[1]) > 1e-6;
+              // Coarse altitude-based zoom step: zoom out as the driver climbs,
+              // similar in spirit to the main camera's altitude-driven zoom
+              // above, but simple — a minimap doesn't need tight tuning.
+              const agl = step.altitude ?? 0;
+              const minimapZoom = agl > 3000 ? 10 : agl > 500 ? 13 : 15;
+              if (moved) {
+                minimapCenter = lngLat;
+                minimap.jumpTo({ center: lngLat, zoom: minimapZoom, bearing: 0, pitch: 0 });
+              }
+              if (minimapArrow) {
+                minimapArrow.style.transform = `translate(-50%, -50%) rotate(${(step.heading * 180) / Math.PI}deg)`;
+              }
+            } catch (err) {
+              console.error('[rider] minimap update failed', err);
+            }
+          }
+
           // P3b: sky-dome overlay — fade in as lookPitch climbs past mapMaxPitch
           // (the map's own pitch cap), simulating looking up into sky/stars.
           if (skyCanvas && skyRenderer && skyScene && skyCamera) {
@@ -1472,6 +1706,7 @@
       stopMeshEffect?.();
       streetProvider?.destroy();
       flightAudio.destroy();
+      try { minimap?.remove(); } catch {}
       map?.remove();
     };
   });
@@ -1487,6 +1722,19 @@
       model={(activeDriver as any).flight.model}
       visible={cockpitVisible && activeCamera.id === 'fps'}
     />
+  {/if}
+
+  <div class="minimap-wrap" class:hidden={!showMinimap}>
+    <div bind:this={minimapContainer} class="minimap"></div>
+    <div bind:this={minimapArrow} class="minimap-arrow"></div>
+  </div>
+
+  {#if showKeybindsPanel}
+    <div class="keybinds-overlay">
+      {#each keybindsList as row}
+        <div class="keybinds-row"><span class="keybinds-key">{row.key}</span><span>{row.action}</span></div>
+      {/each}
+    </div>
   {/if}
 
   {#if debugVisible}
@@ -1650,7 +1898,9 @@
           class:active={debugVisible}
           onclick={() => {
             const url = new URL(window.location.href);
-            if (debugVisible) url.searchParams.delete('debug');
+            // debug defaults ON, so turning it off must write an explicit ?debug=0
+            // (deleting the param would just fall back to the default of on).
+            if (debugVisible) url.searchParams.set('debug', '0');
             else url.searchParams.set('debug', '1');
             window.location.href = url.toString();
           }}
@@ -2223,6 +2473,35 @@
     background: rgba(157, 180, 255, 0.35);
   }
 
+  /* Keybindings help card: 'K' toggles. Left side of screen (debug-overlay owns
+     top-right, minimap owns bottom-left) — same dark translucent HUD look. */
+  .keybinds-overlay {
+    position: fixed;
+    top: 12px;
+    left: 12px;
+    z-index: 100;
+    pointer-events: none;
+    font-family: monospace;
+    font-size: 11px;
+    line-height: 1.6;
+    color: #d8e0ff;
+    background: rgba(0, 0, 0, 0.7);
+    padding: 8px 10px;
+    border-radius: 6px;
+    white-space: nowrap;
+  }
+
+  .keybinds-row {
+    display: flex;
+    gap: 12px;
+  }
+
+  .keybinds-key {
+    display: inline-block;
+    min-width: 100px;
+    color: #9db4ff;
+  }
+
   /* Debug overlay: F8 or ?debug=1. Read-only diagnostics for the render()
      self-scheduling chain (renderFireCount/lastRenderTime) plus live input state. */
   .debug-overlay {
@@ -2243,6 +2522,49 @@
 
   .debug-overlay .err {
     color: #ff6b6b;
+  }
+
+  /* Minimap: fixed bottom-left corner HUD widget. North-up (bearing 0, see
+     frame()'s minimap.jumpTo call) — the player marker rotates instead. Styled
+     to match .debug-overlay's dark translucent HUD look. */
+  .minimap-wrap {
+    position: fixed;
+    left: 12px;
+    bottom: 12px;
+    z-index: 100;
+    width: 180px;
+    height: 180px;
+    border-radius: 10px;
+    overflow: hidden;
+    border: 1px solid rgba(216, 224, 255, 0.35);
+    background: rgba(0, 0, 0, 0.7);
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.4);
+    pointer-events: none;
+  }
+
+  .minimap-wrap.hidden {
+    display: none;
+  }
+
+  .minimap {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+  }
+
+  .minimap-arrow {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: 0;
+    height: 0;
+    border-left: 6px solid transparent;
+    border-right: 6px solid transparent;
+    border-bottom: 12px solid #ff6b6b;
+    filter: drop-shadow(0 0 2px rgba(0, 0, 0, 0.8));
+    transform: translate(-50%, -50%);
+    transform-origin: center;
   }
 
   /* --- Flight game loop: crash flash + screen shake, landed toast --- */

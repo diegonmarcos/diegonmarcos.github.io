@@ -43,12 +43,12 @@
     {
       "_doc": "Inject navigator.serviceWorker.register(...) before </head>. MUST run BEFORE esbuild_sw so the modified HTML feeds into BUILD_HASH. sw_register takes literal filenames, not globs.",
       "mod": "sw_register",
-      "files": ["index.html", "orkut.html", "instagram.html", "linkedin.html", "pinterest.html", "tidal.html", "strava.html", "youtube.html", "icq.html", "shelf.html", "vinyl.html"]
+      "files": ["index.html", "mysocials.html", "orkut.html", "instagram.html", "linkedin.html", "pinterest.html", "tidal.html", "strava.html", "youtube.html", "icq.html", "shelf.html", "vinyl.html"]
     },
     {
       "_doc": "Inject single-namespace observability SDK (Sentry/OpenObserve-style). Mirrors console.* + errors + SW lifecycle to OPFS console.log. window.consoleLogs.{captureException, captureMessage, addBreadcrumb, read, readJSON, tail, clear, download}. console_log takes literal filenames, not globs.",
       "mod": "console_log",
-      "files": ["index.html", "orkut.html", "instagram.html", "linkedin.html", "pinterest.html", "tidal.html", "strava.html", "youtube.html", "icq.html", "shelf.html", "vinyl.html"]
+      "files": ["index.html", "mysocials.html", "orkut.html", "instagram.html", "linkedin.html", "pinterest.html", "tidal.html", "strava.html", "youtube.html", "icq.html", "shelf.html", "vinyl.html"]
     },
     {
       "_doc": "MUST run last — hashes the dist artifacts above to derive BUILD_HASH and inject it into the SW bundle.",
@@ -59,6 +59,7 @@
       "target": "es2020",
       "hash_of": [
         "index.html",
+        "mysocials.html",
         "orkut.html",
         "instagram.html",
         "linkedin.html",
@@ -75,6 +76,7 @@
       "precache": [
         "./",
         "./index.html",
+        "./mysocials.html",
         "./orkut.html",
         "./instagram.html",
         "./linkedin.html",

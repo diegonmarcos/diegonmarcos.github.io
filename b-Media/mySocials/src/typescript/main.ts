@@ -1856,7 +1856,17 @@ const THEMES: Theme[] = ['mysocials', 'orkut', 'instagram', 'linkedin', 'pintere
 // Each theme is a real static page (orkut.html, instagram.html, ...; mysocials = index.html).
 // Every page ships the full bundle, so switching just flips the in-DOM view — no fetch needed.
 function pageFor(theme: Theme): string {
-  return theme === 'mysocials' ? './' : `${theme}.html`;
+  return `${theme}.html`;
+}
+
+// Landing page (index.html) — staggers the card grid's fade-in via animation-delay.
+// No-op on every other page (guarded by the element check, same pattern as renderMediaFeed).
+function initLanding(): void {
+  const grid = document.getElementById('landing-grid');
+  if (!grid) return;
+  grid.querySelectorAll<HTMLElement>('.landing__card').forEach((card, i) => {
+    card.style.animationDelay = `${0.15 + i * 0.05}s`;
+  });
 }
 
 function setTheme(theme: Theme): void {
@@ -1906,6 +1916,7 @@ function init(): void {
   renderShelf();
   renderVinyl();
   initThemeSwitcher();
+  initLanding();
 
   // Animate trust meter bars on load
   setTimeout(() => {

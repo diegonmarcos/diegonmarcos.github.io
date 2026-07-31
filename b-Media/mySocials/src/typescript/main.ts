@@ -1303,20 +1303,24 @@ function renderMySocials(): void {
   const bio = ig?.profile.bio || '';
   const photo = li?.profile.photo || ig?.profile.photo;
 
-  // Each card jumps to that network's view. Metrics are real, from the parsed data.
+  // Each card jumps to that network's view. Metrics + sample images are real, from the parsed data.
   const tidalD = (globalThis as { PORTAL_DATA?: Record<string, { profile: { playlists: number } }> }).PORTAL_DATA?.tidal;
+  const pin = g.pinterest as unknown as PinData | undefined;
+  const yt = (globalThis as { PORTAL_DATA?: Record<string, { playlists?: { videos?: { thumbnail: string }[] }[] }> }).PORTAL_DATA?.youtube;
+  const shelfD = g.shelf as unknown as ShelfData | undefined;
+  const vinylD = g.vinyl as unknown as VinylData | undefined;
 
-  const cards: { theme: Theme; label: string; meta: string; color: string }[] = [
-    { theme: 'linkedin', label: 'LinkedIn', meta: li ? `${li.profile.connections} connections · ${li.profile.followers.toLocaleString()} followers` : 'profile', color: '#0a66c2' },
-    { theme: 'instagram', label: 'Instagram', meta: ig ? `${ig.profile.followers.toLocaleString()} followers · ${ig.profile.posts} post${ig.profile.posts === 1 ? '' : 's'}` : 'profile', color: '#dc2743' },
-    { theme: 'pinterest', label: 'Pinterest', meta: 'boards & pins', color: '#e60023' },
+  const cards: { theme: Theme; label: string; meta: string; color: string; img?: string }[] = [
+    { theme: 'linkedin', label: 'LinkedIn', meta: li ? `${li.profile.connections} connections · ${li.profile.followers.toLocaleString()} followers` : 'profile', color: '#0a66c2', img: li?.profile.photo },
+    { theme: 'instagram', label: 'Instagram', meta: ig ? `${ig.profile.followers.toLocaleString()} followers · ${ig.profile.posts} post${ig.profile.posts === 1 ? '' : 's'}` : 'profile', color: '#dc2743', img: ig?.posts?.[0]?.media },
+    { theme: 'pinterest', label: 'Pinterest', meta: 'boards & pins', color: '#e60023', img: pin?.boards?.[0]?.cover },
     { theme: 'tidal', label: 'TIDAL', meta: tidalD ? `${tidalD.profile.playlists} playlists` : 'playlists', color: '#00ffff' },
     { theme: 'strava', label: 'Strava', meta: 'activities & routes', color: '#fc5200' },
-    { theme: 'youtube', label: 'YouTube', meta: 'playlists & videos', color: '#ff0000' },
+    { theme: 'youtube', label: 'YouTube', meta: 'playlists & videos', color: '#ff0000', img: yt?.playlists?.[0]?.videos?.[0]?.thumbnail },
     { theme: 'orkut', label: 'Orkut', meta: 'the classic profile', color: '#e9008c' },
     { theme: 'icq', label: 'ICQ', meta: 'retro IM · user details', color: '#0a870a' },
-    { theme: 'shelf', label: 'Shelf', meta: 'book shelf · 3D', color: '#8b6914' },
-    { theme: 'vinyl', label: 'Vinyl', meta: 'record store · 3D', color: '#c17f24' },
+    { theme: 'shelf', label: 'Shelf', meta: 'book shelf · 3D', color: '#8b6914', img: shelfD?.books?.[0]?.isbn ? `https://covers.openlibrary.org/b/isbn/${shelfD.books[0].isbn}-M.jpg` : undefined },
+    { theme: 'vinyl', label: 'Vinyl', meta: 'record store · 3D', color: '#c17f24', img: vinylD?.vinyls?.[0]?.mbid ? `https://coverartarchive.org/release/${vinylD.vinyls[0].mbid}/front-250` : undefined },
   ];
 
   view.innerHTML = `
@@ -1331,15 +1335,19 @@ function renderMySocials(): void {
 
       <div class="media-feed" id="media-feed"></div>
 
-      <div class="me-jump">
+      <div class="hub-grid">
         ${cards.map(c => `
-          <button class="me-jump__btn" data-goto="${c.theme}" style="--accent:${c.color}">${c.label}</button>`).join('')}
+          <button class="hub-card" data-goto="${c.theme}" style="--accent:${c.color}${c.img ? `;--img:url('${c.img}')` : ''}">
+            <span class="hub-card__media"></span>
+            <span class="hub-card__label">${c.label}</span>
+            <span class="hub-card__meta">${esc(c.meta)}</span>
+          </button>`).join('')}
       </div>
     </div>`;
 
   renderMediaFeed();
 
-  view.querySelectorAll<HTMLElement>('.me-jump__btn').forEach(btn =>
+  view.querySelectorAll<HTMLElement>('.hub-card').forEach(btn =>
     btn.addEventListener('click', () => navigate(btn.dataset.goto as Theme)));
 }
 
@@ -1853,20 +1861,11 @@ function renderVinyl(): void {
 type Theme = 'mysocials' | 'orkut' | 'instagram' | 'linkedin' | 'pinterest' | 'tidal' | 'strava' | 'youtube' | 'icq' | 'shelf' | 'vinyl';
 const THEMES: Theme[] = ['mysocials', 'orkut', 'instagram', 'linkedin', 'pinterest', 'tidal', 'strava', 'youtube', 'icq', 'shelf', 'vinyl'];
 
-// Each theme is a real static page (orkut.html, instagram.html, ...; mysocials = index.html).
+// Each theme is a real static page (orkut.html, instagram.html, ...) — except
+// 'mysocials', whose page is index.html (the site's front door).
 // Every page ships the full bundle, so switching just flips the in-DOM view — no fetch needed.
 function pageFor(theme: Theme): string {
-  return `${theme}.html`;
-}
-
-// Landing page (index.html) — staggers the card grid's fade-in via animation-delay.
-// No-op on every other page (guarded by the element check, same pattern as renderMediaFeed).
-function initLanding(): void {
-  const grid = document.getElementById('landing-grid');
-  if (!grid) return;
-  grid.querySelectorAll<HTMLElement>('.landing__card').forEach((card, i) => {
-    card.style.animationDelay = `${0.15 + i * 0.05}s`;
-  });
+  return theme === 'mysocials' ? 'index.html' : `${theme}.html`;
 }
 
 function setTheme(theme: Theme): void {
@@ -1916,7 +1915,6 @@ function init(): void {
   renderShelf();
   renderVinyl();
   initThemeSwitcher();
-  initLanding();
 
   // Animate trust meter bars on load
   setTimeout(() => {

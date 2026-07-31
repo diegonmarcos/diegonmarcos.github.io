@@ -51,3 +51,49 @@
   &__meta { font-size: 13px; color: #8a94ac; }
   &__arrow { color: var(--accent); font-size: 20px; }
 }
+
+// Pinterest-style masonry of cards, one per page on the site.
+.hub-grid {
+  column-count: 2;
+  column-gap: 14px;
+  @include mq(md) { column-count: 3; }
+}
+.hub-card {
+  display: block;
+  width: 100%;
+  break-inside: avoid;
+  margin-bottom: 14px;
+  padding: 0;
+  border: 1px solid #262b3b;
+  border-radius: 16px;
+  overflow: hidden;
+  background: #171a24;
+  color: inherit;
+  text-align: left;
+  cursor: pointer;
+  transition: transform 0.15s, box-shadow 0.15s;
+
+  &:hover { transform: translateY(-3px); box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35); }
+
+  &__media {
+    display: block;
+    width: 100%;
+    aspect-ratio: 4 / 5;
+    background: var(--img) center/cover no-repeat, linear-gradient(160deg, var(--accent), #10131c);
+  }
+  &__label {
+    display: block;
+    padding: 12px 14px 2px;
+    font-weight: 700;
+    font-size: 15px;
+    border-left: 3px solid var(--accent);
+    margin-left: 14px;
+    padding-left: 8px;
+  }
+  &__meta {
+    display: block;
+    padding: 2px 14px 14px 22px;
+    font-size: 12px;
+    color: #8a94ac;
+  }
+}

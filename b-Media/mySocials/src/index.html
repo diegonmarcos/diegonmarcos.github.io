@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="index">
+<html lang="en" data-theme="mysocials">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Diego Nepomuceno Marcos</title>
-  <meta name="description" content="Diego Nepomuceno Marcos — software engineer. One profile, reimagined across every era of social media.">
+  <title>My Socials — Media Aggregator</title>
+  <meta name="description" content="My Socials — one aggregated media feed across Instagram, Pinterest, TIDAL, YouTube and Strava, plus the same profile reimagined as Orkut, Instagram, and LinkedIn">
   <meta name="theme-color" content="#0a0c14">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -22,96 +22,176 @@
 <!-- Umami Analytics -->
 <script async src="https://analytics.diegonmarcos.com/umami/script.js" data-website-id="937cbde7-5ec2-450c-9d6a-8117423ac12f"></script>
 <!-- End Umami Analytics -->
+
+    <!-- Data-driven framework: PORTAL_DATA["mySocials"] hydrated by front-data-json-js-wrapper.sh -->
+    <script src="data-mySocials.json.js"></script>
+    <script src="data-instagram.json.js"></script>
+    <script src="data-linkedin.json.js"></script>
+    <script src="data-pinterest.json.js"></script>
+    <script src="data-tidal.json.js"></script>
+    <script src="data-strava.json.js"></script>
+    <script src="data-youtube.json.js"></script>
+    <script src="data-shelf.json.js"></script>
+    <script src="data-vinyl.json.js"></script>
+    <script>(function(){var d=globalThis.PORTAL_DATA&&PORTAL_DATA["mySocials"];if(d&&d.title)document.title=d.title;})();</script>
   </head>
 <body>
 
-  <main class="landing" id="landing">
-    <section class="landing__hero">
-      <img class="landing__photo" src="profile-photo.jpg" alt="Diego Nepomuceno Marcos">
-      <h1 class="landing__name">Diego Nepomuceno Marcos</h1>
-      <p class="landing__tagline">Software engineer &mdash; one profile, reimagined across every era of social media.</p>
-    </section>
+  <!-- Theme / mode switcher — always visible -->
+  <a class="theme-switch__home" href="index.html" aria-label="Home" title="Home">&#8962;</a>
+  <div class="theme-switch" id="theme-switch">
+    <button class="theme-switch__btn theme-switch__btn--me" data-theme-btn="mysocials">My Socials</button>
+    <span class="theme-switch__divider">|</span>
+    <button class="theme-switch__btn" data-theme-btn="linkedin">LinkedIn</button>
+    <button class="theme-switch__btn" data-theme-btn="instagram">Instagram</button>
+    <button class="theme-switch__btn" data-theme-btn="pinterest">Pinterest</button>
+    <button class="theme-switch__btn" data-theme-btn="tidal">TIDAL</button>
+    <button class="theme-switch__btn" data-theme-btn="strava">Strava</button>
+    <button class="theme-switch__btn" data-theme-btn="youtube">YouTube</button>
+    <button class="theme-switch__btn" data-theme-btn="orkut">Orkut</button>
+    <button class="theme-switch__btn" data-theme-btn="icq">ICQ</button>
+    <button class="theme-switch__btn" data-theme-btn="shelf">shelf</button>
+    <button class="theme-switch__btn" data-theme-btn="vinyl">vinyl</button>
+  </div>
 
-    <section class="landing__grid" id="landing-grid">
-      <a class="landing__card" href="mysocials.html" style="--accent:#ff6aa0">
-        <span class="landing__glyph">&#9673;</span>
-        <span class="landing__card-body">
-          <span class="landing__card-title">My Socials</span>
-          <span class="landing__card-desc">The aggregated feed &mdash; every network, one hub.</span>
-        </span>
+  <!-- ═══════════════ MY PROFILE VIEW (rendered by JS) ═══════════════ -->
+  <div class="view view--mysocials" id="me-view"></div>
+
+  <!-- ═══════════════ ORKUT VIEW ═══════════════ -->
+  <div class="view view--orkut">
+  <nav class="navbar">
+    <div class="navbar__inner">
+      <a href="#" class="navbar__logo">
+        <span class="navbar__logo-text">My</span><span class="navbar__logo-accent">Socials</span>
       </a>
-      <a class="landing__card" href="orkut.html" style="--accent:#e9008c">
-        <span class="landing__glyph">&#9734;</span>
-        <span class="landing__card-body">
-          <span class="landing__card-title">Orkut</span>
-          <span class="landing__card-desc">The classic profile &mdash; scraps, communities, testimonials.</span>
-        </span>
-      </a>
-      <a class="landing__card" href="instagram.html" style="--accent:#dc2743">
-        <span class="landing__glyph">&#9723;</span>
-        <span class="landing__card-body">
-          <span class="landing__card-title">Instagram</span>
-          <span class="landing__card-desc">Photos and posts, grid view.</span>
-        </span>
-      </a>
-      <a class="landing__card" href="linkedin.html" style="--accent:#0a66c2">
-        <span class="landing__glyph">&#9635;</span>
-        <span class="landing__card-body">
-          <span class="landing__card-title">LinkedIn</span>
-          <span class="landing__card-desc">Work profile &mdash; headline, connections, experience.</span>
-        </span>
-      </a>
-      <a class="landing__card" href="pinterest.html" style="--accent:#e60023">
-        <span class="landing__glyph">&#9679;</span>
-        <span class="landing__card-body">
-          <span class="landing__card-title">Pinterest</span>
-          <span class="landing__card-desc">Boards and pins.</span>
-        </span>
-      </a>
-      <a class="landing__card" href="tidal.html" style="--accent:#00ffff">
-        <span class="landing__glyph">&#9835;</span>
-        <span class="landing__card-body">
-          <span class="landing__card-title">TIDAL</span>
-          <span class="landing__card-desc">Playlists and listening.</span>
-        </span>
-      </a>
-      <a class="landing__card" href="strava.html" style="--accent:#fc5200">
-        <span class="landing__glyph">&#8734;</span>
-        <span class="landing__card-body">
-          <span class="landing__card-title">Strava</span>
-          <span class="landing__card-desc">Activities and routes.</span>
-        </span>
-      </a>
-      <a class="landing__card" href="youtube.html" style="--accent:#ff0000">
-        <span class="landing__glyph">&#9654;</span>
-        <span class="landing__card-body">
-          <span class="landing__card-title">YouTube</span>
-          <span class="landing__card-desc">Playlists and videos.</span>
-        </span>
-      </a>
-      <a class="landing__card" href="icq.html" style="--accent:#0a870a">
-        <span class="landing__glyph">&#9673;</span>
-        <span class="landing__card-body">
-          <span class="landing__card-title">ICQ</span>
-          <span class="landing__card-desc">Retro IM &mdash; user details.</span>
-        </span>
-      </a>
-      <a class="landing__card" href="shelf.html" style="--accent:#8b6914">
-        <span class="landing__glyph">&#9776;</span>
-        <span class="landing__card-body">
-          <span class="landing__card-title">Bookshelf</span>
-          <span class="landing__card-desc">3D book shelf.</span>
-        </span>
-      </a>
-      <a class="landing__card" href="vinyl.html" style="--accent:#c17f24">
-        <span class="landing__glyph">&#9711;</span>
-        <span class="landing__card-body">
-          <span class="landing__card-title">Vinyl Store</span>
-          <span class="landing__card-desc">3D record store.</span>
-        </span>
-      </a>
+      <div class="navbar__search">
+        <input type="text" class="navbar__search-input" placeholder="Search people, communities...">
+        <button class="navbar__search-btn" aria-label="Search">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        </button>
+      </div>
+      <div class="navbar__links">
+        <a href="#" class="navbar__link navbar__link--active">Home</a>
+        <a href="#" class="navbar__link">Profile</a>
+        <a href="#" class="navbar__link">Scraps</a>
+        <a href="#" class="navbar__link">Communities</a>
+      </div>
+    </div>
+  </nav>
+
+  <main class="layout">
+    <aside class="sidebar">
+      <div class="profile-card">
+        <div class="profile-card__avatar" id="avatar">
+          <div class="profile-card__avatar-placeholder">D</div>
+        </div>
+        <h1 class="profile-card__name">Diego N. Marcos</h1>
+        <p class="profile-card__tagline">Software Engineer & Explorer</p>
+        <div class="profile-card__stats">
+          <div class="profile-card__stat">
+            <span class="profile-card__stat-value" id="friends-count">142</span>
+            <span class="profile-card__stat-label">friends</span>
+          </div>
+          <div class="profile-card__stat">
+            <span class="profile-card__stat-value">38</span>
+            <span class="profile-card__stat-label">communities</span>
+          </div>
+          <div class="profile-card__stat">
+            <span class="profile-card__stat-value">95</span>
+            <span class="profile-card__stat-label">fans</span>
+          </div>
+        </div>
+        <div class="trust-meter">
+          <div class="trust-meter__row">
+            <span class="trust-meter__label">cool</span>
+            <div class="trust-meter__bar"><div class="trust-meter__fill trust-meter__fill--cool"></div></div>
+          </div>
+          <div class="trust-meter__row">
+            <span class="trust-meter__label">trusty</span>
+            <div class="trust-meter__bar"><div class="trust-meter__fill trust-meter__fill--trusty"></div></div>
+          </div>
+          <div class="trust-meter__row">
+            <span class="trust-meter__label">sexy</span>
+            <div class="trust-meter__bar"><div class="trust-meter__fill trust-meter__fill--sexy"></div></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="box">
+        <h3 class="box__title">social</h3>
+        <div class="box__row"><span class="box__label">relationship:</span><span class="box__value">single</span></div>
+        <div class="box__row"><span class="box__label">birthday:</span><span class="box__value">November 15</span></div>
+        <div class="box__row"><span class="box__label">city:</span><span class="box__value">Berlin, Germany</span></div>
+        <div class="box__row"><span class="box__label">country:</span><span class="box__value">Brazil</span></div>
+      </div>
+
+      <div class="box">
+        <h3 class="box__title">photos <span class="box__count">(24)</span></h3>
+        <div class="photo-grid" id="photo-grid"></div>
+      </div>
+    </aside>
+
+    <section class="content">
+      <div class="box">
+        <h3 class="box__title">friends <span class="box__count" id="friends-label">(142)</span></h3>
+        <div class="friends-grid" id="friends-grid"></div>
+        <a href="#" class="box__more">view all friends</a>
+      </div>
+
+      <div class="box">
+        <h3 class="box__title">scraps <span class="box__count">(47)</span></h3>
+        <div class="scrap-composer">
+          <textarea class="scrap-input" placeholder="Write a scrap..." rows="3"></textarea>
+          <button class="scrap-send">send scrap</button>
+        </div>
+        <div class="scraps-list" id="scraps-list"></div>
+      </div>
+
+      <div class="box">
+        <h3 class="box__title">communities <span class="box__count">(38)</span></h3>
+        <div class="communities-grid" id="communities-grid"></div>
+        <a href="#" class="box__more">view all communities</a>
+      </div>
+
+      <div class="box">
+        <h3 class="box__title">testimonials <span class="box__count">(12)</span></h3>
+        <div class="testimonials-list" id="testimonials-list"></div>
+      </div>
     </section>
   </main>
+
+  <footer class="footer">
+    <p class="footer__text">My Socials &mdash; one profile across every era of social media</p>
+    <p class="footer__sub">Orkut · Instagram · LinkedIn — switch below.</p>
+  </footer>
+  </div>
+
+  <!-- ═══════════════ INSTAGRAM VIEW (rendered by JS) ═══════════════ -->
+  <div class="view view--instagram ig" id="ig-view"></div>
+
+  <!-- ═══════════════ LINKEDIN VIEW (rendered by JS) ═══════════════ -->
+  <div class="view view--linkedin li" id="li-view"></div>
+
+  <!-- ═══════════════ PINTEREST VIEW (rendered by JS) ═══════════════ -->
+  <div class="view view--pinterest pin" id="pin-view"></div>
+
+  <!-- ═══════════════ TIDAL VIEW (rendered by JS) ═══════════════ -->
+  <div class="view view--tidal tid" id="tid-view"></div>
+
+  <!-- ═══════════════ STRAVA VIEW (rendered by JS) ═══════════════ -->
+  <div class="view view--strava str" id="str-view"></div>
+
+  <!-- ═══════════════ YOUTUBE VIEW (rendered by JS) ═══════════════ -->
+  <div class="view view--youtube yt" id="yt-view"></div>
+
+  <!-- ═══════════════ ICQ VIEW (rendered by JS) ═══════════════ -->
+  <div class="view view--icq icq-view" id="icq-view"></div>
+
+  <!-- ═══════════════ SHELTER VIEW (rendered by JS) ═══════════════ -->
+  <div class="view view--shelf" id="shelf-view"></div>
+
+  <!-- ═══════════════ VINYL VIEW (rendered by JS) ═══════════════ -->
+  <div class="view view--vinyl" id="vinyl-view"></div>
 
   <script src="script.js"></script>
 </body>

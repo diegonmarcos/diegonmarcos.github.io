@@ -1254,6 +1254,7 @@ function renderMySocials(): void {
   view.innerHTML = `
     <div class="me-hub">
       <div class="me-card">
+        <canvas class="me-hero3d" id="me-hero3d"></canvas>
         ${photo ? `<img class="me-avatar" src="${esc(photo)}" alt="${esc(name)}">` : `<div class="me-avatar"></div>`}
         <h1 class="me-name">${esc(name)}</h1>
         ${headline ? `<p class="me-headline">${esc(headline)}</p>` : ''}
@@ -1273,6 +1274,76 @@ function renderMySocials(): void {
 
   view.querySelectorAll<HTMLElement>('.hub-card').forEach(btn =>
     btn.addEventListener('click', () => navigate(btn.dataset.goto as Theme)));
+
+  bootHero3D();
+}
+
+// Static (single-frame, no animation loop) hero render: a lit object in a dark
+// room, viewed head-on. Purely decorative — errors are swallowed so a WebGL
+// failure never breaks the rest of the hub.
+function bootHero3D(): void {
+  const canvas = document.getElementById('me-hero3d') as HTMLCanvasElement | null;
+  if (!canvas) return;
+  try {
+    const T = THREE_NS as unknown as {
+      Scene: new () => { add(...o: object[]): void; background: unknown; fog: unknown };
+      Color: new (c: string) => object;
+      Fog: new (c: string, near: number, far: number) => object;
+      PerspectiveCamera: new (fov: number, asp: number, n: number, f: number) => { position: { set(x: number, y: number, z: number): void }; lookAt(x: number, y: number, z: number): void; aspect: number; updateProjectionMatrix(): void };
+      WebGLRenderer: new (opts: object) => { setSize(w: number, h: number): void; setPixelRatio(r: number): void; toneMapping: number; toneMappingExposure: number; outputColorSpace?: unknown; render(s: object, c: object): void };
+      ACESFilmicToneMapping: number;
+      SRGBColorSpace?: unknown;
+      TorusKnotGeometry: new (r: number, tube: number, tSeg: number, rSeg: number) => object;
+      MeshStandardMaterial: new (opts: object) => object;
+      Mesh: new (g: object, m: object) => { position: { set(x: number, y: number, z: number): void }; rotation: { x: number; y: number } };
+      AmbientLight: new (c: string, i: number) => object;
+      PointLight: new (c: string, i: number, d: number) => { position: { set(x: number, y: number, z: number): void } };
+      SpotLight: new (c: string, i: number, d: number, angle: number, penumbra: number) => { position: { set(x: number, y: number, z: number): void }; target: object };
+    };
+
+    const W = canvas.clientWidth || canvas.parentElement?.clientWidth || 320;
+    const H = 220;
+
+    const scene = new T.Scene();
+    scene.background = new T.Color('#0a0c12');
+    scene.fog = new T.Fog('#0a0c12', 3, 9);
+
+    const camera = new T.PerspectiveCamera(40, W / H, 0.1, 50);
+    camera.position.set(0, 0, 5.2);
+    camera.lookAt(0, 0, 0);
+
+    const renderer = new T.WebGLRenderer({ canvas, antialias: true, alpha: false });
+    renderer.setPixelRatio(Math.min(devicePixelRatio || 1, 2));
+    renderer.setSize(W, H);
+    renderer.toneMapping = T.ACESFilmicToneMapping;
+    renderer.toneMappingExposure = 1.1;
+
+    const geo = new T.TorusKnotGeometry(1.05, 0.34, 180, 24);
+    const mat = new T.MeshStandardMaterial({ color: '#8a94ac', metalness: 0.85, roughness: 0.25 });
+    const mesh = new T.Mesh(geo, mat);
+    mesh.rotation.x = 0.4;
+    mesh.rotation.y = -0.5;
+    scene.add(mesh as unknown as object);
+
+    // Dark-room key/rim/fill rig — the object, not the room, does the talking.
+    scene.add(new T.AmbientLight('#1a2030', 0.6) as unknown as object);
+
+    const key = new T.PointLight('#7fd4ff', 18, 12);
+    key.position.set(3, 2.5, 3);
+    scene.add(key as unknown as object);
+
+    const rim = new T.PointLight('#ff5fa2', 12, 12);
+    rim.position.set(-3, -1, -2);
+    scene.add(rim as unknown as object);
+
+    const fill = new T.PointLight('#ffffff', 4, 10);
+    fill.position.set(0, 3, 4);
+    scene.add(fill as unknown as object);
+
+    renderer.render(scene as unknown as object, camera as unknown as object);
+  } catch (err) {
+    console.error('[hero3d] boot failed', err);
+  }
 }
 
 // Shared by renderShelf() (vertical spine text) and renderVinyl() (horizontal

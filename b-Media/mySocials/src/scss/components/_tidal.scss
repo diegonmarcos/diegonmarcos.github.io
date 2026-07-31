@@ -57,6 +57,21 @@ $tid-cyan: #00ffff;
   em { font-style: normal; opacity: 0.6; margin-left: 5px; }
 }
 
+// Folder = section: title + its own playlist/album grid underneath.
+.tid-folder-section {
+  margin-bottom: 32px;
+  &__title {
+    font-size: 18px;
+    font-weight: 700;
+    margin-bottom: 14px;
+    em { font-style: normal; opacity: 0.5; margin-left: 8px; font-weight: 500; font-size: 13px; }
+  }
+}
+.tid-card--placeholder {
+  opacity: 0.55;
+  .tid-card__name, .tid-card__meta { color: $tid-muted; }
+}
+
 // ── Playlist grid ────────────────────────────────────────
 .tid-grid {
   display: grid;

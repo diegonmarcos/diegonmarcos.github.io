@@ -836,7 +836,20 @@ function renderTidal(): void {
     </a>`;
   }).join('');
 
-  const folderChips = folders.map(f => `<span class="tid-folder">${esc(f.name)}<em>${f.playlists}</em></span>`).join('');
+  // Folders are sections — each folder's real playlists/albums come later; for now
+  // each folder shows `folder.playlists` placeholder cards so the section layout can
+  // be reviewed before the real per-folder track data is filled in.
+  const placeholderCard = (i: number) => `
+    <div class="tid-card tid-card--placeholder">
+      <div class="tid-card__cover"><div class="tid-card__ph" style="background:${gradientFor(i)}">\u{266B}</div></div>
+      <div class="tid-card__name">Untitled</div>
+      <div class="tid-card__meta">placeholder</div>
+    </div>`;
+  const folderSections = folders.map((f, fi) => `
+    <section class="tid-folder-section">
+      <h2 class="tid-folder-section__title">${esc(f.name)}<em>${f.playlists}</em></h2>
+      <div class="tid-grid">${Array.from({ length: f.playlists }, (_, i) => placeholderCard(fi * 100 + i)).join('') || '<p class="tid-empty">No playlists in this folder yet.</p>'}</div>
+    </section>`).join('');
 
   view.innerHTML = `
     <nav class="tid-nav">
@@ -851,8 +864,13 @@ function renderTidal(): void {
         <div class="tid-head__title">My Playlists</div>
         <div class="tid-head__sub">${prof?.playlists ?? lists.length} playlists · ${prof?.tracks ?? 0} tracks</div>
       </header>
-      ${folderChips ? `<div class="tid-folders">${folderChips}</div>` : ''}
-      <div class="tid-grid">${cards || '<p class="tid-empty">Playlists load once the Tidal profile ID is set.</p>'}</div>
+      ${folderSections}
+      ${lists.length ? `
+      <section class="tid-folder-section">
+        <h2 class="tid-folder-section__title">All Playlists<em>${lists.length}</em></h2>
+        <div class="tid-grid">${cards}</div>
+      </section>` : ''}
+      ${!folders.length && !lists.length ? '<p class="tid-empty">Playlists load once the Tidal profile ID is set.</p>' : ''}
     </div>`;
 }
 

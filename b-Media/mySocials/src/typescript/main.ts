@@ -1958,6 +1958,16 @@ function pageFor(theme: Theme): string {
   return theme === 'mysocials' ? 'index.html' : `${theme}.html`;
 }
 
+// The 3 instagram-*.html pages are symlinked to one shared source file (same
+// markup, same bundle), so a baked-in data-theme attribute can't tell them
+// apart anymore. The page's own filename is the one thing that's actually
+// distinct per URL, so it's authoritative over any baked attribute.
+function themeFromFilename(): Theme | null {
+  const name = (location.pathname.split('/').pop() || '').replace(/\.html$/, '') || 'index';
+  const theme = name === 'index' ? 'mysocials' : name;
+  return (THEMES as string[]).includes(theme) ? (theme as Theme) : null;
+}
+
 function setTheme(theme: Theme): void {
   document.documentElement.setAttribute('data-theme', theme);
   document.querySelectorAll('[data-theme-btn]').forEach(btn => {
@@ -2000,6 +2010,9 @@ function initThemeSwitcher(): void {
 // ─── INIT ───────────────────────────────────────────────────────────────────
 
 function init(): void {
+  const urlTheme = themeFromFilename();
+  if (urlTheme) document.documentElement.setAttribute('data-theme', urlTheme);
+
   renderFriends();
   renderScraps();
   renderCommunities();

@@ -232,6 +232,150 @@ $ig-gradient: linear-gradient(45deg, #f09433, #e6683c 25%, #dc2743 50%, #cc2366 
   &__ov { position: absolute; top: 6px; right: 6px; width: 18px; height: 18px; color: #fff; filter: drop-shadow(0 1px 2px rgba(0,0,0,.6)); }
 }
 
+// Real post card: image + caption/more + like/metadata actions (front-page grid).
+.ig-post-card {
+  display: flex;
+  flex-direction: column;
+  background: $ig-surface;
+  border: 1px solid $ig-border;
+
+  .ig-tile { aspect-ratio: 1; }
+
+  &__cap {
+    padding: 8px 10px 0;
+    font-size: 12px;
+    line-height: 1.4;
+    color: $ig-text;
+  }
+
+  &__cap-text {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  &.is-expanded &__cap-text { -webkit-line-clamp: unset; }
+
+  &__more {
+    background: none;
+    border: none;
+    color: $ig-muted;
+    font-size: 12px;
+    cursor: pointer;
+    padding: 2px 0;
+  }
+
+  &__actions {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 6px 10px 10px;
+  }
+
+  &__like, &__meta-btn {
+    background: none;
+    border: none;
+    color: $ig-text;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    svg { width: 20px; height: 20px; }
+  }
+
+  &__like.is-liked { color: #ed4956; }
+  &__meta-btn { margin-left: auto; color: $ig-muted; font-size: 11px; }
+}
+
+// Maps pane: posts grouped by location, list layout (not a real map yet).
+.ig-loc-group {
+  margin-bottom: 24px;
+
+  &__title {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: $ig-text;
+    font-size: 14px;
+    margin: 0 0 10px;
+    svg { width: 18px; height: 18px; color: $ig-muted; }
+    em { font-style: normal; color: $ig-muted; }
+  }
+}
+
+// Lightbox side-panel caption + like/metadata actions.
+.ig-post-modal__caption { padding: 10px 14px 0; font-size: 13px; line-height: 1.5; color: $ig-text; }
+.ig-post-modal__actions {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 10px 14px;
+  border-bottom: 1px solid $ig-border;
+
+  button {
+    background: none;
+    border: none;
+    color: $ig-text;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 12px;
+    svg { width: 22px; height: 22px; }
+  }
+
+  #ig-post-like.is-liked { color: #ed4956; }
+  #ig-post-meta-btn { margin-left: auto; color: $ig-muted; }
+}
+
+// Metadata modal: small key/value popover.
+.ig-meta-modal {
+  display: none;
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+  background: rgba(0, 0, 0, 0.75);
+  align-items: center;
+  justify-content: center;
+
+  &.is-open { display: flex; }
+
+  &__box {
+    position: relative;
+    background: $ig-surface;
+    border: 1px solid $ig-border;
+    border-radius: 8px;
+    padding: 20px;
+    max-width: 360px;
+    width: 90%;
+
+    h3 { margin: 0 0 12px; font-size: 15px; }
+  }
+
+  &__close {
+    position: absolute;
+    top: 8px;
+    right: 12px;
+    background: none;
+    border: none;
+    color: $ig-muted;
+    font-size: 20px;
+    cursor: pointer;
+  }
+
+  &__list {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 6px 12px;
+    margin: 0;
+    font-size: 12px;
+
+    dt { color: $ig-muted; }
+    dd { margin: 0; word-break: break-all; }
+  }
+}
+
 .ig-empty { text-align: center; color: $ig-muted; padding: 70px 20px; }
 
 // Comments list

@@ -181,6 +181,8 @@ function renderPhotos(): void {
 
 const IG_ICON = {
   heart: '<svg viewBox="0 0 24 24"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.6l-1-1a5.5 5.5 0 0 0-7.8 7.8l1 1L12 21l7.8-7.6 1-1a5.5 5.5 0 0 0 0-7.8z"/></svg>',
+  pin: '<svg viewBox="0 0 24 24"><path d="M12 21s7-7.4 7-12a7 7 0 0 0-14 0c0 4.6 7 12 7 12z"/><circle cx="12" cy="9" r="2.5"/></svg>',
+  info: '<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><line x1="12" y1="11" x2="12" y2="16"/><circle cx="12" cy="8" r="0.5" fill="currentColor" stroke="none"/></svg>',
   comment: '<svg viewBox="0 0 24 24"><path d="M21 11.5a8.4 8.4 0 0 1-9 8.4 9 9 0 0 1-4-1L3 20l1.1-4.9A8.4 8.4 0 0 1 12 3a8.4 8.4 0 0 1 9 8.5z"/></svg>',
   share: '<svg viewBox="0 0 24 24"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>',
   save: '<svg viewBox="0 0 24 24"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>',
@@ -199,7 +201,7 @@ function gradientFor(i: number): string {
 // Real Instagram export shape (parsed by extract_ig.py -> PORTAL_DATA["instagram"]).
 interface IGData {
   profile: { username: string; name: string; bio: string; following: number; followers: number; posts: number; following_shown: number; followers_shown: number; photo?: string };
-  posts: { media: string; caption: string; time: string }[];
+  posts: { media: string; media_all?: string[]; caption: string; time: string; location?: string }[];
   stories: { media: string; caption: string; time: string }[];
   following: string[];
   followers: string[];
@@ -277,7 +279,30 @@ function renderInstagram(): void {
   const sortedPosts = d.posts.slice().sort((a, b) => mediaId(b.media) - mediaId(a.media));
   const POST_GRID = 30; // ~10 rows of a 3-col grid
   const captions = [...d.saved, ...d.liked].map(s => s.caption).filter(Boolean);
-  const realPosts = sortedPosts.map((post, i) => `<a class="ig-tile" href="#" data-post-idx="${i}"><img src="${post.media}" alt="post"></a>`);
+  const realPosts = sortedPosts.map((post, i) => `
+    <div class="ig-post-card">
+      <a class="ig-tile" href="#" data-post-idx="${i}"><img src="${post.media}" alt="post"></a>
+      ${post.caption ? `
+      <div class="ig-post-card__cap">
+        <span class="ig-post-card__cap-text">${esc(post.caption)}</span>
+        <button class="ig-post-card__more" data-more-idx="${i}">more</button>
+      </div>` : ''}
+      <div class="ig-post-card__actions">
+        <button class="ig-post-card__like" data-like-idx="${i}" aria-label="Like">${IG_ICON.heart}</button>
+        <button class="ig-post-card__meta-btn" data-meta-idx="${i}" aria-label="Photo metadata">${IG_ICON.info}</button>
+      </div>
+    </div>`);
+  const locGroups = new Map<string, typeof sortedPosts>();
+  sortedPosts.forEach(post => {
+    const key = post.location?.trim() || 'Unknown location';
+    if (!locGroups.has(key)) locGroups.set(key, []);
+    locGroups.get(key)!.push(post);
+  });
+  const mapsPane = locGroups.size ? [...locGroups.entries()].map(([loc, posts]) => `
+    <div class="ig-loc-group">
+      <h4 class="ig-loc-group__title">${IG_ICON.pin}<span>${esc(loc)}</span><em>${num(posts.length)}</em></h4>
+      <div class="ig-grid">${posts.map(post => `<a class="ig-tile" href="#" data-post-idx="${sortedPosts.indexOf(post)}"><img src="${post.media}" alt="post"></a>`).join('')}</div>
+    </div>`).join('') : '<p class="ig-empty">No location data yet.</p>';
   const fabricated = Array.from({ length: Math.max(0, POST_GRID - realPosts.length) }, (_, i) => `
     <a class="ig-tile ig-tile--post" href="#" style="background:${gradientFor(i)}">
       <span class="ig-tile__cap">${esc(captions[i % (captions.length || 1)] || '')}</span>
@@ -348,6 +373,7 @@ function renderInstagram(): void {
       </div>
 
       <div class="ig-subtabs">
+        <button class="ig-pill" data-pane="maps">${IG_ICON.pin}<span>Maps</span><em>${num(locGroups.size)}</em></button>
         <button class="ig-pill" data-pane="saved">${IG_ICON.save}<span>Saved</span><em>${num(d.saved.length)}</em></button>
         <button class="ig-pill" data-pane="liked">${IG_ICON.heart}<span>Liked</span><em>${num(d.liked.length)}</em></button>
         <button class="ig-pill" data-pane="comments">${IG_ICON.comment}<span>Comments</span><em>${num(d.comments.length)}</em></button>
@@ -356,6 +382,7 @@ function renderInstagram(): void {
       <div class="ig-pane is-active" data-pane="posts">${grid(postsPane)}</div>
       <div class="ig-pane" data-pane="reels">${grid(reelsPane)}</div>
       <div class="ig-pane" data-pane="tagged">${grid(taggedPane)}</div>
+      <div class="ig-pane" data-pane="maps">${mapsPane}</div>
       <div class="ig-pane" data-pane="saved">${grid(savedPane)}</div>
       <div class="ig-pane" data-pane="liked">${grid(likedPane)}</div>
       <div class="ig-pane" data-pane="comments"><div class="ig-comments">${commentsPane}</div></div>
@@ -371,6 +398,14 @@ function renderInstagram(): void {
       </div>
     </div>
 
+    <div class="ig-meta-modal" id="ig-meta-modal">
+      <div class="ig-meta-modal__box">
+        <button class="ig-meta-modal__close" id="ig-meta-modal-close" aria-label="Close">&times;</button>
+        <h3>Photo metadata</h3>
+        <dl class="ig-meta-modal__list" id="ig-meta-modal-list"></dl>
+      </div>
+    </div>
+
     <div class="ig-post-modal" id="ig-post-modal">
       <div class="ig-post-modal__box">
         <button class="ig-post-modal__close" id="ig-post-modal-close" aria-label="Close">&times;</button>
@@ -381,6 +416,11 @@ function renderInstagram(): void {
           <div class="ig-post-modal__dots" id="ig-post-dots"></div>
         </div>
         <div class="ig-post-modal__side">
+          <div class="ig-post-modal__caption" id="ig-post-caption"></div>
+          <div class="ig-post-modal__actions">
+            <button class="ig-post-modal__like" id="ig-post-like" aria-label="Like">${IG_ICON.heart}</button>
+            <button class="ig-post-modal__meta-btn" id="ig-post-meta-btn">${IG_ICON.info}<span>Metadata</span></button>
+          </div>
           <div class="ig-post-modal__comments" id="ig-post-comments"></div>
         </div>
       </div>
@@ -434,17 +474,58 @@ function renderInstagram(): void {
       ? activePost.map((_, i) => `<span class="ig-post-modal__dot${i === activeIdx ? ' is-active' : ''}"></span>`).join('')
       : '';
   };
+  const postCaption = view.querySelector<HTMLElement>('#ig-post-caption')!;
+  const postLikeBtn = view.querySelector<HTMLElement>('#ig-post-like')!;
+  const likedIdx = new Set<number>();
+  let currentPostIdx = -1;
+  const metaModal = view.querySelector<HTMLElement>('#ig-meta-modal')!;
+  const metaList = view.querySelector<HTMLElement>('#ig-meta-modal-list')!;
+  const openMeta = (idx: number) => {
+    const post = sortedPosts[idx];
+    if (!post) return;
+    const rows: [string, string][] = [
+      ['Account', p.username],
+      ['Caption', post.caption || '—'],
+      ['Timestamp', post.time || '—'],
+      ['Location', post.location || '—'],
+      ['Media URL', post.media],
+    ];
+    metaList.innerHTML = rows.map(([k, v]) => `<dt>${esc(k)}</dt><dd>${esc(v)}</dd>`).join('');
+    metaModal.classList.add('is-open');
+  };
+  const closeMeta = () => metaModal.classList.remove('is-open');
+  view.querySelector('#ig-meta-modal-close')!.addEventListener('click', closeMeta);
+  metaModal.addEventListener('click', e => { if (e.target === metaModal) closeMeta(); });
   const openPost = (idx: number) => {
     const post = sortedPosts[idx];
     if (!post) return;
+    currentPostIdx = idx;
     activePost = post.media_all?.length ? post.media_all : [post.media];
     activeIdx = 0;
     renderPostFrame();
+    postCaption.innerHTML = post.caption ? esc(post.caption) : '<em>No caption.</em>';
+    postLikeBtn.classList.toggle('is-liked', likedIdx.has(idx));
     postComments.innerHTML = '<p class="ig-empty">No per-post comment data in this export.</p>';
     postModal.classList.add('is-open');
   };
   view.querySelectorAll<HTMLElement>('.ig-tile[data-post-idx]').forEach(tile =>
     tile.addEventListener('click', e => { e.preventDefault(); openPost(Number(tile.dataset.postIdx)); }));
+  view.querySelectorAll<HTMLElement>('.ig-post-card__more[data-more-idx]').forEach(btn =>
+    btn.addEventListener('click', () => btn.closest('.ig-post-card')?.classList.toggle('is-expanded')));
+  view.querySelectorAll<HTMLElement>('.ig-post-card__like[data-like-idx]').forEach(btn =>
+    btn.addEventListener('click', () => {
+      const i = Number(btn.dataset.likeIdx);
+      likedIdx.has(i) ? likedIdx.delete(i) : likedIdx.add(i);
+      btn.classList.toggle('is-liked', likedIdx.has(i));
+    }));
+  view.querySelectorAll<HTMLElement>('.ig-post-card__meta-btn[data-meta-idx]').forEach(btn =>
+    btn.addEventListener('click', () => openMeta(Number(btn.dataset.metaIdx))));
+  postLikeBtn.addEventListener('click', () => {
+    if (currentPostIdx < 0) return;
+    likedIdx.has(currentPostIdx) ? likedIdx.delete(currentPostIdx) : likedIdx.add(currentPostIdx);
+    postLikeBtn.classList.toggle('is-liked', likedIdx.has(currentPostIdx));
+  });
+  view.querySelector('#ig-post-meta-btn')!.addEventListener('click', () => { if (currentPostIdx >= 0) openMeta(currentPostIdx); });
   view.querySelector('#ig-post-prev')!.addEventListener('click', () => {
     activeIdx = (activeIdx - 1 + activePost.length) % activePost.length;
     renderPostFrame();

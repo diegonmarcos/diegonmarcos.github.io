@@ -5827,6 +5827,14 @@
       {
         "section": "projects",
         "slide": "projects",
+        "column": "Comms",
+        "label": "News GDELT",
+        "url": "#",
+        "icon": "world.svg"
+      },
+      {
+        "section": "projects",
+        "slide": "projects",
         "column": "PM",
         "label": "Calendar",
         "url": "https://cal.diegonmarcos.com",

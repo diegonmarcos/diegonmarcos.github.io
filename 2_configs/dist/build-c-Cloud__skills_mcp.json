@@ -118,12 +118,7 @@
       "deploy_name": "skills_mcp",
       "url": "https://diegonmarcos.github.io/skills_mcp"
     },
-    "consumers": [
-      "c3-infra-mcp",
-      "c3-services-mcp",
-      "cgc-mcp",
-      "dtk-mcp"
-    ],
+    "consumers": [],
     "has_package_json": true,
     "has_manifest": false
   }

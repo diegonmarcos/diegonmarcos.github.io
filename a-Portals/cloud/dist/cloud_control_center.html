@@ -36,7 +36,11 @@
     <script src="data-c3-caddy-routes.json.js"></script>
     <script src="data-c3-cloudflare-dns.json.js"></script>
     <script src="data-c3-cloud-summary.json.js"></script>
+    <script src="data-c3-container-exec.json.js"></script>
+    <script src="data-c3-container-inspect.json.js"></script>
+    <script src="data-c3-container-logs.json.js"></script>
     <script src="data-c3-container-resources.json.js"></script>
+    <script src="data-c3-container-stats.json.js"></script>
     <script src="data-c3-db-audit.json.js"></script>
     <script src="data-c3-db-deploy-history.json.js"></script>
     <script src="data-c3-db-health-history.json.js"></script>
@@ -354,6 +358,35 @@
                     <h2 class="nav-level3-title">Ops</h2>
                     <div class="card-box">
                         <div id="c3-ops-table"></div>
+                    </div>
+                </div>
+
+                <!-- Per-container drawer: opened from a Resources-tab row -->
+                <div class="c3-drawer-backdrop" id="c3-drawer-backdrop" hidden></div>
+                <div class="c3-drawer" id="c3-drawer" hidden role="dialog" aria-modal="true" aria-labelledby="c3-drawer-title">
+                    <div class="c3-drawer-header">
+                        <h3 id="c3-drawer-title">Container</h3>
+                        <button class="c3-drawer-close" id="c3-drawer-close" aria-label="Close">×</button>
+                    </div>
+                    <div class="c3-drawer-tabs">
+                        <button class="c3-drawer-tab-btn active" data-c3-drawer-tab="inspect">Inspect</button>
+                        <button class="c3-drawer-tab-btn" data-c3-drawer-tab="stats">Stats</button>
+                        <button class="c3-drawer-tab-btn" data-c3-drawer-tab="logs">Logs</button>
+                        <button class="c3-drawer-tab-btn" data-c3-drawer-tab="exec">Exec</button>
+                    </div>
+                    <div class="c3-drawer-body">
+                        <div class="c3-drawer-panel active" id="c3-drawer-panel-inspect"></div>
+                        <div class="c3-drawer-panel" id="c3-drawer-panel-stats">
+                            <button class="c3-action-btn" id="c3-drawer-stats-refresh">Refresh</button>
+                            <div id="c3-drawer-stats-body"></div>
+                        </div>
+                        <div class="c3-drawer-panel" id="c3-drawer-panel-logs">
+                            <div class="c3-drawer-logs" id="c3-drawer-logs-body"></div>
+                        </div>
+                        <div class="c3-drawer-panel" id="c3-drawer-panel-exec">
+                            <div class="c3-drawer-exec-controls" id="c3-drawer-exec-controls"></div>
+                            <pre class="c3-drawer-exec-output" id="c3-drawer-exec-output" readonly></pre>
+                        </div>
                     </div>
                 </div>
             </div>

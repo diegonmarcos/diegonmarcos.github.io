@@ -195,3 +195,132 @@
     font-size: 0.75rem;
     color: var(--text-secondary);
 }
+
+/* Per-container drawer */
+.c3-drawer-backdrop {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.45);
+    z-index: 900;
+}
+
+.c3-drawer {
+    position: fixed;
+    top: 0;
+    right: 0;
+    height: 100%;
+    width: min(480px, 100vw);
+    background: var(--bg-primary, var(--bg-secondary));
+    border-left: 1px solid var(--border-color);
+    box-shadow: -8px 0 24px rgba(0, 0, 0, 0.25);
+    z-index: 901;
+    display: flex;
+    flex-direction: column;
+}
+
+.c3-drawer-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.85rem 1rem;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.c3-drawer-header h3 {
+    margin: 0;
+    font-size: 1rem;
+}
+
+.c3-drawer-close {
+    background: none;
+    border: none;
+    font-size: 1.4rem;
+    line-height: 1;
+    cursor: pointer;
+    color: var(--text-secondary);
+}
+
+.c3-drawer-tabs {
+    display: flex;
+    gap: 0.25rem;
+    padding: 0.5rem 1rem 0;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.c3-drawer-tab-btn {
+    background: none;
+    border: none;
+    padding: 0.5rem 0.75rem;
+    cursor: pointer;
+    color: var(--text-secondary);
+    font-size: 0.85rem;
+    border-bottom: 2px solid transparent;
+}
+
+.c3-drawer-tab-btn.active {
+    color: var(--text-primary, inherit);
+    border-bottom-color: var(--accent-blue, #3b82f6);
+}
+
+.c3-drawer-body {
+    padding: 1rem;
+    overflow-y: auto;
+    flex: 1;
+}
+
+.c3-drawer-panel {
+    display: none;
+}
+
+.c3-drawer-panel.active {
+    display: block;
+}
+
+.c3-drawer-field {
+    font-size: 0.85rem;
+    margin-bottom: 0.4rem;
+    word-break: break-all;
+}
+
+.c3-drawer-subtitle {
+    font-weight: 600;
+    font-size: 0.85rem;
+    margin: 0.75rem 0 0.4rem;
+}
+
+.c3-drawer-logs {
+    font-family: monospace;
+    font-size: 0.75rem;
+    max-height: 60vh;
+    overflow-y: auto;
+    background: var(--bg-secondary);
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius);
+    padding: 0.5rem;
+}
+
+.c3-drawer-log-line {
+    white-space: pre-wrap;
+    word-break: break-all;
+    border-bottom: 1px solid var(--border-color);
+    padding: 0.15rem 0;
+}
+
+.c3-drawer-exec-btns {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+    margin-bottom: 0.75rem;
+}
+
+.c3-drawer-exec-output {
+    font-family: monospace;
+    font-size: 0.8rem;
+    white-space: pre-wrap;
+    word-break: break-all;
+    background: var(--bg-secondary);
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius);
+    padding: 0.5rem;
+    min-height: 4rem;
+}

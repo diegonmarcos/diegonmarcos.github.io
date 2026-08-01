@@ -66,6 +66,11 @@ export const REGISTRY: Record<string, string> = {
     'events': '/events',
 
     'slo': '/slo',
+
+    // Per-container drawer (paths are templates; c3Container()/c3ContainerPost() below substitute {vm}/{name})
+    'container-inspect': '/vms/{vm}/containers/{name}/inspect',
+    'container-stats': '/vms/{vm}/containers/{name}/stats',
+    'container-exec': '/vms/{vm}/containers/{name}/exec',
 };
 
 export const lastErrors: Record<string, string> = {};
@@ -129,10 +134,61 @@ export async function c3(key: string): Promise<any> {
 }
 
 export async function c3All(): Promise<void> {
-    const keys = Object.keys(REGISTRY);
+    // Per-container drawer keys are path templates ({vm}/{name}) — they're fetched
+    // on demand by the drawer, never as part of the blind whole-registry refresh.
+    const keys = Object.keys(REGISTRY).filter((k) => !REGISTRY[k].includes('{'));
     await Promise.all(keys.map(async (key) => {
         cache[key] = await c3(key);
     }));
+}
+
+// ── Per-container drawer helpers ──
+// Mock datasets are keyed by container name: PORTAL_DATA['c3-container-inspect'][name], etc.
+
+export async function c3ContainerInspect(vm: string, name: string): Promise<any> {
+    const mockMap = mockValue('container-inspect') || {};
+    if (getMode() === 'mock') return mockMap[name] ?? null;
+    try {
+        const res = await fetchWithTimeout(`${C3_BASE}/vms/${encodeURIComponent(vm)}/containers/${encodeURIComponent(name)}/inspect`);
+        if (!res.ok) return mockMap[name] ?? null;
+        return await res.json();
+    } catch {
+        return mockMap[name] ?? null;
+    }
+}
+
+export async function c3ContainerStats(vm: string, name: string): Promise<any> {
+    const mockMap = mockValue('container-stats') || {};
+    if (getMode() === 'mock') return mockMap[name] ?? null;
+    try {
+        const res = await fetchWithTimeout(`${C3_BASE}/vms/${encodeURIComponent(vm)}/containers/${encodeURIComponent(name)}/stats`);
+        if (!res.ok) return mockMap[name] ?? null;
+        return await res.json();
+    } catch {
+        return mockMap[name] ?? null;
+    }
+}
+
+/** Mock-mode-only: returns the replayable log line array for a container (never opens an EventSource). */
+export function c3ContainerLogsMock(name: string): Array<{ ts: string; line: string }> {
+    const mockMap = mockValue('container-logs') || {};
+    return Array.isArray(mockMap[name]) ? mockMap[name] : [];
+}
+
+/** Allowlisted commands the exec panel is allowed to present — mirrors the backend's EXEC_COMMAND_ALLOWLIST keys. */
+export const EXEC_COMMAND_ALLOWLIST: string[] = ['restart', 'stop', 'start', 'logs-tail', 'top', 'stats-snapshot'];
+
+export async function c3ContainerExec(vm: string, name: string, command: string): Promise<{ ok: boolean; output: string; mock?: boolean }> {
+    if (!EXEC_COMMAND_ALLOWLIST.includes(command)) {
+        return { ok: false, output: `command not allowed: ${command}` };
+    }
+    if (getMode() === 'mock') {
+        const mockMap = mockValue('container-exec') || {};
+        const entry = mockMap[command] ?? { ok: true, output: '(mock) no output' };
+        return { ...entry, mock: true };
+    }
+    const res = await c3Post(`/vms/${encodeURIComponent(vm)}/containers/${encodeURIComponent(name)}/exec`, { command });
+    return { ok: !!res.ok, output: res.output ?? res.error ?? '' };
 }
 
 export function getCached(key: string): any {

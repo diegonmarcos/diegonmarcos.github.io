@@ -3,7 +3,10 @@
  * Renders every tab from c3-api.ts (mock by default, live on demand).
  */
 
-import { c3, c3All, c3Post, getCached, getMode, setMode, onModeChange, REGISTRY, lastErrors } from './c3-api';
+import {
+    c3, c3All, c3Post, getCached, getMode, setMode, onModeChange, REGISTRY, lastErrors,
+    c3ContainerInspect, c3ContainerStats, c3ContainerLogsMock, c3ContainerExec, EXEC_COMMAND_ALLOWLIST, C3_BASE,
+} from './c3-api';
 
 const TAB_KEYS: Record<string, string[]> = {
     topology: ['topology', 'topology-network', 'topology-drift'],
@@ -66,6 +69,53 @@ function renderTable(container: HTMLElement, data: any): void {
         }).join('')}</tr>`).join('')}</tbody>`;
 
         container.innerHTML = `<table class="resources-table">${thead}${tbody}</table>`;
+    } catch (err) {
+        container.innerHTML = `<div class="c3-empty-state">Render failed: ${escapeHtml(err instanceof Error ? err.message : String(err))}</div>`;
+    }
+}
+
+function renderContainerResources(container: HTMLElement, data: any): void {
+    try {
+        const rows = flattenRows(data);
+        if (!rows.length) {
+            container.innerHTML = '<div class="c3-empty-state">No data available.</div>';
+            return;
+        }
+        const cols = Array.from(rows.reduce((set, row) => {
+            Object.keys(row || {}).forEach((k) => set.add(k));
+            return set;
+        }, new Set<string>())).slice(0, 8);
+
+        const thead = `<thead><tr>${cols.map((c) => `<th>${escapeHtml(c)}</th>`).join('')}<th>Action</th></tr></thead>`;
+        const tbody = `<tbody>${rows.map((row) => {
+            const svc = row as any;
+            const vm = svc.vm ?? '';
+            const containerName = Array.isArray(svc.containers) && svc.containers.length ? svc.containers[0] : (svc.key ?? '');
+            return `<tr data-drawer-vm="${escapeHtml(vm)}" data-drawer-name="${escapeHtml(containerName)}">${cols.map((c) => {
+                const v = svc[c];
+                const text = typeof v === 'object' && v !== null ? JSON.stringify(v) : v;
+                return `<td>${escapeHtml(text)}</td>`;
+            }).join('')}<td><button class="c3-action-btn" data-drawer-open data-drawer-vm="${escapeHtml(vm)}" data-drawer-name="${escapeHtml(containerName)}" ${vm && containerName ? '' : 'disabled'}>Inspect</button></td></tr>`;
+        }).join('')}</tbody>`;
+
+        container.innerHTML = `<table class="resources-table">${thead}${tbody}</table>`;
+
+        container.querySelectorAll<HTMLElement>('tr[data-drawer-vm]').forEach((tr) => {
+            tr.addEventListener('click', (ev) => {
+                if ((ev.target as HTMLElement).closest('button')) return; // let the explicit button handle its own click
+                const vm = tr.dataset.drawerVm;
+                const name = tr.dataset.drawerName;
+                if (vm && name) openContainerDrawer(vm, name);
+            });
+        });
+        container.querySelectorAll<HTMLButtonElement>('[data-drawer-open]').forEach((btn) => {
+            btn.addEventListener('click', (ev) => {
+                ev.stopPropagation();
+                const vm = btn.dataset.drawerVm;
+                const name = btn.dataset.drawerName;
+                if (vm && name) openContainerDrawer(vm, name);
+            });
+        });
     } catch (err) {
         container.innerHTML = `<div class="c3-empty-state">Render failed: ${escapeHtml(err instanceof Error ? err.message : String(err))}</div>`;
     }
@@ -242,6 +292,11 @@ async function renderTab(tab: string): Promise<void> {
             if (el) renderSlo(el, data);
             continue;
         }
+        if (key === 'container-resources') {
+            const el = document.getElementById('c3-table-' + key);
+            if (el) renderContainerResources(el, data);
+            continue;
+        }
         const el = document.getElementById('c3-table-' + key);
         if (!el) continue;
         renderTable(el, data);
@@ -293,6 +348,209 @@ function renderOps(): void {
     } catch (err) {
         el.innerHTML = `<div class="c3-empty-state">Render failed: ${escapeHtml(err instanceof Error ? err.message : String(err))}</div>`;
     }
+}
+
+// ── Per-container drawer ──
+
+let drawerVm: string | null = null;
+let drawerName: string | null = null;
+let drawerLogsTimer: ReturnType<typeof setInterval> | null = null;
+let drawerEventSource: EventSource | null = null;
+
+function stopDrawerLogs(): void {
+    if (drawerLogsTimer !== null) {
+        clearInterval(drawerLogsTimer);
+        drawerLogsTimer = null;
+    }
+    if (drawerEventSource !== null) {
+        drawerEventSource.close();
+        drawerEventSource = null;
+    }
+}
+
+function appendLogLine(body: HTMLElement, text: string): void {
+    const line = document.createElement('div');
+    line.className = 'c3-drawer-log-line';
+    line.textContent = text;
+    body.appendChild(line);
+    body.scrollTop = body.scrollHeight;
+}
+
+function startDrawerLogs(vm: string, name: string): void {
+    const body = document.getElementById('c3-drawer-logs-body');
+    if (!body) return;
+    body.innerHTML = '';
+
+    if (getMode() === 'mock') {
+        // MOCK: never open an EventSource — replay the mock log array on a timer so it demos offline.
+        const lines = c3ContainerLogsMock(name);
+        if (!lines.length) {
+            body.innerHTML = '<div class="c3-empty-state">No log data available.</div>';
+            return;
+        }
+        let i = 0;
+        appendLogLine(body, `[${lines[0].ts}] ${lines[0].line}`);
+        i = 1;
+        drawerLogsTimer = setInterval(() => {
+            if (i >= lines.length) {
+                i = 0; // loop the replay so the demo keeps showing activity
+                return;
+            }
+            appendLogLine(body, `[${lines[i].ts}] ${lines[i].line}`);
+            i += 1;
+        }, 1500);
+        return;
+    }
+
+    // LIVE: real EventSource against C3_BASE only. Closed on drawer close / container switch / mode change.
+    try {
+        const es = new EventSource(`${C3_BASE}/logs/stream/${encodeURIComponent(vm)}/${encodeURIComponent(name)}`);
+        drawerEventSource = es;
+        es.addEventListener('log', (ev) => appendLogLine(body, (ev as MessageEvent).data));
+        es.addEventListener('stderr', (ev) => appendLogLine(body, '[stderr] ' + (ev as MessageEvent).data));
+        es.addEventListener('close', (ev) => appendLogLine(body, '[closed] ' + (ev as MessageEvent).data));
+        es.onerror = () => appendLogLine(body, '[error] log stream disconnected');
+    } catch (err) {
+        body.innerHTML = `<div class="c3-empty-state">Log stream failed: ${escapeHtml(err instanceof Error ? err.message : String(err))}</div>`;
+    }
+}
+
+function renderInspectPanel(data: any): void {
+    const el = document.getElementById('c3-drawer-panel-inspect');
+    if (!el) return;
+    if (!data) {
+        el.innerHTML = '<div class="c3-empty-state">No inspect data available.</div>';
+        return;
+    }
+    try {
+        const envRows = Object.entries(data.env || {}).map(([k, v]) => `<tr><td>${escapeHtml(k)}</td><td>${escapeHtml(v)}</td></tr>`).join('');
+        const mounts = Array.isArray(data.mounts) ? data.mounts : [];
+        const mountRows = mounts.map((m: any) => `<tr><td>${escapeHtml(m.source)}</td><td>${escapeHtml(m.destination)}</td><td>${escapeHtml(m.mode)}</td></tr>`).join('');
+        el.innerHTML = `
+            <div class="c3-drawer-field"><strong>Image</strong> ${escapeHtml(data.image)}</div>
+            <div class="c3-drawer-field"><strong>Digest</strong> ${escapeHtml(data.imageDigest ?? 'unknown')}</div>
+            <div class="c3-drawer-field"><strong>State</strong> ${escapeHtml(data.state)}</div>
+            <div class="c3-drawer-field"><strong>Ports</strong> ${escapeHtml(JSON.stringify(data.ports ?? {}))}</div>
+            <div class="c3-drawer-subtitle">Mounts</div>
+            <table class="resources-table">${mountRows ? `<thead><tr><th>Source</th><th>Destination</th><th>Mode</th></tr></thead><tbody>${mountRows}</tbody>` : ''}</table>
+            ${mountRows ? '' : '<div class="c3-empty-state">No mounts.</div>'}
+            <div class="c3-drawer-subtitle">Env (secrets redacted by the API)</div>
+            <table class="resources-table">${envRows ? `<thead><tr><th>Key</th><th>Value</th></tr></thead><tbody>${envRows}</tbody>` : ''}</table>
+            ${envRows ? '' : '<div class="c3-empty-state">No env vars.</div>'}
+        `;
+    } catch (err) {
+        el.innerHTML = `<div class="c3-empty-state">Render failed: ${escapeHtml(err instanceof Error ? err.message : String(err))}</div>`;
+    }
+}
+
+async function renderStatsPanel(vm: string, name: string): Promise<void> {
+    const el = document.getElementById('c3-drawer-stats-body');
+    if (!el) return;
+    const data = await c3ContainerStats(vm, name);
+    if (!data) {
+        el.innerHTML = '<div class="c3-empty-state">No stats available.</div>';
+        return;
+    }
+    try {
+        el.innerHTML = `
+            <div class="c3-drawer-field"><strong>CPU</strong> ${escapeHtml(data.cpuPerc)}</div>
+            <div class="c3-drawer-field"><strong>Mem</strong> ${escapeHtml(data.memUsage)} (${escapeHtml(data.memPerc)})</div>
+            <div class="c3-drawer-field"><strong>Net I/O</strong> ${escapeHtml(data.netIO)}</div>
+            <div class="c3-drawer-field"><strong>Block I/O</strong> ${escapeHtml(data.blockIO)}</div>
+            <div class="c3-drawer-field"><strong>PIDs</strong> ${escapeHtml(data.pids)}</div>
+        `;
+    } catch (err) {
+        el.innerHTML = `<div class="c3-empty-state">Render failed: ${escapeHtml(err instanceof Error ? err.message : String(err))}</div>`;
+    }
+}
+
+function renderExecPanel(vm: string, name: string): void {
+    const controls = document.getElementById('c3-drawer-exec-controls');
+    const output = document.getElementById('c3-drawer-exec-output');
+    if (!controls || !output) return;
+
+    output.textContent = '';
+    const mockGate = getMode() === 'mock';
+    controls.innerHTML = `
+        ${mockGate ? '<div class="c3-empty-state">Mock mode: exec is a simulated response, not a real command run.</div>' : ''}
+        <div class="c3-drawer-exec-btns">
+            ${EXEC_COMMAND_ALLOWLIST.map((cmd) => `<button class="c3-action-btn" data-exec-cmd="${escapeHtml(cmd)}">${escapeHtml(cmd)}</button>`).join('')}
+        </div>
+    `;
+
+    controls.querySelectorAll<HTMLButtonElement>('[data-exec-cmd]').forEach((btn) => {
+        btn.addEventListener('click', async () => {
+            const cmd = btn.dataset.execCmd;
+            if (!cmd) return;
+            controls.querySelectorAll('button').forEach((b) => (b as HTMLButtonElement).disabled = true);
+            output.textContent = 'Running...';
+            const res = await c3ContainerExec(vm, name, cmd);
+            output.textContent = (res.mock ? '(mock) ' : '') + res.output;
+            controls.querySelectorAll('button').forEach((b) => (b as HTMLButtonElement).disabled = false);
+        });
+    });
+}
+
+async function openContainerDrawer(vm: string, name: string): Promise<void> {
+    // Switching container while open must tear down the previous container's timer/EventSource first.
+    stopDrawerLogs();
+    drawerVm = vm;
+    drawerName = name;
+
+    const drawer = document.getElementById('c3-drawer');
+    const backdrop = document.getElementById('c3-drawer-backdrop');
+    const title = document.getElementById('c3-drawer-title');
+    if (title) title.textContent = `${name} (${vm})`;
+    drawer?.removeAttribute('hidden');
+    backdrop?.removeAttribute('hidden');
+
+    const inspectData = await c3ContainerInspect(vm, name);
+    renderInspectPanel(inspectData);
+    await renderStatsPanel(vm, name);
+    startDrawerLogs(vm, name);
+    renderExecPanel(vm, name);
+
+    const refreshBtn = document.getElementById('c3-drawer-stats-refresh');
+    if (refreshBtn && !refreshBtn.dataset.wired) {
+        refreshBtn.dataset.wired = '1';
+        refreshBtn.addEventListener('click', () => {
+            if (drawerVm && drawerName) renderStatsPanel(drawerVm, drawerName);
+        });
+    }
+}
+
+function closeContainerDrawer(): void {
+    stopDrawerLogs();
+    drawerVm = null;
+    drawerName = null;
+    document.getElementById('c3-drawer')?.setAttribute('hidden', '');
+    document.getElementById('c3-drawer-backdrop')?.setAttribute('hidden', '');
+}
+
+function wireDrawerChrome(): void {
+    document.getElementById('c3-drawer-close')?.addEventListener('click', closeContainerDrawer);
+    document.getElementById('c3-drawer-backdrop')?.addEventListener('click', closeContainerDrawer);
+    document.addEventListener('keydown', (ev) => {
+        if (ev.key === 'Escape' && !document.getElementById('c3-drawer')?.hasAttribute('hidden')) {
+            closeContainerDrawer();
+        }
+    });
+    document.querySelectorAll<HTMLButtonElement>('[data-c3-drawer-tab]').forEach((btn) => {
+        btn.addEventListener('click', () => {
+            document.querySelectorAll('[data-c3-drawer-tab]').forEach((b) => b.classList.remove('active'));
+            btn.classList.add('active');
+            const tab = btn.dataset.c3DrawerTab as string;
+            document.querySelectorAll('.c3-drawer-panel').forEach((p) => p.classList.remove('active'));
+            document.getElementById('c3-drawer-panel-' + tab)?.classList.add('active');
+        });
+    });
+    // Tear down the SSE connection immediately on a mock/live mode flip — the old
+    // connection (or timer) belongs to a mode that no longer applies.
+    onModeChange(() => {
+        if (drawerVm && drawerName && !document.getElementById('c3-drawer')?.hasAttribute('hidden')) {
+            openContainerDrawer(drawerVm, drawerName);
+        }
+    });
 }
 
 function updateModeBadge(): void {
@@ -357,6 +615,7 @@ export function initC3ControlCenter(): void {
         });
     });
 
+    wireDrawerChrome();
     renderAllTabs();
 }
 

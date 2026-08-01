@@ -312,6 +312,27 @@ step_derive() {
   ' "$C" > "$DIST/front-deps.json"
   log "  front-deps.json:            $(jq '[.node.merged.dependencies,.node.merged.devDependencies]|map(length)|add' "$DIST/front-deps.json") packages"
 
+  # front-fleet-gh-declared.json — GH Pages deployed projects with full URLs.
+  # Source of truth for fleet display (cloud-superapp labs, linktree cloud, etc.)
+  jq '
+    .deploys as $deps |
+    [ .projects[] | . as $p |
+      ($deps[] | select(.path == $p.path)) as $dep |
+      select($dep.deploy_name and $dep.deploy_name != ".") |
+      {
+        id:          $p.key,
+        project:     $p.project,
+        path:        $p.path,
+        category:    $p.category,
+        name:        ($p.build.name // $p.project),
+        framework:   ($p.build.framework // "vanilla"),
+        deploy_name: $dep.deploy_name,
+        url:         ("https://diegonmarcos.github.io/" + $dep.deploy_name)
+      }
+    ] | sort_by(.category, .project)
+  ' "$C" > "$DIST/front-fleet-gh-declared.json"
+  log "  front-fleet-gh-declared.json: $(jq 'length' "$DIST/front-fleet-gh-declared.json") deployed GH Pages projects"
+
   sect "Phase 2 · derive (per-project resolved configs)"
   # Wipe old per-project derives so deletions propagate
   find "$DIST" -maxdepth 1 -name 'build-*.json' -type f -delete 2>/dev/null || true

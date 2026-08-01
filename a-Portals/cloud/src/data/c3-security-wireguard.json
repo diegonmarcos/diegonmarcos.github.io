@@ -1,0 +1,46 @@
+[
+  {
+    "vm": "oci-mail",
+    "peers": [
+      {
+        "endpoint": "203.0.113.5:51820",
+        "allowedIps": "10.0.0.0/24",
+        "latestHandshake": "42 seconds ago",
+        "transfer": "1.2 MiB received, 800 KiB sent"
+      }
+    ]
+  },
+  {
+    "vm": "oci-analytics",
+    "peers": [
+      {
+        "endpoint": "203.0.113.5:51820",
+        "allowedIps": "10.0.0.0/24",
+        "latestHandshake": "42 seconds ago",
+        "transfer": "1.2 MiB received, 800 KiB sent"
+      }
+    ]
+  },
+  {
+    "vm": "oci-apps",
+    "peers": [
+      {
+        "endpoint": "203.0.113.5:51820",
+        "allowedIps": "10.0.0.0/24",
+        "latestHandshake": "42 seconds ago",
+        "transfer": "1.2 MiB received, 800 KiB sent"
+      }
+    ]
+  },
+  {
+    "vm": "gcp-f-micro_1",
+    "peers": [
+      {
+        "endpoint": "203.0.113.5:51820",
+        "allowedIps": "10.0.0.0/24",
+        "latestHandshake": "42 seconds ago",
+        "transfer": "1.2 MiB received, 800 KiB sent"
+      }
+    ]
+  }
+]

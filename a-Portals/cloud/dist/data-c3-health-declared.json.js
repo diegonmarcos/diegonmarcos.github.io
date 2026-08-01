@@ -1,0 +1,416 @@
+// GENERATED FROM c3-health-declared.json by front-data-json-js-wrapper.sh — DO NOT EDIT BY HAND.
+// Re-generate with: bash a-Portals/linktree/src/data/build.sh
+(function () {
+  var g = (typeof globalThis !== "undefined") ? globalThis : (typeof window !== "undefined" ? window : this);
+  g.PORTAL_DATA = g.PORTAL_DATA || {};
+  g.PORTAL_DATA["c3-health-declared"] = [
+  {
+    "service": "c3-infra-api",
+    "vm": "oci-apps",
+    "status": "ok",
+    "checkedAt": "2026-08-01T09:00:00Z"
+  },
+  {
+    "service": "c3-public-api",
+    "vm": "oci-apps",
+    "status": "ok",
+    "checkedAt": "2026-08-01T09:00:00Z"
+  },
+  {
+    "service": "c3-services-api",
+    "vm": "oci-apps",
+    "status": "ok",
+    "checkedAt": "2026-08-01T09:00:00Z"
+  },
+  {
+    "service": "c3-infra-mcp",
+    "vm": "oci-apps",
+    "status": "ok",
+    "checkedAt": "2026-08-01T09:00:00Z"
+  },
+  {
+    "service": "google-personal-mcp",
+    "vm": "oci-apps",
+    "status": "ok",
+    "checkedAt": "2026-08-01T09:00:00Z"
+  },
+  {
+    "service": "authelia",
+    "vm": "oci-apps",
+    "status": "ok",
+    "checkedAt": "2026-08-01T09:00:00Z"
+  },
+  {
+    "service": "caddy",
+    "vm": "oci-apps",
+    "status": "ok",
+    "checkedAt": "2026-08-01T09:00:00Z"
+  },
+  {
+    "service": "caddy-public",
+    "vm": "oci-apps",
+    "status": "ok",
+    "checkedAt": "2026-08-01T09:00:00Z"
+  },
+  {
+    "service": "crowdsec",
+    "vm": "oci-apps",
+    "status": "ok",
+    "checkedAt": "2026-08-01T09:00:00Z"
+  },
+  {
+    "service": "introspect-proxy",
+    "vm": "oci-apps",
+    "status": "ok",
+    "checkedAt": "2026-08-01T09:00:00Z"
+  },
+  {
+    "service": "dagu",
+    "vm": "oci-analytics",
+    "status": "ok",
+    "checkedAt": "2026-08-01T09:00:00Z"
+  },
+  {
+    "service": "dbgate",
+    "vm": "oci-apps",
+    "status": "ok",
+    "checkedAt": "2026-08-01T09:00:00Z"
+  },
+  {
+    "service": "matomo",
+    "vm": "oci-analytics",
+    "status": "ok",
+    "checkedAt": "2026-08-01T09:00:00Z"
+  },
+  {
+    "service": "umami",
+    "vm": "oci-analytics",
+    "status": "ok",
+    "checkedAt": "2026-08-01T09:00:00Z"
+  },
+  {
+    "service": "openobserve",
+    "vm": "oci-apps",
+    "status": "ok",
+    "checkedAt": "2026-08-01T09:00:00Z"
+  },
+  {
+    "service": "ntfy",
+    "vm": "oci-apps",
+    "status": "ok",
+    "checkedAt": "2026-08-01T09:00:00Z"
+  },
+  {
+    "service": "cloud-spec",
+    "vm": "oci-apps",
+    "status": "ok",
+    "checkedAt": "2026-08-01T09:00:00Z"
+  },
+  {
+    "service": "postlite",
+    "vm": "oci-apps",
+    "status": "ok",
+    "checkedAt": "2026-08-01T09:00:00Z"
+  },
+  {
+    "service": "redis",
+    "vm": "oci-apps",
+    "status": "ok",
+    "checkedAt": "2026-08-01T09:00:00Z"
+  },
+  {
+    "service": "hickory-dns",
+    "vm": "oci-mail",
+    "status": "ok",
+    "checkedAt": "2026-08-01T09:00:00Z"
+  },
+  {
+    "service": "unbound-dns64",
+    "vm": "oci-mail",
+    "status": "ok",
+    "checkedAt": "2026-08-01T09:00:00Z"
+  },
+  {
+    "service": "wireguard-mesh",
+    "vm": "oci-apps",
+    "status": "ok",
+    "checkedAt": "2026-08-01T09:00:00Z"
+  },
+  {
+    "service": "wireguard-mesh-ws-tunnel",
+    "vm": "gcp-f-micro_1",
+    "status": "ok",
+    "checkedAt": "2026-08-01T09:00:00Z"
+  },
+  {
+    "service": "wireguard-public",
+    "vm": "oci-apps",
+    "status": "ok",
+    "checkedAt": "2026-08-01T09:00:00Z"
+  },
+  {
+    "service": "gitea",
+    "vm": "oci-apps",
+    "status": "ok",
+    "checkedAt": "2026-08-01T09:00:00Z"
+  },
+  {
+    "service": "backup-borg",
+    "vm": "oci-apps",
+    "status": "ok",
+    "checkedAt": "2026-08-01T09:00:00Z"
+  },
+  {
+    "service": "backup-bup",
+    "vm": "oci-apps",
+    "status": "ok",
+    "checkedAt": "2026-08-01T09:00:00Z"
+  },
+  {
+    "service": "languagetool",
+    "vm": "oci-apps",
+    "status": "ok",
+    "checkedAt": "2026-08-01T09:00:00Z"
+  },
+  {
+    "service": "cloud-builder-x",
+    "vm": "oci-apps",
+    "status": "ok",
+    "checkedAt": "2026-08-01T09:00:00Z"
+  },
+  {
+    "service": "gha-runner",
+    "vm": "oci-apps",
+    "status": "ok",
+    "checkedAt": "2026-08-01T09:00:00Z"
+  },
+  {
+    "service": "cloudflare-worker",
+    "vm": null,
+    "status": "ok",
+    "checkedAt": "2026-08-01T09:00:00Z"
+  },
+  {
+    "service": "gcloud",
+    "vm": "gcp-f-micro_1",
+    "status": "ok",
+    "checkedAt": "2026-08-01T09:00:00Z"
+  },
+  {
+    "service": "my-ai-api",
+    "vm": "oci-apps",
+    "status": "ok",
+    "checkedAt": "2026-08-01T09:00:00Z"
+  },
+  {
+    "service": "hermes-agent",
+    "vm": "oci-apps",
+    "status": "ok",
+    "checkedAt": "2026-08-01T09:00:00Z"
+  },
+  {
+    "service": "kg-store",
+    "vm": "oci-apps",
+    "status": "ok",
+    "checkedAt": "2026-08-01T09:00:00Z"
+  },
+  {
+    "service": "session-memory",
+    "vm": "oci-apps",
+    "status": "ok",
+    "checkedAt": "2026-08-01T09:00:00Z"
+  },
+  {
+    "service": "db-agent",
+    "vm": "oci-apps",
+    "status": "ok",
+    "checkedAt": "2026-08-01T09:00:00Z"
+  },
+  {
+    "service": "claude-superset-api",
+    "vm": "oci-apps",
+    "status": "ok",
+    "checkedAt": "2026-08-01T09:00:00Z"
+  },
+  {
+    "service": "cloud-cgc-mcp",
+    "vm": "oci-apps",
+    "status": "ok",
+    "checkedAt": "2026-08-01T09:00:00Z"
+  },
+  {
+    "service": "chat-mattermost",
+    "vm": "oci-apps",
+    "status": "ok",
+    "checkedAt": "2026-08-01T09:00:00Z"
+  },
+  {
+    "service": "matrix-element",
+    "vm": "oci-apps",
+    "status": "ok",
+    "checkedAt": "2026-08-01T09:00:00Z"
+  },
+  {
+    "service": "matrix-mautrix-whatsapp",
+    "vm": "oci-apps",
+    "status": "ok",
+    "checkedAt": "2026-08-01T09:00:00Z"
+  },
+  {
+    "service": "snappymail",
+    "vm": "oci-mail",
+    "status": "ok",
+    "checkedAt": "2026-08-01T09:00:00Z"
+  },
+  {
+    "service": "maddy",
+    "vm": "oci-mail",
+    "status": "ok",
+    "checkedAt": "2026-08-01T09:00:00Z"
+  },
+  {
+    "service": "stalwart",
+    "vm": "oci-mail",
+    "status": "ok",
+    "checkedAt": "2026-08-01T09:00:00Z"
+  },
+  {
+    "service": "mail-puller",
+    "vm": "oci-mail",
+    "status": "ok",
+    "checkedAt": "2026-08-01T09:00:00Z"
+  },
+  {
+    "service": "cypht",
+    "vm": "oci-mail",
+    "status": "ok",
+    "checkedAt": "2026-08-01T09:00:00Z"
+  },
+  {
+    "service": "vaultwarden",
+    "vm": "oci-apps",
+    "status": "ok",
+    "checkedAt": "2026-08-01T09:00:00Z"
+  },
+  {
+    "service": "photoprism",
+    "vm": "oci-apps",
+    "status": "ok",
+    "checkedAt": "2026-08-01T09:00:00Z"
+  },
+  {
+    "service": "playlist-syncer",
+    "vm": "oci-apps",
+    "status": "ok",
+    "checkedAt": "2026-08-01T09:00:00Z"
+  },
+  {
+    "service": "news-gdelt",
+    "vm": "oci-apps",
+    "status": "ok",
+    "checkedAt": "2026-08-01T09:00:00Z"
+  },
+  {
+    "service": "calendar-radicale",
+    "vm": "oci-apps",
+    "status": "ok",
+    "checkedAt": "2026-08-01T09:00:00Z"
+  },
+  {
+    "service": "contacts-radicale",
+    "vm": "oci-apps",
+    "status": "ok",
+    "checkedAt": "2026-08-01T09:00:00Z"
+  },
+  {
+    "service": "code-server",
+    "vm": "oci-apps",
+    "status": "ok",
+    "checkedAt": "2026-08-01T09:00:00Z"
+  },
+  {
+    "service": "etherpad",
+    "vm": "oci-apps",
+    "status": "ok",
+    "checkedAt": "2026-08-01T09:00:00Z"
+  },
+  {
+    "service": "filebrowser",
+    "vm": "oci-apps",
+    "status": "ok",
+    "checkedAt": "2026-08-01T09:00:00Z"
+  },
+  {
+    "service": "grist",
+    "vm": "oci-apps",
+    "status": "ok",
+    "checkedAt": "2026-08-01T09:00:00Z"
+  },
+  {
+    "service": "hedgedoc",
+    "vm": "oci-apps",
+    "status": "ok",
+    "checkedAt": "2026-08-01T09:00:00Z"
+  },
+  {
+    "service": "paca",
+    "vm": "oci-apps",
+    "status": "ok",
+    "checkedAt": "2026-08-01T09:00:00Z"
+  },
+  {
+    "service": "revealmd",
+    "vm": "oci-apps",
+    "status": "ok",
+    "checkedAt": "2026-08-01T09:00:00Z"
+  },
+  {
+    "service": "send",
+    "vm": "oci-apps",
+    "status": "ok",
+    "checkedAt": "2026-08-01T09:00:00Z"
+  },
+  {
+    "service": "scrappers-api",
+    "vm": "oci-apps",
+    "status": "ok",
+    "checkedAt": "2026-08-01T09:00:00Z"
+  },
+  {
+    "service": "fin-api",
+    "vm": "oci-apps",
+    "status": "ok",
+    "checkedAt": "2026-08-01T09:00:00Z"
+  },
+  {
+    "service": "crawlee-cloud",
+    "vm": "oci-apps",
+    "status": "ok",
+    "checkedAt": "2026-08-01T09:00:00Z"
+  },
+  {
+    "service": "front-end",
+    "vm": "oci-apps",
+    "status": "ok",
+    "checkedAt": "2026-08-01T09:00:00Z"
+  },
+  {
+    "service": "matrix-continuwuity",
+    "vm": "oci-apps",
+    "status": "ok",
+    "checkedAt": "2026-08-01T09:00:00Z"
+  },
+  {
+    "service": "vaultwarden-mic",
+    "vm": "oci-apps",
+    "status": "ok",
+    "checkedAt": "2026-08-01T09:00:00Z"
+  },
+  {
+    "service": "alerts-api",
+    "vm": "oci-apps",
+    "status": "ok",
+    "checkedAt": "2026-08-01T09:00:00Z"
+  }
+];
+})();

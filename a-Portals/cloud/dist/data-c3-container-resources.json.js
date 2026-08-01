@@ -1,0 +1,882 @@
+// GENERATED FROM c3-container-resources.json by front-data-json-js-wrapper.sh — DO NOT EDIT BY HAND.
+// Re-generate with: bash a-Portals/linktree/src/data/build.sh
+(function () {
+  var g = (typeof globalThis !== "undefined") ? globalThis : (typeof window !== "undefined" ? window : this);
+  g.PORTAL_DATA = g.PORTAL_DATA || {};
+  g.PORTAL_DATA["c3-container-resources"] = {
+  "_generated": "2026-08-01T09:00:00Z",
+  "services": {
+    "c3-infra-api": {
+      "vm": "oci-apps",
+      "vm_ram_gb": 24,
+      "vm_cpu": 4,
+      "containers": [
+        "c3-infra-api"
+      ],
+      "resources": {
+        "cpu_pct": 4,
+        "mem_pct": 10,
+        "mem_mb": 64
+      }
+    },
+    "c3-public-api": {
+      "vm": "oci-apps",
+      "vm_ram_gb": 24,
+      "vm_cpu": 4,
+      "containers": [
+        "c3-public-api"
+      ],
+      "resources": {
+        "cpu_pct": 5,
+        "mem_pct": 11,
+        "mem_mb": 65
+      }
+    },
+    "c3-services-api": {
+      "vm": "oci-apps",
+      "vm_ram_gb": 24,
+      "vm_cpu": 4,
+      "containers": [
+        "c3-services-api"
+      ],
+      "resources": {
+        "cpu_pct": 6,
+        "mem_pct": 12,
+        "mem_mb": 66
+      }
+    },
+    "c3-infra-mcp": {
+      "vm": "oci-apps",
+      "vm_ram_gb": 24,
+      "vm_cpu": 4,
+      "containers": [
+        "c3-infra-mcp"
+      ],
+      "resources": {
+        "cpu_pct": 7,
+        "mem_pct": 13,
+        "mem_mb": 67
+      }
+    },
+    "google-personal-mcp": {
+      "vm": "oci-apps",
+      "vm_ram_gb": 24,
+      "vm_cpu": 4,
+      "containers": [
+        "google-personal-mcp"
+      ],
+      "resources": {
+        "cpu_pct": 8,
+        "mem_pct": 14,
+        "mem_mb": 68
+      }
+    },
+    "authelia": {
+      "vm": "oci-apps",
+      "vm_ram_gb": 24,
+      "vm_cpu": 4,
+      "containers": [
+        "authelia"
+      ],
+      "resources": {
+        "cpu_pct": 9,
+        "mem_pct": 15,
+        "mem_mb": 69
+      }
+    },
+    "caddy": {
+      "vm": "oci-apps",
+      "vm_ram_gb": 24,
+      "vm_cpu": 4,
+      "containers": [
+        "caddy"
+      ],
+      "resources": {
+        "cpu_pct": 10,
+        "mem_pct": 16,
+        "mem_mb": 70
+      }
+    },
+    "caddy-public": {
+      "vm": "oci-apps",
+      "vm_ram_gb": 24,
+      "vm_cpu": 4,
+      "containers": [
+        "caddy-public"
+      ],
+      "resources": {
+        "cpu_pct": 11,
+        "mem_pct": 17,
+        "mem_mb": 71
+      }
+    },
+    "crowdsec": {
+      "vm": "oci-apps",
+      "vm_ram_gb": 24,
+      "vm_cpu": 4,
+      "containers": [
+        "crowdsec"
+      ],
+      "resources": {
+        "cpu_pct": 12,
+        "mem_pct": 18,
+        "mem_mb": 72
+      }
+    },
+    "introspect-proxy": {
+      "vm": "oci-apps",
+      "vm_ram_gb": 24,
+      "vm_cpu": 4,
+      "containers": [
+        "introspect-proxy"
+      ],
+      "resources": {
+        "cpu_pct": 13,
+        "mem_pct": 19,
+        "mem_mb": 73
+      }
+    },
+    "dagu": {
+      "vm": "oci-analytics",
+      "vm_ram_gb": 1,
+      "vm_cpu": 1,
+      "containers": [
+        "dagu"
+      ],
+      "resources": {
+        "cpu_pct": 14,
+        "mem_pct": 20,
+        "mem_mb": 74
+      }
+    },
+    "dbgate": {
+      "vm": "oci-apps",
+      "vm_ram_gb": 24,
+      "vm_cpu": 4,
+      "containers": [
+        "dbgate"
+      ],
+      "resources": {
+        "cpu_pct": 15,
+        "mem_pct": 21,
+        "mem_mb": 75
+      }
+    },
+    "matomo": {
+      "vm": "oci-analytics",
+      "vm_ram_gb": 1,
+      "vm_cpu": 1,
+      "containers": [
+        "matomo"
+      ],
+      "resources": {
+        "cpu_pct": 16,
+        "mem_pct": 22,
+        "mem_mb": 76
+      }
+    },
+    "umami": {
+      "vm": "oci-analytics",
+      "vm_ram_gb": 1,
+      "vm_cpu": 1,
+      "containers": [
+        "umami"
+      ],
+      "resources": {
+        "cpu_pct": 17,
+        "mem_pct": 23,
+        "mem_mb": 77
+      }
+    },
+    "openobserve": {
+      "vm": "oci-apps",
+      "vm_ram_gb": 24,
+      "vm_cpu": 4,
+      "containers": [
+        "openobserve"
+      ],
+      "resources": {
+        "cpu_pct": 18,
+        "mem_pct": 24,
+        "mem_mb": 78
+      }
+    },
+    "ntfy": {
+      "vm": "oci-apps",
+      "vm_ram_gb": 24,
+      "vm_cpu": 4,
+      "containers": [
+        "ntfy"
+      ],
+      "resources": {
+        "cpu_pct": 19,
+        "mem_pct": 25,
+        "mem_mb": 79
+      }
+    },
+    "cloud-spec": {
+      "vm": "oci-apps",
+      "vm_ram_gb": 24,
+      "vm_cpu": 4,
+      "containers": [
+        "cloud-spec"
+      ],
+      "resources": {
+        "cpu_pct": 20,
+        "mem_pct": 26,
+        "mem_mb": 80
+      }
+    },
+    "postlite": {
+      "vm": "oci-apps",
+      "vm_ram_gb": 24,
+      "vm_cpu": 4,
+      "containers": [
+        "postlite"
+      ],
+      "resources": {
+        "cpu_pct": 21,
+        "mem_pct": 27,
+        "mem_mb": 81
+      }
+    },
+    "redis": {
+      "vm": "oci-apps",
+      "vm_ram_gb": 24,
+      "vm_cpu": 4,
+      "containers": [
+        "redis"
+      ],
+      "resources": {
+        "cpu_pct": 22,
+        "mem_pct": 28,
+        "mem_mb": 82
+      }
+    },
+    "hickory-dns": {
+      "vm": "oci-mail",
+      "vm_ram_gb": 1,
+      "vm_cpu": 1,
+      "containers": [
+        "hickory-dns"
+      ],
+      "resources": {
+        "cpu_pct": 23,
+        "mem_pct": 29,
+        "mem_mb": 83
+      }
+    },
+    "unbound-dns64": {
+      "vm": "oci-mail",
+      "vm_ram_gb": 1,
+      "vm_cpu": 1,
+      "containers": [
+        "unbound-dns64"
+      ],
+      "resources": {
+        "cpu_pct": 24,
+        "mem_pct": 30,
+        "mem_mb": 84
+      }
+    },
+    "wireguard-mesh": {
+      "vm": "oci-apps",
+      "vm_ram_gb": 24,
+      "vm_cpu": 4,
+      "containers": [
+        "wireguard-mesh"
+      ],
+      "resources": {
+        "cpu_pct": 25,
+        "mem_pct": 31,
+        "mem_mb": 85
+      }
+    },
+    "wireguard-mesh-ws-tunnel": {
+      "vm": "gcp-f-micro_1",
+      "vm_ram_gb": 1,
+      "vm_cpu": 2,
+      "containers": [
+        "wireguard-mesh-ws-tunnel"
+      ],
+      "resources": {
+        "cpu_pct": 26,
+        "mem_pct": 32,
+        "mem_mb": 86
+      }
+    },
+    "wireguard-public": {
+      "vm": "oci-apps",
+      "vm_ram_gb": 24,
+      "vm_cpu": 4,
+      "containers": [
+        "wireguard-public"
+      ],
+      "resources": {
+        "cpu_pct": 27,
+        "mem_pct": 33,
+        "mem_mb": 87
+      }
+    },
+    "gitea": {
+      "vm": "oci-apps",
+      "vm_ram_gb": 24,
+      "vm_cpu": 4,
+      "containers": [
+        "gitea"
+      ],
+      "resources": {
+        "cpu_pct": 28,
+        "mem_pct": 34,
+        "mem_mb": 88
+      }
+    },
+    "backup-borg": {
+      "vm": "oci-apps",
+      "vm_ram_gb": 24,
+      "vm_cpu": 4,
+      "containers": [
+        "backup-borg"
+      ],
+      "resources": {
+        "cpu_pct": 29,
+        "mem_pct": 35,
+        "mem_mb": 89
+      }
+    },
+    "backup-bup": {
+      "vm": "oci-apps",
+      "vm_ram_gb": 24,
+      "vm_cpu": 4,
+      "containers": [
+        "backup-bup"
+      ],
+      "resources": {
+        "cpu_pct": 30,
+        "mem_pct": 36,
+        "mem_mb": 90
+      }
+    },
+    "languagetool": {
+      "vm": "oci-apps",
+      "vm_ram_gb": 24,
+      "vm_cpu": 4,
+      "containers": [
+        "languagetool"
+      ],
+      "resources": {
+        "cpu_pct": 31,
+        "mem_pct": 37,
+        "mem_mb": 91
+      }
+    },
+    "cloud-builder-x": {
+      "vm": "oci-apps",
+      "vm_ram_gb": 24,
+      "vm_cpu": 4,
+      "containers": [
+        "cloud-builder-x"
+      ],
+      "resources": {
+        "cpu_pct": 32,
+        "mem_pct": 38,
+        "mem_mb": 92
+      }
+    },
+    "gha-runner": {
+      "vm": "oci-apps",
+      "vm_ram_gb": 24,
+      "vm_cpu": 4,
+      "containers": [
+        "gha-runner"
+      ],
+      "resources": {
+        "cpu_pct": 33,
+        "mem_pct": 39,
+        "mem_mb": 93
+      }
+    },
+    "gcloud": {
+      "vm": "gcp-f-micro_1",
+      "vm_ram_gb": 1,
+      "vm_cpu": 2,
+      "containers": [
+        "gcloud"
+      ],
+      "resources": {
+        "cpu_pct": 5,
+        "mem_pct": 41,
+        "mem_mb": 95
+      }
+    },
+    "my-ai-api": {
+      "vm": "oci-apps",
+      "vm_ram_gb": 24,
+      "vm_cpu": 4,
+      "containers": [
+        "my-ai-api"
+      ],
+      "resources": {
+        "cpu_pct": 6,
+        "mem_pct": 42,
+        "mem_mb": 96
+      }
+    },
+    "hermes-agent": {
+      "vm": "oci-apps",
+      "vm_ram_gb": 24,
+      "vm_cpu": 4,
+      "containers": [
+        "hermes-agent"
+      ],
+      "resources": {
+        "cpu_pct": 7,
+        "mem_pct": 43,
+        "mem_mb": 97
+      }
+    },
+    "kg-store": {
+      "vm": "oci-apps",
+      "vm_ram_gb": 24,
+      "vm_cpu": 4,
+      "containers": [
+        "kg-store"
+      ],
+      "resources": {
+        "cpu_pct": 8,
+        "mem_pct": 44,
+        "mem_mb": 98
+      }
+    },
+    "session-memory": {
+      "vm": "oci-apps",
+      "vm_ram_gb": 24,
+      "vm_cpu": 4,
+      "containers": [
+        "session-memory"
+      ],
+      "resources": {
+        "cpu_pct": 9,
+        "mem_pct": 45,
+        "mem_mb": 99
+      }
+    },
+    "db-agent": {
+      "vm": "oci-apps",
+      "vm_ram_gb": 24,
+      "vm_cpu": 4,
+      "containers": [
+        "db-agent"
+      ],
+      "resources": {
+        "cpu_pct": 10,
+        "mem_pct": 46,
+        "mem_mb": 100
+      }
+    },
+    "claude-superset-api": {
+      "vm": "oci-apps",
+      "vm_ram_gb": 24,
+      "vm_cpu": 4,
+      "containers": [
+        "claude-superset-api"
+      ],
+      "resources": {
+        "cpu_pct": 11,
+        "mem_pct": 47,
+        "mem_mb": 101
+      }
+    },
+    "cloud-cgc-mcp": {
+      "vm": "oci-apps",
+      "vm_ram_gb": 24,
+      "vm_cpu": 4,
+      "containers": [
+        "cloud-cgc-mcp"
+      ],
+      "resources": {
+        "cpu_pct": 12,
+        "mem_pct": 48,
+        "mem_mb": 102
+      }
+    },
+    "chat-mattermost": {
+      "vm": "oci-apps",
+      "vm_ram_gb": 24,
+      "vm_cpu": 4,
+      "containers": [
+        "chat-mattermost"
+      ],
+      "resources": {
+        "cpu_pct": 13,
+        "mem_pct": 49,
+        "mem_mb": 103
+      }
+    },
+    "matrix-element": {
+      "vm": "oci-apps",
+      "vm_ram_gb": 24,
+      "vm_cpu": 4,
+      "containers": [
+        "matrix-element"
+      ],
+      "resources": {
+        "cpu_pct": 14,
+        "mem_pct": 50,
+        "mem_mb": 104
+      }
+    },
+    "matrix-mautrix-whatsapp": {
+      "vm": "oci-apps",
+      "vm_ram_gb": 24,
+      "vm_cpu": 4,
+      "containers": [
+        "matrix-mautrix-whatsapp"
+      ],
+      "resources": {
+        "cpu_pct": 15,
+        "mem_pct": 51,
+        "mem_mb": 105
+      }
+    },
+    "snappymail": {
+      "vm": "oci-mail",
+      "vm_ram_gb": 1,
+      "vm_cpu": 1,
+      "containers": [
+        "snappymail"
+      ],
+      "resources": {
+        "cpu_pct": 16,
+        "mem_pct": 52,
+        "mem_mb": 106
+      }
+    },
+    "maddy": {
+      "vm": "oci-mail",
+      "vm_ram_gb": 1,
+      "vm_cpu": 1,
+      "containers": [
+        "maddy"
+      ],
+      "resources": {
+        "cpu_pct": 17,
+        "mem_pct": 53,
+        "mem_mb": 107
+      }
+    },
+    "stalwart": {
+      "vm": "oci-mail",
+      "vm_ram_gb": 1,
+      "vm_cpu": 1,
+      "containers": [
+        "stalwart"
+      ],
+      "resources": {
+        "cpu_pct": 18,
+        "mem_pct": 54,
+        "mem_mb": 108
+      }
+    },
+    "mail-puller": {
+      "vm": "oci-mail",
+      "vm_ram_gb": 1,
+      "vm_cpu": 1,
+      "containers": [
+        "mail-puller"
+      ],
+      "resources": {
+        "cpu_pct": 19,
+        "mem_pct": 55,
+        "mem_mb": 109
+      }
+    },
+    "cypht": {
+      "vm": "oci-mail",
+      "vm_ram_gb": 1,
+      "vm_cpu": 1,
+      "containers": [
+        "cypht"
+      ],
+      "resources": {
+        "cpu_pct": 20,
+        "mem_pct": 56,
+        "mem_mb": 110
+      }
+    },
+    "vaultwarden": {
+      "vm": "oci-apps",
+      "vm_ram_gb": 24,
+      "vm_cpu": 4,
+      "containers": [
+        "vaultwarden"
+      ],
+      "resources": {
+        "cpu_pct": 21,
+        "mem_pct": 57,
+        "mem_mb": 111
+      }
+    },
+    "photoprism": {
+      "vm": "oci-apps",
+      "vm_ram_gb": 24,
+      "vm_cpu": 4,
+      "containers": [
+        "photoprism"
+      ],
+      "resources": {
+        "cpu_pct": 22,
+        "mem_pct": 58,
+        "mem_mb": 112
+      }
+    },
+    "playlist-syncer": {
+      "vm": "oci-apps",
+      "vm_ram_gb": 24,
+      "vm_cpu": 4,
+      "containers": [
+        "playlist-syncer"
+      ],
+      "resources": {
+        "cpu_pct": 23,
+        "mem_pct": 59,
+        "mem_mb": 113
+      }
+    },
+    "news-gdelt": {
+      "vm": "oci-apps",
+      "vm_ram_gb": 24,
+      "vm_cpu": 4,
+      "containers": [
+        "news-gdelt"
+      ],
+      "resources": {
+        "cpu_pct": 24,
+        "mem_pct": 10,
+        "mem_mb": 114
+      }
+    },
+    "calendar-radicale": {
+      "vm": "oci-apps",
+      "vm_ram_gb": 24,
+      "vm_cpu": 4,
+      "containers": [
+        "calendar-radicale"
+      ],
+      "resources": {
+        "cpu_pct": 25,
+        "mem_pct": 11,
+        "mem_mb": 115
+      }
+    },
+    "contacts-radicale": {
+      "vm": "oci-apps",
+      "vm_ram_gb": 24,
+      "vm_cpu": 4,
+      "containers": [
+        "contacts-radicale"
+      ],
+      "resources": {
+        "cpu_pct": 26,
+        "mem_pct": 12,
+        "mem_mb": 116
+      }
+    },
+    "code-server": {
+      "vm": "oci-apps",
+      "vm_ram_gb": 24,
+      "vm_cpu": 4,
+      "containers": [
+        "code-server"
+      ],
+      "resources": {
+        "cpu_pct": 27,
+        "mem_pct": 13,
+        "mem_mb": 117
+      }
+    },
+    "etherpad": {
+      "vm": "oci-apps",
+      "vm_ram_gb": 24,
+      "vm_cpu": 4,
+      "containers": [
+        "etherpad"
+      ],
+      "resources": {
+        "cpu_pct": 28,
+        "mem_pct": 14,
+        "mem_mb": 118
+      }
+    },
+    "filebrowser": {
+      "vm": "oci-apps",
+      "vm_ram_gb": 24,
+      "vm_cpu": 4,
+      "containers": [
+        "filebrowser"
+      ],
+      "resources": {
+        "cpu_pct": 29,
+        "mem_pct": 15,
+        "mem_mb": 119
+      }
+    },
+    "grist": {
+      "vm": "oci-apps",
+      "vm_ram_gb": 24,
+      "vm_cpu": 4,
+      "containers": [
+        "grist"
+      ],
+      "resources": {
+        "cpu_pct": 30,
+        "mem_pct": 16,
+        "mem_mb": 120
+      }
+    },
+    "hedgedoc": {
+      "vm": "oci-apps",
+      "vm_ram_gb": 24,
+      "vm_cpu": 4,
+      "containers": [
+        "hedgedoc"
+      ],
+      "resources": {
+        "cpu_pct": 31,
+        "mem_pct": 17,
+        "mem_mb": 121
+      }
+    },
+    "paca": {
+      "vm": "oci-apps",
+      "vm_ram_gb": 24,
+      "vm_cpu": 4,
+      "containers": [
+        "paca"
+      ],
+      "resources": {
+        "cpu_pct": 32,
+        "mem_pct": 18,
+        "mem_mb": 122
+      }
+    },
+    "revealmd": {
+      "vm": "oci-apps",
+      "vm_ram_gb": 24,
+      "vm_cpu": 4,
+      "containers": [
+        "revealmd"
+      ],
+      "resources": {
+        "cpu_pct": 33,
+        "mem_pct": 19,
+        "mem_mb": 123
+      }
+    },
+    "send": {
+      "vm": "oci-apps",
+      "vm_ram_gb": 24,
+      "vm_cpu": 4,
+      "containers": [
+        "send"
+      ],
+      "resources": {
+        "cpu_pct": 4,
+        "mem_pct": 20,
+        "mem_mb": 124
+      }
+    },
+    "scrappers-api": {
+      "vm": "oci-apps",
+      "vm_ram_gb": 24,
+      "vm_cpu": 4,
+      "containers": [
+        "scrappers-api"
+      ],
+      "resources": {
+        "cpu_pct": 5,
+        "mem_pct": 21,
+        "mem_mb": 125
+      }
+    },
+    "fin-api": {
+      "vm": "oci-apps",
+      "vm_ram_gb": 24,
+      "vm_cpu": 4,
+      "containers": [
+        "fin-api"
+      ],
+      "resources": {
+        "cpu_pct": 6,
+        "mem_pct": 22,
+        "mem_mb": 126
+      }
+    },
+    "crawlee-cloud": {
+      "vm": "oci-apps",
+      "vm_ram_gb": 24,
+      "vm_cpu": 4,
+      "containers": [
+        "crawlee-cloud"
+      ],
+      "resources": {
+        "cpu_pct": 7,
+        "mem_pct": 23,
+        "mem_mb": 127
+      }
+    },
+    "front-end": {
+      "vm": "oci-apps",
+      "vm_ram_gb": 24,
+      "vm_cpu": 4,
+      "containers": [
+        "front-end"
+      ],
+      "resources": {
+        "cpu_pct": 8,
+        "mem_pct": 24,
+        "mem_mb": 128
+      }
+    },
+    "matrix-continuwuity": {
+      "vm": "oci-apps",
+      "vm_ram_gb": 24,
+      "vm_cpu": 4,
+      "containers": [
+        "matrix-continuwuity"
+      ],
+      "resources": {
+        "cpu_pct": 9,
+        "mem_pct": 25,
+        "mem_mb": 129
+      }
+    },
+    "vaultwarden-mic": {
+      "vm": "oci-apps",
+      "vm_ram_gb": 24,
+      "vm_cpu": 4,
+      "containers": [
+        "vaultwarden-mic"
+      ],
+      "resources": {
+        "cpu_pct": 10,
+        "mem_pct": 26,
+        "mem_mb": 130
+      }
+    },
+    "alerts-api": {
+      "vm": "oci-apps",
+      "vm_ram_gb": 24,
+      "vm_cpu": 4,
+      "containers": [
+        "alerts-api"
+      ],
+      "resources": {
+        "cpu_pct": 11,
+        "mem_pct": 27,
+        "mem_mb": 131
+      }
+    }
+  }
+};
+})();

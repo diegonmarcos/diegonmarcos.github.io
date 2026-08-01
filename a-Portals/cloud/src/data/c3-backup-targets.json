@@ -1,0 +1,23 @@
+{
+  "_generated": "2026-08-01T09:00:00Z",
+  "targets": [
+    {
+      "service": "gitea",
+      "vm": "oci-apps",
+      "volumes": [
+        "gitea-data"
+      ],
+      "schedule": "0 3 * * *",
+      "retention": "30d"
+    },
+    {
+      "service": "vaultwarden",
+      "vm": "oci-apps",
+      "volumes": [
+        "vw-data"
+      ],
+      "schedule": "0 3 * * *",
+      "retention": "30d"
+    }
+  ]
+}

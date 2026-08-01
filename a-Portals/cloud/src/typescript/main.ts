@@ -4,6 +4,8 @@ import { initViewToggle, initTreeExpand, initTreeServiceClick, initTreeControls,
 import { initThemeSwitcher } from './theme-switcher';
 import { initZoomControl } from './zoom-control';
 import { initAdminActions } from './admin-actions';
+import { initC3ControlCenter } from './c3-control-center';
+import { initProductsCards } from './products-cards';
 import type { ServiceId } from './types';
 
 // Architecture page modal info - global function for onclick handlers
@@ -156,6 +158,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Admin actions (Flex server controls, etc.)
     initAdminActions();
+
+    // Cloud Control Center (data-driven c3-infra-api dashboard, guarded by #c3-root presence)
+    initC3ControlCenter();
+
+    // Products/Admin service cards (data-driven, guarded by container presence)
+    initProductsCards();
 
     // Listen for service clicks from tree view
     document.addEventListener('service-click', ((e: CustomEvent) => {

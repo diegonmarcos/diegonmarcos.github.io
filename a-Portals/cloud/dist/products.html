@@ -49,6 +49,10 @@
 <!-- Umami Analytics -->
 <script async src="https://analytics.diegonmarcos.com/umami/script.js" data-website-id="937cbde7-5ec2-450c-9d6a-8117423ac12f"></script>
 <!-- End Umami Analytics -->
+    <!-- Data-driven framework: PORTAL_DATA["c3-*"] hydrated by front-data-json-js-wrapper.sh -->
+    <script src="data-c3-services.json.js"></script>
+    <script src="data-c3-card-overrides.json.js"></script>
+    <script src="data-c3-front-apps.json.js"></script>
 <!-- sw-register: injected by mod_sw_register — DO NOT EDIT BY HAND. Re-runs are idempotent (the marker comment above gates the injection). -->
 <script>
 (function () {
@@ -207,6 +211,7 @@
             <div class="nav-level1">
                 <a href="products.html" class="nav-main-btn active">User</a>
                 <a href="cloud_control.html" class="nav-main-btn">Cloud Control</a>
+                <a href="cloud_control_center.html" class="nav-main-btn">Cloud Control Center</a>
                 <a href="architecture.html" class="nav-main-btn">Architecture</a>
             </div>
             <!-- Level 2: Page Tabs -->
@@ -305,127 +310,8 @@
                     </svg>
                     Suite
                 </h2>
-                <div class="categories-row">
-                    <!-- AI Folder -->
-                    <div class="category-section">
-                        <h3 class="category-title">AI</h3>
-                        <div class="cards-grid">
-                            <div class="card" data-service="chat-multimodel" data-url="https://chat.diegonmarcos.com" data-product-category="ai">
-                                <div class="card-icon">
-                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                        <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
-                                        <path d="M8 9h8M8 13h6"/>
-                                    </svg>
-                                </div>
-                                <h3>Chat Multi-Model</h3>
-                                <p>Multi-provider AI Chat</p>
-                            </div>
-                            <div class="card" data-service="chat" data-url="https://chat.diegonmarcos.com" data-product-category="ai">
-                                <div class="card-icon">
-                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                        <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/>
-                                    </svg>
-                                </div>
-                                <h3>Chat</h3>
-                                <p>Team Messaging</p>
-                            </div>
-                            <div class="card" data-service="myterminal" data-url="https://ide.diegonmarcos.com" data-product-category="ai">
-                                <div class="card-icon">
-                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                        <polyline points="4 17 10 11 4 5"/>
-                                        <line x1="12" y1="19" x2="20" y2="19"/>
-                                    </svg>
-                                </div>
-                                <h3>WebIDE</h3>
-                                <p>AI powered Terminal File Explorer and IDE</p>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Inbox Folder -->
-                    <div class="category-section">
-                        <h3 class="category-title">Inbox</h3>
-                        <div class="cards-grid">
-                            <div class="card" data-service="mail" data-url="https://diegonmarcos.github.io/mymail" data-product-category="inbox">
-                                <div class="card-icon">
-                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                        <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
-                                        <polyline points="22,6 12,13 2,6"/>
-                                    </svg>
-                                </div>
-                                <h3>Mail&Cal</h3>
-                                <p>mymail landing</p>
-                            </div>
-                            <div class="card" data-service="myfeed" data-url="https://diegonmarcos.github.io/myfeed" data-product-category="inbox">
-                                <div class="card-icon">
-                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                        <path d="M4 11a9 9 0 0 1 9 9"/>
-                                        <path d="M4 4a16 16 0 0 1 16 16"/>
-                                        <circle cx="5" cy="19" r="1"/>
-                                    </svg>
-                                </div>
-                                <h3>MyFeed</h3>
-                                <p>RSS / News Dashboard</p>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Productivity Folder -->
-                    <div class="category-section">
-                        <h3 class="category-title">Productivity</h3>
-                        <div class="cards-grid">
-                            <div class="card" data-service="drive" data-url="https://suite.diegonmarcos.com" data-product-category="productivity">
-                                <div class="card-icon">
-                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                        <path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/>
-                                        <line x1="12" y1="11" x2="12" y2="17"/>
-                                        <line x1="9" y1="14" x2="15" y2="14"/>
-                                    </svg>
-                                </div>
-                                <h3>Drive&Suite</h3>
-                                <p>suite landing</p>
-                            </div>
-                            <div class="card" data-service="jsonvision" data-url="https://diegonmarcos.github.io/json-vision" data-product-category="productivity">
-                                <div class="card-icon">
-                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
-                                        <polyline points="14 2 14 8 20 8"/>
-                                        <line x1="16" y1="13" x2="8" y2="13"/>
-                                        <line x1="16" y1="17" x2="8" y2="17"/>
-                                    </svg>
-                                </div>
-                                <h3>JSON Vision</h3>
-                                <p>JSON Viewer & Editor</p>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- DEV Folder -->
-                    <div class="category-section">
-                        <h3 class="category-title">DEV</h3>
-                        <div class="cards-grid">
-                            <div class="card" data-service="api-endpoints" data-url="https://diegonmarcos.github.io/api" data-product-category="dev">
-                                <div class="card-icon">
-                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                        <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
-                                        <path d="M8 10h8M8 14h4"/>
-                                    </svg>
-                                </div>
-                                <h3>API Swagger</h3>
-                                <p>REST API Documentation</p>
-                            </div>
-                            <div class="card" data-service="mcp-tools" data-url="https://api.diegonmarcos.com/dash" data-product-category="dev">
-                                <div class="card-icon">
-                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                        <path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/>
-                                    </svg>
-                                </div>
-                                <h3>MCP API Skills Hub</h3>
-                                <p>Model Context Protocol</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                <!-- Categories rendered by products-cards.ts from c3-card-overrides.json (AI, Inbox, Productivity, DEV) -->
+                <div class="categories-row" id="c3-solutions-suite"></div>
             </div>
 
             <!-- Misc Section -->
@@ -437,161 +323,8 @@
                     </svg>
                     Misc
                 </h2>
-                <div class="categories-row">
-                    <!-- MY TOOLS Folder -->
-                    <div class="category-section">
-                        <h3 class="category-title">MY TOOLS</h3>
-                        <div class="cards-grid">
-                            <div class="card" data-service="centralbank" data-url="https://diegonmarcos.github.io/central_bank" data-product-category="tools">
-                                <div class="card-icon">
-                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                        <line x1="12" y1="1" x2="12" y2="23"/>
-                                        <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>
-                                    </svg>
-                                </div>
-                                <h3>Central Bank</h3>
-                                <p>Currency Tools</p>
-                            </div>
-                            <div class="card" data-service="marketwatch" data-url="https://diegonmarcos.github.io/market_watch" data-product-category="tools">
-                                <div class="card-icon">
-                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                        <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/>
-                                    </svg>
-                                </div>
-                                <h3>Market Watch</h3>
-                                <p>Stock & Crypto Tracker</p>
-                            </div>
-                            <div class="card" data-service="myhealth-profile" data-url="https://diegonmarcos.github.io/myhealth-profile" data-product-category="tools">
-                                <div class="card-icon">
-                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                        <path d="M22 12h-4l-3 9L9 3l-3 9H2"/>
-                                    </svg>
-                                </div>
-                                <h3>MyHealth Profile</h3>
-                                <p>Fitness & Health</p>
-                            </div>
-                            <div class="card" data-service="myhealth-feedyourself" data-url="https://diegonmarcos.github.io/myhealth-feedyourself" data-product-category="tools">
-                                <div class="card-icon">
-                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                        <path d="M18 8h1a4 4 0 0 1 0 8h-1"/>
-                                        <path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"/>
-                                        <line x1="6" y1="1" x2="6" y2="4"/>
-                                        <line x1="10" y1="1" x2="10" y2="4"/>
-                                        <line x1="14" y1="1" x2="14" y2="4"/>
-                                    </svg>
-                                </div>
-                                <h3>Feed Yourself</h3>
-                                <p>Recipe & Meal Planner</p>
-                            </div>
-                            <div class="card" data-service="mymaps-navigation" data-url="https://diegonmarcos.github.io/mymaps-navigation" data-product-category="tools">
-                                <div class="card-icon">
-                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                        <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/>
-                                        <circle cx="12" cy="10" r="3"/>
-                                    </svg>
-                                </div>
-                                <h3>MyMaps Navigation</h3>
-                                <p>Maps & Transport</p>
-                            </div>
-                            <div class="card" data-service="mymaps-mytrips" data-url="https://diegonmarcos.github.io/mymaps-mytrips" data-product-category="tools">
-                                <div class="card-icon">
-                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                        <path d="M3 17h2l3-9 3 9h2"/>
-                                        <path d="M13 6h8l-4 11"/>
-                                        <circle cx="6" cy="17" r="2"/>
-                                        <circle cx="17" cy="17" r="2"/>
-                                    </svg>
-                                </div>
-                                <h3>MyMaps MyTrips</h3>
-                                <p>Trip Planner</p>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- ENTERTAINMENT Folder -->
-                    <div class="category-section">
-                        <h3 class="category-title">ENTERTAINMENT</h3>
-                        <div class="cards-grid">
-                            <div class="card" data-service="games" data-url="https://diegonmarcos.github.io/games" data-product-category="entertainment">
-                                <div class="card-icon">
-                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                        <rect x="2" y="6" width="20" height="12" rx="2"/>
-                                        <line x1="6" y1="12" x2="10" y2="12"/>
-                                        <line x1="8" y1="10" x2="8" y2="14"/>
-                                        <circle cx="17" cy="10" r="1"/>
-                                        <circle cx="15" cy="13" r="1"/>
-                                    </svg>
-                                </div>
-                                <h3>Games</h3>
-                                <p>Browser Games</p>
-                            </div>
-                            <div class="card" data-service="myvideos" data-url="https://diegonmarcos.github.io/myvideos" data-product-category="entertainment">
-                                <div class="card-icon">
-                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                        <polygon points="5 3 19 12 5 21 5 3"/>
-                                    </svg>
-                                </div>
-                                <h3>MyVideos</h3>
-                                <p>Video Streaming</p>
-                            </div>
-                            <div class="card" data-service="movies" data-url="https://diegonmarcos.github.io/movies" data-product-category="entertainment">
-                                <div class="card-icon">
-                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                        <rect x="2" y="2" width="20" height="20" rx="2.18" ry="2.18"/>
-                                        <line x1="7" y1="2" x2="7" y2="22"/>
-                                        <line x1="17" y1="2" x2="17" y2="22"/>
-                                        <line x1="2" y1="12" x2="22" y2="12"/>
-                                        <line x1="2" y1="7" x2="7" y2="7"/>
-                                        <line x1="2" y1="17" x2="7" y2="17"/>
-                                        <line x1="17" y1="17" x2="22" y2="17"/>
-                                        <line x1="17" y1="7" x2="22" y2="7"/>
-                                    </svg>
-                                </div>
-                                <h3>Movies</h3>
-                                <p>Movie Collection</p>
-                            </div>
-                            <div class="card" data-service="music" data-url="https://diegonmarcos.github.io/music" data-product-category="entertainment">
-                                <div class="card-icon">
-                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                        <path d="M9 18V5l12-2v13"/>
-                                        <circle cx="6" cy="18" r="3"/>
-                                        <circle cx="18" cy="16" r="3"/>
-                                    </svg>
-                                </div>
-                                <h3>Music</h3>
-                                <p>Music Streaming</p>
-                            </div>
-                            <div class="card" data-service="myAstro" data-url="https://diegonmarcos.github.io/myAstro" data-product-category="entertainment">
-                                <div class="card-icon">
-                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                        <circle cx="12" cy="12" r="4"/>
-                                        <path d="M12 2v2"/>
-                                        <path d="M12 20v2"/>
-                                        <path d="M4.93 4.93l1.41 1.41"/>
-                                        <path d="M17.66 17.66l1.41 1.41"/>
-                                        <path d="M2 12h2"/>
-                                        <path d="M20 12h2"/>
-                                        <path d="M6.34 17.66l-1.41 1.41"/>
-                                        <path d="M19.07 4.93l-1.41 1.41"/>
-                                    </svg>
-                                </div>
-                                <h3>myAstro</h3>
-                                <p>myAstronomy Tools</p>
-                            </div>
-                            <div class="card" data-service="carto" data-url="https://diegonmarcos.github.io/carto/" data-product-category="entertainment">
-                                <div class="card-icon">
-                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                        <rect x="2" y="4" width="20" height="16" rx="2"/>
-                                        <path d="M12 4v16"/>
-                                        <path d="M2 12h20"/>
-                                    </svg>
-                                </div>
-                                <h3>Carto</h3>
-                                <p>Card Games</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                <!-- Categories rendered by products-cards.ts from c3-card-overrides.json (MY TOOLS, ENTERTAINMENT) -->
+                <div class="categories-row" id="c3-solutions-misc"></div>
             </div>
 
             <!-- Flex Server VM Control -->
@@ -724,40 +457,8 @@
         <!-- Apps Page -->
         <div id="apps-page" class="view-content">
             <div class="page-container">
-                <div class="apps-cards-grid apps-cards-grid--centered">
-                    <a href="https://diegonmarcos.github.io/cloud" target="_blank" class="app-card">
-                        <div class="app-card-header">
-                            <div class="app-card-icon app-card-icon--blue">
-                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                    <path d="M18 10h-1.26A8 8 0 1 0 9 20h9a5 5 0 0 0 0-10z"/>
-                                </svg>
-                            </div>
-                            <h3 class="app-card-title">Cloud App</h3>
-                        </div>
-                        <div class="app-card-body">
-                            <div class="app-card-section">
-                                <h4 class="app-card-section-title">Tools</h4>
-                                <ul class="app-card-list">
-                                    <li><span class="app-card-dot app-card-dot--green"></span>VPN Connection</li>
-                                    <li><span class="app-card-dot app-card-dot--purple"></span>Vault Access</li>
-                                    <li><span class="app-card-dot app-card-dot--cyan"></span>System Health Check</li>
-                                </ul>
-                            </div>
-                            <div class="app-card-section">
-                                <h4 class="app-card-section-title">Features</h4>
-                                <ul class="app-card-list">
-                                    <li><span class="app-card-dot app-card-dot--blue"></span>Mesh Network</li>
-                                    <li><span class="app-card-dot app-card-dot--yellow"></span>Split Tunneling</li>
-                                    <li><span class="app-card-dot app-card-dot--cyan"></span>Config Files Local AutoSetup</li>
-                                </ul>
-                            </div>
-                        </div>
-                        <div class="app-card-footer">
-                            <span class="app-card-badge app-card-badge--blue">Desktop App</span>
-                            <span class="app-card-status">Download</span>
-                        </div>
-                    </a>
-                </div>
+                <!-- Rendered by products-cards.ts from c3-card-overrides.json (apps) -->
+                <div class="apps-cards-grid apps-cards-grid--centered" id="c3-apps-cards"></div>
             </div><!-- End page-container -->
         </div><!-- End Apps Page -->
 
@@ -784,191 +485,8 @@
                     }
                 </style>
 
-                <!-- Cloud Providers Section -->
-                <div class="profile-section">
-                    <h2 class="profile-title">
-                        <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
-                            <path d="M18 10h-1.26A8 8 0 1 0 9 20h9a5 5 0 0 0 0-10z"/>
-                        </svg>
-                        Cloud Providers
-                    </h2>
-                    <div class="apps-cards-grid">
-                        <!-- Oracle Cloud -->
-                        <a href="https://cloud.oracle.com" target="_blank" class="app-card">
-                            <div class="app-card-header">
-                                <div class="app-card-icon" style="background: linear-gradient(135deg, #c74634, #a03528);">
-                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                        <ellipse cx="12" cy="12" rx="10" ry="5"/>
-                                        <path d="M2 12v0c0 2.76 4.48 5 10 5s10-2.24 10-5"/>
-                                    </svg>
-                                </div>
-                                <h3 class="app-card-title">Oracle Cloud</h3>
-                            </div>
-                            <div class="app-card-footer">
-                                <span class="app-card-badge" style="background: rgba(199, 70, 52, 0.15); color: #c74634;">OCI</span>
-                                <span class="app-card-status" style="color: rgba(255,255,255,0.5);">Console</span>
-                            </div>
-                        </a>
-
-                        <!-- GCloud -->
-                        <a href="https://console.cloud.google.com" target="_blank" class="app-card">
-                            <div class="app-card-header">
-                                <div class="app-card-icon" style="background: linear-gradient(135deg, #60a5fa, #3b82f6);">
-                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                        <path d="M18 10h-1.26A8 8 0 1 0 9 20h9a5 5 0 0 0 0-10z"/>
-                                    </svg>
-                                </div>
-                                <h3 class="app-card-title">GCloud</h3>
-                            </div>
-                            <div class="app-card-footer">
-                                <span class="app-card-badge" style="background: rgba(96, 165, 250, 0.15); color: #93c5fd;">GCP</span>
-                                <span class="app-card-status" style="color: rgba(255,255,255,0.5);">Console</span>
-                            </div>
-                        </a>
-                    </div>
-                </div>
-
-                <!-- Security Section -->
-                <div class="profile-section">
-                    <h2 class="profile-title">
-                        <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
-                            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
-                        </svg>
-                        Security
-                    </h2>
-                    <div class="apps-cards-grid">
-                        <!-- Proxy (NPM) -->
-                        <a href="https://proxy.diegonmarcos.com" target="_blank" class="app-card">
-                            <div class="app-card-header">
-                                <div class="app-card-icon" style="background: linear-gradient(135deg, #10b981, #059669);">
-                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                        <path d="M12 2L2 7l10 5 10-5-10-5z"/>
-                                        <path d="M2 17l10 5 10-5M2 12l10 5 10-5"/>
-                                    </svg>
-                                </div>
-                                <h3 class="app-card-title">Proxy</h3>
-                            </div>
-                            <div class="app-card-footer">
-                                <span class="app-card-badge" style="background: rgba(16, 185, 129, 0.15); color: #10b981;">NPM</span>
-                                <span class="app-card-status" style="color: rgba(255,255,255,0.5);">gcp-f-micro_1</span>
-                            </div>
-                        </a>
-
-                        <!-- Auth (Authelia 2FA) -->
-                        <a href="https://auth.diegonmarcos.com" target="_blank" class="app-card">
-                            <div class="app-card-header">
-                                <div class="app-card-icon" style="background: linear-gradient(135deg, #ef4444, #dc2626);">
-                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                        <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
-                                    </svg>
-                                </div>
-                                <h3 class="app-card-title">Auth</h3>
-                            </div>
-                            <div class="app-card-footer">
-                                <span class="app-card-badge" style="background: rgba(239, 68, 68, 0.15); color: #ef4444;">Authelia 2FA</span>
-                                <span class="app-card-status" style="color: rgba(255,255,255,0.5);">gcp-proxy</span>
-                            </div>
-                        </a>
-
-                        <!-- ntfy Push -->
-                        <a href="https://rss.diegonmarcos.com" target="_blank" class="app-card">
-                            <div class="app-card-header">
-                                <div class="app-card-icon" style="background: linear-gradient(135deg, #f59e0b, #d97706);">
-                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                        <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/>
-                                        <path d="M13.73 21a2 2 0 0 1-3.46 0"/>
-                                    </svg>
-                                </div>
-                                <h3 class="app-card-title">ntfy Push</h3>
-                            </div>
-                            <div class="app-card-footer">
-                                <span class="app-card-badge" style="background: rgba(245, 158, 11, 0.15); color: #f59e0b;">Notifications</span>
-                                <span class="app-card-status" style="color: rgba(255,255,255,0.5);">gcp-proxy</span>
-                            </div>
-                        </a>
-
-                        <!-- Vault -->
-                        <a href="https://vault.diegonmarcos.com" target="_blank" class="app-card">
-                            <div class="app-card-header">
-                                <div class="app-card-icon" style="background: linear-gradient(135deg, #6366f1, #4f46e5);">
-                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                        <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
-                                        <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
-                                    </svg>
-                                </div>
-                                <h3 class="app-card-title">Vault</h3>
-                            </div>
-                            <div class="app-card-footer">
-                                <span class="app-card-badge" style="background: rgba(99, 102, 241, 0.15); color: #a5b4fc;">Passwords</span>
-                                <span class="app-card-status" style="color: rgba(255,255,255,0.5);">Vaultwarden</span>
-                            </div>
-                        </a>
-                    </div>
-                </div>
-
-                <!-- Others Section -->
-                <div class="profile-section">
-                    <h2 class="profile-title">
-                        <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
-                            <rect x="3" y="3" width="7" height="7"/>
-                            <rect x="14" y="3" width="7" height="7"/>
-                            <rect x="14" y="14" width="7" height="7"/>
-                            <rect x="3" y="14" width="7" height="7"/>
-                        </svg>
-                        Others
-                    </h2>
-                    <div class="apps-cards-grid">
-                        <!-- Matomo Analytics -->
-                        <a href="https://analytics.diegonmarcos.com" target="_blank" class="app-card">
-                            <div class="app-card-header">
-                                <div class="app-card-icon" style="background: linear-gradient(135deg, #8b5cf6, #6d28d9);">
-                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                        <path d="M18 20V10M12 20V4M6 20v-6"/>
-                                    </svg>
-                                </div>
-                                <h3 class="app-card-title">Matomo Analytics</h3>
-                            </div>
-                            <div class="app-card-footer">
-                                <span class="app-card-badge" style="background: rgba(139, 92, 246, 0.15); color: #a78bfa;">Analytics</span>
-                                <span class="app-card-status" style="color: rgba(255,255,255,0.5);">oci-f-micro_2</span>
-                            </div>
-                        </a>
-
-                        <!-- Workflows -->
-                        <a href="https://workflows.diegonmarcos.com" target="_blank" class="app-card">
-                            <div class="app-card-header">
-                                <div class="app-card-icon" style="background: linear-gradient(135deg, #f59e0b, #d97706);">
-                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                        <path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/>
-                                    </svg>
-                                </div>
-                                <h3 class="app-card-title">Workflows</h3>
-                            </div>
-                            <div class="app-card-footer">
-                                <span class="app-card-badge" style="background: rgba(245, 158, 11, 0.15); color: #fbbf24;">Automation</span>
-                                <span class="app-card-status" style="color: rgba(255,255,255,0.5);">DAG Scheduler</span>
-                            </div>
-                        </a>
-
-                        <!-- NocoDB -->
-                        <a href="https://db.diegonmarcos.com" target="_blank" class="app-card">
-                            <div class="app-card-header">
-                                <div class="app-card-icon" style="background: linear-gradient(135deg, #06b6d4, #0891b2);">
-                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                        <ellipse cx="12" cy="5" rx="9" ry="3"/>
-                                        <path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/>
-                                        <path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/>
-                                    </svg>
-                                </div>
-                                <h3 class="app-card-title">NocoDB</h3>
-                            </div>
-                            <div class="app-card-footer">
-                                <span class="app-card-badge" style="background: rgba(6, 182, 212, 0.15); color: #22d3ee;">Database</span>
-                                <span class="app-card-status" style="color: rgba(255,255,255,0.5);">Airtable Alt</span>
-                            </div>
-                        </a>
-                    </div>
-                </div>
+                <!-- Cloud Providers / Security / Others — rendered by products-cards.ts from c3-card-overrides.json (admin) -->
+                <div id="c3-admin-sections"></div>
 
             </div><!-- End page-container -->
         </div><!-- End Admin Page -->

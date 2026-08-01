@@ -1,0 +1,76 @@
+/* Cloud Control Center — reuses .resources-table / .card-box / .nav-* idiom from _cloud_control.scss */
+
+.c3-header-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    margin-bottom: 1rem;
+    padding: 0.75rem 1rem;
+    background: var(--bg-secondary);
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius);
+}
+
+.c3-mode-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.25rem 0.6rem;
+    border-radius: var(--border-radius);
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.03em;
+    border: 1px solid var(--border-color);
+    color: var(--text-secondary);
+}
+
+.c3-mode-badge.live {
+    color: var(--accent-green);
+    border-color: var(--accent-green);
+}
+
+.c3-mode-badge.mock {
+    color: var(--text-secondary);
+}
+
+.c3-header-actions {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.c3-banner {
+    margin-bottom: 1rem;
+    padding: 0.6rem 1rem;
+    border-radius: var(--border-radius);
+    background: rgba(239, 68, 68, 0.1);
+    border: 1px solid var(--accent-red);
+    color: var(--accent-red);
+    font-size: 0.85rem;
+    display: none;
+}
+
+.c3-banner.visible {
+    display: block;
+}
+
+.c3-empty-state {
+    padding: 1rem;
+    text-align: center;
+    color: var(--text-secondary);
+    font-size: 0.85rem;
+}
+
+.c3-tab-content {
+    display: none;
+}
+
+.c3-tab-content.active {
+    display: block;
+}
+
+.c3-action-btn[disabled] {
+    opacity: 0.4;
+    cursor: not-allowed;
+}

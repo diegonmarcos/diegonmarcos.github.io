@@ -1,0 +1,286 @@
+// GENERATED FROM c3-dns-services.json by front-data-json-js-wrapper.sh — DO NOT EDIT BY HAND.
+// Re-generate with: bash a-Portals/linktree/src/data/build.sh
+(function () {
+  var g = (typeof globalThis !== "undefined") ? globalThis : (typeof window !== "undefined" ? window : this);
+  g.PORTAL_DATA = g.PORTAL_DATA || {};
+  g.PORTAL_DATA["c3-dns-services"] = {
+  "_generated": "2026-08-01T09:00:00Z",
+  "suffix": "app",
+  "services": {
+    "c3-infra-api": {
+      "ip": "10.0.0.6",
+      "desc": "Fastify infra control-plane API"
+    },
+    "c3-public-api": {
+      "ip": "10.0.0.6",
+      "desc": "Public read-only API"
+    },
+    "c3-services-api": {
+      "ip": "10.0.0.6",
+      "desc": "Services API"
+    },
+    "c3-infra-mcp": {
+      "ip": "10.0.0.6",
+      "desc": "Infra MCP server"
+    },
+    "google-personal-mcp": {
+      "ip": "10.0.0.6",
+      "desc": "Google personal MCP"
+    },
+    "authelia": {
+      "ip": "10.0.0.6",
+      "desc": "Two-factor / SSO gate"
+    },
+    "caddy": {
+      "ip": "10.0.0.6",
+      "desc": "Reverse proxy"
+    },
+    "caddy-public": {
+      "ip": "10.0.0.6",
+      "desc": "Public edge proxy"
+    },
+    "crowdsec": {
+      "ip": "10.0.0.6",
+      "desc": "Intrusion detection"
+    },
+    "introspect-proxy": {
+      "ip": "10.0.0.6",
+      "desc": "OAuth introspection proxy"
+    },
+    "dagu": {
+      "ip": "10.0.0.4",
+      "desc": "Workflow/DAG engine"
+    },
+    "dbgate": {
+      "ip": "10.0.0.6",
+      "desc": "DB admin UI"
+    },
+    "matomo": {
+      "ip": "10.0.0.4",
+      "desc": "Web analytics"
+    },
+    "umami": {
+      "ip": "10.0.0.4",
+      "desc": "Privacy-first analytics"
+    },
+    "openobserve": {
+      "ip": "10.0.0.6",
+      "desc": "Observability platform (logs/traces/metrics)"
+    },
+    "ntfy": {
+      "ip": "10.0.0.6",
+      "desc": "Push notifications"
+    },
+    "cloud-spec": {
+      "ip": "10.0.0.6",
+      "desc": "OpenAPI spec hub"
+    },
+    "postlite": {
+      "ip": "10.0.0.6",
+      "desc": "SQLite-backed Postgres-compatible store"
+    },
+    "redis": {
+      "ip": "10.0.0.6",
+      "desc": "Cache / queue"
+    },
+    "hickory-dns": {
+      "ip": "10.0.0.3",
+      "desc": "Authoritative mesh DNS"
+    },
+    "unbound-dns64": {
+      "ip": "10.0.0.3",
+      "desc": "Recursive resolver"
+    },
+    "wireguard-mesh": {
+      "ip": "10.0.0.6",
+      "desc": "WireGuard mesh hub"
+    },
+    "wireguard-mesh-ws-tunnel": {
+      "ip": "10.0.0.9",
+      "desc": "WebSocket-tunneled WG"
+    },
+    "wireguard-public": {
+      "ip": "10.0.0.6",
+      "desc": "Public WG endpoint"
+    },
+    "gitea": {
+      "ip": "10.0.0.6",
+      "desc": "Self-hosted git"
+    },
+    "backup-borg": {
+      "ip": "10.0.0.6",
+      "desc": "Borg backups"
+    },
+    "backup-bup": {
+      "ip": "10.0.0.6",
+      "desc": "Bup backups"
+    },
+    "languagetool": {
+      "ip": "10.0.0.6",
+      "desc": "Grammar checker API"
+    },
+    "cloud-builder-x": {
+      "ip": "10.0.0.6",
+      "desc": "Container build service"
+    },
+    "gha-runner": {
+      "ip": "10.0.0.6",
+      "desc": "Self-hosted GitHub Actions runner"
+    },
+    "gcloud": {
+      "ip": "10.0.0.9",
+      "desc": "GCP project glue"
+    },
+    "my-ai-api": {
+      "ip": "10.0.0.6",
+      "desc": "Personal AI gateway (loopback-only)"
+    },
+    "hermes-agent": {
+      "ip": "10.0.0.6",
+      "desc": "Autonomous agent runner"
+    },
+    "kg-store": {
+      "ip": "10.0.0.6",
+      "desc": "Knowledge-graph store"
+    },
+    "session-memory": {
+      "ip": "10.0.0.6",
+      "desc": "Agent session memory"
+    },
+    "db-agent": {
+      "ip": "10.0.0.6",
+      "desc": "DB query agent"
+    },
+    "claude-superset-api": {
+      "ip": "10.0.0.6",
+      "desc": "Claude superset gateway"
+    },
+    "cloud-cgc-mcp": {
+      "ip": "10.0.0.6",
+      "desc": "Cloud-config-generator MCP"
+    },
+    "chat-mattermost": {
+      "ip": "10.0.0.6",
+      "desc": "Team chat"
+    },
+    "matrix-element": {
+      "ip": "10.0.0.6",
+      "desc": "Matrix web client"
+    },
+    "matrix-mautrix-whatsapp": {
+      "ip": "10.0.0.6",
+      "desc": "WhatsApp bridge"
+    },
+    "snappymail": {
+      "ip": "10.0.0.3",
+      "desc": "Webmail client"
+    },
+    "maddy": {
+      "ip": "10.0.0.3",
+      "desc": "SMTP/IMAP mail server"
+    },
+    "stalwart": {
+      "ip": "10.0.0.3",
+      "desc": "JMAP mail server"
+    },
+    "mail-puller": {
+      "ip": "10.0.0.3",
+      "desc": "Mail fetch bridge"
+    },
+    "cypht": {
+      "ip": "10.0.0.3",
+      "desc": "Webmail aggregator"
+    },
+    "vaultwarden": {
+      "ip": "10.0.0.6",
+      "desc": "Password manager"
+    },
+    "photoprism": {
+      "ip": "10.0.0.6",
+      "desc": "Photo library"
+    },
+    "playlist-syncer": {
+      "ip": "10.0.0.6",
+      "desc": "Playlist sync tool"
+    },
+    "news-gdelt": {
+      "ip": "10.0.0.6",
+      "desc": "GDELT news ingest"
+    },
+    "calendar-radicale": {
+      "ip": "10.0.0.6",
+      "desc": "CalDAV calendar"
+    },
+    "contacts-radicale": {
+      "ip": "10.0.0.6",
+      "desc": "CardDAV contacts"
+    },
+    "code-server": {
+      "ip": "10.0.0.6",
+      "desc": "Browser VS Code"
+    },
+    "etherpad": {
+      "ip": "10.0.0.6",
+      "desc": "Collaborative notepad"
+    },
+    "filebrowser": {
+      "ip": "10.0.0.6",
+      "desc": "Web file manager"
+    },
+    "grist": {
+      "ip": "10.0.0.6",
+      "desc": "Spreadsheet/DB hybrid"
+    },
+    "hedgedoc": {
+      "ip": "10.0.0.6",
+      "desc": "Markdown notes"
+    },
+    "paca": {
+      "ip": "10.0.0.6",
+      "desc": "Personal assistant / calendar app"
+    },
+    "revealmd": {
+      "ip": "10.0.0.6",
+      "desc": "Markdown slide decks"
+    },
+    "send": {
+      "ip": "10.0.0.6",
+      "desc": "Encrypted file transfer"
+    },
+    "scrappers-api": {
+      "ip": "10.0.0.6",
+      "desc": "Web scraping API"
+    },
+    "fin-api": {
+      "ip": "10.0.0.6",
+      "desc": "Personal finance API"
+    },
+    "crawlee-cloud": {
+      "ip": "10.0.0.6",
+      "desc": "Crawlee-based crawler service"
+    },
+    "front-end": {
+      "ip": "10.0.0.6",
+      "desc": "Portfolio / portal front-end"
+    },
+    "matrix-continuwuity": {
+      "ip": "10.0.0.6",
+      "desc": "Matrix homeserver (Continuwuity)"
+    },
+    "vaultwarden-mic": {
+      "ip": "10.0.0.6",
+      "desc": "Secondary vault instance"
+    },
+    "alerts-api": {
+      "ip": "10.0.0.6",
+      "desc": "Alerting API"
+    }
+  },
+  "vms": {
+    "3": "oci-mail",
+    "4": "oci-analytics",
+    "6": "oci-apps",
+    "9": "gcp-f-micro_1"
+  }
+};
+})();

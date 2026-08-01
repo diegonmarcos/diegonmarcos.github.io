@@ -1,0 +1,27 @@
+// GENERATED FROM c3-home-manager.json by front-data-json-js-wrapper.sh — DO NOT EDIT BY HAND.
+// Re-generate with: bash a-Portals/linktree/src/data/build.sh
+(function () {
+  var g = (typeof globalThis !== "undefined") ? globalThis : (typeof window !== "undefined" ? window : this);
+  g.PORTAL_DATA = g.PORTAL_DATA || {};
+  g.PORTAL_DATA["c3-home-manager"] = {
+  "_generated": "2026-08-01T09:00:00Z",
+  "vms": {
+    "oci-mail": {
+      "ssh_alias": "oci-mail",
+      "wg_ip": "10.0.0.3"
+    },
+    "oci-analytics": {
+      "ssh_alias": "oci-analytics",
+      "wg_ip": "10.0.0.4"
+    },
+    "oci-apps": {
+      "ssh_alias": "oci-apps",
+      "wg_ip": "10.0.0.6"
+    },
+    "gcp-f-micro_1": {
+      "ssh_alias": "gcp-f-micro_1",
+      "wg_ip": "10.0.0.9"
+    }
+  }
+};
+})();

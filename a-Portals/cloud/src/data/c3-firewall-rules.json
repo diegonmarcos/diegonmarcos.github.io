@@ -1,0 +1,85 @@
+{
+  "_generated": "2026-08-01T09:00:00Z",
+  "vms": {
+    "oci-mail": {
+      "ingress": [
+        {
+          "port": 443,
+          "proto": "tcp",
+          "source": "0.0.0.0/0",
+          "origin": "terraform"
+        },
+        {
+          "port": 51820,
+          "proto": "udp",
+          "source": "0.0.0.0/0",
+          "origin": "terraform"
+        }
+      ],
+      "source": [
+        "terraform",
+        "os"
+      ]
+    },
+    "oci-analytics": {
+      "ingress": [
+        {
+          "port": 443,
+          "proto": "tcp",
+          "source": "0.0.0.0/0",
+          "origin": "terraform"
+        },
+        {
+          "port": 51820,
+          "proto": "udp",
+          "source": "0.0.0.0/0",
+          "origin": "terraform"
+        }
+      ],
+      "source": [
+        "terraform",
+        "os"
+      ]
+    },
+    "oci-apps": {
+      "ingress": [
+        {
+          "port": 443,
+          "proto": "tcp",
+          "source": "0.0.0.0/0",
+          "origin": "terraform"
+        },
+        {
+          "port": 51820,
+          "proto": "udp",
+          "source": "0.0.0.0/0",
+          "origin": "terraform"
+        }
+      ],
+      "source": [
+        "terraform",
+        "os"
+      ]
+    },
+    "gcp-f-micro_1": {
+      "ingress": [
+        {
+          "port": 443,
+          "proto": "tcp",
+          "source": "0.0.0.0/0",
+          "origin": "terraform"
+        },
+        {
+          "port": 51820,
+          "proto": "udp",
+          "source": "0.0.0.0/0",
+          "origin": "terraform"
+        }
+      ],
+      "source": [
+        "terraform",
+        "os"
+      ]
+    }
+  }
+}

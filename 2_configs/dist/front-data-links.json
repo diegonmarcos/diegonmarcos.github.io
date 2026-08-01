@@ -1212,7 +1212,7 @@
       "section": "projects",
       "slide": "projects",
       "column": "Security",
-      "label": "Caddy - Private",
+      "label": "Caddy - Hub Proxy",
       "url": "https://proxy.diegonmarcos.com",
       "icon": "world.svg"
     },
@@ -1220,7 +1220,7 @@
       "section": "projects",
       "slide": "projects",
       "column": "Security",
-      "label": "Caddy - Public SNI",
+      "label": "Caddy - Public Edge SNI",
       "url": "#",
       "icon": "world.svg"
     },
@@ -1228,8 +1228,8 @@
       "section": "projects",
       "slide": "projects",
       "column": "Security",
-      "label": "Introspect",
-      "url": "https://introspect.diegonmarcos.com",
+      "label": "Introspect Proxy",
+      "url": "#",
       "icon": "lock.svg"
     },
     {
@@ -1237,7 +1237,7 @@
       "slide": "projects",
       "column": "Security",
       "label": "Hickory DNS",
-      "url": "https://dns.diegonmarcos.com",
+      "url": "#",
       "icon": "world.svg"
     },
     {
@@ -1252,17 +1252,9 @@
       "section": "projects",
       "slide": "projects",
       "column": "Security",
-      "label": "WG Public",
-      "url": "#",
+      "label": "WG Mesh WS Tunnel",
+      "url": "https://vpn.diegonmarcos.com",
       "icon": "lock.svg"
-    },
-    {
-      "section": "projects",
-      "slide": "projects",
-      "column": "Security",
-      "label": "SIEM Reports",
-      "url": "https://siem.diegonmarcos.com",
-      "icon": "database.svg"
     },
     {
       "section": "projects",
@@ -1292,6 +1284,14 @@
       "section": "projects",
       "slide": "projects",
       "column": "Observ",
+      "label": "OpenObserve",
+      "url": "https://analytics.diegonmarcos.com/openobserve",
+      "icon": "database.svg"
+    },
+    {
+      "section": "projects",
+      "slide": "projects",
+      "column": "Observ",
       "label": "ntfy",
       "url": "https://rss.diegonmarcos.com",
       "icon": "bolt.svg"
@@ -1300,17 +1300,25 @@
       "section": "projects",
       "slide": "projects",
       "column": "Observ",
-      "label": "Cloud Spec",
-      "url": "#",
+      "label": "DBGate",
+      "url": "https://db.diegonmarcos.com",
+      "icon": "database.svg"
+    },
+    {
+      "section": "projects",
+      "slide": "projects",
+      "column": "Observ",
+      "label": "Dagu",
+      "url": "https://workflows.diegonmarcos.com",
       "icon": "settings.svg"
     },
     {
       "section": "projects",
       "slide": "projects",
       "column": "Observ",
-      "label": "OpenObserve",
-      "url": "https://analytics.diegonmarcos.com/openobserve",
-      "icon": "database.svg"
+      "label": "Cloud Spec",
+      "url": "#",
+      "icon": "settings.svg"
     },
     {
       "section": "projects",
@@ -1324,22 +1332,6 @@
       "section": "projects",
       "slide": "projects",
       "column": "Data",
-      "label": "Docker Volumes (25)",
-      "url": "#",
-      "icon": "file-stack.svg"
-    },
-    {
-      "section": "projects",
-      "slide": "projects",
-      "column": "Data",
-      "label": "Borg Backup",
-      "url": "#",
-      "icon": "file-stack.svg"
-    },
-    {
-      "section": "projects",
-      "slide": "projects",
-      "column": "Data",
       "label": "Redis",
       "url": "#",
       "icon": "database.svg"
@@ -1348,9 +1340,17 @@
       "section": "projects",
       "slide": "projects",
       "column": "Others",
-      "label": "Crawler API",
+      "label": "Scrappers API",
       "url": "https://api.diegonmarcos.com",
       "icon": "code.svg"
+    },
+    {
+      "section": "projects",
+      "slide": "projects",
+      "column": "Others",
+      "label": "News GDELT",
+      "url": "#",
+      "icon": "world.svg"
     },
     {
       "section": "projects",
@@ -1364,9 +1364,9 @@
       "section": "projects",
       "slide": "projects",
       "column": "Ops",
-      "label": "VM Pilot / Watchdog",
+      "label": "GHA Runner",
       "url": "#",
-      "icon": "settings.svg"
+      "icon": "git-branch.svg"
     },
     {
       "section": "projects",
@@ -1396,7 +1396,7 @@
       "section": "projects",
       "slide": "projects",
       "column": "Comms",
-      "label": "Mail - Maddy",
+      "label": "Maddy - SMTP",
       "url": "https://mail.diegonmarcos.com",
       "icon": "mail.svg"
     },
@@ -1404,7 +1404,7 @@
       "section": "projects",
       "slide": "projects",
       "column": "Comms",
-      "label": "Mail - Stalwart",
+      "label": "Stalwart - JMAP",
       "url": "https://jmap.diegonmarcos.com",
       "icon": "mail.svg"
     },
@@ -1412,8 +1412,16 @@
       "section": "projects",
       "slide": "projects",
       "column": "Comms",
-      "label": "Webmail",
+      "label": "SnappyMail",
       "url": "https://webmail.diegonmarcos.com",
+      "icon": "mail.svg"
+    },
+    {
+      "section": "projects",
+      "slide": "projects",
+      "column": "Comms",
+      "label": "Mail Puller",
+      "url": "https://mail-puller.diegonmarcos.com",
       "icon": "mail.svg"
     },
     {
@@ -1516,9 +1524,9 @@
       "section": "projects",
       "slide": "projects",
       "column": "AI",
-      "label": "KG Store",
+      "label": "Claude Superset API",
       "url": "#",
-      "icon": "database.svg"
+      "icon": "robot.svg"
     },
     {
       "section": "projects",
@@ -1572,7 +1580,23 @@
       "section": "projects",
       "slide": "projects",
       "column": "API & MCP",
+      "label": "c3-public-api",
+      "url": "https://api.diegonmarcos.com/pub",
+      "icon": "code.svg"
+    },
+    {
+      "section": "projects",
+      "slide": "projects",
+      "column": "API & MCP",
       "label": "google-personal-mcp",
+      "url": "https://mcp.diegonmarcos.com",
+      "icon": "robot.svg"
+    },
+    {
+      "section": "projects",
+      "slide": "projects",
+      "column": "API & MCP",
+      "label": "google-workspace-mcp",
       "url": "https://mcp.diegonmarcos.com",
       "icon": "robot.svg"
     },
@@ -1583,6 +1607,14 @@
       "label": "mail-mcp",
       "url": "https://mcp.diegonmarcos.com",
       "icon": "robot.svg"
+    },
+    {
+      "section": "projects",
+      "slide": "projects",
+      "column": "API & MCP",
+      "label": "LanguageTool",
+      "url": "https://languagetool.diegonmarcos.com",
+      "icon": "code.svg"
     },
     {
       "section": "projects",
@@ -1636,7 +1668,7 @@
       "section": "projects",
       "slide": "projects",
       "column": "Fleet",
-      "label": "oci-A1-f_0",
+      "label": "oci-A1-f_0 - App Tier",
       "url": "#",
       "icon": "device-desktop.svg"
     },
@@ -1644,7 +1676,7 @@
       "section": "projects",
       "slide": "projects",
       "column": "Fleet",
-      "label": "oci-E2-f_0",
+      "label": "oci-E2-f_0 - Mail",
       "url": "#",
       "icon": "device-desktop.svg"
     },
@@ -1652,7 +1684,7 @@
       "section": "projects",
       "slide": "projects",
       "column": "Fleet",
-      "label": "oci-E2-f_1",
+      "label": "oci-E2-f_1 - Edge/Analytics",
       "url": "#",
       "icon": "device-desktop.svg"
     },
@@ -1660,7 +1692,7 @@
       "section": "projects",
       "slide": "projects",
       "column": "Fleet",
-      "label": "gcp-E2-f_0",
+      "label": "gcp-E2-f_0 - Proxy Hub",
       "url": "#",
       "icon": "device-desktop.svg"
     },
@@ -1668,7 +1700,7 @@
       "section": "projects",
       "slide": "projects",
       "column": "Fleet",
-      "label": "vast-RTX-p_0",
+      "label": "vast-RTX-p_0 - GPU (on-demand)",
       "url": "#",
       "icon": "device-desktop.svg"
     },

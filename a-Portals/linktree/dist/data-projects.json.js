@@ -1711,84 +1711,109 @@
       },
       "columns": [
         {
-          "header": "MACRO",
+          "row": 0,
+          "group": 0,
+          "header": "Research",
+          "links": [
+            {
+              "label": "Asset Macro Research Intel",
+              "url": "#",
+              "icon": "database.svg"
+            },
+            {
+              "label": "VC Research Intel",
+              "url": "#",
+              "icon": "database.svg"
+            },
+            {
+              "label": "Pricing & Trends",
+              "url": "#",
+              "icon": "database.svg"
+            }
+          ]
+        },
+        {
+          "row": 0,
+          "group": 1,
+          "header": "Asset",
+          "links": [
+            {
+              "label": "Portfolio Allocator",
+              "url": "#",
+              "icon": "ledger.svg"
+            }
+          ]
+        },
+        {
           "row": 0,
           "group": 2,
+          "header": "Quant",
           "links": [
             {
-              "label": "Central Bank",
-              "url": "https://github.com/diegonmarcos/diegonmarcos.github.io/tree/main/c-LabTools/central_bank",
-              "icon": "database.svg",
-              "item": 0
-            }
-          ]
-        },
-        {
-          "header": "QUANT",
-          "row": 0,
-          "group": 3,
-          "links": [
-            {
-              "label": "Terminal Fin",
-              "url": "https://github.com/diegonmarcos/diegonmarcos.github.io/tree/main/c-LabTools/fin-terminal",
-              "icon": "rocket.svg",
-              "item": 0
-            }
-          ]
-        },
-        {
-          "header": "STRUCTURAL",
-          "row": 1,
-          "group": 0,
-          "links": [
-            {
-              "label": "Civil Eng",
-              "url": "https://github.com/diegonmarcos/cveng_AFrame",
-              "icon": "settings.svg",
-              "item": 0
-            },
-            {
-              "label": "OpenRevit",
-              "url": "https://diegonmarcos.github.io/openrevit",
-              "icon": "settings.svg",
-              "item": 1
-            },
-            {
-              "label": "Sailytics",
-              "url": "https://diegonmarcos.github.io/sailytics",
-              "icon": "world.svg",
-              "item": 2
-            },
-            {
-              "label": "Satellite Simulator",
+              "label": "QuantFund Signaling",
               "url": "#",
-              "icon": "rocket.svg",
-              "item": 3
+              "icon": "rocket.svg"
             }
           ]
         },
         {
-          "header": "MECHATRONICS",
           "row": 1,
-          "group": 1,
+          "group": 3,
+          "header": "Energy",
           "links": [
             {
-              "label": "System",
-              "url": "https://github.com/diegonmarcos/back-System",
-              "icon": "settings.svg",
-              "item": 0
+              "label": "Fusion - Magnetic Plasma",
+              "url": "#",
+              "icon": "bolt.svg"
             },
             {
-              "label": "Graphics",
-              "url": "https://github.com/diegonmarcos/back-Graphic",
-              "icon": "device-desktop.svg",
-              "item": 1
+              "label": "Fission - Space Collision",
+              "url": "#",
+              "icon": "bolt.svg"
+            }
+          ]
+        },
+        {
+          "row": 1,
+          "group": 4,
+          "header": "Mechatronic",
+          "links": [
+            {
+              "label": "Chips Lithography Design",
+              "url": "#",
+              "icon": "settings.svg"
             },
             {
-              "label": "My Libs",
-              "url": "https://github.com/diegonmarcos/ops-Mylibs",
-              "icon": "git-branch.svg",
-              "item": 2
+              "label": "Nanoarchitected Lattices",
+              "url": "#",
+              "icon": "settings.svg"
+            },
+            {
+              "label": "Biomolecular Carbon Fabrication",
+              "url": "#",
+              "icon": "settings.svg"
+            },
+            {
+              "label": "Multi Robots Fabric Designer",
+              "url": "#",
+              "icon": "device-gamepad.svg"
+            }
+          ]
+        },
+        {
+          "row": 1,
+          "group": 5,
+          "header": "Transp",
+          "links": [
+            {
+              "label": "Turbojet Brayton Cycles Engines",
+              "url": "#",
+              "icon": "rocket.svg"
+            },
+            {
+              "label": "Orbital Satellites",
+              "url": "#",
+              "icon": "rocket.svg"
             }
           ]
         }
@@ -1836,7 +1861,15 @@
             "icon": "brand-github.svg"
           }
         ]
-      }
+      },
+      "row_headers": [
+        {
+          "title": "Research & Markets"
+        },
+        {
+          "title": "Deep Tech"
+        }
+      ]
     }
   ]
 }

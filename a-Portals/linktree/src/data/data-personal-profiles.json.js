@@ -254,7 +254,7 @@
       },
       "columns": [
         {
-          "header": "Photos",
+          "header": "PHOTOS",
           "links": [
             {
               "label": "Instagram",
@@ -290,7 +290,7 @@
           "group": 0
         },
         {
-          "header": "Videos",
+          "header": "VIDEOS",
           "links": [
             {
               "label": "YouTube",
@@ -320,7 +320,7 @@
           "group": 1
         },
         {
-          "header": "Music",
+          "header": "MUSIC",
           "links": [
             {
               "label": "TIDAL",
@@ -363,7 +363,7 @@
       },
       "columns": [
         {
-          "header": "Health",
+          "header": "HEALTH",
           "links": [
             {
               "label": "MyHealth",
@@ -381,7 +381,7 @@
           "group": 0
         },
         {
-          "header": "Endurance",
+          "header": "ENDURANCE",
           "links": [
             {
               "label": "Tracker",
@@ -411,7 +411,7 @@
           "group": 1
         },
         {
-          "header": "Achieves",
+          "header": "ACHIEVES",
           "links": [
             {
               "label": "NomadMania",

@@ -136,7 +136,7 @@
           ]
         },
         {
-          "header": "CG & Games",
+          "header": "CG & GAMES",
           "row": 0,
           "group": 3,
           "links": [
@@ -311,7 +311,7 @@
       "dashboard_modifier": "tools-dashboard--5",
       "columns": [
         {
-          "header": "Boot Manager",
+          "header": "BOOT MANAGER",
           "group": 0,
           "links": [
             {
@@ -347,7 +347,7 @@
           ]
         },
         {
-          "header": "OS Flakes",
+          "header": "OS FLAKES",
           "group": 1,
           "links": [
             {
@@ -371,7 +371,7 @@
           ]
         },
         {
-          "header": "HM Flakes",
+          "header": "HM FLAKES",
           "group": 2,
           "links": [
             {
@@ -395,7 +395,7 @@
           ]
         },
         {
-          "header": "Unix Bin",
+          "header": "UNIX BIN",
           "group": 3,
           "links": [
             {
@@ -425,7 +425,7 @@
           ]
         },
         {
-          "header": "Android Apk",
+          "header": "ANDROID APK",
           "group": 4,
           "links": [
             {
@@ -559,7 +559,7 @@
           "row": 0
         },
         {
-          "header": "Prod",
+          "header": "PROD",
           "header_url": "https://diegonmarcos.github.io/suite",
           "links": [
             {
@@ -609,7 +609,7 @@
           "row": 0
         },
         {
-          "header": "Comms",
+          "header": "COMMS",
           "links": [
             {
               "label": "Mail",
@@ -680,7 +680,7 @@
           "row": 1,
           "group": 4,
           "id": "nav",
-          "header": "Nav",
+          "header": "NAV",
           "header_url": "https://diegonmarcos.github.io/mymaps",
           "links": [
             {
@@ -713,7 +713,7 @@
           "row": 1,
           "group": 5,
           "id": "memory",
-          "header": "Social & Trackers",
+          "header": "SOCIAL & TRACKERS",
           "links": [
             {
               "label": "MyPhotos",
@@ -751,7 +751,7 @@
           "row": 1,
           "group": 6,
           "id": "health",
-          "header": "Health",
+          "header": "HEALTH",
           "links": [
             {
               "label": "Tracker",
@@ -777,7 +777,7 @@
           "row": 1,
           "group": 7,
           "id": "tools",
-          "header": "Buro",
+          "header": "BURO",
           "links": [
             {
               "label": "myID",
@@ -836,7 +836,7 @@
       },
       "columns": [
         {
-          "header": "Fin Terminal",
+          "header": "FIN TERMINAL",
           "links": [
             {
               "label": "CentralBank",
@@ -873,7 +873,7 @@
           "row": 0
         },
         {
-          "header": "Structural Designer",
+          "header": "STRUCTURAL DESIGNER",
           "links": [
             {
               "label": "OpenCAD",
@@ -898,7 +898,7 @@
           "row": 0
         },
         {
-          "header": "Simulators",
+          "header": "SIMULATORS",
           "links": [
             {
               "label": "Sailytics",
@@ -929,7 +929,7 @@
           "row": 0
         },
         {
-          "header": "Music Production",
+          "header": "MUSIC PRODUCTION",
           "links": [
             {
               "label": "Music - DAW",
@@ -948,7 +948,7 @@
           "row": 1
         },
         {
-          "header": "Video Production",
+          "header": "VIDEO PRODUCTION",
           "links": [
             {
               "label": "Higgsfield",
@@ -961,7 +961,7 @@
           "row": 1
         },
         {
-          "header": "Game Production",
+          "header": "GAME PRODUCTION",
           "links": [
             {
               "label": "Unity",
@@ -1029,7 +1029,7 @@
         {
           "row": 0,
           "group": 0,
-          "header": "Security",
+          "header": "SECURITY",
           "header_url": "https://diegonmarcos.github.io/cloud",
           "links": [
             {
@@ -1082,7 +1082,7 @@
         {
           "row": 0,
           "group": 1,
-          "header": "Observ",
+          "header": "OBSERV",
           "links": [
             {
               "label": "Matomo",
@@ -1124,7 +1124,7 @@
         {
           "row": 0,
           "group": 2,
-          "header": "Data",
+          "header": "DATA",
           "links": [
             {
               "label": "Gitea",
@@ -1141,7 +1141,7 @@
         {
           "row": 0,
           "group": 4,
-          "header": "Others",
+          "header": "OTHERS",
           "links": [
             {
               "label": "Scrappers API",
@@ -1158,7 +1158,7 @@
         {
           "row": 0,
           "group": 3,
-          "header": "Ops",
+          "header": "OPS",
           "links": [
             {
               "label": "Cloud Builder X",
@@ -1175,7 +1175,7 @@
         {
           "row": 1,
           "group": 5,
-          "header": "Comms",
+          "header": "COMMS",
           "links": [
             {
               "label": "Matrix",
@@ -1217,7 +1217,7 @@
         {
           "row": 1,
           "group": 6,
-          "header": "Prod",
+          "header": "PROD",
           "links": [
             {
               "label": "Calendar",
@@ -1264,7 +1264,7 @@
         {
           "row": 1,
           "group": 7,
-          "header": "Media & Vault",
+          "header": "MEDIA & VAULT",
           "links": [
             {
               "label": "PhotoPrism",
@@ -1403,7 +1403,7 @@
         {
           "row": 2,
           "group": 11,
-          "header": "Fleet",
+          "header": "FLEET",
           "links": [
             {
               "label": "oci-A1-f_0 - App Tier",
@@ -1470,13 +1470,13 @@
       "slide": 4,
       "row_headers": [
         {
-          "title": "Infra Containers"
+          "title": "INFRA CONTAINERS"
         },
         {
-          "title": "User Containers"
+          "title": "USER CONTAINERS"
         },
         {
-          "title": "Stack"
+          "title": "STACK"
         }
       ]
     },
@@ -1493,13 +1493,13 @@
           "title": "CG"
         },
         {
-          "title": "Games"
+          "title": "GAMES"
         }
       ],
       "columns": [
         {
           "row": 0,
-          "header": "Audio",
+          "header": "AUDIO",
           "links": [
             {
               "label": "Music",
@@ -1512,7 +1512,7 @@
         },
         {
           "row": 0,
-          "header": "Videos",
+          "header": "VIDEOS",
           "links": [
             {
               "label": "Movies",
@@ -1525,7 +1525,7 @@
         },
         {
           "row": 0,
-          "header": "Assets",
+          "header": "ASSETS",
           "links": [
             {
               "label": "Assets",
@@ -1550,7 +1550,7 @@
         },
         {
           "row": 0,
-          "header": "Scenes",
+          "header": "SCENES",
           "links": [
             {
               "label": "Galaxy - Gaia",
@@ -1569,7 +1569,7 @@
         },
         {
           "row": 1,
-          "header": "Games 2D",
+          "header": "GAMES 2D",
           "links": [
             {
               "label": "Games",
@@ -1600,7 +1600,7 @@
         },
         {
           "row": 1,
-          "header": "Games 3D",
+          "header": "GAMES 3D",
           "links": [
             {
               "label": "Galaxy - Earth",
@@ -1638,16 +1638,16 @@
       },
       "row_headers": [
         {
-          "title": "Brucheion"
+          "title": "BRUCHEION"
         },
         {
-          "title": "Serapeum"
+          "title": "SERAPEUM"
         }
       ],
       "columns": [
         {
           "row": 0,
-          "header": "Basileia",
+          "header": "BASILEIA",
           "links": [
             {
               "label": "Basileia",
@@ -1660,7 +1660,7 @@
         },
         {
           "row": 0,
-          "header": "Mousseion",
+          "header": "MOUSSEION",
           "links": [
             {
               "label": "Mousseion",
@@ -1673,7 +1673,7 @@
         },
         {
           "row": 0,
-          "header": "Paneion",
+          "header": "PANEION",
           "links": [
             {
               "label": "Paneion",
@@ -1686,7 +1686,7 @@
         },
         {
           "row": 1,
-          "header": "Akropolis",
+          "header": "AKROPOLIS",
           "links": [
             {
               "label": "Akropolis",
@@ -1699,7 +1699,7 @@
         },
         {
           "row": 1,
-          "header": "Bibliotheke",
+          "header": "BIBLIOTHEKE",
           "links": [
             {
               "label": "Bibliotheke",
@@ -1712,7 +1712,7 @@
         },
         {
           "row": 1,
-          "header": "Adyton",
+          "header": "ADYTON",
           "links": [
             {
               "label": "Adyton",
@@ -1739,7 +1739,7 @@
         {
           "row": 0,
           "group": 0,
-          "header": "Research",
+          "header": "RESEARCH",
           "links": [
             {
               "label": "Asset Macro Research Intel",
@@ -1761,7 +1761,7 @@
         {
           "row": 0,
           "group": 1,
-          "header": "Asset",
+          "header": "ASSET",
           "links": [
             {
               "label": "Portfolio Allocator",
@@ -1773,7 +1773,7 @@
         {
           "row": 0,
           "group": 2,
-          "header": "Quant",
+          "header": "QUANT",
           "links": [
             {
               "label": "QuantFund Signaling",
@@ -1785,7 +1785,7 @@
         {
           "row": 1,
           "group": 3,
-          "header": "Energy",
+          "header": "ENERGY",
           "links": [
             {
               "label": "Fusion - Magnetic Plasma",
@@ -1802,7 +1802,7 @@
         {
           "row": 1,
           "group": 4,
-          "header": "Mechatronic",
+          "header": "MECHATRONIC",
           "links": [
             {
               "label": "Chips Lithography Design",
@@ -1829,7 +1829,7 @@
         {
           "row": 1,
           "group": 5,
-          "header": "Transp",
+          "header": "TRANSP",
           "links": [
             {
               "label": "Turbojet Brayton Cycles Engines",
@@ -1890,10 +1890,10 @@
       },
       "row_headers": [
         {
-          "title": "Research & Markets"
+          "title": "RESEARCH & MARKETS"
         },
         {
-          "title": "Deep Tech"
+          "title": "DEEP TECH"
         }
       ]
     }

@@ -825,138 +825,49 @@
       },
       "columns": [
         {
-          "header": "Data Science & ML",
+          "header": "Fin Terminal",
           "links": [
             {
-              "label": "Colab",
-              "url": "https://colab.research.google.com",
-              "icon": "sparkles.svg",
+              "label": "CentralBank",
+              "url": "https://diegonmarcos.github.io/central_bank",
+              "icon": "database.svg",
               "item": 0
             },
-            {
-              "label": "Kaggle",
-              "url": "https://kaggle.com",
-              "icon": "brain.svg",
-              "item": 1
-            },
-            {
-              "label": "HuggingFace",
-              "url": "https://huggingface.co",
-              "icon": "robot.svg",
-              "item": 2
-            },
-            {
-              "label": "PyTorch",
-              "url": "https://pytorch.org",
-              "icon": "bolt.svg",
-              "item": 3
-            },
-            {
-              "label": "TensorFlow",
-              "url": "https://tensorflow.org",
-              "icon": "bolt.svg",
-              "item": 4
-            },
-            {
-              "label": "Scikit-learn",
-              "url": "https://scikit-learn.org",
-              "icon": "code.svg",
-              "item": 5
-            },
-            {
-              "label": "IBM Quantum",
-              "url": "https://quantum.ibm.com",
-              "icon": "rocket.svg",
-              "item": 6
-            },
-            {
-              "label": "Qiskit",
-              "url": "https://qiskit.org",
-              "icon": "code.svg",
-              "item": 7
-            },
-            {
-              "label": "Google QAI",
-              "url": "https://quantumai.google",
-              "icon": "sparkles.svg",
-              "item": 8
-            },
-            {
-              "label": "Cirq",
-              "url": "https://quantumai.google/cirq",
-              "icon": "code.svg",
-              "item": 9
-            },
-            {
-              "label": "PennyLane",
-              "url": "https://pennylane.ai",
-              "icon": "bolt.svg",
-              "item": 10
-            },
-            {
-              "label": "Braket",
-              "url": "https://aws.amazon.com/braket",
-              "icon": "rocket.svg",
-              "item": 11
-            },
-            {
-              "label": "Azure QC",
-              "url": "https://azure.microsoft.com/products/quantum",
-              "icon": "world.svg",
-              "item": 12
-            },
-            {
-              "label": "QInspire",
-              "url": "https://www.quantum-inspire.com",
-              "icon": "brain.svg",
-              "item": 13
-            }
-          ],
-          "group": 0
-        },
-        {
-          "header": "Markets",
-          "links": [
             {
               "label": "Fin Terminal",
               "url": "https://diegonmarcos.github.io/fin-terminal",
               "icon": "database.svg",
-              "item": 0
+              "item": 1
             },
             {
               "label": "GDELT News",
               "url": "https://news.diegonmarcos.com",
               "icon": "world.svg",
-              "item": 1
+              "item": 2
             },
             {
               "label": "MarketWatch",
               "url": "https://diegonmarcos.github.io/market_watch",
               "icon": "database.svg",
-              "item": 2
-            },
-            {
-              "label": "CentralBank",
-              "url": "https://diegonmarcos.github.io/central_bank",
-              "icon": "database.svg",
               "item": 3
             },
             {
-              "label": "My Financials",
-              "url": "https://diegonmarcos.github.io/my-fin",
-              "icon": "ledger.svg",
+              "label": "Data Science & ML Terminal",
+              "url": "#",
+              "icon": "brain.svg",
               "item": 4
             }
           ],
-          "group": 1
+          "group": 0,
+          "row": 0
         },
         {
-          "header": "Engineer",
+          "header": "Structural Designer",
           "links": [
             {
-              "label": "Sailytics",
-              "url": "https://diegonmarcos.github.io/sailytics",
-              "icon": "world.svg",
+              "label": "OpenCAD",
+              "url": "#",
+              "icon": "settings.svg",
               "item": 0
             },
             {
@@ -966,19 +877,102 @@
               "item": 1
             },
             {
+              "label": "OpenBIM",
+              "url": "#",
+              "icon": "settings.svg",
+              "item": 2
+            }
+          ],
+          "group": 1,
+          "row": 0
+        },
+        {
+          "header": "Simulators",
+          "links": [
+            {
+              "label": "Sailytics",
+              "url": "https://diegonmarcos.github.io/sailytics",
+              "icon": "world.svg",
+              "item": 0
+            },
+            {
+              "label": "Airlytics",
+              "url": "#",
+              "icon": "world-longitude.svg",
+              "item": 1
+            },
+            {
+              "label": "Roadlytics",
+              "url": "#",
+              "icon": "world-longitude.svg",
+              "item": 2
+            },
+            {
+              "label": "Spacelytics",
+              "url": "#",
+              "icon": "rocket.svg",
+              "item": 3
+            }
+          ],
+          "group": 2,
+          "row": 0
+        },
+        {
+          "header": "Music Production",
+          "links": [
+            {
               "label": "Music - DAW",
               "url": "https://diegonmarcos.github.io/music_daw_llms",
               "icon": "headphones.svg",
-              "item": 2
+              "item": 0
             },
             {
               "label": "Music - Mixer",
               "url": "https://diegonmarcos.github.io/music_dj-mixer_mixxx",
               "icon": "headphones.svg",
-              "item": 3
+              "item": 1
             }
           ],
-          "group": 2
+          "group": 3,
+          "row": 1
+        },
+        {
+          "header": "Video Production",
+          "links": [
+            {
+              "label": "Higgsfield",
+              "url": "https://higgsfield.ai",
+              "icon": "device-desktop.svg",
+              "item": 0
+            }
+          ],
+          "group": 4,
+          "row": 1
+        },
+        {
+          "header": "Game Production",
+          "links": [
+            {
+              "label": "Unity",
+              "url": "https://unity.com",
+              "icon": "device-gamepad.svg",
+              "item": 0
+            },
+            {
+              "label": "Godot",
+              "url": "https://godotengine.org",
+              "icon": "device-gamepad.svg",
+              "item": 1
+            },
+            {
+              "label": "GDevelop",
+              "url": "https://gdevelop.io",
+              "icon": "device-gamepad.svg",
+              "item": 2
+            }
+          ],
+          "group": 5,
+          "row": 1
         }
       ],
       "slide": 3,

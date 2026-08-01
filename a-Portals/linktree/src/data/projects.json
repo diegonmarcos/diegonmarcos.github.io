@@ -633,9 +633,21 @@
             },
             {
               "label": "Maps",
-              "url": "https://diegonmarcos.github.io/mymaps-maps",
+              "url": "https://diegonmarcos.github.io/maps",
               "icon": "world.svg",
               "item": 1
+            },
+            {
+              "label": "Home",
+              "url": "https://diegonmarcos.github.io/mymaps",
+              "icon": "device-desktop.svg",
+              "item": 2
+            },
+            {
+              "label": "MyTrips",
+              "url": "https://diegonmarcos.github.io/mymaps-mytrips",
+              "icon": "world-longitude.svg",
+              "item": 3
             }
           ],
           "group": 3,

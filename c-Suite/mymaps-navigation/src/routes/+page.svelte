@@ -1,6 +1,8 @@
 <script lang="ts">
   import { onMount } from 'svelte';
   import MapCanvas from '$lib/components/Map/MapCanvas.svelte';
+  import CesiumCanvas from '$lib/components/Map/CesiumCanvas.svelte';
+  import { mapEngine } from '$lib/stores/mapEngineStore';
   import MapControls from '$lib/components/Map/MapControls.svelte';
   import SearchBar from '$lib/components/Search/SearchBar.svelte';
   import DirectionsPanel from '$lib/components/Panels/DirectionsPanel.svelte';
@@ -98,7 +100,11 @@
 <div id="app">
   <!-- Map Layer -->
   <div class="app-map">
-    <MapCanvas />
+    {#if $mapEngine === 'cesium'}
+  <CesiumCanvas />
+{:else}
+  <MapCanvas />
+{/if}
   </div>
 
   <!-- Starfield overlay (globe view only, mix-blend-mode: screen) -->

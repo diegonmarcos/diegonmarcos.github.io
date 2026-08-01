@@ -179,7 +179,7 @@
           {:else if section.id === 'maps'}
             <div class="menu-maps-list">
               <a
-                href="https://diegonmarcos.github.io/mymaps-maps"
+                href="https://diegonmarcos.github.io/maps"
                 class="menu-map-item"
                 target="_blank"
                 rel="noopener noreferrer"

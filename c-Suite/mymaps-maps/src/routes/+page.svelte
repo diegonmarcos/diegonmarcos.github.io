@@ -1,6 +1,7 @@
 <script lang="ts">
   import { base } from '$app/paths';
   import GlobeCanvas from '$lib/components/GlobeCanvas.svelte';
+  import StellariumCanvas from '$lib/components/StellariumCanvas.svelte';
   import SideMenu from '$lib/components/SideMenu.svelte';
   import {
     projections,
@@ -11,6 +12,11 @@
     scale,
     rotation
   } from '$lib/stores/projectionStore';
+  import { viewMode } from '$lib/stores/viewModeStore';
+
+  function toggleViewMode() {
+    viewMode.update(v => (v === 'map' ? 'sky' : 'map'));
+  }
 
   let showProjectionList = $state(false);
 
@@ -52,7 +58,11 @@
 </svelte:head>
 
 <!-- Globe/Map Canvas -->
-<GlobeCanvas />
+{#if $viewMode === 'sky'}
+  <StellariumCanvas />
+{:else}
+  <GlobeCanvas />
+{/if}
 
 <!-- Side Menu (hamburger) -->
 <SideMenu />
@@ -96,6 +106,17 @@
       </button>
     </div>
   {/if}
+
+  <!-- Map / Sky mode toggle -->
+  <div class="control-group">
+    <button
+      class="control-btn"
+      onclick={toggleViewMode}
+      title={$viewMode === 'map' ? 'Switch to sky view' : 'Switch to map view'}
+    >
+      {$viewMode === 'map' ? '🌍' : '✨'}
+    </button>
+  </div>
 
   <!-- Projection selector toggle -->
   <div class="control-group">

@@ -1,6 +1,7 @@
 <script lang="ts">
   import { getMapInstance, mapStore, userLocation, isLocating, isGlobeView, toggleGlobeView } from '$lib/stores/mapStore';
   import { showLayersPanel, toggleLayersPanel } from '$lib/stores/layerStore';
+  import { mapEngine, toggleMapEngine } from '$lib/stores/mapEngineStore';
 
   function resetView() {
     const map = getMapInstance();
@@ -205,6 +206,19 @@
       <circle cx="12" cy="12" r="10" />
       <path d="M2 12h20" />
       <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z" />
+    </svg>
+  </button>
+
+  <!-- Cesium 3D engine toggle -->
+  <button
+    class="map-control-btn map-control-btn--standalone"
+    class:map-control-btn--active={$mapEngine === 'cesium'}
+    onclick={toggleMapEngine}
+    aria-label={$mapEngine === 'cesium' ? 'Switch to MapLibre' : 'Switch to Cesium 3D'}
+    title={$mapEngine === 'cesium' ? 'MapLibre' : 'Cesium 3D terrain'}
+  >
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M3 17l4-10 4 10M4.5 13.5h5M13 17l4-14 4 14M14 13h6" />
     </svg>
   </button>
 </div>

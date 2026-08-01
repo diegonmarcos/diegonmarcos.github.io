@@ -640,6 +640,12 @@
               "url": "https://matrix.diegonmarcos.com",
               "icon": "brand-whatsapp.svg",
               "item": 4
+            },
+            {
+              "label": "News GDELT",
+              "url": "#",
+              "icon": "world.svg",
+              "item": 5
             }
           ],
           "group": 2,
@@ -1134,7 +1140,7 @@
         },
         {
           "row": 0,
-          "group": 3,
+          "group": 4,
           "header": "Others",
           "links": [
             {
@@ -1151,7 +1157,7 @@
         },
         {
           "row": 0,
-          "group": 4,
+          "group": 3,
           "header": "Ops",
           "links": [
             {

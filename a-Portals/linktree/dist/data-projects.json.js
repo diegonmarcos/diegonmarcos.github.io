@@ -509,7 +509,26 @@
           ]
         }
       ],
-      "slide": 1
+      "slide": 1,
+      "extras": {
+        "primary_link": {
+          "label": "Ducks",
+          "url": "#",
+          "icon": "settings.svg"
+        },
+        "profile_icons": [
+          {
+            "url": "https://github.com/diegonmarcos/unix",
+            "title": "Unix",
+            "icon": "brand-github.svg"
+          },
+          {
+            "url": "https://github.com/diegonmarcos/unix/tree/main/ea_cloud-superapp",
+            "title": "Android Apks",
+            "icon": "brand-github.svg"
+          }
+        ]
+      }
     },
     {
       "id": "suite",
@@ -1415,7 +1434,21 @@
           "group": 5
         }
       ],
-      "slide": 5
+      "slide": 5,
+      "extras": {
+        "primary_link": {
+          "label": "Circus",
+          "url": "#",
+          "icon": "device-gamepad.svg"
+        },
+        "profile_icons": [
+          {
+            "url": "https://github.com/diegonmarcos/diegonmarcos.github.io/tree/main/c-Circus",
+            "title": "Circus",
+            "icon": "brand-github.svg"
+          }
+        ]
+      }
     },
     {
       "id": "projects",

@@ -919,7 +919,7 @@
       "build_steps": [
         "sveltekit"
       ],
-      "dep_count": 15,
+      "dep_count": 17,
       "has_dist": true,
       "deploy_name": "mymaps-navigation"
     },

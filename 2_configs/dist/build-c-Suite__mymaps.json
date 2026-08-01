@@ -106,7 +106,9 @@
       "deploy_name": "mymaps",
       "url": "https://diegonmarcos.github.io/mymaps"
     },
-    "consumers": [],
+    "consumers": [
+      "Home"
+    ],
     "has_package_json": false,
     "has_manifest": false
   }

@@ -4330,10 +4330,12 @@
           "svelte": "^5.41.0",
           "svelte-check": "^4.3.3",
           "typescript": "^5.9.3",
-          "vite": "^7.1.10"
+          "vite": "^7.1.10",
+          "vite-plugin-cesium": "^1.2.23"
         },
         "dependencies": {
           "@mapbox/togeojson": "^0.16.2",
+          "cesium": "^1.143.0",
           "jszip": "^3.10.1",
           "maplibre-gl": "^5.17.0"
         }
@@ -5835,8 +5837,24 @@
         "slide": "projects",
         "column": "Nav",
         "label": "Maps",
-        "url": "https://diegonmarcos.github.io/mymaps-maps",
+        "url": "https://diegonmarcos.github.io/maps",
         "icon": "world.svg"
+      },
+      {
+        "section": "projects",
+        "slide": "projects",
+        "column": "Nav",
+        "label": "Home",
+        "url": "https://diegonmarcos.github.io/mymaps",
+        "icon": "device-desktop.svg"
+      },
+      {
+        "section": "projects",
+        "slide": "projects",
+        "column": "Nav",
+        "label": "MyTrips",
+        "url": "https://diegonmarcos.github.io/mymaps-mytrips",
+        "icon": "world-longitude.svg"
       },
       {
         "section": "projects",

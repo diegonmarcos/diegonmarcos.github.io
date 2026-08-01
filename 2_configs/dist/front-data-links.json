@@ -1051,143 +1051,7 @@
     {
       "section": "projects",
       "slide": "projects",
-      "column": "Data Science & ML",
-      "label": "Colab",
-      "url": "https://colab.research.google.com",
-      "icon": "sparkles.svg"
-    },
-    {
-      "section": "projects",
-      "slide": "projects",
-      "column": "Data Science & ML",
-      "label": "Kaggle",
-      "url": "https://kaggle.com",
-      "icon": "brain.svg"
-    },
-    {
-      "section": "projects",
-      "slide": "projects",
-      "column": "Data Science & ML",
-      "label": "HuggingFace",
-      "url": "https://huggingface.co",
-      "icon": "robot.svg"
-    },
-    {
-      "section": "projects",
-      "slide": "projects",
-      "column": "Data Science & ML",
-      "label": "PyTorch",
-      "url": "https://pytorch.org",
-      "icon": "bolt.svg"
-    },
-    {
-      "section": "projects",
-      "slide": "projects",
-      "column": "Data Science & ML",
-      "label": "TensorFlow",
-      "url": "https://tensorflow.org",
-      "icon": "bolt.svg"
-    },
-    {
-      "section": "projects",
-      "slide": "projects",
-      "column": "Data Science & ML",
-      "label": "Scikit-learn",
-      "url": "https://scikit-learn.org",
-      "icon": "code.svg"
-    },
-    {
-      "section": "projects",
-      "slide": "projects",
-      "column": "Data Science & ML",
-      "label": "IBM Quantum",
-      "url": "https://quantum.ibm.com",
-      "icon": "rocket.svg"
-    },
-    {
-      "section": "projects",
-      "slide": "projects",
-      "column": "Data Science & ML",
-      "label": "Qiskit",
-      "url": "https://qiskit.org",
-      "icon": "code.svg"
-    },
-    {
-      "section": "projects",
-      "slide": "projects",
-      "column": "Data Science & ML",
-      "label": "Google QAI",
-      "url": "https://quantumai.google",
-      "icon": "sparkles.svg"
-    },
-    {
-      "section": "projects",
-      "slide": "projects",
-      "column": "Data Science & ML",
-      "label": "Cirq",
-      "url": "https://quantumai.google/cirq",
-      "icon": "code.svg"
-    },
-    {
-      "section": "projects",
-      "slide": "projects",
-      "column": "Data Science & ML",
-      "label": "PennyLane",
-      "url": "https://pennylane.ai",
-      "icon": "bolt.svg"
-    },
-    {
-      "section": "projects",
-      "slide": "projects",
-      "column": "Data Science & ML",
-      "label": "Braket",
-      "url": "https://aws.amazon.com/braket",
-      "icon": "rocket.svg"
-    },
-    {
-      "section": "projects",
-      "slide": "projects",
-      "column": "Data Science & ML",
-      "label": "Azure QC",
-      "url": "https://azure.microsoft.com/products/quantum",
-      "icon": "world.svg"
-    },
-    {
-      "section": "projects",
-      "slide": "projects",
-      "column": "Data Science & ML",
-      "label": "QInspire",
-      "url": "https://www.quantum-inspire.com",
-      "icon": "brain.svg"
-    },
-    {
-      "section": "projects",
-      "slide": "projects",
-      "column": "Markets",
-      "label": "Fin Terminal",
-      "url": "https://diegonmarcos.github.io/fin-terminal",
-      "icon": "database.svg"
-    },
-    {
-      "section": "projects",
-      "slide": "projects",
-      "column": "Markets",
-      "label": "GDELT News",
-      "url": "https://news.diegonmarcos.com",
-      "icon": "world.svg"
-    },
-    {
-      "section": "projects",
-      "slide": "projects",
-      "column": "Markets",
-      "label": "MarketWatch",
-      "url": "https://diegonmarcos.github.io/market_watch",
-      "icon": "database.svg"
-    },
-    {
-      "section": "projects",
-      "slide": "projects",
-      "column": "Markets",
+      "column": "Fin Terminal",
       "label": "CentralBank",
       "url": "https://diegonmarcos.github.io/central_bank",
       "icon": "database.svg"
@@ -1195,23 +1059,47 @@
     {
       "section": "projects",
       "slide": "projects",
-      "column": "Markets",
-      "label": "My Financials",
-      "url": "https://diegonmarcos.github.io/my-fin",
-      "icon": "ledger.svg"
+      "column": "Fin Terminal",
+      "label": "Fin Terminal",
+      "url": "https://diegonmarcos.github.io/fin-terminal",
+      "icon": "database.svg"
     },
     {
       "section": "projects",
       "slide": "projects",
-      "column": "Engineer",
-      "label": "Sailytics",
-      "url": "https://diegonmarcos.github.io/sailytics",
+      "column": "Fin Terminal",
+      "label": "GDELT News",
+      "url": "https://news.diegonmarcos.com",
       "icon": "world.svg"
     },
     {
       "section": "projects",
       "slide": "projects",
-      "column": "Engineer",
+      "column": "Fin Terminal",
+      "label": "MarketWatch",
+      "url": "https://diegonmarcos.github.io/market_watch",
+      "icon": "database.svg"
+    },
+    {
+      "section": "projects",
+      "slide": "projects",
+      "column": "Fin Terminal",
+      "label": "Data Science & ML Terminal",
+      "url": "#",
+      "icon": "brain.svg"
+    },
+    {
+      "section": "projects",
+      "slide": "projects",
+      "column": "Structural Designer",
+      "label": "OpenCAD",
+      "url": "#",
+      "icon": "settings.svg"
+    },
+    {
+      "section": "projects",
+      "slide": "projects",
+      "column": "Structural Designer",
       "label": "OpenRevit",
       "url": "https://diegonmarcos.github.io/openrevit",
       "icon": "settings.svg"
@@ -1219,7 +1107,47 @@
     {
       "section": "projects",
       "slide": "projects",
-      "column": "Engineer",
+      "column": "Structural Designer",
+      "label": "OpenBIM",
+      "url": "#",
+      "icon": "settings.svg"
+    },
+    {
+      "section": "projects",
+      "slide": "projects",
+      "column": "Simulators",
+      "label": "Sailytics",
+      "url": "https://diegonmarcos.github.io/sailytics",
+      "icon": "world.svg"
+    },
+    {
+      "section": "projects",
+      "slide": "projects",
+      "column": "Simulators",
+      "label": "Airlytics",
+      "url": "#",
+      "icon": "world-longitude.svg"
+    },
+    {
+      "section": "projects",
+      "slide": "projects",
+      "column": "Simulators",
+      "label": "Roadlytics",
+      "url": "#",
+      "icon": "world-longitude.svg"
+    },
+    {
+      "section": "projects",
+      "slide": "projects",
+      "column": "Simulators",
+      "label": "Spacelytics",
+      "url": "#",
+      "icon": "rocket.svg"
+    },
+    {
+      "section": "projects",
+      "slide": "projects",
+      "column": "Music Production",
       "label": "Music - DAW",
       "url": "https://diegonmarcos.github.io/music_daw_llms",
       "icon": "headphones.svg"
@@ -1227,10 +1155,42 @@
     {
       "section": "projects",
       "slide": "projects",
-      "column": "Engineer",
+      "column": "Music Production",
       "label": "Music - Mixer",
       "url": "https://diegonmarcos.github.io/music_dj-mixer_mixxx",
       "icon": "headphones.svg"
+    },
+    {
+      "section": "projects",
+      "slide": "projects",
+      "column": "Video Production",
+      "label": "Higgsfield",
+      "url": "https://higgsfield.ai",
+      "icon": "device-desktop.svg"
+    },
+    {
+      "section": "projects",
+      "slide": "projects",
+      "column": "Game Production",
+      "label": "Unity",
+      "url": "https://unity.com",
+      "icon": "device-gamepad.svg"
+    },
+    {
+      "section": "projects",
+      "slide": "projects",
+      "column": "Game Production",
+      "label": "Godot",
+      "url": "https://godotengine.org",
+      "icon": "device-gamepad.svg"
+    },
+    {
+      "section": "projects",
+      "slide": "projects",
+      "column": "Game Production",
+      "label": "GDevelop",
+      "url": "https://gdevelop.io",
+      "icon": "device-gamepad.svg"
     },
     {
       "section": "projects",

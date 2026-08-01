@@ -1037,23 +1037,23 @@
               "icon": "lock.svg"
             },
             {
-              "label": "Caddy - Private",
+              "label": "Caddy - Hub Proxy",
               "url": "https://proxy.diegonmarcos.com",
               "icon": "world.svg"
             },
             {
-              "label": "Caddy - Public SNI",
+              "label": "Caddy - Public Edge SNI",
               "url": "#",
               "icon": "world.svg"
             },
             {
-              "label": "Introspect",
-              "url": "https://introspect.diegonmarcos.com",
+              "label": "Introspect Proxy",
+              "url": "#",
               "icon": "lock.svg"
             },
             {
               "label": "Hickory DNS",
-              "url": "https://dns.diegonmarcos.com",
+              "url": "#",
               "icon": "world.svg"
             },
             {
@@ -1062,14 +1062,9 @@
               "icon": "lock.svg"
             },
             {
-              "label": "WG Public",
-              "url": "#",
+              "label": "WG Mesh WS Tunnel",
+              "url": "https://vpn.diegonmarcos.com",
               "icon": "lock.svg"
-            },
-            {
-              "label": "SIEM Reports",
-              "url": "https://siem.diegonmarcos.com",
-              "icon": "database.svg"
             },
             {
               "label": "CrowdSec",
@@ -1094,19 +1089,29 @@
               "icon": "database.svg"
             },
             {
+              "label": "OpenObserve",
+              "url": "https://analytics.diegonmarcos.com/openobserve",
+              "icon": "database.svg"
+            },
+            {
               "label": "ntfy",
               "url": "https://rss.diegonmarcos.com",
               "icon": "bolt.svg"
             },
             {
-              "label": "Cloud Spec",
-              "url": "#",
+              "label": "DBGate",
+              "url": "https://db.diegonmarcos.com",
+              "icon": "database.svg"
+            },
+            {
+              "label": "Dagu",
+              "url": "https://workflows.diegonmarcos.com",
               "icon": "settings.svg"
             },
             {
-              "label": "OpenObserve",
-              "url": "https://analytics.diegonmarcos.com/openobserve",
-              "icon": "database.svg"
+              "label": "Cloud Spec",
+              "url": "#",
+              "icon": "settings.svg"
             }
           ]
         },
@@ -1121,16 +1126,6 @@
               "icon": "code.svg"
             },
             {
-              "label": "Docker Volumes (25)",
-              "url": "#",
-              "icon": "file-stack.svg"
-            },
-            {
-              "label": "Borg Backup",
-              "url": "#",
-              "icon": "file-stack.svg"
-            },
-            {
               "label": "Redis",
               "url": "#",
               "icon": "database.svg"
@@ -1143,9 +1138,14 @@
           "header": "Others",
           "links": [
             {
-              "label": "Crawler API",
+              "label": "Scrappers API",
               "url": "https://api.diegonmarcos.com",
               "icon": "code.svg"
+            },
+            {
+              "label": "News GDELT",
+              "url": "#",
+              "icon": "world.svg"
             }
           ]
         },
@@ -1160,9 +1160,9 @@
               "icon": "settings.svg"
             },
             {
-              "label": "VM Pilot / Watchdog",
+              "label": "GHA Runner",
               "url": "#",
-              "icon": "settings.svg"
+              "icon": "git-branch.svg"
             }
           ]
         },
@@ -1187,18 +1187,23 @@
               "icon": "send.svg"
             },
             {
-              "label": "Mail - Maddy",
+              "label": "Maddy - SMTP",
               "url": "https://mail.diegonmarcos.com",
               "icon": "mail.svg"
             },
             {
-              "label": "Mail - Stalwart",
+              "label": "Stalwart - JMAP",
               "url": "https://jmap.diegonmarcos.com",
               "icon": "mail.svg"
             },
             {
-              "label": "Webmail",
+              "label": "SnappyMail",
               "url": "https://webmail.diegonmarcos.com",
+              "icon": "mail.svg"
+            },
+            {
+              "label": "Mail Puller",
+              "url": "https://mail-puller.diegonmarcos.com",
               "icon": "mail.svg"
             }
           ]
@@ -1283,9 +1288,9 @@
               "icon": "robot.svg"
             },
             {
-              "label": "KG Store",
+              "label": "Claude Superset API",
               "url": "#",
-              "icon": "database.svg"
+              "icon": "robot.svg"
             },
             {
               "label": "Session Memory",
@@ -1325,7 +1330,17 @@
               "icon": "robot.svg"
             },
             {
+              "label": "c3-public-api",
+              "url": "https://api.diegonmarcos.com/pub",
+              "icon": "code.svg"
+            },
+            {
               "label": "google-personal-mcp",
+              "url": "https://mcp.diegonmarcos.com",
+              "icon": "robot.svg"
+            },
+            {
+              "label": "google-workspace-mcp",
               "url": "https://mcp.diegonmarcos.com",
               "icon": "robot.svg"
             },
@@ -1333,6 +1348,11 @@
               "label": "mail-mcp",
               "url": "https://mcp.diegonmarcos.com",
               "icon": "robot.svg"
+            },
+            {
+              "label": "LanguageTool",
+              "url": "https://languagetool.diegonmarcos.com",
+              "icon": "code.svg"
             }
           ]
         },
@@ -1380,27 +1400,27 @@
           "header": "Fleet",
           "links": [
             {
-              "label": "oci-A1-f_0",
+              "label": "oci-A1-f_0 - App Tier",
               "url": "#",
               "icon": "device-desktop.svg"
             },
             {
-              "label": "oci-E2-f_0",
+              "label": "oci-E2-f_0 - Mail",
               "url": "#",
               "icon": "device-desktop.svg"
             },
             {
-              "label": "oci-E2-f_1",
+              "label": "oci-E2-f_1 - Edge/Analytics",
               "url": "#",
               "icon": "device-desktop.svg"
             },
             {
-              "label": "gcp-E2-f_0",
+              "label": "gcp-E2-f_0 - Proxy Hub",
               "url": "#",
               "icon": "device-desktop.svg"
             },
             {
-              "label": "vast-RTX-p_0",
+              "label": "vast-RTX-p_0 - GPU (on-demand)",
               "url": "#",
               "icon": "device-desktop.svg"
             }

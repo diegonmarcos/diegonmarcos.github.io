@@ -32,7 +32,7 @@
       ],
       "sections": [
         {
-          "title": "Contact",
+          "title": "CONTACT",
           "layout": "contact-icons",
           "items": [
             {
@@ -60,7 +60,7 @@
           "group": 0
         },
         {
-          "title": "Profiles",
+          "title": "PROFILES",
           "layout": "mixed",
           "links": [
             {
@@ -90,7 +90,7 @@
           "group": 1
         },
         {
-          "title": "Ventures",
+          "title": "VENTURES",
           "layout": "contact-icons",
           "items": [
             {
@@ -156,7 +156,7 @@
       },
       "sections": [
         {
-          "title": "Contact",
+          "title": "CONTACT",
           "layout": "contact-icons",
           "items": [
             {
@@ -182,7 +182,7 @@
           "group": 0
         },
         {
-          "title": "Venture",
+          "title": "VENTURE",
           "layout": "links",
           "links": [
             {
@@ -196,7 +196,7 @@
           "group": 1
         },
         {
-          "title": "Cores",
+          "title": "CORES",
           "layout": "tool-links",
           "cols": 3,
           "links": [
@@ -234,7 +234,7 @@
       },
       "sections": [
         {
-          "title": "Contact",
+          "title": "CONTACT",
           "layout": "contact-icons",
           "items": [
             {
@@ -260,7 +260,7 @@
           "group": 0
         },
         {
-          "title": "Venture",
+          "title": "VENTURE",
           "layout": "links",
           "links": [
             {
@@ -274,7 +274,7 @@
           "group": 1
         },
         {
-          "title": "Cores",
+          "title": "CORES",
           "layout": "tool-links",
           "cols": 3,
           "links": [
@@ -330,7 +330,7 @@
       },
       "sections": [
         {
-          "title": "Contact",
+          "title": "CONTACT",
           "layout": "contact-icons",
           "items": [
             {
@@ -356,7 +356,7 @@
           "group": 0
         },
         {
-          "title": "Venture",
+          "title": "VENTURE",
           "layout": "links",
           "links": [
             {
@@ -370,7 +370,7 @@
           "group": 1
         },
         {
-          "title": "Cores",
+          "title": "CORES",
           "layout": "tool-links",
           "cols": 3,
           "links": [

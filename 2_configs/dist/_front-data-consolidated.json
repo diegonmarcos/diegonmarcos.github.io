@@ -6124,7 +6124,7 @@
         "section": "projects",
         "slide": "projects",
         "column": "Security",
-        "label": "Vault",
+        "label": "Vaultwarden",
         "url": "https://vault.diegonmarcos.com",
         "icon": "lock.svg"
       },
@@ -6132,8 +6132,16 @@
         "section": "projects",
         "slide": "projects",
         "column": "Security",
-        "label": "Caddy",
+        "label": "Caddy - Private",
         "url": "https://proxy.diegonmarcos.com",
+        "icon": "world.svg"
+      },
+      {
+        "section": "projects",
+        "slide": "projects",
+        "column": "Security",
+        "label": "Caddy - Public SNI",
+        "url": "#",
         "icon": "world.svg"
       },
       {
@@ -6156,25 +6164,25 @@
         "section": "projects",
         "slide": "projects",
         "column": "Security",
-        "label": "Sauron YARA",
-        "url": "https://sauron.diegonmarcos.com",
-        "icon": "bolt.svg"
+        "label": "WG0 Mesh",
+        "url": "https://mesh.diegonmarcos.com",
+        "icon": "lock.svg"
       },
       {
         "section": "projects",
         "slide": "projects",
         "column": "Security",
-        "label": "SIEM",
+        "label": "WG Public",
+        "url": "#",
+        "icon": "lock.svg"
+      },
+      {
+        "section": "projects",
+        "slide": "projects",
+        "column": "Security",
+        "label": "SIEM Reports",
         "url": "https://siem.diegonmarcos.com",
         "icon": "database.svg"
-      },
-      {
-        "section": "projects",
-        "slide": "projects",
-        "column": "Security",
-        "label": "WG0",
-        "url": "https://wg.diegonmarcos.com",
-        "icon": "lock.svg"
       },
       {
         "section": "projects",
@@ -6187,23 +6195,23 @@
       {
         "section": "projects",
         "slide": "projects",
-        "column": "Ops",
-        "label": "Dagu",
-        "url": "https://workflows.diegonmarcos.com",
-        "icon": "settings.svg"
-      },
-      {
-        "section": "projects",
-        "slide": "projects",
-        "column": "Ops",
-        "label": "Grafana",
-        "url": "https://grafana.diegonmarcos.com",
+        "column": "Observ",
+        "label": "Matomo",
+        "url": "https://analytics.diegonmarcos.com/matomo",
         "icon": "database.svg"
       },
       {
         "section": "projects",
         "slide": "projects",
-        "column": "Ops",
+        "column": "Observ",
+        "label": "Umami",
+        "url": "https://analytics.diegonmarcos.com",
+        "icon": "database.svg"
+      },
+      {
+        "section": "projects",
+        "slide": "projects",
+        "column": "Observ",
         "label": "ntfy",
         "url": "https://rss.diegonmarcos.com",
         "icon": "bolt.svg"
@@ -6211,25 +6219,17 @@
       {
         "section": "projects",
         "slide": "projects",
-        "column": "Ops",
-        "label": "GHA",
-        "url": "https://github.com/diegonmarcos/cloud/actions",
-        "icon": "git-branch.svg"
+        "column": "Observ",
+        "label": "Cloud Spec",
+        "url": "#",
+        "icon": "settings.svg"
       },
       {
         "section": "projects",
         "slide": "projects",
-        "column": "Ops",
-        "label": "GHCR",
-        "url": "https://github.com/orgs/diegonmarcos/packages",
-        "icon": "database.svg"
-      },
-      {
-        "section": "projects",
-        "slide": "projects",
-        "column": "Data",
-        "label": "Matomo",
-        "url": "https://analytics.diegonmarcos.com",
+        "column": "Observ",
+        "label": "OpenObserve",
+        "url": "https://analytics.diegonmarcos.com/openobserve",
         "icon": "database.svg"
       },
       {
@@ -6244,88 +6244,264 @@
         "section": "projects",
         "slide": "projects",
         "column": "Data",
-        "label": "Dozzle",
-        "url": "https://logs.diegonmarcos.com",
+        "label": "Docker Volumes (25)",
+        "url": "#",
         "icon": "file-stack.svg"
       },
       {
         "section": "projects",
         "slide": "projects",
         "column": "Data",
-        "label": "DBGate",
-        "url": "https://dbgate.diegonmarcos.com",
-        "icon": "database.svg"
-      },
-      {
-        "section": "projects",
-        "slide": "projects",
-        "column": "Data",
-        "label": "Rustic",
-        "url": "https://backup.diegonmarcos.com",
+        "label": "Borg Backup",
+        "url": "#",
         "icon": "file-stack.svg"
       },
       {
         "section": "projects",
         "slide": "projects",
         "column": "Data",
-        "label": "Umami",
-        "url": "https://umami.diegonmarcos.com",
+        "label": "Redis",
+        "url": "#",
         "icon": "database.svg"
       },
       {
         "section": "projects",
         "slide": "projects",
-        "column": "Data",
-        "label": "NocoDB",
-        "url": "https://nocodb.diegonmarcos.com",
+        "column": "Others",
+        "label": "Crawler API",
+        "url": "https://api.diegonmarcos.com",
+        "icon": "code.svg"
+      },
+      {
+        "section": "projects",
+        "slide": "projects",
+        "column": "Ops",
+        "label": "Cloud Builder X",
+        "url": "#",
+        "icon": "settings.svg"
+      },
+      {
+        "section": "projects",
+        "slide": "projects",
+        "column": "Ops",
+        "label": "VM Pilot / Watchdog",
+        "url": "#",
+        "icon": "settings.svg"
+      },
+      {
+        "section": "projects",
+        "slide": "projects",
+        "column": "Comms",
+        "label": "Matrix",
+        "url": "https://matrix.diegonmarcos.com",
+        "icon": "brand-whatsapp.svg"
+      },
+      {
+        "section": "projects",
+        "slide": "projects",
+        "column": "Comms",
+        "label": "Element",
+        "url": "https://messenger.diegonmarcos.com",
+        "icon": "brand-whatsapp.svg"
+      },
+      {
+        "section": "projects",
+        "slide": "projects",
+        "column": "Comms",
+        "label": "Mattermost",
+        "url": "https://chat.diegonmarcos.com",
+        "icon": "send.svg"
+      },
+      {
+        "section": "projects",
+        "slide": "projects",
+        "column": "Comms",
+        "label": "Mail - Maddy",
+        "url": "https://mail.diegonmarcos.com",
+        "icon": "mail.svg"
+      },
+      {
+        "section": "projects",
+        "slide": "projects",
+        "column": "Comms",
+        "label": "Mail - Stalwart",
+        "url": "https://jmap.diegonmarcos.com",
+        "icon": "mail.svg"
+      },
+      {
+        "section": "projects",
+        "slide": "projects",
+        "column": "Comms",
+        "label": "Webmail",
+        "url": "https://webmail.diegonmarcos.com",
+        "icon": "mail.svg"
+      },
+      {
+        "section": "projects",
+        "slide": "projects",
+        "column": "Prod",
+        "label": "Calendar",
+        "url": "https://cal.diegonmarcos.com",
+        "icon": "checklist.svg"
+      },
+      {
+        "section": "projects",
+        "slide": "projects",
+        "column": "Prod",
+        "label": "Contacts",
+        "url": "https://contacts.diegonmarcos.com",
+        "icon": "user.svg"
+      },
+      {
+        "section": "projects",
+        "slide": "projects",
+        "column": "Prod",
+        "label": "Code Server",
+        "url": "https://ide.diegonmarcos.com",
+        "icon": "code.svg"
+      },
+      {
+        "section": "projects",
+        "slide": "projects",
+        "column": "Prod",
+        "label": "Filebrowser",
+        "url": "https://app.diegonmarcos.com/filebrowser",
+        "icon": "file-stack.svg"
+      },
+      {
+        "section": "projects",
+        "slide": "projects",
+        "column": "Prod",
+        "label": "Grist",
+        "url": "https://sheets.diegonmarcos.com",
         "icon": "database.svg"
       },
       {
         "section": "projects",
         "slide": "projects",
-        "column": "MCP & API",
+        "column": "Prod",
+        "label": "HedgeDoc",
+        "url": "https://app.diegonmarcos.com/hedgedoc",
+        "icon": "file-stack.svg"
+      },
+      {
+        "section": "projects",
+        "slide": "projects",
+        "column": "Prod",
+        "label": "Etherpad",
+        "url": "https://app.diegonmarcos.com/etherpad",
+        "icon": "file-stack.svg"
+      },
+      {
+        "section": "projects",
+        "slide": "projects",
+        "column": "Prod",
+        "label": "Send",
+        "url": "https://send.diegonmarcos.com",
+        "icon": "file-stack.svg"
+      },
+      {
+        "section": "projects",
+        "slide": "projects",
+        "column": "Media & Vault",
+        "label": "PhotoPrism",
+        "url": "https://photos.diegonmarcos.com",
+        "icon": "slideshow.svg"
+      },
+      {
+        "section": "projects",
+        "slide": "projects",
+        "column": "Media & Vault",
+        "label": "Paca",
+        "url": "https://paca.diegonmarcos.com",
+        "icon": "device-desktop.svg"
+      },
+      {
+        "section": "projects",
+        "slide": "projects",
+        "column": "AI",
+        "label": "My-AI-API",
+        "url": "#",
+        "icon": "brain.svg"
+      },
+      {
+        "section": "projects",
+        "slide": "projects",
+        "column": "AI",
+        "label": "Hermes Agent",
+        "url": "#",
+        "icon": "robot.svg"
+      },
+      {
+        "section": "projects",
+        "slide": "projects",
+        "column": "AI",
+        "label": "KG Store",
+        "url": "#",
+        "icon": "database.svg"
+      },
+      {
+        "section": "projects",
+        "slide": "projects",
+        "column": "AI",
+        "label": "Session Memory",
+        "url": "#",
+        "icon": "brain.svg"
+      },
+      {
+        "section": "projects",
+        "slide": "projects",
+        "column": "AI",
+        "label": "Cloud-CGC-MCP",
+        "url": "#",
+        "icon": "robot.svg"
+      },
+      {
+        "section": "projects",
+        "slide": "projects",
+        "column": "API & MCP",
         "label": "c3-infra-api",
-        "url": "https://api.diegonmarcos.com/c3-api",
+        "url": "https://api.diegonmarcos.com/c3-infra-api",
         "icon": "code.svg"
       },
       {
         "section": "projects",
         "slide": "projects",
-        "column": "MCP & API",
+        "column": "API & MCP",
         "label": "c3-infra-mcp",
-        "url": "https://diegonmarcos.github.io/skills_mcp",
+        "url": "https://mcp.diegonmarcos.com/c3-infra-mcp",
         "icon": "robot.svg"
       },
       {
         "section": "projects",
         "slide": "projects",
-        "column": "MCP & API",
+        "column": "API & MCP",
         "label": "c3-services-api",
-        "url": "https://api.diegonmarcos.com/c3-services",
+        "url": "https://api.diegonmarcos.com/c3-services-api",
         "icon": "code.svg"
       },
       {
         "section": "projects",
         "slide": "projects",
-        "column": "MCP & API",
+        "column": "API & MCP",
         "label": "c3-services-mcp",
-        "url": "https://diegonmarcos.github.io/skills_mcp",
+        "url": "#",
         "icon": "robot.svg"
       },
       {
         "section": "projects",
         "slide": "projects",
-        "column": "MCP & API",
-        "label": "cgc-mcp",
-        "url": "https://diegonmarcos.github.io/skills_mcp",
+        "column": "API & MCP",
+        "label": "google-personal-mcp",
+        "url": "https://mcp.diegonmarcos.com",
         "icon": "robot.svg"
       },
       {
         "section": "projects",
         "slide": "projects",
-        "column": "MCP & API",
-        "label": "dtk-mcp",
-        "url": "https://diegonmarcos.github.io/skills_mcp",
+        "column": "API & MCP",
+        "label": "mail-mcp",
+        "url": "https://mcp.diegonmarcos.com",
         "icon": "robot.svg"
       },
       {
@@ -6379,6 +6555,46 @@
       {
         "section": "projects",
         "slide": "projects",
+        "column": "Fleet",
+        "label": "oci-A1-f_0",
+        "url": "#",
+        "icon": "device-desktop.svg"
+      },
+      {
+        "section": "projects",
+        "slide": "projects",
+        "column": "Fleet",
+        "label": "oci-E2-f_0",
+        "url": "#",
+        "icon": "device-desktop.svg"
+      },
+      {
+        "section": "projects",
+        "slide": "projects",
+        "column": "Fleet",
+        "label": "oci-E2-f_1",
+        "url": "#",
+        "icon": "device-desktop.svg"
+      },
+      {
+        "section": "projects",
+        "slide": "projects",
+        "column": "Fleet",
+        "label": "gcp-E2-f_0",
+        "url": "#",
+        "icon": "device-desktop.svg"
+      },
+      {
+        "section": "projects",
+        "slide": "projects",
+        "column": "Fleet",
+        "label": "vast-RTX-p_0",
+        "url": "#",
+        "icon": "device-desktop.svg"
+      },
+      {
+        "section": "projects",
+        "slide": "projects",
         "column": "Audio",
         "label": "Music",
         "url": "https://diegonmarcos.github.io/music/",
@@ -6391,38 +6607,6 @@
         "label": "Movies",
         "url": "https://diegonmarcos.github.io/movies/",
         "icon": "brand-youtube.svg"
-      },
-      {
-        "section": "projects",
-        "slide": "projects",
-        "column": "Games 2D",
-        "label": "Games",
-        "url": "https://diegonmarcos.github.io/games",
-        "icon": "device-gamepad.svg"
-      },
-      {
-        "section": "projects",
-        "slide": "projects",
-        "column": "Games 2D",
-        "label": "Carto",
-        "url": "https://diegonmarcos.github.io/carto/",
-        "icon": "cards.svg"
-      },
-      {
-        "section": "projects",
-        "slide": "projects",
-        "column": "Games 2D",
-        "label": "myAstro",
-        "url": "https://diegonmarcos.github.io/myAstro",
-        "icon": "world-longitude.svg"
-      },
-      {
-        "section": "projects",
-        "slide": "projects",
-        "column": "Games 2D",
-        "label": "Worms",
-        "url": "https://archive.org/details/worms_team17",
-        "icon": "device-gamepad.svg"
       },
       {
         "section": "projects",
@@ -6463,6 +6647,38 @@
         "label": "Galaxy - X1",
         "url": "https://diegonmarcos.github.io/galaxy-x1/",
         "icon": "world.svg"
+      },
+      {
+        "section": "projects",
+        "slide": "projects",
+        "column": "Games 2D",
+        "label": "Games",
+        "url": "https://diegonmarcos.github.io/games",
+        "icon": "device-gamepad.svg"
+      },
+      {
+        "section": "projects",
+        "slide": "projects",
+        "column": "Games 2D",
+        "label": "Carto",
+        "url": "https://diegonmarcos.github.io/carto/",
+        "icon": "cards.svg"
+      },
+      {
+        "section": "projects",
+        "slide": "projects",
+        "column": "Games 2D",
+        "label": "myAstro",
+        "url": "https://diegonmarcos.github.io/myAstro",
+        "icon": "world-longitude.svg"
+      },
+      {
+        "section": "projects",
+        "slide": "projects",
+        "column": "Games 2D",
+        "label": "Worms",
+        "url": "https://archive.org/details/worms_team17",
+        "icon": "device-gamepad.svg"
       },
       {
         "section": "projects",

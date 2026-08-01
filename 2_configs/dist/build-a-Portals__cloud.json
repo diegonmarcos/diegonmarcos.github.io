@@ -143,7 +143,6 @@
       "url": "https://diegonmarcos.github.io/cloud"
     },
     "consumers": [
-      "GHA",
       "Infra",
       "Solutions - Infra",
       "Solutions - User",

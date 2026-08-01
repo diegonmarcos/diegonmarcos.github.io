@@ -29,6 +29,9 @@
 <!-- End Umami Analytics -->
 
     <!-- Data-driven framework: PORTAL_DATA["c3-<key>"] hydrated by front-data-json-js-wrapper.sh (data_wrap build mod) -->
+    <script src="data-c3-alerts-active.json.js"></script>
+    <script src="data-c3-alerts-history.json.js"></script>
+    <script src="data-c3-alerts-rules.json.js"></script>
     <script src="data-c3-backup-targets.json.js"></script>
     <script src="data-c3-caddy-routes.json.js"></script>
     <script src="data-c3-cloudflare-dns.json.js"></script>
@@ -39,6 +42,7 @@
     <script src="data-c3-db-health-history.json.js"></script>
     <script src="data-c3-db-uptime.json.js"></script>
     <script src="data-c3-dns-services.json.js"></script>
+    <script src="data-c3-events.json.js"></script>
     <script src="data-c3-firewall-rules.json.js"></script>
     <script src="data-c3-gcp-costs.json.js"></script>
     <script src="data-c3-health-declared.json.js"></script>
@@ -46,6 +50,8 @@
     <script src="data-c3-health-drift.json.js"></script>
     <script src="data-c3-health-tier1.json.js"></script>
     <script src="data-c3-home-manager.json.js"></script>
+    <script src="data-c3-metrics-series.json.js"></script>
+    <script src="data-c3-metrics-top.json.js"></script>
     <script src="data-c3-oci-costs.json.js"></script>
     <script src="data-c3-profiling-all.json.js"></script>
     <script src="data-c3-security-docker.json.js"></script>
@@ -54,6 +60,7 @@
     <script src="data-c3-security-tokens.json.js"></script>
     <script src="data-c3-security-wireguard.json.js"></script>
     <script src="data-c3-services.json.js"></script>
+    <script src="data-c3-slo.json.js"></script>
     <script src="data-c3-specs.json.js"></script>
     <script src="data-c3-topology-drift.json.js"></script>
     <script src="data-c3-topology.json.js"></script>
@@ -109,6 +116,10 @@
                     <button class="view-btn" data-c3-tab="audit">Audit</button>
                     <button class="view-btn" data-c3-tab="infra">Infra</button>
                     <button class="view-btn" data-c3-tab="apps">Apps</button>
+                    <button class="view-btn" data-c3-tab="metrics">Metrics</button>
+                    <button class="view-btn" data-c3-tab="alerts">Alerts</button>
+                    <button class="view-btn" data-c3-tab="events">Events</button>
+                    <button class="view-btn" data-c3-tab="slo">SLO</button>
                     <span class="nav-divider"></span>
                     <button class="view-btn" data-c3-tab="ops">Ops</button>
                 </div>
@@ -185,6 +196,58 @@
                 <div class="c3-tab-content" id="c3-tab-apps">
                     <h2 class="nav-level3-title">Apps</h2>
                     <div id="c3-apps-cards"></div>
+                </div>
+
+                <div class="c3-tab-content" id="c3-tab-metrics">
+                    <h2 class="nav-level3-title">Metrics</h2>
+                    <div class="card-box">
+                        <strong>Top by CPU</strong>
+                        <div id="c3-table-metrics-top"></div>
+                    </div>
+                    <div class="card-box">
+                        <strong>Series (oci-apps · cpu)</strong>
+                        <div id="c3-metrics-series"></div>
+                    </div>
+                </div>
+
+                <div class="c3-tab-content" id="c3-tab-alerts">
+                    <h2 class="nav-level3-title">Alerts</h2>
+                    <div class="card-box">
+                        <strong>Active</strong>
+                        <div id="c3-alerts-active"></div>
+                    </div>
+                    <div class="card-box">
+                        <strong>Rules</strong>
+                        <div id="c3-table-alerts-rules"></div>
+                    </div>
+                    <div class="card-box">
+                        <strong>History</strong>
+                        <div id="c3-table-alerts-history"></div>
+                    </div>
+                </div>
+
+                <div class="c3-tab-content" id="c3-tab-events">
+                    <h2 class="nav-level3-title">Events</h2>
+                    <div class="card-box">
+                        <div class="c3-events-filter">
+                            <label for="c3-events-type-filter">Type</label>
+                            <select id="c3-events-type-filter">
+                                <option value="">All</option>
+                                <option value="deploy">Deploy</option>
+                                <option value="alert">Alert</option>
+                                <option value="ops">Ops</option>
+                                <option value="ci">CI</option>
+                            </select>
+                        </div>
+                        <div id="c3-events-timeline"></div>
+                    </div>
+                </div>
+
+                <div class="c3-tab-content" id="c3-tab-slo">
+                    <h2 class="nav-level3-title">SLO</h2>
+                    <div class="card-box">
+                        <div id="c3-slo-view"></div>
+                    </div>
                 </div>
 
                 <div class="c3-tab-content" id="c3-tab-ops">

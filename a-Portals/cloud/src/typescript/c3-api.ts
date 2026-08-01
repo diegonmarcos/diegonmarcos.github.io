@@ -55,6 +55,17 @@ export const REGISTRY: Record<string, string> = {
     'dns-services': '/cloud-data/dns-services',
     'backup-targets': '/cloud-data/backup-targets',
     'home-manager': '/cloud-data/home-manager',
+
+    'metrics-top': '/metrics/top?by=cpu&limit=20',
+    'metrics-series': '/metrics/series/oci-apps?metric=cpu',
+
+    'alerts-active': '/alerts/active',
+    'alerts-rules': '/alerts/rules',
+    'alerts-history': '/alerts/history',
+
+    'events': '/events',
+
+    'slo': '/slo',
 };
 
 export const lastErrors: Record<string, string> = {};

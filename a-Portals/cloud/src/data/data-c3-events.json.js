@@ -1,0 +1,17 @@
+// GENERATED FROM c3-events.json by front-data-json-js-wrapper.sh — DO NOT EDIT BY HAND.
+// Re-generate with: bash a-Portals/linktree/src/data/build.sh
+(function () {
+  var g = (typeof globalThis !== "undefined") ? globalThis : (typeof window !== "undefined" ? window : this);
+  g.PORTAL_DATA = g.PORTAL_DATA || {};
+  g.PORTAL_DATA["c3-events"] = {
+  "events": [
+    { "type": "alert", "ts": "2026-08-01T08:50:00Z", "summary": "FIRED: oci-apps cpu=91.2", "detail": { "ruleId": 3, "target": "oci-apps", "metric": "cpu", "value": 91.2, "status": "fired", "acked": false } },
+    { "type": "deploy", "ts": "2026-08-01T08:12:00Z", "summary": "c3-infra-api deploy: OK", "detail": { "service": "c3-infra-api", "step": "deploy", "success": true, "durationMs": 4210 } },
+    { "type": "ops", "ts": "2026-08-01T07:55:00Z", "summary": "restart caddy-public: ok", "detail": { "tool": "restart", "target": "caddy-public", "result": "ok", "source": "portal" } },
+    { "type": "ci", "ts": "2026-08-01T07:30:00Z", "summary": "build (main): success", "detail": { "name": "build", "branch": "main", "status": "completed", "conclusion": "success", "url": "https://github.com/diegonmarcos/cloud/actions" } },
+    { "type": "alert", "ts": "2026-08-01T08:30:00Z", "summary": "FIRED: gcp-mesh disk=88", "detail": { "ruleId": 7, "target": "gcp-mesh", "metric": "disk", "value": 88.0, "status": "fired", "acked": true } }
+  ],
+  "count": 5
+}
+;
+})();

@@ -244,7 +244,8 @@
       "url": "https://diegonmarcos.github.io/mySocials"
     },
     "consumers": [
-      "My Socials"
+      "My Socials",
+      "mySocials"
     ],
     "has_package_json": false,
     "has_manifest": false

@@ -107,7 +107,8 @@
       "url": "https://diegonmarcos.github.io/my-fin"
     },
     "consumers": [
-      "My Financials"
+      "My Financials",
+      "myFin"
     ],
     "has_package_json": false,
     "has_manifest": false

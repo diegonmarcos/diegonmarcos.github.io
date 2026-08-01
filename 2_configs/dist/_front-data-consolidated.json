@@ -4968,7 +4968,7 @@
         "section": "projects",
         "id": "ducks",
         "kind": "tools",
-        "title": "DUCKS"
+        "title": "DUCKS AND PENGS"
       },
       {
         "section": "projects",
@@ -5716,38 +5716,22 @@
         "section": "projects",
         "slide": "projects",
         "column": "AI & IDE",
-        "label": "Goose",
-        "url": "https://github.com/block/goose",
-        "icon": "robot.svg"
+        "label": "my-ai",
+        "url": "https://github.com/diegonmarcos/unix/tree/main/da_my-ai",
+        "icon": "brain.svg"
       },
       {
         "section": "projects",
         "slide": "projects",
         "column": "AI & IDE",
-        "label": "Claude CLI",
-        "url": "https://claude.ai",
-        "icon": "robot.svg"
-      },
-      {
-        "section": "projects",
-        "slide": "projects",
-        "column": "AI & IDE",
-        "label": "WebIDE",
-        "url": "https://ide.diegonmarcos.com",
+        "label": "my-konsole",
+        "url": "https://github.com/diegonmarcos/unix/tree/main/da_my-konsole",
         "icon": "device-desktop.svg"
       },
       {
         "section": "projects",
         "slide": "projects",
-        "column": "AI & IDE",
-        "label": "Jupyter NB",
-        "url": "https://jupyter.diegonmarcos.com",
-        "icon": "code.svg"
-      },
-      {
-        "section": "projects",
-        "slide": "projects",
-        "column": "Suite",
+        "column": "Prod",
         "label": "Notes",
         "url": "https://hedgedoc.diegonmarcos.com",
         "icon": "file-stack.svg"
@@ -5755,7 +5739,7 @@
       {
         "section": "projects",
         "slide": "projects",
-        "column": "Suite",
+        "column": "Prod",
         "label": "Sheets",
         "url": "https://sheets.diegonmarcos.com",
         "icon": "database.svg"
@@ -5763,7 +5747,7 @@
       {
         "section": "projects",
         "slide": "projects",
-        "column": "Suite",
+        "column": "Prod",
         "label": "Docs",
         "url": "https://docs.diegonmarcos.com",
         "icon": "file-stack.svg"
@@ -5771,7 +5755,7 @@
       {
         "section": "projects",
         "slide": "projects",
-        "column": "Suite",
+        "column": "Prod",
         "label": "Slides",
         "url": "https://slides.diegonmarcos.com",
         "icon": "slideshow.svg"
@@ -5779,26 +5763,26 @@
       {
         "section": "projects",
         "slide": "projects",
-        "column": "Suite",
-        "label": "Calendar",
-        "url": "https://cal.diegonmarcos.com",
-        "icon": "checklist.svg"
-      },
-      {
-        "section": "projects",
-        "slide": "projects",
-        "column": "Suite",
-        "label": "Contacts",
-        "url": "https://contacts.diegonmarcos.com",
-        "icon": "user.svg"
-      },
-      {
-        "section": "projects",
-        "slide": "projects",
-        "column": "Suite",
+        "column": "Prod",
         "label": "Files",
         "url": "https://files.diegonmarcos.com",
         "icon": "file-stack.svg"
+      },
+      {
+        "section": "projects",
+        "slide": "projects",
+        "column": "Prod",
+        "label": "Gallery",
+        "url": "#",
+        "icon": "slideshow.svg"
+      },
+      {
+        "section": "projects",
+        "slide": "projects",
+        "column": "Prod",
+        "label": "tldraw",
+        "url": "https://diegonmarcos.github.io/tldraw/",
+        "icon": "brush.svg"
       },
       {
         "section": "projects",
@@ -5822,6 +5806,46 @@
         "column": "Comms",
         "label": "ntfy",
         "url": "https://ntfy.diegonmarcos.com",
+        "icon": "checklist.svg"
+      },
+      {
+        "section": "projects",
+        "slide": "projects",
+        "column": "Comms",
+        "label": "Contacts",
+        "url": "https://contacts.diegonmarcos.com",
+        "icon": "user.svg"
+      },
+      {
+        "section": "projects",
+        "slide": "projects",
+        "column": "Comms",
+        "label": "Element Matrix",
+        "url": "https://matrix.diegonmarcos.com",
+        "icon": "brand-whatsapp.svg"
+      },
+      {
+        "section": "projects",
+        "slide": "projects",
+        "column": "PM",
+        "label": "Calendar",
+        "url": "https://cal.diegonmarcos.com",
+        "icon": "checklist.svg"
+      },
+      {
+        "section": "projects",
+        "slide": "projects",
+        "column": "PM",
+        "label": "PM Boards",
+        "url": "#",
+        "icon": "checklist.svg"
+      },
+      {
+        "section": "projects",
+        "slide": "projects",
+        "column": "PM",
+        "label": "ToDo",
+        "url": "#",
         "icon": "checklist.svg"
       },
       {
@@ -5859,31 +5883,7 @@
       {
         "section": "projects",
         "slide": "projects",
-        "column": "Media",
-        "label": "Feed",
-        "url": "https://diegonmarcos.github.io/myfeed",
-        "icon": "device-desktop.svg"
-      },
-      {
-        "section": "projects",
-        "slide": "projects",
-        "column": "Media",
-        "label": "Movies",
-        "url": "https://diegonmarcos.github.io/movies",
-        "icon": "device-desktop.svg"
-      },
-      {
-        "section": "projects",
-        "slide": "projects",
-        "column": "Media",
-        "label": "Music",
-        "url": "https://diegonmarcos.github.io/music",
-        "icon": "device-desktop.svg"
-      },
-      {
-        "section": "projects",
-        "slide": "projects",
-        "column": "Memory",
+        "column": "Social & Trackers",
         "label": "MyPhotos",
         "url": "https://diegonmarcos.github.io/myphotos",
         "icon": "device-desktop.svg"
@@ -5891,7 +5891,7 @@
       {
         "section": "projects",
         "slide": "projects",
-        "column": "Memory",
+        "column": "Social & Trackers",
         "label": "MyTrips",
         "url": "https://diegonmarcos.github.io/mymaps-mytrips",
         "icon": "world-longitude.svg"
@@ -5899,10 +5899,26 @@
       {
         "section": "projects",
         "slide": "projects",
-        "column": "Memory",
+        "column": "Social & Trackers",
         "label": "PhotoPrism",
         "url": "https://photos.diegonmarcos.com",
         "icon": "slideshow.svg"
+      },
+      {
+        "section": "projects",
+        "slide": "projects",
+        "column": "Social & Trackers",
+        "label": "mySocials",
+        "url": "https://diegonmarcos.github.io/mySocials",
+        "icon": "heart.svg"
+      },
+      {
+        "section": "projects",
+        "slide": "projects",
+        "column": "Social & Trackers",
+        "label": "myTrackers",
+        "url": "https://diegonmarcos.github.io/myTrackers",
+        "icon": "heart.svg"
       },
       {
         "section": "projects",
@@ -5931,31 +5947,15 @@
       {
         "section": "projects",
         "slide": "projects",
-        "column": "Tools",
-        "label": "Gitea",
-        "url": "https://git.diegonmarcos.com",
-        "icon": "code.svg"
+        "column": "Buro",
+        "label": "myID",
+        "url": "https://diegonmarcos.github.io/myid",
+        "icon": "cards.svg"
       },
       {
         "section": "projects",
         "slide": "projects",
-        "column": "Tools",
-        "label": "JSON Vision",
-        "url": "https://diegonmarcos.github.io/json-vision",
-        "icon": "code.svg"
-      },
-      {
-        "section": "projects",
-        "slide": "projects",
-        "column": "Tools",
-        "label": "NocoDB",
-        "url": "https://nocodb.diegonmarcos.com",
-        "icon": "database.svg"
-      },
-      {
-        "section": "projects",
-        "slide": "projects",
-        "column": "Tools",
+        "column": "Buro",
         "label": "Vault",
         "url": "https://vault.diegonmarcos.com",
         "icon": "lock.svg"
@@ -5963,18 +5963,10 @@
       {
         "section": "projects",
         "slide": "projects",
-        "column": "Tools",
-        "label": "tldraw",
-        "url": "https://diegonmarcos.github.io/tldraw/",
-        "icon": "brush.svg"
-      },
-      {
-        "section": "projects",
-        "slide": "projects",
-        "column": "Tools",
-        "label": "myID",
-        "url": "https://diegonmarcos.github.io/myid",
-        "icon": "cards.svg"
+        "column": "Buro",
+        "label": "myFin",
+        "url": "https://diegonmarcos.github.io/my-fin",
+        "icon": "ledger.svg"
       },
       {
         "section": "projects",

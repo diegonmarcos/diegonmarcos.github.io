@@ -339,3 +339,37 @@
         transparent 100%
     );
 }
+
+// Compact "+" expand toggle for a long .tools-column (reuses the
+// .more-toggle / .collapsible-content JS wiring, just sized down —
+// the default .more-toggle is a full-width divider meant for whole
+// sections, too large for a single dashboard column).
+.tools-column__toggle.more-toggle {
+    width: auto;
+    padding: 0.2rem 0.5rem;
+    margin: 0.15rem 0 0;
+
+    &::before,
+    &::after {
+        display: none;
+    }
+
+    .plus-icon {
+        font-size: 0.75rem;
+        line-height: 1;
+        color: rgba(255, 255, 255, 0.6);
+        transition: color 0.2s ease;
+    }
+
+    &:hover .plus-icon,
+    &.open .plus-icon {
+        color: #fff;
+    }
+}
+
+.tools-column .collapsible-content {
+    display: flex;
+    flex-direction: column;
+    gap: 0.15rem;
+    align-items: center;
+}

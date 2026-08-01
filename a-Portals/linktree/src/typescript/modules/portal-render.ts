@@ -151,6 +151,11 @@ function renderToolLink(link: Link): HTMLElement {
   return a;
 }
 
+// Columns beyond this many links get a "+" expand toggle instead of
+// rendering everything up front — some (e.g. Cloud/Security) run 8-10 deep.
+const TOOLS_COLUMN_LIMIT = 6;
+let toolsColumnAutoId = 0;
+
 function renderColumn(col: Column): HTMLElement {
   const headerEl = col.header_url
     ? (() => {
@@ -160,8 +165,18 @@ function renderColumn(col: Column): HTMLElement {
       })()
     : el('div', { class: 'tools-column__header' }, [col.header]);
   const linksWrap = el('div', { class: 'tools-column__links' });
-  for (const lk of col.links) linksWrap.appendChild(renderToolLink(lk));
-  return el('div', { class: 'tools-column' }, [headerEl, linksWrap]);
+  const visible = col.links.slice(0, TOOLS_COLUMN_LIMIT);
+  const overflow = col.links.slice(TOOLS_COLUMN_LIMIT);
+  for (const lk of visible) linksWrap.appendChild(renderToolLink(lk));
+
+  if (!overflow.length) return el('div', { class: 'tools-column' }, [headerEl, linksWrap]);
+
+  const targetId = `tools-column-more-${toolsColumnAutoId++}`;
+  const toggle = el('button', { class: 'more-toggle tools-column__toggle', type: 'button', 'data-target': targetId });
+  toggle.appendChild(el('span', { class: 'plus-icon' }, ['+']));
+  const collapsibleContent = el('div', { class: 'collapsible-content', id: targetId });
+  for (const lk of overflow) collapsibleContent.appendChild(renderToolLink(lk));
+  return el('div', { class: 'tools-column' }, [headerEl, linksWrap, toggle, collapsibleContent]);
 }
 
 function renderToolsSlide(slide: SlideTools): HTMLElement {

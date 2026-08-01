@@ -37,9 +37,7 @@
       "deploy_name": "json-vision",
       "url": "https://diegonmarcos.github.io/json-vision"
     },
-    "consumers": [
-      "JSON Vision"
-    ],
+    "consumers": [],
     "has_package_json": true,
     "has_manifest": false
   }

@@ -303,7 +303,7 @@
     {
       "id": "ducks",
       "kind": "tools",
-      "title": "DUCKS",
+      "title": "DUCKS AND PENGS",
       "image": {
         "src": "public/images/banners/ducks.gif",
         "alt": "Unix"
@@ -543,35 +543,23 @@
           "header": "AI & IDE",
           "links": [
             {
-              "label": "Goose",
-              "url": "https://github.com/block/goose",
-              "icon": "robot.svg",
+              "label": "my-ai",
+              "url": "https://github.com/diegonmarcos/unix/tree/main/da_my-ai",
+              "icon": "brain.svg",
               "item": 0
             },
             {
-              "label": "Claude CLI",
-              "url": "https://claude.ai",
-              "icon": "robot.svg",
-              "item": 1
-            },
-            {
-              "label": "WebIDE",
-              "url": "https://ide.diegonmarcos.com",
+              "label": "my-konsole",
+              "url": "https://github.com/diegonmarcos/unix/tree/main/da_my-konsole",
               "icon": "device-desktop.svg",
-              "item": 2
-            },
-            {
-              "label": "Jupyter NB",
-              "url": "https://jupyter.diegonmarcos.com",
-              "icon": "code.svg",
-              "item": 3
+              "item": 1
             }
           ],
           "group": 0,
           "row": 0
         },
         {
-          "header": "Suite",
+          "header": "Prod",
           "header_url": "https://diegonmarcos.github.io/suite",
           "links": [
             {
@@ -599,21 +587,21 @@
               "item": 3
             },
             {
-              "label": "Calendar",
-              "url": "https://cal.diegonmarcos.com",
-              "icon": "checklist.svg",
-              "item": 4
-            },
-            {
-              "label": "Contacts",
-              "url": "https://contacts.diegonmarcos.com",
-              "icon": "user.svg",
-              "item": 5
-            },
-            {
               "label": "Files",
               "url": "https://files.diegonmarcos.com",
               "icon": "file-stack.svg",
+              "item": 4
+            },
+            {
+              "label": "Gallery",
+              "url": "#",
+              "icon": "slideshow.svg",
+              "item": 5
+            },
+            {
+              "label": "tldraw",
+              "url": "https://diegonmarcos.github.io/tldraw/",
+              "icon": "brush.svg",
               "item": 6
             }
           ],
@@ -640,12 +628,52 @@
               "url": "https://ntfy.diegonmarcos.com",
               "icon": "checklist.svg",
               "item": 2
+            },
+            {
+              "label": "Contacts",
+              "url": "https://contacts.diegonmarcos.com",
+              "icon": "user.svg",
+              "item": 3
+            },
+            {
+              "label": "Element Matrix",
+              "url": "https://matrix.diegonmarcos.com",
+              "icon": "brand-whatsapp.svg",
+              "item": 4
             }
           ],
           "group": 2,
           "row": 0
         },
         {
+          "header": "PM",
+          "links": [
+            {
+              "label": "Calendar",
+              "url": "https://cal.diegonmarcos.com",
+              "icon": "checklist.svg",
+              "item": 0
+            },
+            {
+              "label": "PM Boards",
+              "url": "#",
+              "icon": "checklist.svg",
+              "item": 1
+            },
+            {
+              "label": "ToDo",
+              "url": "#",
+              "icon": "checklist.svg",
+              "item": 2
+            }
+          ],
+          "group": 3,
+          "row": 0
+        },
+        {
+          "row": 1,
+          "group": 4,
+          "id": "nav",
           "header": "Nav",
           "header_url": "https://diegonmarcos.github.io/mymaps",
           "links": [
@@ -673,41 +701,13 @@
               "icon": "world-longitude.svg",
               "item": 3
             }
-          ],
-          "group": 3,
-          "row": 0
-        },
-        {
-          "row": 1,
-          "group": 5,
-          "id": "media",
-          "header": "Media",
-          "links": [
-            {
-              "label": "Feed",
-              "url": "https://diegonmarcos.github.io/myfeed",
-              "icon": "device-desktop.svg",
-              "item": 0
-            },
-            {
-              "label": "Movies",
-              "url": "https://diegonmarcos.github.io/movies",
-              "icon": "device-desktop.svg",
-              "item": 1
-            },
-            {
-              "label": "Music",
-              "url": "https://diegonmarcos.github.io/music",
-              "icon": "device-desktop.svg",
-              "item": 2
-            }
           ]
         },
         {
           "row": 1,
-          "group": 6,
+          "group": 5,
           "id": "memory",
-          "header": "Memory",
+          "header": "Social & Trackers",
           "links": [
             {
               "label": "MyPhotos",
@@ -726,12 +726,24 @@
               "url": "https://photos.diegonmarcos.com",
               "icon": "slideshow.svg",
               "item": 2
+            },
+            {
+              "label": "mySocials",
+              "url": "https://diegonmarcos.github.io/mySocials",
+              "icon": "heart.svg",
+              "item": 3
+            },
+            {
+              "label": "myTrackers",
+              "url": "https://diegonmarcos.github.io/myTrackers",
+              "icon": "heart.svg",
+              "item": 4
             }
           ]
         },
         {
           "row": 1,
-          "group": 7,
+          "group": 6,
           "id": "health",
           "header": "Health",
           "links": [
@@ -757,45 +769,27 @@
         },
         {
           "row": 1,
-          "group": 8,
+          "group": 7,
           "id": "tools",
-          "header": "Tools",
+          "header": "Buro",
           "links": [
             {
-              "label": "Gitea",
-              "url": "https://git.diegonmarcos.com",
-              "icon": "code.svg",
+              "label": "myID",
+              "url": "https://diegonmarcos.github.io/myid",
+              "icon": "cards.svg",
               "item": 0
-            },
-            {
-              "label": "JSON Vision",
-              "url": "https://diegonmarcos.github.io/json-vision",
-              "icon": "code.svg",
-              "item": 1
-            },
-            {
-              "label": "NocoDB",
-              "url": "https://nocodb.diegonmarcos.com",
-              "icon": "database.svg",
-              "item": 2
             },
             {
               "label": "Vault",
               "url": "https://vault.diegonmarcos.com",
               "icon": "lock.svg",
-              "item": 3
+              "item": 1
             },
             {
-              "label": "tldraw",
-              "url": "https://diegonmarcos.github.io/tldraw/",
-              "icon": "brush.svg",
-              "item": 4
-            },
-            {
-              "label": "myID",
-              "url": "https://diegonmarcos.github.io/myid",
-              "icon": "cards.svg",
-              "item": 5
+              "label": "myFin",
+              "url": "https://diegonmarcos.github.io/my-fin",
+              "icon": "ledger.svg",
+              "item": 2
             }
           ]
         }

@@ -408,6 +408,7 @@
       "path": "c-Suite/mymaps-navigation",
       "deps": {
         "@mapbox/togeojson": "^0.16.2",
+        "cesium": "^1.143.0",
         "jszip": "^3.10.1",
         "maplibre-gl": "^5.17.0",
         "@sveltejs/adapter-static": "^3.0.10",
@@ -421,7 +422,8 @@
         "svelte": "^5.41.0",
         "svelte-check": "^4.3.3",
         "typescript": "^5.9.3",
-        "vite": "^7.1.10"
+        "vite": "^7.1.10",
+        "vite-plugin-cesium": "^1.2.23"
       }
     },
     {
@@ -549,6 +551,8 @@
     "d3-timer": "^3.0.1",
     "@types/d3-geo": "^3.1.0",
     "@mapbox/togeojson": "^0.16.2",
+    "cesium": "^1.143.0",
+    "vite-plugin-cesium": "^1.2.23",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "tldraw": "^5.1.1",

@@ -37,9 +37,7 @@
       "deploy_name": "mymaps-maps",
       "url": "https://diegonmarcos.github.io/mymaps-maps"
     },
-    "consumers": [
-      "Maps"
-    ],
+    "consumers": [],
     "has_package_json": true,
     "has_manifest": false
   }

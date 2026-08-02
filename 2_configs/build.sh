@@ -337,7 +337,7 @@ step_derive() {
   # Symlinked into src_vue/src/data/ and linktree/src/data/ for Vite static import.
   local cloud_dist_url="https://raw.githubusercontent.com/diegonmarcos/cloud/main/2_configs/dist"
   local cloud_dist_local="$HOME/git/cloud/2_configs/dist"
-  for json_file in cloud-fleet-declared.json cloud-fleet-containers-declared.json; do
+  for json_file in cloud-fleet-declared.json cloud-fleet-containers-declared.json _cloud-data-consolidated.json; do
     if [ -f "$cloud_dist_local/$json_file" ]; then
       cp "$cloud_dist_local/$json_file" "$DIST/$json_file"
     elif curl -fsSL "$cloud_dist_url/$json_file" -o "$DIST/$json_file" 2>/dev/null; then

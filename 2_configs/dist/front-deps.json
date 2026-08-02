@@ -2,7 +2,7 @@
   "_meta": {
     "generated_by": "2_configs/build.sh derive",
     "schema": "front-deps/v1",
-    "total_services": 30
+    "total_services": 29
   },
   "node": {
     "merged": {
@@ -34,7 +34,6 @@
         "date-fns": "^3.3.0",
         "dompurify": "^3.0.0",
         "eruda": "^3",
-        "gray-matter": "^4.0.3",
         "jszip": "^3.10.1",
         "lightweight-charts": "^5.0.0",
         "lodash-es": "^4.17.21",
@@ -90,7 +89,6 @@
         "eslint-plugin-vue": "^9.20.0",
         "jsdom": "^25.0.0",
         "jszip": "^3.10.1",
-        "marked": "^15.0.12",
         "postcss": "^8.5.6",
         "prettier": "^3.6.2",
         "prettier-plugin-svelte": "^3.4.0",
@@ -450,20 +448,6 @@
           "vite": "^5.0.0",
           "vite-plugin-singlefile": "^2.0.0",
           "vue-tsc": "^2.0.0"
-        }
-      },
-      {
-        "service": "Skills MCP",
-        "folder": "c-Cloud/skills_mcp",
-        "category": "c-Cloud",
-        "dependencies": {
-          "gray-matter": "^4.0.3"
-        },
-        "devDependencies": {
-          "esbuild": "^0.20.0",
-          "marked": "^15.0.12",
-          "sass": "^1.71.0",
-          "typescript": "^5.3.3"
         }
       },
       {

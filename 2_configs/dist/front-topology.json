@@ -2,7 +2,7 @@
   "_meta": {
     "generated_by": "2_configs/build.sh derive",
     "schema": "front-topology/v1",
-    "project_count": 51
+    "project_count": 48
   },
   "projects": [
     {
@@ -592,70 +592,6 @@
       "dep_count": 10,
       "has_dist": true,
       "deploy_name": "music"
-    },
-    {
-      "name": "API",
-      "slug": "api",
-      "path": "c-Cloud/api",
-      "category": "c-Cloud",
-      "framework": "vanilla",
-      "port": 8023,
-      "build_steps": [
-        "data_wrap",
-        "copy",
-        "copy",
-        "sw_register",
-        "console_log",
-        "esbuild_sw"
-      ],
-      "dep_count": 0,
-      "has_dist": true,
-      "deploy_name": "api"
-    },
-    {
-      "name": "mcp-api-swagger",
-      "slug": "mcp-api-swagger",
-      "path": "c-Cloud/mcp-api-swagger",
-      "category": "c-Cloud",
-      "framework": "vanilla",
-      "port": 8024,
-      "build_steps": [
-        "data_wrap",
-        "copy",
-        "sass",
-        "esbuild",
-        "copy",
-        "sw_register",
-        "console_log",
-        "esbuild_sw"
-      ],
-      "dep_count": 0,
-      "has_dist": true,
-      "deploy_name": "mcp-api-swagger"
-    },
-    {
-      "name": "Skills MCP",
-      "slug": "skills_mcp",
-      "path": "c-Cloud/skills_mcp",
-      "category": "c-Cloud",
-      "framework": "vanilla",
-      "port": 8018,
-      "build_steps": [
-        "data_wrap",
-        "copy",
-        "npm",
-        "sass",
-        "esbuild",
-        "copy",
-        "symlink",
-        "npm",
-        "sw_register",
-        "console_log",
-        "esbuild_sw"
-      ],
-      "dep_count": 5,
-      "has_dist": true,
-      "deploy_name": "skills_mcp"
     },
     {
       "name": "LMMS",

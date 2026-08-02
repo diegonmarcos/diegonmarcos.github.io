@@ -1,7 +1,7 @@
 {
   "meta": {
     "generated_from": "front-topology.json",
-    "project_count": 51
+    "project_count": 48
   },
   "categories": [
     {
@@ -334,38 +334,6 @@
           "category": "c-Circus",
           "framework": "vue",
           "port": 8016,
-          "has_dist": true
-        }
-      ]
-    },
-    {
-      "category": "c-Cloud",
-      "projects": [
-        {
-          "name": "API",
-          "slug": "api",
-          "path": "c-Cloud/api",
-          "category": "c-Cloud",
-          "framework": "vanilla",
-          "port": 8023,
-          "has_dist": true
-        },
-        {
-          "name": "Skills MCP",
-          "slug": "skills_mcp",
-          "path": "c-Cloud/skills_mcp",
-          "category": "c-Cloud",
-          "framework": "vanilla",
-          "port": 8018,
-          "has_dist": true
-        },
-        {
-          "name": "mcp-api-swagger",
-          "slug": "mcp-api-swagger",
-          "path": "c-Cloud/mcp-api-swagger",
-          "category": "c-Cloud",
-          "framework": "vanilla",
-          "port": 8024,
           "has_dist": true
         }
       ]

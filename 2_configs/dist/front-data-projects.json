@@ -360,42 +360,6 @@
     "has_pkg": true
   },
   {
-    "path": "c-Cloud/api",
-    "category": "c-Cloud",
-    "project": "api",
-    "key": "c-Cloud__api",
-    "name": "API",
-    "framework": "vanilla",
-    "port": 8023,
-    "deploy_name": "api",
-    "has_pwa": false,
-    "has_pkg": false
-  },
-  {
-    "path": "c-Cloud/mcp-api-swagger",
-    "category": "c-Cloud",
-    "project": "mcp-api-swagger",
-    "key": "c-Cloud__mcp-api-swagger",
-    "name": "mcp-api-swagger",
-    "framework": "vanilla",
-    "port": 8024,
-    "deploy_name": "mcp-api-swagger",
-    "has_pwa": false,
-    "has_pkg": false
-  },
-  {
-    "path": "c-Cloud/skills_mcp",
-    "category": "c-Cloud",
-    "project": "skills_mcp",
-    "key": "c-Cloud__skills_mcp",
-    "name": "Skills MCP",
-    "framework": "vanilla",
-    "port": 8018,
-    "deploy_name": "skills_mcp",
-    "has_pwa": false,
-    "has_pkg": true
-  },
-  {
     "path": "c-LabTools/Music_DAW_LLMS",
     "category": "c-LabTools",
     "project": "Music_DAW_LLMS",

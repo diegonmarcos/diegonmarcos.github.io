@@ -704,6 +704,14 @@
             "target": "es2015"
           },
           {
+            "_doc": "C3 component library (Wave 1) — standalone IIFE, attaches window.C3UI, consumed by src/c3_gallery.html.",
+            "mod": "esbuild",
+            "input": "src/typescript/c3-ui.ts",
+            "output": "c3-ui.js",
+            "format": "iife",
+            "target": "es2015"
+          },
+          {
             "mod": "copy",
             "files": "*.html",
             "from": "src"

@@ -1,7 +1,7 @@
 import { ref } from 'vue'
 import type { ServiceSection, TreeService } from './types'
-
-const FLEET_URL = 'https://raw.githubusercontent.com/diegonmarcos/cloud/main/2_configs/dist/cloud-fleet-declared.json'
+// ponytail: static import bundled by vite-plugin-singlefile; file is a symlink to 2_configs/dist/
+import fleetJson from '../data/cloud-fleet-declared.json'
 
 const SUBGROUP_ICON: Record<string, string> = {
   'Security': '🔐', 'Network': '🌐', 'Observability': '📊', 'APIs-MCPs': '🔌',
@@ -27,13 +27,10 @@ export function useFleet() {
   const loading = ref(true)
   const error = ref<string | null>(null)
 
-  async function load() {
+  function load() {
     try {
-      const resp = await fetch(FLEET_URL)
-      if (!resp.ok) throw new Error(`HTTP ${resp.status}`)
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      const fleet: any = await resp.json()
-      const cloud = fleet.cloud
+      const cloud = (fleetJson as any).cloud
 
       // --- serviceSections: group infra-apps + user-apps by subgroup ---
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -106,9 +103,8 @@ export function useFleet() {
       })
     } catch (e) {
       error.value = String(e)
-    } finally {
-      loading.value = false
     }
+    loading.value = false
   }
 
   return { serviceSections, treeServices, loading, error, load }

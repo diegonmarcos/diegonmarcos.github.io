@@ -333,6 +333,19 @@ step_derive() {
   ' "$C" > "$DIST/front-fleet-gh-declared.json"
   log "  front-fleet-gh-declared.json: $(jq 'length' "$DIST/front-fleet-gh-declared.json") deployed GH Pages projects"
 
+  # cloud-fleet-declared.json — fetched from cloud repo (containers + GH Pages merged).
+  # Symlinked into src_vue/src/data/ and linktree/src/data/ for Vite static import.
+  local cloud_fleet_url="https://raw.githubusercontent.com/diegonmarcos/cloud/main/2_configs/dist/cloud-fleet-declared.json"
+  local cloud_fleet_local="$HOME/git/cloud/2_configs/dist/cloud-fleet-declared.json"
+  if [ -f "$cloud_fleet_local" ]; then
+    cp "$cloud_fleet_local" "$DIST/cloud-fleet-declared.json"
+  elif curl -fsSL "$cloud_fleet_url" -o "$DIST/cloud-fleet-declared.json" 2>/dev/null; then
+    true
+  else
+    log "  WARN: cloud-fleet-declared.json unavailable — skipping"
+  fi
+  [ -f "$DIST/cloud-fleet-declared.json" ] && log "  cloud-fleet-declared.json: fetched ($(wc -c < "$DIST/cloud-fleet-declared.json") bytes)"
+
   sect "Phase 2 · derive (per-project resolved configs)"
   # Wipe old per-project derives so deletions propagate
   find "$DIST" -maxdepth 1 -name 'build-*.json' -type f -delete 2>/dev/null || true

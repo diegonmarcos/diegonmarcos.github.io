@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, onMounted } from 'vue'
+import { ref } from 'vue'
 import type { ViewType, Service, TreeService } from './lib/types'
 import { useFleet } from './lib/useFleet'
 import ThemeToggle from './components/ThemeToggle.vue'
@@ -10,8 +10,8 @@ import AppNotification from './components/AppNotification.vue'
 
 const activeView = ref<ViewType>('cards')
 const notification = ref<string | null>(null)
-const { serviceSections, treeServices, load: loadFleet } = useFleet()
-onMounted(loadFleet)
+const { serviceSections, treeServices, load } = useFleet()
+load()
 
 function showNotification(message: string) {
   notification.value = message

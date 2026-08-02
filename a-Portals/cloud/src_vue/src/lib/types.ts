@@ -14,9 +14,9 @@ export type ServiceId =
 export type ServiceStatus = 'online' | 'pending' | 'offline';
 
 export interface Service {
-  id: ServiceId;
+  id: string;
   name: string;
-  description: string;
+  description?: string;
   url: string;
   status: ServiceStatus;
   icon: string;

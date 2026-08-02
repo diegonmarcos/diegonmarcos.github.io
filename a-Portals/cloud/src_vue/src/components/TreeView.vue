@@ -2,7 +2,8 @@
 import { ref } from 'vue'
 import SvgIcon from './SvgIcon.vue'
 import type { TreeService } from '../lib/types'
-import { treeServices } from '../lib/services'
+
+const props = defineProps<{ treeServices: TreeService[] }>()
 
 const expandedNodes = ref<Set<string>>(new Set())
 
@@ -27,7 +28,7 @@ const handleServiceClick = (service: TreeService) => {
 }
 
 const expandAll = () => {
-  expandedNodes.value = new Set(getAllNodeIds(treeServices))
+  expandedNodes.value = new Set(getAllNodeIds(props.treeServices))
 }
 
 const collapseAll = () => {

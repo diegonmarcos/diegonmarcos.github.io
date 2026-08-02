@@ -1186,6 +1186,16 @@
         "output": "style-vinyl.css"
       },
       {
+        "mod": "sass",
+        "input": "src/scss/theme-bar-cellar.scss",
+        "output": "style-bar-cellar.css"
+      },
+      {
+        "mod": "sass",
+        "input": "src/scss/theme-menu.scss",
+        "output": "style-menu.css"
+      },
+      {
         "mod": "esbuild",
         "input": "src/typescript/main.ts",
         "output": "script.js",
@@ -1214,7 +1224,9 @@
           "youtube.html",
           "icq.html",
           "shelf.html",
-          "vinyl.html"
+          "vinyl.html",
+          "bar-cellar.html",
+          "menu.html"
         ]
       },
       {
@@ -1233,7 +1245,9 @@
           "youtube.html",
           "icq.html",
           "shelf.html",
-          "vinyl.html"
+          "vinyl.html",
+          "bar-cellar.html",
+          "menu.html"
         ]
       },
       {
@@ -1257,6 +1271,8 @@
           "icq.html",
           "shelf.html",
           "vinyl.html",
+          "bar-cellar.html",
+          "menu.html",
           "script.js",
           "style.css",
           "style-mysocials.css",
@@ -1286,6 +1302,8 @@
           "./icq.html",
           "./shelf.html",
           "./vinyl.html",
+          "./bar-cellar.html",
+          "./menu.html",
           "./script.js",
           "./style.css",
           "./style-mysocials.css",

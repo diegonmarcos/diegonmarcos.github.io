@@ -306,6 +306,8 @@
         "sass",
         "sass",
         "sass",
+        "sass",
+        "sass",
         "esbuild",
         "copy",
         "sw_register",

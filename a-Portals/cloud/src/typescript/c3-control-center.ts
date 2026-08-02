@@ -7,6 +7,8 @@ import {
     c3, c3All, c3Post, getCached, getMode, setMode, onModeChange, REGISTRY, lastErrors,
     c3ContainerInspect, c3ContainerStats, c3ContainerLogsMock, c3ContainerExec, EXEC_COMMAND_ALLOWLIST, C3_BASE,
 } from './c3-api';
+import { initC3Nav, C3_NAV_SECTIONS, demoNav } from './c3-nav';
+import { initC3Reports } from './c3-reports';
 
 const TAB_KEYS: Record<string, string[]> = {
     topology: ['topology', 'topology-network', 'topology-drift'],
@@ -605,18 +607,36 @@ export function initC3ControlCenter(): void {
         await renderAllTabs();
     });
 
-    document.querySelectorAll<HTMLButtonElement>('[data-c3-tab]').forEach((btn) => {
-        btn.addEventListener('click', () => {
-            document.querySelectorAll('[data-c3-tab]').forEach((b) => b.classList.remove('active'));
-            btn.classList.add('active');
-            const tab = btn.dataset.c3Tab as string;
-            document.querySelectorAll('.c3-tab-content').forEach((c) => c.classList.remove('active'));
-            document.getElementById('c3-tab-' + tab)?.classList.add('active');
-        });
+    let currentTab = 'topology';
+
+    function selectTab(tab: string): void {
+        currentTab = tab;
+        // The nav lists each report family as its own entry, keyed
+        // `reports:<family>`. Those all share the one `reports` panel, so the
+        // panel id uses the base key while the suffix selects the family.
+        const [base, sub] = tab.split(':');
+        document.querySelectorAll('.c3-tab-content').forEach((c) => c.classList.remove('active'));
+        document.getElementById('c3-tab-' + base)?.classList.add('active');
+        nav.setActive(tab);
+        if (base === 'reports') {
+            const reportsRoot = document.getElementById('c3-reports-root');
+            if (reportsRoot) initC3Reports(reportsRoot, sub);
+        }
+    }
+
+    // Deliverable 1 + 2: single declarative section->tabs taxonomy renders
+    // BOTH the horizontal tab bar (#c3-tabbar) and the hamburger drawer.
+    const nav = initC3Nav({
+        sections: C3_NAV_SECTIONS,
+        tabBarEl: document.getElementById('c3-tabbar'),
+        getActive: () => currentTab,
+        onSelect: (tab) => selectTab(tab),
     });
+    demoNav();
 
     wireDrawerChrome();
     renderAllTabs();
+    selectTab('topology');
 }
 
 // Keep the registry re-export around for the selfcheck script / debugging.

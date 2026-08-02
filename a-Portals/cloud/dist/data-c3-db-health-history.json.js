@@ -4,12 +4,7 @@
   var g = (typeof globalThis !== "undefined") ? globalThis : (typeof window !== "undefined" ? window : this);
   g.PORTAL_DATA = g.PORTAL_DATA || {};
   g.PORTAL_DATA["c3-db-health-history"] = {
-  "history": [
-    {
-      "ts": "2026-08-01T08:00:00Z",
-      "service": "caddy",
-      "status": "ok"
-    }
-  ]
+ "error": "querystring must have required property 'vm'",
+ "statusCode": 400
 };
 })();

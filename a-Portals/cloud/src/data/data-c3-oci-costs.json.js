@@ -4,8 +4,8 @@
   var g = (typeof globalThis !== "undefined") ? globalThis : (typeof window !== "undefined" ? window : this);
   g.PORTAL_DATA = g.PORTAL_DATA || {};
   g.PORTAL_DATA["c3-oci-costs"] = {
-  "monthly_usd": 0.0,
-  "note": "Oracle Always Free tier \u2014 3x Ampere/E2 micro instances",
-  "breakdown": []
+ "ok": false,
+ "costs": [],
+ "error": "No OCI tenancy ID found. Set OCI_COMPARTMENT_ID or configure ~/.oci/config"
 };
 })();

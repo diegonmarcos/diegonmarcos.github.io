@@ -3,132 +3,42 @@
 (function () {
   var g = (typeof globalThis !== "undefined") ? globalThis : (typeof window !== "undefined" ? window : this);
   g.PORTAL_DATA = g.PORTAL_DATA || {};
-  g.PORTAL_DATA["c3-health-tier1"] = {
-  "results": [
-    {
-      "service": "c3-infra-api",
-      "vm": "oci-apps",
-      "status": "ok",
-      "checkedAt": "2026-08-01T09:00:00Z"
-    },
-    {
-      "service": "c3-public-api",
-      "vm": "oci-apps",
-      "status": "ok",
-      "checkedAt": "2026-08-01T09:00:00Z"
-    },
-    {
-      "service": "c3-services-api",
-      "vm": "oci-apps",
-      "status": "ok",
-      "checkedAt": "2026-08-01T09:00:00Z"
-    },
-    {
-      "service": "c3-infra-mcp",
-      "vm": "oci-apps",
-      "status": "ok",
-      "checkedAt": "2026-08-01T09:00:00Z"
-    },
-    {
-      "service": "google-personal-mcp",
-      "vm": "oci-apps",
-      "status": "ok",
-      "checkedAt": "2026-08-01T09:00:00Z"
-    },
-    {
-      "service": "authelia",
-      "vm": "oci-apps",
-      "status": "ok",
-      "checkedAt": "2026-08-01T09:00:00Z"
-    },
-    {
-      "service": "caddy",
-      "vm": "oci-apps",
-      "status": "ok",
-      "checkedAt": "2026-08-01T09:00:00Z"
-    },
-    {
-      "service": "caddy-public",
-      "vm": "oci-apps",
-      "status": "ok",
-      "checkedAt": "2026-08-01T09:00:00Z"
-    },
-    {
-      "service": "crowdsec",
-      "vm": "oci-apps",
-      "status": "ok",
-      "checkedAt": "2026-08-01T09:00:00Z"
-    },
-    {
-      "service": "introspect-proxy",
-      "vm": "oci-apps",
-      "status": "ok",
-      "checkedAt": "2026-08-01T09:00:00Z"
-    },
-    {
-      "service": "dagu",
-      "vm": "oci-analytics",
-      "status": "ok",
-      "checkedAt": "2026-08-01T09:00:00Z"
-    },
-    {
-      "service": "dbgate",
-      "vm": "oci-apps",
-      "status": "ok",
-      "checkedAt": "2026-08-01T09:00:00Z"
-    },
-    {
-      "service": "matomo",
-      "vm": "oci-analytics",
-      "status": "ok",
-      "checkedAt": "2026-08-01T09:00:00Z"
-    },
-    {
-      "service": "umami",
-      "vm": "oci-analytics",
-      "status": "ok",
-      "checkedAt": "2026-08-01T09:00:00Z"
-    },
-    {
-      "service": "openobserve",
-      "vm": "oci-apps",
-      "status": "ok",
-      "checkedAt": "2026-08-01T09:00:00Z"
-    },
-    {
-      "service": "ntfy",
-      "vm": "oci-apps",
-      "status": "ok",
-      "checkedAt": "2026-08-01T09:00:00Z"
-    },
-    {
-      "service": "cloud-spec",
-      "vm": "oci-apps",
-      "status": "ok",
-      "checkedAt": "2026-08-01T09:00:00Z"
-    },
-    {
-      "service": "postlite",
-      "vm": "oci-apps",
-      "status": "ok",
-      "checkedAt": "2026-08-01T09:00:00Z"
-    },
-    {
-      "service": "redis",
-      "vm": "oci-apps",
-      "status": "ok",
-      "checkedAt": "2026-08-01T09:00:00Z"
-    },
-    {
-      "service": "hickory-dns",
-      "vm": "oci-mail",
-      "status": "ok",
-      "checkedAt": "2026-08-01T09:00:00Z"
-    }
-  ],
-  "summary": {
-    "ok": 19,
-    "fail": 1
-  }
-};
+  g.PORTAL_DATA["c3-health-tier1"] = [
+ {
+  "vm": "oci-E2-f_0",
+  "alias": "oci-mail",
+  "ip": "vm-oci-obs",
+  "reachable": true,
+  "latencyMs": 2879
+ },
+ {
+  "vm": "oci-E2-f_1",
+  "alias": "oci-analytics",
+  "ip": "vm-oci-apps",
+  "reachable": true,
+  "latencyMs": 3059
+ },
+ {
+  "vm": "oci-A1-f_0",
+  "alias": "oci-apps",
+  "ip": "82.70.229.129",
+  "reachable": true,
+  "latencyMs": 275
+ },
+ {
+  "vm": "gcp-E2-f_0",
+  "alias": "gcp-proxy",
+  "ip": "35.226.147.64",
+  "reachable": true,
+  "latencyMs": 1612
+ },
+ {
+  "vm": "vast-RTX-p_0",
+  "alias": "vast-ollama",
+  "ip": "TBD",
+  "reachable": false,
+  "latencyMs": 123,
+  "error": "ssh: Could not resolve hostname vast-ollama: Name or service not known"
+ }
+];
 })();

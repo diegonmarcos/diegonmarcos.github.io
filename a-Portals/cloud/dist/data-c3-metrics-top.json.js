@@ -4,17 +4,108 @@
   var g = (typeof globalThis !== "undefined") ? globalThis : (typeof window !== "undefined" ? window : this);
   g.PORTAL_DATA = g.PORTAL_DATA || {};
   g.PORTAL_DATA["c3-metrics-top"] = {
-  "by": "cpu",
-  "top": [
-    { "target": "oci-apps", "metric": "cpu", "value": 62.4, "ts": "2026-08-01T08:55:00Z" },
-    { "target": "oci-db", "metric": "cpu", "value": 41.1, "ts": "2026-08-01T08:55:00Z" },
-    { "target": "gcp-mesh", "metric": "cpu", "value": 33.7, "ts": "2026-08-01T08:55:00Z" },
-    { "target": "c3-infra-api", "metric": "cpu", "value": 28.9, "ts": "2026-08-01T08:55:00Z" },
-    { "target": "caddy-public", "metric": "cpu", "value": 22.2, "ts": "2026-08-01T08:55:00Z" },
-    { "target": "crowdsec", "metric": "cpu", "value": 18.6, "ts": "2026-08-01T08:55:00Z" },
-    { "target": "matomo", "metric": "cpu", "value": 12.3, "ts": "2026-08-01T08:55:00Z" },
-    { "target": "dagu", "metric": "cpu", "value": 9.5, "ts": "2026-08-01T08:55:00Z" }
-  ]
-}
-;
+ "by": "cpu",
+ "top": [
+  {
+   "target": "c3-infra-api",
+   "value": 117.06,
+   "ts": "2026-08-02T09:13:03Z"
+  },
+  {
+   "target": "loving_poitras",
+   "value": 6.73,
+   "ts": "2026-08-02T08:59:52Z"
+  },
+  {
+   "target": "crazy_bell",
+   "value": 3.94,
+   "ts": "2026-08-02T08:59:52Z"
+  },
+  {
+   "target": "boring_poincare",
+   "value": 2.72,
+   "ts": "2026-08-02T08:59:52Z"
+  },
+  {
+   "target": "dagu",
+   "value": 2.07,
+   "ts": "2026-08-02T09:13:03Z"
+  },
+  {
+   "target": "paca-realtime",
+   "value": 1.74,
+   "ts": "2026-08-02T09:13:03Z"
+  },
+  {
+   "target": "matrix-element",
+   "value": 1.46,
+   "ts": "2026-08-02T09:13:03Z"
+  },
+  {
+   "target": "caddy",
+   "value": 0.79,
+   "ts": "2026-08-02T09:13:44Z"
+  },
+  {
+   "target": "etherpad_app",
+   "value": 0.51,
+   "ts": "2026-08-02T09:13:03Z"
+  },
+  {
+   "target": "authelia-redis",
+   "value": 0.51,
+   "ts": "2026-08-02T09:13:44Z"
+  },
+  {
+   "target": "send_redis",
+   "value": 0.49,
+   "ts": "2026-08-02T09:13:03Z"
+  },
+  {
+   "target": "claude-superset-api",
+   "value": 0.48,
+   "ts": "2026-08-02T09:13:03Z"
+  },
+  {
+   "target": "hedgedoc_app",
+   "value": 0.46,
+   "ts": "2026-08-02T09:13:03Z"
+  },
+  {
+   "target": "hickory-dns",
+   "value": 0.45,
+   "ts": "2026-08-02T09:13:44Z"
+  },
+  {
+   "target": "redis",
+   "value": 0.24,
+   "ts": "2026-08-02T09:13:44Z"
+  },
+  {
+   "target": "c3-services-api",
+   "value": 0.22,
+   "ts": "2026-08-02T09:13:03Z"
+  },
+  {
+   "target": "openobserve",
+   "value": 0.22,
+   "ts": "2026-08-02T09:13:03Z"
+  },
+  {
+   "target": "languagetool",
+   "value": 0.2,
+   "ts": "2026-08-02T09:13:03Z"
+  },
+  {
+   "target": "paca-valkey",
+   "value": 0.2,
+   "ts": "2026-08-02T09:13:03Z"
+  },
+  {
+   "target": "google-workspace-mcp",
+   "value": 0.18,
+   "ts": "2026-08-02T09:01:46Z"
+  }
+ ]
+};
 })();

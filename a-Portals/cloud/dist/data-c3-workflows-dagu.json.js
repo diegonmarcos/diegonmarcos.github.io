@@ -4,17 +4,7 @@
   var g = (typeof globalThis !== "undefined") ? globalThis : (typeof window !== "undefined" ? window : this);
   g.PORTAL_DATA = g.PORTAL_DATA || {};
   g.PORTAL_DATA["c3-workflows-dagu"] = {
-  "dags": [
-    {
-      "name": "nightly-backup",
-      "status": "success",
-      "lastRun": "2026-08-01T03:00:00Z"
-    },
-    {
-      "name": "health-sweep",
-      "status": "success",
-      "lastRun": "2026-08-01T08:00:00Z"
-    }
-  ]
+ "dags": [],
+ "error": "Unexpected token '<', \"\n<!DOCTYPE \"... is not valid JSON"
 };
 })();

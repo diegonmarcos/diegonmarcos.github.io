@@ -4,17 +4,7 @@
   var g = (typeof globalThis !== "undefined") ? globalThis : (typeof window !== "undefined" ? window : this);
   g.PORTAL_DATA = g.PORTAL_DATA || {};
   g.PORTAL_DATA["c3-security-docker"] = {
-  "vm": "oci-apps",
-  "checks": [
-    {
-      "check": "no-new-privileges",
-      "status": "ok"
-    },
-    {
-      "check": "read-only-rootfs",
-      "status": "warn",
-      "detail": "3 containers writable"
-    }
-  ]
+ "error": "querystring must have required property 'vm'",
+ "statusCode": 400
 };
 })();

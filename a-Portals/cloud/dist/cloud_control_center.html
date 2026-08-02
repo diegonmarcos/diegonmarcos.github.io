@@ -208,25 +208,8 @@
                 </div>
                 <div class="c3-banner" id="c3-banner"></div>
 
-                <!-- Level 2: Dashboard Tabs -->
-                <div class="nav-level2 active">
-                    <button class="view-btn active" data-c3-tab="topology">Topology</button>
-                    <button class="view-btn" data-c3-tab="health">Health</button>
-                    <button class="view-btn" data-c3-tab="resources">Resources</button>
-                    <button class="view-btn" data-c3-tab="profiling">Profiling</button>
-                    <button class="view-btn" data-c3-tab="security">Security</button>
-                    <button class="view-btn" data-c3-tab="cost">Cost</button>
-                    <button class="view-btn" data-c3-tab="workflows">Workflows</button>
-                    <button class="view-btn" data-c3-tab="audit">Audit</button>
-                    <button class="view-btn" data-c3-tab="infra">Infra</button>
-                    <button class="view-btn" data-c3-tab="apps">Apps</button>
-                    <button class="view-btn" data-c3-tab="metrics">Metrics</button>
-                    <button class="view-btn" data-c3-tab="alerts">Alerts</button>
-                    <button class="view-btn" data-c3-tab="events">Events</button>
-                    <button class="view-btn" data-c3-tab="slo">SLO</button>
-                    <span class="nav-divider"></span>
-                    <button class="view-btn" data-c3-tab="ops">Ops</button>
-                </div>
+                <!-- Level 2: Dashboard Tabs — rendered from the single section->tabs taxonomy in c3-nav.ts (initC3Nav), which also drives the hamburger drawer. -->
+                <div class="nav-level2 active" id="c3-tabbar"></div>
 
                 <div class="c3-tab-content active" id="c3-tab-topology">
                     <h2 class="nav-level3-title">Topology</h2>
@@ -358,6 +341,13 @@
                     <h2 class="nav-level3-title">Ops</h2>
                     <div class="card-box">
                         <div id="c3-ops-table"></div>
+                    </div>
+                </div>
+
+                <div class="c3-tab-content" id="c3-tab-reports">
+                    <h2 class="nav-level3-title">Reports</h2>
+                    <div class="card-box">
+                        <div id="c3-reports-root"></div>
                     </div>
                 </div>
 

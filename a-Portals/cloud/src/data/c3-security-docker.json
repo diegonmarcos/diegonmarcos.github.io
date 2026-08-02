@@ -1,14 +1,4 @@
 {
-  "vm": "oci-apps",
-  "checks": [
-    {
-      "check": "no-new-privileges",
-      "status": "ok"
-    },
-    {
-      "check": "read-only-rootfs",
-      "status": "warn",
-      "detail": "3 containers writable"
-    }
-  ]
+ "error": "querystring must have required property 'vm'",
+ "statusCode": 400
 }

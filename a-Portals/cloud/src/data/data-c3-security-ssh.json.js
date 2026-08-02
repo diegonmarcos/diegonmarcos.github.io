@@ -4,18 +4,7 @@
   var g = (typeof globalThis !== "undefined") ? globalThis : (typeof window !== "undefined" ? window : this);
   g.PORTAL_DATA = g.PORTAL_DATA || {};
   g.PORTAL_DATA["c3-security-ssh"] = {
-  "vm": "oci-apps",
-  "checks": [
-    {
-      "check": "PermitRootLogin",
-      "status": "ok",
-      "value": "no"
-    },
-    {
-      "check": "PasswordAuthentication",
-      "status": "ok",
-      "value": "no"
-    }
-  ]
+ "error": "querystring must have required property 'vm'",
+ "statusCode": 400
 };
 })();

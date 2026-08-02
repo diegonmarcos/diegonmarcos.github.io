@@ -34,6 +34,8 @@
     <script src="data-youtube.json.js"></script>
     <script src="data-shelf.json.js"></script>
     <script src="data-vinyl.json.js"></script>
+    <script src="data-bar-cellar.json.js"></script>
+    <script src="data-menu.json.js"></script>
     <script>(function(){var d=globalThis.PORTAL_DATA&&PORTAL_DATA["mySocials"];if(d&&d.title)document.title=d.title;})();</script>
 <!-- sw-register: injected by mod_sw_register — DO NOT EDIT BY HAND. Re-runs are idempotent (the marker comment above gates the injection). -->
 <script>
@@ -151,6 +153,8 @@
     <span class="theme-switch__divider">|</span>
     <button class="theme-switch__btn" data-theme-btn="tidal">TIDAL</button>
     <button class="theme-switch__btn" data-theme-btn="vinyl">vinyl</button>
+    <button class="theme-switch__btn" data-theme-btn="bar-cellar">bar cellar</button>
+    <button class="theme-switch__btn" data-theme-btn="menu">menu</button>
     <span class="theme-switch__divider">|</span>
     <button class="theme-switch__btn" data-theme-btn="shelf">shelf</button>
     <span class="theme-switch__divider">|</span>
@@ -299,6 +303,12 @@
 
   <!-- ═══════════════ VINYL VIEW (rendered by JS) ═══════════════ -->
   <div class="view view--vinyl" id="vinyl-view"></div>
+
+  <!-- ═══════════════ BAR CELLAR VIEW (rendered by JS) ═══════════════ -->
+  <div class="view view--bar-cellar" id="bar-cellar-view"></div>
+
+  <!-- ═══════════════ MENU VIEW (rendered by JS) ═══════════════ -->
+  <div class="view view--menu" id="menu-view"></div>
 
   <script src="script.js"></script>
 </body>

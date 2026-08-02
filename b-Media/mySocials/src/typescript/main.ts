@@ -1443,6 +1443,8 @@ function renderMySocials(): void {
   const yt = (globalThis as { PORTAL_DATA?: Record<string, { playlists?: { videos?: { thumbnail: string }[] }[] }> }).PORTAL_DATA?.youtube;
   const shelfD = g.shelf as unknown as ShelfData | undefined;
   const vinylD = g.vinyl as unknown as VinylData | undefined;
+  const barCellarD = g['bar-cellar'] as unknown as BarCellarData | undefined;
+  const menuD = g['menu'] as unknown as MenuData | undefined;
 
   const bookCover = (isbn: string) => `https://covers.openlibrary.org/b/isbn/${isbn}-M.jpg`;
   const vinylCover = (mbid: string) => `https://coverartarchive.org/release/${mbid}/front-250`;
@@ -1471,6 +1473,10 @@ function renderMySocials(): void {
     ] },
     { label: 'Project', cards: [
       { theme: 'linkedin', label: 'LinkedIn', meta: li ? `${li.profile.connections} connections · ${li.profile.followers.toLocaleString()} followers` : 'profile', color: '#0a66c2', imgs: li?.profile.photo ? [li.profile.photo] : [] },
+    ] },
+    { label: 'Food & Drink', cards: [
+      { theme: 'bar-cellar', label: 'Bar Cellar', meta: 'wine cellar · 3D', color: '#6b1a1a', imgs: [] },
+      { theme: 'menu', label: 'Menu', meta: 'casa marcos · cuisine & vins', color: '#8b6914', imgs: [] },
     ] },
     { label: 'Others', cards: [
       { theme: 'orkut', label: 'Orkut', meta: 'the classic profile', color: '#e9008c', imgs: [] },
@@ -1941,6 +1947,13 @@ function renderShelf(): void {
 interface VinylRecord { title: string; artist: string; year: number; mbid: string; color: string; }
 interface VinylData { vinyls: VinylRecord[]; }
 
+interface BarCellarWine { name: string; producer: string; year: number; region: string; variety: string; foil: string; glass: string; }
+interface BarCellarData { wines: BarCellarWine[]; }
+
+interface MenuItem { name: string; description: string; price: string; }
+interface MenuSection { title: string; items: MenuItem[]; }
+interface MenuData { name: string; subtitle: string; sections: MenuSection[]; }
+
 let _vinylDone = false;
 
 function renderVinyl(): void {
@@ -2168,10 +2181,237 @@ function renderVinyl(): void {
   }
 }
 
+// ─── BAR CELLAR ──────────────────────────────────────────────────────────────
+
+let _barCellarDone = false;
+function renderBarCellar(): void {
+  const el = document.getElementById('bar-cellar-view');
+  if (!el || _barCellarDone) return;
+  el.innerHTML = '<div class="view--bar-cellar__loading">uncorking…</div>';
+
+  const data = (globalThis as Record<string, unknown> & { PORTAL_DATA?: Record<string, unknown> }).PORTAL_DATA?.['bar-cellar'] as BarCellarData | undefined;
+  if (!data?.wines?.length) { el.innerHTML = '<div class="view--bar-cellar__error">no data</div>'; return; }
+
+  _barCellarDone = true;
+
+  function _boot(T: Record<string, unknown>): void {
+    el!.innerHTML = '';
+    const wines = data!.wines;
+    const COLS = Math.ceil(wines.length / 3);
+    const COL_PITCH = 1.8;
+    const ROW_PITCH = 1.5;
+    const ROWS = 3;
+    const totalW = COLS * COL_PITCH;
+    const baseX = -totalW / 2 + COL_PITCH / 2;
+
+    const Scene = T.Scene as new () => Record<string, unknown>;
+    const PerspectiveCamera = T.PerspectiveCamera as new (fov: number, aspect: number, near: number, far: number) => Record<string, unknown>;
+    const WebGLRenderer = T.WebGLRenderer as new (opts: Record<string, unknown>) => Record<string, unknown>;
+    const AmbientLight = T.AmbientLight as new (color: number, intensity: number) => Record<string, unknown>;
+    const PointLight = T.PointLight as new (color: number, intensity: number, distance: number) => Record<string, unknown>;
+    const MeshLambertMaterial = T.MeshLambertMaterial as new (opts: Record<string, unknown>) => Record<string, unknown>;
+    const MeshBasicMaterial = T.MeshBasicMaterial as new (opts: Record<string, unknown>) => Record<string, unknown>;
+    const CylinderGeometry = T.CylinderGeometry as new (rTop: number, rBot: number, h: number, seg: number) => Record<string, unknown>;
+    const BoxGeometry = T.BoxGeometry as new (x: number, y: number, z: number) => Record<string, unknown>;
+    const Mesh = T.Mesh as new (geo: Record<string, unknown>, mat: Record<string, unknown>) => Record<string, unknown>;
+    const Color = T.Color as new (hex: number | string) => Record<string, unknown>;
+    const Fog = T.Fog as new (color: number, near: number, far: number) => Record<string, unknown>;
+
+    const scene = new Scene();
+    (scene as unknown as { fog: unknown; background: unknown }).fog = new Fog(0x0a0806, 8, 22);
+    (scene as unknown as { background: unknown }).background = new Color(0x0a0806);
+
+    const w = el!.clientWidth || 800, h = el!.clientHeight || 600;
+    const camera = new PerspectiveCamera(50, w / h, 0.1, 30) as unknown as {
+      position: { x: number; y: number; z: number };
+      aspect: number;
+      lookAt(x: number, y: number, z: number): void;
+      updateProjectionMatrix(): void;
+    };
+    camera.position.x = baseX; camera.position.y = 0.5; camera.position.z = 7.5;
+    camera.lookAt(baseX, 0.5, 0);
+
+    const renderer = new WebGLRenderer({ antialias: true }) as unknown as {
+      setSize(w: number, h: number): void;
+      setPixelRatio(r: number): void;
+      render(scene: Record<string, unknown>, camera: Record<string, unknown>): void;
+      domElement: HTMLCanvasElement;
+    };
+    renderer.setSize(w, h);
+    renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
+    el!.appendChild(renderer.domElement);
+
+    // Lighting — warm candlelight
+    const amb = new AmbientLight(0x3a2010, 0.6) as unknown as { position?: unknown };
+    (scene as unknown as { add(o: unknown): void }).add(amb);
+    const candle1 = new PointLight(0xf5a623, 2.5, 12) as unknown as { position: { set(x: number, y: number, z: number): void } };
+    candle1.position.set(baseX - 2, 2.5, 4);
+    (scene as unknown as { add(o: unknown): void }).add(candle1);
+    const candle2 = new PointLight(0xf5a623, 2.0, 12) as unknown as { position: { set(x: number, y: number, z: number): void } };
+    candle2.position.set(baseX + 2, 2.5, 4);
+    (scene as unknown as { add(o: unknown): void }).add(candle2);
+
+    const add = (o: unknown) => (scene as unknown as { add(o: unknown): void }).add(o);
+
+    function mesh(geo: Record<string, unknown>, mat: Record<string, unknown>, x: number, y: number, z: number): Record<string, unknown> {
+      const m = new Mesh(geo, mat);
+      (m as unknown as { position: { set(x: number, y: number, z: number): void } }).position.set(x, y, z);
+      add(m);
+      return m;
+    }
+
+    function box(sx: number, sy: number, sz: number, mat: Record<string, unknown>, x: number, y: number, z: number) {
+      mesh(new BoxGeometry(sx, sy, sz), mat, x, y, z);
+    }
+
+    // Materials
+    const stone = new MeshLambertMaterial({ color: 0x2a2218 });
+    const wood  = new MeshLambertMaterial({ color: 0x5c3a1a });
+    const dwood = new MeshLambertMaterial({ color: 0x3c2510 });
+
+    // Stone floor and back wall
+    box(totalW + 6, 0.15, 8, stone, baseX, -1.2, 0);
+    box(totalW + 6, 6, 0.2, stone, baseX, 1.5, -2.5);
+    box(0.2, 6, 8, stone, baseX - totalW / 2 - 2.5, 1.5, 0);
+    box(0.2, 6, 8, stone, baseX + totalW / 2 + 2.5, 1.5, 0);
+
+    // Rack frame
+    box(totalW + 0.3, 0.12, 0.5, dwood, baseX, -1.0, -0.8);
+    box(totalW + 0.3, 0.12, 0.5, dwood, baseX, -1.0 + ROW_PITCH, -0.8);
+    box(totalW + 0.3, 0.12, 0.5, dwood, baseX, -1.0 + ROW_PITCH * 2, -0.8);
+    box(totalW + 0.3, 0.12, 0.5, dwood, baseX, -1.0 + ROW_PITCH * 3, -0.8);
+    box(0.12, ROW_PITCH * 3 + 0.3, 0.5, wood, baseX - totalW / 2, -1.0 + ROW_PITCH * 1.5, -0.8);
+    box(0.12, ROW_PITCH * 3 + 0.3, 0.5, wood, baseX + totalW / 2, -1.0 + ROW_PITCH * 1.5, -0.8);
+    for (let c = 0; c <= COLS; c++) {
+      box(0.08, ROW_PITCH * 3 + 0.3, 0.5, dwood, baseX - totalW / 2 + c * COL_PITCH, -1.0 + ROW_PITCH * 1.5, -0.8);
+    }
+
+    // Wine bottles — CylinderGeometry rotated so axis goes into screen
+    wines.forEach((wine, i) => {
+      const col = i % COLS;
+      const row = Math.floor(i / COLS);
+      if (row >= ROWS) return;
+      const bx = baseX - totalW / 2 + COL_PITCH * 0.5 + col * COL_PITCH;
+      const by = -0.9 + row * ROW_PITCH;
+      const bz = -1.0;
+
+      const glassColor = parseInt(wine.glass.replace('#', ''), 16);
+      const foilColor  = parseInt(wine.foil.replace('#', ''), 16);
+      const glassMat = new MeshLambertMaterial({ color: glassColor });
+      const foilMat  = new MeshBasicMaterial({ color: foilColor });
+
+      // Bottle body (cylinder along Z axis)
+      const bodyGeo = new CylinderGeometry(0.1, 0.1, 1.0, 20);
+      const body = new Mesh(bodyGeo, glassMat);
+      (body as unknown as { position: { set(x: number, y: number, z: number): void }; rotation: { x: number } }).position.set(bx, by, bz);
+      (body as unknown as { rotation: { x: number } }).rotation.x = Math.PI / 2;
+      add(body);
+
+      // Neck
+      const neckGeo = new CylinderGeometry(0.05, 0.07, 0.28, 16);
+      const neck = new Mesh(neckGeo, glassMat);
+      (neck as unknown as { position: { set(x: number, y: number, z: number): void }; rotation: { x: number } }).position.set(bx, by, bz - 0.62);
+      (neck as unknown as { rotation: { x: number } }).rotation.x = Math.PI / 2;
+      add(neck);
+
+      // Foil cap
+      const foilGeo = new CylinderGeometry(0.055, 0.055, 0.12, 16);
+      const foil = new Mesh(foilGeo, foilMat);
+      (foil as unknown as { position: { set(x: number, y: number, z: number): void }; rotation: { x: number } }).position.set(bx, by, bz - 0.81);
+      (foil as unknown as { rotation: { x: number } }).rotation.x = Math.PI / 2;
+      add(foil);
+    });
+
+    // Pan state
+    let panX = baseX;
+    let targetX = baseX;
+    let dragStart = -1;
+    let dragStartPanX = baseX;
+
+    el!.addEventListener('pointerdown', (e: PointerEvent) => {
+      dragStart = e.clientX;
+      dragStartPanX = targetX;
+    });
+    el!.addEventListener('pointermove', (e: PointerEvent) => {
+      if (dragStart < 0) return;
+      const dx = (e.clientX - dragStart) / el!.clientWidth * totalW * 1.2;
+      targetX = Math.max(baseX - totalW * 0.3, Math.min(baseX + totalW * 0.3, dragStartPanX - dx));
+    });
+    el!.addEventListener('pointerup', () => { dragStart = -1; });
+    el!.addEventListener('pointerleave', () => { dragStart = -1; });
+
+    let t = 0;
+    function animate() {
+      requestAnimationFrame(animate);
+      t += 0.01;
+      panX += (targetX - panX) * 0.08;
+      // Gentle candle flicker
+      (candle1 as unknown as { intensity: number }).intensity = 2.5 + Math.sin(t * 3.7) * 0.3;
+      (candle2 as unknown as { intensity: number }).intensity = 2.0 + Math.sin(t * 4.1 + 1.2) * 0.25;
+      camera.position.x += (panX - camera.position.x) * 0.1;
+      camera.lookAt(panX, 0.5, 0);
+      renderer.render(scene as unknown as Record<string, unknown>, camera as unknown as Record<string, unknown>);
+    }
+    animate();
+
+    const ro = new (window as unknown as { ResizeObserver: new (cb: () => void) => { observe(el: Element): void; disconnect(): void } }).ResizeObserver(() => {
+      const nW = el!.clientWidth, nH = el!.clientHeight;
+      renderer.setSize(nW, nH);
+      camera.aspect = nW / nH;
+      camera.updateProjectionMatrix();
+    });
+    ro.observe(el!);
+  }
+
+  try {
+    _boot(THREE_NS as unknown as Record<string, unknown>);
+  } catch (err) {
+    console.error('[bar-cellar] THREE boot failed', err);
+    (window as { consoleLogs?: { captureException?: (e: unknown) => void } }).consoleLogs?.captureException?.(err);
+    el!.innerHTML = `<div class="view--bar-cellar__error">bar cellar failed to render: ${esc(String((err as Error)?.message ?? err))}</div>`;
+  }
+}
+
+// ─── MENU ────────────────────────────────────────────────────────────────────
+
+function renderMenu(): void {
+  const el = document.getElementById('menu-view');
+  if (!el) return;
+
+  const data = (globalThis as Record<string, unknown> & { PORTAL_DATA?: Record<string, unknown> }).PORTAL_DATA?.['menu'] as MenuData | undefined;
+  if (!data?.sections?.length) { el.innerHTML = '<div class="view--menu__error">no data</div>'; return; }
+
+  const sections = data.sections.map(s => `
+    <div class="menu-card__section">
+      <h3 class="menu-card__section-title">${esc(s.title)}</h3>
+      ${s.items.map(item => `
+        <div class="menu-card__item">
+          <div class="menu-card__item-info">
+            <span class="menu-card__item-name">${esc(item.name)}</span>
+            <span class="menu-card__item-desc">${esc(item.description)}</span>
+          </div>
+          <span class="menu-card__item-price">${esc(item.price)} €</span>
+        </div>
+      `).join('')}
+    </div>
+  `).join('');
+
+  el.innerHTML = `
+    <div class="menu-card">
+      <header class="menu-card__header">
+        <h1 class="menu-card__name">${esc(data.name)}</h1>
+        <p class="menu-card__subtitle">${esc(data.subtitle)}</p>
+      </header>
+      ${sections}
+      <footer class="menu-card__footer">bon appétit &middot; bom proveito</footer>
+    </div>
+  `;
+}
+
 // ─── THEME SWITCHER ──────────────────────────────────────────────────────────
 
-type Theme = 'mysocials' | 'orkut' | 'instagram-diegonmarcos' | 'instagram-diegocmarcos_' | 'instagram-diegocnmarcos_' | 'linkedin' | 'pinterest' | 'tidal' | 'strava' | 'youtube' | 'icq' | 'shelf' | 'vinyl';
-const THEMES: Theme[] = ['mysocials', 'orkut', 'instagram-diegonmarcos', 'instagram-diegocmarcos_', 'instagram-diegocnmarcos_', 'linkedin', 'pinterest', 'tidal', 'strava', 'youtube', 'icq', 'shelf', 'vinyl'];
+type Theme = 'mysocials' | 'orkut' | 'instagram-diegonmarcos' | 'instagram-diegocmarcos_' | 'instagram-diegocnmarcos_' | 'linkedin' | 'pinterest' | 'tidal' | 'strava' | 'youtube' | 'icq' | 'shelf' | 'vinyl' | 'bar-cellar' | 'menu';
+const THEMES: Theme[] = ['mysocials', 'orkut', 'instagram-diegonmarcos', 'instagram-diegocmarcos_', 'instagram-diegocnmarcos_', 'linkedin', 'pinterest', 'tidal', 'strava', 'youtube', 'icq', 'shelf', 'vinyl', 'bar-cellar', 'menu'];
 
 // Each theme is a real static page (orkut.html, instagram.html, ...) — except
 // 'mysocials', whose page is index.html (the site's front door).
@@ -2267,6 +2507,8 @@ function init(): void {
   renderMySocials();
   renderShelf();
   renderVinyl();
+  renderBarCellar();
+  renderMenu();
   initThemeSwitcher();
 
   // Animate trust meter bars on load

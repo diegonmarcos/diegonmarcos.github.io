@@ -12,8 +12,10 @@ html[data-theme='tidal']     .view--tidal,
 html[data-theme='strava']    .view--strava,
 html[data-theme='youtube']   .view--youtube,
 html[data-theme='icq']       .view--icq { display: block; }
-html[data-theme='shelf']   .view--shelf { display: block; }
-html[data-theme='vinyl']     .view--vinyl { display: block; }
+html[data-theme='shelf']      .view--shelf { display: block; }
+html[data-theme='vinyl']      .view--vinyl { display: block; }
+html[data-theme='bar-cellar'] .view--bar-cellar { display: block; }
+html[data-theme='menu']       .view--menu { display: block; }
 html[data-theme='vinyl']     body { background: #0d0805; color: #c49a3c; }
 
 // Per-theme page background.
@@ -26,4 +28,6 @@ html[data-theme='tidal']     body { background: #000000; color: #ffffff; }
 html[data-theme='strava']    body { background: #f7f7f7; color: #242428; }
 html[data-theme='youtube']   body { background: #f9f9f9; color: #0f0f0f; }
 html[data-theme='icq']       body { background: #0c2624; color: #e6e6e6; } // dark teal desktop
-html[data-theme='shelf']   body { background: #1a0f05; color: #c49a3c; }
+html[data-theme='shelf']      body { background: #1a0f05; color: #c49a3c; }
+html[data-theme='bar-cellar'] body { background: #08060302; color: #c49a3c; }
+html[data-theme='menu']       body { background: #f5f0e8; color: #1a1008; }

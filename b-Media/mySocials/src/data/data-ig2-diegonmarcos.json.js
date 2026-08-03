@@ -1,9 +1,9 @@
-// GENERATED FROM instagram.json by front-data-json-js-wrapper.sh — DO NOT EDIT BY HAND.
+// GENERATED FROM ig2-diegonmarcos.json by front-data-json-js-wrapper.sh — DO NOT EDIT BY HAND.
 // Re-generate with: bash a-Portals/linktree/src/data/build.sh
 (function () {
   var g = (typeof globalThis !== "undefined") ? globalThis : (typeof window !== "undefined" ? window : this);
   g.PORTAL_DATA = g.PORTAL_DATA || {};
-  g.PORTAL_DATA["instagram"] = {
+  g.PORTAL_DATA["ig2-diegonmarcos"] = {
   "_description": "Instagram export (diegonmarcos), parsed by extract_ig.py. All activity except DMs. Email/phone excluded. following/followers are the date-ranged export subset; *_total are the real live counts. Extended by Claude on 2026-07-11 from full JSON takeout (Drive) with archived_posts, reposts, story_quizzes/questions/polls/emoji_sliders, saved_music, saved_collections, other_content. DMs/messages excluded. Email/phone/payment (shopping+monetization) excluded.",
   "profile": {
     "username": "diegonmarcos",

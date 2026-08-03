@@ -1322,7 +1322,7 @@ function renderICQ(): void {
   if (!view) return;
   const g = (globalThis as { PORTAL_DATA?: Record<string, IGData & LIData> }).PORTAL_DATA || {};
   const li = g.linkedin as LIData | undefined;
-  const ig = g.instagram as IGData | undefined;
+  const ig = g['ig2-diegonmarcos'] as IGData | undefined;
 
   const name = li?.profile.name || 'Diego Nepomuceno Marcos';
   const nick = ig?.profile.username || 'diegonmarcos';
@@ -1434,7 +1434,7 @@ function renderMySocials(): void {
   const view = document.getElementById('me-view');
   if (!view) return;
   const g = (globalThis as { PORTAL_DATA?: Record<string, IGData & LIData> }).PORTAL_DATA || {};
-  const ig = g.instagram as IGData | undefined;
+  const ig = g['ig2-diegonmarcos'] as IGData | undefined;
   const li = g.linkedin as LIData | undefined;
 
   // Each card jumps to that network's view. Metrics + sample images are real, from the parsed data.
@@ -1481,7 +1481,6 @@ function renderMySocials(): void {
     { label: 'Others', cards: [
       { theme: 'orkut', label: 'Orkut', meta: 'the classic profile', color: '#e9008c', imgs: [] },
       { theme: 'icq', label: 'ICQ', meta: 'retro IM · user details', color: '#0a870a', imgs: [] },
-      { theme: 'strava', label: 'Strava', meta: 'activities & routes', color: '#fc5200', imgs: [] },
     ] },
   ];
 
@@ -2410,8 +2409,8 @@ function renderMenu(): void {
 
 // ─── THEME SWITCHER ──────────────────────────────────────────────────────────
 
-type Theme = 'mysocials' | 'orkut' | 'instagram-diegonmarcos' | 'instagram-diegocmarcos_' | 'instagram-diegocnmarcos_' | 'linkedin' | 'pinterest' | 'tidal' | 'strava' | 'youtube' | 'icq' | 'shelf' | 'vinyl' | 'bar-cellar' | 'menu';
-const THEMES: Theme[] = ['mysocials', 'orkut', 'instagram-diegonmarcos', 'instagram-diegocmarcos_', 'instagram-diegocnmarcos_', 'linkedin', 'pinterest', 'tidal', 'strava', 'youtube', 'icq', 'shelf', 'vinyl', 'bar-cellar', 'menu'];
+type Theme = 'mysocials' | 'orkut' | 'instagram-diegonmarcos' | 'instagram-diegocmarcos_' | 'instagram-diegocnmarcos_' | 'linkedin' | 'pinterest' | 'tidal' | 'youtube' | 'icq' | 'shelf' | 'vinyl' | 'bar-cellar' | 'menu';
+const THEMES: Theme[] = ['mysocials', 'orkut', 'instagram-diegonmarcos', 'instagram-diegocmarcos_', 'instagram-diegocnmarcos_', 'linkedin', 'pinterest', 'tidal', 'youtube', 'icq', 'shelf', 'vinyl', 'bar-cellar', 'menu'];
 
 // Each theme is a real static page (orkut.html, instagram.html, ...) — except
 // 'mysocials', whose page is index.html (the site's front door).
@@ -2501,7 +2500,6 @@ function init(): void {
   renderLinkedin();
   renderPinterest();
   renderTidal();
-  renderStrava();
   renderYoutube();
   renderICQ();
   renderMySocials();

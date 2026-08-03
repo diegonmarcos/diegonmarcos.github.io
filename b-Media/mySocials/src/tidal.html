@@ -36,6 +36,7 @@
     <script src="data-shelf.json.js"></script>
     <script src="data-vinyl.json.js"></script>
     <script src="data-bar-cellar.json.js"></script>
+    <script src="data-theater.json.js"></script>
     <script src="data-menu.json.js"></script>
     <script>(function(){var d=globalThis.PORTAL_DATA&&PORTAL_DATA["mySocials"];if(d&&d.title)document.title=d.title;})();</script>
   </head>
@@ -61,6 +62,8 @@
       <button class="theme-switch__btn" data-theme-btn="bar-cellar">Bar</button>
       <span class="theme-switch__divider">|</span>
       <button class="theme-switch__btn" data-theme-btn="menu">Menu</button>
+              <span class="theme-switch__divider">|</span>
+              <button class="theme-switch__btn" data-theme-btn="theater">Theater</button>
       <span class="theme-switch__divider">|</span>
       <button class="theme-switch__btn" data-theme-btn="story">Story</button>
     </div>
@@ -226,5 +229,9 @@
   <div class="view view--menu" id="menu-view"></div>
 
   <script src="script.js"></script>
+
+  <!-- ═══════════════ THEATER VIEW (rendered by JS) ═══════════════ -->
+  <div class="view view--theater" id="theater-view"></div>
+
 </body>
 </html>

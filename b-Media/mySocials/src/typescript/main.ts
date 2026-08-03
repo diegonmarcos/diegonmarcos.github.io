@@ -1449,6 +1449,7 @@ function renderMySocials(): void {
   const shelfD = g.shelf as unknown as ShelfData | undefined;
   const vinylD = g.vinyl as unknown as VinylData | undefined;
   const barCellarD = g['bar-cellar'] as unknown as BarCellarData | undefined;
+  const theaterD = g['theater'] as unknown as TheaterData | undefined;
   const menuD = g['menu'] as unknown as MenuData | undefined;
 
   const bookCover = (isbn: string) => `https://covers.openlibrary.org/b/isbn/${isbn}-M.jpg`;
@@ -1481,6 +1482,7 @@ function renderMySocials(): void {
     ] },
     { label: 'Food & Drink', cards: [
       { theme: 'bar-cellar', label: 'Bar Cellar', meta: 'wine cellar · 3D', color: '#6b1a1a', imgs: [] },
+      { theme: 'theater', label: 'Theater', meta: 'cinema hall · 3D', color: '#c8a96e', imgs: [] },
       { theme: 'menu', label: 'Menu', meta: 'casa marcos · cuisine & vins', color: '#8b6914', imgs: [] },
     ] },
     { label: 'Others', cards: [
@@ -1954,6 +1956,9 @@ interface VinylData { vinyls: VinylRecord[]; }
 interface BarCellarWine { name: string; producer: string; year: number; region: string; variety: string; foil: string; glass: string; }
 interface BarCellarData { wines: BarCellarWine[]; }
 
+interface TheaterFilm { title: string; director: string; year: number; color: string; }
+interface TheaterData { films: TheaterFilm[]; }
+
 interface MenuItem { name: string; description: string; price: string; }
 interface MenuSection { title: string; items: MenuItem[]; }
 interface MenuData { name: string; subtitle: string; sections: MenuSection[]; }
@@ -2188,6 +2193,7 @@ function renderVinyl(): void {
 // ─── BAR CELLAR ──────────────────────────────────────────────────────────────
 
 let _barCellarDone = false;
+let _theaterDone = false;
 function renderBarCellar(): void {
   const el = document.getElementById('bar-cellar-view');
   if (!el || _barCellarDone) return;
@@ -2376,6 +2382,184 @@ function renderBarCellar(): void {
   }
 }
 
+// ─── THEATER ─────────────────────────────────────────────────────────────────
+
+function renderTheater(): void {
+  const el = document.getElementById('theater-view');
+  if (!el || _theaterDone) return;
+  el.innerHTML = '<div class="view--theater__loading">raising curtain…</div>';
+
+  const data = (globalThis as Record<string, unknown> & { PORTAL_DATA?: Record<string, unknown> }).PORTAL_DATA?.['theater'] as TheaterData | undefined;
+  if (!data?.films?.length) { el.innerHTML = '<div class="view--theater__error">no data</div>'; return; }
+
+  _theaterDone = true;
+
+  function _boot(T: Record<string, unknown>): void {
+    el!.innerHTML = '';
+    const films = data!.films;
+
+    const Scene = T.Scene as new () => Record<string, unknown>;
+    const PerspectiveCamera = T.PerspectiveCamera as new (fov: number, aspect: number, near: number, far: number) => Record<string, unknown>;
+    const WebGLRenderer = T.WebGLRenderer as new (opts: Record<string, unknown>) => Record<string, unknown>;
+    const AmbientLight = T.AmbientLight as new (color: number, intensity: number) => Record<string, unknown>;
+    const SpotLight = T.SpotLight as new (color: number, intensity: number, distance: number) => Record<string, unknown>;
+    const MeshLambertMaterial = T.MeshLambertMaterial as new (opts: Record<string, unknown>) => Record<string, unknown>;
+    const MeshBasicMaterial = T.MeshBasicMaterial as new (opts: Record<string, unknown>) => Record<string, unknown>;
+    const BoxGeometry = T.BoxGeometry as new (x: number, y: number, z: number) => Record<string, unknown>;
+    const PlaneGeometry = T.PlaneGeometry as new (w: number, h: number) => Record<string, unknown>;
+    const Mesh = T.Mesh as new (geo: Record<string, unknown>, mat: Record<string, unknown>) => Record<string, unknown>;
+    const Color = T.Color as new (hex: number | string) => Record<string, unknown>;
+    const Fog = T.Fog as new (color: number, near: number, far: number) => Record<string, unknown>;
+
+    const scene = new Scene();
+    (scene as unknown as { fog: unknown; background: unknown }).fog = new Fog(0x080608, 12, 30);
+    (scene as unknown as { background: unknown }).background = new Color(0x080608);
+
+    const w = el!.clientWidth || 800, h = el!.clientHeight || 600;
+    const camera = new PerspectiveCamera(55, w / h, 0.1, 40) as unknown as {
+      position: { x: number; y: number; z: number };
+      aspect: number;
+      lookAt(x: number, y: number, z: number): void;
+      updateProjectionMatrix(): void;
+    };
+    camera.position.x = 0; camera.position.y = 2; camera.position.z = 10;
+    camera.lookAt(0, 1, 0);
+
+    const renderer = new WebGLRenderer({ antialias: true }) as unknown as {
+      setSize(w: number, h: number): void;
+      setPixelRatio(r: number): void;
+      render(scene: Record<string, unknown>, camera: Record<string, unknown>): void;
+      domElement: HTMLCanvasElement;
+    };
+    renderer.setSize(w, h);
+    renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
+    el!.appendChild(renderer.domElement);
+
+    const add = (o: unknown) => (scene as unknown as { add(o: unknown): void }).add(o);
+
+    function box(sx: number, sy: number, sz: number, mat: Record<string, unknown>, x: number, y: number, z: number) {
+      const geo = new BoxGeometry(sx, sy, sz);
+      const m = new Mesh(geo, mat);
+      (m as unknown as { position: { set(x: number, y: number, z: number): void } }).position.set(x, y, z);
+      add(m);
+      return m;
+    }
+
+    // Lighting
+    const amb = new AmbientLight(0xc8a96e, 0.3);
+    add(amb);
+    const spot = new SpotLight(0xffffff, 3.5, 30) as unknown as {
+      position: { set(x: number, y: number, z: number): void };
+      target: { position: { set(x: number, y: number, z: number): void } };
+    };
+    spot.position.set(0, 12, 8);
+    spot.target.position.set(0, 2, -5);
+    add(spot);
+    add((spot as unknown as { target: unknown }).target);
+
+    // Cinema screen at front
+    const screenMat = new MeshBasicMaterial({ color: 0xe8e8e8 });
+    const screenGeo = new PlaneGeometry(12, 6);
+    const screen = new Mesh(screenGeo, screenMat);
+    (screen as unknown as { position: { set(x: number, y: number, z: number): void } }).position.set(0, 3, -8);
+    add(screen);
+
+    // Screen frame
+    const frameMat = new MeshLambertMaterial({ color: 0x1a1a1a });
+    box(12.4, 6.4, 0.1, frameMat, 0, 3, -8.05);
+
+    // Floor
+    const floorMat = new MeshLambertMaterial({ color: 0x111111 });
+    box(20, 0.1, 25, floorMat, 0, -0.05, 0);
+
+    // Walls
+    const wallMat = new MeshLambertMaterial({ color: 0x0f0810 });
+    box(20, 12, 0.2, wallMat, 0, 6, -8.2);  // back wall
+    box(0.2, 12, 25, wallMat, -10, 6, 0);   // left wall
+    box(0.2, 12, 25, wallMat, 10, 6, 0);    // right wall
+
+    // Cinema seats — curved rows, red velvet
+    const seatMat = new MeshLambertMaterial({ color: 0x3a0808 });
+    const seatBackMat = new MeshLambertMaterial({ color: 0x2a0606 });
+    const SEAT_ROWS = 6;
+    const SEAT_COLS = 9;
+    const ROW_SPACING = 1.3;
+    const COL_SPACING = 1.1;
+    const startZ = 1.0;
+    const startX = -(SEAT_COLS - 1) * COL_SPACING / 2;
+
+    for (let row = 0; row < SEAT_ROWS; row++) {
+      const zPos = startZ + row * ROW_SPACING;
+      const rowLift = row * 0.18; // gentle rake
+      for (let col = 0; col < SEAT_COLS; col++) {
+        const xPos = startX + col * COL_SPACING;
+        // seat base
+        box(0.85, 0.12, 0.75, seatMat, xPos, rowLift, zPos);
+        // seat back
+        box(0.85, 0.65, 0.1, seatBackMat, xPos, rowLift + 0.38, zPos - 0.32);
+        // armrests
+        box(0.08, 0.2, 0.75, seatBackMat, xPos - 0.44, rowLift + 0.12, zPos);
+        box(0.08, 0.2, 0.75, seatBackMat, xPos + 0.44, rowLift + 0.12, zPos);
+      }
+    }
+
+    // Film title planes — thin emissive boxes arranged near screen, colored per film
+    films.forEach((film, i) => {
+      const filmColor = parseInt(film.color.replace('#', ''), 16);
+      const filmMat = new MeshBasicMaterial({ color: filmColor });
+      const x = -5 + (i % 4) * 3.2;
+      const y = 8.5 - Math.floor(i / 4) * 0.9;
+      const z = -7.5;
+      box(2.5, 0.5, 0.05, filmMat, x, y, z);
+    });
+
+    // Pan state
+    let panX = 0;
+    let targetX = 0;
+    let dragStart = -1;
+    let dragStartPanX = 0;
+
+    el!.addEventListener('pointerdown', (e: PointerEvent) => {
+      dragStart = e.clientX;
+      dragStartPanX = targetX;
+    });
+    el!.addEventListener('pointermove', (e: PointerEvent) => {
+      if (dragStart < 0) return;
+      const dx = (e.clientX - dragStart) / el!.clientWidth * 8;
+      targetX = Math.max(-4, Math.min(4, dragStartPanX - dx));
+    });
+    el!.addEventListener('pointerup', () => { dragStart = -1; });
+    el!.addEventListener('pointerleave', () => { dragStart = -1; });
+
+    let t = 0;
+    function animate() {
+      requestAnimationFrame(animate);
+      t += 0.008;
+      panX += (targetX - panX) * 0.08;
+      camera.position.x += (panX - camera.position.x) * 0.1;
+      camera.lookAt(panX * 0.3, 1, 0);
+      renderer.render(scene as unknown as Record<string, unknown>, camera as unknown as Record<string, unknown>);
+    }
+    animate();
+
+    const ro = new (window as unknown as { ResizeObserver: new (cb: () => void) => { observe(el: Element): void; disconnect(): void } }).ResizeObserver(() => {
+      const nW = el!.clientWidth, nH = el!.clientHeight;
+      renderer.setSize(nW, nH);
+      camera.aspect = nW / nH;
+      camera.updateProjectionMatrix();
+    });
+    ro.observe(el!);
+  }
+
+  try {
+    _boot(THREE_NS as unknown as Record<string, unknown>);
+  } catch (err) {
+    console.error('[theater] THREE boot failed', err);
+    (window as { consoleLogs?: { captureException?: (e: unknown) => void } }).consoleLogs?.captureException?.(err);
+    el!.innerHTML = `<div class="view--theater__error">theater failed to render: ${esc(String((err as Error)?.message ?? err))}</div>`;
+  }
+}
+
 // ─── MENU ────────────────────────────────────────────────────────────────────
 
 function renderMenu(): void {
@@ -2414,8 +2598,8 @@ function renderMenu(): void {
 
 // ─── THEME SWITCHER ──────────────────────────────────────────────────────────
 
-type Theme = 'mysocials' | 'orkut' | 'instagram-diegonmarcos' | 'instagram-diegocmarcos_' | 'instagram-diegocnmarcos_' | 'linkedin' | 'pinterest' | 'tidal' | 'youtube' | 'icq' | 'shelf' | 'vinyl' | 'bar-cellar' | 'menu';
-const THEMES: Theme[] = ['mysocials', 'orkut', 'instagram-diegonmarcos', 'instagram-diegocmarcos_', 'instagram-diegocnmarcos_', 'linkedin', 'pinterest', 'tidal', 'youtube', 'icq', 'shelf', 'vinyl', 'bar-cellar', 'menu'];
+type Theme = 'mysocials' | 'orkut' | 'instagram-diegonmarcos' | 'instagram-diegocmarcos_' | 'instagram-diegocnmarcos_' | 'linkedin' | 'pinterest' | 'tidal' | 'youtube' | 'icq' | 'shelf' | 'vinyl' | 'bar-cellar' | 'menu' | 'theater';
+const THEMES: Theme[] = ['mysocials', 'orkut', 'instagram-diegonmarcos', 'instagram-diegocmarcos_', 'instagram-diegocnmarcos_', 'linkedin', 'pinterest', 'tidal', 'youtube', 'icq', 'shelf', 'vinyl', 'bar-cellar', 'menu', 'theater'];
 
 // Each theme is a real static page (orkut.html, instagram.html, ...) — except
 // 'mysocials', whose page is index.html (the site's front door).
@@ -2511,6 +2695,7 @@ function init(): void {
   renderShelf();
   renderVinyl();
   renderBarCellar();
+  renderTheater();
   renderMenu();
   initThemeSwitcher();
 

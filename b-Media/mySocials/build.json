@@ -118,7 +118,8 @@
         "shelf.html",
         "vinyl.html",
         "bar-cellar.html",
-        "menu.html"
+        "menu.html",
+        "theater.html"
       ]
     },
     {
@@ -138,7 +139,8 @@
         "shelf.html",
         "vinyl.html",
         "bar-cellar.html",
-        "menu.html"
+        "menu.html",
+        "theater.html"
       ]
     },
     {
@@ -163,6 +165,7 @@
         "vinyl.html",
         "bar-cellar.html",
         "menu.html",
+        "theater.html",
         "script.js",
         "style.css",
         "style-mysocials.css",
@@ -192,6 +195,7 @@
         "./vinyl.html",
         "./bar-cellar.html",
         "./menu.html",
+        "./theater.html",
         "./script.js",
         "./style.css",
         "./style-mysocials.css",

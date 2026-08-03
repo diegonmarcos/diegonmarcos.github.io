@@ -24,6 +24,7 @@
 @use 'components/dashboard';
 @use 'components/category';
 @use 'components/app-card';
+@use 'components/theme-switch';
 
 // 7. Utilities: helper classes (highest specificity)
 @use 'utilities/helpers';

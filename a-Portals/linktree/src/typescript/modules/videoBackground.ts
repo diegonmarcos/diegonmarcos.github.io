@@ -29,10 +29,9 @@ export function initVideoBackground(): void {
   videoElement = getElementById<HTMLVideoElement>('background-video');
 
   if (videoElement) {
-    videoElement.src = getRandomVideo();
     videoElement.muted = true;
-    // Set poster for when video is paused/stopped
     videoElement.poster = STATIC_BACKGROUND;
+    // Do NOT set src here — only set it in playVideo() when user explicitly enables
   }
 }
 

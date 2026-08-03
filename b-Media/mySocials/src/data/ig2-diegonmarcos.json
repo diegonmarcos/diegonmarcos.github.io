@@ -9,7 +9,7 @@
     "posts": 63,
     "following_shown": 982,
     "followers_shown": 127,
-    "photo": "./profile-photo.jpg"
+    "photo": "https://cdn.jsdelivr.net/gh/diegonmarcos/front-assets-cdn@main/b-Media/mySocials/static/media/profile-photo.jpg"
   },
   "posts": [
     {

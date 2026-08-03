@@ -10,7 +10,7 @@
           "id": "mytrips",
           "name": "myTrips",
           "icon": "🧭",
-          "url": "https://diegonmarcos.com/mymaps-mytrips",
+          "url": "https://diegonmarcos.github.io/mymaps-mytrips/",
           "description": "Own-data trip logger — routes, stops and travel history.",
           "stat": "Self-hosted"
         },
@@ -59,6 +59,14 @@
           "url": "https://www.google.com/fit/",
           "description": "Cross-app activity aggregation on Android.",
           "stat": "Aggregator"
+        },
+        {
+          "id": "mytracks",
+          "name": "myTracks",
+          "icon": "📊",
+          "url": "https://diegonmarcos.github.io/myhealth-tracker/",
+          "description": "Personal health and activity tracker.",
+          "stat": "Personal"
         }
       ]
     },

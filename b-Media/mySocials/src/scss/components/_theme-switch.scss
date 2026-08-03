@@ -8,19 +8,24 @@
   transform: translateX(-50%);
   z-index: 9999;
   display: flex;
-  gap: 2px;
-  padding: 4px;
+  flex-direction: column;
+  gap: 1px;
+  padding: 4px 6px;
   background: rgba(20, 22, 34, 0.92);
   border: 1px solid rgba(255, 255, 255, 0.12);
-  border-radius: 999px;
+  border-radius: 16px;
   backdrop-filter: blur(8px);
   box-shadow: 0 6px 24px rgba(0, 0, 0, 0.4);
-
-  // Enough tabs now to overflow narrow phones — scroll horizontally, keep pills on one line.
   max-width: calc(100vw - 24px);
-  overflow-x: auto;
-  scrollbar-width: none; // Firefox
-  &::-webkit-scrollbar { display: none; } // WebKit
+
+  &__row {
+    display: flex;
+    align-items: center;
+    gap: 1px;
+    overflow-x: auto;
+    scrollbar-width: none;
+    &::-webkit-scrollbar { display: none; }
+  }
 }
 
 .theme-switch__btn {

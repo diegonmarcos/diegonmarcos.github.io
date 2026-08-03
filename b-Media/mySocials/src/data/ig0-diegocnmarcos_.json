@@ -752,5 +752,21 @@
       "location": ""
     }
   ],
-  "stories": []
+  "stories": [
+    {
+      "media": "https://cdn.jsdelivr.net/gh/diegonmarcos/front-assets-cdn@main/b-Media/mySocials/static/media/diegocnmarcos_/stories/18086324668355107.webp",
+      "caption": "",
+      "time": ""
+    },
+    {
+      "media": "https://cdn.jsdelivr.net/gh/diegonmarcos/front-assets-cdn@main/b-Media/mySocials/static/media/diegocnmarcos_/stories/17990446706063570.mp4",
+      "caption": "",
+      "time": ""
+    },
+    {
+      "media": "https://cdn.jsdelivr.net/gh/diegonmarcos/front-assets-cdn@main/b-Media/mySocials/static/media/diegocnmarcos_/stories/17969030435271830.webp",
+      "caption": "",
+      "time": ""
+    }
+  ]
 }

@@ -248,7 +248,12 @@ function renderInstagram(): void {
   // renderInstagram() runs on every page (all views pre-render, hidden by CSS), so
   // on a non-Instagram page `theme` is e.g. "tidal" — must not look up PORTAL_DATA
   // under that key (wrong shape, crashes). Only instagram-* themes pick their own data.
-  const igKey = !theme.startsWith('instagram') ? 'ig2-diegonmarcos' : theme === 'instagram-diegonmarcos' ? 'ig2-diegonmarcos' : theme;
+  const igKeyMap: Record<string, string> = {
+    'instagram-diegonmarcos': 'ig2-diegonmarcos',
+    'instagram-diegocmarcos_': 'ig1-diegocmarcos_',
+    'instagram-diegocnmarcos_': 'ig0-diegocnmarcos_',
+  };
+  const igKey = igKeyMap[theme] ?? 'ig2-diegonmarcos';
   const d = (globalThis as { PORTAL_DATA?: Record<string, IGData> }).PORTAL_DATA?.[igKey];
   if (!d) { view.innerHTML = '<p class="ig-empty">Instagram data not loaded.</p>'; return; }
 

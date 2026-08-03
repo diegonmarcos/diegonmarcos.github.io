@@ -30,6 +30,7 @@ export function initVideoBackground(): void {
 
   if (videoElement) {
     videoElement.src = getRandomVideo();
+    videoElement.muted = true;
     // Set poster for when video is paused/stopped
     videoElement.poster = STATIC_BACKGROUND;
   }
@@ -87,6 +88,7 @@ function playVideo(): void {
   if (!videoElement) return;
 
   videoElement.src = getRandomVideo();
+  videoElement.muted = true;
   videoElement.play().catch(() => {
     // Autoplay might be blocked, that's okay
   });

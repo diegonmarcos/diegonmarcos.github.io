@@ -454,43 +454,96 @@
     {
       "id": "dms",
       "kind": "venture-card",
+      "slide": 3,
       "title": "DMs",
+      "image": "public/images/banners/dms.svg",
       "sections": [
         {
-          "title": "MAIL",
-          "layout": "links",
-          "links": [
-            {"label": "mailMe", "url": "mailto:me@diegonmarcos.com", "icon": "mail.svg", "item": 0}
-          ],
-          "group": 0
-        },
-        {
-          "title": "MESSENGERS",
           "layout": "contact-icons",
           "items": [
-            {"label": "WhatsApp 0", "url": "https://wa.me/34634769833", "icon": "brand-whatsapp.svg", "item": 0},
-            {"label": "WhatsApp 1", "url": "https://wa.me/34680614213", "icon": "brand-whatsapp.svg", "item": 1},
-            {"label": "Telegram", "url": "https://t.me/diegonmarcos", "icon": "brand-telegram.svg", "item": 2},
-            {"label": "Viber", "url": "viber://chat?number=+34634769833", "icon": "brand-viber.svg", "item": 3},
-            {"label": "Matrix", "url": "https://matrix.to/#/@diegonmarcos:matrix.org", "icon": "brand-matrix.svg", "item": 4},
-            {"label": "Instagram DM", "url": "https://ig.me/m/diegonmarcos", "icon": "brand-instagram.svg", "item": 5},
-            {"label": "X DM", "url": "https://x.com/messages/compose?recipient_id=diegonmarcos", "icon": "brand-x.svg", "item": 6},
-            {"label": "LinkedIn DM", "url": "https://linkedin.com/in/diegonmarcos", "icon": "brand-linkedin.svg", "item": 7},
-            {"label": "ICQ", "url": "https://icq.im/diegonmarcos", "icon": "brand-icq.svg", "item": 8},
-            {"label": "Mail", "url": "mailto:me@diegonmarcos.com", "icon": "mail.svg", "item": 9}
-          ],
-          "group": 1
+            {
+              "label": "Mail",
+              "icon": "public/icons/mail.svg",
+              "href": "mailto:me@diegonmarcos.com"
+            }
+          ]
         },
         {
-          "title": "BEEPER",
           "layout": "links",
-          "links": [
-            {"label": "MyBeeper", "url": "https://mybeeper.com/diegonmarcos", "icon": "send.svg", "item": 0}
-          ],
-          "group": 2
+          "items": [
+            {
+              "label": "mailMe",
+              "href": "mailto:me@diegonmarcos.com",
+              "style": "primary"
+            }
+          ]
+        },
+        {
+          "layout": "contact-icons",
+          "items": [
+            {
+              "label": "Wapp0",
+              "icon": "public/icons/brand-whatsapp.svg",
+              "href": "https://wa.me/34680614213"
+            },
+            {
+              "label": "Wapp1",
+              "icon": "public/icons/brand-whatsapp.svg",
+              "href": "https://wa.me/"
+            },
+            {
+              "label": "Telegram",
+              "icon": "public/icons/brand-telegram.svg",
+              "href": "https://t.me/diegonmarcos"
+            },
+            {
+              "label": "Viber",
+              "icon": "public/icons/brand-viber.svg",
+              "href": "viber://chat?number="
+            },
+            {
+              "label": "Matrix",
+              "icon": "public/icons/brand-matrix.svg",
+              "href": "https://matrix.to/#/@diegonmarcos:matrix.org"
+            },
+            {
+              "label": "igDM",
+              "icon": "public/icons/brand-instagram.svg",
+              "href": "https://ig.me/m/diegonmarcos"
+            },
+            {
+              "label": "XDM",
+              "icon": "public/icons/brand-x.svg",
+              "href": "https://x.com/messages/compose?recipient_id="
+            },
+            {
+              "label": "LinkedinDM",
+              "icon": "public/icons/brand-linkedin.svg",
+              "href": "https://linkedin.com/in/diegonmarcos"
+            },
+            {
+              "label": "ICQ",
+              "icon": "public/icons/brand-icq.svg",
+              "href": "https://icq.com/chat"
+            },
+            {
+              "label": "Mail",
+              "icon": "public/icons/mail.svg",
+              "href": "mailto:me@diegonmarcos.com"
+            }
+          ]
+        },
+        {
+          "layout": "links",
+          "items": [
+            {
+              "label": "MyBeeper",
+              "href": "https://beeper.com",
+              "style": "primary"
+            }
+          ]
         }
-      ],
-      "slide": 3
+      ]
     }
   ]
 }

@@ -16,6 +16,8 @@ html[data-theme='shelf']      .view--shelf { display: block; }
 html[data-theme='vinyl']      .view--vinyl { display: block; }
 html[data-theme='bar-cellar'] .view--bar-cellar { display: block; }
 html[data-theme='menu']       .view--menu { display: block; }
+html[data-theme='story']      .view--story { display: block; }
+html[data-theme='facebook-diegonmarcos'] .view--facebook { display: block; }
 html[data-theme='vinyl']     body { background: #0d0805; color: #c49a3c; }
 
 // Per-theme page background.
@@ -31,3 +33,5 @@ html[data-theme='icq']       body { background: #0c2624; color: #e6e6e6; } // da
 html[data-theme='shelf']      body { background: #1a0f05; color: #c49a3c; }
 html[data-theme='bar-cellar'] body { background: #08060302; color: #c49a3c; }
 html[data-theme='menu']       body { background: #f5f0e8; color: #1a1008; }
+html[data-theme='story']      body { background: #0a0b14; color: #e8ecf4; }
+html[data-theme='facebook-diegonmarcos'] body { background: #18191a; color: #e4e6eb; }

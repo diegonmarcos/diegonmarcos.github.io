@@ -2596,10 +2596,271 @@ function renderMenu(): void {
   `;
 }
 
+// ─── STORY VIEW (mindmap) ────────────────────────────────────────────────────
+
+interface StoryNode {
+  id: string;
+  label: string;
+  color: string;
+  x: number;
+  y: number;
+  isRoot?: boolean;
+  parent?: string;
+}
+
+function renderStory(): void {
+  const view = document.getElementById('story-view');
+  if (!view) return;
+
+  const WIDTH = 900;
+  const HEIGHT = 600;
+  const ROOT_X = WIDTH / 2;
+  const ROOT_Y = HEIGHT / 2;
+
+  // Branch colors — one per top-level group.
+  const BRANCH_COLORS: Record<string, string> = {
+    Life:   '#8a6aff',
+    Work:   '#4ac0ff',
+    Social: '#e8508a',
+  };
+
+  const branches: { label: string; subnodes: string[] }[] = [
+    { label: 'Life',   subnodes: ['Travel', 'Music', 'Food', 'Books'] },
+    { label: 'Work',   subnodes: ['Engineering', 'Design', 'Cloud'] },
+    { label: 'Social', subnodes: ['Instagram', 'LinkedIn', 'Orkut'] },
+  ];
+
+  // Layout: 3 branches radiate from center. Each branch sits at 240°, 0°, 120°
+  // (left, right, bottom-right) — keeps the map airy and avoids label collisions.
+  const BRANCH_ANGLES = [-150, 0, 120]; // degrees
+  const BRANCH_RADIUS = 185;
+  const LEAF_RADIUS   = 100;
+
+  const nodes: StoryNode[] = [
+    { id: 'root', label: 'Diego', color: '#ffe066', x: ROOT_X, y: ROOT_Y, isRoot: true },
+  ];
+
+  branches.forEach((branch, bi) => {
+    const angleDeg = BRANCH_ANGLES[bi];
+    const angleRad = (angleDeg * Math.PI) / 180;
+    const bx = ROOT_X + Math.cos(angleRad) * BRANCH_RADIUS;
+    const by = ROOT_Y + Math.sin(angleRad) * BRANCH_RADIUS;
+    const color = BRANCH_COLORS[branch.label];
+    nodes.push({ id: `branch-${bi}`, label: branch.label, color, x: bx, y: by, parent: 'root' });
+
+    const leafCount = branch.subnodes.length;
+    branch.subnodes.forEach((sub, li) => {
+      // Spread leaves in a fan around the branch direction.
+      const spreadDeg = 60;
+      const startAngle = angleDeg - spreadDeg / 2;
+      const leafAngleDeg = leafCount === 1 ? angleDeg : startAngle + (li / (leafCount - 1)) * spreadDeg;
+      const leafRad = (leafAngleDeg * Math.PI) / 180;
+      const lx = bx + Math.cos(leafRad) * LEAF_RADIUS;
+      const ly = by + Math.sin(leafRad) * LEAF_RADIUS;
+      nodes.push({ id: `leaf-${bi}-${li}`, label: sub, color, x: lx, y: ly, parent: `branch-${bi}` });
+    });
+  });
+
+  // Build SVG lines first (behind nodes).
+  const nodeMap = new Map(nodes.map(n => [n.id, n]));
+  const lines = nodes
+    .filter(n => n.parent)
+    .map(n => {
+      const p = nodeMap.get(n.parent!)!;
+      return `<line class="story-line" x1="${p.x}" y1="${p.y}" x2="${n.x}" y2="${n.y}" stroke="${n.color}"/>`;
+    })
+    .join('');
+
+  const svg = `<svg class="story-canvas" viewBox="0 0 ${WIDTH} ${HEIGHT}" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">${lines}</svg>`;
+
+  // Build absolutely-positioned node divs (foreignObject + SVG foreignObject has poor
+  // cross-browser text rendering, so plain divs positioned over the SVG is cleaner).
+  const nodeHtml = nodes.map(n => {
+    const size   = n.isRoot ? 80 : (n.parent === 'root' ? 64 : 52);
+    const left   = n.x - size / 2;
+    const top    = n.y - size / 2;
+    const fontSize = n.isRoot ? 14 : (n.parent === 'root' ? 12 : 11);
+    return `<div class="story-node${n.isRoot ? ' story-node--root' : ''}" data-node-id="${n.id}"
+      style="left:${left}px;top:${top}px;width:${size}px;height:${size}px;border-color:${n.color};color:${n.color};font-size:${fontSize}px;"
+    ><span>${n.label}</span></div>`;
+  }).join('');
+
+  view.innerHTML = `
+    <div class="story-wrap">
+      ${svg}
+      <div class="story-nodes">${nodeHtml}</div>
+    </div>
+  `;
+
+  // Interactions: hover glow via class, click to zoom-highlight.
+  let activeId: string | null = null;
+  view.querySelectorAll<HTMLElement>('.story-node').forEach(el => {
+    const id = el.dataset.nodeId!;
+    const node = nodeMap.get(id)!;
+
+    el.addEventListener('mouseenter', () => el.classList.add('is-hovered'));
+    el.addEventListener('mouseleave', () => el.classList.remove('is-hovered'));
+
+    el.addEventListener('click', () => {
+      if (activeId === id) {
+        // Deselect.
+        activeId = null;
+        view.querySelectorAll('.story-node').forEach(n => n.classList.remove('is-active', 'is-dimmed'));
+        view.querySelectorAll<SVGLineElement>('.story-line').forEach(l => l.classList.remove('is-active', 'is-dimmed'));
+        return;
+      }
+      activeId = id;
+
+      // Collect connected node ids (self + parent + children).
+      const connected = new Set<string>([id]);
+      if (node.parent) connected.add(node.parent);
+      nodes.filter(n => n.parent === id).forEach(n => connected.add(n.id));
+
+      view.querySelectorAll<HTMLElement>('.story-node').forEach(n => {
+        const nid = n.dataset.nodeId!;
+        n.classList.toggle('is-active', nid === id);
+        n.classList.toggle('is-dimmed', !connected.has(nid));
+      });
+
+      // Dim lines not connected to the active node.
+      view.querySelectorAll<SVGLineElement>('.story-line').forEach((line, i) => {
+        const lineNode = nodes.filter(n => n.parent)[i];
+        const lineActive = lineNode && (lineNode.id === id || lineNode.parent === id || (node.parent && lineNode.id === node.parent) || lineNode.parent === node.parent && lineNode.parent === id);
+        const lineConnected = lineNode && (connected.has(lineNode.id) || connected.has(lineNode.parent!));
+        line.classList.toggle('is-active', !!lineConnected);
+        line.classList.toggle('is-dimmed', !lineConnected);
+      });
+    });
+  });
+
+  // Click backdrop to deselect.
+  view.querySelector('.story-wrap')!.addEventListener('click', e => {
+    if ((e.target as HTMLElement).closest('.story-node')) return;
+    activeId = null;
+    view.querySelectorAll('.story-node').forEach(n => n.classList.remove('is-active', 'is-dimmed'));
+    view.querySelectorAll('.story-line').forEach(l => l.classList.remove('is-active', 'is-dimmed'));
+  });
+}
+
+// ─── FACEBOOK VIEW ───────────────────────────────────────────────────────────
+
+function renderFacebook(): void {
+  const el = document.getElementById('facebook-view');
+  if (!el) return;
+
+  function esc(s: string): string {
+    return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+  }
+
+  const posts = [
+    {
+      id: 1,
+      author: 'Diego Marcos',
+      time: '2 hours ago',
+      content: 'Just shipped a new feature to production. Dark mode everywhere — because eye strain is real. 🌙',
+      likes: 47,
+      comments: 12,
+      shares: 3,
+      hasPhoto: false,
+    },
+    {
+      id: 2,
+      author: 'Diego Marcos',
+      time: 'Yesterday at 9:14 AM',
+      content: 'Weekend project: built a self-hosted analytics stack. Matomo + Umami running on my own VMs. No tracking pixels from big tech.',
+      likes: 83,
+      comments: 21,
+      shares: 9,
+      hasPhoto: true,
+    },
+    {
+      id: 3,
+      author: 'Diego Marcos',
+      time: '3 days ago',
+      content: 'Reminder that WireGuard is incredible. Zero config drift, sub-millisecond handshake. My whole home network runs on it now.',
+      likes: 134,
+      comments: 38,
+      shares: 17,
+      hasPhoto: false,
+    },
+    {
+      id: 4,
+      author: 'Diego Marcos',
+      time: '5 days ago',
+      content: 'Reading: "Designing Data-Intensive Applications" by Kleppmann. If you work with any kind of backend, this book is mandatory reading.',
+      likes: 56,
+      comments: 8,
+      shares: 4,
+      hasPhoto: true,
+    },
+    {
+      id: 5,
+      author: 'Diego Marcos',
+      time: '1 week ago',
+      content: 'Open source isn\'t just code — it\'s infrastructure, documentation, community. Happy to contribute back whenever I can.',
+      likes: 209,
+      comments: 44,
+      shares: 28,
+      hasPhoto: false,
+    },
+  ];
+
+  const postsHtml = posts.map(p => `
+    <article class="fb-post">
+      <header class="fb-post__header">
+        <div class="fb-post__avatar" aria-hidden="true"></div>
+        <div class="fb-post__meta">
+          <span class="fb-post__author">${esc(p.author)}</span>
+          <span class="fb-post__time">${esc(p.time)}</span>
+        </div>
+      </header>
+      <div class="fb-post__content">${esc(p.content)}</div>
+      ${p.hasPhoto ? '<div class="fb-post__photo" aria-label="Photo placeholder"></div>' : ''}
+      <footer class="fb-post__footer">
+        <span class="fb-post__stat">${p.likes} Likes</span>
+        <span class="fb-post__stat">${p.comments} Comments</span>
+        <span class="fb-post__stat">${p.shares} Shares</span>
+      </footer>
+      <div class="fb-post__actions">
+        <button class="fb-post__action" type="button">👍 Like</button>
+        <button class="fb-post__action" type="button">💬 Comment</button>
+        <button class="fb-post__action" type="button">↗ Share</button>
+      </div>
+    </article>
+  `).join('');
+
+  el.innerHTML = `
+    <div class="fb-profile">
+      <div class="fb-cover"></div>
+      <div class="fb-identity">
+        <div class="fb-avatar" aria-label="Profile photo placeholder"></div>
+        <div class="fb-identity__info">
+          <h1 class="fb-identity__name">Diego Marcos</h1>
+          <p class="fb-identity__bio">Software engineer · Building tools, distributed systems, and keyboards.</p>
+        </div>
+      </div>
+      <div class="fb-stats">
+        <span class="fb-stat"><strong>812</strong> Friends</span>
+        <span class="fb-stat"><strong>1.2K</strong> Followers</span>
+        <span class="fb-stat"><strong>345</strong> Following</span>
+      </div>
+      <nav class="fb-tabs" aria-label="Profile sections">
+        <span class="fb-tab fb-tab--active">Timeline</span>
+        <span class="fb-tab">About</span>
+        <span class="fb-tab">Friends</span>
+        <span class="fb-tab">Photos</span>
+      </nav>
+      <main class="fb-timeline">
+        ${postsHtml}
+      </main>
+    </div>
+  `;
+}
+
 // ─── THEME SWITCHER ──────────────────────────────────────────────────────────
 
-type Theme = 'mysocials' | 'orkut' | 'instagram-diegonmarcos' | 'instagram-diegocmarcos_' | 'instagram-diegocnmarcos_' | 'linkedin' | 'pinterest' | 'tidal' | 'youtube' | 'icq' | 'shelf' | 'vinyl' | 'bar-cellar' | 'menu' | 'theater';
-const THEMES: Theme[] = ['mysocials', 'orkut', 'instagram-diegonmarcos', 'instagram-diegocmarcos_', 'instagram-diegocnmarcos_', 'linkedin', 'pinterest', 'tidal', 'youtube', 'icq', 'shelf', 'vinyl', 'bar-cellar', 'menu', 'theater'];
+type Theme = 'mysocials' | 'orkut' | 'instagram-diegonmarcos' | 'instagram-diegocmarcos_' | 'instagram-diegocnmarcos_' | 'linkedin' | 'pinterest' | 'tidal' | 'youtube' | 'icq' | 'shelf' | 'vinyl' | 'bar-cellar' | 'menu' | 'theater' | 'story' | 'facebook-diegonmarcos';
+const THEMES: Theme[] = ['mysocials', 'orkut', 'instagram-diegonmarcos', 'instagram-diegocmarcos_', 'instagram-diegocnmarcos_', 'linkedin', 'pinterest', 'tidal', 'youtube', 'icq', 'shelf', 'vinyl', 'bar-cellar', 'menu', 'theater', 'story', 'facebook-diegonmarcos'];
 
 // Each theme is a real static page (orkut.html, instagram.html, ...) — except
 // 'mysocials', whose page is index.html (the site's front door).
@@ -2697,6 +2958,8 @@ function init(): void {
   renderBarCellar();
   renderTheater();
   renderMenu();
+  renderStory();
+  renderFacebook();
   initThemeSwitcher();
 
   // Animate trust meter bars on load

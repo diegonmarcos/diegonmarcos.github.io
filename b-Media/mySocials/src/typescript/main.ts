@@ -348,13 +348,6 @@ function renderInstagram(): void {
     : `<div class="ig-head__avatar ig-head__avatar--ph">${esc(initials(p.name))}</div>`;
 
   view.innerHTML = `
-    <nav class="ig-nav">
-      <div class="ig-nav__inner">
-        <a href="#" class="ig-nav__logo">My Socials</a>
-        <div class="ig-nav__search"><input placeholder="Search"></div>
-        <div class="ig-nav__icons">${IG_ICON.home}${IG_ICON.heart}${IG_ICON.comment}${IG_ICON.share}</div>
-      </div>
-    </nav>
     <div class="ig-page">
       <header class="ig-head">
         <div class="ig-head__user">${esc(p.username)}</div>
@@ -1464,7 +1457,7 @@ function renderMySocials(): void {
   type Card = { theme: Theme; label: string; meta: string; color: string; imgs: string[] };
   const sections: { label: string; cards: Card[] }[] = [
     { label: 'Media', cards: [
-      { theme: 'instagram-diegonmarcos', label: 'Instagram @ diegonmarcos', meta: ig ? `${ig.profile.followers.toLocaleString()} followers · ${ig.profile.posts} post${ig.profile.posts === 1 ? '' : 's'}` : 'profile', color: '#dc2743', imgs: (ig?.posts || []).slice(0, 3).map(p => p.media).filter(Boolean) },
+      { theme: 'instagram-diegonmarcos', label: 'Instagram @ diegonmarcos', meta: ig ? `${ig.profile.followers.toLocaleString()} followers · ${ig.profile.posts} post${ig.profile.posts === 1 ? '' : 's'}` : 'profile', color: '#dc2743', imgs: [] },
       { theme: 'instagram-diegocmarcos_', label: 'Instagram @ diegocmarcos_', meta: 'profile', color: '#dc2743', imgs: [] },
       { theme: 'instagram-diegocnmarcos_', label: 'Instagram @ diegocnmarcos_', meta: 'profile', color: '#dc2743', imgs: [] },
       { theme: 'pinterest', label: 'Pinterest', meta: 'boards & pins', color: '#e60023', imgs: (pin?.boards || []).slice(0, 3).map(b => b.cover).filter(Boolean) },

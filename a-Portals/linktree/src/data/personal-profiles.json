@@ -122,6 +122,23 @@
             "preview": "public/thumbnails/diegonmarcos_github_io.jpg",
             "item": 9
           }
+        ],
+        "hub_icons": [
+          {
+            "label": "DMs",
+            "icon": "public/icons/mail.svg",
+            "href": "/DMs"
+          },
+          {
+            "label": "mySocials",
+            "icon": "public/icons/user.svg",
+            "href": "/mySocials"
+          },
+          {
+            "label": "myTrackers",
+            "icon": "public/icons/map-pin-2.svg",
+            "href": "/myTrackers"
+          }
         ]
       },
       "collapsible": {

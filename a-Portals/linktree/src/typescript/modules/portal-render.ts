@@ -36,7 +36,7 @@ interface SlideTools {
 interface CardSwiperItem { type?: 'image' | 'video'; src: string; alt?: string; active?: boolean; }
 interface SubSection { subsection?: string; title?: string; }
 interface ContactIconsBlock extends SubSection { icons: IconItem[]; }
-interface ProfilesBlock    extends SubSection { primary_link?: Link; icons?: IconItem[]; }
+interface ProfilesBlock    extends SubSection { primary_link?: Link; hub_icons?: IconItem[]; icons?: IconItem[]; }
 interface CollapsibleGroup extends SubSection { links: Link[]; }
 interface CollapsibleBlock { toggle_target?: string; id?: string; groups?: CollapsibleGroup[]; sections?: ProfileSection[]; }
 
@@ -343,6 +343,11 @@ function renderProfileCardSlide(slide: SlideProfileCard): HTMLElement {
   if (slide.profiles) {
     if (slide.profiles.subsection) linksContainer.appendChild(el('h3', { class: 'subsection-title' }, [slide.profiles.subsection]));
     if (slide.profiles.primary_link) linksContainer.appendChild(renderLinkAnchor(slide.profiles.primary_link));
+    if (slide.profiles.hub_icons?.length) {
+      const hubRow = el('div', { class: 'profile-icons profile-icons--hubs' });
+      for (const it of slide.profiles.hub_icons) hubRow.appendChild(renderIconAnchor(it));
+      linksContainer.appendChild(hubRow);
+    }
     if (slide.profiles.icons?.length) {
       const row = el('div', { class: 'profile-icons' });
       for (const it of slide.profiles.icons) row.appendChild(renderIconAnchor(it));

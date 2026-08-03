@@ -13,7 +13,7 @@ const VIDEOS = [
 const STATIC_BACKGROUND = 'public/images/background_static.jpg';
 
 let videoElement: HTMLVideoElement | null = null;
-let isPlaying = true;
+let isPlaying = false;
 
 /**
  * Get a random video from the list
@@ -44,16 +44,16 @@ export function initVideoToggle(): void {
 
   if (!toggle || !videoElement) return;
 
-  // Load saved preference (default: ON)
+  // Load saved preference (default: OFF — video only plays when explicitly enabled)
   const savedPref = localStorage.getItem('videoPlaying');
-  if (savedPref === 'false') {
+  if (savedPref === 'true') {
+    isPlaying = true;
+    addClass(toggle, 'active');
+    playVideo();
+  } else {
     isPlaying = false;
     removeClass(toggle, 'active');
     pauseAndShowStatic();
-  } else {
-    // Ensure active state on first load
-    isPlaying = true;
-    addClass(toggle, 'active');
   }
 
   toggle.addEventListener('click', () => {

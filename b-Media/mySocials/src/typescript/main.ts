@@ -198,7 +198,7 @@ function gradientFor(i: number): string {
   return `linear-gradient(135deg, ${a}, ${b})`;
 }
 
-// Real Instagram export shape (parsed by extract_ig.py -> PORTAL_DATA["instagram"]).
+// Real Instagram export shape (parsed by extract_ig.py -> PORTAL_DATA["ig2-diegonmarcos"]).
 interface IGData {
   profile: { username: string; name: string; bio: string; following: number; followers: number; posts: number; following_shown: number; followers_shown: number; photo?: string };
   posts: { media: string; media_all?: string[]; caption: string; time: string; location?: string }[];
@@ -248,7 +248,7 @@ function renderInstagram(): void {
   // renderInstagram() runs on every page (all views pre-render, hidden by CSS), so
   // on a non-Instagram page `theme` is e.g. "tidal" — must not look up PORTAL_DATA
   // under that key (wrong shape, crashes). Only instagram-* themes pick their own data.
-  const igKey = !theme.startsWith('instagram') ? 'instagram' : theme === 'instagram-diegonmarcos' ? 'instagram' : theme;
+  const igKey = !theme.startsWith('instagram') ? 'ig2-diegonmarcos' : theme === 'instagram-diegonmarcos' ? 'ig2-diegonmarcos' : theme;
   const d = (globalThis as { PORTAL_DATA?: Record<string, IGData> }).PORTAL_DATA?.[igKey];
   if (!d) { view.innerHTML = '<p class="ig-empty">Instagram data not loaded.</p>'; return; }
 

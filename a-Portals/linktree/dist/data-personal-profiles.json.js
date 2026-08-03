@@ -485,8 +485,8 @@
           "items": [
             {
               "label": "Mail",
-              "icon": "public/icons/mail.svg",
-              "href": "mailto:me@diegonmarcos.com"
+              "icon": "mail.svg",
+              "url": "mailto:me@diegonmarcos.com"
             }
           ]
         },
@@ -495,7 +495,8 @@
           "items": [
             {
               "label": "mailMe",
-              "href": "mailto:me@diegonmarcos.com",
+              "url": "mailto:me@diegonmarcos.com",
+              "icon": "mail.svg",
               "style": "primary"
             }
           ]
@@ -505,53 +506,53 @@
           "items": [
             {
               "label": "Wapp0",
-              "icon": "public/icons/brand-whatsapp.svg",
-              "href": "https://wa.me/34680614213"
+              "icon": "brand-whatsapp.svg",
+              "url": "https://wa.me/34680614213"
             },
             {
               "label": "Wapp1",
-              "icon": "public/icons/brand-whatsapp.svg",
-              "href": "https://wa.me/"
+              "icon": "brand-whatsapp.svg",
+              "url": "https://wa.me/"
             },
             {
               "label": "Telegram",
-              "icon": "public/icons/brand-telegram.svg",
-              "href": "https://t.me/diegonmarcos"
+              "icon": "brand-telegram.svg",
+              "url": "https://t.me/diegonmarcos"
             },
             {
               "label": "Viber",
-              "icon": "public/icons/brand-viber.svg",
-              "href": "viber://chat?number="
+              "icon": "brand-viber.svg",
+              "url": "viber://chat?number="
             },
             {
               "label": "Matrix",
-              "icon": "public/icons/brand-matrix.svg",
-              "href": "https://matrix.to/#/@diegonmarcos:matrix.org"
+              "icon": "brand-matrix.svg",
+              "url": "https://matrix.to/#/@diegonmarcos:matrix.org"
             },
             {
               "label": "igDM",
-              "icon": "public/icons/brand-instagram.svg",
-              "href": "https://ig.me/m/diegonmarcos"
+              "icon": "brand-instagram.svg",
+              "url": "https://ig.me/m/diegonmarcos"
             },
             {
               "label": "XDM",
-              "icon": "public/icons/brand-x.svg",
-              "href": "https://x.com/messages/compose?recipient_id="
+              "icon": "brand-x.svg",
+              "url": "https://x.com/messages/compose?recipient_id="
             },
             {
               "label": "LinkedinDM",
-              "icon": "public/icons/brand-linkedin.svg",
-              "href": "https://linkedin.com/in/diegonmarcos"
+              "icon": "brand-linkedin.svg",
+              "url": "https://linkedin.com/in/diegonmarcos"
             },
             {
               "label": "ICQ",
-              "icon": "public/icons/brand-icq.svg",
-              "href": "https://icq.com/chat"
+              "icon": "brand-icq.svg",
+              "url": "https://icq.com/chat"
             },
             {
               "label": "Mail",
-              "icon": "public/icons/mail.svg",
-              "href": "mailto:me@diegonmarcos.com"
+              "icon": "mail.svg",
+              "url": "mailto:me@diegonmarcos.com"
             }
           ]
         },
@@ -560,7 +561,7 @@
           "items": [
             {
               "label": "MyBeeper",
-              "href": "https://beeper.com",
+              "url": "https://beeper.com",
               "style": "primary"
             }
           ]

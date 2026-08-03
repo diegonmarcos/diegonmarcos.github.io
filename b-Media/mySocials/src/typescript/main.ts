@@ -2387,162 +2387,279 @@ function renderBarCellar(): void {
 function renderTheater(): void {
   const el = document.getElementById('theater-view');
   if (!el || _theaterDone) return;
-  el.innerHTML = '<div class="view--theater__loading">raising curtain…</div>';
+  _theaterDone = true;
+  el.innerHTML = '<div class="view--theater__loading">loading store…</div>';
 
   const data = (globalThis as Record<string, unknown> & { PORTAL_DATA?: Record<string, unknown> }).PORTAL_DATA?.['theater'] as TheaterData | undefined;
-  if (!data?.films?.length) { el.innerHTML = '<div class="view--theater__error">no data</div>'; return; }
+  const films = data?.films?.length ? data.films : [
+    { title: '2001: A Space Odyssey', director: 'Kubrick', year: 1968, color: '#1a1a2e' },
+    { title: 'Blade Runner', director: 'Scott', year: 1982, color: '#0d1117' },
+    { title: 'Stalker', director: 'Tarkovsky', year: 1979, color: '#2d4a22' },
+    { title: 'Mulholland Drive', director: 'Lynch', year: 2001, color: '#1a0a2e' },
+    { title: 'Apocalypse Now', director: 'Coppola', year: 1979, color: '#2a1a0a' },
+    { title: 'The Godfather', director: 'Coppola', year: 1972, color: '#1a0a00' },
+    { title: 'Vertigo', director: 'Hitchcock', year: 1958, color: '#0a1a2e' },
+    { title: 'Persona', director: 'Bergman', year: 1966, color: '#111111' },
+    { title: 'Chinatown', director: 'Polanski', year: 1974, color: '#1a1500' },
+    { title: 'Eyes Wide Shut', director: 'Kubrick', year: 1999, color: '#1a0a0a' },
+    { title: 'There Will Be Blood', director: 'Anderson', year: 2007, color: '#1a0800' },
+    { title: 'Synecdoche, New York', director: 'Kaufman', year: 2008, color: '#0a0a1a' },
+  ];
 
-  _theaterDone = true;
+  // Overlay element
+  const overlay = document.createElement('div');
+  overlay.className = 'view--theater__overlay';
+  overlay.innerHTML = '<span class="view--theater__overlay-title"></span><span class="view--theater__overlay-meta"></span>';
 
   function _boot(T: Record<string, unknown>): void {
     el!.innerHTML = '';
-    const films = data!.films;
+    el!.appendChild(overlay);
 
     const Scene = T.Scene as new () => Record<string, unknown>;
     const PerspectiveCamera = T.PerspectiveCamera as new (fov: number, aspect: number, near: number, far: number) => Record<string, unknown>;
     const WebGLRenderer = T.WebGLRenderer as new (opts: Record<string, unknown>) => Record<string, unknown>;
     const AmbientLight = T.AmbientLight as new (color: number, intensity: number) => Record<string, unknown>;
-    const SpotLight = T.SpotLight as new (color: number, intensity: number, distance: number) => Record<string, unknown>;
-    const MeshLambertMaterial = T.MeshLambertMaterial as new (opts: Record<string, unknown>) => Record<string, unknown>;
-    const MeshBasicMaterial = T.MeshBasicMaterial as new (opts: Record<string, unknown>) => Record<string, unknown>;
+    const PointLight = T.PointLight as new (color: number, intensity: number, distance: number) => Record<string, unknown>;
+    const MeshStandardMaterial = T.MeshStandardMaterial as new (opts: Record<string, unknown>) => Record<string, unknown>;
     const BoxGeometry = T.BoxGeometry as new (x: number, y: number, z: number) => Record<string, unknown>;
-    const PlaneGeometry = T.PlaneGeometry as new (w: number, h: number) => Record<string, unknown>;
     const Mesh = T.Mesh as new (geo: Record<string, unknown>, mat: Record<string, unknown>) => Record<string, unknown>;
     const Color = T.Color as new (hex: number | string) => Record<string, unknown>;
     const Fog = T.Fog as new (color: number, near: number, far: number) => Record<string, unknown>;
+    const Raycaster = T.Raycaster as new () => Record<string, unknown>;
+    const Vector2 = T.Vector2 as new (x: number, y: number) => Record<string, unknown>;
 
     const scene = new Scene();
-    (scene as unknown as { fog: unknown; background: unknown }).fog = new Fog(0x080608, 12, 30);
-    (scene as unknown as { background: unknown }).background = new Color(0x080608);
+    (scene as unknown as { fog: unknown; background: unknown }).fog = new Fog(0x050a14, 14, 36);
+    (scene as unknown as { background: unknown }).background = new Color(0x050a14);
 
     const w = el!.clientWidth || 800, h = el!.clientHeight || 600;
-    const camera = new PerspectiveCamera(55, w / h, 0.1, 40) as unknown as {
+    const camera = new PerspectiveCamera(50, w / h, 0.1, 50) as unknown as {
       position: { x: number; y: number; z: number };
       aspect: number;
       lookAt(x: number, y: number, z: number): void;
       updateProjectionMatrix(): void;
     };
-    camera.position.x = 0; camera.position.y = 2; camera.position.z = 10;
-    camera.lookAt(0, 1, 0);
+    camera.position.x = 0;
+    camera.position.y = 1.6;
+    camera.position.z = 5.5;
+    camera.lookAt(0, 1.2, 0);
 
     const renderer = new WebGLRenderer({ antialias: true }) as unknown as {
       setSize(w: number, h: number): void;
       setPixelRatio(r: number): void;
       render(scene: Record<string, unknown>, camera: Record<string, unknown>): void;
       domElement: HTMLCanvasElement;
+      shadowMap: { enabled: boolean };
     };
     renderer.setSize(w, h);
     renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
-    el!.appendChild(renderer.domElement);
+    el!.insertBefore(renderer.domElement, overlay);
 
     const add = (o: unknown) => (scene as unknown as { add(o: unknown): void }).add(o);
 
-    function box(sx: number, sy: number, sz: number, mat: Record<string, unknown>, x: number, y: number, z: number) {
+    function box(sx: number, sy: number, sz: number, mat: Record<string, unknown>, x: number, y: number, z: number): Record<string, unknown> {
       const geo = new BoxGeometry(sx, sy, sz);
       const m = new Mesh(geo, mat);
-      (m as unknown as { position: { set(x: number, y: number, z: number): void } }).position.set(x, y, z);
+      const pos = (m as unknown as { position: { set(x: number, y: number, z: number): void } }).position;
+      pos.set(x, y, z);
       add(m);
       return m;
     }
 
-    // Lighting
-    const amb = new AmbientLight(0xc8a96e, 0.3);
-    add(amb);
-    const spot = new SpotLight(0xffffff, 3.5, 30) as unknown as {
-      position: { set(x: number, y: number, z: number): void };
-      target: { position: { set(x: number, y: number, z: number): void } };
-    };
-    spot.position.set(0, 12, 8);
-    spot.target.position.set(0, 2, -5);
-    add(spot);
-    add((spot as unknown as { target: unknown }).target);
+    // Ambient fill — very dim, bluish
+    add(new AmbientLight(0x0a2040, 0.9));
 
-    // Cinema screen at front
-    const screenMat = new MeshBasicMaterial({ color: 0xe8e8e8 });
-    const screenGeo = new PlaneGeometry(12, 6);
-    const screen = new Mesh(screenGeo, screenMat);
-    (screen as unknown as { position: { set(x: number, y: number, z: number): void } }).position.set(0, 3, -8);
-    add(screen);
+    // Neon blue shelf-edge point lights — one per shelf row
+    const SHELF_ROWS = 3;
+    const SHELF_Y = [0.55, 1.55, 2.55];
+    for (let s = 0; s < SHELF_ROWS; s++) {
+      const pl = new PointLight(0x00aaff, 2.2, 8) as unknown as {
+        position: { set(x: number, y: number, z: number): void }
+      };
+      pl.position.set(0, SHELF_Y[s] + 0.12, 1.6);
+      add(pl);
+      const pl2 = new PointLight(0x0055aa, 1.0, 6) as unknown as {
+        position: { set(x: number, y: number, z: number): void }
+      };
+      pl2.position.set(-5, SHELF_Y[s] + 0.12, 1.6);
+      add(pl2);
+      const pl3 = new PointLight(0x0055aa, 1.0, 6) as unknown as {
+        position: { set(x: number, y: number, z: number): void }
+      };
+      pl3.position.set(5, SHELF_Y[s] + 0.12, 1.6);
+      add(pl3);
+    }
 
-    // Screen frame
-    const frameMat = new MeshLambertMaterial({ color: 0x1a1a1a });
-    box(12.4, 6.4, 0.1, frameMat, 0, 3, -8.05);
+    // Back wall — dark navy
+    const wallMat = new MeshStandardMaterial({ color: 0x040810, roughness: 1.0, metalness: 0.0 });
+    box(24, 8, 0.15, wallMat, 0, 2, 0);
 
     // Floor
-    const floorMat = new MeshLambertMaterial({ color: 0x111111 });
-    box(20, 0.1, 25, floorMat, 0, -0.05, 0);
+    const floorMat = new MeshStandardMaterial({ color: 0x060c18, roughness: 0.9, metalness: 0.1 });
+    box(24, 0.06, 14, floorMat, 0, 0, 5);
 
-    // Walls
-    const wallMat = new MeshLambertMaterial({ color: 0x0f0810 });
-    box(20, 12, 0.2, wallMat, 0, 6, -8.2);  // back wall
-    box(0.2, 12, 25, wallMat, -10, 6, 0);   // left wall
-    box(0.2, 12, 25, wallMat, 10, 6, 0);    // right wall
+    // Shelf planks — dark wood with slight metallic sheen, neon emissive edge
+    const shelfMat = new MeshStandardMaterial({ color: 0x0a1a30, roughness: 0.6, metalness: 0.3, emissive: 0x003366, emissiveIntensity: 0.4 });
+    const shelfW = 14;
+    for (let s = 0; s < SHELF_ROWS; s++) {
+      box(shelfW, 0.06, 0.28, shelfMat, 0, SHELF_Y[s], 1.5);
+    }
+    // Base shelf
+    box(shelfW, 0.06, 0.28, shelfMat, 0, 0.06, 1.5);
 
-    // Cinema seats — curved rows, red velvet
-    const seatMat = new MeshLambertMaterial({ color: 0x3a0808 });
-    const seatBackMat = new MeshLambertMaterial({ color: 0x2a0606 });
-    const SEAT_ROWS = 6;
-    const SEAT_COLS = 9;
-    const ROW_SPACING = 1.3;
-    const COL_SPACING = 1.1;
-    const startZ = 1.0;
-    const startX = -(SEAT_COLS - 1) * COL_SPACING / 2;
+    // Shelf vertical supports (uprights) every ~3.5 units
+    const upMat = new MeshStandardMaterial({ color: 0x081428, roughness: 0.7, metalness: 0.4 });
+    for (let x = -7; x <= 7; x += 3.5) {
+      box(0.06, 3.2, 0.28, upMat, x, 1.6, 1.5);
+    }
 
-    for (let row = 0; row < SEAT_ROWS; row++) {
-      const zPos = startZ + row * ROW_SPACING;
-      const rowLift = row * 0.18; // gentle rake
-      for (let col = 0; col < SEAT_COLS; col++) {
-        const xPos = startX + col * COL_SPACING;
-        // seat base
-        box(0.85, 0.12, 0.75, seatMat, xPos, rowLift, zPos);
-        // seat back
-        box(0.85, 0.65, 0.1, seatBackMat, xPos, rowLift + 0.38, zPos - 0.32);
-        // armrests
-        box(0.08, 0.2, 0.75, seatBackMat, xPos - 0.44, rowLift + 0.12, zPos);
-        box(0.08, 0.2, 0.75, seatBackMat, xPos + 0.44, rowLift + 0.12, zPos);
+    // DVD cases — spine-visible boxes on shelves
+    // spine: 0.6w × 1.0h × 0.1d
+    const CASE_W = 0.6;
+    const CASE_H = 1.0;
+    const CASE_D = 0.1;
+    const CASES_PER_SHELF = 18;
+    const SHELF_START_X = -shelfW / 2 + 0.5;
+    const CASE_SPACING = (shelfW - 1.0) / CASES_PER_SHELF;
+
+    // Neon spine color palette: blues, purples, teals, magentas
+    const spineColors = [
+      0x1a3a6a, 0x002255, 0x0a2040, 0x112244,
+      0x2a0a5a, 0x1a0a40, 0x0a1a50, 0x3a0a3a,
+      0x005566, 0x004455, 0x003344, 0x0a3344,
+      0x220033, 0x330055, 0x110044, 0x2a1a5a,
+      0x001a44, 0x002233,
+    ];
+
+    // Map films to specific slots (first N cases get real film colors)
+    const caseMeshes: Array<{ mesh: Record<string, unknown>; film: typeof films[0] | null; row: number; col: number }> = [];
+
+    for (let row = 0; row < SHELF_ROWS; row++) {
+      const y = SHELF_Y[row] + CASE_H / 2 + 0.04;
+      for (let col = 0; col < CASES_PER_SHELF; col++) {
+        const filmIndex = row * CASES_PER_SHELF + col;
+        const film = filmIndex < films.length ? films[filmIndex] : null;
+        const spineColor = film
+          ? parseInt((film.color || '#1a1a2e').replace('#', ''), 16)
+          : spineColors[col % spineColors.length];
+        const caseMat = new MeshStandardMaterial({
+          color: spineColor,
+          roughness: 0.5,
+          metalness: 0.15,
+          emissive: spineColor,
+          emissiveIntensity: 0.18,
+        });
+        const x = SHELF_START_X + col * CASE_SPACING;
+        const z = 1.52;
+        const mesh = box(CASE_W, CASE_H, CASE_D, caseMat, x, y, z);
+        caseMeshes.push({ mesh, film, row, col });
       }
     }
 
-    // Film title planes — thin emissive boxes arranged near screen, colored per film
-    films.forEach((film, i) => {
-      const filmColor = parseInt(film.color.replace('#', ''), 16);
-      const filmMat = new MeshBasicMaterial({ color: filmColor });
-      const x = -5 + (i % 4) * 3.2;
-      const y = 8.5 - Math.floor(i / 4) * 0.9;
-      const z = -7.5;
-      box(2.5, 0.5, 0.05, filmMat, x, y, z);
+    // Raycaster for click-to-pop interaction
+    const raycaster = new Raycaster() as unknown as {
+      setFromCamera(coords: Record<string, unknown>, camera: unknown): void;
+      intersectObjects(objs: unknown[]): Array<{ object: Record<string, unknown> }>;
+    };
+    const mouse = new Vector2(0, 0) as unknown as Record<string, unknown>;
+
+    const allMeshes = caseMeshes.map(c => c.mesh);
+    let selectedMesh: Record<string, unknown> | null = null;
+    let selectedEntry: typeof caseMeshes[0] | null = null;
+    let selectedOrigZ = 0;
+
+    function showOverlay(entry: typeof caseMeshes[0] | null): void {
+      const titleEl = overlay.querySelector('.view--theater__overlay-title') as HTMLElement;
+      const metaEl = overlay.querySelector('.view--theater__overlay-meta') as HTMLElement;
+      if (!entry?.film) {
+        overlay.classList.remove('is-visible');
+        return;
+      }
+      titleEl.textContent = entry.film.title;
+      metaEl.textContent = `${entry.film.director} · ${entry.film.year}`;
+      overlay.classList.add('is-visible');
+    }
+
+    el!.addEventListener('click', (e: Event) => {
+      const pe = e as MouseEvent;
+      const rect = el!.getBoundingClientRect();
+      (mouse as unknown as { x: number; y: number }).x = ((pe.clientX - rect.left) / rect.width) * 2 - 1;
+      (mouse as unknown as { x: number; y: number }).y = -((pe.clientY - rect.top) / rect.height) * 2 + 1;
+      raycaster.setFromCamera(mouse, camera);
+      const hits = raycaster.intersectObjects(allMeshes);
+      if (hits.length > 0) {
+        const hitMesh = hits[0].object;
+        const entry = caseMeshes.find(c => c.mesh === hitMesh) ?? null;
+
+        // Pop previously selected back
+        if (selectedMesh && selectedMesh !== hitMesh) {
+          (selectedMesh as unknown as { position: { z: number } }).position.z = selectedOrigZ;
+        }
+
+        if (selectedMesh === hitMesh) {
+          // deselect
+          (selectedMesh as unknown as { position: { z: number } }).position.z = selectedOrigZ;
+          selectedMesh = null;
+          selectedEntry = null;
+          showOverlay(null);
+        } else {
+          selectedOrigZ = (hitMesh as unknown as { position: { z: number } }).position.z;
+          (hitMesh as unknown as { position: { z: number } }).position.z = selectedOrigZ + 0.32;
+          selectedMesh = hitMesh;
+          selectedEntry = entry;
+          showOverlay(entry);
+        }
+      } else {
+        // Click background — deselect
+        if (selectedMesh) {
+          (selectedMesh as unknown as { position: { z: number } }).position.z = selectedOrigZ;
+          selectedMesh = null;
+          selectedEntry = null;
+          showOverlay(null);
+        }
+      }
     });
 
-    // Pan state
+    // Camera dolly/pan state
     let panX = 0;
-    let targetX = 0;
+    let targetPanX = 0;
+    let autoDolly = 0;
     let dragStart = -1;
-    let dragStartPanX = 0;
+    let dragStartPan = 0;
 
-    el!.addEventListener('pointerdown', (e: PointerEvent) => {
-      dragStart = e.clientX;
-      dragStartPanX = targetX;
+    el!.addEventListener('pointerdown', (e: Event) => {
+      const pe = e as PointerEvent;
+      dragStart = pe.clientX;
+      dragStartPan = targetPanX;
     });
-    el!.addEventListener('pointermove', (e: PointerEvent) => {
+    el!.addEventListener('pointermove', (e: Event) => {
+      const pe = e as PointerEvent;
       if (dragStart < 0) return;
-      const dx = (e.clientX - dragStart) / el!.clientWidth * 8;
-      targetX = Math.max(-4, Math.min(4, dragStartPanX - dx));
+      const dx = (pe.clientX - dragStart) / el!.clientWidth * 7;
+      targetPanX = Math.max(-5, Math.min(5, dragStartPan - dx));
     });
     el!.addEventListener('pointerup', () => { dragStart = -1; });
     el!.addEventListener('pointerleave', () => { dragStart = -1; });
 
     let t = 0;
-    function animate() {
+    function animate(): void {
       requestAnimationFrame(animate);
-      t += 0.008;
-      panX += (targetX - panX) * 0.08;
-      camera.position.x += (panX - camera.position.x) * 0.1;
-      camera.lookAt(panX * 0.3, 1, 0);
+      t += 0.004;
+      // Slow auto-dolly left-right when not dragging
+      if (dragStart < 0) {
+        autoDolly = Math.sin(t * 0.35) * 3.5;
+        targetPanX += (autoDolly - targetPanX) * 0.002;
+      }
+      panX += (targetPanX - panX) * 0.06;
+      camera.position.x += (panX - camera.position.x) * 0.08;
+      camera.lookAt(panX * 0.4, 1.2, 0);
       renderer.render(scene as unknown as Record<string, unknown>, camera as unknown as Record<string, unknown>);
     }
     animate();
 
-    const ro = new (window as unknown as { ResizeObserver: new (cb: () => void) => { observe(el: Element): void; disconnect(): void } }).ResizeObserver(() => {
+    const ro = new (window as unknown as {
+      ResizeObserver: new (cb: () => void) => { observe(el: Element): void; disconnect(): void }
+    }).ResizeObserver(() => {
       const nW = el!.clientWidth, nH = el!.clientHeight;
       renderer.setSize(nW, nH);
       camera.aspect = nW / nH;
@@ -2551,13 +2668,34 @@ function renderTheater(): void {
     ro.observe(el!);
   }
 
-  try {
-    _boot(THREE_NS as unknown as Record<string, unknown>);
-  } catch (err) {
-    console.error('[theater] THREE boot failed', err);
-    (window as { consoleLogs?: { captureException?: (e: unknown) => void } }).consoleLogs?.captureException?.(err);
-    el!.innerHTML = `<div class="view--theater__error">theater failed to render: ${esc(String((err as Error)?.message ?? err))}</div>`;
+  // Lazy-load Three.js from CDN (no IPv6/unpkg)
+  const THREE_CDN = 'https://cdnjs.cloudflare.com/ajax/libs/three.js/r169/three.min.js';
+  const THREE_NS_KEY = '__THREE_r169__';
+
+  function loadThree(cb: (T: Record<string, unknown>) => void): void {
+    const cached = (window as Record<string, unknown>)[THREE_NS_KEY];
+    if (cached) { cb(cached as Record<string, unknown>); return; }
+    const s = document.createElement('script');
+    s.src = THREE_CDN;
+    s.onload = () => {
+      const T = (window as Record<string, unknown>)['THREE'] as Record<string, unknown>;
+      (window as Record<string, unknown>)[THREE_NS_KEY] = T;
+      cb(T);
+    };
+    s.onerror = () => {
+      el!.innerHTML = `<div class="view--theater__error">failed to load Three.js</div>`;
+    };
+    document.head.appendChild(s);
   }
+
+  loadThree((T) => {
+    try {
+      _boot(T);
+    } catch (err) {
+      console.error('[theater] boot failed', err);
+      el!.innerHTML = `<div class="view--theater__error">theater failed: ${esc(String((err as Error)?.message ?? err))}</div>`;
+    }
+  });
 }
 
 // ─── MENU ────────────────────────────────────────────────────────────────────

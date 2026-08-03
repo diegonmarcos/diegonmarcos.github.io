@@ -131,18 +131,18 @@
         "hub_icons": [
           {
             "label": "DMs",
-            "icon": "public/icons/mail.svg",
-            "href": "/DMs"
+            "icon": "mail.svg",
+            "url": "/DMs"
           },
           {
             "label": "mySocials",
-            "icon": "public/icons/user.svg",
-            "href": "/mySocials"
+            "icon": "user.svg",
+            "url": "/mySocials"
           },
           {
             "label": "myTrackers",
-            "icon": "public/icons/map-pin-2.svg",
-            "href": "/myTrackers"
+            "icon": "map-pin-2.svg",
+            "url": "/myTrackers"
           }
         ]
       },

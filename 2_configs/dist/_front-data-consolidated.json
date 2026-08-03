@@ -1659,6 +1659,16 @@
             "output": "style-menu.css"
           },
           {
+            "mod": "sass",
+            "input": "src/scss/theme-story.scss",
+            "output": "style-story.css"
+          },
+          {
+            "mod": "sass",
+            "input": "src/scss/style-facebook-diegonmarcos.scss",
+            "output": "style-facebook-diegonmarcos.css"
+          },
+          {
             "mod": "esbuild",
             "input": "src/typescript/main.ts",
             "output": "script.js",
@@ -1747,7 +1757,9 @@
               "style-youtube.css",
               "style-icq.css",
               "style-shelf.css",
-              "style-vinyl.css"
+              "style-vinyl.css",
+              "style-story.css",
+              "style-facebook-diegonmarcos.css"
             ],
             "precache": [
               "./",
@@ -1777,7 +1789,9 @@
               "./style-youtube.css",
               "./style-icq.css",
               "./style-shelf.css",
-              "./style-vinyl.css"
+              "./style-vinyl.css",
+              "./style-story.css",
+              "./style-facebook-diegonmarcos.css"
             ]
           }
         ],

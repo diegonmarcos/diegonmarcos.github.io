@@ -238,7 +238,7 @@
           "category": "b-MyData",
           "framework": "vanilla",
           "port": 8026,
-          "has_dist": false
+          "has_dist": true
         },
         {
           "name": "myID",

@@ -1630,11 +1630,6 @@
           },
           {
             "mod": "sass",
-            "input": "src/scss/theme-strava.scss",
-            "output": "style-strava.css"
-          },
-          {
-            "mod": "sass",
             "input": "src/scss/theme-youtube.scss",
             "output": "style-youtube.css"
           },
@@ -1688,7 +1683,6 @@
               "linkedin.html",
               "pinterest.html",
               "tidal.html",
-              "strava.html",
               "youtube.html",
               "icq.html",
               "shelf.html",
@@ -1709,7 +1703,6 @@
               "linkedin.html",
               "pinterest.html",
               "tidal.html",
-              "strava.html",
               "youtube.html",
               "icq.html",
               "shelf.html",
@@ -1734,7 +1727,6 @@
               "linkedin.html",
               "pinterest.html",
               "tidal.html",
-              "strava.html",
               "youtube.html",
               "icq.html",
               "shelf.html",
@@ -1749,7 +1741,6 @@
               "style-linkedin.css",
               "style-pinterest.css",
               "style-tidal.css",
-              "style-strava.css",
               "style-youtube.css",
               "style-icq.css",
               "style-shelf.css",
@@ -1765,7 +1756,6 @@
               "./linkedin.html",
               "./pinterest.html",
               "./tidal.html",
-              "./strava.html",
               "./youtube.html",
               "./icq.html",
               "./shelf.html",
@@ -1780,7 +1770,6 @@
               "./style-linkedin.css",
               "./style-pinterest.css",
               "./style-tidal.css",
-              "./style-strava.css",
               "./style-youtube.css",
               "./style-icq.css",
               "./style-shelf.css",
@@ -1998,7 +1987,7 @@
       },
       "has_package_json": false,
       "has_manifest": false,
-      "has_dist": false
+      "has_dist": true
     },
     {
       "category": "b-MyData",

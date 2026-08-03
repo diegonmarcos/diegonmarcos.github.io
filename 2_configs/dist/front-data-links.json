@@ -4,7 +4,7 @@
       "id": "personal-profiles",
       "title": "Personal Profiles",
       "box": 1,
-      "slide_count": 3
+      "slide_count": 4
     },
     {
       "id": "projects",
@@ -37,6 +37,12 @@
       "id": "data",
       "kind": "tools",
       "title": "DATA"
+    },
+    {
+      "section": "personal-profiles",
+      "id": "dms",
+      "kind": "venture-card",
+      "title": "DMs"
     },
     {
       "section": "projects",

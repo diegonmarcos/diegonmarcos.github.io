@@ -41,7 +41,7 @@ interface CollapsibleGroup extends SubSection { links: Link[]; }
 interface CollapsibleBlock { toggle_target?: string; id?: string; groups?: CollapsibleGroup[]; sections?: ProfileSection[]; }
 
 interface ProfileSection {
-  title: string;
+  title?: string;
   // 'tool-links' — REPOS-style compact list: each link rendered as
   // <a class="tool-link"> (small icon + label, dense vertical stack).
   // Distinct from 'links' which emits the large <a class="link"> pills.
@@ -75,7 +75,7 @@ interface SlideRepos {
 
 interface SlideVentureCard {
   id: string; kind: 'venture-card'; title: string;
-  image?: { src: string; alt?: string };
+  image?: { src: string; alt?: string } | string;
   sections: ProfileSection[];
 }
 
@@ -283,7 +283,7 @@ function renderLinkAnchor(link: Link): HTMLElement {
 
 function renderProfileSection(sec: ProfileSection): HTMLElement {
   const wrap = el('div', { class: 'profile-section' });
-  wrap.appendChild(el('h3', { class: 'subsection-title' }, [sec.title]));
+  if (sec.title) wrap.appendChild(el('h3', { class: 'subsection-title' }, [sec.title]));
   if (sec.layout === 'contact-icons') {
     const row = el('div', { class: 'profile-icons' });
     for (const it of sec.items ?? []) row.appendChild(renderIconAnchor(it));
@@ -425,7 +425,11 @@ function renderReposSlide(slide: SlideRepos): HTMLElement {
 function renderVentureCardSlide(slide: SlideVentureCard): HTMLElement {
   const linkSection = el('div', { class: 'link-section' });
   linkSection.appendChild(el('h2', { class: 'section-title' }, [slide.title]));
-  if (slide.image) linkSection.appendChild(featuredImg(slide.image.src, slide.image.alt ?? slide.title, false));
+  if (slide.image) {
+    const imgSrc = typeof slide.image === 'string' ? slide.image : slide.image.src;
+    const imgAlt = typeof slide.image === 'string' ? slide.title : (slide.image.alt ?? slide.title);
+    linkSection.appendChild(featuredImg(imgSrc, imgAlt, false));
+  }
   const linksContainer = el('div', { class: 'links-container' });
   for (const sec of slide.sections) linksContainer.appendChild(renderProfileSection(sec));
   linkSection.appendChild(linksContainer);

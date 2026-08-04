@@ -1301,6 +1301,7 @@
           "./instagram-diegocmarcos_.html",
           "./instagram-diegocnmarcos_.html",
           "./linkedin.html",
+          "./facebook-diegonmarcos.html",
           "./pinterest.html",
           "./tidal.html",
           "./youtube.html",
@@ -1316,12 +1317,13 @@
           "./style-orkut.css",
           "./style-instagram.css",
           "./style-linkedin.css",
-          "./style-pinterest.css",
+          "./style-facebook-diegonmarcos.css",
           "./style-tidal.css",
           "./style-youtube.css",
           "./style-icq.css",
           "./style-shelf.css",
           "./style-vinyl.css",
+          "./data-facebook-diegonmarcos.json.js",
           "./style-story.css",
           "./style-facebook-diegonmarcos.css"
         ]

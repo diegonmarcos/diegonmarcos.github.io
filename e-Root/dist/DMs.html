@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dms">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DMs — Diego Marcos</title>
+  <meta name="description" content="All DM channels to reach Diego">
+  <meta name="theme-color" content="#0a0c14">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      background: #0a0c14;
+      color: #e4e6eb;
+      min-height: 100vh;
+    }
+
+    /* Bottom nav — same structure as mySocials but DMs is active */
+    .theme-switch__home {
+      position: fixed; top: 16px; left: 16px;
+      color: #b0b3b8; text-decoration: none; font-size: 1.2rem;
+      z-index: 100;
+    }
+    .theme-switch {
+      position: fixed; bottom: 0; left: 0; right: 0;
+      background: rgba(10,12,20,0.95);
+      backdrop-filter: blur(12px);
+      border-top: 1px solid #3a3b3c;
+      padding: 10px 16px;
+      z-index: 100;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    .theme-switch__row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+    .theme-switch__label {
+      color: #b0b3b8;
+      font-size: 0.75rem;
+      font-weight: 600;
+      margin-right: 4px;
+    }
+    .theme-switch__hub-link {
+      color: #b0b3b8;
+      text-decoration: none;
+      font-size: 0.85rem;
+      font-weight: 500;
+      padding: 4px 8px;
+      border-radius: 6px;
+      transition: all 0.2s;
+    }
+    .theme-switch__hub-link:hover {
+      color: #e4e6eb;
+      background: #242526;
+      text-decoration: none;
+    }
+    .theme-switch__hub-link--active {
+      color: #e4e6eb;
+      font-weight: 700;
+      background: #242526;
+    }
+    .theme-switch__divider {
+      color: #3a3b3c;
+      font-size: 0.75rem;
+    }
+
+    /* DMs page content */
+    .dms-page {
+      max-width: 600px;
+      margin: 0 auto;
+      padding: 80px 16px 160px;
+    }
+    .dms-header {
+      text-align: center;
+      margin-bottom: 32px;
+    }
+    .dms-title {
+      font-size: 2rem;
+      font-weight: 800;
+      color: #e4e6eb;
+      margin: 0 0 4px;
+    }
+    .dms-subtitle {
+      color: #b0b3b8;
+      font-size: 0.9rem;
+    }
+
+    /* Quick actions (mailMe, myBeeper) */
+    .dms-quick {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      max-width: 320px;
+      margin: 0 auto 32px;
+    }
+    .dm-channel {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 14px 20px;
+      border-radius: 12px;
+      background: #242526;
+      color: #e4e6eb;
+      text-decoration: none;
+      font-size: 0.95rem;
+      font-weight: 500;
+      border: 1px solid #3a3b3c;
+      transition: transform 0.2s, background 0.2s;
+      justify-content: center;
+    }
+    .dm-channel:hover {
+      transform: translateY(-2px);
+      background: #303030;
+      text-decoration: none;
+    }
+    .dm-channel--primary {
+      background: #2374e1;
+      color: #fff;
+      border-color: transparent;
+      font-weight: 600;
+    }
+    .dm-channel--primary:hover {
+      background: #1a5fc7;
+    }
+
+    /* DM apps grid */
+    .dms-channels {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      justify-content: center;
+    }
+    .dms-channels .dm-channel {
+      min-width: 100px;
+    }
+    .dm-channel__icon {
+      font-size: 1.2rem;
+    }
+  </style>
+</head>
+<body>
+  <a class="theme-switch__home" href="/" aria-label="Home" title="Home">&#8962;</a>
+  <div class="theme-switch">
+    <!-- Parent selector — DMs is active -->
+    <div class="theme-switch__row">
+      <span class="theme-switch__label">myProfile :</span>
+      <a class="theme-switch__hub-link theme-switch__hub-link--active" href="/DMs">DMs</a>
+      <span class="theme-switch__divider">|</span>
+      <a class="theme-switch__hub-link" href="/mySocials/">mySocials</a>
+      <span class="theme-switch__divider">|</span>
+      <a class="theme-switch__hub-link" href="/myTrackers/">myTrackers</a>
+    </div>
+    <!-- Sub-row 1: quick actions -->
+    <div class="theme-switch__row">
+      <a class="theme-switch__hub-link" href="mailto:me@diegonmarcos.com">mailMe</a>
+      <span class="theme-switch__divider">|</span>
+      <a class="theme-switch__hub-link" href="https://beeper.com" target="_blank" rel="noopener">myBeeper</a>
+    </div>
+    <!-- Sub-row 2: all DM apps -->
+    <div class="theme-switch__row">
+      <a class="theme-switch__hub-link" href="mailto:me@diegonmarcos.com">Mail</a>
+      <span class="theme-switch__divider">|</span>
+      <a class="theme-switch__hub-link" href="https://wa.me/34680614213" target="_blank" rel="noopener">Wapp0</a>
+      <a class="theme-switch__hub-link" href="https://wa.me/4915176069920" target="_blank" rel="noopener">Wapp1</a>
+      <a class="theme-switch__hub-link" href="https://t.me/diegonmarcos" target="_blank" rel="noopener">Telegram</a>
+      <a class="theme-switch__hub-link" href="viber://chat?number=%2B4915176069920">Viber</a>
+      <a class="theme-switch__hub-link" href="https://matrix.to/#/@diegonmarcos:matrix.org" target="_blank" rel="noopener">Matrix</a>
+      <a class="theme-switch__hub-link" href="/mySocials/instagram-diegonmarcos.html">igDM</a>
+      <a class="theme-switch__hub-link" href="https://x.com/messages/compose?recipient_id=171055690" target="_blank" rel="noopener">XDM</a>
+      <a class="theme-switch__hub-link" href="https://linkedin.com/in/diegonmarcos" target="_blank" rel="noopener">LinkedinDM</a>
+      <a class="theme-switch__hub-link" href="https://icq.com/chat" target="_blank" rel="noopener">ICQ</a>
+      <span class="theme-switch__divider">|</span>
+      <a class="theme-switch__hub-link" href="mailto:me@diegonmarcos.com">Mail</a>
+    </div>
+  </div>
+
+  <div class="dms-page">
+    <div class="dms-header">
+      <h1 class="dms-title">DMs</h1>
+      <p class="dms-subtitle">All channels to reach Diego</p>
+    </div>
+    <div class="dms-quick">
+      <a class="dm-channel dm-channel--primary" href="mailto:me@diegonmarcos.com">
+        <span class="dm-channel__icon">✉️</span>
+        <span>mailMe</span>
+      </a>
+      <a class="dm-channel dm-channel--primary" href="https://beeper.com" target="_blank" rel="noopener">
+        <span class="dm-channel__icon">📟</span>
+        <span>myBeeper</span>
+      </a>
+    </div>
+    <div class="dms-channels">
+      <a class="dm-channel" href="mailto:me@diegonmarcos.com"><span class="dm-channel__icon">✉️</span><span>Mail</span></a>
+      <a class="dm-channel" href="https://wa.me/34680614213" target="_blank" rel="noopener"><span class="dm-channel__icon">💬</span><span>Wapp0</span></a>
+      <a class="dm-channel" href="https://wa.me/4915176069920" target="_blank" rel="noopener"><span class="dm-channel__icon">💬</span><span>Wapp1</span></a>
+      <a class="dm-channel" href="https://t.me/diegonmarcos" target="_blank" rel="noopener"><span class="dm-channel__icon">✈️</span><span>Telegram</span></a>
+      <a class="dm-channel" href="viber://chat?number=%2B4915176069920"><span class="dm-channel__icon">📞</span><span>Viber</span></a>
+      <a class="dm-channel" href="https://matrix.to/#/@diegonmarcos:matrix.org" target="_blank" rel="noopener"><span class="dm-channel__icon">🔗</span><span>Matrix</span></a>
+      <a class="dm-channel" href="/mySocials/instagram-diegonmarcos.html"><span class="dm-channel__icon">📷</span><span>igDM</span></a>
+      <a class="dm-channel" href="https://x.com/messages/compose?recipient_id=171055690" target="_blank" rel="noopener"><span class="dm-channel__icon">🐦</span><span>XDM</span></a>
+      <a class="dm-channel" href="https://linkedin.com/in/diegonmarcos" target="_blank" rel="noopener"><span class="dm-channel__icon">💼</span><span>LinkedinDM</span></a>
+      <a class="dm-channel" href="https://icq.com/chat" target="_blank" rel="noopener"><span class="dm-channel__icon">🆔</span><span>ICQ</span></a>
+      <a class="dm-channel" href="mailto:me@diegonmarcos.com"><span class="dm-channel__icon">✉️</span><span>Mail</span></a>
+    </div>
+  </div>
+</body>
+</html>

@@ -46,40 +46,16 @@
   <!-- Theme / mode switcher — always visible -->
   <a class="theme-switch__home" href="index.html" aria-label="Home" title="Home">&#8962;</a>
   <div class="theme-switch" id="theme-switch">
-    <div class="theme-switch__row theme-switch__row--hubs">
+    <!-- Parent selector — always visible. Active parent is highlighted. -->
+    <div class="theme-switch__row theme-switch__row--parents">
       <span class="theme-switch__label">myProfile :</span>
       <a class="theme-switch__hub-link" href="/DMs">DMs</a>
       <span class="theme-switch__divider">|</span>
       <a class="theme-switch__hub-link theme-switch__hub-link--active" href="/mySocials">mySocials</a>
       <span class="theme-switch__divider">|</span>
       <a class="theme-switch__hub-link" href="/myTrackers">myTrackers</a>
-      <span class="theme-switch__divider">|</span>
-      <a class="theme-switch__hub-link" href="/myBeeper">myBeeper</a>
     </div>
-    <div class="theme-switch__row theme-switch__row--dms">
-      <button class="theme-switch__btn theme-switch__btn--parent" data-dm-toggle="dm-apps">DMs ▾</button>
-      <span class="theme-switch__divider">|</span>
-      <a class="theme-switch__hub-link" href="mailto:me@diegonmarcos.com">mailMe</a>
-      <span class="theme-switch__divider">|</span>
-      <a class="theme-switch__hub-link" href="/myBeeper">myBeeper</a>
-    </div>
-    <div class="theme-switch__row theme-switch__row--dm-apps" id="dm-apps-row" hidden>
-      <span class="theme-switch__label">DM apps :</span>
-      <a class="theme-switch__hub-link" href="mailto:me@diegonmarcos.com">Mail</a>
-      <span class="theme-switch__divider">|</span>
-      <a class="theme-switch__hub-link" href="https://wa.me/4915176069920" target="_blank" rel="noopener">Wapp0</a>
-      <a class="theme-switch__hub-link" href="https://wa.me/4915176069920" target="_blank" rel="noopener">Wapp1</a>
-      <a class="theme-switch__hub-link" href="https://t.me/diegonmarcos" target="_blank" rel="noopener">Telegram</a>
-      <a class="theme-switch__hub-link" href="viber://chat?number=%2B4915176069920">Viber</a>
-      <a class="theme-switch__hub-link" href="https://matrix.to/#/@diegonmarcos:matrix.org" target="_blank" rel="noopener">Matrix</a>
-      <button class="theme-switch__btn" data-theme-btn="instagram-diegonmarcos">igDM</button>
-      <button class="theme-switch__btn" data-theme-btn="instagram-diegocmarcos_">igDM1</button>
-      <button class="theme-switch__btn" data-theme-btn="instagram-diegocnmarcos_">igDM0</button>
-      <a class="theme-switch__hub-link" href="https://www.linkedin.com/in/diegonmarcos" target="_blank" rel="noopener">LinkedinDM</a>
-      <button class="theme-switch__btn" data-theme-btn="icq">ICQ</button>
-      <span class="theme-switch__divider">|</span>
-      <a class="theme-switch__hub-link" href="mailto:me@diegonmarcos.com">Mail</a>
-    </div>
+    <!-- Sub-rows for active parent (mySocials) -->
     <div class="theme-switch__row">
       <button class="theme-switch__btn" data-theme-btn="shelf">Shelf</button>
       <span class="theme-switch__divider">|</span>
@@ -106,7 +82,6 @@
       <button class="theme-switch__btn" data-theme-btn="linkedin">LinkedIn</button>
       <span class="theme-switch__divider">|</span>
       <button class="theme-switch__btn" data-theme-btn="orkut">Orkut</button>
-      <span class="theme-switch__divider">|</span>
     </div>
   </div>
 

@@ -3,7 +3,12 @@ import "@sveltejs/kit/internal/server";
 import "topojson-client";
 import { d as derived, w as writable } from "../../chunks/index.js";
 import * as d3Geo from "d3-geo";
-import { a0 as escape_html } from "../../chunks/context.js";
+import "clsx";
+import { a1 as ssr_context, a0 as escape_html } from "../../chunks/context.js";
+function onDestroy(fn) {
+  /** @type {SSRContext} */
+  ssr_context.r.on_destroy(fn);
+}
 const projections = [
   {
     id: "orthographic",
@@ -54,6 +59,18 @@ const isGlobe = derived(
 function GlobeCanvas($$renderer, $$props) {
   $$renderer.component(($$renderer2) => {
     $$renderer2.push(`<div class="canvas-container"><canvas${attr_style(`cursor: ${stringify("grab")}; touch-action: none;`)}></canvas></div>`);
+  });
+}
+function StellariumCanvas($$renderer, $$props) {
+  $$renderer.component(($$renderer2) => {
+    onDestroy(() => {
+    });
+    $$renderer2.push(`<div class="stellarium-container svelte-1n68bue"><canvas class="svelte-1n68bue"></canvas> `);
+    {
+      $$renderer2.push("<!--[-->");
+      $$renderer2.push(`<div class="overlay svelte-1n68bue">Loading sky…</div>`);
+    }
+    $$renderer2.push(`<!--]--></div>`);
   });
 }
 const mapCategories = [
@@ -217,6 +234,7 @@ function SideMenu($$renderer, $$props) {
     if ($$store_subs) unsubscribe_stores($$store_subs);
   });
 }
+const viewMode = writable("map");
 function _page($$renderer, $$props) {
   $$renderer.component(($$renderer2) => {
     var $$store_subs;
@@ -226,8 +244,14 @@ function _page($$renderer, $$props) {
         $$renderer4.push(`<title>Maps - ${escape_html(store_get($$store_subs ??= {}, "$currentProjectionConfig", currentProjectionConfig).name)} View</title>`);
       });
     });
-    GlobeCanvas($$renderer2);
-    $$renderer2.push(`<!----> `);
+    if (store_get($$store_subs ??= {}, "$viewMode", viewMode) === "sky") {
+      $$renderer2.push("<!--[-->");
+      StellariumCanvas($$renderer2);
+    } else {
+      $$renderer2.push("<!--[!-->");
+      GlobeCanvas($$renderer2);
+    }
+    $$renderer2.push(`<!--]--> `);
     SideMenu($$renderer2);
     $$renderer2.push(`<!----> <div class="controls"><div class="control-group"><button class="control-btn" title="Zoom in"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg></button> <button class="control-btn" title="Zoom out"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"></line></svg></button> <button class="control-btn" title="Reset view"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"></path><path d="M3 3v5h5"></path></svg></button></div> `);
     if (store_get($$store_subs ??= {}, "$isGlobe", isGlobe)) {
@@ -238,7 +262,7 @@ function _page($$renderer, $$props) {
     } else {
       $$renderer2.push("<!--[!-->");
     }
-    $$renderer2.push(`<!--]--> <div class="control-group"><button${attr_class("control-btn", void 0, { "active": showProjectionList })} title="Change projection"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><path d="M2 12h20"></path><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path></svg></button></div> `);
+    $$renderer2.push(`<!--]--> <div class="control-group"><button class="control-btn"${attr("title", store_get($$store_subs ??= {}, "$viewMode", viewMode) === "map" ? "Switch to sky view" : "Switch to map view")}>${escape_html(store_get($$store_subs ??= {}, "$viewMode", viewMode) === "map" ? "🌍" : "✨")}</button></div> <div class="control-group"><button${attr_class("control-btn", void 0, { "active": showProjectionList })} title="Change projection"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><path d="M2 12h20"></path><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path></svg></button></div> `);
     {
       $$renderer2.push("<!--[!-->");
     }

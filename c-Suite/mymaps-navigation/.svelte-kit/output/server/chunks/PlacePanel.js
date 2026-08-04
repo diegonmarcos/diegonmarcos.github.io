@@ -444,6 +444,7 @@ function MapCanvas($$renderer, $$props) {
     $$renderer2.push(`<div class="map-canvas"></div>`);
   });
 }
+const mapEngine = writable("maplibre");
 function loadLayerMetadata() {
   return [];
 }
@@ -546,7 +547,9 @@ function MapControls($$renderer, $$props) {
       "map-control-btn--active": store_get($$store_subs ??= {}, "$showLayersPanel", showLayersPanel)
     })} aria-label="Toggle layers panel" title="Layers"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 2 7 12 12 22 7 12 2"></polygon><polyline points="2 17 12 22 22 17"></polyline><polyline points="2 12 12 17 22 12"></polyline></svg></button> <button${attr_class("map-control-btn map-control-btn--standalone", void 0, {
       "map-control-btn--active": store_get($$store_subs ??= {}, "$isGlobeView", isGlobeView)
-    })}${attr("aria-label", store_get($$store_subs ??= {}, "$isGlobeView", isGlobeView) ? "Switch to flat map" : "Switch to globe view")}${attr("title", store_get($$store_subs ??= {}, "$isGlobeView", isGlobeView) ? "Flat map" : "Globe view")}><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><path d="M2 12h20"></path><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path></svg></button></div>`);
+    })}${attr("aria-label", store_get($$store_subs ??= {}, "$isGlobeView", isGlobeView) ? "Switch to flat map" : "Switch to globe view")}${attr("title", store_get($$store_subs ??= {}, "$isGlobeView", isGlobeView) ? "Flat map" : "Globe view")}><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><path d="M2 12h20"></path><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path></svg></button> <button${attr_class("map-control-btn map-control-btn--standalone", void 0, {
+      "map-control-btn--active": store_get($$store_subs ??= {}, "$mapEngine", mapEngine) === "cesium"
+    })}${attr("aria-label", store_get($$store_subs ??= {}, "$mapEngine", mapEngine) === "cesium" ? "Switch to MapLibre" : "Switch to Cesium 3D")}${attr("title", store_get($$store_subs ??= {}, "$mapEngine", mapEngine) === "cesium" ? "MapLibre" : "Cesium 3D terrain")}><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 17l4-10 4 10M4.5 13.5h5M13 17l4-14 4 14M14 13h6"></path></svg></button></div>`);
     if ($$store_subs) unsubscribe_stores($$store_subs);
   });
 }
@@ -799,8 +802,10 @@ function PlacePanel($$renderer, $$props) {
   });
 }
 export {
-  selectedPlace as A,
-  isLoadingPlace as B,
+  PlacePanel as A,
+  mapEngine as B,
+  selectedPlace as C,
+  isLoadingPlace as D,
   MapCanvas as M,
   ProviderBadge as P,
   quickSearch as a,
@@ -817,16 +822,16 @@ export {
   currentStyleId as l,
   mapStyles as m,
   isTerrainLayer as n,
-  isSatelliteLayer as o,
-  isGlobeView as p,
+  onDestroy as o,
+  isSatelliteLayer as p,
   quickSearchCategories as q,
   routeMode as r,
   searchResults as s,
-  is3DTerrain as t,
-  searchRadius as u,
-  tempPinsCount as v,
-  placeLists as w,
-  listVisibility as x,
-  MapControls as y,
-  PlacePanel as z
+  isGlobeView as t,
+  is3DTerrain as u,
+  searchRadius as v,
+  tempPinsCount as w,
+  placeLists as x,
+  listVisibility as y,
+  MapControls as z
 };

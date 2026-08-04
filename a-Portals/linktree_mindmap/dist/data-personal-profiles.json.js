@@ -127,6 +127,23 @@
             "preview": "public/thumbnails/diegonmarcos_github_io.jpg",
             "item": 9
           }
+        ],
+        "hub_icons": [
+          {
+            "label": "DMs",
+            "icon": "mail.svg",
+            "url": "/DMs"
+          },
+          {
+            "label": "mySocials",
+            "icon": "user.svg",
+            "url": "/mySocials"
+          },
+          {
+            "label": "myTrackers",
+            "icon": "map-pin-2.svg",
+            "url": "/myTrackers"
+          }
         ]
       },
       "collapsible": {
@@ -254,7 +271,7 @@
       },
       "columns": [
         {
-          "header": "Photos",
+          "header": "PHOTOS",
           "links": [
             {
               "label": "Instagram",
@@ -290,7 +307,7 @@
           "group": 0
         },
         {
-          "header": "Videos",
+          "header": "VIDEOS",
           "links": [
             {
               "label": "YouTube",
@@ -320,7 +337,7 @@
           "group": 1
         },
         {
-          "header": "Music",
+          "header": "MUSIC",
           "links": [
             {
               "label": "TIDAL",
@@ -344,7 +361,14 @@
           "group": 2
         }
       ],
-      "slide": 1
+      "slide": 1,
+      "extras": {
+        "primary_link": {
+          "label": "My Socials",
+          "url": "https://diegonmarcos.github.io/mySocials",
+          "icon": "heart.svg"
+        }
+      }
     },
     {
       "id": "data",
@@ -356,7 +380,7 @@
       },
       "columns": [
         {
-          "header": "Health",
+          "header": "HEALTH",
           "links": [
             {
               "label": "MyHealth",
@@ -374,7 +398,7 @@
           "group": 0
         },
         {
-          "header": "Endurance",
+          "header": "ENDURANCE",
           "links": [
             {
               "label": "Tracker",
@@ -404,7 +428,7 @@
           "group": 1
         },
         {
-          "header": "Achieves",
+          "header": "ACHIEVES",
           "links": [
             {
               "label": "NomadMania",
@@ -419,130 +443,131 @@
               "item": 1
             },
             {
-              "label": "myID",
-              "url": "https://diegonmarcos.github.io/myid",
-              "icon": "cards.svg",
-              "item": 2
-            },
-            {
               "label": "Bucket (50 things)",
               "url": "https://bucketlistjourney.net/my-bucket-list",
               "icon": "checklist.svg",
-              "item": 3
+              "item": 2
             },
             {
               "label": "Bucket (Endurance)",
               "url": "https://bucketlistjourney.net/my-bucket-list",
               "icon": "checklist.svg",
-              "item": 4
+              "item": 3
             },
             {
               "label": "Bucket (Inner)",
               "url": "https://bucketlistjourney.net/my-bucket-list",
               "icon": "heart.svg",
-              "item": 5
+              "item": 4
             }
           ],
           "group": 2
         }
       ],
-      "slide": 2
+      "slide": 2,
+      "extras": {
+        "primary_link": {
+          "label": "myTrackers",
+          "url": "https://diegonmarcos.github.io/myhealth-tracker",
+          "icon": "heart.svg"
+        }
+      }
     },
     {
-      "id": "projects",
-      "kind": "tools",
-      "title": "PROJECTS",
-      "image": {
-        "src": "public/images/brucheion.jpg",
-        "alt": "Projects"
-      },
-      "row_headers": [
-        { "title": "Brucheion" },
-        { "title": "Serapeum" }
-      ],
-      "columns": [
+      "id": "dms",
+      "kind": "venture-card",
+      "slide": 3,
+      "title": "DMs",
+      "image": "public/images/banners/dms.svg",
+      "sections": [
         {
-          "row": 0,
-          "header": "Basileia",
-          "links": [
+          "layout": "contact-icons",
+          "items": [
             {
-              "label": "Basileia",
-              "url": "#",
-              "icon": "sparkles.svg",
-              "item": 0
+              "label": "Mail",
+              "icon": "mail.svg",
+              "url": "mailto:me@diegonmarcos.com"
             }
-          ],
-          "group": 0
+          ]
         },
         {
-          "row": 0,
-          "header": "Mousseion",
-          "links": [
+          "layout": "links",
+          "items": [
             {
-              "label": "Mousseion",
-              "url": "#",
-              "icon": "books.svg",
-              "item": 0
+              "label": "mailMe",
+              "url": "mailto:me@diegonmarcos.com",
+              "icon": "mail.svg",
+              "style": "primary"
             }
-          ],
-          "group": 1
+          ]
         },
         {
-          "row": 0,
-          "header": "Paneion",
-          "links": [
+          "layout": "contact-icons",
+          "items": [
             {
-              "label": "Paneion",
-              "url": "#",
-              "icon": "bulb.svg",
-              "item": 0
+              "label": "Wapp0",
+              "icon": "brand-whatsapp.svg",
+              "url": "https://wa.me/34680614213"
+            },
+            {
+              "label": "Wapp1",
+              "icon": "brand-whatsapp.svg",
+              "url": "https://wa.me/"
+            },
+            {
+              "label": "Telegram",
+              "icon": "brand-telegram.svg",
+              "url": "https://t.me/diegonmarcos"
+            },
+            {
+              "label": "Viber",
+              "icon": "brand-viber.svg",
+              "url": "viber://chat?number="
+            },
+            {
+              "label": "Matrix",
+              "icon": "brand-matrix.svg",
+              "url": "https://matrix.to/#/@diegonmarcos:matrix.org"
+            },
+            {
+              "label": "igDM",
+              "icon": "brand-instagram.svg",
+              "url": "https://ig.me/m/diegonmarcos"
+            },
+            {
+              "label": "XDM",
+              "icon": "brand-x.svg",
+              "url": "https://x.com/messages/compose?recipient_id="
+            },
+            {
+              "label": "LinkedinDM",
+              "icon": "brand-linkedin.svg",
+              "url": "https://linkedin.com/in/diegonmarcos"
+            },
+            {
+              "label": "ICQ",
+              "icon": "brand-icq.svg",
+              "url": "https://icq.com/chat"
+            },
+            {
+              "label": "Mail",
+              "icon": "mail.svg",
+              "url": "mailto:me@diegonmarcos.com"
             }
-          ],
-          "group": 2
+          ]
         },
         {
-          "row": 1,
-          "header": "Akropolis",
-          "links": [
+          "layout": "links",
+          "items": [
             {
-              "label": "Akropolis",
-              "url": "#",
-              "icon": "rocket.svg",
-              "item": 0
+              "label": "MyBeeper",
+              "url": "https://beeper.com",
+              "style": "primary"
             }
-          ],
-          "group": 3
-        },
-        {
-          "row": 1,
-          "header": "Bibliotheke",
-          "links": [
-            {
-              "label": "Bibliotheke",
-              "url": "#",
-              "icon": "books.svg",
-              "item": 0
-            }
-          ],
-          "group": 4
-        },
-        {
-          "row": 1,
-          "header": "Adyton",
-          "links": [
-            {
-              "label": "Adyton",
-              "url": "#",
-              "icon": "bolt.svg",
-              "item": 0
-            }
-          ],
-          "group": 5
+          ]
         }
-      ],
-      "slide": 3
+      ]
     }
   ]
-}
-;
+};
 })();

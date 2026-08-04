@@ -669,6 +669,17 @@
             "public_url": "https://photos.diegonmarcos.com"
           },
           {
+            "id": "playlist-syncer",
+            "name": "playlist-syncer",
+            "vm": "oci-A1-f_0",
+            "category": "app",
+            "subgroup": "Productivity",
+            "port": 8090,
+            "private_ip": "10.0.0.6",
+            "private_url": "https://playlist-syncer.app",
+            "public_url": "https://playlist.diegonmarcos.com"
+          },
+          {
             "id": "calendar-radicale",
             "name": "calendar-radicale",
             "vm": "oci-A1-f_0",
@@ -1339,6 +1350,17 @@
           "private_ip": "10.0.0.6",
           "private_url": "https://photoprism.app",
           "public_url": "https://photos.diegonmarcos.com"
+        },
+        {
+          "id": "playlist-syncer",
+          "name": "playlist-syncer",
+          "vm": "oci-A1-f_0",
+          "category": "app",
+          "subgroup": "Productivity",
+          "port": 8090,
+          "private_ip": "10.0.0.6",
+          "private_url": "https://playlist-syncer.app",
+          "public_url": "https://playlist.diegonmarcos.com"
         },
         {
           "id": "calendar-radicale",

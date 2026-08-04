@@ -41,7 +41,7 @@
     {
       "section": "personal-profiles",
       "id": "dms",
-      "kind": "venture-card",
+      "kind": "tools",
       "title": "DMs"
     },
     {
@@ -301,6 +301,94 @@
       "label": "Bucket (Inner)",
       "url": "https://bucketlistjourney.net/my-bucket-list",
       "icon": "heart.svg"
+    },
+    {
+      "section": "personal-profiles",
+      "slide": "personal-profiles",
+      "column": "MAIL",
+      "label": "mailMe",
+      "url": "mailto:me@diegonmarcos.com",
+      "icon": "mail.svg"
+    },
+    {
+      "section": "personal-profiles",
+      "slide": "personal-profiles",
+      "column": "MAIL",
+      "label": "Mail",
+      "url": "mailto:me@diegonmarcos.com",
+      "icon": "mail.svg"
+    },
+    {
+      "section": "personal-profiles",
+      "slide": "personal-profiles",
+      "column": "CHATS",
+      "label": "WhatsApp",
+      "url": "https://wa.me/34680614213",
+      "icon": "brand-whatsapp.svg"
+    },
+    {
+      "section": "personal-profiles",
+      "slide": "personal-profiles",
+      "column": "CHATS",
+      "label": "Telegram",
+      "url": "https://t.me/diegonmarcos",
+      "icon": "brand-telegram.svg"
+    },
+    {
+      "section": "personal-profiles",
+      "slide": "personal-profiles",
+      "column": "CHATS",
+      "label": "Viber",
+      "url": "viber://chat?number=",
+      "icon": "brand-viber.svg"
+    },
+    {
+      "section": "personal-profiles",
+      "slide": "personal-profiles",
+      "column": "CHATS",
+      "label": "Matrix",
+      "url": "https://matrix.to/#/@diegonmarcos:matrix.org",
+      "icon": "brand-matrix.svg"
+    },
+    {
+      "section": "personal-profiles",
+      "slide": "personal-profiles",
+      "column": "CHATS",
+      "label": "ICQ",
+      "url": "https://icq.com/chat",
+      "icon": "brand-icq.svg"
+    },
+    {
+      "section": "personal-profiles",
+      "slide": "personal-profiles",
+      "column": "SOCIAL",
+      "label": "Instagram DM",
+      "url": "https://ig.me/m/diegonmarcos",
+      "icon": "brand-instagram.svg"
+    },
+    {
+      "section": "personal-profiles",
+      "slide": "personal-profiles",
+      "column": "SOCIAL",
+      "label": "X DM",
+      "url": "https://x.com/messages/compose?recipient_id=",
+      "icon": "brand-x.svg"
+    },
+    {
+      "section": "personal-profiles",
+      "slide": "personal-profiles",
+      "column": "SOCIAL",
+      "label": "LinkedIn DM",
+      "url": "https://linkedin.com/in/diegonmarcos",
+      "icon": "brand-linkedin.svg"
+    },
+    {
+      "section": "personal-profiles",
+      "slide": "personal-profiles",
+      "column": "HUBS",
+      "label": "MyBeeper",
+      "url": "https://beeper.com",
+      "icon": "link.svg"
     },
     {
       "section": "projects",

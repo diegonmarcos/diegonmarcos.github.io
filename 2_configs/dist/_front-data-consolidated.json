@@ -1918,11 +1918,11 @@
     },
     {
       "category": "b-MyData",
-      "project": "myhealth",
-      "key": "b-MyData__myhealth",
-      "path": "b-MyData/myhealth",
+      "project": "myTrackers",
+      "key": "b-MyData__myTrackers",
+      "path": "b-MyData/myTrackers",
       "build": {
-        "name": "MyHealth",
+        "name": "MyTrackers",
         "framework": "vanilla",
         "port": 8026,
         "src": "src",
@@ -2121,6 +2121,100 @@
           {
             "mod": "symlink",
             "files": "public"
+          },
+          {
+            "_doc": "Inject navigator.serviceWorker.register(...) before </head>. MUST run BEFORE esbuild_sw so the modified HTML feeds into BUILD_HASH.",
+            "mod": "sw_register",
+            "files": "index.html"
+          },
+          {
+            "_doc": "Inject single-namespace observability SDK (Sentry/OpenObserve-style). Mirrors console.* + errors + SW lifecycle to OPFS console.log. window.consoleLogs.{captureException, captureMessage, addBreadcrumb, read, readJSON, tail, clear, download}.",
+            "mod": "console_log",
+            "files": "index.html"
+          },
+          {
+            "_doc": "MUST run last — hashes the dist artifacts above to derive BUILD_HASH and inject it into the SW bundle.",
+            "mod": "esbuild_sw",
+            "input": "src/typescript/script-service-worker.ts",
+            "output": "script-service-worker.js",
+            "format": "iife",
+            "target": "es2020",
+            "hash_of": [
+              "index.html",
+              "script.js",
+              "style.css"
+            ],
+            "precache": [
+              "./",
+              "./index.html",
+              "./script.js",
+              "./style.css"
+            ]
+          }
+        ],
+        "serve": {
+          "mode": "auto",
+          "dir": "src",
+          "watch": [
+            {
+              "mod": "sass",
+              "input": "scss/main.scss",
+              "output": "style.css"
+            },
+            {
+              "mod": "esbuild",
+              "input": "typescript/main.ts",
+              "output": "script.js",
+              "format": "iife",
+              "target": "es2020"
+            }
+          ]
+        },
+        "deploy": {}
+      },
+      "has_package_json": false,
+      "has_manifest": false,
+      "has_dist": true
+    },
+    {
+      "category": "b-MyData",
+      "project": "myhealth",
+      "key": "b-MyData__myhealth",
+      "path": "b-MyData/myhealth",
+      "build": {
+        "name": "MyHealth",
+        "framework": "vanilla",
+        "port": 8026,
+        "src": "src",
+        "dist": "dist",
+        "build": [
+          {
+            "_doc": "Wrap every *.json in src/data/ as a globalThis.PORTAL_DATA[<key>] companion (data-*.json.js). Engine: front-data-json-js-wrapper.sh.",
+            "mod": "data_wrap",
+            "dir": "src/data"
+          },
+          {
+            "_doc": "Ship the wrapped data-*.json.js companions to dist/ root, so HTML can load them with <script src=\"data-<KEY>.json.js\"></script> — no fetch, no CORS.",
+            "mod": "copy",
+            "files": "data-*.json.js",
+            "from": "src/data"
+          },
+          {
+            "mod": "sass",
+            "input": "src/scss/main.scss",
+            "output": "style.css"
+          },
+          {
+            "mod": "esbuild",
+            "input": "src/typescript/main.ts",
+            "output": "script.js",
+            "format": "iife",
+            "target": "es2020"
+          },
+          {
+            "mod": "copy",
+            "files": "index.html",
+            "from": "src"
           },
           {
             "_doc": "Inject navigator.serviceWorker.register(...) before </head>. MUST run BEFORE esbuild_sw so the modified HTML feeds into BUILD_HASH.",
@@ -2410,100 +2504,6 @@
       "has_dist": true
     },
     {
-      "category": "b-MyData",
-      "project": "myTrackers",
-      "key": "b-MyData__myTrackers",
-      "path": "b-MyData/myTrackers",
-      "build": {
-        "name": "MyTrackers",
-        "framework": "vanilla",
-        "port": 8026,
-        "src": "src",
-        "dist": "dist",
-        "build": [
-          {
-            "_doc": "Wrap every *.json in src/data/ as a globalThis.PORTAL_DATA[<key>] companion (data-*.json.js). Engine: front-data-json-js-wrapper.sh.",
-            "mod": "data_wrap",
-            "dir": "src/data"
-          },
-          {
-            "_doc": "Ship the wrapped data-*.json.js companions to dist/ root, so HTML can load them with <script src=\"data-<KEY>.json.js\"></script> — no fetch, no CORS.",
-            "mod": "copy",
-            "files": "data-*.json.js",
-            "from": "src/data"
-          },
-          {
-            "mod": "sass",
-            "input": "src/scss/main.scss",
-            "output": "style.css"
-          },
-          {
-            "mod": "esbuild",
-            "input": "src/typescript/main.ts",
-            "output": "script.js",
-            "format": "iife",
-            "target": "es2020"
-          },
-          {
-            "mod": "copy",
-            "files": "index.html",
-            "from": "src"
-          },
-          {
-            "_doc": "Inject navigator.serviceWorker.register(...) before </head>. MUST run BEFORE esbuild_sw so the modified HTML feeds into BUILD_HASH.",
-            "mod": "sw_register",
-            "files": "index.html"
-          },
-          {
-            "_doc": "Inject single-namespace observability SDK (Sentry/OpenObserve-style). Mirrors console.* + errors + SW lifecycle to OPFS console.log. window.consoleLogs.{captureException, captureMessage, addBreadcrumb, read, readJSON, tail, clear, download}.",
-            "mod": "console_log",
-            "files": "index.html"
-          },
-          {
-            "_doc": "MUST run last — hashes the dist artifacts above to derive BUILD_HASH and inject it into the SW bundle.",
-            "mod": "esbuild_sw",
-            "input": "src/typescript/script-service-worker.ts",
-            "output": "script-service-worker.js",
-            "format": "iife",
-            "target": "es2020",
-            "hash_of": [
-              "index.html",
-              "script.js",
-              "style.css"
-            ],
-            "precache": [
-              "./",
-              "./index.html",
-              "./script.js",
-              "./style.css"
-            ]
-          }
-        ],
-        "serve": {
-          "mode": "auto",
-          "dir": "src",
-          "watch": [
-            {
-              "mod": "sass",
-              "input": "scss/main.scss",
-              "output": "style.css"
-            },
-            {
-              "mod": "esbuild",
-              "input": "typescript/main.ts",
-              "output": "script.js",
-              "format": "iife",
-              "target": "es2020"
-            }
-          ]
-        },
-        "deploy": {}
-      },
-      "has_package_json": false,
-      "has_manifest": false,
-      "has_dist": true
-    },
-    {
       "category": "b-Profiles",
       "project": "myprofile",
       "key": "b-Profiles__myprofile",
@@ -2547,54 +2547,6 @@
           "svelte-check": "^4.0.0",
           "typescript": "^5.0.0",
           "vite": "^6.0.0"
-        }
-      }
-    },
-    {
-      "category": "b-Projects",
-      "project": "galaxy",
-      "key": "b-Projects__galaxy",
-      "path": "b-Projects/galaxy",
-      "build": {
-        "name": "Galaxy",
-        "framework": "sveltekit",
-        "port": 8024,
-        "src": "src",
-        "dist": "dist",
-        "build": [
-          {
-            "mod": "sveltekit"
-          }
-        ],
-        "serve": {
-          "mode": "sveltekit"
-        },
-        "deploy": {}
-      },
-      "has_package_json": true,
-      "has_manifest": false,
-      "has_dist": true,
-      "package": {
-        "name": "galaxy",
-        "description": "Constellation Hub — landing page linking to each planet",
-        "private": true,
-        "type": "module",
-        "scripts": {
-          "dev": "vite dev --port 8024",
-          "build": "vite build",
-          "preview": "vite preview",
-          "prepare": "svelte-kit sync || echo ''",
-          "check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
-          "test": "node test/hub.test.mjs"
-        },
-        "devDependencies": {
-          "@sveltejs/adapter-static": "^3.0.10",
-          "@sveltejs/kit": "^2.47.1",
-          "@sveltejs/vite-plugin-svelte": "^6.2.1",
-          "svelte": "^5.41.0",
-          "svelte-check": "^4.3.3",
-          "typescript": "^5.9.3",
-          "vite": "^7.1.10"
         }
       }
     },
@@ -2699,6 +2651,54 @@
           "@sveltejs/kit": "^2.47.1",
           "@sveltejs/vite-plugin-svelte": "^6.2.1",
           "@types/three": "^0.169.0",
+          "svelte": "^5.41.0",
+          "svelte-check": "^4.3.3",
+          "typescript": "^5.9.3",
+          "vite": "^7.1.10"
+        }
+      }
+    },
+    {
+      "category": "b-Projects",
+      "project": "galaxy",
+      "key": "b-Projects__galaxy",
+      "path": "b-Projects/galaxy",
+      "build": {
+        "name": "Galaxy",
+        "framework": "sveltekit",
+        "port": 8024,
+        "src": "src",
+        "dist": "dist",
+        "build": [
+          {
+            "mod": "sveltekit"
+          }
+        ],
+        "serve": {
+          "mode": "sveltekit"
+        },
+        "deploy": {}
+      },
+      "has_package_json": true,
+      "has_manifest": false,
+      "has_dist": true,
+      "package": {
+        "name": "galaxy",
+        "description": "Constellation Hub — landing page linking to each planet",
+        "private": true,
+        "type": "module",
+        "scripts": {
+          "dev": "vite dev --port 8024",
+          "build": "vite build",
+          "preview": "vite preview",
+          "prepare": "svelte-kit sync || echo ''",
+          "check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
+          "test": "node test/hub.test.mjs"
+        },
+        "devDependencies": {
+          "@sveltejs/adapter-static": "^3.0.10",
+          "@sveltejs/kit": "^2.47.1",
+          "@sveltejs/vite-plugin-svelte": "^6.2.1",
           "svelte": "^5.41.0",
           "svelte-check": "^4.3.3",
           "typescript": "^5.9.3",
@@ -2961,6 +2961,132 @@
           "vue-tsc": "^2.0.0"
         }
       }
+    },
+    {
+      "category": "c-LabTools",
+      "project": "Music_DAW_LLMS",
+      "key": "c-LabTools__Music_DAW_LLMS",
+      "path": "c-LabTools/Music_DAW_LLMS",
+      "build": {
+        "name": "LMMS",
+        "framework": "vanilla",
+        "port": 8035,
+        "src": "src",
+        "dist": "dist",
+        "build": [
+          {
+            "mod": "data_wrap",
+            "dir": "src/data"
+          },
+          {
+            "mod": "copy",
+            "files": "data-*.json.js",
+            "from": "src/data"
+          },
+          {
+            "mod": "sass",
+            "input": "src/scss/main.scss",
+            "output": "style.css"
+          },
+          {
+            "mod": "esbuild",
+            "input": "src/typescript/main.ts",
+            "output": "script.js",
+            "format": "iife",
+            "target": "es2020"
+          },
+          {
+            "mod": "copy",
+            "files": "index.html",
+            "from": "src"
+          }
+        ],
+        "serve": {
+          "mode": "auto",
+          "dir": "src",
+          "watch": [
+            {
+              "mod": "sass",
+              "input": "scss/main.scss",
+              "output": "style.css"
+            },
+            {
+              "mod": "esbuild",
+              "input": "typescript/main.ts",
+              "output": "script.js",
+              "format": "iife",
+              "target": "es2020"
+            }
+          ]
+        },
+        "deploy": {}
+      },
+      "has_package_json": false,
+      "has_manifest": false,
+      "has_dist": true
+    },
+    {
+      "category": "c-LabTools",
+      "project": "Music_DJ-Mixer_Mixxx",
+      "key": "c-LabTools__Music_DJ-Mixer_Mixxx",
+      "path": "c-LabTools/Music_DJ-Mixer_Mixxx",
+      "build": {
+        "name": "Mixxx",
+        "framework": "vanilla",
+        "port": 8034,
+        "src": "src",
+        "dist": "dist",
+        "build": [
+          {
+            "mod": "data_wrap",
+            "dir": "src/data"
+          },
+          {
+            "mod": "copy",
+            "files": "data-*.json.js",
+            "from": "src/data"
+          },
+          {
+            "mod": "sass",
+            "input": "src/scss/main.scss",
+            "output": "style.css"
+          },
+          {
+            "mod": "esbuild",
+            "input": "src/typescript/main.ts",
+            "output": "script.js",
+            "format": "iife",
+            "target": "es2020"
+          },
+          {
+            "mod": "copy",
+            "files": "index.html",
+            "from": "src"
+          }
+        ],
+        "serve": {
+          "mode": "auto",
+          "dir": "src",
+          "watch": [
+            {
+              "mod": "sass",
+              "input": "scss/main.scss",
+              "output": "style.css"
+            },
+            {
+              "mod": "esbuild",
+              "input": "typescript/main.ts",
+              "output": "script.js",
+              "format": "iife",
+              "target": "es2020"
+            }
+          ]
+        },
+        "deploy": {}
+      },
+      "has_package_json": false,
+      "has_manifest": false,
+      "has_dist": true
     },
     {
       "category": "c-LabTools",
@@ -3283,132 +3409,6 @@
           "typescript": "^5.3.2"
         }
       }
-    },
-    {
-      "category": "c-LabTools",
-      "project": "Music_DAW_LLMS",
-      "key": "c-LabTools__Music_DAW_LLMS",
-      "path": "c-LabTools/Music_DAW_LLMS",
-      "build": {
-        "name": "LMMS",
-        "framework": "vanilla",
-        "port": 8035,
-        "src": "src",
-        "dist": "dist",
-        "build": [
-          {
-            "mod": "data_wrap",
-            "dir": "src/data"
-          },
-          {
-            "mod": "copy",
-            "files": "data-*.json.js",
-            "from": "src/data"
-          },
-          {
-            "mod": "sass",
-            "input": "src/scss/main.scss",
-            "output": "style.css"
-          },
-          {
-            "mod": "esbuild",
-            "input": "src/typescript/main.ts",
-            "output": "script.js",
-            "format": "iife",
-            "target": "es2020"
-          },
-          {
-            "mod": "copy",
-            "files": "index.html",
-            "from": "src"
-          }
-        ],
-        "serve": {
-          "mode": "auto",
-          "dir": "src",
-          "watch": [
-            {
-              "mod": "sass",
-              "input": "scss/main.scss",
-              "output": "style.css"
-            },
-            {
-              "mod": "esbuild",
-              "input": "typescript/main.ts",
-              "output": "script.js",
-              "format": "iife",
-              "target": "es2020"
-            }
-          ]
-        },
-        "deploy": {}
-      },
-      "has_package_json": false,
-      "has_manifest": false,
-      "has_dist": true
-    },
-    {
-      "category": "c-LabTools",
-      "project": "Music_DJ-Mixer_Mixxx",
-      "key": "c-LabTools__Music_DJ-Mixer_Mixxx",
-      "path": "c-LabTools/Music_DJ-Mixer_Mixxx",
-      "build": {
-        "name": "Mixxx",
-        "framework": "vanilla",
-        "port": 8034,
-        "src": "src",
-        "dist": "dist",
-        "build": [
-          {
-            "mod": "data_wrap",
-            "dir": "src/data"
-          },
-          {
-            "mod": "copy",
-            "files": "data-*.json.js",
-            "from": "src/data"
-          },
-          {
-            "mod": "sass",
-            "input": "src/scss/main.scss",
-            "output": "style.css"
-          },
-          {
-            "mod": "esbuild",
-            "input": "src/typescript/main.ts",
-            "output": "script.js",
-            "format": "iife",
-            "target": "es2020"
-          },
-          {
-            "mod": "copy",
-            "files": "index.html",
-            "from": "src"
-          }
-        ],
-        "serve": {
-          "mode": "auto",
-          "dir": "src",
-          "watch": [
-            {
-              "mod": "sass",
-              "input": "scss/main.scss",
-              "output": "style.css"
-            },
-            {
-              "mod": "esbuild",
-              "input": "typescript/main.ts",
-              "output": "script.js",
-              "format": "iife",
-              "target": "es2020"
-            }
-          ]
-        },
-        "deploy": {}
-      },
-      "has_package_json": false,
-      "has_manifest": false,
-      "has_dist": true
     },
     {
       "category": "c-LabTools",
@@ -3956,100 +3956,6 @@
     },
     {
       "category": "c-Suite",
-      "project": "mymaps",
-      "key": "c-Suite__mymaps",
-      "path": "c-Suite/mymaps",
-      "build": {
-        "name": "MyMaps",
-        "framework": "vanilla",
-        "port": 8027,
-        "src": "src",
-        "dist": "dist",
-        "build": [
-          {
-            "_doc": "Wrap every *.json in src/data/ as a globalThis.PORTAL_DATA[<key>] companion (data-*.json.js). Engine: front-data-json-js-wrapper.sh.",
-            "mod": "data_wrap",
-            "dir": "src/data"
-          },
-          {
-            "_doc": "Ship the wrapped data-*.json.js companions to dist/ root, so HTML can load them with <script src=\"data-<KEY>.json.js\"></script> — no fetch, no CORS.",
-            "mod": "copy",
-            "files": "data-*.json.js",
-            "from": "src/data"
-          },
-          {
-            "mod": "sass",
-            "input": "src/scss/main.scss",
-            "output": "style.css"
-          },
-          {
-            "mod": "esbuild",
-            "input": "src/typescript/main.ts",
-            "output": "script.js",
-            "format": "iife",
-            "target": "es2020"
-          },
-          {
-            "mod": "copy",
-            "files": "index.html",
-            "from": "src"
-          },
-          {
-            "_doc": "Inject navigator.serviceWorker.register(...) before </head>. MUST run BEFORE esbuild_sw so the modified HTML feeds into BUILD_HASH.",
-            "mod": "sw_register",
-            "files": "index.html"
-          },
-          {
-            "_doc": "Inject single-namespace observability SDK (Sentry/OpenObserve-style). Mirrors console.* + errors + SW lifecycle to OPFS console.log. window.consoleLogs.{captureException, captureMessage, addBreadcrumb, read, readJSON, tail, clear, download}.",
-            "mod": "console_log",
-            "files": "index.html"
-          },
-          {
-            "_doc": "MUST run last — hashes the dist artifacts above to derive BUILD_HASH and inject it into the SW bundle.",
-            "mod": "esbuild_sw",
-            "input": "src/typescript/script-service-worker.ts",
-            "output": "script-service-worker.js",
-            "format": "iife",
-            "target": "es2020",
-            "hash_of": [
-              "index.html",
-              "script.js",
-              "style.css"
-            ],
-            "precache": [
-              "./",
-              "./index.html",
-              "./script.js",
-              "./style.css"
-            ]
-          }
-        ],
-        "serve": {
-          "mode": "auto",
-          "dir": "src",
-          "watch": [
-            {
-              "mod": "sass",
-              "input": "scss/main.scss",
-              "output": "style.css"
-            },
-            {
-              "mod": "esbuild",
-              "input": "typescript/main.ts",
-              "output": "script.js",
-              "format": "iife",
-              "target": "es2020"
-            }
-          ]
-        },
-        "deploy": {}
-      },
-      "has_package_json": false,
-      "has_manifest": false,
-      "has_dist": true
-    },
-    {
-      "category": "c-Suite",
       "project": "mymaps-maps",
       "key": "c-Suite__mymaps-maps",
       "path": "c-Suite/mymaps-maps",
@@ -4167,6 +4073,100 @@
           "maplibre-gl": "^5.17.0"
         }
       }
+    },
+    {
+      "category": "c-Suite",
+      "project": "mymaps",
+      "key": "c-Suite__mymaps",
+      "path": "c-Suite/mymaps",
+      "build": {
+        "name": "MyMaps",
+        "framework": "vanilla",
+        "port": 8027,
+        "src": "src",
+        "dist": "dist",
+        "build": [
+          {
+            "_doc": "Wrap every *.json in src/data/ as a globalThis.PORTAL_DATA[<key>] companion (data-*.json.js). Engine: front-data-json-js-wrapper.sh.",
+            "mod": "data_wrap",
+            "dir": "src/data"
+          },
+          {
+            "_doc": "Ship the wrapped data-*.json.js companions to dist/ root, so HTML can load them with <script src=\"data-<KEY>.json.js\"></script> — no fetch, no CORS.",
+            "mod": "copy",
+            "files": "data-*.json.js",
+            "from": "src/data"
+          },
+          {
+            "mod": "sass",
+            "input": "src/scss/main.scss",
+            "output": "style.css"
+          },
+          {
+            "mod": "esbuild",
+            "input": "src/typescript/main.ts",
+            "output": "script.js",
+            "format": "iife",
+            "target": "es2020"
+          },
+          {
+            "mod": "copy",
+            "files": "index.html",
+            "from": "src"
+          },
+          {
+            "_doc": "Inject navigator.serviceWorker.register(...) before </head>. MUST run BEFORE esbuild_sw so the modified HTML feeds into BUILD_HASH.",
+            "mod": "sw_register",
+            "files": "index.html"
+          },
+          {
+            "_doc": "Inject single-namespace observability SDK (Sentry/OpenObserve-style). Mirrors console.* + errors + SW lifecycle to OPFS console.log. window.consoleLogs.{captureException, captureMessage, addBreadcrumb, read, readJSON, tail, clear, download}.",
+            "mod": "console_log",
+            "files": "index.html"
+          },
+          {
+            "_doc": "MUST run last — hashes the dist artifacts above to derive BUILD_HASH and inject it into the SW bundle.",
+            "mod": "esbuild_sw",
+            "input": "src/typescript/script-service-worker.ts",
+            "output": "script-service-worker.js",
+            "format": "iife",
+            "target": "es2020",
+            "hash_of": [
+              "index.html",
+              "script.js",
+              "style.css"
+            ],
+            "precache": [
+              "./",
+              "./index.html",
+              "./script.js",
+              "./style.css"
+            ]
+          }
+        ],
+        "serve": {
+          "mode": "auto",
+          "dir": "src",
+          "watch": [
+            {
+              "mod": "sass",
+              "input": "scss/main.scss",
+              "output": "style.css"
+            },
+            {
+              "mod": "esbuild",
+              "input": "typescript/main.ts",
+              "output": "script.js",
+              "format": "iife",
+              "target": "es2020"
+            }
+          ]
+        },
+        "deploy": {}
+      },
+      "has_package_json": false,
+      "has_manifest": false,
+      "has_dist": true
     },
     {
       "category": "c-Suite",
@@ -4694,7 +4694,7 @@
       {
         "section": "personal-profiles",
         "id": "dms",
-        "kind": "venture-card",
+        "kind": "tools",
         "title": "DMs"
       },
       {
@@ -4954,6 +4954,94 @@
         "label": "Bucket (Inner)",
         "url": "https://bucketlistjourney.net/my-bucket-list",
         "icon": "heart.svg"
+      },
+      {
+        "section": "personal-profiles",
+        "slide": "personal-profiles",
+        "column": "MAIL",
+        "label": "mailMe",
+        "url": "mailto:me@diegonmarcos.com",
+        "icon": "mail.svg"
+      },
+      {
+        "section": "personal-profiles",
+        "slide": "personal-profiles",
+        "column": "MAIL",
+        "label": "Mail",
+        "url": "mailto:me@diegonmarcos.com",
+        "icon": "mail.svg"
+      },
+      {
+        "section": "personal-profiles",
+        "slide": "personal-profiles",
+        "column": "CHATS",
+        "label": "WhatsApp",
+        "url": "https://wa.me/34680614213",
+        "icon": "brand-whatsapp.svg"
+      },
+      {
+        "section": "personal-profiles",
+        "slide": "personal-profiles",
+        "column": "CHATS",
+        "label": "Telegram",
+        "url": "https://t.me/diegonmarcos",
+        "icon": "brand-telegram.svg"
+      },
+      {
+        "section": "personal-profiles",
+        "slide": "personal-profiles",
+        "column": "CHATS",
+        "label": "Viber",
+        "url": "viber://chat?number=",
+        "icon": "brand-viber.svg"
+      },
+      {
+        "section": "personal-profiles",
+        "slide": "personal-profiles",
+        "column": "CHATS",
+        "label": "Matrix",
+        "url": "https://matrix.to/#/@diegonmarcos:matrix.org",
+        "icon": "brand-matrix.svg"
+      },
+      {
+        "section": "personal-profiles",
+        "slide": "personal-profiles",
+        "column": "CHATS",
+        "label": "ICQ",
+        "url": "https://icq.com/chat",
+        "icon": "brand-icq.svg"
+      },
+      {
+        "section": "personal-profiles",
+        "slide": "personal-profiles",
+        "column": "SOCIAL",
+        "label": "Instagram DM",
+        "url": "https://ig.me/m/diegonmarcos",
+        "icon": "brand-instagram.svg"
+      },
+      {
+        "section": "personal-profiles",
+        "slide": "personal-profiles",
+        "column": "SOCIAL",
+        "label": "X DM",
+        "url": "https://x.com/messages/compose?recipient_id=",
+        "icon": "brand-x.svg"
+      },
+      {
+        "section": "personal-profiles",
+        "slide": "personal-profiles",
+        "column": "SOCIAL",
+        "label": "LinkedIn DM",
+        "url": "https://linkedin.com/in/diegonmarcos",
+        "icon": "brand-linkedin.svg"
+      },
+      {
+        "section": "personal-profiles",
+        "slide": "personal-profiles",
+        "column": "HUBS",
+        "label": "MyBeeper",
+        "url": "https://beeper.com",
+        "icon": "link.svg"
       },
       {
         "section": "projects",

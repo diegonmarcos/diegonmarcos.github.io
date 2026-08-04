@@ -468,7 +468,7 @@
       "extras": {
         "primary_link": {
           "label": "myTrackers",
-          "url": "https://diegonmarcos.github.io/myhealth-tracker",
+          "url": "https://diegonmarcos.github.io/myTrackers/",
           "icon": "heart.svg"
         }
       }
@@ -479,6 +479,11 @@
       "slide": 3,
       "title": "DMs",
       "image": "public/images/banners/dms.svg",
+      "primary_link": {
+        "label": "DMs",
+        "url": "https://diegonmarcos.github.io/DMs",
+        "icon": "mail.svg"
+      },
       "sections": [
         {
           "layout": "contact-icons",

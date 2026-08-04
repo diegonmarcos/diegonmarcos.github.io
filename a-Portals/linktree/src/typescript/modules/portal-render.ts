@@ -77,6 +77,7 @@ interface SlideVentureCard {
   id: string; kind: 'venture-card'; title: string;
   image?: { src: string; alt?: string } | string;
   sections: ProfileSection[];
+  primary_link?: Link;
 }
 
 type Slide = SlideTools | SlideProfileCard | SlideRepos | SlideVentureCard;
@@ -248,7 +249,11 @@ function renderCardSwiper(items: CardSwiperItem[]): HTMLElement {
   for (const item of items) {
     const cls = `featured-image card-slide${item.active ? ' active' : ''}`;
     if (item.type === 'video') {
-      wrap.appendChild(el('video', { class: cls, src: item.src, autoplay: '', loop: '', muted: '', playsinline: '', preload: 'metadata' }));
+      const videoEl = el('video', { class: cls, src: item.src, autoplay: '', loop: '', muted: '', playsinline: '', preload: 'metadata' });
+      // setAttribute('muted','') is unreliable on some browsers/Android —
+      // the IDL property must be set directly for guaranteed mute.
+      (videoEl as HTMLVideoElement).muted = true;
+      wrap.appendChild(videoEl);
     } else {
       const imgAttrs: Record<string, string> = { class: cls, src: item.src, alt: item.alt ?? '', decoding: 'async' };
       if (item.active) {
@@ -432,6 +437,7 @@ function renderVentureCardSlide(slide: SlideVentureCard): HTMLElement {
   }
   const linksContainer = el('div', { class: 'links-container' });
   for (const sec of slide.sections) linksContainer.appendChild(renderProfileSection(sec));
+  if (slide.primary_link) linksContainer.appendChild(renderLinkAnchor(slide.primary_link));
   linkSection.appendChild(linksContainer);
   return el('div', { class: 'swiper-slide' }, [linkSection]);
 }

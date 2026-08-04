@@ -127,6 +127,23 @@
             "preview": "public/thumbnails/diegonmarcos_github_io.jpg",
             "item": 9
           }
+        ],
+        "hub_icons": [
+          {
+            "label": "DMs",
+            "icon": "mail.svg",
+            "url": "/DMs"
+          },
+          {
+            "label": "mySocials",
+            "icon": "user.svg",
+            "url": "/mySocials"
+          },
+          {
+            "label": "myTrackers",
+            "icon": "map-pin-2.svg",
+            "url": "/myTrackers"
+          }
         ]
       },
       "collapsible": {
@@ -451,12 +468,111 @@
       "extras": {
         "primary_link": {
           "label": "myTrackers",
-          "url": "https://diegonmarcos.github.io/myhealth-tracker",
+          "url": "https://diegonmarcos.github.io/myTrackers/",
           "icon": "heart.svg"
         }
       }
+    },
+    {
+      "id": "dms",
+      "kind": "venture-card",
+      "slide": 3,
+      "title": "DMs",
+      "image": "public/images/banners/dms.svg",
+      "primary_link": {
+        "label": "DMs",
+        "url": "https://diegonmarcos.github.io/DMs",
+        "icon": "mail.svg"
+      },
+      "sections": [
+        {
+          "layout": "contact-icons",
+          "items": [
+            {
+              "label": "Mail",
+              "icon": "mail.svg",
+              "url": "mailto:me@diegonmarcos.com"
+            }
+          ]
+        },
+        {
+          "layout": "links",
+          "items": [
+            {
+              "label": "mailMe",
+              "url": "mailto:me@diegonmarcos.com",
+              "icon": "mail.svg",
+              "style": "primary"
+            }
+          ]
+        },
+        {
+          "layout": "contact-icons",
+          "items": [
+            {
+              "label": "Wapp0",
+              "icon": "brand-whatsapp.svg",
+              "url": "https://wa.me/34680614213"
+            },
+            {
+              "label": "Wapp1",
+              "icon": "brand-whatsapp.svg",
+              "url": "https://wa.me/"
+            },
+            {
+              "label": "Telegram",
+              "icon": "brand-telegram.svg",
+              "url": "https://t.me/diegonmarcos"
+            },
+            {
+              "label": "Viber",
+              "icon": "brand-viber.svg",
+              "url": "viber://chat?number="
+            },
+            {
+              "label": "Matrix",
+              "icon": "brand-matrix.svg",
+              "url": "https://matrix.to/#/@diegonmarcos:matrix.org"
+            },
+            {
+              "label": "igDM",
+              "icon": "brand-instagram.svg",
+              "url": "https://ig.me/m/diegonmarcos"
+            },
+            {
+              "label": "XDM",
+              "icon": "brand-x.svg",
+              "url": "https://x.com/messages/compose?recipient_id="
+            },
+            {
+              "label": "LinkedinDM",
+              "icon": "brand-linkedin.svg",
+              "url": "https://linkedin.com/in/diegonmarcos"
+            },
+            {
+              "label": "ICQ",
+              "icon": "brand-icq.svg",
+              "url": "https://icq.com/chat"
+            },
+            {
+              "label": "Mail",
+              "icon": "mail.svg",
+              "url": "mailto:me@diegonmarcos.com"
+            }
+          ]
+        },
+        {
+          "layout": "links",
+          "items": [
+            {
+              "label": "MyBeeper",
+              "url": "https://beeper.com",
+              "style": "primary"
+            }
+          ]
+        }
+      ]
     }
   ]
-}
-;
+};
 })();

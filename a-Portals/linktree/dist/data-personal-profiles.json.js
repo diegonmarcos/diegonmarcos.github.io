@@ -479,6 +479,16 @@
       },
       "columns": [
         {
+          "header": "HUBS",
+          "links": [
+            {
+              "label": "MyBeeper",
+              "url": "https://beeper.com",
+              "icon": "link.svg"
+            }
+          ]
+        },
+        {
           "header": "MAIL",
           "links": [
             {
@@ -540,16 +550,6 @@
               "label": "LinkedIn DM",
               "url": "https://linkedin.com/in/diegonmarcos",
               "icon": "brand-linkedin.svg"
-            }
-          ]
-        },
-        {
-          "header": "HUBS",
-          "links": [
-            {
-              "label": "MyBeeper",
-              "url": "https://beeper.com",
-              "icon": "link.svg"
             }
           ]
         }

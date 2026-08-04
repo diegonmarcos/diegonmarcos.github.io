@@ -305,6 +305,14 @@
     {
       "section": "personal-profiles",
       "slide": "personal-profiles",
+      "column": "HUBS",
+      "label": "MyBeeper",
+      "url": "https://beeper.com",
+      "icon": "link.svg"
+    },
+    {
+      "section": "personal-profiles",
+      "slide": "personal-profiles",
       "column": "MAIL",
       "label": "mailMe",
       "url": "mailto:me@diegonmarcos.com",
@@ -381,14 +389,6 @@
       "label": "LinkedIn DM",
       "url": "https://linkedin.com/in/diegonmarcos",
       "icon": "brand-linkedin.svg"
-    },
-    {
-      "section": "personal-profiles",
-      "slide": "personal-profiles",
-      "column": "HUBS",
-      "label": "MyBeeper",
-      "url": "https://beeper.com",
-      "icon": "link.svg"
     },
     {
       "section": "projects",

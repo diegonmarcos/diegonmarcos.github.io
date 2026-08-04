@@ -4236,51 +4236,43 @@ void main() {
       ${f}
       <div class="story-nodes">${m}</div>
     </div>
-  `;let _=null;s.querySelectorAll(".story-node").forEach(g=>{let p=g.dataset.nodeId,x=u.get(p);g.addEventListener("mouseenter",()=>g.classList.add("is-hovered")),g.addEventListener("mouseleave",()=>g.classList.remove("is-hovered")),g.addEventListener("click",()=>{if(_===p){_=null,s.querySelectorAll(".story-node").forEach(y=>y.classList.remove("is-active","is-dimmed")),s.querySelectorAll(".story-line").forEach(y=>y.classList.remove("is-active","is-dimmed"));return}_=p;let v=new Set([p]);x.parent&&v.add(x.parent),h.filter(y=>y.parent===p).forEach(y=>v.add(y.id)),s.querySelectorAll(".story-node").forEach(y=>{let w=y.dataset.nodeId;y.classList.toggle("is-active",w===p),y.classList.toggle("is-dimmed",!v.has(w))}),s.querySelectorAll(".story-line").forEach((y,w)=>{let S=h.filter(N=>N.parent)[w],E=S&&(S.id===p||S.parent===p||x.parent&&S.id===x.parent||S.parent===x.parent&&S.parent===p),R=S&&(v.has(S.id)||v.has(S.parent));y.classList.toggle("is-active",!!R),y.classList.toggle("is-dimmed",!R)})})}),s.querySelector(".story-wrap").addEventListener("click",g=>{g.target.closest(".story-node")||(_=null,s.querySelectorAll(".story-node").forEach(p=>p.classList.remove("is-active","is-dimmed")),s.querySelectorAll(".story-line").forEach(p=>p.classList.remove("is-active","is-dimmed")))})}function _b(){let s=document.getElementById("facebook-view");if(!s)return;function e(i){return i.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;")}let n=[{id:1,author:"Diego Marcos",time:"2 hours ago",content:"Just shipped a new feature to production. Dark mode everywhere \u2014 because eye strain is real. \u{1F319}",likes:47,comments:12,shares:3,hasPhoto:!1},{id:2,author:"Diego Marcos",time:"Yesterday at 9:14 AM",content:"Weekend project: built a self-hosted analytics stack. Matomo + Umami running on my own VMs. No tracking pixels from big tech.",likes:83,comments:21,shares:9,hasPhoto:!0},{id:3,author:"Diego Marcos",time:"3 days ago",content:"Reminder that WireGuard is incredible. Zero config drift, sub-millisecond handshake. My whole home network runs on it now.",likes:134,comments:38,shares:17,hasPhoto:!1},{id:4,author:"Diego Marcos",time:"5 days ago",content:'Reading: "Designing Data-Intensive Applications" by Kleppmann. If you work with any kind of backend, this book is mandatory reading.',likes:56,comments:8,shares:4,hasPhoto:!0},{id:5,author:"Diego Marcos",time:"1 week ago",content:"Open source isn't just code \u2014 it's infrastructure, documentation, community. Happy to contribute back whenever I can.",likes:209,comments:44,shares:28,hasPhoto:!1}].map(i=>`
+  `;let _=null;s.querySelectorAll(".story-node").forEach(g=>{let p=g.dataset.nodeId,x=u.get(p);g.addEventListener("mouseenter",()=>g.classList.add("is-hovered")),g.addEventListener("mouseleave",()=>g.classList.remove("is-hovered")),g.addEventListener("click",()=>{if(_===p){_=null,s.querySelectorAll(".story-node").forEach(y=>y.classList.remove("is-active","is-dimmed")),s.querySelectorAll(".story-line").forEach(y=>y.classList.remove("is-active","is-dimmed"));return}_=p;let v=new Set([p]);x.parent&&v.add(x.parent),h.filter(y=>y.parent===p).forEach(y=>v.add(y.id)),s.querySelectorAll(".story-node").forEach(y=>{let w=y.dataset.nodeId;y.classList.toggle("is-active",w===p),y.classList.toggle("is-dimmed",!v.has(w))}),s.querySelectorAll(".story-line").forEach((y,w)=>{let S=h.filter(N=>N.parent)[w],E=S&&(S.id===p||S.parent===p||x.parent&&S.id===x.parent||S.parent===x.parent&&S.parent===p),R=S&&(v.has(S.id)||v.has(S.parent));y.classList.toggle("is-active",!!R),y.classList.toggle("is-dimmed",!R)})})}),s.querySelector(".story-wrap").addEventListener("click",g=>{g.target.closest(".story-node")||(_=null,s.querySelectorAll(".story-node").forEach(p=>p.classList.remove("is-active","is-dimmed")),s.querySelectorAll(".story-line").forEach(p=>p.classList.remove("is-active","is-dimmed")))})}function _b(){let s=document.getElementById("facebook-view");if(!s)return;function e(a){return a.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;")}let t=globalThis.PORTAL_DATA?.["facebook-diegonmarcos"],n=t?.profile||{name:"Diego Marcos",bio:"",photo:""},i=t?.posts||[],r=i.slice(0,50).map(a=>{let o=(a.media||[]).map(l=>l.endsWith(".mp4")?`<video class="fb-post__photo" src="${e(l)}" controls preload="metadata"></video>`:`<img class="fb-post__photo" src="${e(l)}" loading="lazy" alt="" />`).join("");return`
     <article class="fb-post">
       <header class="fb-post__header">
         <div class="fb-post__avatar" aria-hidden="true"></div>
         <div class="fb-post__meta">
-          <span class="fb-post__author">${e(i.author)}</span>
-          <span class="fb-post__time">${e(i.time)}</span>
+          <span class="fb-post__author">${e(n.name)}</span>
+          <span class="fb-post__time">${e(a.timestamp||"")}</span>
         </div>
       </header>
-      <div class="fb-post__content">${e(i.content)}</div>
-      ${i.hasPhoto?'<div class="fb-post__photo" aria-label="Photo placeholder"></div>':""}
-      <footer class="fb-post__footer">
-        <span class="fb-post__stat">${i.likes} Likes</span>
-        <span class="fb-post__stat">${i.comments} Comments</span>
-        <span class="fb-post__stat">${i.shares} Shares</span>
-      </footer>
+      ${a.content?`<div class="fb-post__content">${e(a.content)}</div>`:""}
+      ${o}
       <div class="fb-post__actions">
         <button class="fb-post__action" type="button">\u{1F44D} Like</button>
         <button class="fb-post__action" type="button">\u{1F4AC} Comment</button>
         <button class="fb-post__action" type="button">\u2197 Share</button>
       </div>
     </article>
-  `).join("");s.innerHTML=`
+  `}).join("");s.innerHTML=`
     <div class="fb-profile">
       <div class="fb-cover"></div>
       <div class="fb-identity">
-        <div class="fb-avatar" aria-label="Profile photo placeholder"></div>
+        <div class="fb-avatar" aria-hidden="true" ${n.photo?`style="background-image:url('${e(n.photo)}');background-size:cover"`:""}></div>
         <div class="fb-identity__info">
-          <h1 class="fb-identity__name">Diego Marcos</h1>
-          <p class="fb-identity__bio">Software engineer \xB7 Building tools, distributed systems, and keyboards.</p>
+          <h1 class="fb-identity__name">${e(n.name)}</h1>
+          <p class="fb-identity__bio">${e(n.bio||"")}</p>
         </div>
       </div>
       <div class="fb-stats">
-        <span class="fb-stat"><strong>812</strong> Friends</span>
-        <span class="fb-stat"><strong>1.2K</strong> Followers</span>
-        <span class="fb-stat"><strong>345</strong> Following</span>
+        <span class="fb-stat"><strong>${i.length}</strong> Posts</span>
       </div>
       <nav class="fb-tabs" aria-label="Profile sections">
         <span class="fb-tab fb-tab--active">Timeline</span>
         <span class="fb-tab">About</span>
-        <span class="fb-tab">Friends</span>
         <span class="fb-tab">Photos</span>
       </nav>
       <main class="fb-timeline">
-        ${n}
+        ${r}
       </main>
     </div>
   `}var Gp=["mysocials","orkut","instagram-diegonmarcos","instagram-diegocmarcos_","instagram-diegocnmarcos_","linkedin","pinterest","tidal","youtube","icq","shelf","vinyl","bar-cellar","menu","theater","story","facebook-diegonmarcos"];function Bp(s){return s==="mysocials"?"index.html":`${s}.html`}function vb(){let s=(location.pathname.split("/").pop()||"").replace(/\.html$/,"")||"index",e=s==="index"?"mysocials":s;return Gp.includes(e)?e:null}function xb(s){return s.startsWith("instagram-")?"instagram":s}function yb(s){let e=`style-${xb(s)}.css`;if(document.querySelector(`link[href="${e}"]`))return;let t=document.createElement("link");t.rel="stylesheet",t.href=e,document.head.appendChild(t)}function gl(s){yb(s),document.documentElement.setAttribute("data-theme",s),document.querySelectorAll("[data-theme-btn]").forEach(e=>{e.classList.toggle("is-active",e.dataset.themeBtn===s)}),window.scrollTo(0,0)}function Wp(s,e=!0){if(s.startsWith("instagram-")){location.href=Bp(s);return}gl(s),e&&history.pushState({theme:s},"",Bp(s))}function bb(){let s=document.documentElement.dataset.theme||"mysocials";gl(Gp.includes(s)?s:"mysocials"),document.querySelectorAll("[data-theme-btn]").forEach(e=>{e.addEventListener("click",()=>Wp(e.dataset.themeBtn))}),window.addEventListener("popstate",e=>{let t=e.state?.theme||"mysocials";gl(t)})}function kp(){let s=vb();s&&document.documentElement.setAttribute("data-theme",s),qy(),Yy(),jy(),Zy(),Jy(),eb(),nb(),ib(),sb(),rb(),ab(),ob(),ub(),db(),fb(),pb(),mb(),gb(),_b(),bb(),setTimeout(()=>{document.querySelectorAll(".trust-meter__fill").forEach(e=>{e.style.transition="width 1.2s cubic-bezier(0.16, 1, 0.3, 1)"})},300)}async function $p(){let s=document.getElementById("theme-switch"),e=[...document.querySelectorAll("[data-theme-btn]")],t=document.documentElement.dataset.theme??"";e.find(h=>h.dataset.themeBtn!==t)?.click();let i=document.documentElement.dataset.theme!==t;i&&t&&gl(t);let r="none",a=[],o={};try{r=navigator.serviceWorker?.controller?.scriptURL??"none",a=(await navigator.serviceWorker?.getRegistrations?.()??[]).map(u=>[u.installing&&"installing",u.waiting&&"waiting",u.active&&`active:${u.active.scriptURL}`].filter(Boolean).join(","));for(let u of await caches.keys())o[u]=(await(await caches.open(u)).keys()).length}catch{}let l="n/a";if(s){let h=s.getBoundingClientRect(),u=document.elementFromPoint(h.left+h.width/2,h.top+h.height/2);l=`<${u?.tagName}.${(u?.className||"").toString().trim()}> inNav:${s.contains(u)}`}let c={url:location.href,theme:document.documentElement.dataset.theme,navButtons:e.length,navWired:i,swController:r,swRegistrations:a,caches:o,navHitTest:l,ua:navigator.userAgent};return console.info("[mySocials debug]",JSON.stringify(c)),c}window.__debugReport=$p;document.readyState==="loading"?document.addEventListener("DOMContentLoaded",kp):kp();(/\bdebug\b/.test(location.search)||/\bdebug\b/.test(location.hash))&&setTimeout(()=>{$p()},500);})();

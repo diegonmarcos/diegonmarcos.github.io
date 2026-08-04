@@ -2883,102 +2883,52 @@ function renderFacebook(): void {
     return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
   }
 
-  const posts = [
-    {
-      id: 1,
-      author: 'Diego Marcos',
-      time: '2 hours ago',
-      content: 'Just shipped a new feature to production. Dark mode everywhere — because eye strain is real. 🌙',
-      likes: 47,
-      comments: 12,
-      shares: 3,
-      hasPhoto: false,
-    },
-    {
-      id: 2,
-      author: 'Diego Marcos',
-      time: 'Yesterday at 9:14 AM',
-      content: 'Weekend project: built a self-hosted analytics stack. Matomo + Umami running on my own VMs. No tracking pixels from big tech.',
-      likes: 83,
-      comments: 21,
-      shares: 9,
-      hasPhoto: true,
-    },
-    {
-      id: 3,
-      author: 'Diego Marcos',
-      time: '3 days ago',
-      content: 'Reminder that WireGuard is incredible. Zero config drift, sub-millisecond handshake. My whole home network runs on it now.',
-      likes: 134,
-      comments: 38,
-      shares: 17,
-      hasPhoto: false,
-    },
-    {
-      id: 4,
-      author: 'Diego Marcos',
-      time: '5 days ago',
-      content: 'Reading: "Designing Data-Intensive Applications" by Kleppmann. If you work with any kind of backend, this book is mandatory reading.',
-      likes: 56,
-      comments: 8,
-      shares: 4,
-      hasPhoto: true,
-    },
-    {
-      id: 5,
-      author: 'Diego Marcos',
-      time: '1 week ago',
-      content: 'Open source isn\'t just code — it\'s infrastructure, documentation, community. Happy to contribute back whenever I can.',
-      likes: 209,
-      comments: 44,
-      shares: 28,
-      hasPhoto: false,
-    },
-  ];
+  // Load real data from PORTAL_DATA
+  const data = (globalThis as any).PORTAL_DATA?.['facebook-diegonmarcos'];
+  const profile = data?.profile || { name: 'Diego Marcos', bio: '', photo: '' };
+  const posts: Array<{ timestamp: string; content: string; media: string[] }> = data?.posts || [];
 
-  const postsHtml = posts.map(p => `
+  const postsHtml = posts.slice(0, 50).map(p => {
+    const mediaHtml = (p.media || []).map(m =>
+      m.endsWith('.mp4')
+        ? `<video class="fb-post__photo" src="${esc(m)}" controls preload="metadata"></video>`
+        : `<img class="fb-post__photo" src="${esc(m)}" loading="lazy" alt="" />`
+    ).join('');
+    return `
     <article class="fb-post">
       <header class="fb-post__header">
         <div class="fb-post__avatar" aria-hidden="true"></div>
         <div class="fb-post__meta">
-          <span class="fb-post__author">${esc(p.author)}</span>
-          <span class="fb-post__time">${esc(p.time)}</span>
+          <span class="fb-post__author">${esc(profile.name)}</span>
+          <span class="fb-post__time">${esc(p.timestamp || '')}</span>
         </div>
       </header>
-      <div class="fb-post__content">${esc(p.content)}</div>
-      ${p.hasPhoto ? '<div class="fb-post__photo" aria-label="Photo placeholder"></div>' : ''}
-      <footer class="fb-post__footer">
-        <span class="fb-post__stat">${p.likes} Likes</span>
-        <span class="fb-post__stat">${p.comments} Comments</span>
-        <span class="fb-post__stat">${p.shares} Shares</span>
-      </footer>
+      ${p.content ? `<div class="fb-post__content">${esc(p.content)}</div>` : ''}
+      ${mediaHtml}
       <div class="fb-post__actions">
         <button class="fb-post__action" type="button">👍 Like</button>
         <button class="fb-post__action" type="button">💬 Comment</button>
         <button class="fb-post__action" type="button">↗ Share</button>
       </div>
     </article>
-  `).join('');
+  `}).join('');
 
   el.innerHTML = `
     <div class="fb-profile">
       <div class="fb-cover"></div>
       <div class="fb-identity">
-        <div class="fb-avatar" aria-label="Profile photo placeholder"></div>
+        <div class="fb-avatar" aria-hidden="true" ${profile.photo ? `style="background-image:url('${esc(profile.photo)}');background-size:cover"` : ''}></div>
         <div class="fb-identity__info">
-          <h1 class="fb-identity__name">Diego Marcos</h1>
-          <p class="fb-identity__bio">Software engineer · Building tools, distributed systems, and keyboards.</p>
+          <h1 class="fb-identity__name">${esc(profile.name)}</h1>
+          <p class="fb-identity__bio">${esc(profile.bio || '')}</p>
         </div>
       </div>
       <div class="fb-stats">
-        <span class="fb-stat"><strong>812</strong> Friends</span>
-        <span class="fb-stat"><strong>1.2K</strong> Followers</span>
-        <span class="fb-stat"><strong>345</strong> Following</span>
+        <span class="fb-stat"><strong>${posts.length}</strong> Posts</span>
       </div>
       <nav class="fb-tabs" aria-label="Profile sections">
         <span class="fb-tab fb-tab--active">Timeline</span>
         <span class="fb-tab">About</span>
-        <span class="fb-tab">Friends</span>
         <span class="fb-tab">Photos</span>
       </nav>
       <main class="fb-timeline">

@@ -128,6 +128,112 @@ $ig-gradient: linear-gradient(45deg, #f09433, #e6683c 25%, #dc2743 50%, #cc2366 
   }
 }
 
+// ── Stories bar (horizontal scrollable circles) ──────────
+.ig-stories {
+  @include flex-row($spacing-lg);
+  padding: 12px 4px 20px;
+  overflow-x: auto;
+  border-bottom: 1px solid $ig-border;
+  -webkit-overflow-scrolling: touch;
+}
+.ig-story {
+  &__item {
+    @include flex-col($spacing-xs);
+    align-items: center;
+    flex: 0 0 auto;
+    cursor: pointer;
+    width: 72px;
+  }
+  &__ring {
+    width: 64px; height: 64px; border-radius: 50%; padding: 2px;
+    background: $ig-gradient; @include flex-center;
+  }
+  &__avatar {
+    width: 100%; height: 100%; border-radius: 50%;
+    border: 3px solid $ig-bg; @include flex-center; overflow: hidden;
+    position: relative;
+    img { width: 100%; height: 100%; object-fit: cover; }
+  }
+  &__play {
+    position: absolute; inset: 0;
+    @include flex-center;
+    background: rgba(0, 0, 0, 0.3);
+    color: #fff; font-size: 18px;
+    border-radius: 50%;
+  }
+  &__time {
+    font-size: 10px; color: $ig-muted;
+    max-width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+  }
+}
+
+// ── Story viewer (full-screen modal) ─────────────────────
+.ig-story-viewer {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  display: none;
+  background: #000;
+
+  &.is-open { display: flex; align-items: center; justify-content: center; }
+
+  &__progress {
+    position: absolute; top: 0; left: 0; right: 0; height: 3px;
+    background: rgba(255, 255, 255, 0.2);
+    z-index: 2;
+
+    &::after {
+      content: '';
+      display: block;
+      height: 100%;
+      width: 0;
+      background: #fff;
+    }
+    &--running::after {
+      animation: ig-story-progress 5s linear forwards;
+    }
+  }
+  @keyframes ig-story-progress { to { width: 100%; } }
+
+  &__close {
+    position: absolute; top: 14px; right: 14px; z-index: 3;
+    background: rgba(255, 255, 255, 0.15);
+    color: #fff; border: none; border-radius: 50%;
+    width: 36px; height: 36px; font-size: 22px;
+    @include flex-center; cursor: pointer;
+  }
+
+  &__time {
+    position: absolute; top: 18px; left: 14px; z-index: 3;
+    color: rgba(255, 255, 255, 0.7); font-size: 12px;
+  }
+
+  &__media-wrap {
+    max-width: 100%; max-height: 100%;
+    display: flex; align-items: center; justify-content: center;
+  }
+
+  &__media {
+    max-width: 100vw; max-height: 100vh;
+    object-fit: contain;
+  }
+
+  &__nav {
+    position: absolute; top: 50%; transform: translateY(-50%); z-index: 3;
+    background: rgba(255, 255, 255, 0.15);
+    color: #fff; border: none; border-radius: 50%;
+    width: 40px; height: 40px; font-size: 26px; line-height: 1;
+    @include flex-center; cursor: pointer;
+    &--prev { left: 10px; }
+    &--next { right: 10px; }
+  }
+
+  &__counter {
+    position: absolute; bottom: 20px; left: 50%; transform: translateX(-50%); z-index: 3;
+    color: rgba(255, 255, 255, 0.7); font-size: 13px;
+  }
+}
+
 // ── Tabs: row 1 = Posts (IG underline style) ─────────────
 .ig-tabs {
   @include flex-center;
@@ -488,4 +594,24 @@ $ig-gradient: linear-gradient(45deg, #f09433, #e6683c 25%, #dc2743 50%, #cc2366 
   overflow-y: auto;
   max-height: 40vh;
   @include mq(sm) { max-height: 85vh; }
+}
+
+// ── Phone frame wrapper (desktop mockup, mobile full-screen) ──
+.ig-phone-frame {
+  width: 100%;
+  min-height: 100dvh;
+
+  @include mq(sm) {
+    max-width: 430px;
+    margin: 24px auto 40px;
+    border: 3px solid #2a2a2a;
+    border-radius: 38px;
+    overflow: hidden;
+    box-shadow:
+      0 0 0 3px #111,
+      0 0 0 6px #1a1a1a,
+      0 20px 50px rgba(0, 0, 0, 0.55);
+    position: relative;
+    min-height: 80vh;
+  }
 }

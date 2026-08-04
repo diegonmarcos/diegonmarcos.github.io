@@ -211,3 +211,88 @@ html[data-theme='facebook-diegonmarcos'] body {
 
 html[data-theme='facebook-diegonmarcos'] .view--facebook {
   }
+
+// Album grid for Photos tab
+.fb-photos-pane {
+  max-width: 860px;
+  margin: 0 auto;
+  padding: 16px;
+}
+
+.fb-albums-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: 16px;
+}
+
+.fb-album {
+  cursor: pointer;
+  border-radius: $fb-radius;
+  overflow: hidden;
+  background: $fb-surface;
+  border: 1px solid $fb-border;
+  transition: transform 0.2s;
+
+  &:hover { transform: translateY(-2px); }
+}
+
+.fb-album__cover {
+  width: 100%;
+  aspect-ratio: 1;
+  overflow: hidden;
+  background: $fb-border;
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+}
+
+.fb-album__name {
+  display: block;
+  padding: 8px 12px 2px;
+  font-weight: 600;
+  color: $fb-text;
+  font-size: 0.85rem;
+}
+
+.fb-album__count {
+  display: block;
+  padding: 0 12px 8px;
+  color: $fb-text-muted;
+  font-size: 0.75rem;
+}
+
+// About pane
+.fb-about-pane {
+  max-width: 860px;
+  margin: 0 auto;
+  padding: 24px;
+}
+
+.fb-about {
+  h2 {
+    color: $fb-text;
+    margin-bottom: 12px;
+  }
+  p {
+    color: $fb-text-muted;
+    margin-bottom: 8px;
+    line-height: 1.5;
+  }
+}
+
+// Post album label
+.fb-post__album {
+  display: block;
+  color: $fb-text-muted;
+  font-size: 0.75rem;
+  margin-top: 2px;
+}
+
+// Avatar with image
+.fb-post__avatar {
+  background-size: cover !important;
+  background-position: center !important;
+}

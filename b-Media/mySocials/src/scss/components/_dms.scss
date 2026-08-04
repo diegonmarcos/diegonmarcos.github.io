@@ -1,0 +1,83 @@
+// ── DMs page ─────────────────────────────────────────────────────────────────
+
+.dms-page {
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 24px 16px 80px;
+}
+
+.dms-header {
+  text-align: center;
+  margin-bottom: 32px;
+}
+
+.dms-title {
+  font-size: 2rem;
+  font-weight: 800;
+  color: var(--text, #e4e6eb);
+  margin: 0 0 4px;
+}
+
+.dms-subtitle {
+  color: var(--text-muted, #b0b3b8);
+  font-size: 0.9rem;
+  margin: 0;
+}
+
+.dms-section {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  justify-content: center;
+  margin-bottom: 24px;
+}
+
+.dm-section--quick {
+  flex-direction: column;
+  align-items: stretch;
+  max-width: 320px;
+  margin: 0 auto 32px;
+}
+
+.dm-channel {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 20px;
+  border-radius: 12px;
+  background: var(--surface, #242526);
+  color: var(--text, #e4e6eb);
+  text-decoration: none;
+  font-size: 0.9rem;
+  font-weight: 500;
+  border: 1px solid var(--border, #3a3b3c);
+  transition: transform 0.2s, background 0.2s;
+  min-width: 100px;
+  justify-content: center;
+
+  &:hover {
+    transform: translateY(-2px);
+    background: var(--surface-hover, #303030);
+    text-decoration: none;
+  }
+}
+
+.dm-channel--primary {
+  background: var(--accent, #2374e1);
+  color: #fff;
+  border-color: transparent;
+  font-weight: 600;
+
+  &:hover {
+    background: var(--accent-hover, #1a5fc7);
+  }
+}
+
+.dm-channel__icon {
+  font-size: 1.2rem;
+  line-height: 1;
+}
+
+.dm-channel__label {
+  white-space: nowrap;
+}

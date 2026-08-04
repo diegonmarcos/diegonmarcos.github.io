@@ -11,7 +11,7 @@
     "followers": 0,
     "following": 32,
     "posts": 74,
-    "photo": ""
+    "photo": "https://cdn.jsdelivr.net/gh/diegonmarcos/front-assets-cdn@main/b-Media/mySocials/static/media/profile-photo.jpg"
   },
   "posts": [
     {
@@ -773,6 +773,10 @@
       "caption": "",
       "time": ""
     }
-  ]
+  ],
+  "saved": [],
+  "liked": [],
+  "comments": [],
+  "highlights": []
 };
 })();

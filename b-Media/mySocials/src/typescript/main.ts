@@ -260,15 +260,28 @@ function renderInstagram(): void {
   const p = d.profile;
   const num = (n: number) => n.toLocaleString();
 
-  // Story highlights = ONLY your own labeled highlight folders (d.highlights). The raw
-  // `d.stories` media dump is NOT used here — its provenance (whose stories, from where)
-  // isn't guaranteed to be exclusively yours, so it's excluded rather than risk showing
-  // someone else's photo under your name.
+  // Story highlights (d.highlights) — labeled folders only.
   const highlights = (d.highlights || []).map((h, i) => `
     <div class="ig-hl">
       <div class="ig-hl__ring"><div class="ig-hl__avatar" style="background:${gradientFor(i)}"><span class="ig-hl__emoji">${h.emoji}</span></div></div>
       <span class="ig-hl__name">${esc(h.label)}</span>
     </div>`).join('');
+
+  // Stories bar — first 30 stories in horizontal scrollable circles (like IG's real story bar).
+  // Each circle shows a thumbnail; mp4/webm/mov get a play-icon overlay.
+  const MAX_STORIES = 30;
+  const isVideo = (url: string) => /\.(mp4|webm|mov|mkv|avi)(\?|$)/i.test(url);
+  const storiesSlice = (d.stories || []).slice(0, MAX_STORIES);
+  const storiesBar = storiesSlice.length ? storiesSlice.map((s, i) => `
+    <div class="ig-story__item" data-story-idx="${i}">
+      <div class="ig-story__ring">
+        <div class="ig-story__avatar">
+          <img src="${esc(s.media)}" alt="story ${i + 1}" loading="lazy" decoding="async" onerror="this.closest('.ig-story__item').remove()">
+          ${isVideo(s.media) ? '<span class="ig-story__play">▶</span>' : ''}
+        </div>
+      </div>
+      <span class="ig-story__time">${esc(s.time.slice(0, 11))}</span>
+    </div>`).join('') : '';
 
   // Caption tiles for saved / liked (export has links + captions, not the images).
   const tile = (item: { url: string; caption: string }, badge: string) => `
@@ -348,6 +361,7 @@ function renderInstagram(): void {
     : `<div class="ig-head__avatar ig-head__avatar--ph">${esc(initials(p.name))}</div>`;
 
   view.innerHTML = `
+    <div class="ig-phone-frame">
     <div class="ig-page">
       <header class="ig-head">
         <div class="ig-head__user">${esc(p.username)}</div>
@@ -368,6 +382,7 @@ function renderInstagram(): void {
       </header>
 
       ${highlights ? `<div class="ig-highlights">${highlights}</div>` : ''}
+      ${storiesBar ? `<div class="ig-stories">${storiesBar}</div>` : ''}
 
       <div class="ig-tabs">
         <div class="ig-tab is-active" data-pane="posts">${IG_ICON.grid} Posts</div>
@@ -427,6 +442,20 @@ function renderInstagram(): void {
           <div class="ig-post-modal__comments" id="ig-post-comments"></div>
         </div>
       </div>
+    </div>
+    </div>
+
+    <div class="ig-story-viewer" id="ig-story-viewer">
+      <div class="ig-story-viewer__progress" id="ig-story-progress"></div>
+      <button class="ig-story-viewer__close" id="ig-story-close" aria-label="Close">&times;</button>
+      <div class="ig-story-viewer__time" id="ig-story-time"></div>
+      <div class="ig-story-viewer__media-wrap">
+        <img class="ig-story-viewer__media" id="ig-story-img" alt="story">
+        <video class="ig-story-viewer__media" id="ig-story-vid" controls playsinline></video>
+      </div>
+      <button class="ig-story-viewer__nav ig-story-viewer__nav--prev" id="ig-story-prev" aria-label="Previous story">&lsaquo;</button>
+      <button class="ig-story-viewer__nav ig-story-viewer__nav--next" id="ig-story-next" aria-label="Next story">&rsaquo;</button>
+      <div class="ig-story-viewer__counter" id="ig-story-counter"></div>
     </div>`;
 
   // Tab switching — the Posts tab and the Saved/Liked/Comments pills share one selector.
@@ -543,10 +572,67 @@ function renderInstagram(): void {
   view.querySelector('#ig-post-modal-close')!.addEventListener('click', closePost);
   postModal.addEventListener('click', e => { if (e.target === postModal) closePost(); });
 
+  // ── Story viewer ────────────────────────────────────────────────────
+  const storyViewer = view.querySelector<HTMLElement>('#ig-story-viewer')!;
+  const storyImg = view.querySelector<HTMLImageElement>('#ig-story-img')!;
+  const storyVid = view.querySelector<HTMLVideoElement>('#ig-story-vid')!;
+  const storyProgress = view.querySelector<HTMLElement>('#ig-story-progress')!;
+  const storyTime = view.querySelector<HTMLElement>('#ig-story-time')!;
+  const storyCounter = view.querySelector<HTMLElement>('#ig-story-counter')!;
+  let storyIdx = 0;
+  let storyTimer: ReturnType<typeof setTimeout> | null = null;
+
+  const storyCount = storiesSlice.length;
+  const showStory = (idx: number) => {
+    const s = storiesSlice[idx];
+    if (!s) return;
+    storyIdx = idx;
+    storyCounter.textContent = `${idx + 1} / ${storyCount}`;
+    storyTime.textContent = s.time;
+    // Reset progress bar animation
+    storyProgress.classList.remove('ig-story-viewer__progress--running');
+    void storyProgress.offsetWidth;
+    storyProgress.classList.add('ig-story-viewer__progress--running');
+    // Clear old timer
+    if (storyTimer) { clearTimeout(storyTimer); storyTimer = null; }
+    if (isVideo(s.media)) {
+      storyImg.style.display = 'none';
+      storyVid.style.display = '';
+      storyVid.src = s.media;
+    } else {
+      storyVid.style.display = 'none';
+      storyVid.src = '';
+      storyImg.style.display = '';
+      storyImg.src = s.media;
+      // Auto-advance after 5s for images
+      storyTimer = setTimeout(() => nextStory(), 5000);
+    }
+  };
+  const nextStory = () => { if (storyIdx + 1 < storyCount) showStory(storyIdx + 1); else closeStory(); };
+  const prevStory = () => { if (storyIdx > 0) showStory(storyIdx - 1); };
+  const closeStory = () => {
+    if (storyTimer) { clearTimeout(storyTimer); storyTimer = null; }
+    storyVid.pause();
+    storyVid.src = '';
+    storyViewer.classList.remove('is-open');
+  };
+  const openStory = (idx: number) => {
+    showStory(idx);
+    storyViewer.classList.add('is-open');
+  };
+
+  view.querySelectorAll<HTMLElement>('.ig-story__item').forEach(item =>
+    item.addEventListener('click', () => openStory(Number(item.dataset.storyIdx))));
+  view.querySelector('#ig-story-close')!.addEventListener('click', closeStory);
+  view.querySelector('#ig-story-prev')!.addEventListener('click', prevStory);
+  view.querySelector('#ig-story-next')!.addEventListener('click', nextStory);
+  storyViewer.addEventListener('click', e => { if (e.target === storyViewer) closeStory(); });
+
   document.addEventListener('keydown', e => {
     if (e.key !== 'Escape') return;
     if (metaModal.classList.contains('is-open')) closeMeta();
     else if (postModal.classList.contains('is-open')) closePost();
+    else if (storyViewer.classList.contains('is-open')) closeStory();
   });
 }
 
@@ -1454,12 +1540,21 @@ function renderMySocials(): void {
   const bio = ig?.profile.bio || '';
   const photo = li?.profile.photo || ig?.profile.photo;
 
+  // Real post thumbnails for IG hub cards
+  const ig0 = g['ig0-diegocnmarcos_'] as IGData | undefined;
+  const ig1 = g['ig1-diegocmarcos_'] as IGData | undefined;
+  const igPosts = (data: IGData | undefined, n: number) =>
+    (data?.posts || []).slice(0, n).map(p => p.media).filter(Boolean);
+  const fb = (globalThis as { PORTAL_DATA?: Record<string, { posts?: { media?: string[] }[] }> }).PORTAL_DATA?.['facebook-diegonmarcos'];
+  const fbImgs = (fb?.posts || []).flatMap(p => p.media || []).slice(0, 3);
+
   type Card = { theme: Theme; label: string; meta: string; color: string; imgs: string[] };
   const sections: { label: string; cards: Card[] }[] = [
     { label: 'Media', cards: [
-      { theme: 'instagram-diegonmarcos', label: 'Instagram @ diegonmarcos', meta: ig ? `${ig.profile.followers.toLocaleString()} followers · ${ig.profile.posts} post${ig.profile.posts === 1 ? '' : 's'}` : 'profile', color: '#dc2743', imgs: [] },
-      { theme: 'instagram-diegocmarcos_', label: 'Instagram @ diegocmarcos_', meta: 'profile', color: '#dc2743', imgs: [] },
-      { theme: 'instagram-diegocnmarcos_', label: 'Instagram @ diegocnmarcos_', meta: 'profile', color: '#dc2743', imgs: [] },
+      { theme: 'instagram-diegonmarcos', label: 'Instagram @ diegonmarcos', meta: ig ? `${ig.profile.followers.toLocaleString()} followers · ${ig.profile.posts} post${ig.profile.posts === 1 ? '' : 's'}` : 'profile', color: '#dc2743', imgs: igPosts(ig, 3) },
+      { theme: 'instagram-diegocmarcos_', label: 'Instagram @ diegocmarcos_', meta: ig1 ? `${ig1.profile.posts} posts` : 'profile', color: '#dc2743', imgs: igPosts(ig1, 3) },
+      { theme: 'instagram-diegocnmarcos_', label: 'Instagram @ diegocnmarcos_', meta: ig0 ? `${ig0.profile.posts} posts` : 'profile', color: '#dc2743', imgs: igPosts(ig0, 3) },
+      { theme: 'facebook-diegonmarcos', label: 'Facebook', meta: fb ? `${fb.posts?.length || 0} posts` : 'profile', color: '#2374e1', imgs: fbImgs },
       { theme: 'pinterest', label: 'Pinterest', meta: 'boards & pins', color: '#e60023', imgs: (pin?.boards || []).slice(0, 3).map(b => b.cover).filter(Boolean) },
       { theme: 'youtube', label: 'YouTube', meta: 'playlists & videos', color: '#ff0000', imgs: (yt?.playlists || []).slice(0, 3).map(p => p.videos?.[0]?.thumbnail).filter(Boolean) as string[] },
     ] },
@@ -2886,32 +2981,50 @@ function renderFacebook(): void {
   // Load real data from PORTAL_DATA
   const data = (globalThis as any).PORTAL_DATA?.['facebook-diegonmarcos'];
   const profile = data?.profile || { name: 'Diego Marcos', bio: '', photo: '' };
-  const posts: Array<{ timestamp: string; content: string; media: string[] }> = data?.posts || [];
+  const posts: Array<{ timestamp: string; content: string; media: string[]; album?: string }> = data?.posts || [];
 
-  const postsHtml = posts.slice(0, 50).map(p => {
-    const mediaHtml = (p.media || []).map(m =>
-      m.endsWith('.mp4')
-        ? `<video class="fb-post__photo" src="${esc(m)}" controls preload="metadata"></video>`
-        : `<img class="fb-post__photo" src="${esc(m)}" loading="lazy" alt="" />`
-    ).join('');
-    return `
+  // Group posts by album for the Photos tab
+  const albums = new Map<string, typeof posts>();
+  posts.forEach(p => {
+    const key = p.album || 'Other';
+    if (!albums.has(key)) albums.set(key, []);
+    albums.get(key)!.push(p);
+  });
+
+  const mediaHtml = (media: string[]) => (media || []).map(m =>
+    m.endsWith('.mp4')
+      ? `<video class="fb-post__photo" src="${esc(m)}" controls preload="metadata"></video>`
+      : `<img class="fb-post__photo" src="${esc(m)}" loading="lazy" alt="" />`
+  ).join('');
+
+  const postsHtml = posts.slice(0, 50).map(p => `
     <article class="fb-post">
       <header class="fb-post__header">
-        <div class="fb-post__avatar" aria-hidden="true"></div>
+        <div class="fb-post__avatar" aria-hidden="true" ${profile.photo ? `style="background-image:url('${esc(profile.photo)}');background-size:cover"` : ''}></div>
         <div class="fb-post__meta">
           <span class="fb-post__author">${esc(profile.name)}</span>
           <span class="fb-post__time">${esc(p.timestamp || '')}</span>
+          ${p.album ? `<span class="fb-post__album">${esc(p.album)}</span>` : ''}
         </div>
       </header>
       ${p.content ? `<div class="fb-post__content">${esc(p.content)}</div>` : ''}
-      ${mediaHtml}
+      ${mediaHtml(p.media)}
       <div class="fb-post__actions">
         <button class="fb-post__action" type="button">👍 Like</button>
         <button class="fb-post__action" type="button">💬 Comment</button>
         <button class="fb-post__action" type="button">↗ Share</button>
       </div>
     </article>
-  `}).join('');
+  `).join('');
+
+  // Albums grid for the Photos tab
+  const albumsHtml = [...albums.entries()].map(([name, aps]) => `
+    <div class="fb-album" data-album="${esc(name)}">
+      <div class="fb-album__cover">${aps[0]?.media?.[0] ? `<img src="${esc(aps[0].media[0])}" loading="lazy" alt="" />` : ''}</div>
+      <span class="fb-album__name">${esc(name)}</span>
+      <span class="fb-album__count">${aps.length} photos</span>
+    </div>
+  `).join('');
 
   el.innerHTML = `
     <div class="fb-profile">
@@ -2925,23 +3038,47 @@ function renderFacebook(): void {
       </div>
       <div class="fb-stats">
         <span class="fb-stat"><strong>${posts.length}</strong> Posts</span>
+        <span class="fb-stat"><strong>${albums.size}</strong> Albums</span>
+        <span class="fb-stat"><strong>${posts.reduce((n, p) => n + (p.media?.length || 0), 0)}</strong> Photos</span>
       </div>
       <nav class="fb-tabs" aria-label="Profile sections">
-        <span class="fb-tab fb-tab--active">Timeline</span>
-        <span class="fb-tab">About</span>
-        <span class="fb-tab">Photos</span>
+        <span class="fb-tab fb-tab--active" data-fb-tab="timeline">Timeline</span>
+        <span class="fb-tab" data-fb-tab="photos">Photos</span>
+        <span class="fb-tab" data-fb-tab="about">About</span>
       </nav>
-      <main class="fb-timeline">
+      <main class="fb-timeline" data-fb-pane="timeline">
         ${postsHtml}
+      </main>
+      <main class="fb-photos-pane" data-fb-pane="photos" hidden>
+        <div class="fb-albums-grid">${albumsHtml}</div>
+      </main>
+      <main class="fb-about-pane" data-fb-pane="about" hidden>
+        <div class="fb-about">
+          <h2>About</h2>
+          <p>Facebook profile for ${esc(profile.name)}</p>
+          <p><strong>${posts.length}</strong> posts across <strong>${albums.size}</strong> albums</p>
+        </div>
       </main>
     </div>
   `;
+
+  // Tab switching
+  el.querySelectorAll('[data-fb-tab]').forEach(tab => {
+    tab.addEventListener('click', () => {
+      const pane = tab.dataset.fbTab;
+      el.querySelectorAll('[data-fb-tab]').forEach(t => t.classList.remove('fb-tab--active'));
+      tab.classList.add('fb-tab--active');
+      el.querySelectorAll('[data-fb-pane]').forEach(p => {
+        (p as HTMLElement).hidden = p.dataset.fbPane !== pane;
+      });
+    });
+  });
 }
 
 // ─── THEME SWITCHER ──────────────────────────────────────────────────────────
 
-type Theme = 'mysocials' | 'orkut' | 'instagram-diegonmarcos' | 'instagram-diegocmarcos_' | 'instagram-diegocnmarcos_' | 'linkedin' | 'pinterest' | 'tidal' | 'youtube' | 'icq' | 'shelf' | 'vinyl' | 'bar-cellar' | 'menu' | 'theater' | 'story' | 'facebook-diegonmarcos';
-const THEMES: Theme[] = ['mysocials', 'orkut', 'instagram-diegonmarcos', 'instagram-diegocmarcos_', 'instagram-diegocnmarcos_', 'linkedin', 'pinterest', 'tidal', 'youtube', 'icq', 'shelf', 'vinyl', 'bar-cellar', 'menu', 'theater', 'story', 'facebook-diegonmarcos'];
+type Theme = 'mysocials' | 'orkut' | 'instagram-diegonmarcos' | 'instagram-diegocmarcos_' | 'instagram-diegocnmarcos_' | 'linkedin' | 'pinterest' | 'tidal' | 'youtube' | 'icq' | 'shelf' | 'vinyl' | 'bar-cellar' | 'menu' | 'theater' | 'story' | 'facebook-diegonmarcos' | 'dms';
+const THEMES: Theme[] = ['mysocials', 'orkut', 'instagram-diegonmarcos', 'instagram-diegocmarcos_', 'instagram-diegocnmarcos_', 'linkedin', 'pinterest', 'tidal', 'youtube', 'icq', 'shelf', 'vinyl', 'bar-cellar', 'menu', 'theater', 'story', 'facebook-diegonmarcos', 'dms'];
 
 // Each theme is a real static page (orkut.html, instagram.html, ...) — except
 // 'mysocials', whose page is index.html (the site's front door).
@@ -3003,12 +3140,75 @@ function navigate(theme: Theme, push = true): void {
   if (push) history.pushState({ theme }, '', pageFor(theme));
 }
 
+function renderDMs(): void {
+  const el = document.getElementById('dms-view');
+  if (!el) return;
+
+  function esc(s: string): string {
+    return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+  }
+
+  type DMChannel = { label: string; url: string; icon: string; style?: string };
+  type DMSection = { layout: string; items: DMChannel[] };
+
+  const sections: DMSection[] = [
+    { layout: 'quick', items: [
+      { label: 'mailMe', url: 'mailto:me@diegonmarcos.com', icon: '✉️', style: 'primary' },
+      { label: 'myBeeper', url: 'https://beeper.com', icon: '📟', style: 'primary' },
+    ]},
+    { layout: 'channels', items: [
+      { label: 'Mail', url: 'mailto:me@diegonmarcos.com', icon: '✉️' },
+      { label: 'Wapp0', url: 'https://wa.me/34680614213', icon: '💬' },
+      { label: 'Wapp1', url: 'https://wa.me/4915176069920', icon: '💬' },
+      { label: 'Telegram', url: 'https://t.me/diegonmarcos', icon: '✈️' },
+      { label: 'Viber', url: 'viber://chat?number=%2B4915176069920', icon: '📞' },
+      { label: 'Matrix', url: 'https://matrix.to/#/@diegonmarcos:matrix.org', icon: '🔗' },
+      { label: 'igDM', url: 'https://ig.me/m/diegonmarcos', icon: '📷' },
+      { label: 'XDM', url: 'https://x.com/messages/compose?recipient_id=171055690', icon: '🐦' },
+      { label: 'LinkedinDM', url: 'https://linkedin.com/in/diegonmarcos', icon: '💼' },
+      { label: 'ICQ', url: 'https://icq.com/chat', icon: '🆔' },
+      { label: 'Mail', url: 'mailto:me@diegonmarcos.com', icon: '✉️' },
+    ]},
+  ];
+
+  const channelHtml = (c: DMChannel) => `
+    <a class="dm-channel ${c.style === 'primary' ? 'dm-channel--primary' : ''}" href="${esc(c.url)}" target="_blank" rel="noopener">
+      <span class="dm-channel__icon">${c.icon}</span>
+      <span class="dm-channel__label">${esc(c.label)}</span>
+    </a>`;
+
+  el.innerHTML = `
+    <div class="dms-page">
+      <div class="dms-header">
+        <h1 class="dms-title">DMs</h1>
+        <p class="dms-subtitle">All channels to reach Diego</p>
+      </div>
+      ${sections.map(s => `
+        <div class="dms-section dm-section--${esc(s.layout)}">
+          ${s.items.map(channelHtml).join('')}
+        </div>
+      `).join('')}
+    </div>
+  `;
+}
+
 function initThemeSwitcher(): void {
   // The page's own baked-in data-theme is authoritative on load (deep links work).
   const current = (document.documentElement.dataset.theme as Theme) || 'mysocials';
   setTheme(THEMES.includes(current) ? current : 'mysocials');
   document.querySelectorAll('[data-theme-btn]').forEach(btn => {
     btn.addEventListener('click', () => navigate((btn as HTMLElement).dataset.themeBtn as Theme));
+  });
+  // DM parent toggle — show/hide the DM apps sub-row
+  document.querySelectorAll('[data-dm-toggle]').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const targetId = (btn as HTMLElement).dataset.dmToggle;
+      const target = targetId ? document.getElementById(targetId) : null;
+      if (target) {
+        target.hidden = !target.hidden;
+        btn.textContent = target.hidden ? 'DMs ▾' : 'DMs ▴';
+      }
+    });
   });
   window.addEventListener('popstate', (e) => {
     const theme = (e.state?.theme as Theme) || 'mysocials';
@@ -3041,6 +3241,7 @@ function init(): void {
   renderMenu();
   renderStory();
   renderFacebook();
+  renderDMs();
   initThemeSwitcher();
 
   // Animate trust meter bars on load

@@ -4663,7 +4663,7 @@
         "id": "projects",
         "title": "Projects",
         "box": 2,
-        "slide_count": 8
+        "slide_count": 11
       },
       {
         "id": "professional-profiles",
@@ -4699,15 +4699,15 @@
       },
       {
         "section": "projects",
-        "id": "repos",
-        "kind": "repos",
-        "title": "REPOS"
+        "id": "home",
+        "kind": "tools",
+        "title": "PROJECTS"
       },
       {
         "section": "projects",
-        "id": "ducks",
+        "id": "labs",
         "kind": "tools",
-        "title": "DUCKS AND PENGS"
+        "title": "LABS"
       },
       {
         "section": "projects",
@@ -4723,9 +4723,21 @@
       },
       {
         "section": "projects",
+        "id": "ducks",
+        "kind": "tools",
+        "title": "DUCKS AND PENGS"
+      },
+      {
+        "section": "projects",
         "id": "cloud",
         "kind": "tools",
         "title": "CLOUD"
+      },
+      {
+        "section": "projects",
+        "id": "portfolio",
+        "kind": "tools",
+        "title": "PORTFOLIO"
       },
       {
         "section": "projects",
@@ -4735,15 +4747,21 @@
       },
       {
         "section": "projects",
+        "id": "structural",
+        "kind": "tools",
+        "title": "X"
+      },
+      {
+        "section": "projects",
         "id": "projects",
         "kind": "tools",
         "title": "PHI"
       },
       {
         "section": "projects",
-        "id": "structural",
-        "kind": "tools",
-        "title": "X"
+        "id": "repos",
+        "kind": "repos",
+        "title": "REPOS"
       },
       {
         "section": "professional-profiles",
@@ -5046,498 +5064,106 @@
       {
         "section": "projects",
         "slide": "projects",
-        "column": "UNIX",
-        "label": "Boot Manager",
-        "url": "https://github.com/diegonmarcos/unix/tree/main/aa_bootloader",
-        "icon": "bolt.svg"
+        "column": "LABS",
+        "label": "Labs",
+        "url": "#",
+        "icon": "sparkles.svg"
       },
       {
         "section": "projects",
         "slide": "projects",
-        "column": "UNIX",
-        "label": "OS Flakes",
-        "url": "https://github.com/diegonmarcos/unix/tree/main/ba_flakes_desktop",
-        "icon": "world.svg"
-      },
-      {
-        "section": "projects",
-        "slide": "projects",
-        "column": "UNIX",
-        "label": "Home-Manager Flakes",
-        "url": "https://github.com/diegonmarcos/unix/tree/main/bb_flakes_termux",
-        "icon": "settings.svg"
-      },
-      {
-        "section": "projects",
-        "slide": "projects",
-        "column": "UNIX",
-        "label": "Unix Binaries",
-        "url": "https://github.com/diegonmarcos/unix/tree/main/ca_containers_user",
-        "icon": "git-branch.svg"
-      },
-      {
-        "section": "projects",
-        "slide": "projects",
-        "column": "UNIX",
-        "label": "Android Apks",
-        "url": "https://github.com/diegonmarcos/unix/tree/main/ea_cloud-superapp",
-        "icon": "device-gamepad.svg"
-      },
-      {
-        "section": "projects",
-        "slide": "projects",
-        "column": "CLOUD",
-        "label": "Solutions - Infra",
-        "url": "https://github.com/diegonmarcos/cloud/tree/main/a_solutions",
-        "icon": "world.svg"
-      },
-      {
-        "section": "projects",
-        "slide": "projects",
-        "column": "CLOUD",
-        "label": "Solutions - User",
-        "url": "https://github.com/diegonmarcos/cloud/tree/main/2_configs",
-        "icon": "settings.svg"
-      },
-      {
-        "section": "projects",
-        "slide": "projects",
-        "column": "CLOUD",
-        "label": "Vault",
-        "url": "https://github.com/diegonmarcos/vault",
-        "icon": "bolt.svg"
-      },
-      {
-        "section": "projects",
-        "slide": "projects",
-        "column": "CLOUD",
-        "label": "Infra",
-        "url": "https://github.com/diegonmarcos/cloud/tree/main/b_infra",
-        "icon": "git-branch.svg"
-      },
-      {
-        "section": "projects",
-        "slide": "projects",
-        "column": "CLOUD",
-        "label": "VPS",
-        "url": "https://github.com/diegonmarcos/cloud/tree/main/c_vps",
-        "icon": "device-desktop.svg"
-      },
-      {
-        "section": "projects",
-        "slide": "projects",
-        "column": "FRONT",
-        "label": "Portals",
-        "url": "https://github.com/diegonmarcos/diegonmarcos.github.io/tree/main/a_Portals",
-        "icon": "world.svg"
-      },
-      {
-        "section": "projects",
-        "slide": "projects",
-        "column": "FRONT",
-        "label": "Profiles",
-        "url": "https://github.com/diegonmarcos/diegonmarcos.github.io/tree/main/b_Work_Profiles",
-        "icon": "file-type-html.svg"
-      },
-      {
-        "section": "projects",
-        "slide": "projects",
-        "column": "FRONT",
-        "label": "Work Tools",
-        "url": "https://github.com/diegonmarcos/diegonmarcos.github.io/tree/main/b_Work_Tools",
-        "icon": "settings.svg"
-      },
-      {
-        "section": "projects",
-        "slide": "projects",
-        "column": "FRONT",
-        "label": "Personal Tools",
-        "url": "https://github.com/diegonmarcos/diegonmarcos.github.io/tree/main/c_Personal_Tools",
-        "icon": "device-desktop.svg"
-      },
-      {
-        "section": "projects",
-        "slide": "projects",
-        "column": "CG & GAMES",
-        "label": "Games 2D",
-        "url": "https://github.com/diegonmarcos/diegonmarcos.github.io/tree/main/c-Circus/games",
-        "icon": "device-gamepad.svg"
-      },
-      {
-        "section": "projects",
-        "slide": "projects",
-        "column": "CG & GAMES",
-        "label": "Scenes 3D",
-        "url": "https://github.com/diegonmarcos/diegonmarcos.github.io/tree/main/b-Projects/galaxy-gaia",
-        "icon": "world.svg"
-      },
-      {
-        "section": "projects",
-        "slide": "projects",
-        "column": "CG & GAMES",
-        "label": "Games 3D",
-        "url": "https://github.com/diegonmarcos/diegonmarcos.github.io/tree/main/b-Projects/galaxy-earth",
-        "icon": "device-gamepad.svg"
-      },
-      {
-        "section": "projects",
-        "slide": "projects",
-        "column": "CS",
-        "label": "My Libs",
-        "url": "https://github.com/diegonmarcos/ops-Mylibs",
-        "icon": "git-branch.svg"
-      },
-      {
-        "section": "projects",
-        "slide": "projects",
-        "column": "CS",
-        "label": "Algorithms",
-        "url": "https://github.com/diegonmarcos/back-Algo",
-        "icon": "settings.svg"
-      },
-      {
-        "section": "projects",
-        "slide": "projects",
-        "column": "CS",
-        "label": "System",
-        "url": "https://github.com/diegonmarcos/back-System",
-        "icon": "settings.svg"
-      },
-      {
-        "section": "projects",
-        "slide": "projects",
-        "column": "CS",
-        "label": "Graphics",
-        "url": "https://github.com/diegonmarcos/back-Graphic",
-        "icon": "device-desktop.svg"
-      },
-      {
-        "section": "projects",
-        "slide": "projects",
-        "column": "CS",
-        "label": "Cyber",
-        "url": "https://github.com/diegonmarcos/cyber-Cyberwarfare",
-        "icon": "bolt.svg"
-      },
-      {
-        "section": "projects",
-        "slide": "projects",
-        "column": "CS",
-        "label": "42 School",
-        "url": "https://github.com/diegonmarcos/lecole42",
+        "column": "PORTFOLIO",
+        "label": "Portfolio",
+        "url": "#",
         "icon": "rocket.svg"
       },
       {
         "section": "projects",
         "slide": "projects",
-        "column": "CS",
-        "label": "Agentic AI",
-        "url": "https://github.com/diegonmarcos/ml-Agentic",
+        "column": "IDE AGENTIC",
+        "label": "IDE Agentic",
+        "url": "#",
         "icon": "brain.svg"
       },
       {
         "section": "projects",
         "slide": "projects",
-        "column": "CS",
-        "label": "Machine Learning",
-        "url": "https://github.com/diegonmarcos/ml-MachineLearning",
-        "icon": "brain.svg"
+        "column": "SUITE",
+        "label": "Suite",
+        "url": "#",
+        "icon": "sparkles.svg"
       },
       {
         "section": "projects",
         "slide": "projects",
-        "column": "DATA",
-        "label": "Macro/Quant",
-        "url": "https://github.com/diegonmarcos/ecoqt-thesis1",
+        "column": "FIN TERMINAL",
+        "label": "Fin Terminal",
+        "url": "#",
         "icon": "database.svg"
       },
       {
         "section": "projects",
         "slide": "projects",
-        "column": "DATA",
+        "column": "STRUCTURAL",
         "label": "Structural",
-        "url": "https://github.com/diegonmarcos/cveng_AFrame",
+        "url": "#",
         "icon": "settings.svg"
       },
       {
         "section": "projects",
         "slide": "projects",
-        "column": "DATA",
-        "label": "Mechatronics",
-        "url": "https://github.com/diegonmarcos/back-System",
-        "icon": "device-desktop.svg"
-      },
-      {
-        "section": "projects",
-        "slide": "projects",
-        "column": "MACRO&QUANT",
-        "label": "Central Bank",
-        "url": "https://github.com/diegonmarcos/diegonmarcos.github.io/tree/main/c-LabTools/central_bank",
-        "icon": "database.svg"
-      },
-      {
-        "section": "projects",
-        "slide": "projects",
-        "column": "MACRO&QUANT",
-        "label": "Quant Terminal",
-        "url": "https://github.com/diegonmarcos/diegonmarcos.github.io/tree/main/c-LabTools/fin-terminal",
-        "icon": "rocket.svg"
-      },
-      {
-        "section": "projects",
-        "slide": "projects",
-        "column": "STRUCTURAL",
-        "label": "Waterlytics",
+        "column": "SIMULATORS",
+        "label": "Simulators",
         "url": "#",
         "icon": "world-longitude.svg"
       },
       {
         "section": "projects",
         "slide": "projects",
-        "column": "STRUCTURAL",
-        "label": "Airlytics",
+        "column": "VIDEO ANIMATION",
+        "label": "Video Animation",
         "url": "#",
-        "icon": "world-longitude.svg"
+        "icon": "brand-youtube.svg"
       },
       {
         "section": "projects",
         "slide": "projects",
-        "column": "STRUCTURAL",
-        "label": "Spacelytics",
+        "column": "MUSIC PRODUCTION",
+        "label": "Music Production",
         "url": "#",
-        "icon": "rocket.svg"
-      },
-      {
-        "section": "projects",
-        "slide": "projects",
-        "column": "MECHATRONICS",
-        "label": "Autonomous Engines",
-        "url": "#",
-        "icon": "bolt.svg"
-      },
-      {
-        "section": "projects",
-        "slide": "projects",
-        "column": "BOOT MANAGER",
-        "label": "ReFind",
-        "url": "https://github.com/diegonmarcos/unix/tree/main/aa_bootloader",
-        "icon": "bolt.svg"
-      },
-      {
-        "section": "projects",
-        "slide": "projects",
-        "column": "BOOT MANAGER",
-        "label": "NixOS",
-        "url": "https://github.com/diegonmarcos/unix/tree/main/aa_desk-usr_x86_surface-linux_nixos",
-        "icon": "world.svg"
-      },
-      {
-        "section": "projects",
-        "slide": "projects",
-        "column": "BOOT MANAGER",
-        "label": "KDE Plasma",
-        "url": "https://github.com/diegonmarcos/unix/tree/main/ea_cloud-superapp/libs/kde-connect",
-        "icon": "settings.svg"
-      },
-      {
-        "section": "projects",
-        "slide": "projects",
-        "column": "BOOT MANAGER",
-        "label": "Kali Linux",
-        "url": "https://github.com/diegonmarcos/unix/tree/main/ab_desk-security_x86_kali-linux_kali",
-        "icon": "bolt.svg"
-      },
-      {
-        "section": "projects",
-        "slide": "projects",
-        "column": "BOOT MANAGER",
-        "label": "NixSlim",
-        "url": "https://github.com/diegonmarcos/unix/tree/main/ca_ventoy_fallback_usb/debian-slim-surface_fallback_usb",
-        "icon": "settings.svg"
-      },
-      {
-        "section": "projects",
-        "slide": "projects",
-        "column": "OS FLAKES",
-        "label": "OS Flakes",
-        "url": "https://github.com/diegonmarcos/unix/tree/main/ba_flakes_desktop",
-        "icon": "world.svg"
-      },
-      {
-        "section": "projects",
-        "slide": "projects",
-        "column": "OS FLAKES",
-        "label": "System Protection",
-        "url": "https://github.com/diegonmarcos/unix/tree/main/ba_flakes_desktop",
-        "icon": "lock.svg"
-      },
-      {
-        "section": "projects",
-        "slide": "projects",
-        "column": "OS FLAKES",
-        "label": "Watchdog",
-        "url": "https://github.com/diegonmarcos/unix/tree/main/_aba_cloud-servers-x/B1_vm-pilot-watchdog",
-        "icon": "bolt.svg"
-      },
-      {
-        "section": "projects",
-        "slide": "projects",
-        "column": "HM FLAKES",
-        "label": "HM Flakes",
-        "url": "https://github.com/diegonmarcos/unix/tree/main/bb_flakes_termux",
-        "icon": "settings.svg"
-      },
-      {
-        "section": "projects",
-        "slide": "projects",
-        "column": "HM FLAKES",
-        "label": "CI/CD",
-        "url": "https://github.com/diegonmarcos/unix/tree/main/1_workflows/src/cicd",
-        "icon": "git-branch.svg"
-      },
-      {
-        "section": "projects",
-        "slide": "projects",
-        "column": "HM FLAKES",
-        "label": "VM Pilot",
-        "url": "https://github.com/diegonmarcos/unix/tree/main/_aba_cloud-servers-x",
-        "icon": "device-desktop.svg"
-      },
-      {
-        "section": "projects",
-        "slide": "projects",
-        "column": "UNIX BIN",
-        "label": "Unix Bin",
-        "url": "https://github.com/diegonmarcos/unix/tree/main/ca_containers_user",
-        "icon": "git-branch.svg"
-      },
-      {
-        "section": "projects",
-        "slide": "projects",
-        "column": "UNIX BIN",
-        "label": "myAI",
-        "url": "https://github.com/diegonmarcos/unix/tree/main/da_my-ai",
-        "icon": "brain.svg"
-      },
-      {
-        "section": "projects",
-        "slide": "projects",
-        "column": "UNIX BIN",
-        "label": "myBrowser",
-        "url": "https://github.com/diegonmarcos/unix/tree/main/da_my-browser-qute",
-        "icon": "world.svg"
-      },
-      {
-        "section": "projects",
-        "slide": "projects",
-        "column": "UNIX BIN",
-        "label": "myKonsole",
-        "url": "https://github.com/diegonmarcos/unix/tree/main/da_my-konsole",
-        "icon": "device-desktop.svg"
-      },
-      {
-        "section": "projects",
-        "slide": "projects",
-        "column": "ANDROID APK",
-        "label": "Browser",
-        "url": "https://github.com/diegonmarcos/unix/tree/main/ea_cloud-browser",
-        "icon": "world.svg"
-      },
-      {
-        "section": "projects",
-        "slide": "projects",
-        "column": "ANDROID APK",
-        "label": "Chat",
-        "url": "https://github.com/diegonmarcos/unix/tree/main/ea_cloud-chat",
-        "icon": "brand-whatsapp.svg"
-      },
-      {
-        "section": "projects",
-        "slide": "projects",
-        "column": "ANDROID APK",
-        "label": "Dialer",
-        "url": "https://github.com/diegonmarcos/unix/tree/main/ea_cloud-dialer",
-        "icon": "link.svg"
-      },
-      {
-        "section": "projects",
-        "slide": "projects",
-        "column": "ANDROID APK",
-        "label": "IDE",
-        "url": "https://github.com/diegonmarcos/unix/tree/main/ea_cloud-ide",
-        "icon": "code.svg"
-      },
-      {
-        "section": "projects",
-        "slide": "projects",
-        "column": "ANDROID APK",
-        "label": "Keyboard",
-        "url": "https://github.com/diegonmarcos/unix/tree/main/ea_cloud-keyboard",
-        "icon": "file-type-html.svg"
-      },
-      {
-        "section": "projects",
-        "slide": "projects",
-        "column": "ANDROID APK",
-        "label": "Keyboard Libs",
-        "url": "https://github.com/diegonmarcos/unix/tree/main/ea_cloud-keyboard-libs",
-        "icon": "file-type-html.svg"
-      },
-      {
-        "section": "projects",
-        "slide": "projects",
-        "column": "ANDROID APK",
-        "label": "Mail",
-        "url": "https://github.com/diegonmarcos/unix/tree/main/ea_cloud-mail",
-        "icon": "mail.svg"
-      },
-      {
-        "section": "projects",
-        "slide": "projects",
-        "column": "ANDROID APK",
-        "label": "Matrix",
-        "url": "https://github.com/diegonmarcos/unix/tree/main/ea_cloud-matrix",
-        "icon": "brand-whatsapp.svg"
-      },
-      {
-        "section": "projects",
-        "slide": "projects",
-        "column": "ANDROID APK",
-        "label": "Media Center",
-        "url": "https://github.com/diegonmarcos/unix/tree/main/ea_cloud-media-center",
         "icon": "headphones.svg"
       },
       {
         "section": "projects",
         "slide": "projects",
-        "column": "ANDROID APK",
-        "label": "Nav",
-        "url": "https://github.com/diegonmarcos/unix/tree/main/ea_cloud-nav",
-        "icon": "world-longitude.svg"
-      },
-      {
-        "section": "projects",
-        "slide": "projects",
-        "column": "ANDROID APK",
-        "label": "SuperApp",
-        "url": "https://github.com/diegonmarcos/unix/tree/main/ea_cloud-superapp",
+        "column": "GAMES DEV",
+        "label": "Games Dev",
+        "url": "#",
         "icon": "device-gamepad.svg"
       },
       {
         "section": "projects",
         "slide": "projects",
-        "column": "ANDROID APK",
-        "label": "Vault",
-        "url": "https://github.com/diegonmarcos/unix/tree/main/ea_cloud-vault",
-        "icon": "lock.svg"
+        "column": "UNIX",
+        "label": "Unix",
+        "url": "#",
+        "icon": "bolt.svg"
       },
       {
         "section": "projects",
         "slide": "projects",
-        "column": "ANDROID APK",
-        "label": "Wallet",
-        "url": "https://github.com/diegonmarcos/unix/tree/main/ea_cloud-wallet",
-        "icon": "ledger.svg"
+        "column": "CLOUD",
+        "label": "Cloud",
+        "url": "#",
+        "icon": "device-desktop.svg"
+      },
+      {
+        "section": "projects",
+        "slide": "projects",
+        "column": "REPOS",
+        "label": "Repos",
+        "url": "#",
+        "icon": "brand-github.svg"
       },
       {
         "section": "projects",
@@ -5946,6 +5572,230 @@
         "label": "GDevelop",
         "url": "https://gdevelop.io",
         "icon": "device-gamepad.svg"
+      },
+      {
+        "section": "projects",
+        "slide": "projects",
+        "column": "BOOT MANAGER",
+        "label": "ReFind",
+        "url": "https://github.com/diegonmarcos/unix/tree/main/aa_bootloader",
+        "icon": "bolt.svg"
+      },
+      {
+        "section": "projects",
+        "slide": "projects",
+        "column": "BOOT MANAGER",
+        "label": "NixOS",
+        "url": "https://github.com/diegonmarcos/unix/tree/main/aa_desk-usr_x86_surface-linux_nixos",
+        "icon": "world.svg"
+      },
+      {
+        "section": "projects",
+        "slide": "projects",
+        "column": "BOOT MANAGER",
+        "label": "KDE Plasma",
+        "url": "https://github.com/diegonmarcos/unix/tree/main/ea_cloud-superapp/libs/kde-connect",
+        "icon": "settings.svg"
+      },
+      {
+        "section": "projects",
+        "slide": "projects",
+        "column": "BOOT MANAGER",
+        "label": "Kali Linux",
+        "url": "https://github.com/diegonmarcos/unix/tree/main/ab_desk-security_x86_kali-linux_kali",
+        "icon": "bolt.svg"
+      },
+      {
+        "section": "projects",
+        "slide": "projects",
+        "column": "BOOT MANAGER",
+        "label": "NixSlim",
+        "url": "https://github.com/diegonmarcos/unix/tree/main/ca_ventoy_fallback_usb/debian-slim-surface_fallback_usb",
+        "icon": "settings.svg"
+      },
+      {
+        "section": "projects",
+        "slide": "projects",
+        "column": "OS FLAKES",
+        "label": "OS Flakes",
+        "url": "https://github.com/diegonmarcos/unix/tree/main/ba_flakes_desktop",
+        "icon": "world.svg"
+      },
+      {
+        "section": "projects",
+        "slide": "projects",
+        "column": "OS FLAKES",
+        "label": "System Protection",
+        "url": "https://github.com/diegonmarcos/unix/tree/main/ba_flakes_desktop",
+        "icon": "lock.svg"
+      },
+      {
+        "section": "projects",
+        "slide": "projects",
+        "column": "OS FLAKES",
+        "label": "Watchdog",
+        "url": "https://github.com/diegonmarcos/unix/tree/main/_aba_cloud-servers-x/B1_vm-pilot-watchdog",
+        "icon": "bolt.svg"
+      },
+      {
+        "section": "projects",
+        "slide": "projects",
+        "column": "HM FLAKES",
+        "label": "HM Flakes",
+        "url": "https://github.com/diegonmarcos/unix/tree/main/bb_flakes_termux",
+        "icon": "settings.svg"
+      },
+      {
+        "section": "projects",
+        "slide": "projects",
+        "column": "HM FLAKES",
+        "label": "CI/CD",
+        "url": "https://github.com/diegonmarcos/unix/tree/main/1_workflows/src/cicd",
+        "icon": "git-branch.svg"
+      },
+      {
+        "section": "projects",
+        "slide": "projects",
+        "column": "HM FLAKES",
+        "label": "VM Pilot",
+        "url": "https://github.com/diegonmarcos/unix/tree/main/_aba_cloud-servers-x",
+        "icon": "device-desktop.svg"
+      },
+      {
+        "section": "projects",
+        "slide": "projects",
+        "column": "UNIX BIN",
+        "label": "Unix Bin",
+        "url": "https://github.com/diegonmarcos/unix/tree/main/ca_containers_user",
+        "icon": "git-branch.svg"
+      },
+      {
+        "section": "projects",
+        "slide": "projects",
+        "column": "UNIX BIN",
+        "label": "myAI",
+        "url": "https://github.com/diegonmarcos/unix/tree/main/da_my-ai",
+        "icon": "brain.svg"
+      },
+      {
+        "section": "projects",
+        "slide": "projects",
+        "column": "UNIX BIN",
+        "label": "myBrowser",
+        "url": "https://github.com/diegonmarcos/unix/tree/main/da_my-browser-qute",
+        "icon": "world.svg"
+      },
+      {
+        "section": "projects",
+        "slide": "projects",
+        "column": "UNIX BIN",
+        "label": "myKonsole",
+        "url": "https://github.com/diegonmarcos/unix/tree/main/da_my-konsole",
+        "icon": "device-desktop.svg"
+      },
+      {
+        "section": "projects",
+        "slide": "projects",
+        "column": "ANDROID APK",
+        "label": "Browser",
+        "url": "https://github.com/diegonmarcos/unix/tree/main/ea_cloud-browser",
+        "icon": "world.svg"
+      },
+      {
+        "section": "projects",
+        "slide": "projects",
+        "column": "ANDROID APK",
+        "label": "Chat",
+        "url": "https://github.com/diegonmarcos/unix/tree/main/ea_cloud-chat",
+        "icon": "brand-whatsapp.svg"
+      },
+      {
+        "section": "projects",
+        "slide": "projects",
+        "column": "ANDROID APK",
+        "label": "Dialer",
+        "url": "https://github.com/diegonmarcos/unix/tree/main/ea_cloud-dialer",
+        "icon": "link.svg"
+      },
+      {
+        "section": "projects",
+        "slide": "projects",
+        "column": "ANDROID APK",
+        "label": "IDE",
+        "url": "https://github.com/diegonmarcos/unix/tree/main/ea_cloud-ide",
+        "icon": "code.svg"
+      },
+      {
+        "section": "projects",
+        "slide": "projects",
+        "column": "ANDROID APK",
+        "label": "Keyboard",
+        "url": "https://github.com/diegonmarcos/unix/tree/main/ea_cloud-keyboard",
+        "icon": "file-type-html.svg"
+      },
+      {
+        "section": "projects",
+        "slide": "projects",
+        "column": "ANDROID APK",
+        "label": "Keyboard Libs",
+        "url": "https://github.com/diegonmarcos/unix/tree/main/ea_cloud-keyboard-libs",
+        "icon": "file-type-html.svg"
+      },
+      {
+        "section": "projects",
+        "slide": "projects",
+        "column": "ANDROID APK",
+        "label": "Mail",
+        "url": "https://github.com/diegonmarcos/unix/tree/main/ea_cloud-mail",
+        "icon": "mail.svg"
+      },
+      {
+        "section": "projects",
+        "slide": "projects",
+        "column": "ANDROID APK",
+        "label": "Matrix",
+        "url": "https://github.com/diegonmarcos/unix/tree/main/ea_cloud-matrix",
+        "icon": "brand-whatsapp.svg"
+      },
+      {
+        "section": "projects",
+        "slide": "projects",
+        "column": "ANDROID APK",
+        "label": "Media Center",
+        "url": "https://github.com/diegonmarcos/unix/tree/main/ea_cloud-media-center",
+        "icon": "headphones.svg"
+      },
+      {
+        "section": "projects",
+        "slide": "projects",
+        "column": "ANDROID APK",
+        "label": "Nav",
+        "url": "https://github.com/diegonmarcos/unix/tree/main/ea_cloud-nav",
+        "icon": "world-longitude.svg"
+      },
+      {
+        "section": "projects",
+        "slide": "projects",
+        "column": "ANDROID APK",
+        "label": "SuperApp",
+        "url": "https://github.com/diegonmarcos/unix/tree/main/ea_cloud-superapp",
+        "icon": "device-gamepad.svg"
+      },
+      {
+        "section": "projects",
+        "slide": "projects",
+        "column": "ANDROID APK",
+        "label": "Vault",
+        "url": "https://github.com/diegonmarcos/unix/tree/main/ea_cloud-vault",
+        "icon": "lock.svg"
+      },
+      {
+        "section": "projects",
+        "slide": "projects",
+        "column": "ANDROID APK",
+        "label": "Wallet",
+        "url": "https://github.com/diegonmarcos/unix/tree/main/ea_cloud-wallet",
+        "icon": "ledger.svg"
       },
       {
         "section": "projects",
@@ -6462,6 +6312,30 @@
       {
         "section": "projects",
         "slide": "projects",
+        "column": "MARKETS",
+        "label": "Markets",
+        "url": "#",
+        "icon": "database.svg"
+      },
+      {
+        "section": "projects",
+        "slide": "projects",
+        "column": "DEEP TECH",
+        "label": "Deep Tech",
+        "url": "#",
+        "icon": "settings.svg"
+      },
+      {
+        "section": "projects",
+        "slide": "projects",
+        "column": "CG & GAMES",
+        "label": "CG & Games",
+        "url": "#",
+        "icon": "device-gamepad.svg"
+      },
+      {
+        "section": "projects",
+        "slide": "projects",
         "column": "AUDIO",
         "label": "Music",
         "url": "https://diegonmarcos.github.io/music/",
@@ -6554,54 +6428,6 @@
         "label": "Galaxy - Earth",
         "url": "https://diegonmarcos.github.io/galaxy-earth/",
         "icon": "world.svg"
-      },
-      {
-        "section": "projects",
-        "slide": "projects",
-        "column": "BASILEIA",
-        "label": "Basileia",
-        "url": "#",
-        "icon": "sparkles.svg"
-      },
-      {
-        "section": "projects",
-        "slide": "projects",
-        "column": "MOUSSEION",
-        "label": "Mousseion",
-        "url": "#",
-        "icon": "books.svg"
-      },
-      {
-        "section": "projects",
-        "slide": "projects",
-        "column": "PANEION",
-        "label": "Paneion",
-        "url": "#",
-        "icon": "bulb.svg"
-      },
-      {
-        "section": "projects",
-        "slide": "projects",
-        "column": "AKROPOLIS",
-        "label": "Akropolis",
-        "url": "#",
-        "icon": "rocket.svg"
-      },
-      {
-        "section": "projects",
-        "slide": "projects",
-        "column": "BIBLIOTHEKE",
-        "label": "Bibliotheke",
-        "url": "#",
-        "icon": "books.svg"
-      },
-      {
-        "section": "projects",
-        "slide": "projects",
-        "column": "ADYTON",
-        "label": "Adyton",
-        "url": "#",
-        "icon": "bolt.svg"
       },
       {
         "section": "projects",
@@ -6706,6 +6532,326 @@
         "label": "Orbital Satellites",
         "url": "#",
         "icon": "rocket.svg"
+      },
+      {
+        "section": "projects",
+        "slide": "projects",
+        "column": "BASILEIA",
+        "label": "Basileia",
+        "url": "#",
+        "icon": "sparkles.svg"
+      },
+      {
+        "section": "projects",
+        "slide": "projects",
+        "column": "MOUSSEION",
+        "label": "Mousseion",
+        "url": "#",
+        "icon": "books.svg"
+      },
+      {
+        "section": "projects",
+        "slide": "projects",
+        "column": "PANEION",
+        "label": "Paneion",
+        "url": "#",
+        "icon": "bulb.svg"
+      },
+      {
+        "section": "projects",
+        "slide": "projects",
+        "column": "AKROPOLIS",
+        "label": "Akropolis",
+        "url": "#",
+        "icon": "rocket.svg"
+      },
+      {
+        "section": "projects",
+        "slide": "projects",
+        "column": "BIBLIOTHEKE",
+        "label": "Bibliotheke",
+        "url": "#",
+        "icon": "books.svg"
+      },
+      {
+        "section": "projects",
+        "slide": "projects",
+        "column": "ADYTON",
+        "label": "Adyton",
+        "url": "#",
+        "icon": "bolt.svg"
+      },
+      {
+        "section": "projects",
+        "slide": "projects",
+        "column": "UNIX",
+        "label": "Boot Manager",
+        "url": "https://github.com/diegonmarcos/unix/tree/main/aa_bootloader",
+        "icon": "bolt.svg"
+      },
+      {
+        "section": "projects",
+        "slide": "projects",
+        "column": "UNIX",
+        "label": "OS Flakes",
+        "url": "https://github.com/diegonmarcos/unix/tree/main/ba_flakes_desktop",
+        "icon": "world.svg"
+      },
+      {
+        "section": "projects",
+        "slide": "projects",
+        "column": "UNIX",
+        "label": "Home-Manager Flakes",
+        "url": "https://github.com/diegonmarcos/unix/tree/main/bb_flakes_termux",
+        "icon": "settings.svg"
+      },
+      {
+        "section": "projects",
+        "slide": "projects",
+        "column": "UNIX",
+        "label": "Unix Binaries",
+        "url": "https://github.com/diegonmarcos/unix/tree/main/ca_containers_user",
+        "icon": "git-branch.svg"
+      },
+      {
+        "section": "projects",
+        "slide": "projects",
+        "column": "UNIX",
+        "label": "Android Apks",
+        "url": "https://github.com/diegonmarcos/unix/tree/main/ea_cloud-superapp",
+        "icon": "device-gamepad.svg"
+      },
+      {
+        "section": "projects",
+        "slide": "projects",
+        "column": "CLOUD",
+        "label": "Solutions - Infra",
+        "url": "https://github.com/diegonmarcos/cloud/tree/main/a_solutions",
+        "icon": "world.svg"
+      },
+      {
+        "section": "projects",
+        "slide": "projects",
+        "column": "CLOUD",
+        "label": "Solutions - User",
+        "url": "https://github.com/diegonmarcos/cloud/tree/main/2_configs",
+        "icon": "settings.svg"
+      },
+      {
+        "section": "projects",
+        "slide": "projects",
+        "column": "CLOUD",
+        "label": "Vault",
+        "url": "https://github.com/diegonmarcos/vault",
+        "icon": "bolt.svg"
+      },
+      {
+        "section": "projects",
+        "slide": "projects",
+        "column": "CLOUD",
+        "label": "Infra",
+        "url": "https://github.com/diegonmarcos/cloud/tree/main/b_infra",
+        "icon": "git-branch.svg"
+      },
+      {
+        "section": "projects",
+        "slide": "projects",
+        "column": "CLOUD",
+        "label": "VPS",
+        "url": "https://github.com/diegonmarcos/cloud/tree/main/c_vps",
+        "icon": "device-desktop.svg"
+      },
+      {
+        "section": "projects",
+        "slide": "projects",
+        "column": "FRONT",
+        "label": "Portals",
+        "url": "https://github.com/diegonmarcos/diegonmarcos.github.io/tree/main/a_Portals",
+        "icon": "world.svg"
+      },
+      {
+        "section": "projects",
+        "slide": "projects",
+        "column": "FRONT",
+        "label": "Profiles",
+        "url": "https://github.com/diegonmarcos/diegonmarcos.github.io/tree/main/b_Work_Profiles",
+        "icon": "file-type-html.svg"
+      },
+      {
+        "section": "projects",
+        "slide": "projects",
+        "column": "FRONT",
+        "label": "Work Tools",
+        "url": "https://github.com/diegonmarcos/diegonmarcos.github.io/tree/main/b_Work_Tools",
+        "icon": "settings.svg"
+      },
+      {
+        "section": "projects",
+        "slide": "projects",
+        "column": "FRONT",
+        "label": "Personal Tools",
+        "url": "https://github.com/diegonmarcos/diegonmarcos.github.io/tree/main/c_Personal_Tools",
+        "icon": "device-desktop.svg"
+      },
+      {
+        "section": "projects",
+        "slide": "projects",
+        "column": "CG & GAMES",
+        "label": "Games 2D",
+        "url": "https://github.com/diegonmarcos/diegonmarcos.github.io/tree/main/c-Circus/games",
+        "icon": "device-gamepad.svg"
+      },
+      {
+        "section": "projects",
+        "slide": "projects",
+        "column": "CG & GAMES",
+        "label": "Scenes 3D",
+        "url": "https://github.com/diegonmarcos/diegonmarcos.github.io/tree/main/b-Projects/galaxy-gaia",
+        "icon": "world.svg"
+      },
+      {
+        "section": "projects",
+        "slide": "projects",
+        "column": "CG & GAMES",
+        "label": "Games 3D",
+        "url": "https://github.com/diegonmarcos/diegonmarcos.github.io/tree/main/b-Projects/galaxy-earth",
+        "icon": "device-gamepad.svg"
+      },
+      {
+        "section": "projects",
+        "slide": "projects",
+        "column": "CS",
+        "label": "My Libs",
+        "url": "https://github.com/diegonmarcos/ops-Mylibs",
+        "icon": "git-branch.svg"
+      },
+      {
+        "section": "projects",
+        "slide": "projects",
+        "column": "CS",
+        "label": "Algorithms",
+        "url": "https://github.com/diegonmarcos/back-Algo",
+        "icon": "settings.svg"
+      },
+      {
+        "section": "projects",
+        "slide": "projects",
+        "column": "CS",
+        "label": "System",
+        "url": "https://github.com/diegonmarcos/back-System",
+        "icon": "settings.svg"
+      },
+      {
+        "section": "projects",
+        "slide": "projects",
+        "column": "CS",
+        "label": "Graphics",
+        "url": "https://github.com/diegonmarcos/back-Graphic",
+        "icon": "device-desktop.svg"
+      },
+      {
+        "section": "projects",
+        "slide": "projects",
+        "column": "CS",
+        "label": "Cyber",
+        "url": "https://github.com/diegonmarcos/cyber-Cyberwarfare",
+        "icon": "bolt.svg"
+      },
+      {
+        "section": "projects",
+        "slide": "projects",
+        "column": "CS",
+        "label": "42 School",
+        "url": "https://github.com/diegonmarcos/lecole42",
+        "icon": "rocket.svg"
+      },
+      {
+        "section": "projects",
+        "slide": "projects",
+        "column": "CS",
+        "label": "Agentic AI",
+        "url": "https://github.com/diegonmarcos/ml-Agentic",
+        "icon": "brain.svg"
+      },
+      {
+        "section": "projects",
+        "slide": "projects",
+        "column": "CS",
+        "label": "Machine Learning",
+        "url": "https://github.com/diegonmarcos/ml-MachineLearning",
+        "icon": "brain.svg"
+      },
+      {
+        "section": "projects",
+        "slide": "projects",
+        "column": "DATA",
+        "label": "Macro/Quant",
+        "url": "https://github.com/diegonmarcos/ecoqt-thesis1",
+        "icon": "database.svg"
+      },
+      {
+        "section": "projects",
+        "slide": "projects",
+        "column": "DATA",
+        "label": "Structural",
+        "url": "https://github.com/diegonmarcos/cveng_AFrame",
+        "icon": "settings.svg"
+      },
+      {
+        "section": "projects",
+        "slide": "projects",
+        "column": "DATA",
+        "label": "Mechatronics",
+        "url": "https://github.com/diegonmarcos/back-System",
+        "icon": "device-desktop.svg"
+      },
+      {
+        "section": "projects",
+        "slide": "projects",
+        "column": "MACRO&QUANT",
+        "label": "Central Bank",
+        "url": "https://github.com/diegonmarcos/diegonmarcos.github.io/tree/main/c-LabTools/central_bank",
+        "icon": "database.svg"
+      },
+      {
+        "section": "projects",
+        "slide": "projects",
+        "column": "MACRO&QUANT",
+        "label": "Quant Terminal",
+        "url": "https://github.com/diegonmarcos/diegonmarcos.github.io/tree/main/c-LabTools/fin-terminal",
+        "icon": "rocket.svg"
+      },
+      {
+        "section": "projects",
+        "slide": "projects",
+        "column": "STRUCTURAL",
+        "label": "Waterlytics",
+        "url": "#",
+        "icon": "world-longitude.svg"
+      },
+      {
+        "section": "projects",
+        "slide": "projects",
+        "column": "STRUCTURAL",
+        "label": "Airlytics",
+        "url": "#",
+        "icon": "world-longitude.svg"
+      },
+      {
+        "section": "projects",
+        "slide": "projects",
+        "column": "STRUCTURAL",
+        "label": "Spacelytics",
+        "url": "#",
+        "icon": "rocket.svg"
+      },
+      {
+        "section": "projects",
+        "slide": "projects",
+        "column": "MECHATRONICS",
+        "label": "Autonomous Engines",
+        "url": "#",
+        "icon": "bolt.svg"
       }
     ]
   }

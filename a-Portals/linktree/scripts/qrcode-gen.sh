@@ -45,6 +45,17 @@ if [ -z "$TSC_BIN" ]; then
     exit 0
 fi
 
+# Resolve the repo root so we can pass its node_modules to NODE_PATH.
+# The compiled output lands in a temp dir with no node_modules, so without
+# NODE_PATH node cannot find jsdom, sharp, qrcode, etc.
+REPO_ROOT="$(git -C "$PROJECT" rev-parse --show-toplevel 2>/dev/null || true)"
+NODE_MODULES_PATH=""
+if [ -n "$REPO_ROOT" ] && [ -d "$REPO_ROOT/node_modules" ]; then
+    NODE_MODULES_PATH="$REPO_ROOT/node_modules"
+elif [ -d "$PROJECT/node_modules" ]; then
+    NODE_MODULES_PATH="$PROJECT/node_modules"
+fi
+
 # Compile the generator to a temp dir and run with node.
 TMP_OUT="$(mktemp -d)"
 trap 'rm -rf "$TMP_OUT"' EXIT
@@ -61,7 +72,10 @@ trap 'rm -rf "$TMP_OUT"' EXIT
 # Invoke the compiled generator. The generator's PROJECT_ROOT is computed
 # from its own __dirname, so we pass it the original source path so it
 # resolves assets relative to the project root correctly.
+# NODE_PATH lets node find packages installed in the repo root node_modules
+# even though the compiled output lives in a temp directory.
 (
     cd "$PROJECT"
-    node "$TMP_OUT/qr-code-generator.js" --manifest="$MANIFEST_REL"
+    NODE_PATH="${NODE_MODULES_PATH}${NODE_PATH:+:$NODE_PATH}" \
+        node "$TMP_OUT/qr-code-generator.js" --manifest="$MANIFEST_REL"
 )

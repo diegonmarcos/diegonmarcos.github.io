@@ -691,20 +691,19 @@ mod_data_wrap() {
 }
 
 # ─── mod_qrcode_gen — generate vCard files + styled QR PNGs + qrcode.html ───
-# from a JSON manifest. Delegates to front-qrcode-gen.sh, which calls the
-# project's LOCAL tsx (never npx). Requires the project's package.json to
-# declare tsx + qr-code-styling + qrcode + sharp + jsdom in devDependencies.
+# from a JSON manifest. Delegates to scripts/qrcode-gen.sh inside the project
+# directory. Requires the project's package.json to declare typescript +
+# qr-code-styling + qrcode + sharp + jsdom in devDependencies.
 mod_qrcode_gen() {
     local manifest="${1:-src/typescript/qrcode/qrcodes.json}"
-    local engine="$REPO_ROOT/1_workflows/dist/scripts/front-qrcode-gen.sh"
-    [ -x "$engine" ] || engine="$REPO_ROOT/1_workflows/src/scripts/front-qrcode-gen.sh"
-    [ -x "$engine" ] || { log_error "qrcode_gen: front-qrcode-gen.sh not found / not executable"; return $EXIT_BUILD; }
+    local engine="$PROJECT_DIR/scripts/qrcode-gen.sh"
+    [ -x "$engine" ] || { log_error "qrcode_gen: scripts/qrcode-gen.sh not found in project — place it at <project>/scripts/qrcode-gen.sh"; return $EXIT_BUILD; }
     local out
     out="$("$engine" "$PROJECT_DIR" "$manifest" 2>&1)" || { log_error "qrcode_gen failed:"; echo "$out" >&2; return $EXIT_BUILD; }
     local n_qr n_vcf
     n_qr="$(echo "$out"  | grep -c '\->')"
     n_vcf="$(echo "$out" | grep -c '^\[vcf:')"
-    log_step "qrcode_gen: $n_qr QR PNG(s) + $n_vcf vcf file(s) + qrcode.html from $manifest"
+    log_success "qrcode_gen: $n_qr QR PNG(s) + $n_vcf vcf file(s) + qrcode.html from $manifest"
 }
 
 # ─── BUILD RUNNER ───────────────────────────────────────────

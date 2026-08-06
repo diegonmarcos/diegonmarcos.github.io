@@ -9,12 +9,11 @@
 #   • Styled QR PNGs declared in manifest.qrcodes      (default: src/public/qr-code-*.png)
 #   • The data-driven qrcode.html (default: src/qrcode.html)
 #
-# Reproducibility: invokes the project's LOCAL `tsx` binary
-# (<project>/node_modules/.bin/tsx). NEVER uses `npx` — that would pull
-# from network/cache and break "same input → same output". The project's
-# package.json MUST declare tsx + qr-code-styling + qrcode + sharp + jsdom
-# in devDependencies, installed via `npm install` (also reproducible
-# via package-lock.json).
+# Reproducibility: compiles with the project's LOCAL `tsc` binary then runs
+# with `node`. NEVER uses `npx` — that would pull from network/cache and
+# break "same input → same output". The project's package.json MUST declare
+# typescript + qr-code-styling + qrcode + sharp + jsdom in devDependencies,
+# installed via `npm install` (also reproducible via package-lock.json).
 #
 # Usage:
 #     front-qrcode-gen.sh <project_dir> [manifest_rel_path]
@@ -42,31 +41,44 @@ MANIFEST="$PROJECT/$MANIFEST_REL"
 [ -f "$GENERATOR" ] || { echo "✗ qrcode generator not found: $GENERATOR" >&2; exit 1; }
 [ -f "$MANIFEST" ]  || { echo "✗ qrcode manifest not found: $MANIFEST" >&2; exit 1; }
 
-# Resolve tsx via standard npm-monorepo lookup order:
-#   1) project-local node_modules/.bin/tsx
-#   2) walk up parent dirs until we find one (root node_modules/.bin/tsx
+# Resolve tsc via standard npm-monorepo lookup order:
+#   1) project-local node_modules/.bin/tsc
+#   2) walk up parent dirs until we find one (root node_modules/.bin/tsc
 #      when deps were hoisted by `npm install` at the repo root — which
 #      is what GHA does)
-TSX_BIN=""
+TSC_BIN=""
 _dir="$PROJECT"
 while [ "$_dir" != "/" ] && [ -n "$_dir" ]; do
-    if [ -x "$_dir/node_modules/.bin/tsx" ]; then
-        TSX_BIN="$_dir/node_modules/.bin/tsx"
+    if [ -x "$_dir/node_modules/.bin/tsc" ]; then
+        TSC_BIN="$_dir/node_modules/.bin/tsc"
         break
     fi
     _dir="$(dirname "$_dir")"
 done
 
-[ -x "$TSX_BIN" ] || {
-    echo "✗ tsx not found anywhere from $PROJECT upward" >&2
-    echo "  Declare tsx + qr-code-styling + qrcode + sharp + jsdom in package.json devDependencies (project or repo root) and run \`npm install\`." >&2
+[ -x "$TSC_BIN" ] || {
+    echo "✗ tsc not found anywhere from $PROJECT upward" >&2
+    echo "  Declare typescript + qr-code-styling + qrcode + sharp + jsdom in package.json devDependencies (project or repo root) and run \`npm install\`." >&2
     exit 1
 }
 
-# Invoke the generator with the absolute manifest path. The generator's
-# PROJECT_ROOT is computed from its own location, so cwd doesn't matter,
-# but we cd into the project for predictable relative paths.
+# Compile the generator to a temp dir and run with node.
+TMP_OUT="$(mktemp -d)"
+trap 'rm -rf "$TMP_OUT"' EXIT
+
+"$TSC_BIN" \
+    --target ES2020 \
+    --module CommonJS \
+    --moduleResolution node16 \
+    --esModuleInterop true \
+    --skipLibCheck true \
+    --outDir "$TMP_OUT" \
+    "$GENERATOR"
+
+# Invoke the compiled generator. The generator's PROJECT_ROOT is computed
+# from its own __dirname, so we pass it the original source path so it
+# resolves assets relative to the project root correctly.
 (
     cd "$PROJECT"
-    "$TSX_BIN" "$GENERATOR" --manifest="$MANIFEST_REL"
+    node "$TMP_OUT/qr-code-generator.js" --manifest="$MANIFEST_REL"
 )

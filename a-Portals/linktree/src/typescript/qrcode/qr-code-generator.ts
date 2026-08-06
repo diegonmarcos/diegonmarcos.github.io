@@ -128,12 +128,7 @@ interface Manifest {
     htmlOutput?: HtmlOutputCfg;
 }
 
-const PROJECT_ROOT = path.resolve(
-    path.dirname(new URL(import.meta.url).pathname),
-    '..',
-    '..',
-    '..',
-);
+const PROJECT_ROOT = process.cwd();
 
 function resolveContactUrl(
     u: ContactUrl,

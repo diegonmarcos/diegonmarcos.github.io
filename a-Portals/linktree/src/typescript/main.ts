@@ -14,6 +14,8 @@ import { initAudioToggle } from './modules/audioToggle';
 import { initVmControl } from './modules/vmControl';
 import { initProfilePicSwiper } from './modules/profilePicSwiper';
 import { initScrollFab } from './modules/scrollFab';
+import { initErudaToggle } from './modules/eruda';
+import { initLogcatViewer } from './modules/logcat';
 import { initCardSwiper } from './modules/cardSwiper';
 import { initPortalRender } from './modules/portal-render';
 import { initThemeToggle } from './modules/themeToggle';
@@ -53,6 +55,8 @@ function initApp(): void {
   initIconViewToggle();
   initAudioToggle();
   initScrollFab();
+  initErudaToggle();
+  initLogcatViewer();
 
   // Initialize random background video (or WebGL canvas if opted in).
   initVideoBackground();

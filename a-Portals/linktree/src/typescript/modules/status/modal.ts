@@ -417,14 +417,17 @@ export function initStatusModal(): void {
     }
   });
 
-  statusModalClose.addEventListener('click', () => {
+  function closeModal(): void {
     statusModal.style.display = 'none';
-  });
+    // Re-show FABs (scroll-hide may have hidden them)
+    document.querySelector('.controls-fab-container')?.classList.remove('fab-hidden');
+    document.getElementById('hamburger-menu')?.classList.remove('fab-hidden');
+  }
+
+  statusModalClose.addEventListener('click', closeModal);
 
   // Close on outside click
   statusModal.addEventListener('click', (e) => {
-    if (e.target === statusModal) {
-      statusModal.style.display = 'none';
-    }
+    if (e.target === statusModal) closeModal();
   });
 }

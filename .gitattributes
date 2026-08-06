@@ -1,7 +1,50 @@
-# vCard 3.0 (RFC 2426 §3.1) mandates CRLF line endings. Without this
-# rule git's autocrlf normalises the CRLF the renderer emits back to LF
-# on checkout (incl. CI runners), silently dropping the spec-compliance
-# fix and breaking Apple's QR vCard parser (which is stricter than the
-# Contacts.app file-import parser). Treat as binary so the byte content
-# is preserved exactly on every machine.
-*.vcf binary
+# ╔══════════════════════════════════════════════════════════════════╗
+# ║                                                                  ║
+# ║   GENERATED FILE — DO NOT EDIT                                   ║
+# ║                                                                  ║
+# ║   Source : 1_workflows/src/gitattributes
+# ║   Engine : 1_workflows/src/scripts/front-ship-repo-workflow-engine.sh
+# ║   Rebuild: ./1_workflows/build.sh
+# ║                                                                  ║
+# ║   Manual edits will be overwritten on next build.                ║
+# ║                                                                  ║
+# ╚══════════════════════════════════════════════════════════════════╝
+
+# Line endings — normalize tracked text to LF (all-Linux fleet: termux, CI, VMs).
+* text=auto
+
+# Logs — union-merge: keep both sides' lines instead of conflicting, so the
+# pre-push hook's `pull --rebase --autostash` can never jam on log churn.
+# `union` is built into git (no per-machine merge.*.driver config needed).
+*.log    merge=union
+
+# Generated trees & lockfiles — mark generated so GitHub collapses them in PR
+# diffs (cosmetic; does not affect merge behavior).
+**/dist/**        linguist-generated=true
+flake.lock        linguist-generated=true
+package-lock.json linguist-generated=true
+
+# Binary assets — never text-diff or 3-way line-merge (avoids corruption on
+# keystores/apks and noisy diffs on images/fonts).
+*.png   binary
+*.jpg   binary
+*.jpeg  binary
+*.gif   binary
+*.webp  binary
+*.ico   binary
+*.ttf   binary
+*.otf   binary
+*.woff  binary
+*.woff2 binary
+*.apk   binary
+*.aab   binary
+*.jar   binary
+*.aar   binary
+*.keystore binary
+*.jks   binary
+*.so    binary
+*.zst   binary
+*.nar   binary
+*.gz    binary
+*.zip   binary
+*.pdf   binary

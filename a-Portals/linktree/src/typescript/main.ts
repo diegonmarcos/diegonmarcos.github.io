@@ -77,25 +77,48 @@ function initApp(): void {
   onIdle(() => initGalleryToggle());
   onIdle(() => initVmControl());
 
+  // Hamburger menu
+  const hamburgerBtn = document.getElementById('hamburger-btn');
+  const hamburgerNav = document.getElementById('hamburger-nav');
+  if (hamburgerBtn && hamburgerNav) {
+    hamburgerBtn.addEventListener('click', () => {
+      const expanded = hamburgerBtn.getAttribute('aria-expanded') === 'true';
+      hamburgerBtn.setAttribute('aria-expanded', String(!expanded));
+      hamburgerNav.classList.toggle('is-open', !expanded);
+    });
+    // Delegate: clicking a hamburger-item triggers the target button
+    hamburgerNav.addEventListener('click', (e) => {
+      const item = (e.target as HTMLElement).closest('.hamburger-item') as HTMLElement | null;
+      if (!item) return;
+      const targetId = item.dataset['trigger'];
+      if (!targetId) return;
+      const target = document.getElementById(targetId);
+      if (target) target.click();
+      // close menu
+      hamburgerBtn.setAttribute('aria-expanded', 'false');
+      hamburgerNav.classList.remove('is-open');
+    });
+    // Close on outside click
+    document.addEventListener('click', (e) => {
+      const menu = document.getElementById('hamburger-menu');
+      if (menu && !menu.contains(e.target as Node)) {
+        hamburgerBtn.setAttribute('aria-expanded', 'false');
+        hamburgerNav.classList.remove('is-open');
+      }
+    });
+  }
+
   // Show FABs after everything is loaded and positioned
   requestAnimationFrame(() => {
     requestAnimationFrame(() => {
       const controlsFab = document.querySelector('.controls-fab-container') as HTMLElement;
-      const mindmapBtn = document.getElementById('mindmap-btn') as HTMLElement;
-      const pixelworldBtn = document.getElementById('pixelworld-btn') as HTMLElement;
-      const iconviewBtn = document.getElementById('iconview-btn') as HTMLElement;
+      const hamburgerMenu = document.getElementById('hamburger-menu') as HTMLElement;
 
       if (controlsFab) {
         controlsFab.style.visibility = 'visible';
       }
-      if (mindmapBtn) {
-        mindmapBtn.style.visibility = 'visible';
-      }
-      if (pixelworldBtn) {
-        pixelworldBtn.style.visibility = 'visible';
-      }
-      if (iconviewBtn) {
-        iconviewBtn.style.visibility = 'visible';
+      if (hamburgerMenu) {
+        hamburgerMenu.style.visibility = 'visible';
       }
     });
   });

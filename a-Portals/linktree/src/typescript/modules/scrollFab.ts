@@ -6,12 +6,10 @@
  */
 export function initScrollFab(): void {
   const controlsFab = document.querySelector('.controls-fab-container') as HTMLElement;
-  const mindmapBtn = document.getElementById('mindmap-btn') as HTMLElement;
-  const pixelworldBtn = document.getElementById('pixelworld-btn') as HTMLElement;
-  const iconviewBtn = document.getElementById('iconview-btn') as HTMLElement;
+  const hamburgerMenu = document.getElementById('hamburger-menu') as HTMLElement;
   const controlsList = document.getElementById('controls-list') as HTMLElement;
 
-  if (!controlsFab || !mindmapBtn || !controlsList) {
+  if (!controlsFab || !hamburgerMenu || !controlsList) {
     console.warn('ScrollFab: FAB elements not found');
     return;
   }
@@ -42,19 +40,9 @@ export function initScrollFab(): void {
       controlsFab.style.transition = 'none';
       controlsFab.style.opacity = '0';
       controlsFab.style.pointerEvents = 'none';
-      mindmapBtn.style.transition = 'none';
-      mindmapBtn.style.opacity = '0';
-      mindmapBtn.style.pointerEvents = 'none';
-      if (pixelworldBtn) {
-        pixelworldBtn.style.transition = 'none';
-        pixelworldBtn.style.opacity = '0';
-        pixelworldBtn.style.pointerEvents = 'none';
-      }
-      if (iconviewBtn) {
-        iconviewBtn.style.transition = 'none';
-        iconviewBtn.style.opacity = '0';
-        iconviewBtn.style.pointerEvents = 'none';
-      }
+      hamburgerMenu.style.transition = 'none';
+      hamburgerMenu.style.opacity = '0';
+      hamburgerMenu.style.pointerEvents = 'none';
     }
   }
 
@@ -68,19 +56,9 @@ export function initScrollFab(): void {
       controlsFab.style.transition = 'none';
       controlsFab.style.opacity = '1';
       controlsFab.style.pointerEvents = 'auto';
-      mindmapBtn.style.transition = 'none';
-      mindmapBtn.style.opacity = '1';
-      mindmapBtn.style.pointerEvents = 'auto';
-      if (pixelworldBtn) {
-        pixelworldBtn.style.transition = 'none';
-        pixelworldBtn.style.opacity = '1';
-        pixelworldBtn.style.pointerEvents = 'auto';
-      }
-      if (iconviewBtn) {
-        iconviewBtn.style.transition = 'none';
-        iconviewBtn.style.opacity = '1';
-        iconviewBtn.style.pointerEvents = 'auto';
-      }
+      hamburgerMenu.style.transition = 'none';
+      hamburgerMenu.style.opacity = '1';
+      hamburgerMenu.style.pointerEvents = 'auto';
     }
   }
 
@@ -110,7 +88,7 @@ export function initScrollFab(): void {
   }
 
   // Prevent hiding when interacting with FABs
-  const fabElements = [controlsFab, mindmapBtn, ...(pixelworldBtn ? [pixelworldBtn] : []), ...(iconviewBtn ? [iconviewBtn] : [])];
+  const fabElements = [controlsFab, hamburgerMenu];
   fabElements.forEach(element => {
     // Touch/click start - mark as interacting
     element.addEventListener('touchstart', () => {

@@ -47,13 +47,13 @@
     {
       "section": "projects",
       "id": "home",
-      "kind": "tools",
+      "kind": "title-card",
       "title": "PROJECTS"
     },
     {
       "section": "projects",
       "id": "labs",
-      "kind": "tools",
+      "kind": "title-card",
       "title": "LABS"
     },
     {
@@ -83,7 +83,7 @@
     {
       "section": "projects",
       "id": "portfolio",
-      "kind": "tools",
+      "kind": "title-card",
       "title": "PORTFOLIO"
     },
     {
@@ -407,110 +407,6 @@
       "label": "LinkedIn DM",
       "url": "https://linkedin.com/in/diegonmarcos",
       "icon": "brand-linkedin.svg"
-    },
-    {
-      "section": "projects",
-      "slide": "projects",
-      "column": "LABS",
-      "label": "Labs",
-      "url": "#",
-      "icon": "sparkles.svg"
-    },
-    {
-      "section": "projects",
-      "slide": "projects",
-      "column": "PORTFOLIO",
-      "label": "Portfolio",
-      "url": "#",
-      "icon": "rocket.svg"
-    },
-    {
-      "section": "projects",
-      "slide": "projects",
-      "column": "IDE AGENTIC",
-      "label": "IDE Agentic",
-      "url": "#",
-      "icon": "brain.svg"
-    },
-    {
-      "section": "projects",
-      "slide": "projects",
-      "column": "SUITE",
-      "label": "Suite",
-      "url": "#",
-      "icon": "sparkles.svg"
-    },
-    {
-      "section": "projects",
-      "slide": "projects",
-      "column": "FIN TERMINAL",
-      "label": "Fin Terminal",
-      "url": "#",
-      "icon": "database.svg"
-    },
-    {
-      "section": "projects",
-      "slide": "projects",
-      "column": "STRUCTURAL",
-      "label": "Structural",
-      "url": "#",
-      "icon": "settings.svg"
-    },
-    {
-      "section": "projects",
-      "slide": "projects",
-      "column": "SIMULATORS",
-      "label": "Simulators",
-      "url": "#",
-      "icon": "world-longitude.svg"
-    },
-    {
-      "section": "projects",
-      "slide": "projects",
-      "column": "VIDEO ANIMATION",
-      "label": "Video Animation",
-      "url": "#",
-      "icon": "brand-youtube.svg"
-    },
-    {
-      "section": "projects",
-      "slide": "projects",
-      "column": "MUSIC PRODUCTION",
-      "label": "Music Production",
-      "url": "#",
-      "icon": "headphones.svg"
-    },
-    {
-      "section": "projects",
-      "slide": "projects",
-      "column": "GAMES DEV",
-      "label": "Games Dev",
-      "url": "#",
-      "icon": "device-gamepad.svg"
-    },
-    {
-      "section": "projects",
-      "slide": "projects",
-      "column": "UNIX",
-      "label": "Unix",
-      "url": "#",
-      "icon": "bolt.svg"
-    },
-    {
-      "section": "projects",
-      "slide": "projects",
-      "column": "CLOUD",
-      "label": "Cloud",
-      "url": "#",
-      "icon": "device-desktop.svg"
-    },
-    {
-      "section": "projects",
-      "slide": "projects",
-      "column": "REPOS",
-      "label": "Repos",
-      "url": "#",
-      "icon": "brand-github.svg"
     },
     {
       "section": "projects",
@@ -1655,30 +1551,6 @@
       "label": "vast-RTX-p_0 - GPU (on-demand)",
       "url": "#",
       "icon": "device-desktop.svg"
-    },
-    {
-      "section": "projects",
-      "slide": "projects",
-      "column": "MARKETS",
-      "label": "Markets",
-      "url": "#",
-      "icon": "database.svg"
-    },
-    {
-      "section": "projects",
-      "slide": "projects",
-      "column": "DEEP TECH",
-      "label": "Deep Tech",
-      "url": "#",
-      "icon": "settings.svg"
-    },
-    {
-      "section": "projects",
-      "slide": "projects",
-      "column": "CG & GAMES",
-      "label": "CG & Games",
-      "url": "#",
-      "icon": "device-gamepad.svg"
     },
     {
       "section": "projects",

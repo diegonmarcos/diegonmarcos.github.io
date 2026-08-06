@@ -1,0 +1,102 @@
+# ╔══════════════════════════════════════════════════════════════════╗
+# ║                                                                  ║
+# ║   GENERATED FILE — DO NOT EDIT                                   ║
+# ║                                                                  ║
+# ║   Source : 1_workflows/src/gitignore
+# ║   Engine : 1_workflows/src/scripts/front-ship-repo-workflow-engine.sh
+# ║   Rebuild: ./1_workflows/build.sh
+# ║                                                                  ║
+# ║   Manual edits will be overwritten on next build.                ║
+# ║                                                                  ║
+# ╚══════════════════════════════════════════════════════════════════╝
+
+# ══════════════════════════════════════════════════════════
+# REPO: front (PUBLIC)
+# https://github.com/diegonmarcos/diegonmarcos.github.io
+# ══════════════════════════════════════════════════════════
+
+# ── Secrets & Credentials (reinforces global gitignore) ──
+# KEEP IN SYNC with global gitignore: ~/git/unix/ba_flakes_desktop/src/modules/programs/git.nix
+#                                      ~/git/unix/bb_flakes_termux/src/modules/programs/git.nix
+## Decrypted secrets output
+.secrets
+*.secrets
+**/.secrets
+.secrets.d/
+**/.secrets.d/
+## Environment files
+.env
+.env.*
+**/.env
+**/.env.*
+!.env.example
+!**/.env.example
+## Private keys & certificates
+*.pem
+*.key
+*.p12
+*.pfx
+*.jks
+*.keystore
+## Auth tokens & credentials
+*.token
+*credentials*.json
+*_token.json
+*_tokens.json
+## Cloud provider configs
+.oci/
+.gcloud/
+## GPG & age
+*.asc
+*.age
+!*.age.pub
+## Terraform secrets
+terraform.tfvars
+*.tfvars
+!*.tfvars.example
+
+# ── Repo-specific ──
+## Dependencies
+vendor/
+**/1.ops/node_modules/
+## Jekyll
+_site/
+.jekyll-cache/
+.jekyll-metadata
+Gemfile.lock
+## Temporary build directories
+blog_output/
+final_site/
+## Sass/CSS build artifacts
+*.backup
+## Dev/watch outputs leaking into src/ (regression guard).
+## _engine.sh start_watchers() writes to <project>/dist/watch/ — these
+## patterns under src/ exist only as a belt-and-braces trap if a future
+## engine bug ever rewires watchers back to src/.
+a-Portals/*/src/script.js
+a-Portals/*/src/script.js.map
+a-Portals/*/src/style.css
+a-Portals/*/src/style.css.map
+## tsc emits leaking into src/typescript/ (regression guard).
+## _engine.sh mod_tsc forces --outDir=dist/.tsc-tmp so tsc never writes
+## back to src/. Project tsconfigs default outDir to "." for IDE
+## resolution, which would leak .js/.js.map next to every .ts file
+## without the CLI override. These patterns catch any future regression.
+**/src/typescript/*.js
+**/src/typescript/*.js.map
+## Build logs
+1.ops/build_main.log
+1.ops/.build-status
+1.ops/.dev-servers.pid
+## Dev-server runtime logs (server.sh, now under 0_ folder)
+**/server.log
+**/browser-console.log
+## Generated root install manifest — derived from front-deps.json (the source).
+## Anchored to repo root: per-project package.json / package-lock.json stay tracked.
+/package.json
+/package-lock.json
+## Obsidian
+.obsidian/workspace-mobile.json
+node_modules/
+## Generated config data lives in 2_configs/dist/ (committed, in-repo).
+## Root front-topology.json / front-deps.json are tracked symlinks → 2_configs/dist/.

@@ -57,11 +57,6 @@ elif [ -d "$PROJECT/node_modules" ]; then
     NODE_MODULES_SRC="$PROJECT/node_modules"
 fi
 
-if [ -z "$NODE_MODULES_SRC" ] || [ ! -d "$NODE_MODULES_SRC/jsdom" ]; then
-    echo "⚠ jsdom not found in node_modules — skipping QR regeneration (existing src/public/qr-code-*.png will be used). Add jsdom to front-deps.json to enable regeneration." >&2
-    exit 0
-fi
-
 # Compile the generator to a temp dir and run with node.
 TMP_OUT="$(mktemp -d)"
 trap 'rm -rf "$TMP_OUT"' EXIT

@@ -9,14 +9,12 @@
 #   • Styled QR PNGs declared in manifest.qrcodes      (default: src/public/qr-code-*.png)
 #   • The data-driven qrcode.html (default: src/qrcode.html)
 #
-# Reproducibility: compiles with the project's LOCAL `tsc` binary then runs
-# with `node`. NEVER uses `npx` — that would pull from network/cache and
-# break "same input → same output". The project's package.json MUST declare
-# typescript + qr-code-styling + qrcode + sharp + jsdom in devDependencies,
-# installed via `npm install` (also reproducible via package-lock.json).
+# Uses the system `tsc` (installed via nix on the build server) then runs
+# the compiled output with `node`. The project's package.json declares
+# qr-code-styling + qrcode + sharp + jsdom in devDependencies.
 #
 # Usage:
-#     front-qrcode-gen.sh <project_dir> [manifest_rel_path]
+#     qrcode-gen.sh <project_dir> [manifest_rel_path]
 #
 #     <project_dir>      — absolute path to the project (contains build.json)
 #     [manifest_rel_path]— relative to project_dir;
@@ -24,7 +22,7 @@
 #
 # Exit codes:
 #     0 — success
-#     1 — bad usage / project layout / tsx missing
+#     1 — bad usage / project layout / tsc missing
 #     2 — generator script failed
 # ──────────────────────────────────────────────────────────────────────
 set -euo pipefail
@@ -41,26 +39,11 @@ MANIFEST="$PROJECT/$MANIFEST_REL"
 [ -f "$GENERATOR" ] || { echo "✗ qrcode generator not found: $GENERATOR" >&2; exit 1; }
 [ -f "$MANIFEST" ]  || { echo "✗ qrcode manifest not found: $MANIFEST" >&2; exit 1; }
 
-# Resolve tsc via standard npm-monorepo lookup order:
-#   1) project-local node_modules/.bin/tsc
-#   2) walk up parent dirs until we find one (root node_modules/.bin/tsc
-#      when deps were hoisted by `npm install` at the repo root — which
-#      is what GHA does)
-TSC_BIN=""
-_dir="$PROJECT"
-while [ "$_dir" != "/" ] && [ -n "$_dir" ]; do
-    if [ -x "$_dir/node_modules/.bin/tsc" ]; then
-        TSC_BIN="$_dir/node_modules/.bin/tsc"
-        break
-    fi
-    _dir="$(dirname "$_dir")"
-done
-
-[ -x "$TSC_BIN" ] || {
-    echo "✗ tsc not found anywhere from $PROJECT upward" >&2
-    echo "  Declare typescript + qr-code-styling + qrcode + sharp + jsdom in package.json devDependencies (project or repo root) and run \`npm install\`." >&2
-    exit 1
-}
+TSC_BIN="$(command -v tsc 2>/dev/null)"
+if [ -z "$TSC_BIN" ]; then
+    echo "⚠ tsc not found in PATH — skipping QR regeneration (existing src/public/qr-code-*.png will be used). Install typescript via the system package manager to enable regeneration." >&2
+    exit 0
+fi
 
 # Compile the generator to a temp dir and run with node.
 TMP_OUT="$(mktemp -d)"

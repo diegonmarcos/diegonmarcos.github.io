@@ -13,6 +13,7 @@ import { initIconViewToggle } from './modules/iconViewToggle';
 import { initAudioToggle } from './modules/audioToggle';
 import { initVmControl } from './modules/vmControl';
 import { initProfilePicSwiper } from './modules/profilePicSwiper';
+import { initScrollFab } from './modules/scrollFab';
 import { initCardSwiper } from './modules/cardSwiper';
 import { initPortalRender } from './modules/portal-render';
 import { initThemeToggle } from './modules/themeToggle';
@@ -51,6 +52,7 @@ function initApp(): void {
   // Initialize in-page list view toggle
   initIconViewToggle();
   initAudioToggle();
+  initScrollFab();
 
   // Initialize random background video (or WebGL canvas if opted in).
   initVideoBackground();

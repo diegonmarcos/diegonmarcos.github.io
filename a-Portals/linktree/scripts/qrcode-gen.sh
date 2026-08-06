@@ -51,7 +51,7 @@ trap 'rm -rf "$TMP_OUT"' EXIT
 
 "$TSC_BIN" \
     --target ES2020 \
-    --module CommonJS \
+    --module node16 \
     --moduleResolution node16 \
     --esModuleInterop true \
     --skipLibCheck true \

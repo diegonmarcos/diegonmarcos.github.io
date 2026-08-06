@@ -32,7 +32,7 @@
       "rclone": { "nix": "rclone", "apt": "rclone" }
     },
     "npm": {
-      "flags": "--no-fund --no-audit --legacy-peer-deps"
+      "flags": "--no-fund --no-audit --legacy-peer-deps --include=dev"
     }
   }
 }

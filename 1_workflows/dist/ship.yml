@@ -214,6 +214,17 @@ jobs:
           bash build.sh build
           cd ../..
           echo "✅ MyPhotos build complete"
+      - name: 🔨 Build MyTrackers
+        id: build-mytrackers
+        if:
+          contains(steps.changed-files.outputs.all_changed_files, 'b-MyData/myTrackers/src/')
+
+        run: |
+          echo "🔨 Building MyTrackers..."
+          cd b-MyData/myTrackers
+          bash build.sh build
+          cd ../..
+          echo "✅ MyTrackers build complete"
       - name: 🔨 Build Suite
         id: build-suite
         if:
@@ -568,6 +579,7 @@ jobs:
             "c-Suite/json-vision:json-vision"
             "c-Suite/mymail:mymail"
             "b-MyData/myphotos:myphotos"
+            "b-MyData/myTrackers:myTrackers"
             "c-Suite/suite:suite"
             "c-Suite/tldraw:tldraw"
             "b-Data/myAstro:myAstro"

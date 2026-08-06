@@ -100,11 +100,3 @@ a-Portals/*/src/style.css.map
 node_modules/
 ## Generated config data lives in 2_configs/dist/ (committed, in-repo).
 ## Root front-topology.json / front-deps.json are tracked symlinks → 2_configs/dist/.
-
-# Embedded repos — never track these
-.claude/worktrees/
-II_tools/
-I_front-data/
-front-data/
-tools/
-front-assets-cdn/

@@ -108,6 +108,28 @@ function initApp(): void {
     });
   }
 
+  // Card View button — close all overlay views, return to default swiper
+  const cardviewBtn = document.getElementById('cardview-btn');
+  if (cardviewBtn) {
+    cardviewBtn.addEventListener('click', () => {
+      // Close icon view if open
+      const iconviewOverlay = document.getElementById('iconview-content') as HTMLElement | null;
+      if (iconviewOverlay && iconviewOverlay.style.display !== 'none' && iconviewOverlay.offsetParent !== null) {
+        (document.getElementById('iconview-btn') as HTMLElement | null)?.click();
+      }
+      // Close gallery if active
+      const galleryOverlay = document.querySelector('.gallery-overlay') as HTMLElement | null;
+      if (galleryOverlay && galleryOverlay.offsetParent !== null) {
+        (document.getElementById('gallery-toggle') as HTMLElement | null)?.click();
+      }
+      // Close mindmap overlay if open
+      const mindmapOverlay = document.getElementById('mindmap-overlay') as HTMLElement | null;
+      if (mindmapOverlay && mindmapOverlay.style.display !== 'none') {
+        mindmapOverlay.style.display = 'none';
+      }
+    });
+  }
+
   // Show FABs after everything is loaded and positioned
   requestAnimationFrame(() => {
     requestAnimationFrame(() => {

@@ -45,20 +45,33 @@ if [ -z "$TSC_BIN" ]; then
     exit 0
 fi
 
-# Resolve the repo root so we can pass its node_modules to NODE_PATH.
-# The compiled output lands in a temp dir with no node_modules, so without
-# NODE_PATH node cannot find jsdom, sharp, qrcode, etc.
+# Resolve the repo root to find the shared node_modules.
+# The compiled output lands in a temp dir; ESM does NOT use NODE_PATH,
+# so we symlink node_modules into the temp dir so node's upward-walking
+# package resolution finds jsdom, sharp, qrcode, etc.
 REPO_ROOT="$(git -C "$PROJECT" rev-parse --show-toplevel 2>/dev/null || true)"
-NODE_MODULES_PATH=""
+NODE_MODULES_SRC=""
 if [ -n "$REPO_ROOT" ] && [ -d "$REPO_ROOT/node_modules" ]; then
-    NODE_MODULES_PATH="$REPO_ROOT/node_modules"
+    NODE_MODULES_SRC="$REPO_ROOT/node_modules"
 elif [ -d "$PROJECT/node_modules" ]; then
-    NODE_MODULES_PATH="$PROJECT/node_modules"
+    NODE_MODULES_SRC="$PROJECT/node_modules"
+fi
+
+if [ -z "$NODE_MODULES_SRC" ] || [ ! -d "$NODE_MODULES_SRC/jsdom" ]; then
+    echo "⚠ jsdom not found in node_modules — skipping QR regeneration (existing src/public/qr-code-*.png will be used). Add jsdom to front-deps.json to enable regeneration." >&2
+    exit 0
 fi
 
 # Compile the generator to a temp dir and run with node.
 TMP_OUT="$(mktemp -d)"
 trap 'rm -rf "$TMP_OUT"' EXIT
+
+# Symlink node_modules into the temp dir so ESM package resolution works.
+# ESM walks up from the compiled file's directory looking for node_modules;
+# without this symlink it would reach / without finding any packages.
+if [ -n "$NODE_MODULES_SRC" ]; then
+    ln -s "$NODE_MODULES_SRC" "$TMP_OUT/node_modules"
+fi
 
 "$TSC_BIN" \
     --target ES2020 \
@@ -72,10 +85,7 @@ trap 'rm -rf "$TMP_OUT"' EXIT
 # Invoke the compiled generator. The generator's PROJECT_ROOT is computed
 # from its own __dirname, so we pass it the original source path so it
 # resolves assets relative to the project root correctly.
-# NODE_PATH lets node find packages installed in the repo root node_modules
-# even though the compiled output lives in a temp directory.
 (
     cd "$PROJECT"
-    NODE_PATH="${NODE_MODULES_PATH}${NODE_PATH:+:$NODE_PATH}" \
-        node "$TMP_OUT/qr-code-generator.js" --manifest="$MANIFEST_REL"
+    node "$TMP_OUT/qr-code-generator.js" --manifest="$MANIFEST_REL"
 )

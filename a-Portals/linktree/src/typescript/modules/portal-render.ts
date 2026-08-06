@@ -80,7 +80,11 @@ interface SlideVentureCard {
   primary_link?: Link;
 }
 
-type Slide = SlideTools | SlideProfileCard | SlideRepos | SlideVentureCard;
+interface SlideTitleCard {
+  id: string; kind: 'title-card'; title: string;
+}
+
+type Slide = SlideTools | SlideProfileCard | SlideRepos | SlideVentureCard | SlideTitleCard;
 
 interface SectionCfg {
   section: { id: string; title: string; swiper_class: string };
@@ -442,6 +446,12 @@ function renderVentureCardSlide(slide: SlideVentureCard): HTMLElement {
   return el('div', { class: 'swiper-slide' }, [linkSection]);
 }
 
+function renderTitleCardSlide(slide: SlideTitleCard): HTMLElement {
+  const linkSection = el('div', { class: 'link-section link-section--title-card' });
+  linkSection.appendChild(el('h2', { class: 'title-card__title' }, [slide.title]));
+  return el('div', { class: 'swiper-slide' }, [linkSection]);
+}
+
 // --------------------------------------------------------------------------
 // Public API
 // --------------------------------------------------------------------------
@@ -454,6 +464,7 @@ export function renderSlide(id: string): HTMLElement | null {
     case 'profile-card':  return renderProfileCardSlide(slide);
     case 'repos':         return renderReposSlide(slide);
     case 'venture-card':  return renderVentureCardSlide(slide);
+    case 'title-card':    return renderTitleCardSlide(slide);
   }
   return null;
 }

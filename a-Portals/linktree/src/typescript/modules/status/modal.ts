@@ -23,8 +23,9 @@ const REPO_URL = `https://github.com/${REPO}`;
 
 async function getRepoCommits(): Promise<RepoCommit[]> {
   try {
+    const since = new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString();
     const response = await fetch(
-      `https://api.github.com/repos/${REPO}/commits?per_page=10&path=a-Portals/linktree`,
+      `https://api.github.com/repos/${REPO}/commits?per_page=100&path=a-Portals/linktree&since=${since}`,
       { headers: { Accept: 'application/vnd.github.v3+json' } },
     );
     if (!response.ok) return [];
@@ -345,7 +346,7 @@ function renderDiagnostics(data: DiagnosticData): string {
 
       <!-- Repo News Section -->
       <div class="diag-section">
-        <h3>Repo News (last 10 commits)</h3>
+        <h3>Repo News (last 30 days)</h3>
         ${data.commits.length === 0
           ? '<p class="diag-no-data">Could not fetch commits (rate limit or offline).</p>'
           : `<div class="diag-commits">${data.commits.map((c) => `

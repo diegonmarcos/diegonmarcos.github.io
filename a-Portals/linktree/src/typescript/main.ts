@@ -183,6 +183,10 @@ document.addEventListener('DOMContentLoaded', async () => {
       await Promise.all(keys.map((k) => caches.delete(k)));
       location.reload();
     };
+
+    document.getElementById('sw-reset-toggle')?.addEventListener('click', () =>
+      (window as unknown as { __resetSW: () => Promise<void> }).__resetSW(),
+    );
   }
 });
 

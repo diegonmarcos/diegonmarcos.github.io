@@ -18,6 +18,8 @@ import { initErudaToggle } from './modules/eruda';
 import { initLogcatViewer } from './modules/logcat';
 import { initCardSwiper } from './modules/cardSwiper';
 import { initPortalRender } from './modules/portal-render';
+import { renderMenu } from './modules/menuRender';
+import { initZoomToggle } from './modules/zoomToggle';
 import { initThemeToggle } from './modules/themeToggle';
 import { initTilt3d } from './modules/tilt3d';
 import { initCanvasBackground } from './modules/canvas-bg';
@@ -35,6 +37,10 @@ const onIdle: IdleCb = (cb) =>
  * Initialize all application modules
  */
 function initApp(): void {
+  // Render the FAB + hamburger menus from shared data before anything
+  // below looks up their button ids.
+  renderMenu();
+
   // Hydrate declarative portal slides FIRST so subsequent modules
   // (Swiper carousels in particular) see the rendered DOM.
   initPortalRender();
@@ -54,6 +60,7 @@ function initApp(): void {
   // Initialize in-page list view toggle
   initIconViewToggle();
   initAudioToggle();
+  initZoomToggle();
   initScrollFab();
   initErudaToggle();
   initLogcatViewer();

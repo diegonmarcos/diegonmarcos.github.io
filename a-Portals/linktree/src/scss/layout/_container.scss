@@ -99,9 +99,21 @@
                 all 0.5s cubic-bezier(0.4, 0.0, 0.2, 1);
 }
 
-// Zoom out: shrink the whole container so all 3 card groups (Professional
-// Profiles / Projects / Personal Profiles, each a 100dvh snap section) are
-// visible together instead of one at a time.
-:root.zoomed-out .container {
+// Card view modes:
+// - cards-view-single-card (default): the 3 groups stacked full-height,
+//   one card visible at a time via swiper — normal browsing.
+// - cards-view-all-cards (zoom out): the 3 groups placed side by side
+//   instead of stacked, shrunk to fit so all of them are visible together.
+:root.cards-view-all-cards main {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    gap: 1rem;
     zoom: 0.32;
+}
+
+:root.cards-view-all-cards .section-box {
+    flex: 1;
+    min-width: 0;
+    margin-bottom: 0;
 }

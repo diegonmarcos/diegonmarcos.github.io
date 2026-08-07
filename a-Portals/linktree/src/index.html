@@ -156,29 +156,8 @@
         <button class="hamburger-btn" id="hamburger-btn" title="Menu" aria-expanded="false">
             <span></span><span></span><span></span>
         </button>
-        <nav class="hamburger-nav" id="hamburger-nav" aria-hidden="true">
-            <div class="hamburger-group">
-                <span class="hamburger-group__label">View Mode</span>
-                <button class="hamburger-item" data-trigger="btn-pixelworld">Pixel World</button>
-                <button class="hamburger-item" data-trigger="btn-mindmap">Mindmap</button>
-                <button class="hamburger-item" data-trigger="iconview-btn">Icon View</button>
-                <button class="hamburger-item" data-trigger="cardview-btn">Card View</button>
-            </div>
-            <div class="hamburger-group">
-                <span class="hamburger-group__label">Theme</span>
-                <button class="hamburger-item" data-trigger="lite-toggle">Light Mode</button>
-                <button class="hamburger-item" data-trigger="theme-toggle">Theme Toggle</button>
-                <button class="hamburger-item" data-trigger="audio-toggle">Audio Toggle</button>
-            </div>
-            <div class="hamburger-group">
-                <span class="hamburger-group__label">Dev Control</span>
-                <button class="hamburger-item" data-trigger="status-toggle">Status</button>
-                <button class="hamburger-item" data-trigger="about-toggle">About</button>
-                <button class="hamburger-item" data-trigger="eruda-toggle">Dev Tools</button>
-                <button class="hamburger-item" data-trigger="logcat-toggle">Logcat</button>
-                <button class="hamburger-item" data-trigger="sw-reset-toggle">Clear Cache</button>
-            </div>
-        </nav>
+        <!-- Populated at runtime by menuRender.ts from menuData.ts (shared with the FAB below) -->
+        <nav class="hamburger-nav" id="hamburger-nav" aria-hidden="true"></nav>
     </div>
 
     <!-- Icon View Overlay -->
@@ -507,56 +486,8 @@
     <!-- Performance Controls (corner button) -->
     <!-- Controls FAB (bottom-right) -->
     <div class="controls-fab-container" data-fab="controls-container" style="position: fixed !important; bottom: 2rem !important; right: 2rem !important; visibility: hidden;">
-        <div class="controls-list" id="controls-list" data-fab="controls-list">
-            <!-- View Mode -->
-            <div class="fab-group">
-                <span class="fab-group__label">View</span>
-                <a href="https://diegonmarcos.github.io/linktree_pixel-world/" id="btn-pixelworld" class="icon-btn" data-fab="icon-btn" title="Pixel World">
-                    <img src="public/icons/device-gamepad.svg" alt="Pixel World" data-fab-img>
-                </a>
-                <button id="btn-mindmap" class="icon-btn" data-fab="icon-btn" title="Mindmap">
-                    <img src="public/icons/git-branch.svg" alt="Mindmap" data-fab-img>
-                </button>
-                <button id="iconview-btn" class="icon-btn" data-fab="icon-btn" title="Icon View">
-                    <img src="public/icons/cards.svg" alt="Icon View" data-fab-img>
-                </button>
-                <button id="cardview-btn" class="icon-btn" data-fab="icon-btn" title="Card View">
-                    <img src="public/icons/cards.svg" alt="Card View" data-fab-img>
-                </button>
-            </div>
-            <!-- Theme -->
-            <div class="fab-group">
-                <span class="fab-group__label">Theme</span>
-                <button id="lite-toggle" class="icon-btn" data-fab="icon-btn" title="Light Mode">
-                    <img src="public/icons/bolt.svg" alt="Light Mode" data-fab-img>
-                </button>
-                <button id="theme-toggle" class="icon-btn" data-fab="icon-btn" title="Toggle Theme">
-                    <img src="public/icons/bulb.svg" alt="Theme" data-fab-img>
-                </button>
-                <button id="audio-toggle" class="icon-btn" data-fab="icon-btn" aria-pressed="false" title="Audio: off">
-                    <img src="public/icons/headphones.svg" alt="Audio" data-fab-img>
-                </button>
-            </div>
-            <!-- Dev Control -->
-            <div class="fab-group">
-                <span class="fab-group__label">Dev</span>
-                <button id="status-toggle" class="icon-btn" data-fab="icon-btn" title="Status">
-                    <img src="public/icons/database.svg" alt="Status" data-fab-img>
-                </button>
-                <button id="about-toggle" class="icon-btn" data-fab="icon-btn" title="About">
-                    <img src="public/icons/info-circle.svg" alt="About" data-fab-img>
-                </button>
-                <button id="eruda-toggle" class="icon-btn" data-fab="icon-btn" title="Dev Tools">
-                    <img src="public/icons/code.svg" alt="Dev Tools" data-fab-img>
-                </button>
-                <button id="logcat-toggle" class="icon-btn" data-fab="icon-btn" title="Logcat">
-                    <img src="public/icons/file-stack.svg" alt="Logcat" data-fab-img>
-                </button>
-                <button id="sw-reset-toggle" class="icon-btn" data-fab="icon-btn" title="Clear Cache &amp; Reload">
-                    <img src="public/icons/refresh.svg" alt="Clear Cache" data-fab-img>
-                </button>
-            </div>
-        </div>
+        <!-- Populated at runtime by menuRender.ts from menuData.ts (shared with the hamburger nav above) -->
+        <div class="controls-list" id="controls-list" data-fab="controls-list"></div>
         <button class="controls-fab" id="controls-fab" data-fab="controls-fab" title="Settings">
             <img src="public/icons/settings.svg" alt="Settings" data-fab-img>
         </button>

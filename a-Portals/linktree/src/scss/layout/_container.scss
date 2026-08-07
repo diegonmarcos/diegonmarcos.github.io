@@ -98,3 +98,10 @@
                 margin-top 0.5s cubic-bezier(0.4, 0.0, 0.2, 1),
                 all 0.5s cubic-bezier(0.4, 0.0, 0.2, 1);
 }
+
+// Zoom out: shrink the whole container so all 3 card groups (Professional
+// Profiles / Projects / Personal Profiles, each a 100dvh snap section) are
+// visible together instead of one at a time.
+:root.zoomed-out .container {
+    zoom: 0.32;
+}

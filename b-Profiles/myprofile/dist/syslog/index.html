@@ -8,31 +8,42 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Rajdhani:wght@400;500;600;700&display=swap" rel="stylesheet">
   <title>Diego Marcos | Profile</title>
-  
-		<link rel="modulepreload" href="../_app/immutable/entry/start.BFfkgqK6.js">
-		<link rel="modulepreload" href="../_app/immutable/chunks/BhKYKdMs.js">
-		<link rel="modulepreload" href="../_app/immutable/chunks/Du0EjBT8.js">
-		<link rel="modulepreload" href="../_app/immutable/chunks/DH1vMWid.js">
-		<link rel="modulepreload" href="../_app/immutable/entry/app.Xzmubf6x.js">
-		<link rel="modulepreload" href="../_app/immutable/chunks/poDlVxfP.js">
-		<link rel="modulepreload" href="../_app/immutable/chunks/nFcBeTHs.js">
-		<link rel="modulepreload" href="../_app/immutable/chunks/D3pXm4t4.js">
-		<link rel="modulepreload" href="../_app/immutable/chunks/D_d1iZD_.js">
-		<link rel="modulepreload" href="../_app/immutable/chunks/3gf1Qcw4.js">
+  <link href="../_app/immutable/entry/start.9AMy8GM3.js" rel="modulepreload">
+		<link href="../_app/immutable/chunks/BN3Mp0Sx.js" rel="modulepreload">
+		<link href="../_app/immutable/chunks/Dz_z9VXY.js" rel="modulepreload">
+		<link href="../_app/immutable/chunks/CzBQFMFe.js" rel="modulepreload">
+		<link href="../_app/immutable/entry/app.DBPM5MAD.js" rel="modulepreload">
+		<link href="../_app/immutable/chunks/CqN94Jny.js" rel="modulepreload">
+		<link href="../_app/immutable/chunks/oMVn9KqV.js" rel="modulepreload">
+		<link href="../_app/immutable/chunks/tYxOlI-N.js" rel="modulepreload">
+		<link href="../_app/immutable/chunks/ZwyYqW3K.js" rel="modulepreload">
+		<link href="../_app/immutable/chunks/C6Y5ULCi.js" rel="modulepreload">
+		<link href="../_app/immutable/nodes/0.BVMA2UuY.js" rel="modulepreload">
+		<link href="../_app/immutable/chunks/Di8feGOt.js" rel="modulepreload">
+		<link href="../_app/immutable/chunks/e2GyrVOD.js" rel="modulepreload">
+		<link href="../_app/immutable/chunks/-HSbPVFl.js" rel="modulepreload">
+		<link href="../_app/immutable/nodes/7.BMmBsQFQ.js" rel="modulepreload">
+		
+		<link href="../_app/immutable/assets/Icon.DskQ8yDc.css" rel="stylesheet">
+		<link href="../_app/immutable/assets/0.DkE73B3v.css" rel="stylesheet">
+		<link href="../_app/immutable/assets/7.Dt0EmlX5.css" rel="stylesheet">
+<!-- Umami Analytics -->
+<script defer src="https://analytics.diegonmarcos.com/umami/script.js" data-website-id="937cbde7-5ec2-450c-9d6a-8117423ac12f"></script>
+<!-- End Umami Analytics -->
 </head>
 <body data-sveltekit-preload-data="hover">
   <div style="display: contents">
 			<script>
 				{
-					__sveltekit_1hyd8yl = {
+					__sveltekit_1ihpnfc = {
 						base: new URL("..", location).pathname.slice(0, -1)
 					};
 
 					const element = document.currentScript.parentElement;
 
 					Promise.all([
-						import("../_app/immutable/entry/start.BFfkgqK6.js"),
-						import("../_app/immutable/entry/app.Xzmubf6x.js")
+						import("../_app/immutable/entry/start.9AMy8GM3.js"),
+						import("../_app/immutable/entry/app.DBPM5MAD.js")
 					]).then(([kit, app]) => {
 						kit.start(app, element);
 					});
@@ -49,5 +60,52 @@
     s.parentNode.insertBefore(g,s);
   })();
   </script>
+<!-- ═══ Bottom nav — shared theme-switch pattern (same as mySocials/myTrackers/DMs) ═══ -->
+  <div class="theme-switch" id="theme-switch">
+    <div class="theme-switch__row theme-switch__row--hubs">
+      <a class="theme-switch__label theme-switch__hub-link" href="/myprofile" rel="external" style="opacity:1;font-weight:700">myProfile</a><span class="theme-switch__label"> :</span>
+      <a class="theme-switch__hub-link" href="/DMs" rel="external">DMs</a>
+      <span class="theme-switch__divider">|</span>
+      <a class="theme-switch__hub-link" href="/mySocials" rel="external">mySocials</a>
+      <span class="theme-switch__divider">|</span>
+      <a class="theme-switch__hub-link" href="/myTrackers" rel="external">myTrackers</a>
+    </div>
+  </div>
+  <style>
+    .theme-switch {
+      position: fixed; bottom: 18px; left: 50%; transform: translateX(-50%);
+      z-index: 99999;
+      display: flex; flex-direction: column; gap: 1px;
+      padding: 4px 6px;
+      background: rgba(20, 22, 34, 0.92);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 16px;
+      backdrop-filter: blur(8px);
+      box-shadow: 0 6px 24px rgba(0, 0, 0, 0.4);
+      max-width: calc(100vw - 24px);
+    }
+    .theme-switch__row {
+      display: flex; align-items: center; gap: 1px;
+      overflow-x: auto; scrollbar-width: none;
+    }
+    .theme-switch__row::-webkit-scrollbar { display: none; }
+    .theme-switch__row--hubs {
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      font-size: 0.72rem; color: rgba(255, 255, 255, 0.5);
+      padding-bottom: 6px; margin-bottom: 4px;
+      display: flex; align-items: center; gap: 4px; flex-wrap: wrap;
+    }
+    .theme-switch__label {
+      color: inherit; font-size: 0.72rem; font-weight: 600;
+      text-decoration: none; padding: 2px 6px; border-radius: 6px;
+    }
+    .theme-switch__hub-link {
+      color: inherit; text-decoration: none; opacity: 0.6;
+      font-size: 0.72rem; font-weight: 600; padding: 2px 6px; border-radius: 6px;
+    }
+    .theme-switch__hub-link--active { opacity: 1; color: #fff; background: rgba(255,255,255,0.1); }
+    .theme-switch__hub-link:hover { color: #fff; text-decoration: none; }
+    .theme-switch__divider { color: rgba(255,255,255,0.3); font-size: 0.72rem; padding: 0 2px; }
+  </style>
 </body>
 </html>

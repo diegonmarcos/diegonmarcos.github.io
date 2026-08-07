@@ -7,6 +7,10 @@
 # ║        ./build.sh deploy       # dist → .github/ + repo root    ║
 # ╚══════════════════════════════════════════════════════════════════╝
 set -e
+chmod +x "$0"
+
+# Prefer termux coreutils over nix binaries (nix cp/tail fail with libpthread on Android).
+export PATH="/data/data/com.termux.nix/files/usr/bin:$PATH"
 
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 REPO_ROOT="$(cd "$SCRIPT_DIR/.." && pwd)"
@@ -74,6 +78,12 @@ do_build() {
     if [ -f "$SRC_DIR/gitignore" ]; then
         inject_header "$SRC_DIR/gitignore" "$DIST_DIR/.gitignore"
         log "Built gitignore"
+    fi
+
+    # Gitattributes (src/gitattributes → dist/.gitattributes)
+    if [ -f "$SRC_DIR/gitattributes" ]; then
+        inject_header "$SRC_DIR/gitattributes" "$DIST_DIR/.gitattributes"
+        log "Built gitattributes"
     fi
 
     # Gitconfig (src/gitconfig → dist/)

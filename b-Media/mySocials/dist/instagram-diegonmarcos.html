@@ -26,16 +26,18 @@
 
     <!-- Data-driven framework: PORTAL_DATA["mySocials"] hydrated by front-data-json-js-wrapper.sh -->
     <script src="data-mySocials.json.js"></script>
-    <script src="data-instagram.json.js"></script>
-    <script src="data-instagram-diegocmarcos_.json.js"></script>
-    <script src="data-instagram-diegocnmarcos_.json.js"></script>
+    <script src="data-ig0-diegocnmarcos_.json.js"></script>
+    <script src="data-ig1-diegocmarcos_.json.js"></script>
+    <script src="data-ig2-diegonmarcos.json.js"></script>
     <script src="data-linkedin.json.js"></script>
     <script src="data-pinterest.json.js"></script>
     <script src="data-tidal.json.js"></script>
-    <script src="data-strava.json.js"></script>
     <script src="data-youtube.json.js"></script>
     <script src="data-shelf.json.js"></script>
     <script src="data-vinyl.json.js"></script>
+    <script src="data-bar-cellar.json.js"></script>
+    <script src="data-theater.json.js"></script>
+    <script src="data-menu.json.js"></script>
     <script>(function(){var d=globalThis.PORTAL_DATA&&PORTAL_DATA["mySocials"];if(d&&d.title)document.title=d.title;})();</script>
 <!-- sw-register: injected by mod_sw_register — DO NOT EDIT BY HAND. Re-runs are idempotent (the marker comment above gates the injection). -->
 <script>
@@ -142,25 +144,29 @@
 
   <!-- Theme / mode switcher — always visible -->
   <a class="theme-switch__home" href="index.html" aria-label="Home" title="Home">&#8962;</a>
-  <div class="theme-switch" id="theme-switch">
-    <button class="theme-switch__btn theme-switch__btn--me" data-theme-btn="mysocials">My Socials</button>
-    <span class="theme-switch__divider">|</span>
-    <button class="theme-switch__btn" data-theme-btn="instagram-diegonmarcos">IG: diegonmarcos</button>
-    <button class="theme-switch__btn" data-theme-btn="instagram-diegocmarcos_">IG: diegocmarcos_</button>
-    <button class="theme-switch__btn" data-theme-btn="instagram-diegocnmarcos_">IG: diegocnmarcos_</button>
-    <button class="theme-switch__btn" data-theme-btn="pinterest">Pinterest</button>
-    <button class="theme-switch__btn" data-theme-btn="youtube">YouTube</button>
-    <span class="theme-switch__divider">|</span>
-    <button class="theme-switch__btn" data-theme-btn="tidal">TIDAL</button>
-    <button class="theme-switch__btn" data-theme-btn="vinyl">vinyl</button>
-    <span class="theme-switch__divider">|</span>
-    <button class="theme-switch__btn" data-theme-btn="shelf">shelf</button>
-    <span class="theme-switch__divider">|</span>
-    <button class="theme-switch__btn" data-theme-btn="linkedin">LinkedIn</button>
-    <span class="theme-switch__divider">|</span>
-    <button class="theme-switch__btn" data-theme-btn="orkut">Orkut</button>
-    <button class="theme-switch__btn" data-theme-btn="icq">ICQ</button>
-    <button class="theme-switch__btn" data-theme-btn="strava">Strava</button>
+    <div class="theme-switch" id="theme-switch">
+    <div class="theme-switch__row theme-switch__row--parents">
+      <a class="theme-switch__label theme-switch__hub-link" href="/myprofile" style="opacity:1;font-weight:700">myProfile</a><span class="theme-switch__label"> :</span>
+      <a class="theme-switch__hub-link" href="/DMs">DMs</a>
+      <span class="theme-switch__divider">|</span>
+      <a class="theme-switch__hub-link theme-switch__hub-link--active" href="/mySocials/">mySocials</a>
+      <span class="theme-switch__divider">|</span>
+      <a class="theme-switch__hub-link" href="/myTrackers/">myTrackers</a>
+    </div>
+    <div class="theme-switch__row">
+      <button class="theme-switch__btn" data-theme-btn="instagram-diegocnmarcos_">ig0</button>
+      <button class="theme-switch__btn" data-theme-btn="instagram-diegocmarcos_">ig1</button>
+      <button class="theme-switch__btn" data-theme-btn="instagram-diegonmarcos">ig2</button>
+      <button class="theme-switch__btn" data-theme-btn="facebook-diegonmarcos">face0</button>
+      <span class="theme-switch__divider">|</span>
+      <button class="theme-switch__btn" data-theme-btn="pinterest">Pinterest</button>
+      <button class="theme-switch__btn" data-theme-btn="youtube">YouTube</button>
+      <button class="theme-switch__btn" data-theme-btn="tidal">TIDAL</button>
+      <span class="theme-switch__divider">|</span>
+      <button class="theme-switch__btn" data-theme-btn="linkedin">LinkedIn</button>
+      <span class="theme-switch__divider">|</span>
+      <button class="theme-switch__btn" data-theme-btn="orkut">Orkut</button>
+    </div>
   </div>
 
   <!-- ═══════════════ MY PROFILE VIEW (rendered by JS) ═══════════════ -->
@@ -277,6 +283,8 @@
 
   <!-- ═══════════════ INSTAGRAM VIEW (rendered by JS) ═══════════════ -->
   <div class="view view--instagram ig" id="ig-view"></div>
+  <!-- ═══════════════ FACEBOOK VIEW (rendered by JS) ═══════════════ -->
+  <div class="view view--facebook" id="facebook-view"></div>
 
   <!-- ═══════════════ LINKEDIN VIEW (rendered by JS) ═══════════════ -->
   <div class="view view--linkedin li" id="li-view"></div>
@@ -288,7 +296,6 @@
   <div class="view view--tidal tid" id="tid-view"></div>
 
   <!-- ═══════════════ STRAVA VIEW (rendered by JS) ═══════════════ -->
-  <div class="view view--strava str" id="str-view"></div>
 
   <!-- ═══════════════ YOUTUBE VIEW (rendered by JS) ═══════════════ -->
   <div class="view view--youtube yt" id="yt-view"></div>
@@ -302,6 +309,18 @@
   <!-- ═══════════════ VINYL VIEW (rendered by JS) ═══════════════ -->
   <div class="view view--vinyl" id="vinyl-view"></div>
 
+  <!-- ═══════════════ BAR CELLAR VIEW (rendered by JS) ═══════════════ -->
+  <div class="view view--bar-cellar" id="bar-cellar-view"></div>
+
+  <!-- ═══════════════ MENU VIEW (rendered by JS) ═══════════════ -->
+  <div class="view view--menu" id="menu-view"></div>
+
   <script src="script.js"></script>
+
+  <!-- ═══════════════ THEATER VIEW (rendered by JS) ═══════════════ -->
+  <div class="view view--theater" id="theater-view"></div>
+  <!-- ═══════════════ STORY VIEW (rendered by JS) ═══════════════ -->
+  <div class="view view--story" id="story-view"></div>
+
 </body>
 </html>

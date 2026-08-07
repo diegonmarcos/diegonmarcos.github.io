@@ -198,7 +198,7 @@ function gradientFor(i: number): string {
   return `linear-gradient(135deg, ${a}, ${b})`;
 }
 
-// Real Instagram export shape (parsed by extract_ig.py -> PORTAL_DATA["instagram"]).
+// Real Instagram export shape (parsed by extract_ig.py -> PORTAL_DATA["ig2-diegonmarcos"]).
 interface IGData {
   profile: { username: string; name: string; bio: string; following: number; followers: number; posts: number; following_shown: number; followers_shown: number; photo?: string };
   posts: { media: string; media_all?: string[]; caption: string; time: string; location?: string }[];
@@ -248,22 +248,40 @@ function renderInstagram(): void {
   // renderInstagram() runs on every page (all views pre-render, hidden by CSS), so
   // on a non-Instagram page `theme` is e.g. "tidal" — must not look up PORTAL_DATA
   // under that key (wrong shape, crashes). Only instagram-* themes pick their own data.
-  const igKey = !theme.startsWith('instagram') ? 'instagram' : theme === 'instagram-diegonmarcos' ? 'instagram' : theme;
+  const igKeyMap: Record<string, string> = {
+    'instagram-diegonmarcos': 'ig2-diegonmarcos',
+    'instagram-diegocmarcos_': 'ig1-diegocmarcos_',
+    'instagram-diegocnmarcos_': 'ig0-diegocnmarcos_',
+  };
+  const igKey = igKeyMap[theme] ?? 'ig2-diegonmarcos';
   const d = (globalThis as { PORTAL_DATA?: Record<string, IGData> }).PORTAL_DATA?.[igKey];
   if (!d) { view.innerHTML = '<p class="ig-empty">Instagram data not loaded.</p>'; return; }
 
   const p = d.profile;
   const num = (n: number) => n.toLocaleString();
 
-  // Story highlights = ONLY your own labeled highlight folders (d.highlights). The raw
-  // `d.stories` media dump is NOT used here — its provenance (whose stories, from where)
-  // isn't guaranteed to be exclusively yours, so it's excluded rather than risk showing
-  // someone else's photo under your name.
+  // Story highlights (d.highlights) — labeled folders only.
   const highlights = (d.highlights || []).map((h, i) => `
     <div class="ig-hl">
       <div class="ig-hl__ring"><div class="ig-hl__avatar" style="background:${gradientFor(i)}"><span class="ig-hl__emoji">${h.emoji}</span></div></div>
       <span class="ig-hl__name">${esc(h.label)}</span>
     </div>`).join('');
+
+  // Stories bar — first 30 stories in horizontal scrollable circles (like IG's real story bar).
+  // Each circle shows a thumbnail; mp4/webm/mov get a play-icon overlay.
+  const MAX_STORIES = 30;
+  const isVideo = (url: string) => /\.(mp4|webm|mov|mkv|avi)(\?|$)/i.test(url);
+  const storiesSlice = (d.stories || []).slice(0, MAX_STORIES);
+  const storiesBar = storiesSlice.length ? storiesSlice.map((s, i) => `
+    <div class="ig-story__item" data-story-idx="${i}">
+      <div class="ig-story__ring">
+        <div class="ig-story__avatar">
+          <img src="${esc(s.media)}" alt="story ${i + 1}" loading="lazy" decoding="async" onerror="this.closest('.ig-story__item').remove()">
+          ${isVideo(s.media) ? '<span class="ig-story__play">▶</span>' : ''}
+        </div>
+      </div>
+      <span class="ig-story__time">${esc(s.time.slice(0, 11))}</span>
+    </div>`).join('') : '';
 
   // Caption tiles for saved / liked (export has links + captions, not the images).
   const tile = (item: { url: string; caption: string }, badge: string) => `
@@ -343,13 +361,7 @@ function renderInstagram(): void {
     : `<div class="ig-head__avatar ig-head__avatar--ph">${esc(initials(p.name))}</div>`;
 
   view.innerHTML = `
-    <nav class="ig-nav">
-      <div class="ig-nav__inner">
-        <a href="#" class="ig-nav__logo">My Socials</a>
-        <div class="ig-nav__search"><input placeholder="Search"></div>
-        <div class="ig-nav__icons">${IG_ICON.home}${IG_ICON.heart}${IG_ICON.comment}${IG_ICON.share}</div>
-      </div>
-    </nav>
+    <div class="ig-phone-frame">
     <div class="ig-page">
       <header class="ig-head">
         <div class="ig-head__user">${esc(p.username)}</div>
@@ -370,6 +382,7 @@ function renderInstagram(): void {
       </header>
 
       ${highlights ? `<div class="ig-highlights">${highlights}</div>` : ''}
+      ${storiesBar ? `<div class="ig-stories">${storiesBar}</div>` : ''}
 
       <div class="ig-tabs">
         <div class="ig-tab is-active" data-pane="posts">${IG_ICON.grid} Posts</div>
@@ -429,6 +442,20 @@ function renderInstagram(): void {
           <div class="ig-post-modal__comments" id="ig-post-comments"></div>
         </div>
       </div>
+    </div>
+    </div>
+
+    <div class="ig-story-viewer" id="ig-story-viewer">
+      <div class="ig-story-viewer__progress" id="ig-story-progress"></div>
+      <button class="ig-story-viewer__close" id="ig-story-close" aria-label="Close">&times;</button>
+      <div class="ig-story-viewer__time" id="ig-story-time"></div>
+      <div class="ig-story-viewer__media-wrap">
+        <img class="ig-story-viewer__media" id="ig-story-img" alt="story">
+        <video class="ig-story-viewer__media" id="ig-story-vid" controls playsinline></video>
+      </div>
+      <button class="ig-story-viewer__nav ig-story-viewer__nav--prev" id="ig-story-prev" aria-label="Previous story">&lsaquo;</button>
+      <button class="ig-story-viewer__nav ig-story-viewer__nav--next" id="ig-story-next" aria-label="Next story">&rsaquo;</button>
+      <div class="ig-story-viewer__counter" id="ig-story-counter"></div>
     </div>`;
 
   // Tab switching — the Posts tab and the Saved/Liked/Comments pills share one selector.
@@ -545,10 +572,67 @@ function renderInstagram(): void {
   view.querySelector('#ig-post-modal-close')!.addEventListener('click', closePost);
   postModal.addEventListener('click', e => { if (e.target === postModal) closePost(); });
 
+  // ── Story viewer ────────────────────────────────────────────────────
+  const storyViewer = view.querySelector<HTMLElement>('#ig-story-viewer')!;
+  const storyImg = view.querySelector<HTMLImageElement>('#ig-story-img')!;
+  const storyVid = view.querySelector<HTMLVideoElement>('#ig-story-vid')!;
+  const storyProgress = view.querySelector<HTMLElement>('#ig-story-progress')!;
+  const storyTime = view.querySelector<HTMLElement>('#ig-story-time')!;
+  const storyCounter = view.querySelector<HTMLElement>('#ig-story-counter')!;
+  let storyIdx = 0;
+  let storyTimer: ReturnType<typeof setTimeout> | null = null;
+
+  const storyCount = storiesSlice.length;
+  const showStory = (idx: number) => {
+    const s = storiesSlice[idx];
+    if (!s) return;
+    storyIdx = idx;
+    storyCounter.textContent = `${idx + 1} / ${storyCount}`;
+    storyTime.textContent = s.time;
+    // Reset progress bar animation
+    storyProgress.classList.remove('ig-story-viewer__progress--running');
+    void storyProgress.offsetWidth;
+    storyProgress.classList.add('ig-story-viewer__progress--running');
+    // Clear old timer
+    if (storyTimer) { clearTimeout(storyTimer); storyTimer = null; }
+    if (isVideo(s.media)) {
+      storyImg.style.display = 'none';
+      storyVid.style.display = '';
+      storyVid.src = s.media;
+    } else {
+      storyVid.style.display = 'none';
+      storyVid.src = '';
+      storyImg.style.display = '';
+      storyImg.src = s.media;
+      // Auto-advance after 5s for images
+      storyTimer = setTimeout(() => nextStory(), 5000);
+    }
+  };
+  const nextStory = () => { if (storyIdx + 1 < storyCount) showStory(storyIdx + 1); else closeStory(); };
+  const prevStory = () => { if (storyIdx > 0) showStory(storyIdx - 1); };
+  const closeStory = () => {
+    if (storyTimer) { clearTimeout(storyTimer); storyTimer = null; }
+    storyVid.pause();
+    storyVid.src = '';
+    storyViewer.classList.remove('is-open');
+  };
+  const openStory = (idx: number) => {
+    showStory(idx);
+    storyViewer.classList.add('is-open');
+  };
+
+  view.querySelectorAll<HTMLElement>('.ig-story__item').forEach(item =>
+    item.addEventListener('click', () => openStory(Number(item.dataset.storyIdx))));
+  view.querySelector('#ig-story-close')!.addEventListener('click', closeStory);
+  view.querySelector('#ig-story-prev')!.addEventListener('click', prevStory);
+  view.querySelector('#ig-story-next')!.addEventListener('click', nextStory);
+  storyViewer.addEventListener('click', e => { if (e.target === storyViewer) closeStory(); });
+
   document.addEventListener('keydown', e => {
     if (e.key !== 'Escape') return;
     if (metaModal.classList.contains('is-open')) closeMeta();
     else if (postModal.classList.contains('is-open')) closePost();
+    else if (storyViewer.classList.contains('is-open')) closeStory();
   });
 }
 
@@ -1322,7 +1406,7 @@ function renderICQ(): void {
   if (!view) return;
   const g = (globalThis as { PORTAL_DATA?: Record<string, IGData & LIData> }).PORTAL_DATA || {};
   const li = g.linkedin as LIData | undefined;
-  const ig = g.instagram as IGData | undefined;
+  const ig = g['ig2-diegonmarcos'] as IGData | undefined;
 
   const name = li?.profile.name || 'Diego Nepomuceno Marcos';
   const nick = ig?.profile.username || 'diegonmarcos';
@@ -1434,7 +1518,7 @@ function renderMySocials(): void {
   const view = document.getElementById('me-view');
   if (!view) return;
   const g = (globalThis as { PORTAL_DATA?: Record<string, IGData & LIData> }).PORTAL_DATA || {};
-  const ig = g.instagram as IGData | undefined;
+  const ig = g['ig2-diegonmarcos'] as IGData | undefined;
   const li = g.linkedin as LIData | undefined;
 
   // Each card jumps to that network's view. Metrics + sample images are real, from the parsed data.
@@ -1443,6 +1527,9 @@ function renderMySocials(): void {
   const yt = (globalThis as { PORTAL_DATA?: Record<string, { playlists?: { videos?: { thumbnail: string }[] }[] }> }).PORTAL_DATA?.youtube;
   const shelfD = g.shelf as unknown as ShelfData | undefined;
   const vinylD = g.vinyl as unknown as VinylData | undefined;
+  const barCellarD = g['bar-cellar'] as unknown as BarCellarData | undefined;
+  const theaterD = g['theater'] as unknown as TheaterData | undefined;
+  const menuD = g['menu'] as unknown as MenuData | undefined;
 
   const bookCover = (isbn: string) => `https://covers.openlibrary.org/b/isbn/${isbn}-M.jpg`;
   const vinylCover = (mbid: string) => `https://coverartarchive.org/release/${mbid}/front-250`;
@@ -1453,12 +1540,21 @@ function renderMySocials(): void {
   const bio = ig?.profile.bio || '';
   const photo = li?.profile.photo || ig?.profile.photo;
 
+  // Real post thumbnails for IG hub cards
+  const ig0 = g['ig0-diegocnmarcos_'] as IGData | undefined;
+  const ig1 = g['ig1-diegocmarcos_'] as IGData | undefined;
+  const igPosts = (data: IGData | undefined, n: number) =>
+    (data?.posts || []).slice(0, n).map(p => p.media).filter(Boolean);
+  const fb = (globalThis as { PORTAL_DATA?: Record<string, { posts?: { media?: string[] }[] }> }).PORTAL_DATA?.['facebook-diegonmarcos'];
+  const fbImgs = (fb?.posts || []).flatMap(p => p.media || []).slice(0, 3);
+
   type Card = { theme: Theme; label: string; meta: string; color: string; imgs: string[] };
   const sections: { label: string; cards: Card[] }[] = [
     { label: 'Media', cards: [
-      { theme: 'instagram-diegonmarcos', label: 'Instagram @ diegonmarcos', meta: ig ? `${ig.profile.followers.toLocaleString()} followers · ${ig.profile.posts} post${ig.profile.posts === 1 ? '' : 's'}` : 'profile', color: '#dc2743', imgs: (ig?.posts || []).slice(0, 3).map(p => p.media).filter(Boolean) },
-      { theme: 'instagram-diegocmarcos_', label: 'Instagram @ diegocmarcos_', meta: 'profile', color: '#dc2743', imgs: [] },
-      { theme: 'instagram-diegocnmarcos_', label: 'Instagram @ diegocnmarcos_', meta: 'profile', color: '#dc2743', imgs: [] },
+      { theme: 'instagram-diegonmarcos', label: 'Instagram @ diegonmarcos', meta: ig ? `${ig.profile.followers.toLocaleString()} followers · ${ig.profile.posts} post${ig.profile.posts === 1 ? '' : 's'}` : 'profile', color: '#dc2743', imgs: igPosts(ig, 3) },
+      { theme: 'instagram-diegocmarcos_', label: 'Instagram @ diegocmarcos_', meta: ig1 ? `${ig1.profile.posts} posts` : 'profile', color: '#dc2743', imgs: igPosts(ig1, 3) },
+      { theme: 'instagram-diegocnmarcos_', label: 'Instagram @ diegocnmarcos_', meta: ig0 ? `${ig0.profile.posts} posts` : 'profile', color: '#dc2743', imgs: igPosts(ig0, 3) },
+      { theme: 'facebook-diegonmarcos', label: 'Facebook', meta: fb ? `${fb.posts?.length || 0} posts` : 'profile', color: '#2374e1', imgs: fbImgs },
       { theme: 'pinterest', label: 'Pinterest', meta: 'boards & pins', color: '#e60023', imgs: (pin?.boards || []).slice(0, 3).map(b => b.cover).filter(Boolean) },
       { theme: 'youtube', label: 'YouTube', meta: 'playlists & videos', color: '#ff0000', imgs: (yt?.playlists || []).slice(0, 3).map(p => p.videos?.[0]?.thumbnail).filter(Boolean) as string[] },
     ] },
@@ -1472,10 +1568,14 @@ function renderMySocials(): void {
     { label: 'Project', cards: [
       { theme: 'linkedin', label: 'LinkedIn', meta: li ? `${li.profile.connections} connections · ${li.profile.followers.toLocaleString()} followers` : 'profile', color: '#0a66c2', imgs: li?.profile.photo ? [li.profile.photo] : [] },
     ] },
+    { label: 'Food & Drink', cards: [
+      { theme: 'bar-cellar', label: 'Bar Cellar', meta: 'wine cellar · 3D', color: '#6b1a1a', imgs: [] },
+      { theme: 'theater', label: 'Theater', meta: 'cinema hall · 3D', color: '#c8a96e', imgs: [] },
+      { theme: 'menu', label: 'Menu', meta: 'casa marcos · cuisine & vins', color: '#8b6914', imgs: [] },
+    ] },
     { label: 'Others', cards: [
       { theme: 'orkut', label: 'Orkut', meta: 'the classic profile', color: '#e9008c', imgs: [] },
       { theme: 'icq', label: 'ICQ', meta: 'retro IM · user details', color: '#0a870a', imgs: [] },
-      { theme: 'strava', label: 'Strava', meta: 'activities & routes', color: '#fc5200', imgs: [] },
     ] },
   ];
 
@@ -1941,6 +2041,16 @@ function renderShelf(): void {
 interface VinylRecord { title: string; artist: string; year: number; mbid: string; color: string; }
 interface VinylData { vinyls: VinylRecord[]; }
 
+interface BarCellarWine { name: string; producer: string; year: number; region: string; variety: string; foil: string; glass: string; }
+interface BarCellarData { wines: BarCellarWine[]; }
+
+interface TheaterFilm { title: string; director: string; year: number; color: string; }
+interface TheaterData { films: TheaterFilm[]; }
+
+interface MenuItem { name: string; description: string; price: string; }
+interface MenuSection { title: string; items: MenuItem[]; }
+interface MenuData { name: string; subtitle: string; sections: MenuSection[]; }
+
 let _vinylDone = false;
 
 function renderVinyl(): void {
@@ -2168,10 +2278,807 @@ function renderVinyl(): void {
   }
 }
 
+// ─── BAR CELLAR ──────────────────────────────────────────────────────────────
+
+let _barCellarDone = false;
+let _theaterDone = false;
+function renderBarCellar(): void {
+  const el = document.getElementById('bar-cellar-view');
+  if (!el || _barCellarDone) return;
+  el.innerHTML = '<div class="view--bar-cellar__loading">uncorking…</div>';
+
+  const data = (globalThis as Record<string, unknown> & { PORTAL_DATA?: Record<string, unknown> }).PORTAL_DATA?.['bar-cellar'] as BarCellarData | undefined;
+  if (!data?.wines?.length) { el.innerHTML = '<div class="view--bar-cellar__error">no data</div>'; return; }
+
+  _barCellarDone = true;
+
+  function _boot(T: Record<string, unknown>): void {
+    el!.innerHTML = '';
+    const wines = data!.wines;
+    const COLS = Math.ceil(wines.length / 3);
+    const COL_PITCH = 1.8;
+    const ROW_PITCH = 1.5;
+    const ROWS = 3;
+    const totalW = COLS * COL_PITCH;
+    const baseX = -totalW / 2 + COL_PITCH / 2;
+
+    const Scene = T.Scene as new () => Record<string, unknown>;
+    const PerspectiveCamera = T.PerspectiveCamera as new (fov: number, aspect: number, near: number, far: number) => Record<string, unknown>;
+    const WebGLRenderer = T.WebGLRenderer as new (opts: Record<string, unknown>) => Record<string, unknown>;
+    const AmbientLight = T.AmbientLight as new (color: number, intensity: number) => Record<string, unknown>;
+    const PointLight = T.PointLight as new (color: number, intensity: number, distance: number) => Record<string, unknown>;
+    const MeshLambertMaterial = T.MeshLambertMaterial as new (opts: Record<string, unknown>) => Record<string, unknown>;
+    const MeshBasicMaterial = T.MeshBasicMaterial as new (opts: Record<string, unknown>) => Record<string, unknown>;
+    const CylinderGeometry = T.CylinderGeometry as new (rTop: number, rBot: number, h: number, seg: number) => Record<string, unknown>;
+    const BoxGeometry = T.BoxGeometry as new (x: number, y: number, z: number) => Record<string, unknown>;
+    const Mesh = T.Mesh as new (geo: Record<string, unknown>, mat: Record<string, unknown>) => Record<string, unknown>;
+    const Color = T.Color as new (hex: number | string) => Record<string, unknown>;
+    const Fog = T.Fog as new (color: number, near: number, far: number) => Record<string, unknown>;
+
+    const scene = new Scene();
+    (scene as unknown as { fog: unknown; background: unknown }).fog = new Fog(0x0a0806, 8, 22);
+    (scene as unknown as { background: unknown }).background = new Color(0x0a0806);
+
+    const w = el!.clientWidth || 800, h = el!.clientHeight || 600;
+    const camera = new PerspectiveCamera(50, w / h, 0.1, 30) as unknown as {
+      position: { x: number; y: number; z: number };
+      aspect: number;
+      lookAt(x: number, y: number, z: number): void;
+      updateProjectionMatrix(): void;
+    };
+    camera.position.x = baseX; camera.position.y = 0.5; camera.position.z = 7.5;
+    camera.lookAt(baseX, 0.5, 0);
+
+    const renderer = new WebGLRenderer({ antialias: true }) as unknown as {
+      setSize(w: number, h: number): void;
+      setPixelRatio(r: number): void;
+      render(scene: Record<string, unknown>, camera: Record<string, unknown>): void;
+      domElement: HTMLCanvasElement;
+    };
+    renderer.setSize(w, h);
+    renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
+    el!.appendChild(renderer.domElement);
+
+    // Lighting — warm candlelight
+    const amb = new AmbientLight(0x3a2010, 0.6) as unknown as { position?: unknown };
+    (scene as unknown as { add(o: unknown): void }).add(amb);
+    const candle1 = new PointLight(0xf5a623, 2.5, 12) as unknown as { position: { set(x: number, y: number, z: number): void } };
+    candle1.position.set(baseX - 2, 2.5, 4);
+    (scene as unknown as { add(o: unknown): void }).add(candle1);
+    const candle2 = new PointLight(0xf5a623, 2.0, 12) as unknown as { position: { set(x: number, y: number, z: number): void } };
+    candle2.position.set(baseX + 2, 2.5, 4);
+    (scene as unknown as { add(o: unknown): void }).add(candle2);
+
+    const add = (o: unknown) => (scene as unknown as { add(o: unknown): void }).add(o);
+
+    function mesh(geo: Record<string, unknown>, mat: Record<string, unknown>, x: number, y: number, z: number): Record<string, unknown> {
+      const m = new Mesh(geo, mat);
+      (m as unknown as { position: { set(x: number, y: number, z: number): void } }).position.set(x, y, z);
+      add(m);
+      return m;
+    }
+
+    function box(sx: number, sy: number, sz: number, mat: Record<string, unknown>, x: number, y: number, z: number) {
+      mesh(new BoxGeometry(sx, sy, sz), mat, x, y, z);
+    }
+
+    // Materials
+    const stone = new MeshLambertMaterial({ color: 0x2a2218 });
+    const wood  = new MeshLambertMaterial({ color: 0x5c3a1a });
+    const dwood = new MeshLambertMaterial({ color: 0x3c2510 });
+
+    // Stone floor and back wall
+    box(totalW + 6, 0.15, 8, stone, baseX, -1.2, 0);
+    box(totalW + 6, 6, 0.2, stone, baseX, 1.5, -2.5);
+    box(0.2, 6, 8, stone, baseX - totalW / 2 - 2.5, 1.5, 0);
+    box(0.2, 6, 8, stone, baseX + totalW / 2 + 2.5, 1.5, 0);
+
+    // Rack frame
+    box(totalW + 0.3, 0.12, 0.5, dwood, baseX, -1.0, -0.8);
+    box(totalW + 0.3, 0.12, 0.5, dwood, baseX, -1.0 + ROW_PITCH, -0.8);
+    box(totalW + 0.3, 0.12, 0.5, dwood, baseX, -1.0 + ROW_PITCH * 2, -0.8);
+    box(totalW + 0.3, 0.12, 0.5, dwood, baseX, -1.0 + ROW_PITCH * 3, -0.8);
+    box(0.12, ROW_PITCH * 3 + 0.3, 0.5, wood, baseX - totalW / 2, -1.0 + ROW_PITCH * 1.5, -0.8);
+    box(0.12, ROW_PITCH * 3 + 0.3, 0.5, wood, baseX + totalW / 2, -1.0 + ROW_PITCH * 1.5, -0.8);
+    for (let c = 0; c <= COLS; c++) {
+      box(0.08, ROW_PITCH * 3 + 0.3, 0.5, dwood, baseX - totalW / 2 + c * COL_PITCH, -1.0 + ROW_PITCH * 1.5, -0.8);
+    }
+
+    // Wine bottles — CylinderGeometry rotated so axis goes into screen
+    wines.forEach((wine, i) => {
+      const col = i % COLS;
+      const row = Math.floor(i / COLS);
+      if (row >= ROWS) return;
+      const bx = baseX - totalW / 2 + COL_PITCH * 0.5 + col * COL_PITCH;
+      const by = -0.9 + row * ROW_PITCH;
+      const bz = -1.0;
+
+      const glassColor = parseInt(wine.glass.replace('#', ''), 16);
+      const foilColor  = parseInt(wine.foil.replace('#', ''), 16);
+      const glassMat = new MeshLambertMaterial({ color: glassColor });
+      const foilMat  = new MeshBasicMaterial({ color: foilColor });
+
+      // Bottle body (cylinder along Z axis)
+      const bodyGeo = new CylinderGeometry(0.1, 0.1, 1.0, 20);
+      const body = new Mesh(bodyGeo, glassMat);
+      (body as unknown as { position: { set(x: number, y: number, z: number): void }; rotation: { x: number } }).position.set(bx, by, bz);
+      (body as unknown as { rotation: { x: number } }).rotation.x = Math.PI / 2;
+      add(body);
+
+      // Neck
+      const neckGeo = new CylinderGeometry(0.05, 0.07, 0.28, 16);
+      const neck = new Mesh(neckGeo, glassMat);
+      (neck as unknown as { position: { set(x: number, y: number, z: number): void }; rotation: { x: number } }).position.set(bx, by, bz - 0.62);
+      (neck as unknown as { rotation: { x: number } }).rotation.x = Math.PI / 2;
+      add(neck);
+
+      // Foil cap
+      const foilGeo = new CylinderGeometry(0.055, 0.055, 0.12, 16);
+      const foil = new Mesh(foilGeo, foilMat);
+      (foil as unknown as { position: { set(x: number, y: number, z: number): void }; rotation: { x: number } }).position.set(bx, by, bz - 0.81);
+      (foil as unknown as { rotation: { x: number } }).rotation.x = Math.PI / 2;
+      add(foil);
+    });
+
+    // Pan state
+    let panX = baseX;
+    let targetX = baseX;
+    let dragStart = -1;
+    let dragStartPanX = baseX;
+
+    el!.addEventListener('pointerdown', (e: PointerEvent) => {
+      dragStart = e.clientX;
+      dragStartPanX = targetX;
+    });
+    el!.addEventListener('pointermove', (e: PointerEvent) => {
+      if (dragStart < 0) return;
+      const dx = (e.clientX - dragStart) / el!.clientWidth * totalW * 1.2;
+      targetX = Math.max(baseX - totalW * 0.3, Math.min(baseX + totalW * 0.3, dragStartPanX - dx));
+    });
+    el!.addEventListener('pointerup', () => { dragStart = -1; });
+    el!.addEventListener('pointerleave', () => { dragStart = -1; });
+
+    let t = 0;
+    function animate() {
+      requestAnimationFrame(animate);
+      t += 0.01;
+      panX += (targetX - panX) * 0.08;
+      // Gentle candle flicker
+      (candle1 as unknown as { intensity: number }).intensity = 2.5 + Math.sin(t * 3.7) * 0.3;
+      (candle2 as unknown as { intensity: number }).intensity = 2.0 + Math.sin(t * 4.1 + 1.2) * 0.25;
+      camera.position.x += (panX - camera.position.x) * 0.1;
+      camera.lookAt(panX, 0.5, 0);
+      renderer.render(scene as unknown as Record<string, unknown>, camera as unknown as Record<string, unknown>);
+    }
+    animate();
+
+    const ro = new (window as unknown as { ResizeObserver: new (cb: () => void) => { observe(el: Element): void; disconnect(): void } }).ResizeObserver(() => {
+      const nW = el!.clientWidth, nH = el!.clientHeight;
+      renderer.setSize(nW, nH);
+      camera.aspect = nW / nH;
+      camera.updateProjectionMatrix();
+    });
+    ro.observe(el!);
+  }
+
+  try {
+    _boot(THREE_NS as unknown as Record<string, unknown>);
+  } catch (err) {
+    console.error('[bar-cellar] THREE boot failed', err);
+    (window as { consoleLogs?: { captureException?: (e: unknown) => void } }).consoleLogs?.captureException?.(err);
+    el!.innerHTML = `<div class="view--bar-cellar__error">bar cellar failed to render: ${esc(String((err as Error)?.message ?? err))}</div>`;
+  }
+}
+
+// ─── THEATER ─────────────────────────────────────────────────────────────────
+
+function renderTheater(): void {
+  const el = document.getElementById('theater-view');
+  if (!el || _theaterDone) return;
+  _theaterDone = true;
+  el.innerHTML = '<div class="view--theater__loading">loading store…</div>';
+
+  const data = (globalThis as Record<string, unknown> & { PORTAL_DATA?: Record<string, unknown> }).PORTAL_DATA?.['theater'] as TheaterData | undefined;
+  const films = data?.films?.length ? data.films : [
+    { title: '2001: A Space Odyssey', director: 'Kubrick', year: 1968, color: '#1a1a2e' },
+    { title: 'Blade Runner', director: 'Scott', year: 1982, color: '#0d1117' },
+    { title: 'Stalker', director: 'Tarkovsky', year: 1979, color: '#2d4a22' },
+    { title: 'Mulholland Drive', director: 'Lynch', year: 2001, color: '#1a0a2e' },
+    { title: 'Apocalypse Now', director: 'Coppola', year: 1979, color: '#2a1a0a' },
+    { title: 'The Godfather', director: 'Coppola', year: 1972, color: '#1a0a00' },
+    { title: 'Vertigo', director: 'Hitchcock', year: 1958, color: '#0a1a2e' },
+    { title: 'Persona', director: 'Bergman', year: 1966, color: '#111111' },
+    { title: 'Chinatown', director: 'Polanski', year: 1974, color: '#1a1500' },
+    { title: 'Eyes Wide Shut', director: 'Kubrick', year: 1999, color: '#1a0a0a' },
+    { title: 'There Will Be Blood', director: 'Anderson', year: 2007, color: '#1a0800' },
+    { title: 'Synecdoche, New York', director: 'Kaufman', year: 2008, color: '#0a0a1a' },
+  ];
+
+  // Overlay element
+  const overlay = document.createElement('div');
+  overlay.className = 'view--theater__overlay';
+  overlay.innerHTML = '<span class="view--theater__overlay-title"></span><span class="view--theater__overlay-meta"></span>';
+
+  function _boot(T: Record<string, unknown>): void {
+    el!.innerHTML = '';
+    el!.appendChild(overlay);
+
+    const Scene = T.Scene as new () => Record<string, unknown>;
+    const PerspectiveCamera = T.PerspectiveCamera as new (fov: number, aspect: number, near: number, far: number) => Record<string, unknown>;
+    const WebGLRenderer = T.WebGLRenderer as new (opts: Record<string, unknown>) => Record<string, unknown>;
+    const AmbientLight = T.AmbientLight as new (color: number, intensity: number) => Record<string, unknown>;
+    const PointLight = T.PointLight as new (color: number, intensity: number, distance: number) => Record<string, unknown>;
+    const MeshStandardMaterial = T.MeshStandardMaterial as new (opts: Record<string, unknown>) => Record<string, unknown>;
+    const BoxGeometry = T.BoxGeometry as new (x: number, y: number, z: number) => Record<string, unknown>;
+    const Mesh = T.Mesh as new (geo: Record<string, unknown>, mat: Record<string, unknown>) => Record<string, unknown>;
+    const Color = T.Color as new (hex: number | string) => Record<string, unknown>;
+    const Fog = T.Fog as new (color: number, near: number, far: number) => Record<string, unknown>;
+    const Raycaster = T.Raycaster as new () => Record<string, unknown>;
+    const Vector2 = T.Vector2 as new (x: number, y: number) => Record<string, unknown>;
+
+    const scene = new Scene();
+    (scene as unknown as { fog: unknown; background: unknown }).fog = new Fog(0x050a14, 14, 36);
+    (scene as unknown as { background: unknown }).background = new Color(0x050a14);
+
+    const w = el!.clientWidth || 800, h = el!.clientHeight || 600;
+    const camera = new PerspectiveCamera(50, w / h, 0.1, 50) as unknown as {
+      position: { x: number; y: number; z: number };
+      aspect: number;
+      lookAt(x: number, y: number, z: number): void;
+      updateProjectionMatrix(): void;
+    };
+    camera.position.x = 0;
+    camera.position.y = 1.6;
+    camera.position.z = 5.5;
+    camera.lookAt(0, 1.2, 0);
+
+    const renderer = new WebGLRenderer({ antialias: true }) as unknown as {
+      setSize(w: number, h: number): void;
+      setPixelRatio(r: number): void;
+      render(scene: Record<string, unknown>, camera: Record<string, unknown>): void;
+      domElement: HTMLCanvasElement;
+      shadowMap: { enabled: boolean };
+    };
+    renderer.setSize(w, h);
+    renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
+    el!.insertBefore(renderer.domElement, overlay);
+
+    const add = (o: unknown) => (scene as unknown as { add(o: unknown): void }).add(o);
+
+    function box(sx: number, sy: number, sz: number, mat: Record<string, unknown>, x: number, y: number, z: number): Record<string, unknown> {
+      const geo = new BoxGeometry(sx, sy, sz);
+      const m = new Mesh(geo, mat);
+      const pos = (m as unknown as { position: { set(x: number, y: number, z: number): void } }).position;
+      pos.set(x, y, z);
+      add(m);
+      return m;
+    }
+
+    // Ambient fill — very dim, bluish
+    add(new AmbientLight(0x0a2040, 0.9));
+
+    // Neon blue shelf-edge point lights — one per shelf row
+    const SHELF_ROWS = 3;
+    const SHELF_Y = [0.55, 1.55, 2.55];
+    for (let s = 0; s < SHELF_ROWS; s++) {
+      const pl = new PointLight(0x00aaff, 2.2, 8) as unknown as {
+        position: { set(x: number, y: number, z: number): void }
+      };
+      pl.position.set(0, SHELF_Y[s] + 0.12, 1.6);
+      add(pl);
+      const pl2 = new PointLight(0x0055aa, 1.0, 6) as unknown as {
+        position: { set(x: number, y: number, z: number): void }
+      };
+      pl2.position.set(-5, SHELF_Y[s] + 0.12, 1.6);
+      add(pl2);
+      const pl3 = new PointLight(0x0055aa, 1.0, 6) as unknown as {
+        position: { set(x: number, y: number, z: number): void }
+      };
+      pl3.position.set(5, SHELF_Y[s] + 0.12, 1.6);
+      add(pl3);
+    }
+
+    // Back wall — dark navy
+    const wallMat = new MeshStandardMaterial({ color: 0x040810, roughness: 1.0, metalness: 0.0 });
+    box(24, 8, 0.15, wallMat, 0, 2, 0);
+
+    // Floor
+    const floorMat = new MeshStandardMaterial({ color: 0x060c18, roughness: 0.9, metalness: 0.1 });
+    box(24, 0.06, 14, floorMat, 0, 0, 5);
+
+    // Shelf planks — dark wood with slight metallic sheen, neon emissive edge
+    const shelfMat = new MeshStandardMaterial({ color: 0x0a1a30, roughness: 0.6, metalness: 0.3, emissive: 0x003366, emissiveIntensity: 0.4 });
+    const shelfW = 14;
+    for (let s = 0; s < SHELF_ROWS; s++) {
+      box(shelfW, 0.06, 0.28, shelfMat, 0, SHELF_Y[s], 1.5);
+    }
+    // Base shelf
+    box(shelfW, 0.06, 0.28, shelfMat, 0, 0.06, 1.5);
+
+    // Shelf vertical supports (uprights) every ~3.5 units
+    const upMat = new MeshStandardMaterial({ color: 0x081428, roughness: 0.7, metalness: 0.4 });
+    for (let x = -7; x <= 7; x += 3.5) {
+      box(0.06, 3.2, 0.28, upMat, x, 1.6, 1.5);
+    }
+
+    // DVD cases — spine-visible boxes on shelves
+    // spine: 0.6w × 1.0h × 0.1d
+    const CASE_W = 0.6;
+    const CASE_H = 1.0;
+    const CASE_D = 0.1;
+    const CASES_PER_SHELF = 18;
+    const SHELF_START_X = -shelfW / 2 + 0.5;
+    const CASE_SPACING = (shelfW - 1.0) / CASES_PER_SHELF;
+
+    // Neon spine color palette: blues, purples, teals, magentas
+    const spineColors = [
+      0x1a3a6a, 0x002255, 0x0a2040, 0x112244,
+      0x2a0a5a, 0x1a0a40, 0x0a1a50, 0x3a0a3a,
+      0x005566, 0x004455, 0x003344, 0x0a3344,
+      0x220033, 0x330055, 0x110044, 0x2a1a5a,
+      0x001a44, 0x002233,
+    ];
+
+    // Map films to specific slots (first N cases get real film colors)
+    const caseMeshes: Array<{ mesh: Record<string, unknown>; film: typeof films[0] | null; row: number; col: number }> = [];
+
+    for (let row = 0; row < SHELF_ROWS; row++) {
+      const y = SHELF_Y[row] + CASE_H / 2 + 0.04;
+      for (let col = 0; col < CASES_PER_SHELF; col++) {
+        const filmIndex = row * CASES_PER_SHELF + col;
+        const film = filmIndex < films.length ? films[filmIndex] : null;
+        const spineColor = film
+          ? parseInt((film.color || '#1a1a2e').replace('#', ''), 16)
+          : spineColors[col % spineColors.length];
+        const caseMat = new MeshStandardMaterial({
+          color: spineColor,
+          roughness: 0.5,
+          metalness: 0.15,
+          emissive: spineColor,
+          emissiveIntensity: 0.18,
+        });
+        const x = SHELF_START_X + col * CASE_SPACING;
+        const z = 1.52;
+        const mesh = box(CASE_W, CASE_H, CASE_D, caseMat, x, y, z);
+        caseMeshes.push({ mesh, film, row, col });
+      }
+    }
+
+    // Raycaster for click-to-pop interaction
+    const raycaster = new Raycaster() as unknown as {
+      setFromCamera(coords: Record<string, unknown>, camera: unknown): void;
+      intersectObjects(objs: unknown[]): Array<{ object: Record<string, unknown> }>;
+    };
+    const mouse = new Vector2(0, 0) as unknown as Record<string, unknown>;
+
+    const allMeshes = caseMeshes.map(c => c.mesh);
+    let selectedMesh: Record<string, unknown> | null = null;
+    let selectedEntry: typeof caseMeshes[0] | null = null;
+    let selectedOrigZ = 0;
+
+    function showOverlay(entry: typeof caseMeshes[0] | null): void {
+      const titleEl = overlay.querySelector('.view--theater__overlay-title') as HTMLElement;
+      const metaEl = overlay.querySelector('.view--theater__overlay-meta') as HTMLElement;
+      if (!entry?.film) {
+        overlay.classList.remove('is-visible');
+        return;
+      }
+      titleEl.textContent = entry.film.title;
+      metaEl.textContent = `${entry.film.director} · ${entry.film.year}`;
+      overlay.classList.add('is-visible');
+    }
+
+    el!.addEventListener('click', (e: Event) => {
+      const pe = e as MouseEvent;
+      const rect = el!.getBoundingClientRect();
+      (mouse as unknown as { x: number; y: number }).x = ((pe.clientX - rect.left) / rect.width) * 2 - 1;
+      (mouse as unknown as { x: number; y: number }).y = -((pe.clientY - rect.top) / rect.height) * 2 + 1;
+      raycaster.setFromCamera(mouse, camera);
+      const hits = raycaster.intersectObjects(allMeshes);
+      if (hits.length > 0) {
+        const hitMesh = hits[0].object;
+        const entry = caseMeshes.find(c => c.mesh === hitMesh) ?? null;
+
+        // Pop previously selected back
+        if (selectedMesh && selectedMesh !== hitMesh) {
+          (selectedMesh as unknown as { position: { z: number } }).position.z = selectedOrigZ;
+        }
+
+        if (selectedMesh === hitMesh) {
+          // deselect
+          (selectedMesh as unknown as { position: { z: number } }).position.z = selectedOrigZ;
+          selectedMesh = null;
+          selectedEntry = null;
+          showOverlay(null);
+        } else {
+          selectedOrigZ = (hitMesh as unknown as { position: { z: number } }).position.z;
+          (hitMesh as unknown as { position: { z: number } }).position.z = selectedOrigZ + 0.32;
+          selectedMesh = hitMesh;
+          selectedEntry = entry;
+          showOverlay(entry);
+        }
+      } else {
+        // Click background — deselect
+        if (selectedMesh) {
+          (selectedMesh as unknown as { position: { z: number } }).position.z = selectedOrigZ;
+          selectedMesh = null;
+          selectedEntry = null;
+          showOverlay(null);
+        }
+      }
+    });
+
+    // Camera dolly/pan state
+    let panX = 0;
+    let targetPanX = 0;
+    let autoDolly = 0;
+    let dragStart = -1;
+    let dragStartPan = 0;
+
+    el!.addEventListener('pointerdown', (e: Event) => {
+      const pe = e as PointerEvent;
+      dragStart = pe.clientX;
+      dragStartPan = targetPanX;
+    });
+    el!.addEventListener('pointermove', (e: Event) => {
+      const pe = e as PointerEvent;
+      if (dragStart < 0) return;
+      const dx = (pe.clientX - dragStart) / el!.clientWidth * 7;
+      targetPanX = Math.max(-5, Math.min(5, dragStartPan - dx));
+    });
+    el!.addEventListener('pointerup', () => { dragStart = -1; });
+    el!.addEventListener('pointerleave', () => { dragStart = -1; });
+
+    let t = 0;
+    function animate(): void {
+      requestAnimationFrame(animate);
+      t += 0.004;
+      // Slow auto-dolly left-right when not dragging
+      if (dragStart < 0) {
+        autoDolly = Math.sin(t * 0.35) * 3.5;
+        targetPanX += (autoDolly - targetPanX) * 0.002;
+      }
+      panX += (targetPanX - panX) * 0.06;
+      camera.position.x += (panX - camera.position.x) * 0.08;
+      camera.lookAt(panX * 0.4, 1.2, 0);
+      renderer.render(scene as unknown as Record<string, unknown>, camera as unknown as Record<string, unknown>);
+    }
+    animate();
+
+    const ro = new (window as unknown as {
+      ResizeObserver: new (cb: () => void) => { observe(el: Element): void; disconnect(): void }
+    }).ResizeObserver(() => {
+      const nW = el!.clientWidth, nH = el!.clientHeight;
+      renderer.setSize(nW, nH);
+      camera.aspect = nW / nH;
+      camera.updateProjectionMatrix();
+    });
+    ro.observe(el!);
+  }
+
+  // Lazy-load Three.js from CDN (no IPv6/unpkg)
+  const THREE_CDN = 'https://cdnjs.cloudflare.com/ajax/libs/three.js/r169/three.min.js';
+  const THREE_NS_KEY = '__THREE_r169__';
+
+  function loadThree(cb: (T: Record<string, unknown>) => void): void {
+    const cached = (window as Record<string, unknown>)[THREE_NS_KEY];
+    if (cached) { cb(cached as Record<string, unknown>); return; }
+    const s = document.createElement('script');
+    s.src = THREE_CDN;
+    s.onload = () => {
+      const T = (window as Record<string, unknown>)['THREE'] as Record<string, unknown>;
+      (window as Record<string, unknown>)[THREE_NS_KEY] = T;
+      cb(T);
+    };
+    s.onerror = () => {
+      el!.innerHTML = `<div class="view--theater__error">failed to load Three.js</div>`;
+    };
+    document.head.appendChild(s);
+  }
+
+  loadThree((T) => {
+    try {
+      _boot(T);
+    } catch (err) {
+      console.error('[theater] boot failed', err);
+      el!.innerHTML = `<div class="view--theater__error">theater failed: ${esc(String((err as Error)?.message ?? err))}</div>`;
+    }
+  });
+}
+
+// ─── MENU ────────────────────────────────────────────────────────────────────
+
+function renderMenu(): void {
+  const el = document.getElementById('menu-view');
+  if (!el) return;
+
+  const data = (globalThis as Record<string, unknown> & { PORTAL_DATA?: Record<string, unknown> }).PORTAL_DATA?.['menu'] as MenuData | undefined;
+  if (!data?.sections?.length) { el.innerHTML = '<div class="view--menu__error">no data</div>'; return; }
+
+  const sections = data.sections.map(s => `
+    <div class="menu-card__section">
+      <h3 class="menu-card__section-title">${esc(s.title)}</h3>
+      ${s.items.map(item => `
+        <div class="menu-card__item">
+          <div class="menu-card__item-info">
+            <span class="menu-card__item-name">${esc(item.name)}</span>
+            <span class="menu-card__item-desc">${esc(item.description)}</span>
+          </div>
+          <span class="menu-card__item-price">${esc(item.price)} €</span>
+        </div>
+      `).join('')}
+    </div>
+  `).join('');
+
+  el.innerHTML = `
+    <div class="menu-card">
+      <header class="menu-card__header">
+        <h1 class="menu-card__name">${esc(data.name)}</h1>
+        <p class="menu-card__subtitle">${esc(data.subtitle)}</p>
+      </header>
+      ${sections}
+      <footer class="menu-card__footer">bon appétit &middot; bom proveito</footer>
+    </div>
+  `;
+}
+
+// ─── STORY VIEW (mindmap) ────────────────────────────────────────────────────
+
+interface StoryNode {
+  id: string;
+  label: string;
+  color: string;
+  x: number;
+  y: number;
+  isRoot?: boolean;
+  parent?: string;
+}
+
+function renderStory(): void {
+  const view = document.getElementById('story-view');
+  if (!view) return;
+
+  const WIDTH = 900;
+  const HEIGHT = 600;
+  const ROOT_X = WIDTH / 2;
+  const ROOT_Y = HEIGHT / 2;
+
+  // Branch colors — one per top-level group.
+  const BRANCH_COLORS: Record<string, string> = {
+    Life:   '#8a6aff',
+    Work:   '#4ac0ff',
+    Social: '#e8508a',
+  };
+
+  const branches: { label: string; subnodes: string[] }[] = [
+    { label: 'Life',   subnodes: ['Travel', 'Music', 'Food', 'Books'] },
+    { label: 'Work',   subnodes: ['Engineering', 'Design', 'Cloud'] },
+    { label: 'Social', subnodes: ['Instagram', 'LinkedIn', 'Orkut'] },
+  ];
+
+  // Layout: 3 branches radiate from center. Each branch sits at 240°, 0°, 120°
+  // (left, right, bottom-right) — keeps the map airy and avoids label collisions.
+  const BRANCH_ANGLES = [-150, 0, 120]; // degrees
+  const BRANCH_RADIUS = 185;
+  const LEAF_RADIUS   = 100;
+
+  const nodes: StoryNode[] = [
+    { id: 'root', label: 'Diego', color: '#ffe066', x: ROOT_X, y: ROOT_Y, isRoot: true },
+  ];
+
+  branches.forEach((branch, bi) => {
+    const angleDeg = BRANCH_ANGLES[bi];
+    const angleRad = (angleDeg * Math.PI) / 180;
+    const bx = ROOT_X + Math.cos(angleRad) * BRANCH_RADIUS;
+    const by = ROOT_Y + Math.sin(angleRad) * BRANCH_RADIUS;
+    const color = BRANCH_COLORS[branch.label];
+    nodes.push({ id: `branch-${bi}`, label: branch.label, color, x: bx, y: by, parent: 'root' });
+
+    const leafCount = branch.subnodes.length;
+    branch.subnodes.forEach((sub, li) => {
+      // Spread leaves in a fan around the branch direction.
+      const spreadDeg = 60;
+      const startAngle = angleDeg - spreadDeg / 2;
+      const leafAngleDeg = leafCount === 1 ? angleDeg : startAngle + (li / (leafCount - 1)) * spreadDeg;
+      const leafRad = (leafAngleDeg * Math.PI) / 180;
+      const lx = bx + Math.cos(leafRad) * LEAF_RADIUS;
+      const ly = by + Math.sin(leafRad) * LEAF_RADIUS;
+      nodes.push({ id: `leaf-${bi}-${li}`, label: sub, color, x: lx, y: ly, parent: `branch-${bi}` });
+    });
+  });
+
+  // Build SVG lines first (behind nodes).
+  const nodeMap = new Map(nodes.map(n => [n.id, n]));
+  const lines = nodes
+    .filter(n => n.parent)
+    .map(n => {
+      const p = nodeMap.get(n.parent!)!;
+      return `<line class="story-line" x1="${p.x}" y1="${p.y}" x2="${n.x}" y2="${n.y}" stroke="${n.color}"/>`;
+    })
+    .join('');
+
+  const svg = `<svg class="story-canvas" viewBox="0 0 ${WIDTH} ${HEIGHT}" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">${lines}</svg>`;
+
+  // Build absolutely-positioned node divs (foreignObject + SVG foreignObject has poor
+  // cross-browser text rendering, so plain divs positioned over the SVG is cleaner).
+  const nodeHtml = nodes.map(n => {
+    const size   = n.isRoot ? 80 : (n.parent === 'root' ? 64 : 52);
+    const left   = n.x - size / 2;
+    const top    = n.y - size / 2;
+    const fontSize = n.isRoot ? 14 : (n.parent === 'root' ? 12 : 11);
+    return `<div class="story-node${n.isRoot ? ' story-node--root' : ''}" data-node-id="${n.id}"
+      style="left:${left}px;top:${top}px;width:${size}px;height:${size}px;border-color:${n.color};color:${n.color};font-size:${fontSize}px;"
+    ><span>${n.label}</span></div>`;
+  }).join('');
+
+  view.innerHTML = `
+    <div class="story-wrap">
+      ${svg}
+      <div class="story-nodes">${nodeHtml}</div>
+    </div>
+  `;
+
+  // Interactions: hover glow via class, click to zoom-highlight.
+  let activeId: string | null = null;
+  view.querySelectorAll<HTMLElement>('.story-node').forEach(el => {
+    const id = el.dataset.nodeId!;
+    const node = nodeMap.get(id)!;
+
+    el.addEventListener('mouseenter', () => el.classList.add('is-hovered'));
+    el.addEventListener('mouseleave', () => el.classList.remove('is-hovered'));
+
+    el.addEventListener('click', () => {
+      if (activeId === id) {
+        // Deselect.
+        activeId = null;
+        view.querySelectorAll('.story-node').forEach(n => n.classList.remove('is-active', 'is-dimmed'));
+        view.querySelectorAll<SVGLineElement>('.story-line').forEach(l => l.classList.remove('is-active', 'is-dimmed'));
+        return;
+      }
+      activeId = id;
+
+      // Collect connected node ids (self + parent + children).
+      const connected = new Set<string>([id]);
+      if (node.parent) connected.add(node.parent);
+      nodes.filter(n => n.parent === id).forEach(n => connected.add(n.id));
+
+      view.querySelectorAll<HTMLElement>('.story-node').forEach(n => {
+        const nid = n.dataset.nodeId!;
+        n.classList.toggle('is-active', nid === id);
+        n.classList.toggle('is-dimmed', !connected.has(nid));
+      });
+
+      // Dim lines not connected to the active node.
+      view.querySelectorAll<SVGLineElement>('.story-line').forEach((line, i) => {
+        const lineNode = nodes.filter(n => n.parent)[i];
+        const lineActive = lineNode && (lineNode.id === id || lineNode.parent === id || (node.parent && lineNode.id === node.parent) || lineNode.parent === node.parent && lineNode.parent === id);
+        const lineConnected = lineNode && (connected.has(lineNode.id) || connected.has(lineNode.parent!));
+        line.classList.toggle('is-active', !!lineConnected);
+        line.classList.toggle('is-dimmed', !lineConnected);
+      });
+    });
+  });
+
+  // Click backdrop to deselect.
+  view.querySelector('.story-wrap')!.addEventListener('click', e => {
+    if ((e.target as HTMLElement).closest('.story-node')) return;
+    activeId = null;
+    view.querySelectorAll('.story-node').forEach(n => n.classList.remove('is-active', 'is-dimmed'));
+    view.querySelectorAll('.story-line').forEach(l => l.classList.remove('is-active', 'is-dimmed'));
+  });
+}
+
+// ─── FACEBOOK VIEW ───────────────────────────────────────────────────────────
+
+function renderFacebook(): void {
+  const el = document.getElementById('facebook-view');
+  if (!el) return;
+
+  function esc(s: string): string {
+    return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+  }
+
+  // Load real data from PORTAL_DATA
+  const data = (globalThis as any).PORTAL_DATA?.['facebook-diegonmarcos'];
+  const profile = data?.profile || { name: 'Diego Marcos', bio: '', photo: '' };
+  const posts: Array<{ timestamp: string; content: string; media: string[]; album?: string }> = data?.posts || [];
+
+  // Group posts by album for the Photos tab
+  const albums = new Map<string, typeof posts>();
+  posts.forEach(p => {
+    const key = p.album || 'Other';
+    if (!albums.has(key)) albums.set(key, []);
+    albums.get(key)!.push(p);
+  });
+
+  const mediaHtml = (media: string[]) => (media || []).map(m =>
+    m.endsWith('.mp4')
+      ? `<video class="fb-post__photo" src="${esc(m)}" controls preload="metadata"></video>`
+      : `<img class="fb-post__photo" src="${esc(m)}" loading="lazy" alt="" />`
+  ).join('');
+
+  const postsHtml = posts.slice(0, 50).map(p => `
+    <article class="fb-post">
+      <header class="fb-post__header">
+        <div class="fb-post__avatar" aria-hidden="true" ${profile.photo ? `style="background-image:url('${esc(profile.photo)}');background-size:cover"` : ''}></div>
+        <div class="fb-post__meta">
+          <span class="fb-post__author">${esc(profile.name)}</span>
+          <span class="fb-post__time">${esc(p.timestamp || '')}</span>
+          ${p.album ? `<span class="fb-post__album">${esc(p.album)}</span>` : ''}
+        </div>
+      </header>
+      ${p.content ? `<div class="fb-post__content">${esc(p.content)}</div>` : ''}
+      ${mediaHtml(p.media)}
+      <div class="fb-post__actions">
+        <button class="fb-post__action" type="button">👍 Like</button>
+        <button class="fb-post__action" type="button">💬 Comment</button>
+        <button class="fb-post__action" type="button">↗ Share</button>
+      </div>
+    </article>
+  `).join('');
+
+  // Albums grid for the Photos tab
+  const albumsHtml = [...albums.entries()].map(([name, aps]) => `
+    <div class="fb-album" data-album="${esc(name)}">
+      <div class="fb-album__cover">${aps[0]?.media?.[0] ? `<img src="${esc(aps[0].media[0])}" loading="lazy" alt="" />` : ''}</div>
+      <span class="fb-album__name">${esc(name)}</span>
+      <span class="fb-album__count">${aps.length} photos</span>
+    </div>
+  `).join('');
+
+  el.innerHTML = `
+    <div class="fb-profile">
+      <div class="fb-cover"></div>
+      <div class="fb-identity">
+        <div class="fb-avatar" aria-hidden="true" ${profile.photo ? `style="background-image:url('${esc(profile.photo)}');background-size:cover"` : ''}></div>
+        <div class="fb-identity__info">
+          <h1 class="fb-identity__name">${esc(profile.name)}</h1>
+          <p class="fb-identity__bio">${esc(profile.bio || '')}</p>
+        </div>
+      </div>
+      <div class="fb-stats">
+        <span class="fb-stat"><strong>${posts.length}</strong> Posts</span>
+        <span class="fb-stat"><strong>${albums.size}</strong> Albums</span>
+        <span class="fb-stat"><strong>${posts.reduce((n, p) => n + (p.media?.length || 0), 0)}</strong> Photos</span>
+      </div>
+      <nav class="fb-tabs" aria-label="Profile sections">
+        <span class="fb-tab fb-tab--active" data-fb-tab="timeline">Timeline</span>
+        <span class="fb-tab" data-fb-tab="photos">Photos</span>
+        <span class="fb-tab" data-fb-tab="about">About</span>
+      </nav>
+      <main class="fb-timeline" data-fb-pane="timeline">
+        ${postsHtml}
+      </main>
+      <main class="fb-photos-pane" data-fb-pane="photos" hidden>
+        <div class="fb-albums-grid">${albumsHtml}</div>
+      </main>
+      <main class="fb-about-pane" data-fb-pane="about" hidden>
+        <div class="fb-about">
+          <h2>About</h2>
+          <p>Facebook profile for ${esc(profile.name)}</p>
+          <p><strong>${posts.length}</strong> posts across <strong>${albums.size}</strong> albums</p>
+        </div>
+      </main>
+    </div>
+  `;
+
+  // Tab switching
+  el.querySelectorAll('[data-fb-tab]').forEach(tab => {
+    tab.addEventListener('click', () => {
+      const pane = tab.dataset.fbTab;
+      el.querySelectorAll('[data-fb-tab]').forEach(t => t.classList.remove('fb-tab--active'));
+      tab.classList.add('fb-tab--active');
+      el.querySelectorAll('[data-fb-pane]').forEach(p => {
+        (p as HTMLElement).hidden = p.dataset.fbPane !== pane;
+      });
+    });
+  });
+}
+
 // ─── THEME SWITCHER ──────────────────────────────────────────────────────────
 
-type Theme = 'mysocials' | 'orkut' | 'instagram-diegonmarcos' | 'instagram-diegocmarcos_' | 'instagram-diegocnmarcos_' | 'linkedin' | 'pinterest' | 'tidal' | 'strava' | 'youtube' | 'icq' | 'shelf' | 'vinyl';
-const THEMES: Theme[] = ['mysocials', 'orkut', 'instagram-diegonmarcos', 'instagram-diegocmarcos_', 'instagram-diegocnmarcos_', 'linkedin', 'pinterest', 'tidal', 'strava', 'youtube', 'icq', 'shelf', 'vinyl'];
+type Theme = 'mysocials' | 'orkut' | 'instagram-diegonmarcos' | 'instagram-diegocmarcos_' | 'instagram-diegocnmarcos_' | 'linkedin' | 'pinterest' | 'tidal' | 'youtube' | 'icq' | 'shelf' | 'vinyl' | 'bar-cellar' | 'menu' | 'theater' | 'story' | 'facebook-diegonmarcos' | 'dms';
+const THEMES: Theme[] = ['mysocials', 'orkut', 'instagram-diegonmarcos', 'instagram-diegocmarcos_', 'instagram-diegocnmarcos_', 'linkedin', 'pinterest', 'tidal', 'youtube', 'icq', 'shelf', 'vinyl', 'bar-cellar', 'menu', 'theater', 'story', 'facebook-diegonmarcos', 'dms'];
 
 // Each theme is a real static page (orkut.html, instagram.html, ...) — except
 // 'mysocials', whose page is index.html (the site's front door).
@@ -2233,12 +3140,75 @@ function navigate(theme: Theme, push = true): void {
   if (push) history.pushState({ theme }, '', pageFor(theme));
 }
 
+function renderDMs(): void {
+  const el = document.getElementById('dms-view');
+  if (!el) return;
+
+  function esc(s: string): string {
+    return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+  }
+
+  type DMChannel = { label: string; url: string; icon: string; style?: string };
+  type DMSection = { layout: string; items: DMChannel[] };
+
+  const sections: DMSection[] = [
+    { layout: 'quick', items: [
+      { label: 'mailMe', url: 'mailto:me@diegonmarcos.com', icon: '✉️', style: 'primary' },
+      { label: 'myBeeper', url: 'https://beeper.com', icon: '📟', style: 'primary' },
+    ]},
+    { layout: 'channels', items: [
+      { label: 'Mail', url: 'mailto:me@diegonmarcos.com', icon: '✉️' },
+      { label: 'Wapp0', url: 'https://wa.me/34680614213', icon: '💬' },
+      { label: 'Wapp1', url: 'https://wa.me/4915176069920', icon: '💬' },
+      { label: 'Telegram', url: 'https://t.me/diegonmarcos', icon: '✈️' },
+      { label: 'Viber', url: 'viber://chat?number=%2B4915176069920', icon: '📞' },
+      { label: 'Matrix', url: 'https://matrix.to/#/@diegonmarcos:matrix.org', icon: '🔗' },
+      { label: 'igDM', url: 'https://ig.me/m/diegonmarcos', icon: '📷' },
+      { label: 'XDM', url: 'https://x.com/messages/compose?recipient_id=171055690', icon: '🐦' },
+      { label: 'LinkedinDM', url: 'https://linkedin.com/in/diegonmarcos', icon: '💼' },
+      { label: 'ICQ', url: 'https://icq.com/chat', icon: '🆔' },
+      { label: 'Mail', url: 'mailto:me@diegonmarcos.com', icon: '✉️' },
+    ]},
+  ];
+
+  const channelHtml = (c: DMChannel) => `
+    <a class="dm-channel ${c.style === 'primary' ? 'dm-channel--primary' : ''}" href="${esc(c.url)}" target="_blank" rel="noopener">
+      <span class="dm-channel__icon">${c.icon}</span>
+      <span class="dm-channel__label">${esc(c.label)}</span>
+    </a>`;
+
+  el.innerHTML = `
+    <div class="dms-page">
+      <div class="dms-header">
+        <h1 class="dms-title">DMs</h1>
+        <p class="dms-subtitle">All channels to reach Diego</p>
+      </div>
+      ${sections.map(s => `
+        <div class="dms-section dm-section--${esc(s.layout)}">
+          ${s.items.map(channelHtml).join('')}
+        </div>
+      `).join('')}
+    </div>
+  `;
+}
+
 function initThemeSwitcher(): void {
   // The page's own baked-in data-theme is authoritative on load (deep links work).
   const current = (document.documentElement.dataset.theme as Theme) || 'mysocials';
   setTheme(THEMES.includes(current) ? current : 'mysocials');
   document.querySelectorAll('[data-theme-btn]').forEach(btn => {
     btn.addEventListener('click', () => navigate((btn as HTMLElement).dataset.themeBtn as Theme));
+  });
+  // DM parent toggle — show/hide the DM apps sub-row
+  document.querySelectorAll('[data-dm-toggle]').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const targetId = (btn as HTMLElement).dataset.dmToggle;
+      const target = targetId ? document.getElementById(targetId) : null;
+      if (target) {
+        target.hidden = !target.hidden;
+        btn.textContent = target.hidden ? 'DMs ▾' : 'DMs ▴';
+      }
+    });
   });
   window.addEventListener('popstate', (e) => {
     const theme = (e.state?.theme as Theme) || 'mysocials';
@@ -2261,12 +3231,17 @@ function init(): void {
   renderLinkedin();
   renderPinterest();
   renderTidal();
-  renderStrava();
   renderYoutube();
   renderICQ();
   renderMySocials();
   renderShelf();
   renderVinyl();
+  renderBarCellar();
+  renderTheater();
+  renderMenu();
+  renderStory();
+  renderFacebook();
+  renderDMs();
   initThemeSwitcher();
 
   // Animate trust meter bars on load

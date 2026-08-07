@@ -4,7 +4,7 @@
   var g = (typeof globalThis !== "undefined") ? globalThis : (typeof window !== "undefined" ? window : this);
   g.PORTAL_DATA = g.PORTAL_DATA || {};
   g.PORTAL_DATA["professional-profiles"] = {
-  "_description": "Declarative source of truth for the Professional Profiles section-box. Each `slide` becomes one swiper-slide. `kind=tools` slides render as `.link-section > .featured-image + .tools-dashboard > .tools-column` (matches Personal Tools markup). `kind=profile-card` renders the PROFILE slide with card-swiper image+video, contact icons, profile icons, ventures icons, plain links and a collapsible content block. `kind=repos` renders REPOS slide with a top link plus a tools-dashboard. `kind=venture-card` renders the venture slides (NEXUS/LEAFY/STARK) with contact icons + grouped sections containing either a single full-width link or a links-grid (grid-3).",
+  "_description": "Declarative source of truth for the Professional Profiles section-box. Each `slide` becomes one swiper-slide. `kind=tools` slides render as `.link-section > .featured-image + .tools-dashboard > .tools-column` (matches Projects markup). `kind=profile-card` renders the PROFILE slide with card-swiper image+video, contact icons, profile icons, ventures icons, plain links and a collapsible content block. `kind=repos` renders REPOS slide with a top link plus a tools-dashboard. `kind=venture-card` renders the venture slides (NEXUS/LEAFY/STARK) with contact icons + grouped sections containing either a single full-width link or a links-grid (grid-3).",
   "section": {
     "id": "professional-profiles",
     "title": "Professional Profiles",
@@ -32,7 +32,7 @@
       ],
       "sections": [
         {
-          "title": "Contact",
+          "title": "CONTACT",
           "layout": "contact-icons",
           "items": [
             {
@@ -60,7 +60,7 @@
           "group": 0
         },
         {
-          "title": "Profiles",
+          "title": "PROFILES",
           "layout": "mixed",
           "links": [
             {
@@ -90,7 +90,7 @@
           "group": 1
         },
         {
-          "title": "Ventures",
+          "title": "VENTURES",
           "layout": "contact-icons",
           "items": [
             {
@@ -147,184 +147,6 @@
       "slide": 0
     },
     {
-      "id": "repos",
-      "kind": "repos",
-      "title": "REPOS",
-      "image": {
-        "src": "public/images/banners/repos.gif",
-        "alt": "Coding"
-      },
-      "top_links": [
-        {
-          "label": "Github",
-          "url": "https://github.com/diegonmarcos",
-          "icon": "brand-github.svg",
-          "preview": "public/thumbnails/github_com.jpg",
-          "item": 0
-        }
-      ],
-      "dashboard_modifier": "tools-dashboard--5",
-      "columns": [
-        {
-          "header": "Front-end",
-          "links": [
-            {
-              "label": "Portals",
-              "url": "https://github.com/diegonmarcos/diegonmarcos.github.io/tree/main/a_Portals",
-              "icon": "world.svg",
-              "item": 0
-            },
-            {
-              "label": "Profiles",
-              "url": "https://github.com/diegonmarcos/diegonmarcos.github.io/tree/main/b_Work_Profiles",
-              "icon": "file-type-html.svg",
-              "item": 1
-            },
-            {
-              "label": "Work Tools",
-              "url": "https://github.com/diegonmarcos/diegonmarcos.github.io/tree/main/b_Work_Tools",
-              "icon": "settings.svg",
-              "item": 2
-            },
-            {
-              "label": "Personal Tools",
-              "url": "https://github.com/diegonmarcos/diegonmarcos.github.io/tree/main/c_Personal_Tools",
-              "icon": "device-desktop.svg",
-              "item": 3
-            }
-          ],
-          "group": 0
-        },
-        {
-          "header": "Cloud",
-          "links": [
-            {
-              "label": "Cloud",
-              "url": "https://github.com/diegonmarcos/cloud",
-              "icon": "world.svg",
-              "item": 0
-            },
-            {
-              "label": "Unix",
-              "url": "https://github.com/diegonmarcos/unix",
-              "icon": "settings.svg",
-              "item": 1
-            },
-            {
-              "label": "Vault",
-              "url": "https://github.com/diegonmarcos/vault",
-              "icon": "bolt.svg",
-              "item": 2
-            },
-            {
-              "label": "Front",
-              "url": "https://github.com/diegonmarcos/diegonmarcos.github.io",
-              "icon": "world.svg",
-              "item": 3
-            },
-            {
-              "label": "Tooling",
-              "url": "https://github.com/diegonmarcos/ops-Tooling",
-              "icon": "git-branch.svg",
-              "item": 4
-            },
-            {
-              "label": "MCP Servers",
-              "url": "https://github.com/diegonmarcos/diegonmarcos.github.io/tree/main/b_Work_Tools/skills_mcp",
-              "icon": "brain.svg",
-              "item": 5
-            }
-          ],
-          "group": 1
-        },
-        {
-          "header": "Low Level",
-          "links": [
-            {
-              "label": "My Libs",
-              "url": "https://github.com/diegonmarcos/ops-Mylibs",
-              "icon": "git-branch.svg",
-              "item": 0
-            },
-            {
-              "label": "Algorithms",
-              "url": "https://github.com/diegonmarcos/back-Algo",
-              "icon": "settings.svg",
-              "item": 1
-            },
-            {
-              "label": "System",
-              "url": "https://github.com/diegonmarcos/back-System",
-              "icon": "settings.svg",
-              "item": 2
-            },
-            {
-              "label": "Graphics",
-              "url": "https://github.com/diegonmarcos/back-Graphic",
-              "icon": "device-desktop.svg",
-              "item": 3
-            },
-            {
-              "label": "Cyber",
-              "url": "https://github.com/diegonmarcos/cyber-Cyberwarfare",
-              "icon": "bolt.svg",
-              "item": 4
-            },
-            {
-              "label": "42 School",
-              "url": "https://github.com/diegonmarcos/lecole42",
-              "icon": "rocket.svg",
-              "item": 5
-            }
-          ],
-          "group": 2
-        },
-        {
-          "header": "ML",
-          "links": [
-            {
-              "label": "Agentic AI",
-              "url": "https://github.com/diegonmarcos/ml-Agentic",
-              "icon": "brain.svg",
-              "item": 0
-            },
-            {
-              "label": "Machine Learning",
-              "url": "https://github.com/diegonmarcos/ml-MachineLearning",
-              "icon": "brain.svg",
-              "item": 1
-            }
-          ],
-          "group": 3
-        },
-        {
-          "header": "Data",
-          "links": [
-            {
-              "label": "Data Science",
-              "url": "https://github.com/diegonmarcos/ml-DataScience",
-              "icon": "database.svg",
-              "item": 0
-            },
-            {
-              "label": "Civil Eng",
-              "url": "https://github.com/diegonmarcos/cveng_AFrame",
-              "icon": "settings.svg",
-              "item": 1
-            },
-            {
-              "label": "Macro/Quant",
-              "url": "https://github.com/diegonmarcos/ecoqt-thesis1",
-              "icon": "database.svg",
-              "item": 2
-            }
-          ],
-          "group": 4
-        }
-      ],
-      "slide": 1
-    },
-    {
       "id": "nexus",
       "kind": "venture-card",
       "title": "NEXUS",
@@ -334,7 +156,7 @@
       },
       "sections": [
         {
-          "title": "Contact",
+          "title": "CONTACT",
           "layout": "contact-icons",
           "items": [
             {
@@ -360,7 +182,7 @@
           "group": 0
         },
         {
-          "title": "Venture",
+          "title": "VENTURE",
           "layout": "links",
           "links": [
             {
@@ -374,7 +196,7 @@
           "group": 1
         },
         {
-          "title": "Cores",
+          "title": "CORES",
           "layout": "tool-links",
           "cols": 3,
           "links": [
@@ -400,7 +222,7 @@
           "group": 2
         }
       ],
-      "slide": 2
+      "slide": 1
     },
     {
       "id": "leafy",
@@ -412,7 +234,7 @@
       },
       "sections": [
         {
-          "title": "Contact",
+          "title": "CONTACT",
           "layout": "contact-icons",
           "items": [
             {
@@ -438,7 +260,7 @@
           "group": 0
         },
         {
-          "title": "Venture",
+          "title": "VENTURE",
           "layout": "links",
           "links": [
             {
@@ -452,7 +274,7 @@
           "group": 1
         },
         {
-          "title": "Cores",
+          "title": "CORES",
           "layout": "tool-links",
           "cols": 3,
           "links": [
@@ -496,7 +318,7 @@
           "group": 2
         }
       ],
-      "slide": 3
+      "slide": 2
     },
     {
       "id": "stark",
@@ -508,7 +330,7 @@
       },
       "sections": [
         {
-          "title": "Contact",
+          "title": "CONTACT",
           "layout": "contact-icons",
           "items": [
             {
@@ -534,7 +356,7 @@
           "group": 0
         },
         {
-          "title": "Venture",
+          "title": "VENTURE",
           "layout": "links",
           "links": [
             {
@@ -548,7 +370,7 @@
           "group": 1
         },
         {
-          "title": "Cores",
+          "title": "CORES",
           "layout": "tool-links",
           "cols": 3,
           "links": [
@@ -592,7 +414,7 @@
           "group": 2
         }
       ],
-      "slide": 4
+      "slide": 3
     }
   ]
 }

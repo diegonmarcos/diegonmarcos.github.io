@@ -1,0 +1,298 @@
+@use '../settings/colors' as *;
+
+// ── Facebook dark-mode profile ─────────────────────────────────────────────
+
+$fb-bg:          #18191a;
+$fb-surface:     #242526;
+$fb-border:      #3a3b3c;
+$fb-blue:        #2374e1;
+$fb-text:        #e4e6eb;
+$fb-text-muted:  #b0b3b8;
+$fb-radius:      8px;
+
+.view--facebook {
+  background: $fb-bg;
+  color: $fb-text;
+  min-height: 100vh;
+}
+
+.fb-profile {
+  max-width: 860px;
+  margin: 0 auto;
+  padding-bottom: 48px;
+}
+
+// Cover photo
+.fb-cover {
+  width: 100%;
+  height: 300px;
+  background: linear-gradient(135deg, #1a3a6b 0%, $fb-blue 50%, #0d2a5c 100%);
+  border-radius: 0 0 $fb-radius $fb-radius;
+}
+
+// Profile identity row
+.fb-identity {
+  display: flex;
+  align-items: flex-end;
+  gap: 16px;
+  padding: 0 24px;
+  margin-top: -48px;
+  margin-bottom: 16px;
+}
+
+.fb-avatar {
+  width: 96px;
+  height: 96px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, $fb-blue, #1a3a6b);
+  border: 4px solid $fb-bg;
+  flex-shrink: 0;
+}
+
+.fb-identity__info {
+  padding-bottom: 8px;
+}
+
+.fb-identity__name {
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: $fb-text;
+  margin: 0 0 4px;
+}
+
+.fb-identity__bio {
+  font-size: 0.875rem;
+  color: $fb-text-muted;
+  margin: 0;
+}
+
+// Stats bar
+.fb-stats {
+  display: flex;
+  gap: 24px;
+  padding: 0 24px 12px;
+  border-bottom: 1px solid $fb-border;
+  margin-bottom: 4px;
+}
+
+.fb-stat {
+  font-size: 0.875rem;
+  color: $fb-text-muted;
+
+  strong {
+    color: $fb-blue;
+    font-weight: 600;
+  }
+}
+
+// Section tabs
+.fb-tabs {
+  display: flex;
+  gap: 4px;
+  padding: 4px 24px;
+  border-bottom: 1px solid $fb-border;
+  margin-bottom: 16px;
+}
+
+.fb-tab {
+  padding: 10px 16px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: $fb-text-muted;
+  border-radius: $fb-radius;
+  cursor: pointer;
+
+  &--active {
+    color: $fb-blue;
+    border-bottom: 3px solid $fb-blue;
+    border-radius: 0;
+  }
+}
+
+// Timeline feed
+.fb-timeline {
+  padding: 0 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+// Post card
+.fb-post {
+  background: $fb-surface;
+  border: 1px solid $fb-border;
+  border-radius: $fb-radius;
+  overflow: hidden;
+}
+
+.fb-post__header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 16px 8px;
+}
+
+.fb-post__avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, $fb-blue, #1a3a6b);
+  flex-shrink: 0;
+}
+
+.fb-post__meta {
+  display: flex;
+  flex-direction: column;
+}
+
+.fb-post__author {
+  font-weight: 600;
+  font-size: 0.9rem;
+  color: $fb-text;
+}
+
+.fb-post__time {
+  font-size: 0.78rem;
+  color: $fb-text-muted;
+}
+
+.fb-post__content {
+  padding: 4px 16px 12px;
+  font-size: 0.9375rem;
+  line-height: 1.5;
+  color: $fb-text;
+}
+
+.fb-post__photo {
+  width: 100%;
+  height: 200px;
+  background: linear-gradient(135deg, #1a2a4a 0%, $fb-blue 100%);
+  margin-bottom: 0;
+}
+
+.fb-post__footer {
+  display: flex;
+  gap: 16px;
+  padding: 6px 16px;
+  border-top: 1px solid $fb-border;
+  font-size: 0.8rem;
+  color: $fb-text-muted;
+}
+
+.fb-post__actions {
+  display: flex;
+  padding: 4px 8px;
+  border-top: 1px solid $fb-border;
+}
+
+.fb-post__action {
+  flex: 1;
+  background: none;
+  border: none;
+  color: $fb-text-muted;
+  font-size: 0.875rem;
+  font-weight: 500;
+  padding: 8px;
+  border-radius: $fb-radius;
+  cursor: pointer;
+  transition: background 0.15s;
+
+  &:hover {
+    background: $fb-border;
+    color: $fb-text;
+  }
+}
+
+// Body background for facebook theme
+html[data-theme='facebook-diegonmarcos'] body {
+  background: $fb-bg;
+  color: $fb-text;
+}
+
+html[data-theme='facebook-diegonmarcos'] .view--facebook {
+  }
+
+// Album grid for Photos tab
+.fb-photos-pane {
+  max-width: 860px;
+  margin: 0 auto;
+  padding: 16px;
+}
+
+.fb-albums-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: 16px;
+}
+
+.fb-album {
+  cursor: pointer;
+  border-radius: $fb-radius;
+  overflow: hidden;
+  background: $fb-surface;
+  border: 1px solid $fb-border;
+  transition: transform 0.2s;
+
+  &:hover { transform: translateY(-2px); }
+}
+
+.fb-album__cover {
+  width: 100%;
+  aspect-ratio: 1;
+  overflow: hidden;
+  background: $fb-border;
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+}
+
+.fb-album__name {
+  display: block;
+  padding: 8px 12px 2px;
+  font-weight: 600;
+  color: $fb-text;
+  font-size: 0.85rem;
+}
+
+.fb-album__count {
+  display: block;
+  padding: 0 12px 8px;
+  color: $fb-text-muted;
+  font-size: 0.75rem;
+}
+
+// About pane
+.fb-about-pane {
+  max-width: 860px;
+  margin: 0 auto;
+  padding: 24px;
+}
+
+.fb-about {
+  h2 {
+    color: $fb-text;
+    margin-bottom: 12px;
+  }
+  p {
+    color: $fb-text-muted;
+    margin-bottom: 8px;
+    line-height: 1.5;
+  }
+}
+
+// Post album label
+.fb-post__album {
+  display: block;
+  color: $fb-text-muted;
+  font-size: 0.75rem;
+  margin-top: 2px;
+}
+
+// Avatar with image
+.fb-post__avatar {
+  background-size: cover !important;
+  background-position: center !important;
+}

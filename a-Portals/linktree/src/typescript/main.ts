@@ -13,6 +13,9 @@ import { initIconViewToggle } from './modules/iconViewToggle';
 import { initAudioToggle } from './modules/audioToggle';
 import { initVmControl } from './modules/vmControl';
 import { initProfilePicSwiper } from './modules/profilePicSwiper';
+import { initScrollFab } from './modules/scrollFab';
+import { initErudaToggle } from './modules/eruda';
+import { initLogcatViewer } from './modules/logcat';
 import { initCardSwiper } from './modules/cardSwiper';
 import { initPortalRender } from './modules/portal-render';
 import { initThemeToggle } from './modules/themeToggle';
@@ -51,6 +54,9 @@ function initApp(): void {
   // Initialize in-page list view toggle
   initIconViewToggle();
   initAudioToggle();
+  initScrollFab();
+  initErudaToggle();
+  initLogcatViewer();
 
   // Initialize random background video (or WebGL canvas if opted in).
   initVideoBackground();
@@ -77,25 +83,70 @@ function initApp(): void {
   onIdle(() => initGalleryToggle());
   onIdle(() => initVmControl());
 
+  // Hamburger menu
+  const hamburgerBtn = document.getElementById('hamburger-btn');
+  const hamburgerNav = document.getElementById('hamburger-nav');
+  if (hamburgerBtn && hamburgerNav) {
+    hamburgerBtn.addEventListener('click', () => {
+      const expanded = hamburgerBtn.getAttribute('aria-expanded') === 'true';
+      hamburgerBtn.setAttribute('aria-expanded', String(!expanded));
+      hamburgerNav.classList.toggle('is-open', !expanded);
+    });
+    // Delegate: clicking a hamburger-item triggers the target button
+    hamburgerNav.addEventListener('click', (e) => {
+      const item = (e.target as HTMLElement).closest('.hamburger-item') as HTMLElement | null;
+      if (!item) return;
+      const targetId = item.dataset['trigger'];
+      if (!targetId) return;
+      const target = document.getElementById(targetId);
+      if (target) target.click();
+      // close menu
+      hamburgerBtn.setAttribute('aria-expanded', 'false');
+      hamburgerNav.classList.remove('is-open');
+    });
+    // Close on outside click
+    document.addEventListener('click', (e) => {
+      const menu = document.getElementById('hamburger-menu');
+      if (menu && !menu.contains(e.target as Node)) {
+        hamburgerBtn.setAttribute('aria-expanded', 'false');
+        hamburgerNav.classList.remove('is-open');
+      }
+    });
+  }
+
+  // Card View button — close all overlay views, return to default swiper
+  const cardviewBtn = document.getElementById('cardview-btn');
+  if (cardviewBtn) {
+    cardviewBtn.addEventListener('click', () => {
+      // Close icon view if open
+      const iconviewOverlay = document.getElementById('iconview-content') as HTMLElement | null;
+      if (iconviewOverlay && iconviewOverlay.style.display !== 'none' && iconviewOverlay.offsetParent !== null) {
+        (document.getElementById('iconview-btn') as HTMLElement | null)?.click();
+      }
+      // Close gallery if active
+      const galleryOverlay = document.querySelector('.gallery-overlay') as HTMLElement | null;
+      if (galleryOverlay && galleryOverlay.offsetParent !== null) {
+        (document.getElementById('gallery-toggle') as HTMLElement | null)?.click();
+      }
+      // Close mindmap overlay if open
+      const mindmapOverlay = document.getElementById('mindmap-overlay') as HTMLElement | null;
+      if (mindmapOverlay && mindmapOverlay.style.display !== 'none') {
+        mindmapOverlay.style.display = 'none';
+      }
+    });
+  }
+
   // Show FABs after everything is loaded and positioned
   requestAnimationFrame(() => {
     requestAnimationFrame(() => {
       const controlsFab = document.querySelector('.controls-fab-container') as HTMLElement;
-      const mindmapBtn = document.getElementById('mindmap-btn') as HTMLElement;
-      const pixelworldBtn = document.getElementById('pixelworld-btn') as HTMLElement;
-      const iconviewBtn = document.getElementById('iconview-btn') as HTMLElement;
+      const hamburgerMenu = document.getElementById('hamburger-menu') as HTMLElement;
 
       if (controlsFab) {
         controlsFab.style.visibility = 'visible';
       }
-      if (mindmapBtn) {
-        mindmapBtn.style.visibility = 'visible';
-      }
-      if (pixelworldBtn) {
-        pixelworldBtn.style.visibility = 'visible';
-      }
-      if (iconviewBtn) {
-        iconviewBtn.style.visibility = 'visible';
+      if (hamburgerMenu) {
+        hamburgerMenu.style.visibility = 'visible';
       }
     });
   });
@@ -132,6 +183,10 @@ document.addEventListener('DOMContentLoaded', async () => {
       await Promise.all(keys.map((k) => caches.delete(k)));
       location.reload();
     };
+
+    document.getElementById('sw-reset-toggle')?.addEventListener('click', () =>
+      (window as unknown as { __resetSW: () => Promise<void> }).__resetSW(),
+    );
   }
 });
 

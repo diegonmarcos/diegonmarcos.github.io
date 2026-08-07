@@ -1,0 +1,449 @@
+// GENERATED FROM front-fleet-gh-declared.json by front-data-json-js-wrapper.sh — DO NOT EDIT BY HAND.
+// Re-generate with: bash a-Portals/linktree/src/data/build.sh
+(function () {
+  var g = (typeof globalThis !== "undefined") ? globalThis : (typeof window !== "undefined" ? window : this);
+  g.PORTAL_DATA = g.PORTAL_DATA || {};
+  g.PORTAL_DATA["front-fleet-gh-declared"] = [
+  {
+    "id": "a-Companies__leafy",
+    "project": "leafy",
+    "path": "a-Companies/leafy",
+    "category": "a-Companies",
+    "name": "Leafy",
+    "framework": "vanilla",
+    "deploy_name": "leafy",
+    "url": "https://diegonmarcos.github.io/leafy"
+  },
+  {
+    "id": "a-Companies__nexus",
+    "project": "nexus",
+    "path": "a-Companies/nexus",
+    "category": "a-Companies",
+    "name": "Nexus",
+    "framework": "vanilla",
+    "deploy_name": "nexus",
+    "url": "https://diegonmarcos.github.io/nexus"
+  },
+  {
+    "id": "a-Companies__stark",
+    "project": "stark",
+    "path": "a-Companies/stark",
+    "category": "a-Companies",
+    "name": "Stark",
+    "framework": "vanilla",
+    "deploy_name": "stark",
+    "url": "https://diegonmarcos.github.io/stark"
+  },
+  {
+    "id": "a-Individual__cv_pdf",
+    "project": "cv_pdf",
+    "path": "a-Individual/cv_pdf",
+    "category": "a-Individual",
+    "name": "CV PDF",
+    "framework": "vanilla",
+    "deploy_name": "cv_pdf",
+    "url": "https://diegonmarcos.github.io/cv_pdf"
+  },
+  {
+    "id": "a-Individual__cv_web",
+    "project": "cv_web",
+    "path": "a-Individual/cv_web",
+    "category": "a-Individual",
+    "name": "CV Web",
+    "framework": "vanilla",
+    "deploy_name": "cv_web",
+    "url": "https://diegonmarcos.github.io/cv_web"
+  },
+  {
+    "id": "a-Individual__landpage",
+    "project": "landpage",
+    "path": "a-Individual/landpage",
+    "category": "a-Individual",
+    "name": "Landpage",
+    "framework": "vanilla",
+    "deploy_name": "landpage",
+    "url": "https://diegonmarcos.github.io/landpage"
+  },
+  {
+    "id": "a-Portals__cloud",
+    "project": "cloud",
+    "path": "a-Portals/cloud",
+    "category": "a-Portals",
+    "name": "Cloud",
+    "framework": "vanilla",
+    "deploy_name": "cloud",
+    "url": "https://diegonmarcos.github.io/cloud"
+  },
+  {
+    "id": "a-Portals__linktree",
+    "project": "linktree",
+    "path": "a-Portals/linktree",
+    "category": "a-Portals",
+    "name": "Linktree",
+    "framework": "vanilla",
+    "deploy_name": "linktree",
+    "url": "https://diegonmarcos.github.io/linktree"
+  },
+  {
+    "id": "a-Portals__linktree_mindmap",
+    "project": "linktree_mindmap",
+    "path": "a-Portals/linktree_mindmap",
+    "category": "a-Portals",
+    "name": "Linktree Mindmap",
+    "framework": "vanilla",
+    "deploy_name": "linktree_mindmap",
+    "url": "https://diegonmarcos.github.io/linktree_mindmap"
+  },
+  {
+    "id": "a-Portals__linktree_pixel-world",
+    "project": "linktree_pixel-world",
+    "path": "a-Portals/linktree_pixel-world",
+    "category": "a-Portals",
+    "name": "Linktree Pixel World",
+    "framework": "vanilla",
+    "deploy_name": "linktree_pixel-world",
+    "url": "https://diegonmarcos.github.io/linktree_pixel-world"
+  },
+  {
+    "id": "a-Projects__Warehouse",
+    "project": "Warehouse",
+    "path": "a-Projects/Warehouse",
+    "category": "a-Projects",
+    "name": "SlabTwin 3D Warehouse",
+    "framework": "vanilla",
+    "deploy_name": "Warehouse",
+    "url": "https://diegonmarcos.github.io/Warehouse"
+  },
+  {
+    "id": "b-Data__myAstro",
+    "project": "myAstro",
+    "path": "b-Data/myAstro",
+    "category": "b-Data",
+    "name": "myAstro",
+    "framework": "vanilla",
+    "deploy_name": "myAstro",
+    "url": "https://diegonmarcos.github.io/myAstro"
+  },
+  {
+    "id": "b-Data__myfeed",
+    "project": "myfeed",
+    "path": "b-Data/myfeed",
+    "category": "b-Data",
+    "name": "MyFeed",
+    "framework": "vue",
+    "deploy_name": "myfeed",
+    "url": "https://diegonmarcos.github.io/myfeed"
+  },
+  {
+    "id": "b-Media__mySocials",
+    "project": "mySocials",
+    "path": "b-Media/mySocials",
+    "category": "b-Media",
+    "name": "mySocials",
+    "framework": "vanilla",
+    "deploy_name": "mySocials",
+    "url": "https://diegonmarcos.github.io/mySocials"
+  },
+  {
+    "id": "b-MyData__my-fin",
+    "project": "my-fin",
+    "path": "b-MyData/my-fin",
+    "category": "b-MyData",
+    "name": "My Financials",
+    "framework": "vanilla",
+    "deploy_name": "my-fin",
+    "url": "https://diegonmarcos.github.io/my-fin"
+  },
+  {
+    "id": "b-MyData__myTrackers",
+    "project": "myTrackers",
+    "path": "b-MyData/myTrackers",
+    "category": "b-MyData",
+    "name": "MyTrackers",
+    "framework": "vanilla",
+    "deploy_name": "myTrackers",
+    "url": "https://diegonmarcos.github.io/myTrackers"
+  },
+  {
+    "id": "b-MyData__myhealth",
+    "project": "myhealth",
+    "path": "b-MyData/myhealth",
+    "category": "b-MyData",
+    "name": "MyHealth",
+    "framework": "vanilla",
+    "deploy_name": "myhealth",
+    "url": "https://diegonmarcos.github.io/myhealth"
+  },
+  {
+    "id": "b-MyData__myhealth-profile",
+    "project": "myhealth-profile",
+    "path": "b-MyData/myhealth-profile",
+    "category": "b-MyData",
+    "name": "MyHealth Profile",
+    "framework": "vanilla",
+    "deploy_name": "myhealth-profile",
+    "url": "https://diegonmarcos.github.io/myhealth-profile"
+  },
+  {
+    "id": "b-MyData__myhealth-tracker",
+    "project": "myhealth-tracker",
+    "path": "b-MyData/myhealth-tracker",
+    "category": "b-MyData",
+    "name": "MyHealth Tracker",
+    "framework": "vanilla",
+    "deploy_name": "myhealth-tracker",
+    "url": "https://diegonmarcos.github.io/myhealth-tracker"
+  },
+  {
+    "id": "b-MyData__myid",
+    "project": "myid",
+    "path": "b-MyData/myid",
+    "category": "b-MyData",
+    "name": "myID",
+    "framework": "vanilla",
+    "deploy_name": "myid",
+    "url": "https://diegonmarcos.github.io/myid"
+  },
+  {
+    "id": "b-MyData__mymaps-mytrips",
+    "project": "mymaps-mytrips",
+    "path": "b-MyData/mymaps-mytrips",
+    "category": "b-MyData",
+    "name": "MyMaps MyTrips",
+    "framework": "vue",
+    "deploy_name": "mymaps-mytrips",
+    "url": "https://diegonmarcos.github.io/mymaps-mytrips"
+  },
+  {
+    "id": "b-MyData__myphotos",
+    "project": "myphotos",
+    "path": "b-MyData/myphotos",
+    "category": "b-MyData",
+    "name": "MyPhotos",
+    "framework": "vanilla",
+    "deploy_name": "myphotos",
+    "url": "https://diegonmarcos.github.io/myphotos"
+  },
+  {
+    "id": "b-Profiles__myprofile",
+    "project": "myprofile",
+    "path": "b-Profiles/myprofile",
+    "category": "b-Profiles",
+    "name": "MyProfile",
+    "framework": "sveltekit",
+    "deploy_name": "myprofile",
+    "url": "https://diegonmarcos.github.io/myprofile"
+  },
+  {
+    "id": "b-Projects__galaxy",
+    "project": "galaxy",
+    "path": "b-Projects/galaxy",
+    "category": "b-Projects",
+    "name": "Galaxy",
+    "framework": "sveltekit",
+    "deploy_name": "galaxy",
+    "url": "https://diegonmarcos.github.io/galaxy"
+  },
+  {
+    "id": "c-Circus__carto",
+    "project": "carto",
+    "path": "c-Circus/carto",
+    "category": "c-Circus",
+    "name": "Carto",
+    "framework": "vanilla",
+    "deploy_name": "carto",
+    "url": "https://diegonmarcos.github.io/carto"
+  },
+  {
+    "id": "c-Circus__games",
+    "project": "games",
+    "path": "c-Circus/games",
+    "category": "c-Circus",
+    "name": "Games",
+    "framework": "sveltekit",
+    "deploy_name": "games",
+    "url": "https://diegonmarcos.github.io/games"
+  },
+  {
+    "id": "c-Circus__movies",
+    "project": "movies",
+    "path": "c-Circus/movies",
+    "category": "c-Circus",
+    "name": "Movies",
+    "framework": "vue",
+    "deploy_name": "movies",
+    "url": "https://diegonmarcos.github.io/movies"
+  },
+  {
+    "id": "c-Circus__music",
+    "project": "music",
+    "path": "c-Circus/music",
+    "category": "c-Circus",
+    "name": "Music",
+    "framework": "vue",
+    "deploy_name": "music",
+    "url": "https://diegonmarcos.github.io/music"
+  },
+  {
+    "id": "c-LabTools__Music_DAW_LLMS",
+    "project": "Music_DAW_LLMS",
+    "path": "c-LabTools/Music_DAW_LLMS",
+    "category": "c-LabTools",
+    "name": "LMMS",
+    "framework": "vanilla",
+    "deploy_name": "Music_DAW_LLMS",
+    "url": "https://diegonmarcos.github.io/Music_DAW_LLMS"
+  },
+  {
+    "id": "c-LabTools__Music_DJ-Mixer_Mixxx",
+    "project": "Music_DJ-Mixer_Mixxx",
+    "path": "c-LabTools/Music_DJ-Mixer_Mixxx",
+    "category": "c-LabTools",
+    "name": "Mixxx",
+    "framework": "vanilla",
+    "deploy_name": "Music_DJ-Mixer_Mixxx",
+    "url": "https://diegonmarcos.github.io/Music_DJ-Mixer_Mixxx"
+  },
+  {
+    "id": "c-LabTools__central_bank",
+    "project": "central_bank",
+    "path": "c-LabTools/central_bank",
+    "category": "c-LabTools",
+    "name": "CentralBank",
+    "framework": "vanilla",
+    "deploy_name": "central_bank",
+    "url": "https://diegonmarcos.github.io/central_bank"
+  },
+  {
+    "id": "c-LabTools__fin-terminal",
+    "project": "fin-terminal",
+    "path": "c-LabTools/fin-terminal",
+    "category": "c-LabTools",
+    "name": "FinTerminal",
+    "framework": "vanilla",
+    "deploy_name": "fin-terminal",
+    "url": "https://diegonmarcos.github.io/fin-terminal"
+  },
+  {
+    "id": "c-LabTools__market_watch",
+    "project": "market_watch",
+    "path": "c-LabTools/market_watch",
+    "category": "c-LabTools",
+    "name": "MarketWatch",
+    "framework": "vanilla",
+    "deploy_name": "market_watch",
+    "url": "https://diegonmarcos.github.io/market_watch"
+  },
+  {
+    "id": "c-LabTools__news",
+    "project": "news",
+    "path": "c-LabTools/news",
+    "category": "c-LabTools",
+    "name": "GDELTNews",
+    "framework": "vanilla",
+    "deploy_name": "news",
+    "url": "https://diegonmarcos.github.io/news"
+  },
+  {
+    "id": "c-LabTools__sailytics",
+    "project": "sailytics",
+    "path": "c-LabTools/sailytics",
+    "category": "c-LabTools",
+    "name": "Sailyng",
+    "framework": "vanilla",
+    "deploy_name": "sailytics",
+    "url": "https://diegonmarcos.github.io/sailytics"
+  },
+  {
+    "id": "c-Suite__json-vision",
+    "project": "json-vision",
+    "path": "c-Suite/json-vision",
+    "category": "c-Suite",
+    "name": "JSON Vision",
+    "framework": "vue",
+    "deploy_name": "json-vision",
+    "url": "https://diegonmarcos.github.io/json-vision"
+  },
+  {
+    "id": "c-Suite__myhealth-feedyourself",
+    "project": "myhealth-feedyourself",
+    "path": "c-Suite/myhealth-feedyourself",
+    "category": "c-Suite",
+    "name": "MyHealth FeedYourself",
+    "framework": "vanilla",
+    "deploy_name": "myhealth-feedyourself",
+    "url": "https://diegonmarcos.github.io/myhealth-feedyourself"
+  },
+  {
+    "id": "c-Suite__mymail",
+    "project": "mymail",
+    "path": "c-Suite/mymail",
+    "category": "c-Suite",
+    "name": "MyMail",
+    "framework": "vanilla",
+    "deploy_name": "mymail",
+    "url": "https://diegonmarcos.github.io/mymail"
+  },
+  {
+    "id": "c-Suite__mymaps",
+    "project": "mymaps",
+    "path": "c-Suite/mymaps",
+    "category": "c-Suite",
+    "name": "MyMaps",
+    "framework": "vanilla",
+    "deploy_name": "mymaps",
+    "url": "https://diegonmarcos.github.io/mymaps"
+  },
+  {
+    "id": "c-Suite__mymaps-maps",
+    "project": "mymaps-maps",
+    "path": "c-Suite/mymaps-maps",
+    "category": "c-Suite",
+    "name": "MyMaps Maps",
+    "framework": "sveltekit",
+    "deploy_name": "mymaps-maps",
+    "url": "https://diegonmarcos.github.io/mymaps-maps"
+  },
+  {
+    "id": "c-Suite__mymaps-navigation",
+    "project": "mymaps-navigation",
+    "path": "c-Suite/mymaps-navigation",
+    "category": "c-Suite",
+    "name": "MyMaps Navigation",
+    "framework": "sveltekit",
+    "deploy_name": "mymaps-navigation",
+    "url": "https://diegonmarcos.github.io/mymaps-navigation"
+  },
+  {
+    "id": "c-Suite__suite",
+    "project": "suite",
+    "path": "c-Suite/suite",
+    "category": "c-Suite",
+    "name": "Suite",
+    "framework": "vanilla",
+    "deploy_name": "suite",
+    "url": "https://diegonmarcos.github.io/suite"
+  },
+  {
+    "id": "c-Suite__tldraw",
+    "project": "tldraw",
+    "path": "c-Suite/tldraw",
+    "category": "c-Suite",
+    "name": "tldraw",
+    "framework": "react",
+    "deploy_name": "tldraw",
+    "url": "https://diegonmarcos.github.io/tldraw"
+  },
+  {
+    "id": "e-Others__others",
+    "project": "others",
+    "path": "e-Others/others",
+    "category": "e-Others",
+    "name": "Others",
+    "framework": "vanilla",
+    "deploy_name": "others",
+    "url": "https://diegonmarcos.github.io/others"
+  }
+]
+;
+})();

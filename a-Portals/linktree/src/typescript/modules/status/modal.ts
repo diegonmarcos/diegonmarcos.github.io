@@ -1,6 +1,6 @@
 // Status Modal - UI/modal rendering
 
-import type { DiagnosticData, Warning } from './types';
+import type { DiagnosticData, RepoCommit, Warning } from './types';
 import {
   getNetworkDiagnostics,
   getCacheDiagnostics,
@@ -17,6 +17,34 @@ import {
   synthesizeWarnings,
   formatBytes,
 } from './diagnostics';
+
+const REPO = 'diegonmarcos/front';
+const REPO_URL = `https://github.com/${REPO}`;
+
+async function getRepoCommits(): Promise<RepoCommit[]> {
+  try {
+    const since = new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString();
+    const response = await fetch(
+      `https://api.github.com/repos/${REPO}/commits?per_page=100&path=a-Portals/linktree&since=${since}`,
+      { headers: { Accept: 'application/vnd.github.v3+json' } },
+    );
+    if (!response.ok) return [];
+    const data = await response.json() as Array<{
+      sha: string;
+      html_url: string;
+      commit: { message: string; author: { name: string; date: string } };
+    }>;
+    return data.map((c) => ({
+      sha: c.sha.slice(0, 7),
+      message: c.commit.message.split('\n')[0],
+      author: c.commit.author.name,
+      date: new Date(c.commit.author.date).toLocaleDateString(),
+      url: c.html_url,
+    }));
+  } catch {
+    return [];
+  }
+}
 
 /**
  * Render the warnings banner — severity-coloured advisories synthesised
@@ -300,6 +328,36 @@ function renderDiagnostics(data: DiagnosticData): string {
         </div>
       </div>
 
+      <!-- Sources Section -->
+      <div class="diag-section">
+        <h3>Sources</h3>
+        <div class="diag-sources">
+          <a class="diag-source-link" href="${REPO_URL}/tree/main/a-Portals/linktree" target="_blank" rel="noopener">
+            <img src="public/icons/brand-github.svg" alt="GitHub" width="16" height="16"> Repo
+          </a>
+          <a class="diag-source-link" href="https://github.com/orgs/diegonmarcos/packages" target="_blank" rel="noopener">
+            <img src="public/icons/brand-github.svg" alt="GHCR" width="16" height="16"> GHCR
+          </a>
+          <a class="diag-source-link" href="${REPO_URL}/releases" target="_blank" rel="noopener">
+            <img src="public/icons/brand-github.svg" alt="Releases" width="16" height="16"> Releases
+          </a>
+        </div>
+      </div>
+
+      <!-- Repo News Section -->
+      <div class="diag-section">
+        <h3>Repo News (last 30 days)</h3>
+        ${data.commits.length === 0
+          ? '<p class="diag-no-data">Could not fetch commits (rate limit or offline).</p>'
+          : `<div class="diag-commits">${data.commits.map((c) => `
+            <div class="diag-commit">
+              <a class="diag-commit-sha" href="${c.url}" target="_blank" rel="noopener">${c.sha}</a>
+              <span class="diag-commit-msg">${c.message}</span>
+              <span class="diag-commit-meta">${c.author} · ${c.date}</span>
+            </div>`).join('')}</div>`
+        }
+      </div>
+
       <!-- Assets Section -->
       <div class="diag-section">
         <h3>Asset Information (${data.assets.length} files)</h3>
@@ -351,12 +409,13 @@ export function initStatusModal(): void {
     // Gather all diagnostic data — parallelised where possible. Each
     // gatherer is fault-tolerant; partial failures still produce a
     // renderable snapshot with sensible "Unknown"/"N/A" fallbacks.
-    const [network, assets, gpuCpu, serviceWorker, storage] = await Promise.all([
+    const [network, assets, gpuCpu, serviceWorker, storage, commits] = await Promise.all([
       getNetworkDiagnostics(),
       getAssetInfo(),
       getGPUCPUMetrics(),
       getServiceWorkerInfo(),
       getStorageInfo(),
+      getRepoCommits(),
     ]);
     const partial = {
       network, assets, gpuCpu, serviceWorker, storage,
@@ -370,6 +429,7 @@ export function initStatusModal(): void {
     };
     const diagnosticData: DiagnosticData = {
       ...partial,
+      commits,
       warnings: synthesizeWarnings(partial),
     };
 
@@ -417,14 +477,17 @@ export function initStatusModal(): void {
     }
   });
 
-  statusModalClose.addEventListener('click', () => {
+  function closeModal(): void {
     statusModal.style.display = 'none';
-  });
+    // Re-show FABs (scroll-hide may have hidden them)
+    document.querySelector('.controls-fab-container')?.classList.remove('fab-hidden');
+    document.getElementById('hamburger-menu')?.classList.remove('fab-hidden');
+  }
+
+  statusModalClose.addEventListener('click', closeModal);
 
   // Close on outside click
   statusModal.addEventListener('click', (e) => {
-    if (e.target === statusModal) {
-      statusModal.style.display = 'none';
-    }
+    if (e.target === statusModal) closeModal();
   });
 }

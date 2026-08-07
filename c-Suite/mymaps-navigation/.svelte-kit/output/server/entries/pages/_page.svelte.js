@@ -1,5 +1,6 @@
 import { e as ensure_array_like, a as attr_class, s as store_get, b as attr, u as unsubscribe_stores, c as attr_style, d as stringify, h as head } from "../../chunks/index2.js";
-import { q as quickSearchCategories, a as quickSearch, s as searchResults, b as searchQuery, f as formatDuration, c as formatDistance, P as ProviderBadge, d as showDirectionsPanel, r as routeMode, i as isCalculatingRoute, e as routeError, g as selectedRoute, h as routeOrigin, j as routeDestination, k as showLayersPanel, m as mapStyles, l as currentStyleId, n as isTerrainLayer, o as isSatelliteLayer, p as isGlobeView, t as is3DTerrain, u as searchRadius, v as tempPinsCount, w as placeLists, x as listVisibility, M as MapCanvas, y as MapControls, z as PlacePanel } from "../../chunks/PlacePanel.js";
+import { o as onDestroy, q as quickSearchCategories, a as quickSearch, s as searchResults, b as searchQuery, f as formatDuration, c as formatDistance, P as ProviderBadge, d as showDirectionsPanel, r as routeMode, i as isCalculatingRoute, e as routeError, g as selectedRoute, h as routeOrigin, j as routeDestination, k as showLayersPanel, m as mapStyles, l as currentStyleId, n as isTerrainLayer, p as isSatelliteLayer, t as isGlobeView, u as is3DTerrain, v as searchRadius, w as tempPinsCount, x as placeLists, y as listVisibility, M as MapCanvas, z as MapControls, A as PlacePanel, B as mapEngine } from "../../chunks/PlacePanel.js";
+import "clsx";
 import { c as capabilities } from "../../chunks/configStore.js";
 import "maplibre-gl";
 import { $ as escape_html } from "../../chunks/context.js";
@@ -7,6 +8,16 @@ import "@mapbox/togeojson";
 import "jszip";
 import { b as base } from "../../chunks/server.js";
 import "@sveltejs/kit/internal/server";
+function CesiumCanvas($$renderer, $$props) {
+  $$renderer.component(($$renderer2) => {
+    let viewer;
+    onDestroy(() => {
+      viewer?.destroy();
+      viewer = void 0;
+    });
+    $$renderer2.push(`<div class="cesium-container svelte-wkkdor"></div>`);
+  });
+}
 function QuickSearchBar($$renderer, $$props) {
   $$renderer.component(($$renderer2) => {
     var $$store_subs;
@@ -336,7 +347,7 @@ function SideMenu($$renderer, $$props) {
           $$renderer2.push("<!--[!-->");
           if (section.id === "maps") {
             $$renderer2.push("<!--[-->");
-            $$renderer2.push(`<div class="menu-maps-list"><a href="https://diegonmarcos.github.io/mymaps-maps" class="menu-map-item" target="_blank" rel="noopener noreferrer"><span class="menu-map-icon">🏠</span> <span class="menu-map-name">Home</span></a> <!--[-->`);
+            $$renderer2.push(`<div class="menu-maps-list"><a href="https://diegonmarcos.github.io/maps" class="menu-map-item" target="_blank" rel="noopener noreferrer"><span class="menu-map-icon">🏠</span> <span class="menu-map-name">Home</span></a> <!--[-->`);
             const each_array_3 = ensure_array_like(mapProjections);
             for (let $$index_2 = 0, $$length2 = each_array_3.length; $$index_2 < $$length2; $$index_2++) {
               let projection = each_array_3[$$index_2];
@@ -387,8 +398,14 @@ function _page($$renderer, $$props) {
       });
     });
     $$renderer2.push(`<div id="app"><div class="app-map">`);
-    MapCanvas($$renderer2);
-    $$renderer2.push(`<!----></div> <div${attr_class("starfield", void 0, {
+    if (store_get($$store_subs ??= {}, "$mapEngine", mapEngine) === "cesium") {
+      $$renderer2.push("<!--[-->");
+      CesiumCanvas($$renderer2);
+    } else {
+      $$renderer2.push("<!--[!-->");
+      MapCanvas($$renderer2);
+    }
+    $$renderer2.push(`<!--]--></div> <div${attr_class("starfield", void 0, {
       "starfield--visible": store_get($$store_subs ??= {}, "$isGlobeView", isGlobeView)
     })}></div> <div class="app-ui">`);
     SideMenu($$renderer2);

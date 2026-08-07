@@ -1,5 +1,13 @@
 // Status Diagnostics Types
 
+export interface RepoCommit {
+  sha: string;
+  message: string;
+  author: string;
+  date: string;
+  url: string;
+}
+
 export interface DiagnosticData {
   warnings: Warning[];
   network: NetworkDiagnostics;
@@ -14,6 +22,7 @@ export interface DiagnosticData {
   codecs: CodecSupport;
   display: DisplayInfo;
   vitals: WebVitals;
+  commits: RepoCommit[];
 }
 
 export type WarningSeverity = 'critical' | 'high' | 'medium' | 'info';

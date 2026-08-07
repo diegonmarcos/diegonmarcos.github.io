@@ -667,7 +667,7 @@
         "bg": "#000000"
       },
       {
-        "_doc": "Generate vCard files + styled QR PNGs + qrcode.html from src/typescript/qrcode/qrcodes.json. Engine: front-qrcode-gen.sh (uses LOCAL tsx — deps declared in package.json: tsx, qr-code-styling, qrcode, sharp, jsdom). MUST run BEFORE the copy steps that ship qrcode.html + qrcodes.json + the PNGs to dist/.",
+        "_doc": "Generate vCard files + styled QR PNGs + qrcode.html from src/typescript/qrcode/qrcodes.json. Engine: front-qrcode-gen.sh (compiles with LOCAL tsc then runs with node — deps declared in package.json: typescript, qr-code-styling, qrcode, sharp, jsdom). MUST run BEFORE the copy steps that ship qrcode.html + qrcodes.json + the PNGs to dist/.",
         "mod": "qrcode_gen",
         "manifest": "src/typescript/qrcode/qrcodes.json"
       },
@@ -1162,11 +1162,6 @@
       },
       {
         "mod": "sass",
-        "input": "src/scss/theme-strava.scss",
-        "output": "style-strava.css"
-      },
-      {
-        "mod": "sass",
         "input": "src/scss/theme-youtube.scss",
         "output": "style-youtube.css"
       },
@@ -1184,6 +1179,26 @@
         "mod": "sass",
         "input": "src/scss/theme-vinyl.scss",
         "output": "style-vinyl.css"
+      },
+      {
+        "mod": "sass",
+        "input": "src/scss/theme-bar-cellar.scss",
+        "output": "style-bar-cellar.css"
+      },
+      {
+        "mod": "sass",
+        "input": "src/scss/theme-menu.scss",
+        "output": "style-menu.css"
+      },
+      {
+        "mod": "sass",
+        "input": "src/scss/theme-story.scss",
+        "output": "style-story.css"
+      },
+      {
+        "mod": "sass",
+        "input": "src/scss/style-facebook-diegonmarcos.scss",
+        "output": "style-facebook-diegonmarcos.css"
       },
       {
         "mod": "esbuild",
@@ -1210,11 +1225,13 @@
           "linkedin.html",
           "pinterest.html",
           "tidal.html",
-          "strava.html",
           "youtube.html",
           "icq.html",
           "shelf.html",
-          "vinyl.html"
+          "vinyl.html",
+          "bar-cellar.html",
+          "menu.html",
+          "theater.html"
         ]
       },
       {
@@ -1229,11 +1246,13 @@
           "linkedin.html",
           "pinterest.html",
           "tidal.html",
-          "strava.html",
           "youtube.html",
           "icq.html",
           "shelf.html",
-          "vinyl.html"
+          "vinyl.html",
+          "bar-cellar.html",
+          "menu.html",
+          "theater.html"
         ]
       },
       {
@@ -1252,11 +1271,13 @@
           "linkedin.html",
           "pinterest.html",
           "tidal.html",
-          "strava.html",
           "youtube.html",
           "icq.html",
           "shelf.html",
           "vinyl.html",
+          "bar-cellar.html",
+          "menu.html",
+          "theater.html",
           "script.js",
           "style.css",
           "style-mysocials.css",
@@ -1265,11 +1286,12 @@
           "style-linkedin.css",
           "style-pinterest.css",
           "style-tidal.css",
-          "style-strava.css",
           "style-youtube.css",
           "style-icq.css",
           "style-shelf.css",
-          "style-vinyl.css"
+          "style-vinyl.css",
+          "style-story.css",
+          "style-facebook-diegonmarcos.css"
         ],
         "precache": [
           "./",
@@ -1279,26 +1301,32 @@
           "./instagram-diegocmarcos_.html",
           "./instagram-diegocnmarcos_.html",
           "./linkedin.html",
+          "./facebook-diegonmarcos.html",
+          "./dms.html",
           "./pinterest.html",
           "./tidal.html",
-          "./strava.html",
           "./youtube.html",
           "./icq.html",
           "./shelf.html",
           "./vinyl.html",
+          "./bar-cellar.html",
+          "./menu.html",
+          "./theater.html",
           "./script.js",
           "./style.css",
           "./style-mysocials.css",
           "./style-orkut.css",
           "./style-instagram.css",
           "./style-linkedin.css",
-          "./style-pinterest.css",
+          "./style-facebook-diegonmarcos.css",
           "./style-tidal.css",
-          "./style-strava.css",
           "./style-youtube.css",
           "./style-icq.css",
           "./style-shelf.css",
-          "./style-vinyl.css"
+          "./style-vinyl.css",
+          "./data-facebook-diegonmarcos.json.js",
+          "./style-story.css",
+          "./style-facebook-diegonmarcos.css"
         ]
       }
     ],
@@ -1449,6 +1477,35 @@
         "mod": "copy",
         "files": "index.html",
         "from": "src"
+      },
+      {
+        "_doc": "Inject navigator.serviceWorker.register(...) before </head>. MUST run BEFORE esbuild_sw so the modified HTML feeds into BUILD_HASH.",
+        "mod": "sw_register",
+        "files": "index.html"
+      },
+      {
+        "_doc": "Inject single-namespace observability SDK (Sentry/OpenObserve-style). Mirrors console.* + errors + SW lifecycle to OPFS console.log. window.consoleLogs.{captureException, captureMessage, addBreadcrumb, read, readJSON, tail, clear, download}.",
+        "mod": "console_log",
+        "files": "index.html"
+      },
+      {
+        "_doc": "MUST run last — hashes the dist artifacts above to derive BUILD_HASH and inject it into the SW bundle.",
+        "mod": "esbuild_sw",
+        "input": "src/typescript/script-service-worker.ts",
+        "output": "script-service-worker.js",
+        "format": "iife",
+        "target": "es2020",
+        "hash_of": [
+          "index.html",
+          "script.js",
+          "style.css"
+        ],
+        "precache": [
+          "./",
+          "./index.html",
+          "./script.js",
+          "./style.css"
+        ]
       }
     ],
     "serve": {

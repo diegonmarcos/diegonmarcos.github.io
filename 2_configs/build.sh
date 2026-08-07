@@ -335,16 +335,18 @@ step_derive() {
 
   # cloud-fleet-declared.json — fetched from cloud repo (containers + GH Pages merged).
   # Symlinked into src_vue/src/data/ and linktree/src/data/ for Vite static import.
-  local cloud_fleet_url="https://raw.githubusercontent.com/diegonmarcos/cloud/main/2_configs/dist/cloud-fleet-declared.json"
-  local cloud_fleet_local="$HOME/git/cloud/2_configs/dist/cloud-fleet-declared.json"
-  if [ -f "$cloud_fleet_local" ]; then
-    cp "$cloud_fleet_local" "$DIST/cloud-fleet-declared.json"
-  elif curl -fsSL "$cloud_fleet_url" -o "$DIST/cloud-fleet-declared.json" 2>/dev/null; then
-    true
-  else
-    log "  WARN: cloud-fleet-declared.json unavailable — skipping"
-  fi
-  [ -f "$DIST/cloud-fleet-declared.json" ] && log "  cloud-fleet-declared.json: fetched ($(wc -c < "$DIST/cloud-fleet-declared.json") bytes)"
+  local cloud_dist_url="https://raw.githubusercontent.com/diegonmarcos/cloud/main/2_configs/dist"
+  local cloud_dist_local="$HOME/git/cloud/2_configs/dist"
+  for json_file in cloud-fleet-declared.json cloud-fleet-containers-declared.json _cloud-data-consolidated.json; do
+    if [ -f "$cloud_dist_local/$json_file" ]; then
+      cp "$cloud_dist_local/$json_file" "$DIST/$json_file"
+    elif curl -fsSL "$cloud_dist_url/$json_file" -o "$DIST/$json_file" 2>/dev/null; then
+      true
+    else
+      log "  WARN: $json_file unavailable — skipping"
+    fi
+    [ -f "$DIST/$json_file" ] && log "  $json_file: $(wc -c < "$DIST/$json_file") bytes"
+  done
 
   sect "Phase 2 · derive (per-project resolved configs)"
   # Wipe old per-project derives so deletions propagate

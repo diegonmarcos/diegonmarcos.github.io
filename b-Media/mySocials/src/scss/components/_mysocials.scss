@@ -103,15 +103,17 @@
     background: linear-gradient(160deg, var(--accent), #10131c);
 
     &--0 { display: block; }
-    &--1 { grid-template-columns: 1fr; }
-    &--2 { grid-template-columns: 1fr 1fr; }
+    &--1 { grid-template-columns: 1fr; grid-template-rows: 1fr; }
+    &--2 { grid-template-columns: 1fr 1fr; grid-template-rows: 1fr; }
     &--3 {
       grid-template-columns: 2fr 1fr;
       grid-template-rows: 1fr 1fr;
-      .hub-card__img:nth-child(1) { grid-row: 1 / 3; }
+      .hub-card__img:nth-child(2) { grid-row: 1 / 3; }
     }
   }
   &__img {
+    display: block;
+    height: 100%;
     background-size: cover;
     background-position: center;
   }

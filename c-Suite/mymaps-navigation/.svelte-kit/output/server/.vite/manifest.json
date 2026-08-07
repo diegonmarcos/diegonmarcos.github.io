@@ -164,6 +164,9 @@
       "_configStore.js",
       "_context.js",
       "_server.js"
+    ],
+    "css": [
+      "_app/immutable/assets/_page.BvMMASJQ.css"
     ]
   },
   "src/routes/+page.ts": {

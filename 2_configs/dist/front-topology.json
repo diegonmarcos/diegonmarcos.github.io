@@ -306,6 +306,9 @@
         "sass",
         "sass",
         "sass",
+        "sass",
+        "sass",
+        "sass",
         "esbuild",
         "copy",
         "sw_register",
@@ -349,10 +352,13 @@
         "copy",
         "sass",
         "esbuild",
-        "copy"
+        "copy",
+        "sw_register",
+        "console_log",
+        "esbuild_sw"
       ],
       "dep_count": 0,
-      "has_dist": false,
+      "has_dist": true,
       "deploy_name": "myTrackers"
     },
     {

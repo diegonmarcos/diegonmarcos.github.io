@@ -36,12 +36,12 @@ interface SlideTools {
 interface CardSwiperItem { type?: 'image' | 'video'; src: string; alt?: string; active?: boolean; }
 interface SubSection { subsection?: string; title?: string; }
 interface ContactIconsBlock extends SubSection { icons: IconItem[]; }
-interface ProfilesBlock    extends SubSection { primary_link?: Link; icons?: IconItem[]; }
+interface ProfilesBlock    extends SubSection { primary_link?: Link; hub_icons?: IconItem[]; icons?: IconItem[]; }
 interface CollapsibleGroup extends SubSection { links: Link[]; }
 interface CollapsibleBlock { toggle_target?: string; id?: string; groups?: CollapsibleGroup[]; sections?: ProfileSection[]; }
 
 interface ProfileSection {
-  title: string;
+  title?: string;
   // 'tool-links' — REPOS-style compact list: each link rendered as
   // <a class="tool-link"> (small icon + label, dense vertical stack).
   // Distinct from 'links' which emits the large <a class="link"> pills.
@@ -75,11 +75,16 @@ interface SlideRepos {
 
 interface SlideVentureCard {
   id: string; kind: 'venture-card'; title: string;
-  image?: { src: string; alt?: string };
+  image?: { src: string; alt?: string } | string;
   sections: ProfileSection[];
+  primary_link?: Link;
 }
 
-type Slide = SlideTools | SlideProfileCard | SlideRepos | SlideVentureCard;
+interface SlideTitleCard {
+  id: string; kind: 'title-card'; title: string;
+}
+
+type Slide = SlideTools | SlideProfileCard | SlideRepos | SlideVentureCard | SlideTitleCard;
 
 interface SectionCfg {
   section: { id: string; title: string; swiper_class: string };
@@ -248,7 +253,11 @@ function renderCardSwiper(items: CardSwiperItem[]): HTMLElement {
   for (const item of items) {
     const cls = `featured-image card-slide${item.active ? ' active' : ''}`;
     if (item.type === 'video') {
-      wrap.appendChild(el('video', { class: cls, src: item.src, autoplay: '', loop: '', muted: '', playsinline: '', preload: 'metadata' }));
+      const videoEl = el('video', { class: cls, src: item.src, autoplay: '', loop: '', muted: '', playsinline: '', preload: 'metadata' });
+      // setAttribute('muted','') is unreliable on some browsers/Android —
+      // the IDL property must be set directly for guaranteed mute.
+      (videoEl as HTMLVideoElement).muted = true;
+      wrap.appendChild(videoEl);
     } else {
       const imgAttrs: Record<string, string> = { class: cls, src: item.src, alt: item.alt ?? '', decoding: 'async' };
       if (item.active) {
@@ -283,7 +292,7 @@ function renderLinkAnchor(link: Link): HTMLElement {
 
 function renderProfileSection(sec: ProfileSection): HTMLElement {
   const wrap = el('div', { class: 'profile-section' });
-  wrap.appendChild(el('h3', { class: 'subsection-title' }, [sec.title]));
+  if (sec.title) wrap.appendChild(el('h3', { class: 'subsection-title' }, [sec.title]));
   if (sec.layout === 'contact-icons') {
     const row = el('div', { class: 'profile-icons' });
     for (const it of sec.items ?? []) row.appendChild(renderIconAnchor(it));
@@ -343,6 +352,11 @@ function renderProfileCardSlide(slide: SlideProfileCard): HTMLElement {
   if (slide.profiles) {
     if (slide.profiles.subsection) linksContainer.appendChild(el('h3', { class: 'subsection-title' }, [slide.profiles.subsection]));
     if (slide.profiles.primary_link) linksContainer.appendChild(renderLinkAnchor(slide.profiles.primary_link));
+    if (slide.profiles.hub_icons?.length) {
+      const hubRow = el('div', { class: 'profile-icons profile-icons--hubs' });
+      for (const it of slide.profiles.hub_icons) hubRow.appendChild(renderIconAnchor(it));
+      linksContainer.appendChild(hubRow);
+    }
     if (slide.profiles.icons?.length) {
       const row = el('div', { class: 'profile-icons' });
       for (const it of slide.profiles.icons) row.appendChild(renderIconAnchor(it));
@@ -420,10 +434,21 @@ function renderReposSlide(slide: SlideRepos): HTMLElement {
 function renderVentureCardSlide(slide: SlideVentureCard): HTMLElement {
   const linkSection = el('div', { class: 'link-section' });
   linkSection.appendChild(el('h2', { class: 'section-title' }, [slide.title]));
-  if (slide.image) linkSection.appendChild(featuredImg(slide.image.src, slide.image.alt ?? slide.title, false));
+  if (slide.image) {
+    const imgSrc = typeof slide.image === 'string' ? slide.image : slide.image.src;
+    const imgAlt = typeof slide.image === 'string' ? slide.title : (slide.image.alt ?? slide.title);
+    linkSection.appendChild(featuredImg(imgSrc, imgAlt, false));
+  }
   const linksContainer = el('div', { class: 'links-container' });
   for (const sec of slide.sections) linksContainer.appendChild(renderProfileSection(sec));
+  if (slide.primary_link) linksContainer.appendChild(renderLinkAnchor(slide.primary_link));
   linkSection.appendChild(linksContainer);
+  return el('div', { class: 'swiper-slide' }, [linkSection]);
+}
+
+function renderTitleCardSlide(slide: SlideTitleCard): HTMLElement {
+  const linkSection = el('div', { class: 'link-section link-section--title-card' });
+  linkSection.appendChild(el('h2', { class: 'title-card__title' }, [slide.title]));
   return el('div', { class: 'swiper-slide' }, [linkSection]);
 }
 
@@ -439,6 +464,7 @@ export function renderSlide(id: string): HTMLElement | null {
     case 'profile-card':  return renderProfileCardSlide(slide);
     case 'repos':         return renderReposSlide(slide);
     case 'venture-card':  return renderVentureCardSlide(slide);
+    case 'title-card':    return renderTitleCardSlide(slide);
   }
   return null;
 }

@@ -1,5 +1,6 @@
 @use '../settings/colors' as *;
 @use '../settings/typography' as *;
+@use '../settings/breakpoints' as *;
 @use '../tools/mixins' as *;
 
 .app-card {

@@ -124,6 +124,9 @@
       "_index2.js",
       "_index.js",
       "_context.js"
+    ],
+    "css": [
+      "_app/immutable/assets/_page.BRSoZVae.css"
     ]
   }
 }

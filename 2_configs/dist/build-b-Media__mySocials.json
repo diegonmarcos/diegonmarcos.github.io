@@ -60,11 +60,6 @@
     },
     {
       "mod": "sass",
-      "input": "src/scss/theme-strava.scss",
-      "output": "style-strava.css"
-    },
-    {
-      "mod": "sass",
       "input": "src/scss/theme-youtube.scss",
       "output": "style-youtube.css"
     },
@@ -82,6 +77,26 @@
       "mod": "sass",
       "input": "src/scss/theme-vinyl.scss",
       "output": "style-vinyl.css"
+    },
+    {
+      "mod": "sass",
+      "input": "src/scss/theme-bar-cellar.scss",
+      "output": "style-bar-cellar.css"
+    },
+    {
+      "mod": "sass",
+      "input": "src/scss/theme-menu.scss",
+      "output": "style-menu.css"
+    },
+    {
+      "mod": "sass",
+      "input": "src/scss/theme-story.scss",
+      "output": "style-story.css"
+    },
+    {
+      "mod": "sass",
+      "input": "src/scss/style-facebook-diegonmarcos.scss",
+      "output": "style-facebook-diegonmarcos.css"
     },
     {
       "mod": "esbuild",
@@ -108,11 +123,13 @@
         "linkedin.html",
         "pinterest.html",
         "tidal.html",
-        "strava.html",
         "youtube.html",
         "icq.html",
         "shelf.html",
-        "vinyl.html"
+        "vinyl.html",
+        "bar-cellar.html",
+        "menu.html",
+        "theater.html"
       ]
     },
     {
@@ -127,11 +144,13 @@
         "linkedin.html",
         "pinterest.html",
         "tidal.html",
-        "strava.html",
         "youtube.html",
         "icq.html",
         "shelf.html",
-        "vinyl.html"
+        "vinyl.html",
+        "bar-cellar.html",
+        "menu.html",
+        "theater.html"
       ]
     },
     {
@@ -150,11 +169,13 @@
         "linkedin.html",
         "pinterest.html",
         "tidal.html",
-        "strava.html",
         "youtube.html",
         "icq.html",
         "shelf.html",
         "vinyl.html",
+        "bar-cellar.html",
+        "menu.html",
+        "theater.html",
         "script.js",
         "style.css",
         "style-mysocials.css",
@@ -163,11 +184,12 @@
         "style-linkedin.css",
         "style-pinterest.css",
         "style-tidal.css",
-        "style-strava.css",
         "style-youtube.css",
         "style-icq.css",
         "style-shelf.css",
-        "style-vinyl.css"
+        "style-vinyl.css",
+        "style-story.css",
+        "style-facebook-diegonmarcos.css"
       ],
       "precache": [
         "./",
@@ -177,26 +199,32 @@
         "./instagram-diegocmarcos_.html",
         "./instagram-diegocnmarcos_.html",
         "./linkedin.html",
+        "./facebook-diegonmarcos.html",
+        "./dms.html",
         "./pinterest.html",
         "./tidal.html",
-        "./strava.html",
         "./youtube.html",
         "./icq.html",
         "./shelf.html",
         "./vinyl.html",
+        "./bar-cellar.html",
+        "./menu.html",
+        "./theater.html",
         "./script.js",
         "./style.css",
         "./style-mysocials.css",
         "./style-orkut.css",
         "./style-instagram.css",
         "./style-linkedin.css",
-        "./style-pinterest.css",
+        "./style-facebook-diegonmarcos.css",
         "./style-tidal.css",
-        "./style-strava.css",
         "./style-youtube.css",
         "./style-icq.css",
         "./style-shelf.css",
-        "./style-vinyl.css"
+        "./style-vinyl.css",
+        "./data-facebook-diegonmarcos.json.js",
+        "./style-story.css",
+        "./style-facebook-diegonmarcos.css"
       ]
     }
   ],

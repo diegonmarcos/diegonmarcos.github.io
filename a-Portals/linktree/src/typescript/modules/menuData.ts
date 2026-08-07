@@ -38,10 +38,10 @@ export const MENU_GROUPS: MenuGroup[] = [
     label: 'Dev',
     items: [
       { id: 'status-toggle', icon: 'database.svg', label: 'Status' },
-      { id: 'about-toggle', icon: 'info-circle.svg', label: 'About' },
       { id: 'eruda-toggle', icon: 'code.svg', label: 'Dev Tools' },
       { id: 'logcat-toggle', icon: 'file-stack.svg', label: 'Logcat' },
       { id: 'sw-reset-toggle', icon: 'refresh.svg', label: 'Clear Cache' },
+      { id: 'about-toggle', icon: 'info-circle.svg', label: 'About' },
     ],
   },
 ];

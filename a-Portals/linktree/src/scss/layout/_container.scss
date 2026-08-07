@@ -102,18 +102,32 @@
 // Card view modes:
 // - cards-view-single-card (default): the 3 groups stacked full-height,
 //   one card visible at a time via swiper — normal browsing.
-// - cards-view-all-cards (zoom out): the 3 groups placed side by side
-//   instead of stacked, shrunk to fit so all of them are visible together.
-:root.cards-view-all-cards main {
+// - cards-view-all-cards (zoom out): each group stays in its original
+//   (stacked) position, but its Swiper is torn down (see carousel.ts
+//   teardownCarousels()) and all of its cards open in a row to the right
+//   instead of just the first one.
+:root.cards-view-all-cards .section-box {
+    height: auto;
+    min-height: 0;
+}
+
+:root.cards-view-all-cards .swiper-wrapper {
     display: flex;
     flex-direction: row;
     align-items: flex-start;
+    overflow-x: auto;
     gap: 1rem;
-    zoom: 0.32;
+    height: auto;
 }
 
-:root.cards-view-all-cards .section-box {
-    flex: 1;
-    min-width: 0;
-    margin-bottom: 0;
+:root.cards-view-all-cards .swiper-slide {
+    flex: 0 0 320px;
+    width: 320px;
+    height: auto;
+}
+
+:root.cards-view-all-cards .swiper-button-prev,
+:root.cards-view-all-cards .swiper-button-next,
+:root.cards-view-all-cards .swiper-pagination {
+    display: none;
 }

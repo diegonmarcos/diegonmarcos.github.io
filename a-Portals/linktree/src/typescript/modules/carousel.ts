@@ -304,38 +304,11 @@ function initClickSelection(): void {
 }
 
 /**
- * Initialize carousels
+ * Create (or re-create) the 3 Swiper instances. Split out from
+ * initCarousels() so cards-view-all-cards mode can tear these down and
+ * rebuild them without re-registering keyboard/click/trackpad listeners.
  */
-export function initCarousels(): void {
-  // Get carousel rows
-  const profRow = querySelector<HTMLElement>('.professional-profiles-section .carousel-row');
-  const persRow = querySelector<HTMLElement>('.personal-profiles-section .carousel-row');
-  const pToolsRow = querySelector<HTMLElement>('.projects-section .carousel-row');
-
-  if (!profRow || !persRow || !pToolsRow) return;
-
-  professionalRow = profRow;
-  personalRow = persRow;
-  projectsRow = pToolsRow;
-
-  // Get navigation elements
-  const profPrev = querySelector<HTMLElement>('.professional-prev');
-  const profNext = querySelector<HTMLElement>('.professional-next');
-  const persPrev = querySelector<HTMLElement>('.personal-prev');
-  const persNext = querySelector<HTMLElement>('.personal-next');
-  const pToolsPrev = querySelector<HTMLElement>('.projects-prev');
-  const pToolsNext = querySelector<HTMLElement>('.projects-next');
-
-  if (!profPrev || !profNext || !persPrev || !persNext || !pToolsPrev || !pToolsNext) return;
-
-  professionalPrev = profPrev;
-  professionalNext = profNext;
-  personalPrev = persPrev;
-  personalNext = persNext;
-  projectsPrev = pToolsPrev;
-  projectsNext = pToolsNext;
-
-  // Initialize Swiper instances
+function createSwiperInstances(): void {
   professionalSwiper = new Swiper('.professional-swiper', {
     ...swiperConfig,
     navigation: {
@@ -371,6 +344,63 @@ export function initCarousels(): void {
       clickable: true,
     },
   });
+}
+
+/**
+ * cards-view-all-cards mode: destroy the Swiper instances so their
+ * creative-effect transforms/inline styles are gone and plain CSS can lay
+ * out every .swiper-slide in a row instead of stacking one at a time.
+ */
+export function teardownCarousels(): void {
+  professionalSwiper?.destroy(true, true);
+  personalSwiper?.destroy(true, true);
+  projectsSwiper?.destroy(true, true);
+}
+
+/**
+ * cards-view-single-card mode: rebuild the Swiper instances torn down by
+ * teardownCarousels(). Row/nav elements and their listeners are untouched.
+ */
+export function rebuildCarousels(): void {
+  createSwiperInstances();
+  updateArrowStates();
+  updateTrackpadListeners();
+}
+
+/**
+ * Initialize carousels
+ */
+export function initCarousels(): void {
+  // Get carousel rows
+  const profRow = querySelector<HTMLElement>('.professional-profiles-section .carousel-row');
+  const persRow = querySelector<HTMLElement>('.personal-profiles-section .carousel-row');
+  const pToolsRow = querySelector<HTMLElement>('.projects-section .carousel-row');
+
+  if (!profRow || !persRow || !pToolsRow) return;
+
+  professionalRow = profRow;
+  personalRow = persRow;
+  projectsRow = pToolsRow;
+
+  // Get navigation elements
+  const profPrev = querySelector<HTMLElement>('.professional-prev');
+  const profNext = querySelector<HTMLElement>('.professional-next');
+  const persPrev = querySelector<HTMLElement>('.personal-prev');
+  const persNext = querySelector<HTMLElement>('.personal-next');
+  const pToolsPrev = querySelector<HTMLElement>('.projects-prev');
+  const pToolsNext = querySelector<HTMLElement>('.projects-next');
+
+  if (!profPrev || !profNext || !persPrev || !persNext || !pToolsPrev || !pToolsNext) return;
+
+  professionalPrev = profPrev;
+  professionalNext = profNext;
+  personalPrev = persPrev;
+  personalNext = persNext;
+  projectsPrev = pToolsPrev;
+  projectsNext = pToolsNext;
+
+  // Initialize Swiper instances
+  createSwiperInstances();
 
   // Set initial selected state
   addClass(professionalRow, 'selected');

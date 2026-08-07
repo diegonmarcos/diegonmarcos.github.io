@@ -104,8 +104,12 @@
 //   one card visible at a time via swiper — normal browsing.
 // - cards-view-all-cards (zoom out): each group stays in its original
 //   (stacked) position, but its Swiper is torn down (see carousel.ts
-//   teardownCarousels()) and all of its cards open in a row to the right
-//   instead of just the first one.
+//   teardownCarousels()) and ALL of its cards are shown at once, wrapped
+//   to fit the screen width instead of scrolling off to the side.
+:root.cards-view-all-cards main {
+    zoom: 0.5;
+}
+
 :root.cards-view-all-cards .section-box {
     height: auto;
     min-height: 0;
@@ -113,16 +117,16 @@
 
 :root.cards-view-all-cards .swiper-wrapper {
     display: flex;
-    flex-direction: row;
+    flex-flow: row wrap;
     align-items: flex-start;
-    overflow-x: auto;
-    gap: 1rem;
+    justify-content: center;
+    gap: 0.75rem;
     height: auto;
 }
 
 :root.cards-view-all-cards .swiper-slide {
-    flex: 0 0 320px;
-    width: 320px;
+    flex: 0 1 180px;
+    width: 180px;
     height: auto;
 }
 

@@ -100,8 +100,8 @@ export function initCollapsibleSections(): void {
 
 /**
  * Initialize controls FAB (floating action button)
- * Desktop: Hover to expand, auto-collapse after 1 second
- * Mobile: Click/tap to toggle, NO auto-collapse
+ * Desktop: Hover to expand, closes when the mouse leaves the container
+ * Mobile: Click/tap to toggle
  */
 export function initControlsToggle(): void {
   const controlsFab = getElementById<HTMLElement>('controls-fab');
@@ -110,66 +110,29 @@ export function initControlsToggle(): void {
 
   if (!controlsFab || !controlsList || !container) return;
 
-  let autoCloseTimeout: number | null = null;
-
   // Detect if device is mobile/touch
   const isMobile = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
 
   const closeControls = () => {
     removeClass(controlsList, 'open');
     removeClass(controlsFab, 'open');
-    if (autoCloseTimeout) {
-      clearTimeout(autoCloseTimeout);
-      autoCloseTimeout = null;
-    }
   };
 
-  const openControls = (withAutoClose: boolean = true) => {
+  const openControls = () => {
     addClass(controlsList, 'open');
     addClass(controlsFab, 'open');
-
-    // Only auto-close on desktop, NOT on mobile
-    if (withAutoClose && !isMobile) {
-      autoCloseTimeout = window.setTimeout(() => {
-        closeControls();
-      }, 1000);
-    }
   };
 
-  const cancelAutoClose = () => {
-    if (autoCloseTimeout) {
-      clearTimeout(autoCloseTimeout);
-      autoCloseTimeout = null;
-    }
-  };
-
-  const restartAutoClose = () => {
-    cancelAutoClose();
-    if (hasClass(controlsList, 'open') && !isMobile) {
-      autoCloseTimeout = window.setTimeout(() => {
-        closeControls();
-      }, 1000);
-    }
-  };
-
-  // Desktop: Hover to expand
+  // Desktop: hover to expand, mouseleave on the container (fab + list) to close.
+  // No timers here — a timer-based auto-close raced with continued hovering
+  // and closed the menu out from under the cursor.
   if (!isMobile) {
-    // Hover FAB button to expand (not container!)
     controlsFab.addEventListener('mouseenter', () => {
-      cancelAutoClose();
-      if (!hasClass(controlsList, 'open')) {
-        openControls(true);
-      }
+      openControls();
     });
 
-    // When hovering over the opened list, cancel auto-close
-    controlsList.addEventListener('mouseenter', () => {
-      cancelAutoClose();
-    });
-
-    // Restart auto-close when leaving the whole container
     container.addEventListener('mouseleave', () => {
-      restartAutoClose();
+      closeControls();
     });
   }
 
@@ -181,8 +144,7 @@ export function initControlsToggle(): void {
     if (hasClass(controlsList, 'open')) {
       closeControls();
     } else {
-      // On mobile: no auto-close, on desktop: with auto-close
-      openControls(!isMobile);
+      openControls();
     }
   });
 
@@ -194,7 +156,7 @@ export function initControlsToggle(): void {
       if (hasClass(controlsList, 'open')) {
         closeControls();
       } else {
-        openControls(false); // No auto-close on mobile
+        openControls();
       }
     }, { passive: false });
   }

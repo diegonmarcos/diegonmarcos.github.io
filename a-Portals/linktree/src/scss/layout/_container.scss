@@ -105,14 +105,27 @@
 // - cards-view-all-cards (zoom out): each group stays in its original
 //   (stacked) position, but its Swiper is torn down (see carousel.ts
 //   teardownCarousels()) and ALL of its cards are shown at once, wrapped
-//   to fit the screen width instead of scrolling off to the side.
+//   to fit the screen width. The 3 groups are forced into equal thirds
+//   of the viewport (instead of 100dvh snap sections) so all 3 are on
+//   screen together; a group with too many cards to fit its third
+//   scrolls internally rather than pushing the other groups off-screen.
+html.cards-view-all-cards {
+    scroll-snap-type: none;
+    overflow-y: hidden;
+}
+
 :root.cards-view-all-cards main {
-    zoom: 0.5;
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
 }
 
 :root.cards-view-all-cards .section-box {
+    flex: 1 1 0;
     height: auto;
     min-height: 0;
+    overflow-y: auto;
+    scroll-snap-align: none;
 }
 
 :root.cards-view-all-cards .swiper-wrapper {
@@ -120,13 +133,17 @@
     flex-flow: row wrap;
     align-items: flex-start;
     justify-content: center;
-    gap: 0.75rem;
+    gap: 0.5rem;
     height: auto;
 }
 
+// Fixed width + aspect-ratio (matching the single-card view's roughly
+// 3:4 portrait shape) instead of height: auto, so shrunk cards keep
+// their proportions rather than getting squashed by wrapped content.
 :root.cards-view-all-cards .swiper-slide {
-    flex: 0 1 180px;
-    width: 180px;
+    flex: 0 1 140px;
+    width: 140px;
+    aspect-ratio: 3 / 4;
     height: auto;
 }
 

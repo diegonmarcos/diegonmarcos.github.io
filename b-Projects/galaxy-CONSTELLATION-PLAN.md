@@ -143,9 +143,9 @@ follow-cam. Coordinator (Opus) pushes ONCE after both commits + both builds veri
 ## CI oper/ deploy discipline (learned P1–P4a)
 
 Two workflows auto-commit to `main` per push — Pages Deployment ("commit built dist back") and
-"Regenerate (2_configs)". **Bursting several pushes within minutes makes their runs overlap and the
+"Regenerate (1_front-configs)". **Bursting several pushes within minutes makes their runs overlap and the
 loser's push is rejected non-fast-forward** (commit-back autostash does not stash *untracked*
-regenerated `2_configs/*.json`, so a concurrently-landed sibling project's config collides on
+regenerated `1_front-configs/*.json`, so a concurrently-landed sibling project's config collides on
 rebase-checkout). Spaced single pushes go green (history + `30fee59f` confirm). **Rule: one push,
 let its run settle to green, then the next.** Do NOT rewrite the shared commit-back engine to "fix"
 this mid-scope — it serves 30+ projects and works under normal cadence.

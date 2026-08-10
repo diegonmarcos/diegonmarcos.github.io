@@ -1,6 +1,6 @@
 import { ref } from 'vue'
 import type { ServiceSection, TreeService } from './types'
-// ponytail: static import bundled by vite-plugin-singlefile; file is a symlink to 2_configs/dist/
+// ponytail: static import bundled by vite-plugin-singlefile; file is a symlink to 1_front-configs/dist/
 import fleetJson from '../data/cloud-fleet-declared.json'
 
 const SUBGROUP_ICON: Record<string, string> = {

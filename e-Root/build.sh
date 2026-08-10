@@ -1,1 +1,1 @@
-../1_workflows/src/scripts/_engine.sh
+../1_configs/src/gha/scripts/_engine.sh

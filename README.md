@@ -193,11 +193,11 @@ Full details: [Code Practices](./1.ops/30_Code_Practise.md) | [Stack Spec](./1.o
 **Pattern**: Universal engine + declarative config
 
 ```
-1_workflows/src/scripts/_engine.sh  Universal build engine (SoT, ~65K)
-1_workflows/src/scripts/build.sh    Root orchestrator (SoT)
-build.sh                Symlink → 1_workflows/src/scripts/build.sh
+1_configs/src/gha/scripts/_engine.sh  Universal build engine (SoT, ~65K)
+1_configs/src/gha/scripts/build.sh    Root orchestrator (SoT)
+build.sh                Symlink → 1_configs/src/gha/scripts/build.sh
 config.json             Root config (analytics, defaults, system deps)
-<project>/build.sh      Symlink → ../../1_workflows/src/scripts/_engine.sh
+<project>/build.sh      Symlink → ../../1_configs/src/gha/scripts/_engine.sh
 <project>/build.json    Per-project declarative config
 ```
 
@@ -298,7 +298,7 @@ Root configuration for the monorepo orchestrator:
 
 ```
 <project>/
-├── build.sh            → ../../1_workflows/src/scripts/_engine.sh (symlink)
+├── build.sh            → ../../1_configs/src/gha/scripts/_engine.sh (symlink)
 ├── build.json          Declarative build config
 ├── src/
 │   ├── scss/           ITCSS stylesheets

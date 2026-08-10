@@ -1,1 +1,1 @@
-1_workflows/src/scripts/build.sh
+1_configs/src/gha/scripts/build.sh

@@ -1,6 +1,6 @@
 {
   "_meta": {
-    "generated_by": "2_configs/build.sh derive",
+    "generated_by": "1_front-configs/build.sh derive",
     "schema": "front-deps/v1",
     "total_services": 29
   },

@@ -1,6 +1,6 @@
 {
   "_meta": {
-    "generated_by": "2_configs/build.sh consolidate",
+    "generated_by": "1_front-configs/build.sh consolidate",
     "timestamp": "",
     "schema": "front-data/v1"
   },
@@ -6506,7 +6506,7 @@
         "slide": "projects",
         "column": "CLOUD",
         "label": "Solutions - User",
-        "url": "https://github.com/diegonmarcos/cloud/tree/main/2_configs",
+        "url": "https://github.com/diegonmarcos/cloud/tree/main/1_front-configs",
         "icon": "settings.svg"
       },
       {

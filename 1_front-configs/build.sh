@@ -31,7 +31,7 @@ list_projects() {
     proj_path="${rel%/build.json}"
     top="${proj_path%%/*}"
     case "$top" in
-      1_front-configs|1_configs|0_docs|0_tasks|node_modules|.git|.github|I_*|II_*|z_*|.obsidian) continue ;;
+      1_front-configs|1_configs|0_specs|0_tasks|node_modules|.git|.github|I_*|II_*|z_*|.obsidian) continue ;;
     esac
     if [[ "$proj_path" == */* ]]; then
       cat="${proj_path%%/*}"; proj="${proj_path#*/}"

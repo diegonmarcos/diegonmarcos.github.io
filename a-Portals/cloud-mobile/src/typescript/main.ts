@@ -9,6 +9,9 @@
 import { getData } from './data';
 import { initDrawer } from './drawer';
 import { initStars } from './stars';
+import { initOverlays } from './overlays';
+import { initFanMenu } from './fan-menu';
+import { initStackCards } from './cards';
 
 // document.currentScript is only valid synchronously while this script is
 // the one executing — capture it now, before any async boundary, for use
@@ -19,6 +22,9 @@ function initApp(): void {
   const data = getData();
   initDrawer(data);
   initStars(data);
+  initOverlays(data);
+  initFanMenu(data);
+  initStackCards();
 }
 
 document.addEventListener('DOMContentLoaded', () => {

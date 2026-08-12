@@ -1,0 +1,88 @@
+@use '../mixins' as *;
+
+// ==========================================================================
+// Stack cards — Communication / Infos / Tools "Apps"/"Admin" tab content
+// (collapsible cards) and bare section dividers
+// ==========================================================================
+
+.stack-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.stack-divider {
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: .05em;
+    color: var(--text-secondary);
+    margin: 14px 4px 2px;
+}
+
+.stack-card {
+    background: var(--glass-bg);
+    border: 1px solid var(--glass-border);
+    border-radius: 16px;
+    overflow: hidden;
+}
+
+.stack-card__header {
+    width: 100%;
+    @include flex-row(space-between, center, 8px);
+    padding: 14px;
+    text-align: left;
+}
+
+.stack-card__title {
+    color: var(--cloud-primary);
+    font-weight: 600;
+    font-size: 15px;
+    text-decoration: none;
+}
+
+a.stack-card__title:hover {
+    text-decoration: underline;
+}
+
+.stack-card__chevron {
+    color: var(--text-secondary);
+    transition: transform var(--transition-fast);
+}
+
+.stack-card__header[aria-expanded="false"] .stack-card__chevron {
+    transform: rotate(-90deg);
+}
+
+.stack-card__content {
+    padding: 0 14px 14px;
+}
+
+.stack-card__header[aria-expanded="false"] + .stack-card__content {
+    display: none;
+}
+
+.stack-card__subtitle {
+    color: var(--text-secondary);
+    font-size: 12px;
+    margin: -6px 0 10px;
+}
+
+.stack-card__stats {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.stack-card__stat {
+    @include flex-row(space-between, center, 8px);
+    font-size: 13px;
+}
+
+.stack-card__stat span {
+    color: var(--text-secondary);
+}
+
+.stack-card__stat b {
+    color: var(--text-primary);
+    font-weight: 600;
+}

@@ -7,10 +7,16 @@
 @use 'base';
 @use 'components/islands';
 @use 'components/stars';
+@use 'components/home-cube';
 @use 'components/content';
 @use 'components/tiles';
+@use 'components/app-icons';
 @use 'components/bottom-nav';
 @use 'components/drawer';
 @use 'components/content-blocks';
+@use 'components/stack-cards';
+@use 'components/settings-list';
 @use 'components/page-list';
 @use 'components/radial-menu';
+@use 'components/overlay-sheet';
+@use 'components/fan-menu';

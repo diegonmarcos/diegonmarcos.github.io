@@ -20,7 +20,7 @@
   "stars": {
     "sirius": {
       "nodes": [
-        { "id": "home-apps", "label": "Home Apps", "icon": "home", "target": "section:home" },
+        { "id": "home-apps", "label": "Home Apps", "icon": "home", "target": "action:open_search" },
         { "id": "communication", "label": "Comms", "icon": "chat", "target": "section:communication" },
         { "id": "infos", "label": "Infos", "icon": "logs", "target": "section:infos" },
         { "id": "suite", "label": "Suite", "icon": "suite",
@@ -53,12 +53,29 @@
     }
   },
   "longPress": {
-    "_doc": "Bottom-nav long-press fan menus (real app: 380ms hold, PopupWindow anchored above the icon). Home uses a fixed 4-item menu; the other 4 read from each aggregator's own mode toggle.",
+    "_doc": "Bottom-nav long-press fan menus (real app: 380ms hold, PopupWindow anchored above the icon). Home uses a fixed 4-item menu; communication/infos/tools read from each's Apps|Admin mode toggle; suite reads its own Cloud|Phone|More set.",
     "home": [
-      { "id": "home-apps", "label": "Home Apps", "icon": "home", "target": "section:home" },
+      { "id": "home-apps", "label": "Home Apps", "icon": "home", "target": "action:open_search" },
       { "id": "recent-apps", "label": "Recent Apps", "icon": "cube", "target": null },
       { "id": "tabs", "label": "Tabs", "icon": "suite", "target": "page:apptabs/grid" },
       { "id": "update", "label": "Update", "icon": "refresh", "target": "action:open_update" }
+    ],
+    "communication": [
+      { "id": "apps", "label": "Apps", "icon": "chat", "target": "section:communication" },
+      { "id": "admin", "label": "Admin", "icon": "workflow", "target": "page:communication/admin" }
+    ],
+    "infos": [
+      { "id": "apps", "label": "Apps", "icon": "logs", "target": "section:infos" },
+      { "id": "admin", "label": "Admin", "icon": "workflow", "target": "page:infos/admin" }
+    ],
+    "suite": [
+      { "id": "cloud", "label": "Cloud", "icon": "suite", "target": "page:suite/cloud/quickmarks" },
+      { "id": "phone", "label": "Phone", "icon": "phone", "target": "page:suite/phone/quickmarks" },
+      { "id": "more", "label": "More", "icon": "more", "target": "page:suite/phone/all" }
+    ],
+    "tools": [
+      { "id": "apps", "label": "Apps", "icon": "tools", "target": "section:tools" },
+      { "id": "admin", "label": "Admin", "icon": "workflow", "target": "page:tools/admin" }
     ]
   },
   "search": {

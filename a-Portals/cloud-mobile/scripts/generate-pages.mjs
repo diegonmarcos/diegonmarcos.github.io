@@ -1,34 +1,41 @@
 #!/usr/bin/env node
-// Static page generator — walks src/data/cloud-mobile.json and emits one
-// real, independent, crawlable HTML file per route into dist/. No client
-// router: every navigation in the output is a plain <a href>. A small
-// shared script.js (built separately by esbuild) progressively enhances
-// the shipped pages (drawer open/close, radial star menus) — see
-// src/typescript/{drawer,stars}.ts. This script only runs at build time.
+// Static page generator — reads the data manifests under src/data/ (split by
+// domain, mirroring the real app's libs/ separation: shell chrome, the 4
+// TabbedSectionFragment aggregators, every content-only section, and the
+// Phone-tab mock app list) and emits one real, independent, crawlable HTML
+// file per route into dist/. No client router: every navigation is a plain
+// <a href>. A small shared script.js progressively enhances the shipped
+// pages (drawer, radial star menus, overlays, card collapse) — this script
+// only runs at build time.
 import { readFileSync, writeFileSync, mkdirSync } from 'node:fs';
 import { join, dirname } from 'node:path';
 
 const [, , PROJECT_DIR, DIST_DIR, MANIFEST] = process.argv;
-const data = JSON.parse(readFileSync(join(PROJECT_DIR, MANIFEST), 'utf8'));
-const { sections, bottomNav } = data;
+const DATA_DIR = join(PROJECT_DIR, dirname(MANIFEST));
+const readJson = (name) => JSON.parse(readFileSync(join(DATA_DIR, name), 'utf8'));
 
-// Single source of truth for the Phone tab's app grid — see mock-apps.json's
-// own _doc. Both suite/phone/quickmarks and suite/phone/all are DERIVED from
-// this one list (filtered by category + pinned flag), not hand-duplicated.
-const mockData = JSON.parse(readFileSync(join(PROJECT_DIR, dirname(MANIFEST), 'mock-apps.json'), 'utf8'));
+const shell = readJson('shell.json');
+const core = readJson('sections-core.json');
+const content = readJson('sections-content.json');
+const mockData = readJson('mock-apps.json');
+
+const { app, bottomNav, cube, stars, longPress, search, notificationCenter, updateOverlay } = shell;
+const sections = { ...core.sections, ...content.sections, home: { label: 'Home', icon: 'home', color: 'blue' } };
+
+// Both suite/phone/quickmarks and suite/phone/all are DERIVED from mock-apps
+// (filtered by category + pinned flag), not hand-duplicated per view.
 function phoneGroupsFromMockData(pinnedOnly) {
   const categories = [...new Set(mockData.apps.map((a) => a.category))];
   return categories.map((category) => {
     const apps = mockData.apps
       .filter((a) => a.category === category && (!pinnedOnly || a.pinned))
-      .map((a) => ({ name: a.name, icon: a.icon }));
+      .map((a) => ({ name: a.name }));
     const folders = mockData.folders
       .filter((f) => f.category === category)
-      .map((f) => ({ label: f.label, apps: f.apps }));
+      .map((f) => ({ label: f.label, apps: f.apps.map((a) => ({ name: a.name })) }));
     return { title: category, apps, folders };
   });
 }
-
 
 // ── target grammar → href (mirrors LauncherNavController's dispatch table) ─
 function resolveTarget(target) {
@@ -45,6 +52,15 @@ function routeHref(segments) {
 function relPrefix(depth) {
   return depth === 0 ? './' : '../'.repeat(depth);
 }
+function slug(s) {
+  return s.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
+}
+function hash(str) {
+  let h = 0;
+  for (let i = 0; i < str.length; i++) h = (h * 31 + str.charCodeAt(i)) >>> 0;
+  return h;
+}
+const TILE_COLORS = ['blue', 'green', 'purple', 'pink', 'orange', 'teal', 'amber', 'indigo'];
 
 // ── icon + tile markup ──────────────────────────────────────────────────
 function iconImg(icon, rel, cls) {
@@ -61,15 +77,177 @@ function tileHtml(tile, color, rel) {
   }
   return `<div class="${cls} tile--inert" role="listitem" aria-disabled="true">${icon}${label}</div>`;
 }
-// Real installed-app icons have no web equivalent (no such API, and
-// bundling third-party app icons would be a trademark problem anyway) — each
-// app in mock-apps.json instead carries its own closest-fit icon from our
-// set, so the grid still reads as varied/recognizable apps.
-function avatarTileHtml(name, icon, rel, href) {
-  const body = `${iconImg(icon, rel, 'tile__icon')}<span class="tile__label">${name}</span>`;
+// Cloud tab tiles are our own self-hosted services — generic functional
+// icons (mail/calendar/chat) make sense there. Phone tab tiles represent
+// real installed Android apps, which each have a distinct branded icon on a
+// real phone. We can't bundle real trademarked app icons, but showing them
+// as uniform outline icons erases exactly the visual distinction the real
+// app has between "our services" and "your apps" — so these render as a
+// colored initial-letter badge instead, deterministic per name (stable
+// across quickmarks/all, not random), so the grid reads as visually varied
+// like a real app drawer rather than a second copy of the Cloud tab style.
+function appIconHtml(name) {
+  const color = TILE_COLORS[hash(name) % TILE_COLORS.length];
+  const initial = name.charAt(0).toUpperCase();
+  return `<span class="tile__app-icon tile__app-icon--${color}">${initial}</span>`;
+}
+function avatarTileHtml(name, rel, href) {
+  const body = `${appIconHtml(name)}<span class="tile__label">${name}</span>`;
   return href
     ? `<a class="tile tile--app" href="${href}" role="listitem">${body}</a>`
     : `<div class="tile tile--app tile--inert" role="listitem" aria-disabled="true">${body}</div>`;
+}
+
+// ── AggregatorStackFragment card rendering (Communication/Infos/Tools) ───
+function cardHtml(card, rel) {
+  if (card.kind === 'section_title') {
+    return `<h2 class="stack-divider">${card.title}</h2>`;
+  }
+  const { href, external } = resolveTarget(card.target);
+  const titleInner = href
+    ? `<a class="stack-card__title" href="${href}"${external ? ' target="_blank" rel="noopener"' : ''}>${card.title}</a>`
+    : `<span class="stack-card__title">${card.title}</span>`;
+  const subtitle = card.subtitle ? `<p class="stack-card__subtitle">${card.subtitle}</p>` : '';
+  const body = card.kind === 'stats' && card.rows
+    ? `<div class="stack-card__stats">${card.rows.map(([l, v]) => `<div class="stack-card__stat"><span>${l}</span><b>${v}</b></div>`).join('')}</div>`
+    : `<div class="stack-card__body"><div class="page-body__skeleton-row"></div></div>`;
+  return `<div class="stack-card">
+                <button class="stack-card__header" type="button" aria-expanded="true">${titleInner}<span class="stack-card__chevron" aria-hidden="true">⌄</span></button>
+                <div class="stack-card__content">${subtitle}${body}</div>
+            </div>`;
+}
+function stackBody(cards, rel) {
+  return `<div class="stack-list">
+                ${cards.map((c) => cardHtml(c, rel)).join('\n                ')}
+            </div>`;
+}
+
+// ── Apps|Admin tab strip + body, for Communication/Infos/Tools ──────────
+function modeTabsHtml(sectionId, active) {
+  return `<div class="page-tabs" role="tablist">
+                <a class="page-tabs__item${active === 'apps' ? ' is-active' : ''}" href="${routeHref([sectionId])}">Apps</a>
+                <a class="page-tabs__item${active === 'admin' ? ' is-active' : ''}" href="${routeHref([sectionId, 'admin'])}">Admin</a>
+            </div>`;
+}
+function tabbedSectionBody(section, sectionId, mode, rel) {
+  const modeData = section[mode];
+  const inner = modeData.type === 'stack'
+    ? stackBody(modeData.cards, rel)
+    : tileGridBody(modeData.tiles, rel, () => section.color);
+  return `${modeTabsHtml(sectionId, mode)}\n            ${inner}`;
+}
+
+// ── page-type content renderers ─────────────────────────────────────────
+function tileGridBody(tiles, rel, colorFn) {
+  const items = tiles.map((t) => tileHtml(t, colorFn(t), rel)).join('\n                ');
+  return `<div class="tile-grid" role="list">
+                ${items}
+            </div>`;
+}
+
+function groupListBody(groups, rel, footer, footerHref) {
+  const blocks = groups.map((g) => `
+            <section class="tile-group">
+                <h2 class="tile-group__title">${g.title}</h2>
+                <div class="tile-grid tile-grid--dense" role="list">
+                    ${g.tiles.map((t) => tileHtml(t, 'blue', rel)).join('\n                    ')}
+                </div>
+            </section>`).join('\n');
+  const footerHtml = footer && footerHref ? `<a class="footer-link" href="${footerHref}">${footer.label}</a>` : '';
+  return `${blocks}\n            ${footerHtml}`;
+}
+
+// groups come pre-filtered from phoneGroupsFromMockData(pinnedOnly).
+function appListBody(groups, rel, footer, isAllMode, footerHref) {
+  const blocks = groups.map((g) => {
+    const folderHtml = (g.folders || []).map((f) => `
+                <div class="app-folder">
+                    <h3 class="app-folder__title">${f.label}</h3>
+                    <div class="tile-grid tile-grid--dense" role="list">
+                        ${f.apps.map((a) => avatarTileHtml(a.name, rel, null)).join('\n                        ')}
+                    </div>
+                </div>`).join('');
+    return `
+            <section class="tile-group">
+                <h2 class="tile-group__title">${g.title}</h2>
+                <div class="tile-grid tile-grid--dense" role="list">
+                    ${g.apps.map((a) => avatarTileHtml(a.name, rel, null)).join('\n                    ')}
+                </div>${folderHtml}
+            </section>`;
+  }).join('\n');
+  const footerHtml = footer && !isAllMode && footerHref ? `<a class="footer-link" href="${footerHref}">${footer.label}</a>` : '';
+  return `${blocks}\n            ${footerHtml}`;
+}
+
+function pageListBody(pages, sectionId, rel) {
+  const items = pages.map((p) => {
+    const label = typeof p === 'string' ? p : p.label;
+    const id = typeof p === 'string' ? slug(p) : p.id;
+    const override = typeof p === 'object' && p.target ? resolveTarget(p.target) : null;
+    const href = override ? override.href : routeHref([sectionId, id]);
+    return href
+      ? `<a class="page-list__item" href="${href}">${label}</a>`
+      : `<span class="page-list__item page-list__item--inert" aria-disabled="true">${label}</span>`;
+  }).join('\n                ');
+  return `<div class="page-list">
+                ${items}
+            </div>`;
+}
+
+function pageTabsHtml(pages, sectionId, activeId, rel) {
+  const items = pages.map((p) => {
+    const label = typeof p === 'string' ? p : p.label;
+    const id = typeof p === 'string' ? slug(p) : p.id;
+    const override = typeof p === 'object' && p.target ? resolveTarget(p.target) : null;
+    const href = override ? override.href : routeHref([sectionId, id]);
+    const active = id === activeId ? ' is-active' : '';
+    return href
+      ? `<a class="page-tabs__item${active}" href="${href}">${label}</a>`
+      : `<span class="page-tabs__item page-tabs__item--inert" aria-disabled="true">${label}</span>`;
+  }).join('\n                ');
+  return `<div class="page-tabs" role="tablist">
+                ${items}
+            </div>`;
+}
+
+function skeletonBody() {
+  return `<div class="page-body">
+                <div class="page-body__skeleton-row"></div>
+                <div class="page-body__skeleton-row"></div>
+                <div class="page-body__skeleton-row"></div>
+            </div>`;
+}
+
+// Real config pages carry actual rows (settings values) instead of generic
+// shimmer placeholders — it's a fully enumerable settings screen, not
+// backend-fed content, so there's no reason to fake-load it.
+function settingsListBody(rows) {
+  const items = rows.map(([label, value]) => `
+                <div class="settings-list__row">
+                    <span class="settings-list__label">${label}</span>
+                    <span class="settings-list__value">${value}</span>
+                </div>`).join('');
+  return `<div class="settings-list">${items}
+            </div>`;
+}
+
+// ── the home cube — Home3DFragment's real centerpiece, CSS 3D transforms ─
+function homeCubeHtml() {
+  const face = (cls) => `<div class="home-cube__face home-cube__face--${cls}"></div>`;
+  return `<div class="home-cube" aria-hidden="true">
+                <div class="home-cube__inner">
+                    ${['front', 'back', 'right', 'left', 'top', 'bottom'].map(face).join('\n                    ')}
+                </div>
+            </div>`;
+}
+
+function write(routeSegments, title, sectionId, bodyHtml, backHref) {
+  const depth = routeSegments.length;
+  const html = renderShell({ title, sectionId, depth, bodyHtml, backHref });
+  const dir = join(DIST_DIR, ...routeSegments);
+  mkdirSync(dir, { recursive: true });
+  writeFileSync(join(dir, 'index.html'), html);
+  console.log(`✓ /${routeSegments.join('/')}/`);
 }
 
 // ── shared shell ─────────────────────────────────────────────────────────
@@ -83,7 +261,7 @@ function renderShell({ title, sectionId, depth, bodyHtml, backHref }) {
   const navItems = bottomNav.map((id) => {
     const s = sections[id];
     const active = id === sectionId ? ' is-active' : '';
-    return `<a class="bottom-nav__item${active}" href="${rel}${id === 'home' ? '' : id + '/'}">${iconImg(s.icon, rel, '')}<span>${s.label}</span></a>`;
+    return `<a class="bottom-nav__item${active}" href="${rel}${id === 'home' ? '' : id + '/'}" data-longpress="${id}">${iconImg(s.icon, rel, '')}<span>${s.label}</span></a>`;
   }).join('\n            ');
 
   return `<!DOCTYPE html>
@@ -108,6 +286,7 @@ function renderShell({ title, sectionId, depth, bodyHtml, backHref }) {
 <body data-section="${sectionId}">
     <div class="shell${isHome}">
         <div class="galaxy-backdrop" aria-hidden="true"></div>
+        ${sectionId === 'home' ? homeCubeHtml() : ''}
 
         <button class="star star--sirius" id="star-sirius" type="button" aria-label="Open menu">✦</button>
         <button class="star star--canopus" id="star-canopus" type="button" aria-label="Quick configs">✦</button>
@@ -118,10 +297,10 @@ function renderShell({ title, sectionId, depth, bodyHtml, backHref }) {
                 ${iconImg('menu', rel, '')}
             </button>
             ${backBtn}
-            <div class="dynamic-island" aria-hidden="true">
+            <button class="dynamic-island" id="dynamic-island" type="button" aria-label="Notifications">
                 <span class="dynamic-island__wave"></span>
                 <span class="dynamic-island__label">Cloud SuperApp</span>
-            </div>
+            </button>
             <span class="toolbar-island__spacer" aria-hidden="true"></span>
         </header>
 
@@ -162,143 +341,40 @@ function renderShell({ title, sectionId, depth, bodyHtml, backHref }) {
     </aside>
 
     <div class="radial-menu" id="radial-menu" hidden aria-hidden="true"></div>
+    <div class="fan-menu" id="fan-menu" hidden aria-hidden="true"></div>
+    <div class="overlay-sheet" id="notification-center" hidden></div>
+    <div class="overlay-sheet overlay-sheet--full" id="search-sheet" hidden></div>
+    <div class="overlay-sheet overlay-sheet--full" id="update-overlay" hidden></div>
 
     <script>window.PORTAL_DATA = window.PORTAL_DATA || {};</script>
-    <script src="${rel}data-cloud-mobile.json.js"></script>
+    <script src="${rel}data-shell.json.js"></script>
+    <script src="${rel}data-sections-core.json.js"></script>
+    <script src="${rel}data-sections-content.json.js"></script>
+    <script src="${rel}data-mock-apps.json.js"></script>
     <script src="${rel}script.js"></script>
 </body>
 </html>
 `;
 }
 
-// ── page-type content renderers ─────────────────────────────────────────
-function tileGridBody(tiles, rel, colorFn) {
-  const items = tiles.map((t) => tileHtml(t, colorFn(t), rel)).join('\n                ');
-  return `<div class="tile-grid" role="list">
-                ${items}
-            </div>`;
-}
-
-function groupListBody(groups, rel, footer, footerHref) {
-  const blocks = groups.map((g) => `
-            <section class="tile-group">
-                <h2 class="tile-group__title">${g.title}</h2>
-                <div class="tile-grid tile-grid--dense" role="list">
-                    ${g.tiles.map((t) => tileHtml(t, 'blue', rel)).join('\n                    ')}
-                </div>
-            </section>`).join('\n');
-  // footer.target is an Android-only "action:" string with no generic web
-  // destination (resolveTarget would return null) — the caller passes the
-  // real sibling page href it already knows it generated (e.g. the /all/
-  // view), since that's what this footer conceptually points to.
-  const footerHtml = footer && footerHref ? `<a class="footer-link" href="${footerHref}">${footer.label}</a>` : '';
-  return `${blocks}\n            ${footerHtml}`;
-}
-
-// groups come pre-filtered from phoneGroupsFromMockData(pinnedOnly) — quickmarks
-// passes pinned-only groups, all passes every mock-apps.json entry per category.
-function appListBody(groups, rel, footer, isAllMode, footerHref) {
-  const blocks = groups.map((g) => {
-    const folderHtml = (g.folders || []).map((f) => `
-                <div class="app-folder">
-                    <h3 class="app-folder__title">${f.label}</h3>
-                    <div class="tile-grid tile-grid--dense" role="list">
-                        ${f.apps.map((a) => avatarTileHtml(a.name, a.icon, rel, null)).join('\n                        ')}
-                    </div>
-                </div>`).join('');
-    return `
-            <section class="tile-group">
-                <h2 class="tile-group__title">${g.title}</h2>
-                <div class="tile-grid tile-grid--dense" role="list">
-                    ${g.apps.map((a) => avatarTileHtml(a.name, a.icon, rel, null)).join('\n                    ')}
-                </div>${folderHtml}
-            </section>`;
-  }).join('\n');
-  const footerHtml = footer && !isAllMode && footerHref ? `<a class="footer-link" href="${footerHref}">${footer.label}</a>` : '';
-  return `${blocks}\n            ${footerHtml}`;
-}
-
-function pageListBody(pages, sectionId, rel) {
-  const items = pages.map((p) => {
-    const label = typeof p === 'string' ? p : p.label;
-    const id = typeof p === 'string' ? slug(p) : p.id;
-    const override = typeof p === 'object' && p.target ? resolveTarget(p.target) : null;
-    const href = override ? override.href : routeHref([sectionId, id]);
-    return href
-      ? `<a class="page-list__item" href="${href}">${label}</a>`
-      : `<span class="page-list__item page-list__item--inert" aria-disabled="true">${label}</span>`;
-  }).join('\n                ');
-  return `<div class="page-list">
-                ${items}
-            </div>`;
-}
-
-// Horizontal sibling-page tab strip — reuses the .page-tabs/.page-tabs__item
-// classes already defined in _content.scss (present since the first build,
-// unused since pages stopped being client-rendered). Every tab is now a
-// real <a href> to a real sibling page instead of a cosmetic JS toggle.
-function pageTabsHtml(pages, sectionId, activeId, rel) {
-  const items = pages.map((p) => {
-    const label = typeof p === 'string' ? p : p.label;
-    const id = typeof p === 'string' ? slug(p) : p.id;
-    const override = typeof p === 'object' && p.target ? resolveTarget(p.target) : null;
-    const href = override ? override.href : routeHref([sectionId, id]);
-    const active = id === activeId ? ' is-active' : '';
-    return href
-      ? `<a class="page-tabs__item${active}" href="${href}">${label}</a>`
-      : `<span class="page-tabs__item page-tabs__item--inert" aria-disabled="true">${label}</span>`;
-  }).join('\n                ');
-  return `<div class="page-tabs" role="tablist">
-                ${items}
-            </div>`;
-}
-
-function skeletonBody() {
-  return `<div class="page-body">
-                <div class="page-body__skeleton-row"></div>
-                <div class="page-body__skeleton-row"></div>
-                <div class="page-body__skeleton-row"></div>
-            </div>`;
-}
-
-function slug(s) {
-  return s.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
-}
-
-// ── colors: aggregator tiles use the section's own color; home tiles use
-// the color of the section each tile points to. ─────────────────────────
-function write(routeSegments, title, sectionId, bodyHtml, backHref) {
-  const depth = routeSegments.length;
-  const html = renderShell({ title, sectionId, depth, bodyHtml, backHref });
-  const dir = join(DIST_DIR, ...routeSegments);
-  mkdirSync(dir, { recursive: true });
-  writeFileSync(join(dir, 'index.html'), html);
-  console.log(`✓ /${routeSegments.join('/')}/`);
-}
-
 // ── route tree ───────────────────────────────────────────────────────────
-// Home
-{
-  const rel = relPrefix(0);
-  const homeTiles = Object.entries(sections)
-    .filter(([id]) => id !== 'home')
-    .map(([id, s]) => ({ id, label: s.label, icon: s.icon, target: `section:${id}`, _color: s.color }));
-  const body = tileGridBody(homeTiles, rel, (t) => t._color);
-  write([], 'Home', 'home', body, null);
-}
+// Home — the real app's default (and only) home screen is Home3DFragment,
+// a centered animated cube, NOT a tile grid. Discovery of sections happens
+// via bottom nav / drawer / the star radial menus, matching the real app.
+write([], 'Home', 'home', '', null);
 
-// Aggregator sections (communication, infos, tools) — plain tile grids.
+// Communication / Infos / Tools — TabbedSectionFragment: real Apps|Admin
+// tabs, each mode rendering either a tile grid or an AggregatorStack card
+// list depending on section[mode].type (verbatim from build.json).
 for (const id of ['communication', 'infos', 'tools']) {
   const s = sections[id];
-  const rel = relPrefix(1);
-  const body = tileGridBody(s.tiles, rel, () => s.color);
-  write([id], s.label, id, body, routeHref([]));
+  const rel1 = relPrefix(1);
+  const rel2 = relPrefix(2);
+  write([id], s.label, id, tabbedSectionBody(s, id, 'apps', rel1), routeHref([]));
+  write([id, 'admin'], `${s.label} · Admin`, id, tabbedSectionBody(s, id, 'admin', rel2), routeHref([id]));
 }
 
 // Suite — root index (the 5 home-style shortcuts) + cloud/phone x quickmarks/all.
-// The real app's SuiteCloudPhoneTabsFragment hosts an inline Cloud/Phone tab
-// switcher (not a separate section) — replicated here as a real 2-link tab
-// strip that preserves the current quickmarks/all mode while switching.
 {
   const s = sections.suite;
   const rel1 = relPrefix(1);
@@ -313,24 +389,23 @@ for (const id of ['communication', 'infos', 'tools']) {
   write(['suite', 'cloud', 'quickmarks'], 'Suite · Cloud', 'suite',
     cloudPhoneTabs('quickmarks', 'cloud') + '\n            ' +
     groupListBody(s.cloud.tileGroups, rel3, s.cloud.footer, routeHref(['suite', 'cloud', 'all'])), routeHref(['suite']));
-  // Cloud's "all" view (real app: action:open_suite_cloud_all, a full-screen
-  // push of the same tile_groups with no tab chrome) has no more real data to
-  // reveal than quickmarks already shows — unlike Phone, there's no larger
-  // "installed cloud services" universe to pad out, so this reuses the exact
-  // same tileGroups rather than inventing filler content.
+  // Cloud's "all" (real app: action:open_suite_cloud_all, full-screen push of
+  // the same tile_groups with no tab chrome) has no larger real-data universe
+  // to reveal than quickmarks — unlike Phone, there's no bigger "installed
+  // cloud services" list to pad out, so this reuses the same tileGroups.
   write(['suite', 'cloud', 'all'], 'Suite · Cloud · All', 'suite',
     groupListBody(s.cloud.tileGroups, rel3, null), routeHref(['suite']));
 
   write(['suite', 'phone', 'quickmarks'], 'Suite · Phone', 'suite',
     cloudPhoneTabs('quickmarks', 'phone') + '\n            ' +
-    appListBody(phoneGroupsFromMockData(true), rel3, s.phone.footer, false, routeHref(['suite', 'phone', 'all'])), routeHref(['suite']));
+    appListBody(phoneGroupsFromMockData(true), rel3, shell.longPress ? null : null, false, routeHref(['suite', 'phone', 'all'])), routeHref(['suite']));
   write(['suite', 'phone', 'all'], 'Suite · Phone · All', 'suite',
     cloudPhoneTabs('all', 'phone') + '\n            ' +
-    appListBody(phoneGroupsFromMockData(false), rel3, s.phone.footer, true), routeHref(['suite']));
+    appListBody(phoneGroupsFromMockData(false), rel3, null, true), routeHref(['suite']));
 }
 
-// Content-only sections (mail, rss, calendar, drive, vault, chat, wg, solutions, config,
-// plus the 3 minimal stub sections Suite's Cloud tab page: targets point at).
+// Content-only sections. Config carries real settings rows; everything else
+// still gets skeleton placeholders (no real backend to reflect either way).
 for (const id of ['mail', 'rss', 'calendar', 'drive', 'vault', 'chat', 'wg', 'solutions', 'apptabs', 'myfin', 'health', 'config']) {
   const s = sections[id];
   const rel1 = relPrefix(1);
@@ -341,10 +416,9 @@ for (const id of ['mail', 'rss', 'calendar', 'drive', 'vault', 'chat', 'wg', 'so
     const label = typeof p === 'string' ? p : p.label;
     const pid = typeof p === 'string' ? slug(p) : p.id;
     if (typeof p === 'object' && p.target) continue; // routes elsewhere or inert — no own page
-    const body = s.pages.length > 1
-      ? `${pageTabsHtml(s.pages, id, pid, rel2)}\n            ${skeletonBody()}`
-      : skeletonBody();
-    write([id, pid], `${s.label} · ${label}`, id, body, routeHref([id]));
+    const tabs = s.pages.length > 1 ? `${pageTabsHtml(s.pages, id, pid, rel2)}\n            ` : '';
+    const inner = typeof p === 'object' && p.rows ? settingsListBody(p.rows) : skeletonBody();
+    write([id, pid], `${s.label} · ${label}`, id, tabs + inner, routeHref([id]));
   }
 }
 

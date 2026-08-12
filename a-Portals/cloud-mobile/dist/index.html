@@ -20,6 +20,16 @@
 <body data-section="home">
     <div class="shell is-home">
         <div class="galaxy-backdrop" aria-hidden="true"></div>
+        <div class="home-cube" aria-hidden="true">
+                <div class="home-cube__inner">
+                    <div class="home-cube__face home-cube__face--front"></div>
+                    <div class="home-cube__face home-cube__face--back"></div>
+                    <div class="home-cube__face home-cube__face--right"></div>
+                    <div class="home-cube__face home-cube__face--left"></div>
+                    <div class="home-cube__face home-cube__face--top"></div>
+                    <div class="home-cube__face home-cube__face--bottom"></div>
+                </div>
+            </div>
 
         <button class="star star--sirius" id="star-sirius" type="button" aria-label="Open menu">✦</button>
         <button class="star star--canopus" id="star-canopus" type="button" aria-label="Quick configs">✦</button>
@@ -30,41 +40,24 @@
                 <img class="" src="./public/icons/menu.svg" alt="">
             </button>
             <span class="back-btn" hidden></span>
-            <div class="dynamic-island" aria-hidden="true">
+            <button class="dynamic-island" id="dynamic-island" type="button" aria-label="Notifications">
                 <span class="dynamic-island__wave"></span>
                 <span class="dynamic-island__label">Cloud SuperApp</span>
-            </div>
+            </button>
             <span class="toolbar-island__spacer" aria-hidden="true"></span>
         </header>
 
         <main class="content" id="content">
             <h1 class="content__title">Home</h1>
-            <div class="tile-grid" role="list">
-                <a class="tile tile--green" href="/cloud-mobile/communication/" role="listitem"><img class="tile__icon" src="./public/icons/chat.svg" alt=""><span class="tile__label">Inboxes</span></a>
-                <a class="tile tile--purple" href="/cloud-mobile/infos/" role="listitem"><img class="tile__icon" src="./public/icons/logs.svg" alt=""><span class="tile__label">Infos</span></a>
-                <a class="tile tile--orange" href="/cloud-mobile/suite/" role="listitem"><img class="tile__icon" src="./public/icons/suite.svg" alt=""><span class="tile__label">Suite</span></a>
-                <a class="tile tile--teal" href="/cloud-mobile/tools/" role="listitem"><img class="tile__icon" src="./public/icons/tools.svg" alt=""><span class="tile__label">Labs</span></a>
-                <a class="tile tile--blue" href="/cloud-mobile/mail/" role="listitem"><img class="tile__icon" src="./public/icons/mail.svg" alt=""><span class="tile__label">Mail</span></a>
-                <a class="tile tile--amber" href="/cloud-mobile/rss/" role="listitem"><img class="tile__icon" src="./public/icons/rss.svg" alt=""><span class="tile__label">RSS</span></a>
-                <a class="tile tile--green" href="/cloud-mobile/calendar/" role="listitem"><img class="tile__icon" src="./public/icons/calendar.svg" alt=""><span class="tile__label">Calendar</span></a>
-                <a class="tile tile--indigo" href="/cloud-mobile/drive/" role="listitem"><img class="tile__icon" src="./public/icons/database.svg" alt=""><span class="tile__label">Drive</span></a>
-                <a class="tile tile--pink" href="/cloud-mobile/vault/" role="listitem"><img class="tile__icon" src="./public/icons/lock.svg" alt=""><span class="tile__label">Vault</span></a>
-                <a class="tile tile--teal" href="/cloud-mobile/chat/" role="listitem"><img class="tile__icon" src="./public/icons/chat.svg" alt=""><span class="tile__label">Chat</span></a>
-                <a class="tile tile--amber" href="/cloud-mobile/wg/" role="listitem"><img class="tile__icon" src="./public/icons/mesh.svg" alt=""><span class="tile__label">WG</span></a>
-                <a class="tile tile--purple" href="/cloud-mobile/solutions/" role="listitem"><img class="tile__icon" src="./public/icons/briefcase.svg" alt=""><span class="tile__label">Solutions</span></a>
-                <a class="tile tile--teal" href="/cloud-mobile/apptabs/" role="listitem"><img class="tile__icon" src="./public/icons/suite.svg" alt=""><span class="tile__label">Tabs</span></a>
-                <a class="tile tile--green" href="/cloud-mobile/myfin/" role="listitem"><img class="tile__icon" src="./public/icons/chart.svg" alt=""><span class="tile__label">MyFin</span></a>
-                <a class="tile tile--pink" href="/cloud-mobile/health/" role="listitem"><img class="tile__icon" src="./public/icons/heart.svg" alt=""><span class="tile__label">MyHealth</span></a>
-                <a class="tile tile--blue" href="/cloud-mobile/config/" role="listitem"><img class="tile__icon" src="./public/icons/settings.svg" alt=""><span class="tile__label">Configs</span></a>
-            </div>
+            
         </main>
 
         <nav class="bottom-nav" id="bottom-nav" aria-label="Primary">
-            <a class="bottom-nav__item" href="./communication/"><img class="" src="./public/icons/chat.svg" alt=""><span>Inboxes</span></a>
-            <a class="bottom-nav__item" href="./infos/"><img class="" src="./public/icons/logs.svg" alt=""><span>Infos</span></a>
-            <a class="bottom-nav__item is-active" href="./"><img class="" src="./public/icons/home.svg" alt=""><span>Home</span></a>
-            <a class="bottom-nav__item" href="./suite/"><img class="" src="./public/icons/suite.svg" alt=""><span>Suite</span></a>
-            <a class="bottom-nav__item" href="./tools/"><img class="" src="./public/icons/tools.svg" alt=""><span>Labs</span></a>
+            <a class="bottom-nav__item" href="./communication/" data-longpress="communication"><img class="" src="./public/icons/chat.svg" alt=""><span>Inboxes</span></a>
+            <a class="bottom-nav__item" href="./infos/" data-longpress="infos"><img class="" src="./public/icons/logs.svg" alt=""><span>Infos</span></a>
+            <a class="bottom-nav__item is-active" href="./" data-longpress="home"><img class="" src="./public/icons/home.svg" alt=""><span>Home</span></a>
+            <a class="bottom-nav__item" href="./suite/" data-longpress="suite"><img class="" src="./public/icons/suite.svg" alt=""><span>Suite</span></a>
+            <a class="bottom-nav__item" href="./tools/" data-longpress="tools"><img class="" src="./public/icons/tools.svg" alt=""><span>Labs</span></a>
         </nav>
     </div>
 
@@ -95,9 +88,16 @@
     </aside>
 
     <div class="radial-menu" id="radial-menu" hidden aria-hidden="true"></div>
+    <div class="fan-menu" id="fan-menu" hidden aria-hidden="true"></div>
+    <div class="overlay-sheet" id="notification-center" hidden></div>
+    <div class="overlay-sheet overlay-sheet--full" id="search-sheet" hidden></div>
+    <div class="overlay-sheet overlay-sheet--full" id="update-overlay" hidden></div>
 
     <script>window.PORTAL_DATA = window.PORTAL_DATA || {};</script>
-    <script src="./data-cloud-mobile.json.js"></script>
+    <script src="./data-shell.json.js"></script>
+    <script src="./data-sections-core.json.js"></script>
+    <script src="./data-sections-content.json.js"></script>
+    <script src="./data-mock-apps.json.js"></script>
     <script src="./script.js"></script>
 </body>
 </html>

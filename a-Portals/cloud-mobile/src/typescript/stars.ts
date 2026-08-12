@@ -71,7 +71,11 @@ function siriusItems(nodes: RadialNode[]): RadialItem[] {
       return { id: n.id, label: n.label, href: null, inert: false, node: n };
     }
     const href = resolveTarget(n.target).href;
-    return { id: n.id, label: n.label, href, inert: href === null };
+    // node is kept for leaf items too (not just parents) so commitIndex()
+    // below can still see the raw target string — needed to recognize the
+    // action:open_search / action:open_update special targets, which
+    // resolveTarget() deliberately maps to a null href (see nav.ts).
+    return { id: n.id, label: n.label, href, inert: href === null, node: n };
   });
 }
 
@@ -239,6 +243,20 @@ export function initStars(data: PortalData): void {
     }
     if (item.node?.children && item.node.children.length > 0) {
       drillInto(item.node.children);
+      return;
+    }
+    // Sirius's "Home Apps" node (and any future sirius leaf) can carry the
+    // same action:open_search / action:open_update targets the long-press
+    // fan menu handles (see fan-menu.ts's handleSelect) — resolveTarget()
+    // has no web href for these, so they must be special-cased here too,
+    // ahead of the plain href branch below.
+    const actionTarget = item.node?.target;
+    if (actionTarget === 'action:open_search' || actionTarget === 'action:open_update') {
+      closeMenu();
+      import('./overlays').then((mod) => {
+        if (actionTarget === 'action:open_search') mod.openSearch();
+        else mod.openUpdateOverlay();
+      });
       return;
     }
     if (item.href) {

@@ -20,6 +20,7 @@
 <body data-section="wg">
     <div class="shell">
         <div class="galaxy-backdrop" aria-hidden="true"></div>
+        
 
         <button class="star star--sirius" id="star-sirius" type="button" aria-label="Open menu">✦</button>
         <button class="star star--canopus" id="star-canopus" type="button" aria-label="Quick configs">✦</button>
@@ -30,10 +31,10 @@
                 <img class="" src="../public/icons/menu.svg" alt="">
             </button>
             <a class="back-btn" href="/cloud-mobile/" aria-label="Back"><img class="" src="../public/icons/back.svg" alt=""></a>
-            <div class="dynamic-island" aria-hidden="true">
+            <button class="dynamic-island" id="dynamic-island" type="button" aria-label="Notifications">
                 <span class="dynamic-island__wave"></span>
                 <span class="dynamic-island__label">Cloud SuperApp</span>
-            </div>
+            </button>
             <span class="toolbar-island__spacer" aria-hidden="true"></span>
         </header>
 
@@ -45,11 +46,11 @@
         </main>
 
         <nav class="bottom-nav" id="bottom-nav" aria-label="Primary">
-            <a class="bottom-nav__item" href="../communication/"><img class="" src="../public/icons/chat.svg" alt=""><span>Inboxes</span></a>
-            <a class="bottom-nav__item" href="../infos/"><img class="" src="../public/icons/logs.svg" alt=""><span>Infos</span></a>
-            <a class="bottom-nav__item" href="../"><img class="" src="../public/icons/home.svg" alt=""><span>Home</span></a>
-            <a class="bottom-nav__item" href="../suite/"><img class="" src="../public/icons/suite.svg" alt=""><span>Suite</span></a>
-            <a class="bottom-nav__item" href="../tools/"><img class="" src="../public/icons/tools.svg" alt=""><span>Labs</span></a>
+            <a class="bottom-nav__item" href="../communication/" data-longpress="communication"><img class="" src="../public/icons/chat.svg" alt=""><span>Inboxes</span></a>
+            <a class="bottom-nav__item" href="../infos/" data-longpress="infos"><img class="" src="../public/icons/logs.svg" alt=""><span>Infos</span></a>
+            <a class="bottom-nav__item" href="../" data-longpress="home"><img class="" src="../public/icons/home.svg" alt=""><span>Home</span></a>
+            <a class="bottom-nav__item" href="../suite/" data-longpress="suite"><img class="" src="../public/icons/suite.svg" alt=""><span>Suite</span></a>
+            <a class="bottom-nav__item" href="../tools/" data-longpress="tools"><img class="" src="../public/icons/tools.svg" alt=""><span>Labs</span></a>
         </nav>
     </div>
 
@@ -80,9 +81,16 @@
     </aside>
 
     <div class="radial-menu" id="radial-menu" hidden aria-hidden="true"></div>
+    <div class="fan-menu" id="fan-menu" hidden aria-hidden="true"></div>
+    <div class="overlay-sheet" id="notification-center" hidden></div>
+    <div class="overlay-sheet overlay-sheet--full" id="search-sheet" hidden></div>
+    <div class="overlay-sheet overlay-sheet--full" id="update-overlay" hidden></div>
 
     <script>window.PORTAL_DATA = window.PORTAL_DATA || {};</script>
-    <script src="../data-cloud-mobile.json.js"></script>
+    <script src="../data-shell.json.js"></script>
+    <script src="../data-sections-core.json.js"></script>
+    <script src="../data-sections-content.json.js"></script>
+    <script src="../data-mock-apps.json.js"></script>
     <script src="../script.js"></script>
 </body>
 </html>

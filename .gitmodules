@@ -13,3 +13,4 @@
 [submodule "tools"]
 	path = II_tools
 	url = git@github.com:diegonmarcos/ops-Tooling.git
+	shallow = true

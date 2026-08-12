@@ -56,6 +56,29 @@ function buildNavRow(href: string | null, label: string, icon?: string): HTMLEle
   return row;
 }
 
+const MODE_STORAGE_KEY = 'cloud-mobile-mode';
+
+// The real app's user banner is tappable to flip a persistent Apps/Admin
+// mode. This site doesn't (yet) render separate admin content per section,
+// but the toggle affordance itself — tap, flip, persist across visits — is
+// part of the real UI and is replicated faithfully here rather than left as
+// a dead button.
+function readMode(fallback: string): string {
+  try {
+    return window.localStorage.getItem(MODE_STORAGE_KEY) ?? fallback;
+  } catch {
+    return fallback;
+  }
+}
+
+function writeMode(mode: string): void {
+  try {
+    window.localStorage.setItem(MODE_STORAGE_KEY, mode);
+  } catch {
+    /* localStorage unavailable (private mode, etc.) — mode just won't persist */
+  }
+}
+
 function fillBanner(data: PortalData): void {
   const setText = (id: string, text: string): void => {
     const el = document.getElementById(id);
@@ -67,7 +90,19 @@ function fillBanner(data: PortalData): void {
   setText('drawer-user-avatar', data.app.user.initials);
   setText('drawer-user-name', data.app.user.name);
   setText('drawer-user-email', data.app.user.email);
-  setText('drawer-user-mode', `Mode: ${data.app.user.mode}`);
+
+  const modeEl = document.getElementById('drawer-user-mode');
+  const bannerBtn = document.getElementById('drawer-user-banner');
+  if (!modeEl || !bannerBtn) return;
+
+  let mode = readMode(data.app.user.mode);
+  modeEl.textContent = `Mode: ${mode}`;
+
+  bannerBtn.addEventListener('click', () => {
+    mode = mode === 'Apps' ? 'Admin' : 'Apps';
+    writeMode(mode);
+    modeEl.textContent = `Mode: ${mode}`;
+  });
 }
 
 // Home tab: every bottomNav destination first (in order), then every other

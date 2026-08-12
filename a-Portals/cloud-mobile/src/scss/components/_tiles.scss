@@ -9,15 +9,21 @@
     padding: 2px;
 }
 
+// 128dp is the real app's default tile height (item_tile.xml) — only the
+// weight-based grouped grids (Suite's dense variant below) shrink it.
 .tile {
     @include flex-center;
     flex-direction: column;
     gap: 6px;
-    min-height: 104px;
+    min-height: 128px;
     border-radius: var(--radius-tile);
     padding: 10px 6px;
     transition: transform var(--transition-fast);
     border: 0;
+}
+
+.tile-grid--dense .tile {
+    min-height: 96px;
 }
 
 .tile:active {

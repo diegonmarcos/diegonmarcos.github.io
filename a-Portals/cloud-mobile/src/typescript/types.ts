@@ -2,7 +2,25 @@ export interface Tile {
   id: string;
   label: string;
   icon: string;
-  target?: string;
+  target?: string | null;
+}
+
+export type PageEntry = string | { id: string; label: string; target?: string };
+
+export interface TileGroup {
+  title: string;
+  tiles: Tile[];
+}
+
+export interface AppFolder {
+  label: string;
+  apps: string[];
+}
+
+export interface AppGroup {
+  title: string;
+  apps: string[];
+  folders?: AppFolder[];
 }
 
 export interface Section {
@@ -11,7 +29,11 @@ export interface Section {
   color: string;
   aggregator?: boolean;
   tiles?: Tile[];
-  pages?: string[];
+  pages?: PageEntry[];
+  // Suite only:
+  tabs?: string[];
+  cloud?: { footer?: Tile; tileGroups: TileGroup[] };
+  phone?: { footer?: Tile; appGroups: AppGroup[] };
 }
 
 export interface PortalUser {
@@ -27,8 +49,23 @@ export interface PortalApp {
   user: PortalUser;
 }
 
+export interface RadialNode {
+  id: string;
+  label: string;
+  icon?: string;
+  target?: string;
+  children?: RadialNode[];
+}
+
+export interface StarsConfig {
+  sirius: { nodes: RadialNode[] };
+  canopus: { fixedSection: string };
+  centauri: { recentApps: string[] };
+}
+
 export interface PortalData {
   app: PortalApp;
   bottomNav: string[];
   sections: Record<string, Section>;
+  stars: StarsConfig;
 }

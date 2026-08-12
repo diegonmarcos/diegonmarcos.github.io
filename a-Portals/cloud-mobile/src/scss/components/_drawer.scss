@@ -140,3 +140,27 @@
 .drawer__nav-item:active {
     background: var(--glass-border);
 }
+
+.drawer__nav-item--inert {
+    opacity: .5;
+}
+
+// Drawer tabs — Home / current-section switcher
+.drawer__tabs {
+    @include flex-row(stretch, stretch, 0);
+    border-bottom: 1px solid var(--glass-border);
+}
+
+.drawer__tab {
+    flex: 1;
+    padding: 12px;
+    text-align: center;
+    font-size: 13px;
+    color: var(--text-secondary);
+    border-bottom: 2px solid transparent;
+}
+
+.drawer__tab.is-active {
+    color: var(--text-primary);
+    border-bottom-color: var(--island-accent);
+}

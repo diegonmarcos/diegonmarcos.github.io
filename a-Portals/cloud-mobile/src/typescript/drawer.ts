@@ -1,82 +1,187 @@
-import type { PortalData, Section } from './types';
-import { navigateTo } from './router';
+// src/typescript/drawer.ts — slide-in nav drawer.
+//
+// The real Android app's drawer is exactly 2 tabs: "Home" (every top-level
+// destination) and the current section (that section's own tiles/pages) —
+// never a flat combined list. This module only populates and wires the
+// drawer markup the generated HTML shell already contains (see
+// scripts/generate-pages.mjs); it never creates that markup itself, and it
+// never navigates on its own — every link it builds is a real <a href>.
 
-const appNameEl = document.getElementById('drawer-app-name');
-const appBuildEl = document.getElementById('drawer-app-build');
-const avatarEl = document.getElementById('drawer-user-avatar');
-const userNameEl = document.getElementById('drawer-user-name');
-const userEmailEl = document.getElementById('drawer-user-email');
-const userModeEl = document.getElementById('drawer-user-mode');
-const navEl = document.getElementById('drawer-nav');
-const drawerEl = document.getElementById('drawer');
-const scrimEl = document.getElementById('drawer-scrim');
-const hamburgerBtn = document.getElementById('hamburger-btn');
-const starSiriusBtn = document.getElementById('star-sirius');
+import type { PageEntry, PortalData, Section } from './types';
+import { resolveTarget, routeHref } from './nav';
 
-function openDrawer(): void {
-  if (!drawerEl || !scrimEl) return;
-  drawerEl.classList.add('is-open');
-  scrimEl.classList.add('is-open');
-  drawerEl.setAttribute('aria-hidden', 'false');
-  if (hamburgerBtn) hamburgerBtn.setAttribute('aria-expanded', 'true');
+// The shared script.js runs unmodified on every page regardless of nesting
+// depth, so — unlike the build-time generator's per-page relative `rel`
+// prefix — icons here always use this absolute, root-anchored path.
+function iconSrc(icon: string): string {
+  return `/cloud-mobile/public/icons/${icon}.svg`;
 }
 
-function closeDrawer(): void {
-  if (!drawerEl || !scrimEl) return;
-  drawerEl.classList.remove('is-open');
-  scrimEl.classList.remove('is-open');
-  drawerEl.setAttribute('aria-hidden', 'true');
-  if (hamburgerBtn) hamburgerBtn.setAttribute('aria-expanded', 'false');
+function slugify(value: string): string {
+  return value
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/(^-|-$)/g, '');
 }
 
-function buildNavItem(id: string, section: Section): HTMLButtonElement {
-  const item = document.createElement('button');
-  item.className = 'drawer__nav-item';
-  item.type = 'button';
+// One drawer row: a real <a> when href resolves, otherwise a non-navigating
+// <span> — mirrors the tile/page-list inert pattern used across the
+// generated pages themselves.
+function buildNavRow(href: string | null, label: string, icon?: string): HTMLElement {
+  let row: HTMLElement;
+  if (href) {
+    const anchor = document.createElement('a');
+    anchor.href = href;
+    row = anchor;
+  } else {
+    row = document.createElement('span');
+  }
+  row.classList.add('drawer__nav-item');
+  if (!href) {
+    row.classList.add('drawer__nav-item--inert');
+    row.setAttribute('aria-disabled', 'true');
+  }
 
-  const icon = document.createElement('img');
-  icon.src = `public/icons/${section.icon}.svg`;
-  icon.alt = '';
+  if (icon) {
+    const iconEl = document.createElement('img');
+    iconEl.src = iconSrc(icon);
+    iconEl.alt = '';
+    row.appendChild(iconEl);
+  }
 
-  const label = document.createElement('span');
-  label.textContent = section.label;
+  const labelEl = document.createElement('span');
+  labelEl.textContent = label;
+  row.appendChild(labelEl);
 
-  item.appendChild(icon);
-  item.appendChild(label);
-  item.addEventListener('click', () => {
-    navigateTo(id);
-    closeDrawer();
+  return row;
+}
+
+function fillBanner(data: PortalData): void {
+  const setText = (id: string, text: string): void => {
+    const el = document.getElementById(id);
+    if (!el) return;
+    el.textContent = text;
+  };
+  setText('drawer-app-name', data.app.name);
+  setText('drawer-app-build', data.app.build);
+  setText('drawer-user-avatar', data.app.user.initials);
+  setText('drawer-user-name', data.app.user.name);
+  setText('drawer-user-email', data.app.user.email);
+  setText('drawer-user-mode', `Mode: ${data.app.user.mode}`);
+}
+
+// Home tab: every bottomNav destination first (in order), then every other
+// section (order doesn't matter) — i.e. all sections, deduplicated.
+function fillHomeNav(container: HTMLElement, data: PortalData): void {
+  container.innerHTML = '';
+  const remainingIds = Object.keys(data.sections).filter((id) => !data.bottomNav.includes(id));
+  const orderedIds = [...data.bottomNav, ...remainingIds];
+
+  orderedIds.forEach((id) => {
+    const section: Section | undefined = data.sections[id];
+    if (!section) return;
+    container.appendChild(buildNavRow(routeHref([id]), section.label, section.icon));
+  });
+}
+
+// Section tab: the current section's own tiles (aggregators) or pages
+// (content-only sections). Left empty for 'home' — its own tab covers that.
+function fillSectionNav(container: HTMLElement, sectionId: string, section: Section): void {
+  container.innerHTML = '';
+
+  if (section.tiles) {
+    section.tiles.forEach((tile) => {
+      container.appendChild(buildNavRow(resolveTarget(tile.target).href, tile.label, tile.icon));
+    });
+    if (sectionId === 'suite') {
+      container.appendChild(buildNavRow(routeHref(['suite', 'cloud', 'quickmarks']), 'Cloud', 'suite'));
+      container.appendChild(buildNavRow(routeHref(['suite', 'phone', 'quickmarks']), 'Phone', 'phone'));
+    }
+    return;
+  }
+
+  if (section.pages) {
+    section.pages.forEach((page: PageEntry) => {
+      const label = typeof page === 'string' ? page : page.label;
+      const id = typeof page === 'string' ? slugify(page) : page.id;
+      const href = typeof page === 'object' && page.target
+        ? resolveTarget(page.target).href
+        : routeHref([sectionId, id]);
+      container.appendChild(buildNavRow(href, label));
+    });
+  }
+}
+
+// Pure UI state: exactly one of the two <nav> lists is visible at a time,
+// driven by which of the two tab buttons is active. Never navigates.
+function wireTabs(): void {
+  const tabsEl = document.getElementById('drawer-tabs');
+  const homeNavEl = document.getElementById('drawer-nav-home');
+  const sectionNavEl = document.getElementById('drawer-nav-section');
+  if (!tabsEl || !homeNavEl || !sectionNavEl) return;
+
+  const homeTabBtn = tabsEl.querySelector<HTMLButtonElement>('[data-tab="home"]');
+  const sectionTabBtn = tabsEl.querySelector<HTMLButtonElement>('[data-tab="section"]');
+  if (!homeTabBtn || !sectionTabBtn) return;
+
+  homeTabBtn.addEventListener('click', () => {
+    homeTabBtn.classList.add('is-active');
+    sectionTabBtn.classList.remove('is-active');
+    homeNavEl.hidden = false;
+    sectionNavEl.hidden = true;
   });
 
-  return item;
+  sectionTabBtn.addEventListener('click', () => {
+    sectionTabBtn.classList.add('is-active');
+    homeTabBtn.classList.remove('is-active');
+    homeNavEl.hidden = true;
+    sectionNavEl.hidden = false;
+  });
+}
+
+// Open/close mechanics. Note: the Sirius star no longer opens the drawer —
+// it now drives its own radial menu (see stars.ts) — so it is not wired here.
+function wireOpenClose(): void {
+  const hamburgerBtn = document.getElementById('hamburger-btn');
+  const drawerEl = document.getElementById('drawer');
+  const scrimEl = document.getElementById('drawer-scrim');
+  if (!hamburgerBtn || !drawerEl || !scrimEl) return;
+
+  const open = (): void => {
+    drawerEl.classList.add('is-open');
+    scrimEl.classList.add('is-open');
+    drawerEl.setAttribute('aria-hidden', 'false');
+    hamburgerBtn.setAttribute('aria-expanded', 'true');
+  };
+
+  const close = (): void => {
+    drawerEl.classList.remove('is-open');
+    scrimEl.classList.remove('is-open');
+    drawerEl.setAttribute('aria-hidden', 'true');
+    hamburgerBtn.setAttribute('aria-expanded', 'false');
+  };
+
+  hamburgerBtn.addEventListener('click', open);
+  scrimEl.addEventListener('click', close);
+  document.addEventListener('keydown', (event) => {
+    if (event.key === 'Escape') close();
+  });
 }
 
 export function initDrawer(data: PortalData): void {
-  if (appNameEl) appNameEl.textContent = data.app.name;
-  if (appBuildEl) appBuildEl.textContent = data.app.build;
-  if (avatarEl) avatarEl.textContent = data.app.user.initials;
-  if (userNameEl) userNameEl.textContent = data.app.user.name;
-  if (userEmailEl) userEmailEl.textContent = data.app.user.email;
-  if (userModeEl) userModeEl.textContent = `Mode: ${data.app.user.mode}`;
+  const sectionId = document.body.dataset['section'] ?? 'home';
 
-  if (navEl) {
-    navEl.innerHTML = '';
+  fillBanner(data);
 
-    const remainingIds = Object.keys(data.sections).filter((key) => !data.bottomNav.includes(key));
-    const orderedIds = [...data.bottomNav, ...remainingIds];
+  const homeNavEl = document.getElementById('drawer-nav-home');
+  if (homeNavEl) fillHomeNav(homeNavEl, data);
 
-    orderedIds.forEach((id) => {
-      const section: Section | undefined = data.sections[id];
-      if (!section) return;
-      navEl.appendChild(buildNavItem(id, section));
-    });
+  const sectionNavEl = document.getElementById('drawer-nav-section');
+  const section = data.sections[sectionId];
+  if (sectionNavEl && section && sectionId !== 'home') {
+    fillSectionNav(sectionNavEl, sectionId, section);
   }
 
-  if (hamburgerBtn) hamburgerBtn.addEventListener('click', () => openDrawer());
-  if (starSiriusBtn) starSiriusBtn.addEventListener('click', () => openDrawer());
-  if (scrimEl) scrimEl.addEventListener('click', () => closeDrawer());
-
-  document.addEventListener('keydown', (event) => {
-    if (event.key === 'Escape') closeDrawer();
-  });
+  wireTabs();
+  wireOpenClose();
 }

@@ -706,6 +706,22 @@ mod_qrcode_gen() {
     log_success "qrcode_gen: $n_qr QR PNG(s) + $n_vcf vcf file(s) + qrcode.html from $manifest"
 }
 
+# ─── mod_page_gen — generate a tree of independent static HTML pages from a
+# sitemap manifest. Delegates to scripts/page-gen.sh inside the project
+# directory (same delegation pattern as mod_qrcode_gen) — the project owns
+# its own page template + sitemap derivation logic; this just wires it into
+# the build pipeline and reports how many pages came out.
+mod_page_gen() {
+    local manifest="${1:-src/data/sitemap.json}"
+    local engine="$PROJECT_DIR/scripts/page-gen.sh"
+    [ -x "$engine" ] || { log_error "page_gen: scripts/page-gen.sh not found in project — place it at <project>/scripts/page-gen.sh"; return $EXIT_BUILD; }
+    local out
+    out="$("$engine" "$PROJECT_DIR" "$DIST_DIR" "$manifest" 2>&1)" || { log_error "page_gen failed:"; echo "$out" >&2; return $EXIT_BUILD; }
+    local n
+    n="$(echo "$out" | grep -c '^✓ ')"
+    log_success "page_gen: $n page(s) generated from $manifest"
+}
+
 # ─── BUILD RUNNER ───────────────────────────────────────────
 run_build() {
     local i=0
@@ -767,6 +783,7 @@ run_build() {
             symlink)      mod_symlink "$_files" "$_output" ;;
             data_wrap)    mod_data_wrap "$_dir" ;;
             qrcode_gen)   mod_qrcode_gen "$_manifest" ;;
+            page_gen)     mod_page_gen "$_manifest" ;;
             *)            log_warn "Unknown module: $_mod" ;;
         esac
 

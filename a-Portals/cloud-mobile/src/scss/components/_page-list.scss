@@ -1,0 +1,32 @@
+// ==========================================================================
+// Page list — flat link-list content body (section index pages)
+// ==========================================================================
+
+.page-list {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.page-list__item {
+    display: block;
+    padding: 14px 16px;
+    border-radius: 12px;
+    color: var(--text-primary);
+    font-size: 15px;
+    text-decoration: none;
+    background: var(--glass-bg);
+    border: 1px solid var(--glass-border);
+}
+
+.page-list__item + .page-list__item {
+    margin-top: 6px;
+}
+
+.page-list__item--inert {
+    opacity: .5;
+}
+
+.page-list__item:active {
+    transform: scale(0.98);
+}

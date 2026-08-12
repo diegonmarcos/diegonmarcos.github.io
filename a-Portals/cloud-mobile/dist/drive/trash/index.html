@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+    <title>Drive · Trash · Cloud SuperApp</title>
+    <link rel="icon" type="image/svg+xml" href="../../public/favicon.svg">
+    <link rel="manifest" href="../../manifest.webmanifest">
+    <meta name="theme-color" content="#000000">
+<script>
+  var _mtm = window._mtm = window._mtm || [];
+  _mtm.push({'mtm.startTime': (new Date().getTime()), 'event': 'mtm.Start'});
+  (function() {
+    var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0];
+    g.async=true; g.src='https://analytics.diegonmarcos.com/js/container_odwLIyPV.js'; s.parentNode.insertBefore(g,s);
+  })();
+</script>
+    <link rel="stylesheet" href="../../style.css">
+</head>
+<body data-section="drive">
+    <div class="shell">
+        <div class="galaxy-backdrop" aria-hidden="true"></div>
+
+        <button class="star star--sirius" id="star-sirius" type="button" aria-label="Open menu">✦</button>
+        <button class="star star--canopus" id="star-canopus" type="button" aria-label="Quick configs">✦</button>
+        <button class="star star--centauri" id="star-centauri" type="button" aria-label="Recent apps">✦</button>
+
+        <header class="toolbar-island">
+            <button class="icon-btn" id="hamburger-btn" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="drawer">
+                <img class="" src="../../public/icons/menu.svg" alt="">
+            </button>
+            <a class="back-btn" href="/cloud-mobile/drive/" aria-label="Back"><img class="" src="../../public/icons/back.svg" alt=""></a>
+            <div class="dynamic-island" aria-hidden="true">
+                <span class="dynamic-island__wave"></span>
+                <span class="dynamic-island__label">Cloud SuperApp</span>
+            </div>
+            <span class="toolbar-island__spacer" aria-hidden="true"></span>
+        </header>
+
+        <main class="content" id="content">
+            <h1 class="content__title">Drive · Trash</h1>
+            <div class="page-body">
+                <div class="page-body__skeleton-row"></div>
+                <div class="page-body__skeleton-row"></div>
+                <div class="page-body__skeleton-row"></div>
+            </div>
+        </main>
+
+        <nav class="bottom-nav" id="bottom-nav" aria-label="Primary">
+            <a class="bottom-nav__item" href="../../communication/"><img class="" src="../../public/icons/chat.svg" alt=""><span>Inboxes</span></a>
+            <a class="bottom-nav__item" href="../../infos/"><img class="" src="../../public/icons/logs.svg" alt=""><span>Infos</span></a>
+            <a class="bottom-nav__item" href="../../"><img class="" src="../../public/icons/home.svg" alt=""><span>Home</span></a>
+            <a class="bottom-nav__item" href="../../suite/"><img class="" src="../../public/icons/suite.svg" alt=""><span>Suite</span></a>
+            <a class="bottom-nav__item" href="../../tools/"><img class="" src="../../public/icons/tools.svg" alt=""><span>Labs</span></a>
+        </nav>
+    </div>
+
+    <div class="drawer-scrim" id="drawer-scrim"></div>
+    <aside class="drawer" id="drawer" aria-hidden="true">
+        <div class="drawer__banner drawer__banner--app" id="drawer-app-banner">
+            <img class="drawer__banner-icon" src="../../public/icons/home.svg" alt="">
+            <div class="drawer__banner-text">
+                <p class="drawer__title" id="drawer-app-name">Cloud SuperApp</p>
+                <p class="drawer__meta" id="drawer-app-build">cloud-mobile · web</p>
+            </div>
+        </div>
+        <div class="drawer__separator"></div>
+        <button class="drawer__banner drawer__banner--user" id="drawer-user-banner" type="button">
+            <span class="drawer__avatar" id="drawer-user-avatar">DCM</span>
+            <div class="drawer__banner-text">
+                <p class="drawer__title" id="drawer-user-name">Diego Coelho Marcos</p>
+                <p class="drawer__meta" id="drawer-user-email">me@diegonmarcos.com</p>
+                <p class="drawer__mode"><span id="drawer-user-mode">Mode: Apps</span> <img class="" src="../../public/icons/refresh.svg" alt=""></p>
+            </div>
+        </button>
+        <div class="drawer__tabs" id="drawer-tabs" role="tablist">
+            <button class="drawer__tab is-active" type="button" data-tab="home">Home</button>
+            <button class="drawer__tab" type="button" data-tab="section">Drive</button>
+        </div>
+        <nav class="drawer__nav" id="drawer-nav-home"></nav>
+        <nav class="drawer__nav" id="drawer-nav-section" hidden></nav>
+    </aside>
+
+    <div class="radial-menu" id="radial-menu" hidden aria-hidden="true"></div>
+
+    <script>window.PORTAL_DATA = window.PORTAL_DATA || {};</script>
+    <script src="../../data-cloud-mobile.json.js"></script>
+    <script src="../../script.js"></script>
+</body>
+</html>

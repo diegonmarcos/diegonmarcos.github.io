@@ -5,7 +5,13 @@ export interface Tile {
   target?: string | null;
 }
 
-export type PageEntry = string | { id: string; label: string; target?: string; rows?: [string, string][] };
+export interface ItemRef {
+  title: string;
+  subtitle?: string;
+  meta?: string;
+}
+
+export type PageEntry = string | { id: string; label: string; target?: string; rows?: [string, string][]; items?: ItemRef[] };
 
 export interface TileGroup {
   title: string;
@@ -109,6 +115,11 @@ export interface UpdateOverlayConfig {
   states: Record<string, string>;
 }
 
+export interface StatusBarConfig {
+  left: { label: string; active: boolean }[];
+  right: { label: string; value: string }[];
+}
+
 // shell.json's own shape (before sections are merged in by data.ts).
 export interface ShellData {
   app: PortalApp;
@@ -119,6 +130,7 @@ export interface ShellData {
   search: SearchConfig;
   notificationCenter: NotificationCenterConfig;
   updateOverlay: UpdateOverlayConfig;
+  statusBar: StatusBarConfig;
 }
 
 export interface MockAppsData {

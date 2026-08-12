@@ -18,6 +18,21 @@ import { initStackCards } from './cards';
 // inside the deferred SW-registration callback below.
 const SELF_SCRIPT_URL = (document.currentScript as HTMLScriptElement | null)?.src ?? '';
 
+// Status strip's clock is the one genuinely live piece of that readout (RAM/
+// battery/radio state have no web equivalent, so those stay static) — server
+// render already painted the correct value, this just keeps it ticking.
+function initStatusClock(): void {
+  const el = document.getElementById('status-clock');
+  if (!el) return;
+  const pad = (n: number): string => String(n).padStart(2, '0');
+  const tick = (): void => {
+    const now = new Date();
+    el.textContent = `${pad(now.getDate())}-${pad(now.getMonth() + 1)}-${now.getFullYear()} ${pad(now.getHours())}:${pad(now.getMinutes())}`;
+  };
+  tick();
+  window.setInterval(tick, 15000);
+}
+
 function initApp(): void {
   const data = getData();
   initDrawer(data);
@@ -25,6 +40,7 @@ function initApp(): void {
   initOverlays(data);
   initFanMenu(data);
   initStackCards();
+  initStatusClock();
 }
 
 document.addEventListener('DOMContentLoaded', () => {

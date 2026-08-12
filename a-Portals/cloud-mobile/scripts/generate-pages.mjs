@@ -19,7 +19,7 @@ const core = readJson('sections-core.json');
 const content = readJson('sections-content.json');
 const mockData = readJson('mock-apps.json');
 
-const { app, bottomNav, cube, stars, longPress, search, notificationCenter, updateOverlay } = shell;
+const { app, bottomNav, cube, stars, longPress, search, notificationCenter, updateOverlay, statusBar } = shell;
 const sections = { ...core.sections, ...content.sections, home: { label: 'Home', icon: 'home', color: 'blue' } };
 
 // Both suite/phone/quickmarks and suite/phone/all are DERIVED from mock-apps
@@ -231,6 +231,23 @@ function settingsListBody(rows) {
             </div>`;
 }
 
+// Mail inboxes, calendar events, vault entries, etc. — generic 3-field mock
+// content (title/subtitle/meta) so every leaf page has believable real-shaped
+// content instead of a shimmer placeholder, without needing a bespoke
+// renderer per content type.
+function itemListBody(items) {
+  const rows = items.map((it) => `
+                <div class="item-list__row">
+                    <div class="item-list__text">
+                        <span class="item-list__title">${it.title}</span>
+                        ${it.subtitle ? `<span class="item-list__subtitle">${it.subtitle}</span>` : ''}
+                    </div>
+                    ${it.meta ? `<span class="item-list__meta">${it.meta}</span>` : ''}
+                </div>`).join('');
+  return `<div class="item-list">${rows}
+            </div>`;
+}
+
 // ── the home cube — Home3DFragment's real centerpiece, CSS 3D transforms ─
 function homeCubeHtml() {
   const face = (cls) => `<div class="home-cube__face home-cube__face--${cls}"></div>`;
@@ -251,6 +268,25 @@ function write(routeSegments, title, sectionId, bodyHtml, backHref) {
 }
 
 // ── shared shell ─────────────────────────────────────────────────────────
+// LauncherStatusStripView — real device metrics (radio state, RAM/storage/
+// CPU/battery) have no web equivalent, so left/right clusters are static
+// mock values; the center clock is genuinely live (see main.ts's tiny
+// setInterval clock updater — #status-clock's text is refreshed client-side,
+// this server-rendered value is just the correct initial paint).
+function statusStripHtml() {
+  const left = statusBar.left.map((i) => `<span class="status-strip__chip${i.active ? ' is-active' : ''}">${i.label}</span>`).join('');
+  const right = statusBar.right.map((i) => `<span class="status-strip__chip">${i.label} ${i.value}</span>`).join('');
+  const now = new Date();
+  const pad = (n) => String(n).padStart(2, '0');
+  const initialClock = `${pad(now.getDate())}-${pad(now.getMonth() + 1)}-${now.getFullYear()} ${pad(now.getHours())}:${pad(now.getMinutes())}`;
+  return `<div class="status-strip">
+            <div class="status-strip__cluster status-strip__cluster--left">${left}</div>
+            <span class="status-strip__clock" id="status-clock">${initialClock}</span>
+            <div class="status-strip__cluster status-strip__cluster--right">${right}</div>
+        </div>
+        <div class="status-strip__camera" aria-hidden="true"></div>`;
+}
+
 function renderShell({ title, sectionId, depth, bodyHtml, backHref }) {
   const rel = relPrefix(depth);
   const isHome = sectionId === 'home' ? ' is-home' : '';
@@ -285,6 +321,7 @@ function renderShell({ title, sectionId, depth, bodyHtml, backHref }) {
 </head>
 <body data-section="${sectionId}">
     <div class="shell${isHome}">
+        ${statusStripHtml()}
         <div class="galaxy-backdrop" aria-hidden="true"></div>
         ${sectionId === 'home' ? homeCubeHtml() : ''}
 
@@ -374,21 +411,27 @@ for (const id of ['communication', 'infos', 'tools']) {
   write([id, 'admin'], `${s.label} · Admin`, id, tabbedSectionBody(s, id, 'admin', rel2), routeHref([id]));
 }
 
-// Suite — root index (the 5 home-style shortcuts) + cloud/phone x quickmarks/all.
+// Suite — bottom-nav destination goes straight to the Cloud|Phone tabbed
+// view (matching Communication/Infos/Tools's "tabs visible immediately"
+// pattern — no intermediate shortcut-tiles page), plus the same view is
+// also reachable at its own cloud/phone x quickmarks/all URLs for deep
+// links (Sirius star, long-press menu, the "More" footer).
 {
   const s = sections.suite;
   const rel1 = relPrefix(1);
-  write(['suite'], s.label, 'suite', tileGridBody(s.tiles, rel1, () => s.color), routeHref([]));
-
   const rel3 = relPrefix(3);
-  const cloudPhoneTabs = (mode, active) => `<div class="page-tabs" role="tablist">
+  const cloudPhoneTabs = (mode, active, rel) => `<div class="page-tabs" role="tablist">
                 <a class="page-tabs__item${active === 'cloud' ? ' is-active' : ''}" href="${routeHref(['suite', 'cloud', mode])}">Cloud</a>
                 <a class="page-tabs__item${active === 'phone' ? ' is-active' : ''}" href="${routeHref(['suite', 'phone', mode])}">Phone</a>
             </div>`;
 
+  write(['suite'], s.label, 'suite',
+    cloudPhoneTabs('quickmarks', 'cloud', rel1) + '\n            ' +
+    groupListBody(s.cloud.tileGroups, rel1, s.cloud.footer, routeHref(['suite', 'cloud', 'all'])), routeHref([]));
+
   write(['suite', 'cloud', 'quickmarks'], 'Suite · Cloud', 'suite',
-    cloudPhoneTabs('quickmarks', 'cloud') + '\n            ' +
-    groupListBody(s.cloud.tileGroups, rel3, s.cloud.footer, routeHref(['suite', 'cloud', 'all'])), routeHref(['suite']));
+    cloudPhoneTabs('quickmarks', 'cloud', rel3) + '\n            ' +
+    groupListBody(s.cloud.tileGroups, rel3, s.cloud.footer, routeHref(['suite', 'cloud', 'all'])), routeHref([]));
   // Cloud's "all" (real app: action:open_suite_cloud_all, full-screen push of
   // the same tile_groups with no tab chrome) has no larger real-data universe
   // to reveal than quickmarks — unlike Phone, there's no bigger "installed
@@ -397,10 +440,10 @@ for (const id of ['communication', 'infos', 'tools']) {
     groupListBody(s.cloud.tileGroups, rel3, null), routeHref(['suite']));
 
   write(['suite', 'phone', 'quickmarks'], 'Suite · Phone', 'suite',
-    cloudPhoneTabs('quickmarks', 'phone') + '\n            ' +
-    appListBody(phoneGroupsFromMockData(true), rel3, shell.longPress ? null : null, false, routeHref(['suite', 'phone', 'all'])), routeHref(['suite']));
+    cloudPhoneTabs('quickmarks', 'phone', rel3) + '\n            ' +
+    appListBody(phoneGroupsFromMockData(true), rel3, s.phone.footer, false, routeHref(['suite', 'phone', 'all'])), routeHref([]));
   write(['suite', 'phone', 'all'], 'Suite · Phone · All', 'suite',
-    cloudPhoneTabs('all', 'phone') + '\n            ' +
+    cloudPhoneTabs('all', 'phone', rel3) + '\n            ' +
     appListBody(phoneGroupsFromMockData(false), rel3, null, true), routeHref(['suite']));
 }
 
@@ -417,7 +460,10 @@ for (const id of ['mail', 'rss', 'calendar', 'drive', 'vault', 'chat', 'wg', 'so
     const pid = typeof p === 'string' ? slug(p) : p.id;
     if (typeof p === 'object' && p.target) continue; // routes elsewhere or inert — no own page
     const tabs = s.pages.length > 1 ? `${pageTabsHtml(s.pages, id, pid, rel2)}\n            ` : '';
-    const inner = typeof p === 'object' && p.rows ? settingsListBody(p.rows) : skeletonBody();
+    let inner;
+    if (typeof p === 'object' && p.rows) inner = settingsListBody(p.rows);
+    else if (typeof p === 'object' && p.items) inner = itemListBody(p.items);
+    else inner = skeletonBody();
     write([id, pid], `${s.label} · ${label}`, id, tabs + inner, routeHref([id]));
   }
 }

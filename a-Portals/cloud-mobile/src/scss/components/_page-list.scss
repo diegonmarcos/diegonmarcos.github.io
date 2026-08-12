@@ -30,3 +30,56 @@
 .page-list__item:active {
     transform: scale(0.98);
 }
+
+// ==========================================================================
+// Item list — mock content rows (mail/inbox, calendar/day, vault/logins…):
+// title + optional subtitle on the left, optional meta chip on the right.
+// ==========================================================================
+
+.item-list {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.item-list__row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    padding: 12px 14px;
+    border-radius: 12px;
+    background: var(--glass-bg);
+    border: 1px solid var(--glass-border);
+}
+
+.item-list__text {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    min-width: 0;
+}
+
+.item-list__title {
+    color: var(--text-primary);
+    font-size: 14px;
+    font-weight: 500;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.item-list__subtitle {
+    color: var(--text-secondary);
+    font-size: 12px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.item-list__meta {
+    color: var(--text-secondary);
+    font-size: 11px;
+    font-family: monospace;
+    flex-shrink: 0;
+}

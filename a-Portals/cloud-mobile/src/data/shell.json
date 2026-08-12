@@ -11,6 +11,17 @@
     }
   },
   "bottomNav": ["communication", "infos", "home", "suite", "tools"],
+  "statusBar": {
+    "_doc": "LauncherStatusStripView — real device metrics (RAM/storage/CPU/battery/radio state) with no web equivalent, so left/right clusters are static mock values; the center clock is genuinely live (real Date, updated client-side).",
+    "left": [
+      { "label": "5G", "active": true }, { "label": "WiFi", "active": true },
+      { "label": "WG", "active": true }, { "label": "KDE", "active": false }, { "label": "BT", "active": true }
+    ],
+    "right": [
+      { "label": "RAM", "value": "62%" }, { "label": "STO", "value": "48%" },
+      { "label": "CPU", "value": "17%" }, { "label": "BAT", "value": "84%" }
+    ]
+  },
   "cube": {
     "_doc": "Home3DFragment — the real default (and only) home screen: a 360dp centered wireframe cube, Canvas-drawn in the app, CSS 3D transforms here. cube_anim (ambient rotation) defaults true; cube_interactive (drag-to-spin) defaults false, so this ships the ambient-only default.",
     "glow": "#B794F4",

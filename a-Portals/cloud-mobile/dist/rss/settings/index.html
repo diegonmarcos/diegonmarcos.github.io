@@ -19,6 +19,12 @@
 </head>
 <body data-section="rss">
     <div class="shell">
+        <div class="status-strip">
+            <div class="status-strip__cluster status-strip__cluster--left"><span class="status-strip__chip is-active">5G</span><span class="status-strip__chip is-active">WiFi</span><span class="status-strip__chip is-active">WG</span><span class="status-strip__chip">KDE</span><span class="status-strip__chip is-active">BT</span></div>
+            <span class="status-strip__clock" id="status-clock">12-08-2026 18:51</span>
+            <div class="status-strip__cluster status-strip__cluster--right"><span class="status-strip__chip">RAM 62%</span><span class="status-strip__chip">STO 48%</span><span class="status-strip__chip">CPU 17%</span><span class="status-strip__chip">BAT 84%</span></div>
+        </div>
+        <div class="status-strip__camera" aria-hidden="true"></div>
         <div class="galaxy-backdrop" aria-hidden="true"></div>
         
 
@@ -48,10 +54,15 @@
                 <a class="page-tabs__item" href="/cloud-mobile/rss/subscribe/">+ Subscribe</a>
                 <a class="page-tabs__item is-active" href="/cloud-mobile/rss/settings/">Settings</a>
             </div>
-            <div class="page-body">
-                <div class="page-body__skeleton-row"></div>
-                <div class="page-body__skeleton-row"></div>
-                <div class="page-body__skeleton-row"></div>
+            <div class="settings-list">
+                <div class="settings-list__row">
+                    <span class="settings-list__label">Refresh</span>
+                    <span class="settings-list__value">Every 15 min</span>
+                </div>
+                <div class="settings-list__row">
+                    <span class="settings-list__label">Mark read on open</span>
+                    <span class="settings-list__value">On</span>
+                </div>
             </div>
         </main>
 

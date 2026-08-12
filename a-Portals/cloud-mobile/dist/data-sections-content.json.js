@@ -56,25 +56,197 @@
               { "id": "mydata", "label": "MyData", "icon": "database", "target": "https://diegonmarcos.github.io/my-data/" }
             ] }
         ]
+      },
+      "phone": {
+        "footer": { "id": "more-phone", "label": "More", "icon": "more", "target": "action:open_suite_phone_all" }
       }
     },
 
     "mail": { "label": "Mail", "icon": "mail", "color": "blue",
-      "pages": ["Folders", "Inbox", "Accounts", "Identities", "Rules", "Answers", "Contacts", "Settings"] },
+      "pages": [
+        { "id": "folders", "label": "Folders", "items": [
+          { "title": "Inbox", "meta": "12" }, { "title": "Sent" }, { "title": "Drafts", "meta": "2" },
+          { "title": "Archive" }, { "title": "Spam", "meta": "3" }, { "title": "Trash" }
+        ]},
+        { "id": "inbox", "label": "Inbox", "items": [
+          { "title": "GitHub", "subtitle": "[cloud] Deploy succeeded", "meta": "2m" },
+          { "title": "Diego Coelho Marcos", "subtitle": "Re: Weekly sync notes", "meta": "1h" },
+          { "title": "Vaultwarden", "subtitle": "Your vault export is ready", "meta": "3h" },
+          { "title": "Grafana", "subtitle": "Alert resolved: disk usage", "meta": "5h" },
+          { "title": "Mattermost", "subtitle": "New mention in #ops", "meta": "1d" }
+        ]},
+        { "id": "accounts", "label": "Accounts", "items": [
+          { "title": "me@diegonmarcos.com", "subtitle": "IMAP · Personal", "meta": "Default" },
+          { "title": "admin@diegonmarcos.com", "subtitle": "IMAP · Ops" }
+        ]},
+        { "id": "identities", "label": "Identities", "items": [
+          { "title": "Diego Coelho Marcos", "subtitle": "me@diegonmarcos.com" },
+          { "title": "DCM", "subtitle": "admin@diegonmarcos.com" }
+        ]},
+        { "id": "rules", "label": "Rules", "items": [
+          { "title": "Archive GitHub notifications", "subtitle": "from: notifications@github.com" },
+          { "title": "Star from Grafana", "subtitle": "from: grafana@diegonmarcos.com" }
+        ]},
+        { "id": "answers", "label": "Answers", "items": [
+          { "title": "Out of office", "subtitle": "Thanks for your email…" },
+          { "title": "Meeting confirmation", "subtitle": "Confirming our call…" }
+        ]},
+        { "id": "contacts", "label": "Contacts", "items": [
+          { "title": "Support", "subtitle": "support@diegonmarcos.com" },
+          { "title": "Ops Team", "subtitle": "ops@diegonmarcos.com" }
+        ]},
+        { "id": "settings", "label": "Settings", "rows": [
+          ["Sync", "Every 5 min"], ["Notifications", "On"], ["Signature", "Enabled"]
+        ]}
+      ] },
+
     "rss": { "label": "RSS", "icon": "rss", "color": "amber",
-      "pages": ["All feeds", "Unread", "Saved", "Subscriptions", "+ Subscribe", "Settings"] },
+      "pages": [
+        { "id": "all-feeds", "label": "All feeds", "items": [
+          { "title": "Hacker News", "subtitle": "news.ycombinator.com", "meta": "24" },
+          { "title": "Kubernetes Blog", "subtitle": "kubernetes.io/blog", "meta": "3" },
+          { "title": "Anthropic News", "subtitle": "anthropic.com/news", "meta": "1" }
+        ]},
+        { "id": "unread", "label": "Unread", "items": [
+          { "title": "Show HN: a self-hosted…", "subtitle": "Hacker News", "meta": "12m" },
+          { "title": "v1.32 release notes", "subtitle": "Kubernetes Blog", "meta": "2h" }
+        ]},
+        { "id": "saved", "label": "Saved", "items": [
+          { "title": "Designing data-driven build pipelines", "subtitle": "Saved 3d ago" }
+        ]},
+        { "id": "subscriptions", "label": "Subscriptions", "items": [
+          { "title": "Hacker News", "meta": "Every 15 min" }, { "title": "Kubernetes Blog", "meta": "Daily" }, { "title": "Anthropic News", "meta": "Daily" }
+        ]},
+        { "id": "subscribe", "label": "+ Subscribe", "items": [
+          { "title": "Paste a feed URL to add it", "subtitle": "https://…" }
+        ]},
+        { "id": "settings", "label": "Settings", "rows": [ ["Refresh", "Every 15 min"], ["Mark read on open", "On"] ] }
+      ] },
+
     "calendar": { "label": "Calendar", "icon": "calendar", "color": "green",
-      "pages": ["Day", "Week", "Month", "Agenda", "Calendars", "+ Add CalDAV", "Settings"] },
+      "pages": [
+        { "id": "day", "label": "Day", "items": [
+          { "title": "Standup", "subtitle": "09:00", "meta": "Work" },
+          { "title": "1:1 with Ops", "subtitle": "14:00", "meta": "Work" }
+        ]},
+        { "id": "week", "label": "Week", "items": [
+          { "title": "Standup", "subtitle": "Mon–Fri · 09:00", "meta": "Work" },
+          { "title": "Deploy freeze", "subtitle": "Thu", "meta": "Ops" }
+        ]},
+        { "id": "month", "label": "Month", "items": [
+          { "title": "12 events this month", "subtitle": "3 work · 2 ops · 7 personal" }
+        ]},
+        { "id": "agenda", "label": "Agenda", "items": [
+          { "title": "Standup", "subtitle": "Today · 09:00" },
+          { "title": "1:1 with Ops", "subtitle": "Today · 14:00" },
+          { "title": "Dentist", "subtitle": "Tomorrow · 10:30" }
+        ]},
+        { "id": "calendars", "label": "Calendars", "items": [
+          { "title": "Personal", "meta": "On" }, { "title": "Work", "meta": "On" }, { "title": "Holidays", "meta": "On" }
+        ]},
+        { "id": "add-caldav", "label": "+ Add CalDAV", "items": [
+          { "title": "Server URL", "subtitle": "https://caldav…" }
+        ]},
+        { "id": "settings", "label": "Settings", "rows": [ ["Sync", "Every 15 min"], ["Week starts on", "Monday"] ] }
+      ] },
+
     "drive": { "label": "Drive", "icon": "database", "color": "indigo",
-      "pages": ["My files", "Photos", "Connections", "Recent", "Shared", "Trash", "Backups", "+ Upload", "Settings"] },
+      "pages": [
+        { "id": "my-files", "label": "My files", "items": [
+          { "title": "Projects", "subtitle": "Folder", "meta": "24 items" },
+          { "title": "Backups", "subtitle": "Folder", "meta": "6 items" },
+          { "title": "resume.pdf", "subtitle": "412 KB", "meta": "2d ago" }
+        ]},
+        { "id": "photos", "label": "Photos", "items": [
+          { "title": "Camera roll", "meta": "1,204 photos" }, { "title": "Screenshots", "meta": "88 photos" }
+        ]},
+        { "id": "connections", "label": "Connections", "items": [
+          { "title": "PhotoPrism", "subtitle": "Self-hosted", "meta": "Connected" },
+          { "title": "Nextcloud", "subtitle": "Self-hosted", "meta": "Connected" }
+        ]},
+        { "id": "recent", "label": "Recent", "items": [
+          { "title": "resume.pdf", "meta": "2d ago" }, { "title": "roadmap.md", "meta": "4d ago" }
+        ]},
+        { "id": "shared", "label": "Shared", "items": [
+          { "title": "roadmap.md", "subtitle": "Shared with Ops Team" }
+        ]},
+        { "id": "trash", "label": "Trash", "items": [
+          { "title": "old-notes.txt", "meta": "Deleted 6d ago" }
+        ]},
+        { "id": "backups", "label": "Backups", "items": [
+          { "title": "Nightly snapshot", "subtitle": "2026-08-11", "meta": "4.2 GB" },
+          { "title": "Nightly snapshot", "subtitle": "2026-08-10", "meta": "4.1 GB" }
+        ]},
+        { "id": "upload", "label": "+ Upload", "items": [
+          { "title": "Drop files here or tap to browse" }
+        ]},
+        { "id": "settings", "label": "Settings", "rows": [ ["Auto-backup", "Nightly"], ["Storage used", "48.2 GB / 200 GB"] ] }
+      ] },
+
     "vault": { "label": "Vault", "icon": "lock", "color": "pink",
-      "pages": ["Logins", "TOTP", "Generator", "Identities", "Vaults", "Settings"] },
+      "pages": [
+        { "id": "logins", "label": "Logins", "items": [
+          { "title": "github.com", "subtitle": "diegonmarcos" },
+          { "title": "grafana.diegonmarcos.com", "subtitle": "admin" },
+          { "title": "vault.diegonmarcos.com", "subtitle": "dcm" }
+        ]},
+        { "id": "totp", "label": "TOTP", "items": [
+          { "title": "GitHub", "subtitle": "2FA code", "meta": "482 913" },
+          { "title": "Cloudflare", "subtitle": "2FA code", "meta": "051 774" }
+        ]},
+        { "id": "generator", "label": "Generator", "items": [
+          { "title": "Xk9#mP2$vQr7", "subtitle": "16 chars · upper/lower/digits/symbols" }
+        ]},
+        { "id": "identities", "label": "Identities", "items": [
+          { "title": "Diego Coelho Marcos", "subtitle": "Personal identity" }
+        ]},
+        { "id": "vaults", "label": "Vaults", "items": [
+          { "title": "Personal", "meta": "38 items" }, { "title": "Ops", "meta": "14 items" }
+        ]},
+        { "id": "settings", "label": "Settings", "rows": [ ["Lock after", "5 min idle"], ["Biometric unlock", "On"] ] }
+      ] },
+
     "chat": { "label": "Chat", "icon": "chat", "color": "teal",
-      "pages": ["Mattermost", "Matrix-Bridges", "Direct messages", "Channels", "Servers", "+ Add server", "Settings"] },
+      "pages": [
+        { "id": "mattermost", "label": "Mattermost", "items": [
+          { "title": "#ops", "subtitle": "New mention", "meta": "1d" },
+          { "title": "#general", "meta": "3d" }
+        ]},
+        { "id": "matrix-bridges", "label": "Matrix-Bridges", "items": [
+          { "title": "WhatsApp bridge", "meta": "Connected" }, { "title": "Telegram bridge", "meta": "Connected" }
+        ]},
+        { "id": "direct-messages", "label": "Direct messages", "items": [
+          { "title": "Ops Team", "subtitle": "Deploy looks good 👍", "meta": "2h" }
+        ]},
+        { "id": "channels", "label": "Channels", "items": [
+          { "title": "#ops" }, { "title": "#general" }, { "title": "#random" }
+        ]},
+        { "id": "servers", "label": "Servers", "items": [
+          { "title": "chat.diegonmarcos.com", "subtitle": "Mattermost", "meta": "Connected" }
+        ]},
+        { "id": "add-server", "label": "+ Add server", "items": [
+          { "title": "Server URL", "subtitle": "https://…" }
+        ]},
+        { "id": "settings", "label": "Settings", "rows": [ ["Notifications", "Mentions only"], ["Theme", "Dark"] ] }
+      ] },
+
     "wg": { "label": "WG", "icon": "mesh", "color": "amber",
-      "pages": ["WireGuard"] },
+      "pages": [
+        { "id": "wireguard", "label": "WireGuard", "items": [
+          { "title": "phone-mesh", "subtitle": "10.0.0.4", "meta": "Connected" },
+          { "title": "laptop-mesh", "subtitle": "10.0.0.7", "meta": "Connected" },
+          { "title": "gcp-proxy", "subtitle": "10.0.0.1", "meta": "Connected" }
+        ]}
+      ] },
     "solutions": { "label": "Solutions", "icon": "briefcase", "color": "purple",
-      "pages": ["Professional", "Personal"] },
+      "pages": [
+        { "id": "professional", "label": "Professional", "items": [
+          { "title": "Product & Software Engineer" }, { "title": "Venture Capital & Portfolio Analyst" }, { "title": "Civil Engineer B.Sc." }
+        ]},
+        { "id": "personal", "label": "Personal", "items": [
+          { "title": "Berlin, Germany" }, { "title": "diegonmarcos.com" }
+        ]}
+      ] },
     "apptabs": { "label": "Tabs", "icon": "suite", "color": "teal",
       "pages": [{ "id": "grid", "label": "Grid" }] },
     "myfin": { "label": "MyFin", "icon": "chart", "color": "green",

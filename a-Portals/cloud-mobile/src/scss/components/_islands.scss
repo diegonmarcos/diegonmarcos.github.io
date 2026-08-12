@@ -4,9 +4,62 @@
 // Islands — floating frosted-glass toolbar (top) and bottom nav
 // ==========================================================================
 
+// ── Status strip — LauncherStatusStripView, flush at the very top ──────
+.status-strip {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 26px;
+    z-index: 11;
+    @include flex-row(space-between, center, 6px);
+    padding: 0 16px;
+    font-family: monospace;
+    font-size: 9px;
+    font-weight: 700;
+    color: rgba(255, 255, 255, 0.35);
+}
+
+.status-strip__cluster {
+    @include flex-row(flex-start, center, 6px);
+    min-width: 0;
+    overflow: hidden;
+}
+
+.status-strip__cluster--right {
+    justify-content: flex-end;
+}
+
+.status-strip__chip {
+    white-space: nowrap;
+}
+
+.status-strip__chip.is-active {
+    color: #fff;
+}
+
+.status-strip__clock {
+    color: #fff;
+    text-shadow: 0 0 6px rgba(0, 0, 0, 0.6);
+    flex-shrink: 0;
+}
+
+.status-strip__camera {
+    position: absolute;
+    top: 6px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: #000;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    z-index: 12;
+}
+
 .toolbar-island {
     position: absolute;
-    top: 26px;
+    top: 54px;
     left: var(--island-margin);
     right: var(--island-margin);
     height: 56px;
@@ -22,6 +75,15 @@
     height: 40px;
     border-radius: 50%;
     @include flex-center;
+}
+
+// The flex-center mixin's display:flex has equal specificity to the
+// browser's own [hidden] { display:none } and wins on source order (author
+// styles beat the UA stylesheet) — without this override, a hidden
+// .back-btn on root pages still rendered as an empty flex box, silently
+// stealing space in the toolbar row and throwing its whole layout off.
+.back-btn[hidden] {
+    display: none;
 }
 
 .icon-btn img,

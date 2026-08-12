@@ -51,6 +51,12 @@ export function initFanMenu(data: PortalData): void {
   // Non-nullable alias so every closure below sees HTMLElement directly,
   // without re-checking — matches stars.ts's menuEl hoist.
   const fanMenuEl: HTMLElement = fanMenuRoot;
+  // .fan-menu is positioned absolute within .shell now (see _fan-menu.scss),
+  // but getBoundingClientRect() below always returns viewport-relative
+  // coordinates — same shell-offset correction as stars.ts's radial menu,
+  // needed so the popup anchors above the actual icon instead of drifting
+  // toward the browser's true left edge on desktop.
+  const shellEl = fanMenuEl.closest<HTMLElement>('.shell');
 
   // Optional: not every page ships this yet (see the HTML contract).
   // Dismissal works either way via the document-level click/Escape
@@ -103,8 +109,9 @@ export function initFanMenu(data: PortalData): void {
     // Centered above the icon: fixed left at the icon's horizontal center,
     // shifted back by half its own width via transform.
     const rect = itemEl.getBoundingClientRect();
-    fanMenuEl.style.left = `${rect.left + rect.width / 2}px`;
-    fanMenuEl.style.top = `${rect.top - MENU_OFFSET_PX}px`;
+    const shellRect = shellEl?.getBoundingClientRect();
+    fanMenuEl.style.left = `${rect.left + rect.width / 2 - (shellRect?.left ?? 0)}px`;
+    fanMenuEl.style.top = `${rect.top - MENU_OFFSET_PX - (shellRect?.top ?? 0)}px`;
     fanMenuEl.style.transform = 'translateX(-50%)';
 
     fanMenuEl.hidden = false;

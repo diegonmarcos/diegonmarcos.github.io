@@ -4,8 +4,11 @@
 // Fan menu — bottom-nav long-press popup (shell.json "longPress" entries)
 // ==========================================================================
 
+// absolute, not fixed — .fan-menu is now a descendant of .shell (see
+// generate-pages.mjs's renderShell); fan-menu.ts's left/top math is shell-
+// relative to match (see its buildFanMenu offset subtraction).
 .fan-menu {
-    position: fixed;
+    position: absolute;
     z-index: 45;
     display: none;
 }
@@ -50,7 +53,7 @@
 }
 
 .fan-menu-scrim {
-    position: fixed;
+    position: absolute;
     inset: 0;
     z-index: 44;
     display: none;

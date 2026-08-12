@@ -4,8 +4,17 @@
 // Drawer — slide-in nav panel + scrim, app banner + user banner
 // ==========================================================================
 
+// position:absolute, not fixed: the drawer, its scrim, and every other
+// overlay (radial-menu, fan-menu, overlay-sheet) are now DOM descendants of
+// .shell (see generate-pages.mjs's renderShell) rather than <body> siblings.
+// .shell is what actually represents "the screen" — full height always, but
+// only full WIDTH on mobile; on desktop it's a centered 480px mockup with
+// empty space on either side. fixed anchors to the true browser viewport,
+// so on desktop the drawer used to slide in from the real window edge,
+// nowhere near the visible phone mockup. absolute anchors to .shell's own
+// box (position:relative), which is exactly "the screen area".
 .drawer-scrim {
-    position: fixed;
+    position: absolute;
     inset: 0;
     background: rgba(0, 0, 0, 0.55);
     opacity: 0;
@@ -20,7 +29,7 @@
 }
 
 .drawer {
-    position: fixed;
+    position: absolute;
     top: 0;
     left: 0;
     bottom: 0;
@@ -145,22 +154,25 @@
     opacity: .5;
 }
 
-// Drawer tabs — Home / current-section switcher
-.drawer__tabs {
-    @include flex-row(stretch, stretch, 0);
-    border-bottom: 1px solid var(--glass-border);
-}
-
-.drawer__tab {
-    flex: 1;
-    padding: 12px;
-    text-align: center;
-    font-size: 13px;
+// NavigationView submenu title — non-clickable group header (real app:
+// HomeDrawerFragment's menu.addSubMenu(...) title, e.g. "Home"). Only one
+// group in the current data (more of build.json's home_groups are
+// horizontal-scroll tile strips, not plain nav rows — not yet replicated).
+.drawer__group-title {
+    padding: 14px 12px 4px;
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: .04em;
     color: var(--text-secondary);
-    border-bottom: 2px solid transparent;
 }
 
-.drawer__tab.is-active {
-    color: var(--text-primary);
-    border-bottom-color: var(--island-accent);
+// Indented tree child — real app: when a Home-group tile is `section:X` and
+// that section declares .pages, each page renders as an indented sibling
+// directly under the tile ("      └─── {label}"). Left padding stands in
+// for the NBSP+└─ prefix; the built-in <img> icon slot is reused for
+// per-page icons where sections declare one.
+.drawer__nav-item--child {
+    padding-left: 34px;
+    font-size: 13px;
 }

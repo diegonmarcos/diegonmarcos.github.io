@@ -357,38 +357,34 @@ function renderShell({ title, sectionId, depth, bodyHtml, backHref }) {
         <nav class="bottom-nav" id="bottom-nav" aria-label="Primary">
             ${navItems}
         </nav>
+
+        <div class="drawer-scrim" id="drawer-scrim"></div>
+        <aside class="drawer" id="drawer" aria-hidden="true">
+            <div class="drawer__banner drawer__banner--app" id="drawer-app-banner">
+                ${iconImg('home', rel, 'drawer__banner-icon')}
+                <div class="drawer__banner-text">
+                    <p class="drawer__title" id="drawer-app-name">Cloud SuperApp</p>
+                    <p class="drawer__meta" id="drawer-app-build">cloud-mobile · web</p>
+                </div>
+            </div>
+            <div class="drawer__separator"></div>
+            <button class="drawer__banner drawer__banner--user" id="drawer-user-banner" type="button">
+                <span class="drawer__avatar" id="drawer-user-avatar">DCM</span>
+                <div class="drawer__banner-text">
+                    <p class="drawer__title" id="drawer-user-name">Diego Coelho Marcos</p>
+                    <p class="drawer__meta" id="drawer-user-email">me@diegonmarcos.com</p>
+                    <p class="drawer__mode"><span id="drawer-user-mode">Mode: Apps</span> ${iconImg('refresh', rel, '')}</p>
+                </div>
+            </button>
+            <nav class="drawer__nav" id="drawer-nav"></nav>
+        </aside>
+
+        <div class="radial-menu" id="radial-menu" hidden aria-hidden="true"></div>
+        <div class="fan-menu-scrim" id="fan-menu-scrim" hidden></div>
+        <div class="fan-menu" id="fan-menu" hidden aria-hidden="true"></div>
+        <div class="overlay-sheet" id="notification-center" hidden></div>
+        <div class="overlay-sheet overlay-sheet--full" id="update-overlay" hidden></div>
     </div>
-
-    <div class="drawer-scrim" id="drawer-scrim"></div>
-    <aside class="drawer" id="drawer" aria-hidden="true">
-        <div class="drawer__banner drawer__banner--app" id="drawer-app-banner">
-            ${iconImg('home', rel, 'drawer__banner-icon')}
-            <div class="drawer__banner-text">
-                <p class="drawer__title" id="drawer-app-name">Cloud SuperApp</p>
-                <p class="drawer__meta" id="drawer-app-build">cloud-mobile · web</p>
-            </div>
-        </div>
-        <div class="drawer__separator"></div>
-        <button class="drawer__banner drawer__banner--user" id="drawer-user-banner" type="button">
-            <span class="drawer__avatar" id="drawer-user-avatar">DCM</span>
-            <div class="drawer__banner-text">
-                <p class="drawer__title" id="drawer-user-name">Diego Coelho Marcos</p>
-                <p class="drawer__meta" id="drawer-user-email">me@diegonmarcos.com</p>
-                <p class="drawer__mode"><span id="drawer-user-mode">Mode: Apps</span> ${iconImg('refresh', rel, '')}</p>
-            </div>
-        </button>
-        <div class="drawer__tabs" id="drawer-tabs" role="tablist">
-            <button class="drawer__tab is-active" type="button" data-tab="home">Home</button>
-            <button class="drawer__tab" type="button" data-tab="section">${sections[sectionId] ? sections[sectionId].label : 'Section'}</button>
-        </div>
-        <nav class="drawer__nav" id="drawer-nav-home"></nav>
-        <nav class="drawer__nav" id="drawer-nav-section" hidden></nav>
-    </aside>
-
-    <div class="radial-menu" id="radial-menu" hidden aria-hidden="true"></div>
-    <div class="fan-menu" id="fan-menu" hidden aria-hidden="true"></div>
-    <div class="overlay-sheet" id="notification-center" hidden></div>
-    <div class="overlay-sheet overlay-sheet--full" id="update-overlay" hidden></div>
 
     <script>window.PORTAL_DATA = window.PORTAL_DATA || {};</script>
     <script src="${rel}data-shell.json.js"></script>

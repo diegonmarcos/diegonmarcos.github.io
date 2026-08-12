@@ -1,8 +1,14 @@
 // src/typescript/drawer.ts — slide-in nav drawer.
 //
-// The real Android app's drawer is exactly 2 tabs: "Home" (every top-level
-// destination) and the current section (that section's own tiles/pages) —
-// never a flat combined list. This module only populates and wires the
+// The real Android app's drawer (HomeDrawerFragment) is a single
+// NavigationView list, never tabs: a prepend row ("Home Apps"), then
+// build.json's ui.home_groups rendered as titled submenus. Only the first
+// group ("Home": Inboxes/Infos/Suite/Labs/Configs) is a plain nav list —
+// the rest (Suite/Labs/Configs quick-tiles, 4 Linktree slides) are
+// horizontal-scroll tile strips, a distinct pattern not yet replicated here.
+// When a "Home" group tile is `section:X` and that section declares
+// .pages, each page renders as an indented child row directly beneath it
+// (real: "      └─── {label}"). This module only populates and wires the
 // drawer markup the generated HTML shell already contains (see
 // scripts/generate-pages.mjs); it never creates that markup itself, and it
 // never navigates on its own — every link it builds is a real <a href>.
@@ -26,8 +32,9 @@ function slugify(value: string): string {
 
 // One drawer row: a real <a> when href resolves, otherwise a non-navigating
 // <span> — mirrors the tile/page-list inert pattern used across the
-// generated pages themselves.
-function buildNavRow(href: string | null, label: string, icon?: string): HTMLElement {
+// generated pages themselves. child=true is the real app's indented
+// "└─── {label}" tree row (a section's own page, nested under its tile).
+function buildNavRow(href: string | null, label: string, icon?: string, child = false): HTMLElement {
   let row: HTMLElement;
   if (href) {
     const anchor = document.createElement('a');
@@ -37,6 +44,7 @@ function buildNavRow(href: string | null, label: string, icon?: string): HTMLEle
     row = document.createElement('span');
   }
   row.classList.add('drawer__nav-item');
+  if (child) row.classList.add('drawer__nav-item--child');
   if (!href) {
     row.classList.add('drawer__nav-item--inert');
     row.setAttribute('aria-disabled', 'true');
@@ -54,6 +62,13 @@ function buildNavRow(href: string | null, label: string, icon?: string): HTMLEle
   row.appendChild(labelEl);
 
   return row;
+}
+
+function buildGroupTitle(title: string): HTMLElement {
+  const el = document.createElement('p');
+  el.className = 'drawer__group-title';
+  el.textContent = title;
+  return el;
 }
 
 const MODE_STORAGE_KEY = 'cloud-mobile-mode';
@@ -105,76 +120,40 @@ function fillBanner(data: PortalData): void {
   });
 }
 
-// Home tab: every bottomNav destination first (in order), then every other
-// section (order doesn't matter) — i.e. all sections, deduplicated.
-function fillHomeNav(container: HTMLElement, data: PortalData): void {
+// Real app: HomeDrawerFragment prepends build.json's ui.home_drawer_prepend
+// (one entry: "Home Apps") above the first titled group, then renders
+// ui.home_groups as submenus. Only home_groups[0] ("Home") is a plain nav
+// list; the rest are horizontal-scroll tile strips — a different pattern,
+// not yet built here. "Home" itself is deliberately excluded (self-
+// referential on a page reached from Home), matching how the real list
+// never contains a tile back to itself either.
+function fillDrawerList(container: HTMLElement, data: PortalData): void {
   container.innerHTML = '';
-  const remainingIds = Object.keys(data.sections).filter((id) => !data.bottomNav.includes(id));
-  const orderedIds = [...data.bottomNav, ...remainingIds];
 
-  orderedIds.forEach((id) => {
+  const homeApps = data.longPress['home']?.find((item) => item.id === 'home-apps');
+  if (homeApps) {
+    const { href } = resolveTarget(homeApps.target);
+    container.appendChild(buildNavRow(href, homeApps.label, homeApps.icon));
+  }
+
+  container.appendChild(buildGroupTitle('Home'));
+  const groupIds = [...data.bottomNav.filter((id) => id !== 'home'), 'config'];
+  groupIds.forEach((id) => {
     const section: Section | undefined = data.sections[id];
     if (!section) return;
-    // Home has no /home/ route of its own — it's generated at the site
-    // root (routeHref([])) — every other section id doubles as its own
-    // route segment.
-    const href = id === 'home' ? routeHref([]) : routeHref([id]);
-    container.appendChild(buildNavRow(href, section.label, section.icon));
-  });
-}
+    container.appendChild(buildNavRow(routeHref([id]), section.label, section.icon));
 
-// Section tab: the current section's own tiles (aggregators) or pages
-// (content-only sections). Left empty for 'home' — its own tab covers that.
-function fillSectionNav(container: HTMLElement, sectionId: string, section: Section): void {
-  container.innerHTML = '';
-
-  if (section.tiles) {
-    section.tiles.forEach((tile) => {
-      container.appendChild(buildNavRow(resolveTarget(tile.target).href, tile.label, tile.icon));
-    });
-    if (sectionId === 'suite') {
-      container.appendChild(buildNavRow(routeHref(['suite', 'cloud', 'quickmarks']), 'Cloud', 'suite'));
-      container.appendChild(buildNavRow(routeHref(['suite', 'phone', 'quickmarks']), 'Phone', 'phone'));
-    }
-    return;
-  }
-
-  if (section.pages) {
-    section.pages.forEach((page: PageEntry) => {
+    // Real app: when a "Home" group tile is `section:X` and that section
+    // declares .pages, each page renders as an indented child row directly
+    // beneath it ("      └─── {label}") — currently only Configs has one.
+    section.pages?.forEach((page: PageEntry) => {
       const label = typeof page === 'string' ? page : page.label;
-      const id = typeof page === 'string' ? slugify(page) : page.id;
+      const pageId = typeof page === 'string' ? slugify(page) : page.id;
       const href = typeof page === 'object' && page.target
         ? resolveTarget(page.target).href
-        : routeHref([sectionId, id]);
-      container.appendChild(buildNavRow(href, label));
+        : routeHref([id, pageId]);
+      container.appendChild(buildNavRow(href, label, undefined, true));
     });
-  }
-}
-
-// Pure UI state: exactly one of the two <nav> lists is visible at a time,
-// driven by which of the two tab buttons is active. Never navigates.
-function wireTabs(): void {
-  const tabsEl = document.getElementById('drawer-tabs');
-  const homeNavEl = document.getElementById('drawer-nav-home');
-  const sectionNavEl = document.getElementById('drawer-nav-section');
-  if (!tabsEl || !homeNavEl || !sectionNavEl) return;
-
-  const homeTabBtn = tabsEl.querySelector<HTMLButtonElement>('[data-tab="home"]');
-  const sectionTabBtn = tabsEl.querySelector<HTMLButtonElement>('[data-tab="section"]');
-  if (!homeTabBtn || !sectionTabBtn) return;
-
-  homeTabBtn.addEventListener('click', () => {
-    homeTabBtn.classList.add('is-active');
-    sectionTabBtn.classList.remove('is-active');
-    homeNavEl.hidden = false;
-    sectionNavEl.hidden = true;
-  });
-
-  sectionTabBtn.addEventListener('click', () => {
-    sectionTabBtn.classList.add('is-active');
-    homeTabBtn.classList.remove('is-active');
-    homeNavEl.hidden = true;
-    sectionNavEl.hidden = false;
   });
 }
 
@@ -208,19 +187,10 @@ function wireOpenClose(): void {
 }
 
 export function initDrawer(data: PortalData): void {
-  const sectionId = document.body.dataset['section'] ?? 'home';
-
   fillBanner(data);
 
-  const homeNavEl = document.getElementById('drawer-nav-home');
-  if (homeNavEl) fillHomeNav(homeNavEl, data);
+  const navEl = document.getElementById('drawer-nav');
+  if (navEl) fillDrawerList(navEl, data);
 
-  const sectionNavEl = document.getElementById('drawer-nav-section');
-  const section = data.sections[sectionId];
-  if (sectionNavEl && section && sectionId !== 'home') {
-    fillSectionNav(sectionNavEl, sectionId, section);
-  }
-
-  wireTabs();
   wireOpenClose();
 }

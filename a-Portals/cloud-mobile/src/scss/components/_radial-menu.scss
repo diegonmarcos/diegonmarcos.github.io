@@ -4,8 +4,12 @@
 // Radial menu — press-drag star menu overlay (galaxy "star" buttons)
 // ==========================================================================
 
+// absolute, not fixed — .radial-menu is now a descendant of .shell (the
+// actual "screen" box, full-width on mobile but a centered 480px mockup on
+// desktop), not a <body> sibling. fixed would anchor to the true browser
+// viewport instead, same bug as the drawer (see _drawer.scss).
 .radial-menu {
-    position: fixed;
+    position: absolute;
     inset: 0;
     z-index: 50;
 }

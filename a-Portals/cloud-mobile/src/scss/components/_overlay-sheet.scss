@@ -4,8 +4,10 @@
 // Overlay sheet — shared chrome for notification-center / update-overlay
 // ==========================================================================
 
+// absolute, not fixed — .overlay-sheet is now a descendant of .shell (see
+// generate-pages.mjs's renderShell), same fix as drawer/radial-menu/fan-menu.
 .overlay-sheet {
-    position: fixed;
+    position: absolute;
     inset: 0;
     z-index: 40;
     display: none;

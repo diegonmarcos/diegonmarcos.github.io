@@ -107,6 +107,14 @@ export function initStars(data: PortalData): void {
   // directly with no re-checking needed (matches drawer.ts's guard style,
   // just hoisted once instead of repeated in every helper).
   const menuEl: HTMLElement = menuRoot;
+  // #radial-menu is positioned absolute within .shell (see _radial-menu.scss
+  // — .shell is "the screen", a centered 480px mockup on desktop rather than
+  // the true browser viewport), but getBoundingClientRect() always returns
+  // viewport-relative coordinates regardless of an element's own position
+  // scheme. shellOffset() converts a viewport point into .shell's own
+  // coordinate space so the visual dot lines up with the star that opened
+  // it instead of drifting toward the browser's true left edge on desktop.
+  const shellEl = menuEl.closest<HTMLElement>('.shell');
 
   const starEls: Array<{ el: HTMLElement; kind: StarKind }> = [];
   const siriusEl = document.getElementById('star-sirius');
@@ -157,8 +165,9 @@ export function initStars(data: PortalData): void {
 
     const center = document.createElement('div');
     center.className = 'radial-menu__center';
-    center.style.left = `${originX}px`;
-    center.style.top = `${originY}px`;
+    const shellRect = shellEl?.getBoundingClientRect();
+    center.style.left = `${originX - (shellRect?.left ?? 0)}px`;
+    center.style.top = `${originY - (shellRect?.top ?? 0)}px`;
 
     if (depth > 0) {
       const back = document.createElement('button');

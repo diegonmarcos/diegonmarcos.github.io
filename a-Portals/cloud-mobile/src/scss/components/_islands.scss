@@ -64,16 +64,23 @@
 // clock's coordinate.
 .status-strip__camera {
     justify-self: center;
-    width: 11px;
-    height: 11px;
+    width: 33px;
+    height: 33px;
     border-radius: 50%;
     background: #000;
     border: 1px solid rgba(255, 255, 255, 0.15);
     flex-shrink: 0;
 }
 
-// Toolbar layout is a fixed-track grid (40px icon / flexible center / 40px
-// icon), not flexbox-with-auto-margins — auto-margin centering only balances
+// Real app: activity_main.xml's toolbar_island wraps a stock
+// MaterialToolbar at ?attr/actionBarSize (Material spec = 56dp, matches
+// this island's own height below). Its navigationIcon (hamburger) and menu
+// action icon (back/wallet) follow the same Material spec: a 48dp touch
+// target with a 24dp glyph centered inside it — not an arbitrary size, so
+// both are rebuilt here to those exact numbers rather than an approximation.
+//
+// Layout is a fixed-track grid (48px icon / flexible center / 48px icon),
+// not flexbox-with-auto-margins — auto-margin centering only balances
 // correctly when both side items are actually present with equal width, and
 // broke down as soon as one side was hidden (e.g. root pages with no back
 // button), pulling the dynamic-island pill off-center. A grid's side tracks
@@ -87,10 +94,10 @@
     height: 56px;
     @include glass-island;
     display: grid;
-    grid-template-columns: 40px 1fr 40px;
+    grid-template-columns: 48px 1fr 48px;
     align-items: center;
-    gap: 8px;
-    padding: 0 8px;
+    gap: 4px;
+    padding: 0 4px;
     z-index: 10;
 }
 
@@ -101,8 +108,8 @@
 // real link, never both, never neither — no [hidden]-toggling needed.
 .icon-btn,
 .toolbar-action {
-    width: 40px;
-    height: 40px;
+    width: 48px;
+    height: 48px;
     border-radius: 50%;
     @include flex-center;
     // Neutralize native <button> chrome (default appearance/border/padding
@@ -115,8 +122,8 @@
 
 .icon-btn img,
 .toolbar-action img {
-    width: 22px;
-    height: 22px;
+    width: 24px;
+    height: 24px;
 }
 
 .icon-btn:hover,

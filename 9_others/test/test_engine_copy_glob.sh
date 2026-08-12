@@ -10,7 +10,7 @@
 #   • Multiple comma-separated patterns work alongside each other.
 set -e
 
-REPO_ROOT="$(cd "$(dirname "$0")/../../.." && pwd)"
+REPO_ROOT="$(cd "$(dirname "$0")/../.." && pwd)"
 
 fail() { echo "FAIL: $1" >&2; exit 1; }
 pass() { echo "  ✓ $1"; }

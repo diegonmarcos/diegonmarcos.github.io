@@ -9,7 +9,7 @@
 #   • snippet content survives the round-trip (script tag present).
 set -e
 
-REPO_ROOT="$(cd "$(dirname "$0")/../../.." && pwd)"
+REPO_ROOT="$(cd "$(dirname "$0")/../.." && pwd)"
 ENGINE="$REPO_ROOT/1_cicd/src/scripts/front-sw-register.sh"
 SNIPPET="$REPO_ROOT/9_others/src/templates/sw-register-snippet.html"
 

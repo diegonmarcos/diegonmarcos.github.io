@@ -2,7 +2,7 @@
 # test_framework.sh — verify front's declarative framework is wired correctly
 set -e
 
-REPO_ROOT="$(cd "$(dirname "$0")/../../.." && pwd)"
+REPO_ROOT="$(cd "$(dirname "$0")/../.." && pwd)"
 cd "$REPO_ROOT"
 
 fail() { echo "FAIL: $1" >&2; exit 1; }

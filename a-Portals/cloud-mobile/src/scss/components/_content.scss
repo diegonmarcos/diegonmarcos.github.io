@@ -10,7 +10,7 @@
     min-width: 0;  // let wide inner content (tab strips, grids) clip/scroll here, not overflow the page
     overflow-y: auto;
     overflow-x: hidden;
-    padding: 104px 12px 96px;
+    padding: 118px 12px 96px; // clears .toolbar-island (top:68px + height:56px, see _islands.scss)
     position: relative;
     z-index: 1;
 }

@@ -47,17 +47,28 @@ export function initIslandWave(): void {
   let width = 0;
   let height = 0;
 
-  function resize(): void {
-    const rect = canvas.getBoundingClientRect();
+  function resize(cssWidth: number, cssHeight: number): void {
     const dpr = window.devicePixelRatio || 1;
-    width = rect.width;
-    height = rect.height;
+    width = cssWidth;
+    height = cssHeight;
     canvas.width = Math.max(1, Math.round(width * dpr));
     canvas.height = Math.max(1, Math.round(height * dpr));
     ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
   }
-  resize();
-  window.addEventListener('resize', resize);
+  // ResizeObserver instead of a one-shot getBoundingClientRect() + window
+  // 'resize' listener: a single upfront read can fire before layout has
+  // settled (e.g. right at DOMContentLoaded) and come back 0x0, and
+  // nothing outside an actual window resize would ever retry it — leaving
+  // width/height permanently 0, and every draw() call silently no-oping
+  // forever (see its `if (width === 0 ...) return`). ResizeObserver fires
+  // immediately with the real size once layout is known, and again on any
+  // later change, so there's no window where the canvas can get stuck
+  // never having drawn anything.
+  new ResizeObserver((entries) => {
+    const box = entries[0]?.contentBoxSize?.[0];
+    if (box) resize(box.inlineSize, box.blockSize);
+    else resize(canvas.clientWidth, canvas.clientHeight);
+  }).observe(canvas);
 
   function draw(time: number): void {
     if (width === 0 || height === 0) return;

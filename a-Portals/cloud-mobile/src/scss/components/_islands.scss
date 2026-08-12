@@ -88,7 +88,15 @@
 // them, so the center column is always genuinely centered.
 .toolbar-island {
     position: absolute;
-    top: 54px;
+    // .status-strip is two flex-column rows with no fixed height — it
+    // grows to fit its tallest content (currently the 33px camera dot),
+    // landing at ~56px tall (padding 4+6 + row1 33 + gap 2 + clock ~11).
+    // This offset is a hardcoded independent number, NOT derived from
+    // that actual height, so it needs real headroom above the computed
+    // total or a future status-strip growth (bigger camera, more chip
+    // rows) silently pushes it into the z-index:11 status-strip's
+    // territory again — it already happened once at 54px.
+    top: 68px;
     left: var(--island-margin);
     right: var(--island-margin);
     height: 56px;
@@ -141,7 +149,12 @@
     border-radius: 999px;
     @include flex-center;
     position: relative;
-    overflow: hidden;
+    // No overflow:hidden here — the shimmer ring below needs to extend
+    // slightly OUTSIDE the pill's own box (a halo around the edge, not
+    // just inside it), which a parent overflow:hidden would clip away
+    // entirely. The canvas is clipped to the pill shape on its own
+    // border-radius instead (see .dynamic-island__wave).
+    //
     // Real drawable (res/drawable/bg_dynamic_island.xml): pure black fill +
     // a faint 1dp violet hairline stroke, plain and static — all the color
     // and motion comes from IslandWaveView (the canvas) and
@@ -154,14 +167,16 @@
 }
 
 // Canvas port of IslandWaveView — 4 layered sine-composite waveform
-// channels, drawn/animated by island-wave.ts. Fills the pill; the canvas
-// itself needs no clip-path since border-radius + the parent's
-// overflow:hidden already clip it to the pill shape.
+// channels, drawn/animated by island-wave.ts. border-radius clips the
+// canvas's OWN painted pixels to the pill shape (browsers apply
+// border-radius to an element's own content, not just child overflow, so
+// this needs no overflow:hidden of its own either).
 .dynamic-island__wave {
     position: absolute;
     inset: 0;
     width: 100%;
     height: 100%;
+    border-radius: inherit;
 }
 
 // Canvas port of PrismaticShimmerView — full rainbow SweepGradient stroke

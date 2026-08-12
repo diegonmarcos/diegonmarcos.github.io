@@ -9,9 +9,13 @@
         { "id": "chat-mm", "label": "Chat · Mattermost", "icon": "chat", "target": "section:chat" }
       ],
       "apps": { "type": "stack", "cards": [
-        { "kind": "mail_accounts", "title": "Mail · accounts", "target": "section:mail" },
-        { "kind": "chat_matrix", "title": "Chat · Matrix", "target": "section:chat" },
-        { "kind": "chat_mattermost", "title": "Chat · Mattermost", "target": "section:chat" },
+        { "kind": "mail_accounts", "title": "Mail · accounts", "target": "section:mail",
+          "rows": [["me@diegonmarcos.com", "JMAP"], ["Add IMAP account…", "IMAPS"]],
+          "caption": "Unread / total counts pending JMAP slice C2 + IMAP slice." },
+        { "kind": "chat_matrix", "title": "Chat · Matrix", "target": "section:chat",
+          "linkLabel": "Open Matrix", "caption": "server list + unread counts pending integration" },
+        { "kind": "chat_mattermost", "title": "Chat · Mattermost", "target": "section:chat",
+          "linkLabel": "Open Mattermost", "caption": "server list + unread counts pending integration" },
         { "kind": "stats", "title": "Messenger (Element)", "subtitle": "Matrix · Element",
           "rows": [["Rooms", "12"], ["Unread", "3"], ["Mentions", "1"], ["Last sync", "2m ago"]] },
         { "kind": "stats", "title": "Dialer (Fossy)", "subtitle": "Fossify Phone",

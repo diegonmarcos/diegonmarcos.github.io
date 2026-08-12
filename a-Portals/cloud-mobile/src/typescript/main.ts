@@ -13,6 +13,7 @@ import { initOverlays } from './overlays';
 import { initFanMenu } from './fan-menu';
 import { initStackCards } from './cards';
 import { initCalendarPopup } from './calendar-popup';
+import { initCalendarMonthCards } from './calendar-month-card';
 
 // document.currentScript is only valid synchronously while this script is
 // the one executing — capture it now, before any async boundary, for use
@@ -43,6 +44,7 @@ function initApp(): void {
   initStackCards();
   initStatusClock();
   initCalendarPopup();
+  initCalendarMonthCards();
 }
 
 document.addEventListener('DOMContentLoaded', () => {

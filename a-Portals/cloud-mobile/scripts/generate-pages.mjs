@@ -108,9 +108,34 @@ function cardHtml(card, rel) {
     ? `<a class="stack-card__title" href="${href}"${external ? ' target="_blank" rel="noopener"' : ''}>${card.title}</a>`
     : `<span class="stack-card__title">${card.title}</span>`;
   const subtitle = card.subtitle ? `<p class="stack-card__subtitle">${card.subtitle}</p>` : '';
-  const body = card.kind === 'stats' && card.rows
-    ? `<div class="stack-card__stats">${card.rows.map(([l, v]) => `<div class="stack-card__stat"><span>${l}</span><b>${v}</b></div>`).join('')}</div>`
-    : `<div class="stack-card__body"><div class="page-body__skeleton-row"></div></div>`;
+  const caption = card.caption ? `<p class="stack-card__caption">${card.caption}</p>` : '';
+
+  let body;
+  if (card.kind === 'stats' && card.rows) {
+    body = `<div class="stack-card__stats">${card.rows.map(([l, v]) => `<div class="stack-card__stat"><span>${l}</span><b>${v}</b></div>`).join('')}</div>`;
+  } else if (card.kind === 'mail_accounts' && card.rows) {
+    // Real: one row per declared account (build.json::ui.mail_accounts) —
+    // unread/total counts are pending a real JMAP/IMAP backend in the real
+    // app too, so a caption explaining that is honest, not a placeholder.
+    body = `<div class="stack-card__stats">${card.rows.map(([l, v]) => `<div class="stack-card__stat"><span>${l}</span><b>${v}</b></div>`).join('')}</div>${caption}`;
+  } else if ((card.kind === 'chat_matrix' || card.kind === 'chat_mattermost') && card.linkLabel) {
+    // Real: a single "Open Matrix"/"Open Mattermost" row — the real app has
+    // no richer server-list content here either.
+    body = `${href ? `<a class="stack-card__link-row" href="${href}">${card.linkLabel}</a>` : ''}${caption}`;
+  } else if (card.kind === 'open_link') {
+    // Real: a single tappable header row, no body at all — the generic
+    // skeleton here was pure invention with nothing behind it.
+    body = '';
+  } else if (card.kind === 'calendar_month') {
+    // Real: a month grid with working prev/next chevrons, today
+    // highlighted — pure date math, so this mounts client-side (see
+    // calendar-month-card.ts) rather than baking a build-time date into
+    // the static HTML, which would break dist/ reproducibility.
+    body = `<div class="calendar-card" data-calendar-card></div>`;
+  } else {
+    body = `<div class="stack-card__body"><div class="page-body__skeleton-row"></div></div>`;
+  }
+
   return `<div class="stack-card">
                 <button class="stack-card__header" type="button" aria-expanded="true">${titleInner}<span class="stack-card__chevron" aria-hidden="true">⌄</span></button>
                 <div class="stack-card__content">${subtitle}${body}</div>

@@ -86,3 +86,82 @@ a.stack-card__title:hover {
     color: var(--text-primary);
     font-weight: 600;
 }
+
+.stack-card__caption {
+    color: var(--text-secondary);
+    font-size: 11px;
+    margin: 8px 0 0;
+}
+
+// Real: chat_matrix/chat_mattermost's single "Open Matrix"/"Open
+// Mattermost" tappable row.
+.stack-card__link-row {
+    display: block;
+    color: var(--cloud-primary);
+    font-weight: 600;
+    font-size: 14px;
+    text-decoration: none;
+}
+
+a.stack-card__link-row:hover {
+    text-decoration: underline;
+}
+
+// Real: CalendarMonthFragment — month grid with working prev/next
+// chevrons, today highlighted. Mounted client-side (calendar-month-card.ts)
+// into the calendar_month card's body.
+.calendar-card__header {
+    @include flex-row(space-between, center, 8px);
+    margin-bottom: 8px;
+}
+
+.calendar-card__nav {
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    @include flex-center;
+    color: var(--text-primary);
+    font-size: 15px;
+    flex-shrink: 0;
+}
+
+.calendar-card__nav:hover,
+.calendar-card__nav:active {
+    background: var(--glass-border);
+}
+
+.calendar-card__title {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--drawer-avatar);
+    margin: 0;
+    text-align: center;
+    flex: 1;
+}
+
+.calendar-card__week {
+    display: flex;
+    flex-direction: row;
+}
+
+.calendar-card__day-cell {
+    flex: 1;
+    text-align: center;
+    font-size: 12px;
+    color: var(--text-primary);
+    padding: 5px 0;
+    margin: 1px;
+    border-radius: 50%;
+}
+
+.calendar-card__day-cell--header {
+    font-weight: 700;
+    font-size: 10px;
+    color: var(--text-secondary);
+}
+
+.calendar-card__day-cell.is-today {
+    background: var(--drawer-avatar);
+    color: #fff;
+    font-weight: 700;
+}

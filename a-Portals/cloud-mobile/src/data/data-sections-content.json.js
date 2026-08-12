@@ -268,7 +268,18 @@
         { "id": "keyboard", "label": "Keyboard", "target": "extapp:cloud-keyboard" },
         { "id": "update-all", "label": "Update All", "rows": [["Cloud SuperApp", "Up to date"], ["Cloud Mail", "Up to date"], ["Cloud Chat", "Up to date"]] },
         { "id": "constellation", "label": "Constellation", "rows": [["cloud-mail", "Not installed"], ["cloud-chat", "Not installed"], ["cloud-matrix", "Not installed"], ["cloud-dialer", "Not installed"], ["cloud-ide", "Not installed"], ["cloud-wallet", "Not installed"], ["cloud-nav", "Not installed"], ["cloud-vault", "Not installed"], ["cloud-browser", "Not installed"], ["cloud-keyboard", "Not installed"]] },
-        { "id": "onehand", "label": "One-Hand", "rows": [["Sirius (circular menu)", "On"], ["Canopus (arc menu)", "On"], ["Centauri (recent apps)", "On"]] },
+        { "id": "onehand", "label": "One-Hand", "rows": [
+          ["Edge handles", "On"],
+          ["Left · Top", "Bitwarden"],
+          ["Left · Center", "Back"],
+          ["Left · Down", "Google Maps"],
+          ["Right · Top", "WhatsApp Business"],
+          ["Right · Center", "Back"],
+          ["Right · Down", "Instagram"],
+          ["Sirius (circular menu)", "On"],
+          ["Canopus (arc menu)", "On"],
+          ["Centauri (recent apps)", "On"]
+        ] },
         { "id": "permissions", "label": "Permissions", "rows": [["Notifications", "Granted"], ["Location", "Not requested"], ["Contacts", "Not requested"], ["Nearby devices", "Not requested"]] },
         { "id": "about", "label": "About", "rows": [["Version", "1.0.0"], ["Build", "cloud-mobile · web"], ["Source", "ea_cloud-superapp"]] }
       ]

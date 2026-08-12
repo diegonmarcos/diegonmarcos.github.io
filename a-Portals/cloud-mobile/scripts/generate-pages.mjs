@@ -287,7 +287,7 @@ function statusStripHtml() {
                 <div class="status-strip__camera" aria-hidden="true"></div>
                 <div class="status-strip__cluster status-strip__cluster--right">${right}</div>
             </div>
-            <span class="status-strip__clock" id="status-clock">--:--</span>
+            <button class="status-strip__clock" id="status-clock" type="button" aria-label="Calendar">--:--</button>
         </div>`;
 }
 
@@ -339,16 +339,26 @@ function renderShell({ title, sectionId, depth, bodyHtml, backHref }) {
         <button class="star star--canopus" id="star-canopus" type="button" aria-label="Quick configs">${iconImg('settings', rel, 'star__icon')}</button>
         <button class="star star--centauri" id="star-centauri" type="button" aria-label="Recent apps">✦</button>
 
-        <header class="toolbar-island">
-            <button class="icon-btn" id="hamburger-btn" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="drawer">
-                ${iconImg('menu', rel, '')}
-            </button>
-            <button class="dynamic-island" id="dynamic-island" type="button" aria-label="Notifications">
-                <canvas class="dynamic-island__wave" id="island-wave"></canvas>
-                <span class="dynamic-island__shimmer" aria-hidden="true"></span>
-            </button>
-            ${rightIcon}
-        </header>
+        <button class="icon-btn icon-btn--hamburger" id="hamburger-btn" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="drawer">
+            ${iconImg('menu', rel, '')}
+        </button>
+
+        <div class="music-island" aria-hidden="true">
+            ${iconImg('music', rel, 'music-island__icon')}
+            <span class="music-island__marquee"><span class="music-island__title">Weightless — Marconi Union</span></span>
+        </div>
+
+        <button class="dynamic-island" id="dynamic-island" type="button" aria-label="Notifications">
+            <span class="dynamic-island__wave-clip" aria-hidden="true">
+                <span class="dynamic-island__wave dynamic-island__wave--1"></span>
+                <span class="dynamic-island__wave dynamic-island__wave--2"></span>
+                <span class="dynamic-island__wave dynamic-island__wave--3"></span>
+                <span class="dynamic-island__wave dynamic-island__wave--4"></span>
+            </span>
+            <span class="dynamic-island__shimmer" aria-hidden="true"></span>
+        </button>
+
+        ${rightIcon}
 
         <main class="content" id="content">
             ${bodyHtml}
@@ -384,6 +394,7 @@ function renderShell({ title, sectionId, depth, bodyHtml, backHref }) {
         <div class="fan-menu" id="fan-menu" hidden aria-hidden="true"></div>
         <div class="overlay-sheet" id="notification-center" hidden></div>
         <div class="overlay-sheet overlay-sheet--full" id="update-overlay" hidden></div>
+        <div class="overlay-sheet" id="calendar-popup" hidden></div>
     </div>
 
     <script>window.PORTAL_DATA = window.PORTAL_DATA || {};</script>

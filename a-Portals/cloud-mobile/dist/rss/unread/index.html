@@ -25,7 +25,7 @@
                 <div class="status-strip__camera" aria-hidden="true"></div>
                 <div class="status-strip__cluster status-strip__cluster--right"><span class="status-strip__chip">RAM 62%</span><span class="status-strip__chip">STO 48%</span><span class="status-strip__chip">CPU 17%</span><span class="status-strip__chip">BAT 84%</span></div>
             </div>
-            <span class="status-strip__clock" id="status-clock">--:--</span>
+            <button class="status-strip__clock" id="status-clock" type="button" aria-label="Calendar">--:--</button>
         </div>
         <div class="galaxy-backdrop" aria-hidden="true"></div>
         
@@ -34,16 +34,26 @@
         <button class="star star--canopus" id="star-canopus" type="button" aria-label="Quick configs"><img class="star__icon" src="../../public/icons/settings.svg" alt=""></button>
         <button class="star star--centauri" id="star-centauri" type="button" aria-label="Recent apps">✦</button>
 
-        <header class="toolbar-island">
-            <button class="icon-btn" id="hamburger-btn" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="drawer">
-                <img class="" src="../../public/icons/menu.svg" alt="">
-            </button>
-            <button class="dynamic-island" id="dynamic-island" type="button" aria-label="Notifications">
-                <canvas class="dynamic-island__wave" id="island-wave"></canvas>
-                <span class="dynamic-island__shimmer" aria-hidden="true"></span>
-            </button>
-            <a class="toolbar-action" href="/cloud-mobile/rss/" aria-label="Back"><img class="" src="../../public/icons/back.svg" alt=""></a>
-        </header>
+        <button class="icon-btn icon-btn--hamburger" id="hamburger-btn" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="drawer">
+            <img class="" src="../../public/icons/menu.svg" alt="">
+        </button>
+
+        <div class="music-island" aria-hidden="true">
+            <img class="music-island__icon" src="../../public/icons/music.svg" alt="">
+            <span class="music-island__marquee"><span class="music-island__title">Weightless — Marconi Union</span></span>
+        </div>
+
+        <button class="dynamic-island" id="dynamic-island" type="button" aria-label="Notifications">
+            <span class="dynamic-island__wave-clip" aria-hidden="true">
+                <span class="dynamic-island__wave dynamic-island__wave--1"></span>
+                <span class="dynamic-island__wave dynamic-island__wave--2"></span>
+                <span class="dynamic-island__wave dynamic-island__wave--3"></span>
+                <span class="dynamic-island__wave dynamic-island__wave--4"></span>
+            </span>
+            <span class="dynamic-island__shimmer" aria-hidden="true"></span>
+        </button>
+
+        <a class="toolbar-action" href="/cloud-mobile/rss/" aria-label="Back"><img class="" src="../../public/icons/back.svg" alt=""></a>
 
         <main class="content" id="content">
             <div class="page-tabs" role="tablist">
@@ -106,6 +116,7 @@
         <div class="fan-menu" id="fan-menu" hidden aria-hidden="true"></div>
         <div class="overlay-sheet" id="notification-center" hidden></div>
         <div class="overlay-sheet overlay-sheet--full" id="update-overlay" hidden></div>
+        <div class="overlay-sheet" id="calendar-popup" hidden></div>
     </div>
 
     <script>window.PORTAL_DATA = window.PORTAL_DATA || {};</script>

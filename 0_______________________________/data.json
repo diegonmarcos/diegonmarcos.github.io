@@ -1,7 +1,7 @@
 {
   "meta": {
     "generated_from": "front-topology.json",
-    "project_count": 48
+    "project_count": 49
   },
   "categories": [
     {
@@ -92,6 +92,15 @@
           "category": "a-Portals",
           "framework": "vanilla",
           "port": 8006,
+          "has_dist": true
+        },
+        {
+          "name": "Cloud Mobile",
+          "slug": "cloud-mobile",
+          "path": "a-Portals/cloud-mobile",
+          "category": "a-Portals",
+          "framework": "vanilla",
+          "port": 8036,
           "has_dist": true
         },
         {

@@ -72,6 +72,18 @@
     "has_pkg": false
   },
   {
+    "path": "a-Portals/cloud-mobile",
+    "category": "a-Portals",
+    "project": "cloud-mobile",
+    "key": "a-Portals__cloud-mobile",
+    "name": "Cloud Mobile",
+    "framework": "vanilla",
+    "port": 8036,
+    "deploy_name": "cloud-mobile",
+    "has_pwa": true,
+    "has_pkg": true
+  },
+  {
     "path": "a-Portals/cloud",
     "category": "a-Portals",
     "project": "cloud",

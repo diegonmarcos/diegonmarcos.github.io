@@ -123,19 +123,15 @@ export function initFanMenu(data: PortalData): void {
     closeFanMenu();
     if (!item) return;
 
-    // Overlay actions live in a sibling module built in parallel — a
+    // The Update overlay lives in a sibling module built in parallel — a
     // dynamic import means this file never hard-depends on load order.
-    if (item.target === 'action:open_search') {
-      import('./overlays').then((mod) => mod.openSearch());
-      return;
-    }
     if (item.target === 'action:open_update') {
       import('./overlays').then((mod) => mod.openUpdateOverlay());
       return;
     }
 
     const { href } = resolveTarget(item.target);
-    if (href) location.href = href; // target: null (e.g. "Recent Apps") just closes, handled above
+    if (href) location.href = href;
   }
 
   function onPointerDown(event: PointerEvent): void {

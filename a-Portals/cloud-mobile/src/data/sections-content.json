@@ -248,6 +248,8 @@
       "pages": [{ "id": "dashboard", "label": "Dashboard" }] },
     "health": { "label": "MyHealth", "icon": "heart", "color": "pink",
       "pages": [{ "id": "summary", "label": "Summary" }] },
+    "wallet": { "label": "Wallet", "icon": "wallet", "color": "indigo",
+      "pages": [{ "id": "cards", "label": "Cards" }] },
 
     "config": {
       "label": "Configs", "icon": "settings", "color": "blue",

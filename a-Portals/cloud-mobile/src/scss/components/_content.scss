@@ -15,11 +15,18 @@
     z-index: 1;
 }
 
-.content__title {
-    margin: 4px 4px 14px;
-    font-size: 20px;
-    font-weight: 600;
-    color: var(--text-primary);
+// Home Apps page — real app: a search bar sits above the section tile grid
+// (AppDrawerSheetFragment). No live index behind it here, so it's a static
+// decorative pill rather than a fake-functional input — matches how the
+// status-strip's device-stat chips are real markup without live data.
+.search-pill {
+    padding: 14px 16px;
+    margin-bottom: 12px;
+    border-radius: 999px;
+    background: var(--glass-bg);
+    border: 1px solid var(--glass-border);
+    color: var(--text-secondary);
+    font-size: 14px;
 }
 
 .page-tabs {

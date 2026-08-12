@@ -3,9 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-    <title>Calendar · Agenda · Cloud SuperApp</title>
-    <link rel="icon" type="image/svg+xml" href="../../public/favicon.svg">
-    <link rel="manifest" href="../../manifest.webmanifest">
+    <title>Wallet · Cloud SuperApp</title>
+    <link rel="icon" type="image/svg+xml" href="../public/favicon.svg">
+    <link rel="manifest" href="../manifest.webmanifest">
     <meta name="theme-color" content="#000000">
 <script>
   var _mtm = window._mtm = window._mtm || [];
@@ -15,9 +15,9 @@
     g.async=true; g.src='https://analytics.diegonmarcos.com/js/container_odwLIyPV.js'; s.parentNode.insertBefore(g,s);
   })();
 </script>
-    <link rel="stylesheet" href="../../style.css">
+    <link rel="stylesheet" href="../style.css">
 </head>
-<body data-section="calendar">
+<body data-section="wallet">
     <div class="shell">
         <div class="status-strip">
             <div class="status-strip__row">
@@ -31,68 +31,39 @@
         
 
         <button class="star star--sirius" id="star-sirius" type="button" aria-label="Open menu">✦</button>
-        <button class="star star--canopus" id="star-canopus" type="button" aria-label="Quick configs"><img class="star__icon" src="../../public/icons/settings.svg" alt=""></button>
+        <button class="star star--canopus" id="star-canopus" type="button" aria-label="Quick configs"><img class="star__icon" src="../public/icons/settings.svg" alt=""></button>
         <button class="star star--centauri" id="star-centauri" type="button" aria-label="Recent apps">✦</button>
 
         <header class="toolbar-island">
             <button class="icon-btn" id="hamburger-btn" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="drawer">
-                <img class="" src="../../public/icons/menu.svg" alt="">
+                <img class="" src="../public/icons/menu.svg" alt="">
             </button>
             <button class="dynamic-island" id="dynamic-island" type="button" aria-label="Notifications">
                 <span class="dynamic-island__wave"></span>
                 <span class="dynamic-island__label">Cloud SuperApp</span>
             </button>
-            <a class="toolbar-action" href="/cloud-mobile/calendar/" aria-label="Back"><img class="" src="../../public/icons/back.svg" alt=""></a>
+            <a class="toolbar-action" href="/cloud-mobile/" aria-label="Back"><img class="" src="../public/icons/back.svg" alt=""></a>
         </header>
 
         <main class="content" id="content">
-            <div class="page-tabs" role="tablist">
-                <a class="page-tabs__item" href="/cloud-mobile/calendar/day/">Day</a>
-                <a class="page-tabs__item" href="/cloud-mobile/calendar/week/">Week</a>
-                <a class="page-tabs__item" href="/cloud-mobile/calendar/month/">Month</a>
-                <a class="page-tabs__item is-active" href="/cloud-mobile/calendar/agenda/">Agenda</a>
-                <a class="page-tabs__item" href="/cloud-mobile/calendar/calendars/">Calendars</a>
-                <a class="page-tabs__item" href="/cloud-mobile/calendar/add-caldav/">+ Add CalDAV</a>
-                <a class="page-tabs__item" href="/cloud-mobile/calendar/settings/">Settings</a>
-            </div>
-            <div class="item-list">
-                <div class="item-list__row">
-                    <div class="item-list__text">
-                        <span class="item-list__title">Standup</span>
-                        <span class="item-list__subtitle">Today · 09:00</span>
-                    </div>
-                    
-                </div>
-                <div class="item-list__row">
-                    <div class="item-list__text">
-                        <span class="item-list__title">1:1 with Ops</span>
-                        <span class="item-list__subtitle">Today · 14:00</span>
-                    </div>
-                    
-                </div>
-                <div class="item-list__row">
-                    <div class="item-list__text">
-                        <span class="item-list__title">Dentist</span>
-                        <span class="item-list__subtitle">Tomorrow · 10:30</span>
-                    </div>
-                    
-                </div>
+            <div class="page-list">
+                <a class="page-list__item" href="/cloud-mobile/wallet/cards/">Cards</a>
             </div>
         </main>
 
         <nav class="bottom-nav" id="bottom-nav" aria-label="Primary">
-            <a class="bottom-nav__item" href="../../communication/" data-longpress="communication"><img class="" src="../../public/icons/chat.svg" alt=""><span>Inboxes</span></a>
-            <a class="bottom-nav__item" href="../../infos/" data-longpress="infos"><img class="" src="../../public/icons/logs.svg" alt=""><span>Infos</span></a>
-            <a class="bottom-nav__item" href="../../" data-longpress="home"><img class="" src="../../public/icons/home.svg" alt=""><span>Home</span></a>
-            <a class="bottom-nav__item" href="../../suite/" data-longpress="suite"><img class="" src="../../public/icons/suite.svg" alt=""><span>Suite</span></a>
-            <a class="bottom-nav__item" href="../../tools/" data-longpress="tools"><img class="" src="../../public/icons/tools.svg" alt=""><span>Labs</span></a>
+            <a class="bottom-nav__item" href="../communication/" data-longpress="communication"><img class="" src="../public/icons/chat.svg" alt=""><span>Inboxes</span></a>
+            <a class="bottom-nav__item" href="../infos/" data-longpress="infos"><img class="" src="../public/icons/logs.svg" alt=""><span>Infos</span></a>
+            <a class="bottom-nav__item" href="../" data-longpress="home"><img class="" src="../public/icons/home.svg" alt=""><span>Home</span></a>
+            <a class="bottom-nav__item" href="../suite/" data-longpress="suite"><img class="" src="../public/icons/suite.svg" alt=""><span>Suite</span></a>
+            <a class="bottom-nav__item" href="../tools/" data-longpress="tools"><img class="" src="../public/icons/tools.svg" alt=""><span>Labs</span></a>
         </nav>
     </div>
 
     <div class="drawer-scrim" id="drawer-scrim"></div>
     <aside class="drawer" id="drawer" aria-hidden="true">
         <div class="drawer__banner drawer__banner--app" id="drawer-app-banner">
-            <img class="drawer__banner-icon" src="../../public/icons/home.svg" alt="">
+            <img class="drawer__banner-icon" src="../public/icons/home.svg" alt="">
             <div class="drawer__banner-text">
                 <p class="drawer__title" id="drawer-app-name">Cloud SuperApp</p>
                 <p class="drawer__meta" id="drawer-app-build">cloud-mobile · web</p>
@@ -104,12 +75,12 @@
             <div class="drawer__banner-text">
                 <p class="drawer__title" id="drawer-user-name">Diego Coelho Marcos</p>
                 <p class="drawer__meta" id="drawer-user-email">me@diegonmarcos.com</p>
-                <p class="drawer__mode"><span id="drawer-user-mode">Mode: Apps</span> <img class="" src="../../public/icons/refresh.svg" alt=""></p>
+                <p class="drawer__mode"><span id="drawer-user-mode">Mode: Apps</span> <img class="" src="../public/icons/refresh.svg" alt=""></p>
             </div>
         </button>
         <div class="drawer__tabs" id="drawer-tabs" role="tablist">
             <button class="drawer__tab is-active" type="button" data-tab="home">Home</button>
-            <button class="drawer__tab" type="button" data-tab="section">Calendar</button>
+            <button class="drawer__tab" type="button" data-tab="section">Wallet</button>
         </div>
         <nav class="drawer__nav" id="drawer-nav-home"></nav>
         <nav class="drawer__nav" id="drawer-nav-section" hidden></nav>
@@ -121,10 +92,10 @@
     <div class="overlay-sheet overlay-sheet--full" id="update-overlay" hidden></div>
 
     <script>window.PORTAL_DATA = window.PORTAL_DATA || {};</script>
-    <script src="../../data-shell.json.js"></script>
-    <script src="../../data-sections-core.json.js"></script>
-    <script src="../../data-sections-content.json.js"></script>
-    <script src="../../data-mock-apps.json.js"></script>
-    <script src="../../script.js"></script>
+    <script src="../data-shell.json.js"></script>
+    <script src="../data-sections-core.json.js"></script>
+    <script src="../data-sections-content.json.js"></script>
+    <script src="../data-mock-apps.json.js"></script>
+    <script src="../script.js"></script>
 </body>
 </html>

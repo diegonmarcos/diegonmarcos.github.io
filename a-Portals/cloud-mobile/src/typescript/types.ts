@@ -100,11 +100,6 @@ export interface LongPressItem {
   target: string | null;
 }
 
-export interface SearchConfig {
-  placeholder: string;
-  scopes: { id: string; label: string }[];
-}
-
 export interface NotificationCenterConfig {
   emptyTitle: string;
   emptyBody: string;
@@ -127,7 +122,6 @@ export interface ShellData {
   cube: { glow: string; line: string; dot: string };
   stars: StarsConfig;
   longPress: Record<string, LongPressItem[]>;
-  search: SearchConfig;
   notificationCenter: NotificationCenterConfig;
   updateOverlay: UpdateOverlayConfig;
   statusBar: StatusBarConfig;

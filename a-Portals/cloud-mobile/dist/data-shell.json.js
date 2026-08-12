@@ -36,7 +36,7 @@
   "stars": {
     "sirius": {
       "nodes": [
-        { "id": "home-apps", "label": "Home Apps", "icon": "home", "target": "action:open_search" },
+        { "id": "home-apps", "label": "Home Apps", "icon": "home", "target": "page:home-apps" },
         { "id": "communication", "label": "Comms", "icon": "chat", "target": "section:communication" },
         { "id": "infos", "label": "Infos", "icon": "logs", "target": "section:infos" },
         { "id": "suite", "label": "Suite", "icon": "suite",
@@ -71,8 +71,8 @@
   "longPress": {
     "_doc": "Bottom-nav long-press fan menus (real app: 380ms hold, PopupWindow anchored above the icon). Home uses a fixed 4-item menu; communication/infos/tools read from each's Apps|Admin mode toggle; suite reads its own Cloud|Phone|More set.",
     "home": [
-      { "id": "home-apps", "label": "Home Apps", "icon": "home", "target": "action:open_search" },
-      { "id": "recent-apps", "label": "Recent Apps", "icon": "cube", "target": null },
+      { "id": "home-apps", "label": "Home Apps", "icon": "home", "target": "page:home-apps" },
+      { "id": "recent-apps", "label": "Recent Apps", "icon": "cube", "target": "page:recentapps/grid" },
       { "id": "tabs", "label": "Tabs", "icon": "suite", "target": "page:apptabs/grid" },
       { "id": "update", "label": "Update", "icon": "refresh", "target": "action:open_update" }
     ],
@@ -92,16 +92,6 @@
     "tools": [
       { "id": "apps", "label": "Apps", "icon": "tools", "target": "section:tools" },
       { "id": "admin", "label": "Admin", "icon": "workflow", "target": "page:tools/admin" }
-    ]
-  },
-  "search": {
-    "_doc": "SearchSheetFragment — indexes tilesShared + tiles(Apps/Admin) across sections. Reachable via the Home Apps drawer sheet's search pill (the toolbar itself has no search icon).",
-    "placeholder": "Search the app…",
-    "scopes": [
-      { "id": "cloud_apps", "label": "Cloud" },
-      { "id": "phone_apps", "label": "Phone" },
-      { "id": "cloud_configs", "label": "Configs" },
-      { "id": "phone_configs", "label": "Settings" }
     ]
   },
   "notificationCenter": {

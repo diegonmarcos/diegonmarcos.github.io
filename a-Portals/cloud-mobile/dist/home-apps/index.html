@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-    <title>Mail · Cloud SuperApp</title>
+    <title>Home Apps · Cloud SuperApp</title>
     <link rel="icon" type="image/svg+xml" href="../public/favicon.svg">
     <link rel="manifest" href="../manifest.webmanifest">
     <meta name="theme-color" content="#000000">
@@ -17,7 +17,7 @@
 </script>
     <link rel="stylesheet" href="../style.css">
 </head>
-<body data-section="mail">
+<body data-section="home-apps">
     <div class="shell">
         <div class="status-strip">
             <div class="status-strip__row">
@@ -46,15 +46,25 @@
         </header>
 
         <main class="content" id="content">
-            <div class="page-list">
-                <a class="page-list__item" href="/cloud-mobile/mail/folders/">Folders</a>
-                <a class="page-list__item" href="/cloud-mobile/mail/inbox/">Inbox</a>
-                <a class="page-list__item" href="/cloud-mobile/mail/accounts/">Accounts</a>
-                <a class="page-list__item" href="/cloud-mobile/mail/identities/">Identities</a>
-                <a class="page-list__item" href="/cloud-mobile/mail/rules/">Rules</a>
-                <a class="page-list__item" href="/cloud-mobile/mail/answers/">Answers</a>
-                <a class="page-list__item" href="/cloud-mobile/mail/contacts/">Contacts</a>
-                <a class="page-list__item" href="/cloud-mobile/mail/settings/">Settings</a>
+            <div class="search-pill" aria-hidden="true">Search apps &amp; content</div>
+            <div class="tile-grid" role="list">
+                <a class="tile tile--green" href="/cloud-mobile/communication/" role="listitem"><img class="tile__icon" src="../public/icons/chat.svg" alt=""><span class="tile__label">Inboxes</span></a>
+                <a class="tile tile--purple" href="/cloud-mobile/infos/" role="listitem"><img class="tile__icon" src="../public/icons/logs.svg" alt=""><span class="tile__label">Infos</span></a>
+                <a class="tile tile--orange" href="/cloud-mobile/suite/" role="listitem"><img class="tile__icon" src="../public/icons/suite.svg" alt=""><span class="tile__label">Suite</span></a>
+                <a class="tile tile--teal" href="/cloud-mobile/tools/" role="listitem"><img class="tile__icon" src="../public/icons/tools.svg" alt=""><span class="tile__label">Labs</span></a>
+                <a class="tile tile--blue" href="/cloud-mobile/mail/" role="listitem"><img class="tile__icon" src="../public/icons/mail.svg" alt=""><span class="tile__label">Mail</span></a>
+                <a class="tile tile--amber" href="/cloud-mobile/rss/" role="listitem"><img class="tile__icon" src="../public/icons/rss.svg" alt=""><span class="tile__label">RSS</span></a>
+                <a class="tile tile--green" href="/cloud-mobile/calendar/" role="listitem"><img class="tile__icon" src="../public/icons/calendar.svg" alt=""><span class="tile__label">Calendar</span></a>
+                <a class="tile tile--indigo" href="/cloud-mobile/drive/" role="listitem"><img class="tile__icon" src="../public/icons/database.svg" alt=""><span class="tile__label">Drive</span></a>
+                <a class="tile tile--pink" href="/cloud-mobile/vault/" role="listitem"><img class="tile__icon" src="../public/icons/lock.svg" alt=""><span class="tile__label">Vault</span></a>
+                <a class="tile tile--teal" href="/cloud-mobile/chat/" role="listitem"><img class="tile__icon" src="../public/icons/chat.svg" alt=""><span class="tile__label">Chat</span></a>
+                <a class="tile tile--amber" href="/cloud-mobile/wg/" role="listitem"><img class="tile__icon" src="../public/icons/mesh.svg" alt=""><span class="tile__label">WG</span></a>
+                <a class="tile tile--purple" href="/cloud-mobile/solutions/" role="listitem"><img class="tile__icon" src="../public/icons/briefcase.svg" alt=""><span class="tile__label">Solutions</span></a>
+                <a class="tile tile--teal" href="/cloud-mobile/apptabs/" role="listitem"><img class="tile__icon" src="../public/icons/suite.svg" alt=""><span class="tile__label">Tabs</span></a>
+                <a class="tile tile--green" href="/cloud-mobile/myfin/" role="listitem"><img class="tile__icon" src="../public/icons/chart.svg" alt=""><span class="tile__label">MyFin</span></a>
+                <a class="tile tile--pink" href="/cloud-mobile/health/" role="listitem"><img class="tile__icon" src="../public/icons/heart.svg" alt=""><span class="tile__label">MyHealth</span></a>
+                <a class="tile tile--indigo" href="/cloud-mobile/wallet/" role="listitem"><img class="tile__icon" src="../public/icons/wallet.svg" alt=""><span class="tile__label">Wallet</span></a>
+                <a class="tile tile--blue" href="/cloud-mobile/config/" role="listitem"><img class="tile__icon" src="../public/icons/settings.svg" alt=""><span class="tile__label">Configs</span></a>
             </div>
         </main>
 
@@ -87,7 +97,7 @@
         </button>
         <div class="drawer__tabs" id="drawer-tabs" role="tablist">
             <button class="drawer__tab is-active" type="button" data-tab="home">Home</button>
-            <button class="drawer__tab" type="button" data-tab="section">Mail</button>
+            <button class="drawer__tab" type="button" data-tab="section">Section</button>
         </div>
         <nav class="drawer__nav" id="drawer-nav-home"></nav>
         <nav class="drawer__nav" id="drawer-nav-section" hidden></nav>

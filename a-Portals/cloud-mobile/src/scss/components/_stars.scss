@@ -42,18 +42,35 @@
     animation-delay: 0s;
 }
 
+// canopus/centauri's press-drag radial menus are wired by stars.ts directly
+// onto these elements (getElementById('star-canopus')/('star-centauri')) —
+// pointer-events:none previously made them invisible to hit-testing, so
+// those listeners could never actually fire. Both need auto, same as sirius.
 .star--canopus {
     top: 58%;
     font-size: 22px;
-    pointer-events: none;
+    cursor: pointer;
+    pointer-events: auto;
     animation-delay: 0.8s;
 }
 
 .star--centauri {
     top: 49%;
     font-size: 17px;
-    pointer-events: none;
+    cursor: pointer;
+    pointer-events: auto;
     animation-delay: 1.5s;
+}
+
+// Canopus swaps its "✦" text glyph for a real settings icon (source SVGs
+// are black) — same brightness(0) invert(1) white recolor already used for
+// every other icon in the shell (bottom-nav, drawer), plus a drop-shadow
+// glow standing in for the text-only glyphs' text-shadow, which doesn't
+// apply to <img>.
+.star__icon {
+    width: 20px;
+    height: 20px;
+    filter: brightness(0) invert(1) drop-shadow(0 0 6px var(--island-accent));
 }
 
 @keyframes star-pulse {

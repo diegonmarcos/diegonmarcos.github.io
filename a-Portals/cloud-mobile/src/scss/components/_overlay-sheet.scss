@@ -1,8 +1,7 @@
 @use '../mixins' as *;
 
 // ==========================================================================
-// Overlay sheet — shared chrome for notification-center / search-sheet /
-// update-overlay
+// Overlay sheet — shared chrome for notification-center / update-overlay
 // ==========================================================================
 
 .overlay-sheet {
@@ -64,59 +63,6 @@
     text-align: center;
     padding: 24px 12px;
     white-space: pre-line;
-}
-
-.overlay-sheet__input {
-    width: 100%;
-    padding: 12px 14px;
-    border-radius: 14px;
-    background: var(--glass-bg);
-    border: 1px solid var(--glass-border);
-    color: var(--text-primary);
-    font-size: 15px;
-    margin-bottom: 10px;
-}
-
-.overlay-sheet__scopes {
-    @include flex-row(flex-start, center, 6px);
-    overflow-x: auto;
-    padding-bottom: 8px;
-}
-
-.overlay-sheet__scope {
-    padding: 6px 12px;
-    border-radius: 999px;
-    background: var(--glass-bg);
-    border: 1px solid var(--glass-border);
-    color: var(--text-secondary);
-    font-size: 12px;
-    white-space: nowrap;
-}
-
-.overlay-sheet__scope.is-active {
-    background: var(--cloud-primary-container);
-    color: var(--cloud-on-primary-container);
-    border-color: transparent;
-}
-
-.overlay-sheet__results {
-    display: flex;
-    flex-direction: column;
-    gap: 4px;
-    margin-top: 8px;
-}
-
-.overlay-sheet__result {
-    padding: 12px;
-    border-radius: 12px;
-    color: var(--text-primary);
-    font-size: 14px;
-    text-decoration: none;
-}
-
-.overlay-sheet__result:hover,
-.overlay-sheet__result:active {
-    background: var(--glass-border);
 }
 
 .overlay-sheet__progress {

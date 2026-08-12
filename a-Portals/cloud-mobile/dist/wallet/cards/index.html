@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-    <title>Calendar · Agenda · Cloud SuperApp</title>
+    <title>Wallet · Cards · Cloud SuperApp</title>
     <link rel="icon" type="image/svg+xml" href="../../public/favicon.svg">
     <link rel="manifest" href="../../manifest.webmanifest">
     <meta name="theme-color" content="#000000">
@@ -17,7 +17,7 @@
 </script>
     <link rel="stylesheet" href="../../style.css">
 </head>
-<body data-section="calendar">
+<body data-section="wallet">
     <div class="shell">
         <div class="status-strip">
             <div class="status-strip__row">
@@ -42,41 +42,14 @@
                 <span class="dynamic-island__wave"></span>
                 <span class="dynamic-island__label">Cloud SuperApp</span>
             </button>
-            <a class="toolbar-action" href="/cloud-mobile/calendar/" aria-label="Back"><img class="" src="../../public/icons/back.svg" alt=""></a>
+            <a class="toolbar-action" href="/cloud-mobile/wallet/" aria-label="Back"><img class="" src="../../public/icons/back.svg" alt=""></a>
         </header>
 
         <main class="content" id="content">
-            <div class="page-tabs" role="tablist">
-                <a class="page-tabs__item" href="/cloud-mobile/calendar/day/">Day</a>
-                <a class="page-tabs__item" href="/cloud-mobile/calendar/week/">Week</a>
-                <a class="page-tabs__item" href="/cloud-mobile/calendar/month/">Month</a>
-                <a class="page-tabs__item is-active" href="/cloud-mobile/calendar/agenda/">Agenda</a>
-                <a class="page-tabs__item" href="/cloud-mobile/calendar/calendars/">Calendars</a>
-                <a class="page-tabs__item" href="/cloud-mobile/calendar/add-caldav/">+ Add CalDAV</a>
-                <a class="page-tabs__item" href="/cloud-mobile/calendar/settings/">Settings</a>
-            </div>
-            <div class="item-list">
-                <div class="item-list__row">
-                    <div class="item-list__text">
-                        <span class="item-list__title">Standup</span>
-                        <span class="item-list__subtitle">Today · 09:00</span>
-                    </div>
-                    
-                </div>
-                <div class="item-list__row">
-                    <div class="item-list__text">
-                        <span class="item-list__title">1:1 with Ops</span>
-                        <span class="item-list__subtitle">Today · 14:00</span>
-                    </div>
-                    
-                </div>
-                <div class="item-list__row">
-                    <div class="item-list__text">
-                        <span class="item-list__title">Dentist</span>
-                        <span class="item-list__subtitle">Tomorrow · 10:30</span>
-                    </div>
-                    
-                </div>
+            <div class="page-body">
+                <div class="page-body__skeleton-row"></div>
+                <div class="page-body__skeleton-row"></div>
+                <div class="page-body__skeleton-row"></div>
             </div>
         </main>
 
@@ -109,7 +82,7 @@
         </button>
         <div class="drawer__tabs" id="drawer-tabs" role="tablist">
             <button class="drawer__tab is-active" type="button" data-tab="home">Home</button>
-            <button class="drawer__tab" type="button" data-tab="section">Calendar</button>
+            <button class="drawer__tab" type="button" data-tab="section">Wallet</button>
         </div>
         <nav class="drawer__nav" id="drawer-nav-home"></nav>
         <nav class="drawer__nav" id="drawer-nav-section" hidden></nav>

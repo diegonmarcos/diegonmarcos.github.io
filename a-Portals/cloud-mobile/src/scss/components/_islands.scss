@@ -5,19 +5,34 @@
 // ==========================================================================
 
 // ── Status strip — LauncherStatusStripView, flush at the very top ──────
+// Two stacked rows: row 1 is the widget chips flanking the camera cutout
+// (mirrors a real punch-hole status bar, where system icons flow around
+// the cutout in the same row); row 2 is the clock, centered below. An
+// earlier version put the camera in its own row above a chips+clock row —
+// wrong shape, and the two elements still ended up sharing a coordinate.
 .status-strip {
     position: absolute;
-    top: 12px; // leave a clear band above for .status-strip__camera — see below
+    top: 0;
     left: 0;
     right: 0;
-    height: 26px;
     z-index: 11;
-    @include flex-row(space-between, center, 6px);
-    padding: 0 16px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2px;
+    padding: 4px 16px 6px;
     font-family: monospace;
     font-size: 9px;
     font-weight: 700;
     color: rgba(255, 255, 255, 0.35);
+}
+
+.status-strip__row {
+    width: 100%;
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    align-items: center;
+    column-gap: 6px;
 }
 
 .status-strip__cluster {
@@ -41,26 +56,20 @@
 .status-strip__clock {
     color: #fff;
     text-shadow: 0 0 6px rgba(0, 0, 0, 0.6);
-    flex-shrink: 0;
 }
 
-// Punch-hole camera cutout, in a vertical band of its own (y: 0–12px)
-// entirely above .status-strip's text row (now pushed down to top:12px).
-// Previously both sat at top:0 sharing the same horizontal center as the
-// clock, so the camera's higher z-index painted directly over the date
-// text. A vertical gap makes the separation hold regardless of exactly
-// where the clock lands horizontally, not just when it happens to miss.
+// Punch-hole camera cutout — a plain grid child centered in row 1's middle
+// column, at rest between the two widget clusters. No absolute positioning
+// needed now that it has its own grid track instead of overlapping the
+// clock's coordinate.
 .status-strip__camera {
-    position: absolute;
-    top: 2px;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 8px;
-    height: 8px;
+    justify-self: center;
+    width: 11px;
+    height: 11px;
     border-radius: 50%;
     background: #000;
     border: 1px solid rgba(255, 255, 255, 0.15);
-    z-index: 12;
+    flex-shrink: 0;
 }
 
 // Toolbar layout is a fixed-track grid (40px icon / flexible center / 40px
@@ -85,8 +94,13 @@
     z-index: 10;
 }
 
+// .toolbar-action is the toolbar's right-hand slot — the real app puts
+// action_back there on every screen except Home root, and action_wallet
+// ONLY on Home root (same position, mutually exclusive — see MainActivity's
+// onPrepareOptionsMenu). One shared class since it's always exactly one
+// real link, never both, never neither — no [hidden]-toggling needed.
 .icon-btn,
-.back-btn {
+.toolbar-action {
     width: 40px;
     height: 40px;
     border-radius: 50%;
@@ -94,30 +108,21 @@
     // Neutralize native <button> chrome (default appearance/border/padding
     // differ from a plain <div> across browsers, which was throwing off
     // sizing) — belt-and-suspenders on top of _base.scss's global button
-    // reset, scoped here since these two are the toolbar's own tap targets.
+    // reset, scoped here since these are the toolbar's own tap targets.
     -webkit-appearance: none;
     appearance: none;
 }
 
-// The flex-center mixin's display:flex has equal specificity to the
-// browser's own [hidden] { display:none } and wins on source order (author
-// styles beat the UA stylesheet) — without this override, a hidden
-// .back-btn on root pages still rendered as an empty flex box, silently
-// stealing its grid cell's content area.
-.back-btn[hidden] {
-    display: none;
-}
-
 .icon-btn img,
-.back-btn img {
+.toolbar-action img {
     width: 22px;
     height: 22px;
 }
 
 .icon-btn:hover,
 .icon-btn:active,
-.back-btn:hover,
-.back-btn:active {
+.toolbar-action:hover,
+.toolbar-action:active {
     background: var(--glass-border);
 }
 

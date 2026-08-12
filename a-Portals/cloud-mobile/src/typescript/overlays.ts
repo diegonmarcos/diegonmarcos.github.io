@@ -1,17 +1,16 @@
-// src/typescript/overlays.ts — the 3 shared ".overlay-sheet" modal chromes:
-// Notification Center, Search, and the Update-progress overlay. All three
-// live in the fixed, empty containers every generated page already carries
-// (#notification-center / #search-sheet / #update-overlay — see
-// scripts/generate-pages.mjs); this module only populates and wires them,
-// it never creates those containers itself.
+// src/typescript/overlays.ts — the 2 shared ".overlay-sheet" modal chromes:
+// Notification Center and the Update-progress overlay. Both live in the
+// fixed, empty containers every generated page already carries
+// (#notification-center / #update-overlay — see scripts/generate-pages.mjs);
+// this module only populates and wires them, it never creates those
+// containers itself.
 //
-// Notification Center owns its own trigger (#dynamic-island) directly.
-// Search and the Update overlay are instead opened from elsewhere entirely
-// — Sirius's "Home Apps" radial node and the long-press fan menu, both
-// driven by the special action:open_search / action:open_update target
-// strings resolved by other modules — so those two are exposed as plain
-// exported functions for that other code to call:
-//   import { openSearch, openUpdateOverlay } from './overlays';
+// Notification Center owns its own trigger (#dynamic-island) directly. The
+// Update overlay is instead opened from elsewhere entirely — the long-press
+// fan menu and Sirius's radial menu, both driven by the special
+// action:open_update target string resolved by other modules — so it's
+// exposed as a plain exported function for that other code to call:
+//   import { openUpdateOverlay } from './overlays';
 
 import type { PortalData } from './types';
 
@@ -103,75 +102,6 @@ function buildNotificationCenter(data: PortalData): void {
   });
 }
 
-// --- Search ------------------------------------------------------------
-
-// Returns the sheet's open() closure (or null if the container is missing)
-// so initOverlays() can wire it up to the exported openSearch() below.
-function buildSearchSheet(data: PortalData): (() => void) | null {
-  const root = document.getElementById('search-sheet');
-  if (!root) return null;
-
-  const scrim = buildScrim();
-  const panel = document.createElement('div');
-  panel.className = 'overlay-sheet__panel';
-  panel.appendChild(buildHeader('Search'));
-
-  const input = document.createElement('input');
-  input.type = 'text';
-  input.className = 'overlay-sheet__input';
-  input.placeholder = data.search.placeholder;
-  panel.appendChild(input);
-
-  // Purely visual toggle — there's no live index behind these scopes.
-  const scopes = document.createElement('div');
-  scopes.className = 'overlay-sheet__scopes';
-  data.search.scopes.forEach((scope) => {
-    const pill = document.createElement('button');
-    pill.type = 'button';
-    pill.className = 'overlay-sheet__scope is-active';
-    pill.textContent = scope.label;
-    scopes.appendChild(pill);
-  });
-  scopes.addEventListener('click', (event) => {
-    const target = event.target;
-    if (!(target instanceof HTMLElement)) return;
-    const pill = target.closest<HTMLElement>('.overlay-sheet__scope');
-    if (!pill) return;
-    pill.classList.toggle('is-active');
-  });
-  panel.appendChild(scopes);
-
-  // No real search index to query — a single static placeholder row.
-  const results = document.createElement('div');
-  results.className = 'overlay-sheet__results';
-  const placeholder = document.createElement('div');
-  placeholder.className = 'overlay-sheet__result';
-  placeholder.textContent = 'Type to search…';
-  results.appendChild(placeholder);
-  panel.appendChild(results);
-
-  root.appendChild(scrim);
-  root.appendChild(panel);
-
-  const close = (): void => hide(root);
-  scrim.addEventListener('click', close);
-  document.addEventListener('keydown', (event) => {
-    if (root.classList.contains('is-open') && event.key === 'Escape') close();
-  });
-
-  // Deliberately no document-level "click outside" listener here (unlike
-  // Notification Center): openSearch() is invoked from other modules'
-  // own click/pointerup handlers (radial menu, fan menu), and a generic
-  // document click listener would see that same originating click bubble
-  // past it right after opening and immediately close the sheet again.
-  // Scrim-click + Escape (both scoped to elements this module owns) are
-  // everything the spec asks for and neither has that problem.
-  return (): void => {
-    show(root);
-    input.focus();
-  };
-}
-
 // --- Update overlay ------------------------------------------------------
 
 // Same "return an opener" shape as buildSearchSheet(), for the same reason
@@ -234,12 +164,7 @@ function buildUpdateOverlay(data: PortalData): (() => void) | null {
 
 // --- Public entry points -------------------------------------------------
 
-let searchOpener: (() => void) | null = null;
 let updateOpener: (() => void) | null = null;
-
-export function openSearch(): void {
-  if (searchOpener) searchOpener();
-}
 
 export function openUpdateOverlay(): void {
   if (updateOpener) updateOpener();
@@ -247,6 +172,5 @@ export function openUpdateOverlay(): void {
 
 export function initOverlays(data: PortalData): void {
   buildNotificationCenter(data);
-  searchOpener = buildSearchSheet(data);
   updateOpener = buildUpdateOverlay(data);
 }

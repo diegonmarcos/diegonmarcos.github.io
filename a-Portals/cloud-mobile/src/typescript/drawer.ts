@@ -115,7 +115,11 @@ function fillHomeNav(container: HTMLElement, data: PortalData): void {
   orderedIds.forEach((id) => {
     const section: Section | undefined = data.sections[id];
     if (!section) return;
-    container.appendChild(buildNavRow(routeHref([id]), section.label, section.icon));
+    // Home has no /home/ route of its own — it's generated at the site
+    // root (routeHref([])) — every other section id doubles as its own
+    // route segment.
+    const href = id === 'home' ? routeHref([]) : routeHref([id]);
+    container.appendChild(buildNavRow(href, section.label, section.icon));
   });
 }
 

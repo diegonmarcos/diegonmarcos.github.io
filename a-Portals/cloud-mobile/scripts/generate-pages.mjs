@@ -19,7 +19,7 @@ const core = readJson('sections-core.json');
 const content = readJson('sections-content.json');
 const mockData = readJson('mock-apps.json');
 
-const { app, bottomNav, cube, stars, longPress, search, notificationCenter, updateOverlay, statusBar } = shell;
+const { app, bottomNav, cube, stars, longPress, notificationCenter, updateOverlay, statusBar } = shell;
 const sections = { ...core.sections, ...content.sections, home: { label: 'Home', icon: 'home', color: 'blue' } };
 
 // Both suite/phone/quickmarks and suite/phone/all are DERIVED from mock-apps
@@ -282,19 +282,27 @@ function statusStripHtml() {
   // assumes same source -> byte-identical output). main.ts's initStatusClock()
   // fills the real time in immediately on load instead.
   return `<div class="status-strip">
-            <div class="status-strip__cluster status-strip__cluster--left">${left}</div>
+            <div class="status-strip__row">
+                <div class="status-strip__cluster status-strip__cluster--left">${left}</div>
+                <div class="status-strip__camera" aria-hidden="true"></div>
+                <div class="status-strip__cluster status-strip__cluster--right">${right}</div>
+            </div>
             <span class="status-strip__clock" id="status-clock">--:--</span>
-            <div class="status-strip__cluster status-strip__cluster--right">${right}</div>
-        </div>
-        <div class="status-strip__camera" aria-hidden="true"></div>`;
+        </div>`;
 }
 
 function renderShell({ title, sectionId, depth, bodyHtml, backHref }) {
   const rel = relPrefix(depth);
   const isHome = sectionId === 'home' ? ' is-home' : '';
-  const backBtn = backHref
-    ? `<a class="back-btn" href="${backHref}" aria-label="Back">${iconImg('back', rel, '')}</a>`
-    : `<span class="back-btn" hidden></span>`;
+  // Mirrors MainActivity's onPrepareOptionsMenu: action_back is visible
+  // everywhere except the Home root; action_wallet slots into that same
+  // toolbar position ONLY at the Home root ("mirror of action_back which
+  // hides on Home"). Every non-home route always carries a real backHref
+  // (see the route tree below), so this is a clean either/or — never both,
+  // never neither.
+  const rightIcon = sectionId === 'home'
+    ? `<a class="toolbar-action" href="${routeHref(['wallet', 'cards'])}" aria-label="Wallet">${iconImg('wallet', rel, '')}</a>`
+    : `<a class="toolbar-action" href="${backHref}" aria-label="Back">${iconImg('back', rel, '')}</a>`;
 
   const navItems = bottomNav.map((id) => {
     const s = sections[id];
@@ -328,7 +336,7 @@ function renderShell({ title, sectionId, depth, bodyHtml, backHref }) {
         ${sectionId === 'home' ? homeCubeHtml() : ''}
 
         <button class="star star--sirius" id="star-sirius" type="button" aria-label="Open menu">✦</button>
-        <button class="star star--canopus" id="star-canopus" type="button" aria-label="Quick configs">✦</button>
+        <button class="star star--canopus" id="star-canopus" type="button" aria-label="Quick configs">${iconImg('settings', rel, 'star__icon')}</button>
         <button class="star star--centauri" id="star-centauri" type="button" aria-label="Recent apps">✦</button>
 
         <header class="toolbar-island">
@@ -339,11 +347,10 @@ function renderShell({ title, sectionId, depth, bodyHtml, backHref }) {
                 <span class="dynamic-island__wave"></span>
                 <span class="dynamic-island__label">Cloud SuperApp</span>
             </button>
-            ${backBtn}
+            ${rightIcon}
         </header>
 
         <main class="content" id="content">
-            <h1 class="content__title">${title}</h1>
             ${bodyHtml}
         </main>
 
@@ -381,7 +388,6 @@ function renderShell({ title, sectionId, depth, bodyHtml, backHref }) {
     <div class="radial-menu" id="radial-menu" hidden aria-hidden="true"></div>
     <div class="fan-menu" id="fan-menu" hidden aria-hidden="true"></div>
     <div class="overlay-sheet" id="notification-center" hidden></div>
-    <div class="overlay-sheet overlay-sheet--full" id="search-sheet" hidden></div>
     <div class="overlay-sheet overlay-sheet--full" id="update-overlay" hidden></div>
 
     <script>window.PORTAL_DATA = window.PORTAL_DATA || {};</script>
@@ -400,6 +406,34 @@ function renderShell({ title, sectionId, depth, bodyHtml, backHref }) {
 // a centered animated cube, NOT a tile grid. Discovery of sections happens
 // via bottom nav / drawer / the star radial menus, matching the real app.
 write([], 'Home', 'home', '', null);
+
+// Home Apps — real app: HomeFanMenu's "action:open_home_apps" (and Sirius's
+// same-named node) opens AppDrawerSheetFragment: a search bar + a tile grid
+// of every section. The web version had proxied this to a bare JS search
+// overlay with no real destination — replaced with an actual page so the
+// long-press item and the star node both resolve to a real, working href.
+{
+  const rel1 = relPrefix(1);
+  const tileIds = [...bottomNav, ...Object.keys(sections).filter((id) => id !== 'home' && !bottomNav.includes(id))]
+    .filter((id) => id !== 'home');
+  const tiles = tileIds.map((id) => ({ id, label: sections[id].label, icon: sections[id].icon, target: `section:${id}` }));
+  const searchPill = `<div class="search-pill" aria-hidden="true">Search apps &amp; content</div>`;
+  write(['home-apps'], 'Home Apps', 'home-apps',
+    searchPill + '\n            ' + tileGridBody(tiles, rel1, (t) => sections[t.id].color), routeHref([]));
+}
+
+// Recent Apps — real app: HomeFanMenu's "page:recentapps/grid" opens
+// RecentAppsFragment, a 3-per-row grid of the last 24 opened apps (device
+// usage stats, no web equivalent — reuses the same deterministic recent-
+// apps stand-in list Centauri's star already shows, single source of truth).
+{
+  const rel2 = relPrefix(2);
+  const tiles = stars.centauri.recentApps.map((name) => avatarTileHtml(name, rel2, null)).join('\n                ');
+  const body = `<div class="tile-grid tile-grid--dense" role="list">
+                ${tiles}
+            </div>`;
+  write(['recentapps', 'grid'], 'Recent Apps', 'recentapps', body, routeHref([]));
+}
 
 // Communication / Infos / Tools — TabbedSectionFragment: real Apps|Admin
 // tabs, each mode rendering either a tile grid or an AggregatorStack card
@@ -450,7 +484,7 @@ for (const id of ['communication', 'infos', 'tools']) {
 
 // Content-only sections. Config carries real settings rows; everything else
 // still gets skeleton placeholders (no real backend to reflect either way).
-for (const id of ['mail', 'rss', 'calendar', 'drive', 'vault', 'chat', 'wg', 'solutions', 'apptabs', 'myfin', 'health', 'config']) {
+for (const id of ['mail', 'rss', 'calendar', 'drive', 'vault', 'chat', 'wg', 'solutions', 'apptabs', 'myfin', 'health', 'wallet', 'config']) {
   const s = sections[id];
   const rel1 = relPrefix(1);
   write([id], s.label, id, pageListBody(s.pages, id, rel1), routeHref([]));

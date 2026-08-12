@@ -7,7 +7,7 @@
 // ── Status strip — LauncherStatusStripView, flush at the very top ──────
 .status-strip {
     position: absolute;
-    top: 0;
+    top: 12px; // leave a clear band above for .status-strip__camera — see below
     left: 0;
     right: 0;
     height: 26px;
@@ -44,19 +44,32 @@
     flex-shrink: 0;
 }
 
+// Punch-hole camera cutout, in a vertical band of its own (y: 0–12px)
+// entirely above .status-strip's text row (now pushed down to top:12px).
+// Previously both sat at top:0 sharing the same horizontal center as the
+// clock, so the camera's higher z-index painted directly over the date
+// text. A vertical gap makes the separation hold regardless of exactly
+// where the clock lands horizontally, not just when it happens to miss.
 .status-strip__camera {
     position: absolute;
-    top: 6px;
+    top: 2px;
     left: 50%;
     transform: translateX(-50%);
-    width: 10px;
-    height: 10px;
+    width: 8px;
+    height: 8px;
     border-radius: 50%;
     background: #000;
     border: 1px solid rgba(255, 255, 255, 0.15);
     z-index: 12;
 }
 
+// Toolbar layout is a fixed-track grid (40px icon / flexible center / 40px
+// icon), not flexbox-with-auto-margins — auto-margin centering only balances
+// correctly when both side items are actually present with equal width, and
+// broke down as soon as one side was hidden (e.g. root pages with no back
+// button), pulling the dynamic-island pill off-center. A grid's side tracks
+// reserve their width structurally regardless of whether a child occupies
+// them, so the center column is always genuinely centered.
 .toolbar-island {
     position: absolute;
     top: 54px;
@@ -64,7 +77,10 @@
     right: var(--island-margin);
     height: 56px;
     @include glass-island;
-    @include flex-row(space-between, center, 8px);
+    display: grid;
+    grid-template-columns: 40px 1fr 40px;
+    align-items: center;
+    gap: 8px;
     padding: 0 8px;
     z-index: 10;
 }
@@ -75,13 +91,19 @@
     height: 40px;
     border-radius: 50%;
     @include flex-center;
+    // Neutralize native <button> chrome (default appearance/border/padding
+    // differ from a plain <div> across browsers, which was throwing off
+    // sizing) — belt-and-suspenders on top of _base.scss's global button
+    // reset, scoped here since these two are the toolbar's own tap targets.
+    -webkit-appearance: none;
+    appearance: none;
 }
 
 // The flex-center mixin's display:flex has equal specificity to the
 // browser's own [hidden] { display:none } and wins on source order (author
 // styles beat the UA stylesheet) — without this override, a hidden
 // .back-btn on root pages still rendered as an empty flex box, silently
-// stealing space in the toolbar row and throwing its whole layout off.
+// stealing its grid cell's content area.
 .back-btn[hidden] {
     display: none;
 }
@@ -100,9 +122,9 @@
 }
 
 .dynamic-island {
-    flex: 1;
+    justify-self: center;
+    width: 100%;
     max-width: 120px;
-    margin: 0 auto;
     height: 22px;
     border-radius: 999px;
     @include flex-center;
@@ -111,6 +133,8 @@
     background: linear-gradient(120deg, var(--drawer-avatar), var(--island-accent), var(--drawer-avatar));
     background-size: 200% 100%;
     animation: island-sheen 6s linear infinite;
+    -webkit-appearance: none;
+    appearance: none;
 }
 
 @keyframes island-sheen {
@@ -134,11 +158,6 @@
     opacity: .9;
     position: relative;
     z-index: 1;
-}
-
-.toolbar-island__spacer {
-    // balances hamburger width so the pill stays centered
-    flex: 0 0 40px;
 }
 
 .bottom-nav {

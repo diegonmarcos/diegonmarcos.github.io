@@ -335,12 +335,11 @@ function renderShell({ title, sectionId, depth, bodyHtml, backHref }) {
             <button class="icon-btn" id="hamburger-btn" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="drawer">
                 ${iconImg('menu', rel, '')}
             </button>
-            ${backBtn}
             <button class="dynamic-island" id="dynamic-island" type="button" aria-label="Notifications">
                 <span class="dynamic-island__wave"></span>
                 <span class="dynamic-island__label">Cloud SuperApp</span>
             </button>
-            <span class="toolbar-island__spacer" aria-hidden="true"></span>
+            ${backBtn}
         </header>
 
         <main class="content" id="content">

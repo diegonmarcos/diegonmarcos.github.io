@@ -296,19 +296,29 @@
     }
 }
 
-// Real: PrismaticShimmerView — full rainbow SweepGradient stroke rotating
-// around the pill perimeter, real timing (3.6s/rotation). A plain rotating
-// conic-gradient ring is a closer CSS match to a SweepGradient than
-// anything canvas/SVG would buy here, so this stays CSS-only. No
-// overflow:hidden on .dynamic-island itself (see .dynamic-island__wave-clip
-// above) so this can extend slightly OUTSIDE the pill as a genuine halo.
+// Real: PrismaticShimmerView draws a STATIC pill-shaped stroke path and
+// rotates only the SweepGradient's colors through it (Matrix.postRotate on
+// the shader) — the ring's outline never moves, only the hue sweep does.
+// The previous version rotated the whole element via `transform: rotate()`
+// — fine for a circle, but this ring is a pill (~120x22, not 1:1), and a
+// non-circular shape spinning about its center visibly wobbles/distorts
+// as its corners sweep through a wider arc than its middle does. Animating
+// the conic-gradient's own start angle via a registered custom property
+// instead keeps the pill OUTLINE completely fixed and only sweeps the
+// color pattern through it — matching what the real shader actually does.
+@property --shimmer-angle {
+    syntax: '<angle>';
+    inherits: false;
+    initial-value: 0deg;
+}
+
 .dynamic-island__shimmer {
     position: absolute;
     inset: -2px;
     z-index: 1;
     border-radius: inherit;
     padding: 2px;
-    background: conic-gradient(from 0deg, #ff1744, #ff9100, #ffea00, #00e676, #00e5ff, #2979ff, #aa00ff, #ff1744);
+    background: conic-gradient(from var(--shimmer-angle), #ff1744, #ff9100, #ffea00, #00e676, #00e5ff, #2979ff, #aa00ff, #ff1744);
     -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
     -webkit-mask-composite: xor;
     mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
@@ -319,11 +329,11 @@
 
 @keyframes shimmer-spin {
     from {
-        transform: rotate(0deg);
+        --shimmer-angle: 0deg;
     }
 
     to {
-        transform: rotate(360deg);
+        --shimmer-angle: 360deg;
     }
 }
 

@@ -276,12 +276,14 @@ function write(routeSegments, title, sectionId, bodyHtml, backHref) {
 function statusStripHtml() {
   const left = statusBar.left.map((i) => `<span class="status-strip__chip${i.active ? ' is-active' : ''}">${i.label}</span>`).join('');
   const right = statusBar.right.map((i) => `<span class="status-strip__chip">${i.label} ${i.value}</span>`).join('');
-  const now = new Date();
-  const pad = (n) => String(n).padStart(2, '0');
-  const initialClock = `${pad(now.getDate())}-${pad(now.getMonth() + 1)}-${now.getFullYear()} ${pad(now.getHours())}:${pad(now.getMinutes())}`;
+  // No new Date() here on purpose — a build-time timestamp would make every
+  // page's HTML differ across builds/redeploys with no source change,
+  // breaking reproducibility (the whole dist/-is-committed-code convention
+  // assumes same source -> byte-identical output). main.ts's initStatusClock()
+  // fills the real time in immediately on load instead.
   return `<div class="status-strip">
             <div class="status-strip__cluster status-strip__cluster--left">${left}</div>
-            <span class="status-strip__clock" id="status-clock">${initialClock}</span>
+            <span class="status-strip__clock" id="status-clock">--:--</span>
             <div class="status-strip__cluster status-strip__cluster--right">${right}</div>
         </div>
         <div class="status-strip__camera" aria-hidden="true"></div>`;

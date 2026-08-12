@@ -57,6 +57,6 @@ migrate.
 ## Future steps
 
 1. Add `front-data-deps.json` — merged npm dependencies (`I_front-data/front-deps.json` already does this; port the logic here).
-2. Add `front-data-deploy-status.json` — diff `front-data-projects.json` against `1_configs/src/gha/cicd/ship.yml` PROJECTS list to find drift.
+2. Add `front-data-deploy-status.json` — diff `front-data-projects.json` against `1_cicd/src/cicd/ship.yml` PROJECTS list to find drift.
 3. Promote consolidation to a proper engine module (`mod_consolidate` in `_engine.sh`) so other repos can reuse it.
 4. Add a CI hook: any `build.json` change auto-rebuilds `1_front-configs/dist/`.

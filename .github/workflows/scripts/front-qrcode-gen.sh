@@ -4,9 +4,9 @@
 # ║                                                                  ║
 # ║   GENERATED FILE — DO NOT EDIT                                   ║
 # ║                                                                  ║
-# ║   Source : 1_configs/src/gha/scripts/front-qrcode-gen.sh
-# ║   Engine : 1_configs/src/gha/scripts/front-ship-repo-workflow-engine.sh
-# ║   Rebuild: ./1_configs/build.sh
+# ║   Source : 1_cicd/src/scripts/front-qrcode-gen.sh
+# ║   Engine : 1_cicd/src/scripts/front-ship-repo-workflow-engine.sh
+# ║   Rebuild: ./9_others/build.sh
 # ║                                                                  ║
 # ║   Manual edits will be overwritten on next build.                ║
 # ║                                                                  ║

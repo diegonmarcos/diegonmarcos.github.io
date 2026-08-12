@@ -1,1 +1,1 @@
-../../1_configs/src/gha/scripts/_engine.sh
+../../1_cicd/src/scripts/_engine.sh

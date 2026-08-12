@@ -31,7 +31,7 @@ list_projects() {
     proj_path="${rel%/build.json}"
     top="${proj_path%%/*}"
     case "$top" in
-      1_front-configs|1_configs|0_specs|0_tasks|node_modules|.git|.github|I_*|II_*|z_*|.obsidian) continue ;;
+      1_front-configs|9_others|a0_docs|a0_tasks|node_modules|.git|.github|I_*|II_*|z_*|.obsidian) continue ;;
     esac
     if [[ "$proj_path" == */* ]]; then
       cat="${proj_path%%/*}"; proj="${proj_path#*/}"
@@ -74,7 +74,7 @@ step_populate_src() {
   log "  data-links:    $n_d symlinks"
 
   # ship.yml + root config.json (depth-3 — inputs/ → src/ → 1_front-configs/ → ROOT)
-  ln -sfn "../../../1_configs/src/gha/cicd/ship.yml" "$SRC/inputs/ship.yml"
+  ln -sfn "../../../1_cicd/src/cicd/ship.yml" "$SRC/inputs/ship.yml"
   ln -sfn "../../../config.json"                   "$SRC/inputs/config.json"
   log "  inputs:        ship.yml + config.json linked"
 

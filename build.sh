@@ -1,1 +1,1 @@
-1_configs/src/gha/scripts/build.sh
+1_cicd/src/scripts/build.sh

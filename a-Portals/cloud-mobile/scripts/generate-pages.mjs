@@ -18,7 +18,7 @@ const APP_NAME_BANK = [
   'Compass', 'Ledger', 'Beacon', 'Prism', 'Nimbus', 'Anchor', 'Cascade', 'Drift',
   'Ember', 'Flint', 'Grove', 'Harbor', 'Kite', 'Lantern', 'Meadow', 'Nomad',
   'Orbit', 'Pulse', 'Quill', 'Ridge', 'Sable', 'Tundra', 'Umbra', 'Vellum',
-  'Wren', 'Yonder', 'Zephyr', 'Atlas', 'Birch', 'Coral', 'Delta', ' Echo',
+  'Wren', 'Yonder', 'Zephyr', 'Atlas', 'Birch', 'Coral', 'Delta', 'Echo',
   'Fable', 'Glacier', 'Hearth', 'Ivy', 'Juniper', 'Knoll', 'Loom', 'Marrow',
 ];
 function hash(str) {
@@ -29,7 +29,10 @@ function hash(str) {
 function paddingApps(seed, count) {
   const start = hash(seed) % APP_NAME_BANK.length;
   const out = [];
-  for (let i = 0; i < count; i++) out.push(APP_NAME_BANK[(start + i * 7) % APP_NAME_BANK.length]);
+  for (let i = 0; i < count; i++) {
+    const name = APP_NAME_BANK[(start + i * 7) % APP_NAME_BANK.length];
+    out.push({ name, icon: genericIconFor(seed + name) });
+  }
   return out;
 }
 
@@ -64,9 +67,16 @@ function tileHtml(tile, color, rel) {
   }
   return `<div class="${cls} tile--inert" role="listitem" aria-disabled="true">${icon}${label}</div>`;
 }
-function avatarTileHtml(label, rel, href) {
-  const initial = label.charAt(0).toUpperCase();
-  const body = `<span class="tile__avatar">${initial}</span><span class="tile__label">${label}</span>`;
+// Real installed-app icons have no web equivalent (no such API, and
+// bundling third-party app icons would be a trademark problem anyway) — each
+// app is mapped to the closest fit in our own icon set instead of a bare
+// letter avatar, so the grid still reads as varied/recognizable apps.
+const GENERIC_APP_ICONS = ['suite', 'cube', 'sparkles', 'chart', 'mesh', 'workflow', 'briefcase', 'database'];
+function genericIconFor(name) {
+  return GENERIC_APP_ICONS[hash(name) % GENERIC_APP_ICONS.length];
+}
+function avatarTileHtml(name, icon, rel, href) {
+  const body = `${iconImg(icon, rel, 'tile__icon')}<span class="tile__label">${name}</span>`;
   return href
     ? `<a class="tile tile--app" href="${href}" role="listitem">${body}</a>`
     : `<div class="tile tile--app tile--inert" role="listitem" aria-disabled="true">${body}</div>`;
@@ -205,7 +215,7 @@ function appListBody(groups, rel, footer, allMode, seedPrefix, footerHref) {
                 <div class="app-folder">
                     <h3 class="app-folder__title">${f.label}</h3>
                     <div class="tile-grid tile-grid--dense" role="list">
-                        ${fApps.map((a) => avatarTileHtml(a, rel, null)).join('\n                        ')}
+                        ${fApps.map((a) => avatarTileHtml(a.name, a.icon, rel, null)).join('\n                        ')}
                     </div>
                 </div>`;
     }).join('');
@@ -213,7 +223,7 @@ function appListBody(groups, rel, footer, allMode, seedPrefix, footerHref) {
             <section class="tile-group">
                 <h2 class="tile-group__title">${g.title}</h2>
                 <div class="tile-grid tile-grid--dense" role="list">
-                    ${apps.map((a) => avatarTileHtml(a, rel, null)).join('\n                    ')}
+                    ${apps.map((a) => avatarTileHtml(a.name, a.icon, rel, null)).join('\n                    ')}
                 </div>${folderHtml}
             </section>`;
   }).join('\n');
@@ -232,6 +242,26 @@ function pageListBody(pages, sectionId, rel) {
       : `<span class="page-list__item page-list__item--inert" aria-disabled="true">${label}</span>`;
   }).join('\n                ');
   return `<div class="page-list">
+                ${items}
+            </div>`;
+}
+
+// Horizontal sibling-page tab strip — reuses the .page-tabs/.page-tabs__item
+// classes already defined in _content.scss (present since the first build,
+// unused since pages stopped being client-rendered). Every tab is now a
+// real <a href> to a real sibling page instead of a cosmetic JS toggle.
+function pageTabsHtml(pages, sectionId, activeId, rel) {
+  const items = pages.map((p) => {
+    const label = typeof p === 'string' ? p : p.label;
+    const id = typeof p === 'string' ? slug(p) : p.id;
+    const override = typeof p === 'object' && p.target ? resolveTarget(p.target) : null;
+    const href = override ? override.href : routeHref([sectionId, id]);
+    const active = id === activeId ? ' is-active' : '';
+    return href
+      ? `<a class="page-tabs__item${active}" href="${href}">${label}</a>`
+      : `<span class="page-tabs__item page-tabs__item--inert" aria-disabled="true">${label}</span>`;
+  }).join('\n                ');
+  return `<div class="page-tabs" role="tablist">
                 ${items}
             </div>`;
 }
@@ -279,26 +309,38 @@ for (const id of ['communication', 'infos', 'tools']) {
 }
 
 // Suite — root index (the 5 home-style shortcuts) + cloud/phone x quickmarks/all.
+// The real app's SuiteCloudPhoneTabsFragment hosts an inline Cloud/Phone tab
+// switcher (not a separate section) — replicated here as a real 2-link tab
+// strip that preserves the current quickmarks/all mode while switching.
 {
   const s = sections.suite;
   const rel1 = relPrefix(1);
   write(['suite'], s.label, 'suite', tileGridBody(s.tiles, rel1, () => s.color), routeHref([]));
 
   const rel3 = relPrefix(3);
+  const cloudPhoneTabs = (mode, active) => `<div class="page-tabs" role="tablist">
+                <a class="page-tabs__item${active === 'cloud' ? ' is-active' : ''}" href="${routeHref(['suite', 'cloud', mode])}">Cloud</a>
+                <a class="page-tabs__item${active === 'phone' ? ' is-active' : ''}" href="${routeHref(['suite', 'phone', mode])}">Phone</a>
+            </div>`;
+
   write(['suite', 'cloud', 'quickmarks'], 'Suite · Cloud', 'suite',
+    cloudPhoneTabs('quickmarks', 'cloud') + '\n            ' +
     groupListBody(s.cloud.tileGroups, rel3, s.cloud.footer, routeHref(['suite', 'cloud', 'all'])), routeHref(['suite']));
   write(['suite', 'cloud', 'all'], 'Suite · Cloud · All', 'suite',
+    cloudPhoneTabs('all', 'cloud') + '\n            ' +
     groupListBody(s.cloud.tileGroups.map((g) => ({
       title: g.title,
       tiles: [...g.tiles], // real tiles first
     })), rel3, null) + tileGridBody(
-      s.cloud.tileGroups.flatMap((g) => paddingApps('cloud-all-' + g.title, 3).map((n) => ({ id: slug(n), label: n, icon: 'suite', target: null }))),
+      s.cloud.tileGroups.flatMap((g) => paddingApps('cloud-all-' + g.title, 3).map((n) => ({ id: slug(n.name), label: n.name, icon: n.icon, target: null }))),
       rel3, () => 'blue',
     ), routeHref(['suite']));
 
   write(['suite', 'phone', 'quickmarks'], 'Suite · Phone', 'suite',
+    cloudPhoneTabs('quickmarks', 'phone') + '\n            ' +
     appListBody(s.phone.appGroups, rel3, s.phone.footer, false, 'phone-qm-', routeHref(['suite', 'phone', 'all'])), routeHref(['suite']));
   write(['suite', 'phone', 'all'], 'Suite · Phone · All', 'suite',
+    cloudPhoneTabs('all', 'phone') + '\n            ' +
     appListBody(s.phone.appGroups, rel3, s.phone.footer, true, 'phone-all-'), routeHref(['suite']));
 }
 
@@ -309,11 +351,15 @@ for (const id of ['mail', 'rss', 'calendar', 'drive', 'vault', 'chat', 'wg', 'so
   const rel1 = relPrefix(1);
   write([id], s.label, id, pageListBody(s.pages, id, rel1), routeHref([]));
 
+  const rel2 = relPrefix(2);
   for (const p of s.pages) {
     const label = typeof p === 'string' ? p : p.label;
     const pid = typeof p === 'string' ? slug(p) : p.id;
     if (typeof p === 'object' && p.target) continue; // routes elsewhere or inert — no own page
-    write([id, pid], `${s.label} · ${label}`, id, skeletonBody(), routeHref([id]));
+    const body = s.pages.length > 1
+      ? `${pageTabsHtml(s.pages, id, pid, rel2)}\n            ${skeletonBody()}`
+      : skeletonBody();
+    write([id, pid], `${s.label} · ${label}`, id, body, routeHref([id]));
   }
 }
 

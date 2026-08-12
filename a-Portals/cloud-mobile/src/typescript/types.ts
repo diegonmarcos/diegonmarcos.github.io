@@ -12,14 +12,19 @@ export interface TileGroup {
   tiles: Tile[];
 }
 
+export interface AppRef {
+  name: string;
+  icon: string;
+}
+
 export interface AppFolder {
   label: string;
-  apps: string[];
+  apps: AppRef[];
 }
 
 export interface AppGroup {
   title: string;
-  apps: string[];
+  apps: AppRef[];
   folders?: AppFolder[];
 }
 

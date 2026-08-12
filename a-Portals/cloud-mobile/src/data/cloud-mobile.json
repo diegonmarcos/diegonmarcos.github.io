@@ -114,17 +114,64 @@
       },
       "phone": {
         "footer": { "id": "more-phone", "label": "More", "icon": "more", "target": "action:open_suite_phone_all" },
+        "_doc": "Each app carries an icon — real installed-app icons can't be replicated on the web (no equivalent API, and bundling third-party app icons would be a trademark/copyright problem anyway), so each is mapped to the closest fit in our own icon set by category rather than shown as a bare letter avatar.",
         "appGroups": [
-          { "title": "AI", "apps": ["Claude", "Gemini", "Termux"], "folders": [
-            { "label": "Files Editor (IDE)", "apps": ["X-plore", "My Files", "Google Docs", "Git Sync", "Acode", "Turbo Editor"] }
+          { "title": "AI", "apps": [
+              { "name": "Claude", "icon": "sparkles" },
+              { "name": "Gemini", "icon": "sparkles" },
+              { "name": "Termux", "icon": "code" }
+            ], "folders": [
+            { "label": "Files Editor (IDE)", "apps": [
+                { "name": "X-plore", "icon": "database" },
+                { "name": "My Files", "icon": "database" },
+                { "name": "Google Docs", "icon": "logs" },
+                { "name": "Git Sync", "icon": "workflow" },
+                { "name": "Acode", "icon": "code" },
+                { "name": "Turbo Editor", "icon": "code" }
+              ] }
           ]},
-          { "title": "Communications", "apps": ["FairEmail", "K-9 Mail", "Mattermost", "Beeper", "Dialer", "Phone"], "folders": [
-            { "label": "Others", "apps": ["Samsung Email", "WhatsApp Business", "Gmail", "Telegram", "Instagram", "LinkedIn"] }
+          { "title": "Communications", "apps": [
+              { "name": "FairEmail", "icon": "mail" },
+              { "name": "K-9 Mail", "icon": "mail" },
+              { "name": "Mattermost", "icon": "chat" },
+              { "name": "Beeper", "icon": "chat" },
+              { "name": "Dialer", "icon": "phone" },
+              { "name": "Phone", "icon": "phone" }
+            ], "folders": [
+            { "label": "Others", "apps": [
+                { "name": "Samsung Email", "icon": "mail" },
+                { "name": "WhatsApp Business", "icon": "chat" },
+                { "name": "Gmail", "icon": "mail" },
+                { "name": "Telegram", "icon": "chat" },
+                { "name": "Instagram", "icon": "photos" },
+                { "name": "LinkedIn", "icon": "briefcase" }
+              ] }
           ]},
-          { "title": "Data Apps", "apps": ["Obsidian", "Gallery", "Calendar", "Contacts", "Tidal", "Bitwarden"] },
-          { "title": "Tools Primary", "apps": ["Brave", "News", "Maps", "Wallet", "Translate", "Clock", "Calculator"] },
-          { "title": "Tools Dashboards", "apps": ["Cloud SuperApp"] },
-          { "title": "Configs", "apps": ["Play Store", "F-Droid", "Settings"] }
+          { "title": "Data Apps", "apps": [
+              { "name": "Obsidian", "icon": "logs" },
+              { "name": "Gallery", "icon": "photos" },
+              { "name": "Calendar", "icon": "calendar" },
+              { "name": "Contacts", "icon": "user" },
+              { "name": "Tidal", "icon": "music" },
+              { "name": "Bitwarden", "icon": "lock" }
+            ] },
+          { "title": "Tools Primary", "apps": [
+              { "name": "Brave", "icon": "browser" },
+              { "name": "News", "icon": "rss" },
+              { "name": "Maps", "icon": "pin" },
+              { "name": "Wallet", "icon": "wallet" },
+              { "name": "Translate", "icon": "chat" },
+              { "name": "Clock", "icon": "bell" },
+              { "name": "Calculator", "icon": "chart" }
+            ] },
+          { "title": "Tools Dashboards", "apps": [
+              { "name": "Cloud SuperApp", "icon": "home" }
+            ] },
+          { "title": "Configs", "apps": [
+              { "name": "Play Store", "icon": "suite" },
+              { "name": "F-Droid", "icon": "suite" },
+              { "name": "Settings", "icon": "settings" }
+            ] }
         ]
       }
     },

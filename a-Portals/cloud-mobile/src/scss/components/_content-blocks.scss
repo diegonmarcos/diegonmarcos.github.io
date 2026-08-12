@@ -32,17 +32,6 @@
     background: rgba(255, 255, 255, 0.06);
 }
 
-.tile__avatar {
-    width: 32px;
-    height: 32px;
-    border-radius: 50%;
-    background: var(--drawer-avatar);
-    color: var(--drawer-banner-text);
-    @include flex-center;
-    font-weight: 700;
-    font-size: 13px;
-}
-
 .tile--app .tile__label {
     color: var(--text-on-tile);
 }

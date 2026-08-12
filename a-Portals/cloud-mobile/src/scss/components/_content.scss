@@ -35,12 +35,17 @@
     font-size: 13px;
     white-space: nowrap;
     flex-shrink: 0;
+    text-decoration: none;
 }
 
 .page-tabs__item.is-active {
     background: var(--cloud-primary-container);
     color: var(--cloud-on-primary-container);
     border-color: transparent;
+}
+
+.page-tabs__item--inert {
+    opacity: .5;
 }
 
 .page-body {

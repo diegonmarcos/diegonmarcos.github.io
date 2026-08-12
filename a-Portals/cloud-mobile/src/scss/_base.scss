@@ -54,17 +54,27 @@ a {
 // ── Shell ─────────────────────────────────────────────────────────────
 // Full-bleed on phones; centers into a phone-proportioned column on wider
 // viewports so the launcher UI still reads as a phone screen on desktop.
+//
+// height (not min-height) is load-bearing: the toolbar/bottom-nav islands
+// are position:absolute within .shell, meant to stay visually fixed while
+// only .content scrolls internally. A flex column's height defaults to
+// "as tall as its content", so with only min-height the whole .shell (and
+// the islands riding along with it) grew past the viewport and the BODY
+// scrolled instead — islands drifting off-screen, plus the same sizing
+// slop let wide inner content overflow horizontally. A hard height bound
+// (+ overflow:hidden here and min-height/min-width:0 on .content, see
+// components/content.scss) forces .content to be the only scroll surface.
 .shell {
     position: relative;
     display: flex;
     flex-direction: column;
-    min-height: 100vh;
+    height: 100vh;
+    height: 100dvh;
     overflow: hidden;
     background: linear-gradient(to bottom, var(--gradient-top), var(--gradient-mid), var(--gradient-bottom));
 
     @include mq(sm) {
         max-width: var(--phone-max-width);
-        min-height: 100dvh;
         margin: 0 auto;
         box-shadow: 0 0 60px rgba(0, 0, 0, 0.6);
     }

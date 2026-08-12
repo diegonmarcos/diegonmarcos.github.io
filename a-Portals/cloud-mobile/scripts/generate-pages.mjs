@@ -12,29 +12,23 @@ const [, , PROJECT_DIR, DIST_DIR, MANIFEST] = process.argv;
 const data = JSON.parse(readFileSync(join(PROJECT_DIR, MANIFEST), 'utf8'));
 const { sections, bottomNav } = data;
 
-// ── deterministic "random" app-name padding for /all views ─────────────
-// Reproducible builds: a string hash picks names, not Math.random().
-const APP_NAME_BANK = [
-  'Compass', 'Ledger', 'Beacon', 'Prism', 'Nimbus', 'Anchor', 'Cascade', 'Drift',
-  'Ember', 'Flint', 'Grove', 'Harbor', 'Kite', 'Lantern', 'Meadow', 'Nomad',
-  'Orbit', 'Pulse', 'Quill', 'Ridge', 'Sable', 'Tundra', 'Umbra', 'Vellum',
-  'Wren', 'Yonder', 'Zephyr', 'Atlas', 'Birch', 'Coral', 'Delta', 'Echo',
-  'Fable', 'Glacier', 'Hearth', 'Ivy', 'Juniper', 'Knoll', 'Loom', 'Marrow',
-];
-function hash(str) {
-  let h = 0;
-  for (let i = 0; i < str.length; i++) h = (h * 31 + str.charCodeAt(i)) >>> 0;
-  return h;
+// Single source of truth for the Phone tab's app grid — see mock-apps.json's
+// own _doc. Both suite/phone/quickmarks and suite/phone/all are DERIVED from
+// this one list (filtered by category + pinned flag), not hand-duplicated.
+const mockData = JSON.parse(readFileSync(join(PROJECT_DIR, dirname(MANIFEST), 'mock-apps.json'), 'utf8'));
+function phoneGroupsFromMockData(pinnedOnly) {
+  const categories = [...new Set(mockData.apps.map((a) => a.category))];
+  return categories.map((category) => {
+    const apps = mockData.apps
+      .filter((a) => a.category === category && (!pinnedOnly || a.pinned))
+      .map((a) => ({ name: a.name, icon: a.icon }));
+    const folders = mockData.folders
+      .filter((f) => f.category === category)
+      .map((f) => ({ label: f.label, apps: f.apps }));
+    return { title: category, apps, folders };
+  });
 }
-function paddingApps(seed, count) {
-  const start = hash(seed) % APP_NAME_BANK.length;
-  const out = [];
-  for (let i = 0; i < count; i++) {
-    const name = APP_NAME_BANK[(start + i * 7) % APP_NAME_BANK.length];
-    out.push({ name, icon: genericIconFor(seed + name) });
-  }
-  return out;
-}
+
 
 // ── target grammar → href (mirrors LauncherNavController's dispatch table) ─
 function resolveTarget(target) {
@@ -69,12 +63,8 @@ function tileHtml(tile, color, rel) {
 }
 // Real installed-app icons have no web equivalent (no such API, and
 // bundling third-party app icons would be a trademark problem anyway) — each
-// app is mapped to the closest fit in our own icon set instead of a bare
-// letter avatar, so the grid still reads as varied/recognizable apps.
-const GENERIC_APP_ICONS = ['suite', 'cube', 'sparkles', 'chart', 'mesh', 'workflow', 'briefcase', 'database'];
-function genericIconFor(name) {
-  return GENERIC_APP_ICONS[hash(name) % GENERIC_APP_ICONS.length];
-}
+// app in mock-apps.json instead carries its own closest-fit icon from our
+// set, so the grid still reads as varied/recognizable apps.
 function avatarTileHtml(name, icon, rel, href) {
   const body = `${iconImg(icon, rel, 'tile__icon')}<span class="tile__label">${name}</span>`;
   return href
@@ -205,29 +195,26 @@ function groupListBody(groups, rel, footer, footerHref) {
   return `${blocks}\n            ${footerHtml}`;
 }
 
-function appListBody(groups, rel, footer, allMode, seedPrefix, footerHref) {
+// groups come pre-filtered from phoneGroupsFromMockData(pinnedOnly) — quickmarks
+// passes pinned-only groups, all passes every mock-apps.json entry per category.
+function appListBody(groups, rel, footer, isAllMode, footerHref) {
   const blocks = groups.map((g) => {
-    const apps = [...g.apps];
-    if (allMode) apps.push(...paddingApps(seedPrefix + g.title, 4));
-    const folderHtml = (g.folders || []).map((f) => {
-      const fApps = allMode ? [...f.apps, ...paddingApps(seedPrefix + f.label, 3)] : f.apps;
-      return `
+    const folderHtml = (g.folders || []).map((f) => `
                 <div class="app-folder">
                     <h3 class="app-folder__title">${f.label}</h3>
                     <div class="tile-grid tile-grid--dense" role="list">
-                        ${fApps.map((a) => avatarTileHtml(a.name, a.icon, rel, null)).join('\n                        ')}
+                        ${f.apps.map((a) => avatarTileHtml(a.name, a.icon, rel, null)).join('\n                        ')}
                     </div>
-                </div>`;
-    }).join('');
+                </div>`).join('');
     return `
             <section class="tile-group">
                 <h2 class="tile-group__title">${g.title}</h2>
                 <div class="tile-grid tile-grid--dense" role="list">
-                    ${apps.map((a) => avatarTileHtml(a.name, a.icon, rel, null)).join('\n                    ')}
+                    ${g.apps.map((a) => avatarTileHtml(a.name, a.icon, rel, null)).join('\n                    ')}
                 </div>${folderHtml}
             </section>`;
   }).join('\n');
-  const footerHtml = footer && !allMode && footerHref ? `<a class="footer-link" href="${footerHref}">${footer.label}</a>` : '';
+  const footerHtml = footer && !isAllMode && footerHref ? `<a class="footer-link" href="${footerHref}">${footer.label}</a>` : '';
   return `${blocks}\n            ${footerHtml}`;
 }
 
@@ -326,22 +313,20 @@ for (const id of ['communication', 'infos', 'tools']) {
   write(['suite', 'cloud', 'quickmarks'], 'Suite · Cloud', 'suite',
     cloudPhoneTabs('quickmarks', 'cloud') + '\n            ' +
     groupListBody(s.cloud.tileGroups, rel3, s.cloud.footer, routeHref(['suite', 'cloud', 'all'])), routeHref(['suite']));
+  // Cloud's "all" view (real app: action:open_suite_cloud_all, a full-screen
+  // push of the same tile_groups with no tab chrome) has no more real data to
+  // reveal than quickmarks already shows — unlike Phone, there's no larger
+  // "installed cloud services" universe to pad out, so this reuses the exact
+  // same tileGroups rather than inventing filler content.
   write(['suite', 'cloud', 'all'], 'Suite · Cloud · All', 'suite',
-    cloudPhoneTabs('all', 'cloud') + '\n            ' +
-    groupListBody(s.cloud.tileGroups.map((g) => ({
-      title: g.title,
-      tiles: [...g.tiles], // real tiles first
-    })), rel3, null) + tileGridBody(
-      s.cloud.tileGroups.flatMap((g) => paddingApps('cloud-all-' + g.title, 3).map((n) => ({ id: slug(n.name), label: n.name, icon: n.icon, target: null }))),
-      rel3, () => 'blue',
-    ), routeHref(['suite']));
+    groupListBody(s.cloud.tileGroups, rel3, null), routeHref(['suite']));
 
   write(['suite', 'phone', 'quickmarks'], 'Suite · Phone', 'suite',
     cloudPhoneTabs('quickmarks', 'phone') + '\n            ' +
-    appListBody(s.phone.appGroups, rel3, s.phone.footer, false, 'phone-qm-', routeHref(['suite', 'phone', 'all'])), routeHref(['suite']));
+    appListBody(phoneGroupsFromMockData(true), rel3, s.phone.footer, false, routeHref(['suite', 'phone', 'all'])), routeHref(['suite']));
   write(['suite', 'phone', 'all'], 'Suite · Phone · All', 'suite',
     cloudPhoneTabs('all', 'phone') + '\n            ' +
-    appListBody(s.phone.appGroups, rel3, s.phone.footer, true, 'phone-all-'), routeHref(['suite']));
+    appListBody(phoneGroupsFromMockData(false), rel3, s.phone.footer, true), routeHref(['suite']));
 }
 
 // Content-only sections (mail, rss, calendar, drive, vault, chat, wg, solutions, config,

@@ -6,7 +6,10 @@
 
 .content {
     flex: 1;
+    min-height: 0; // let this actually scroll internally instead of stretching .shell
+    min-width: 0;  // let wide inner content (tab strips, grids) clip/scroll here, not overflow the page
     overflow-y: auto;
+    overflow-x: hidden;
     padding: 76px 12px 96px;
     position: relative;
     z-index: 1;

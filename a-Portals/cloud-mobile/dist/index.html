@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+    <title>Cloud SuperApp | Mobile UI</title>
+    <meta name="description" content="Web replica of the Cloud SuperApp Android launcher — home tile grid, drawer, bottom navigation.">
+    <link rel="icon" type="image/svg+xml" href="public/favicon.svg">
+    <link rel="manifest" href="manifest.webmanifest">
+    <meta name="theme-color" content="#000000">
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://diegonmarcos.github.io/cloud-mobile/">
+    <meta property="og:title" content="Cloud SuperApp | Mobile UI">
+    <meta property="og:description" content="Web replica of the Cloud SuperApp Android launcher.">
+
+<!-- Matomo Tag Manager -->
+<script>
+  var _mtm = window._mtm = window._mtm || [];
+  _mtm.push({'mtm.startTime': (new Date().getTime()), 'event': 'mtm.Start'});
+  (function() {
+    var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0];
+    g.async=true; g.src='https://analytics.diegonmarcos.com/js/container_odwLIyPV.js'; s.parentNode.insertBefore(g,s);
+  })();
+</script>
+<!-- End Matomo Tag Manager -->
+
+    <link rel="stylesheet" href="style.css">
+<!-- sw-register: injected by mod_sw_register — DO NOT EDIT BY HAND. Re-runs are idempotent (the marker comment above gates the injection). -->
+<script>
+(function () {
+  // ── Visible boot log: ALWAYS something in console, even if every other
+  // script breaks. If the user sees nothing here, the inline script tag
+  // itself was blocked (CSP, extension, etc.) — not a SW bug.
+  var TAG = '[sw-register]';
+  var t0 = Date.now();
+  console.info(TAG, 'boot', { url: location.href, ua: navigator.userAgent.slice(0, 60) });
+
+  if (!('serviceWorker' in navigator) || !location.protocol.startsWith('http')) {
+    console.info(TAG, 'skip — no serviceWorker or non-http(s) origin');
+    return;
+  }
+
+  var hadController = navigator.serviceWorker.controller !== null;
+  console.info(TAG, 'controller-at-boot', hadController ? navigator.serviceWorker.controller.scriptURL : 'null');
+
+  // ── Kill-switch ALWAYS available on window: dev can call from console
+  //    or the auto-watchdog below uses it when the page stays blank.
+  window.__resetSW = function (reason) {
+    console.warn(TAG, '__resetSW invoked', { reason: reason || 'manual' });
+    return navigator.serviceWorker.getRegistrations()
+      .then(function (regs) {
+        console.info(TAG, 'unregistering ' + regs.length + ' SW(s)');
+        return Promise.all(regs.map(function (r) { return r.unregister(); }));
+      })
+      .then(function () {
+        return caches.keys().then(function (keys) {
+          console.info(TAG, 'purging ' + keys.length + ' cache(s)', keys);
+          return Promise.all(keys.map(function (k) { return caches.delete(k); }));
+        });
+      })
+      .then(function () {
+        console.info(TAG, 'reset complete — reloading');
+        location.reload();
+      });
+  };
+
+  // ── Reload on controllerchange ONLY when an OLD SW was replaced by a NEW one
+  //    (post-deploy update). Skip on first-ever activation — reloading then
+  //    aborts the in-flight `defer` script.js and the SPA never boots.
+  var reloading = false;
+  navigator.serviceWorker.addEventListener('controllerchange', function () {
+    console.info(TAG, 'controllerchange', {
+      newController: navigator.serviceWorker.controller ? navigator.serviceWorker.controller.scriptURL : 'null',
+      hadController: hadController,
+      willReload: hadController && !reloading
+    });
+    if (!hadController || reloading) return;
+    reloading = true;
+    location.reload();
+  });
+
+  function reg() {
+    console.info(TAG, 'registering ./script-service-worker.js');
+    navigator.serviceWorker.register('./script-service-worker.js')
+      .then(function (r) {
+        console.info(TAG, 'register OK', {
+          scope: r.scope,
+          installing: !!r.installing,
+          waiting: !!r.waiting,
+          active: !!r.active
+        });
+      })
+      .catch(function (e) {
+        console.error(TAG, 'register FAILED', e && e.message);
+      });
+  }
+  if ('requestIdleCallback' in window) requestIdleCallback(reg); else setTimeout(reg, 1);
+
+  // ── Watchdog: if a SW is controlling the page AND the body's #app stays
+  //    empty after 4 seconds AND there's no SPA mark in the DOM, assume the
+  //    SW poisoned the response (stale precache, hash mismatch, partial
+  //    fetch). Auto-reset and reload — the next load fetches fresh from
+  //    network with no SW controller.
+  //
+  //    Only fires when hadController = true (i.e. NOT first-ever load).
+  //    The 4s threshold is conservative — even a slow 3G load completes
+  //    its critical-path script within 2s.
+  if (hadController) {
+    setTimeout(function () {
+      var app = document.getElementById('app');
+      var appEmpty = !app || (app.childElementCount === 0 && !app.textContent);
+      var bodyEmpty = !document.body || document.body.childElementCount <= 1;
+      console.info(TAG, 'watchdog t+' + (Date.now() - t0) + 'ms', {
+        appEmpty: appEmpty, bodyEmpty: bodyEmpty,
+        controller: navigator.serviceWorker.controller ? 'yes' : 'no'
+      });
+      if (appEmpty && bodyEmpty && navigator.serviceWorker.controller && !reloading) {
+        reloading = true;
+        window.__resetSW('watchdog: app + body still empty after 4s with SW in control');
+      }
+    }, 4000);
+  }
+})();
+</script>
+<!-- console-log: injected by mod_console_log — DO NOT EDIT BY HAND. Re-runs are idempotent (the marker comment above gates the injection). Single-namespace observability SDK (Sentry/OpenObserve-style). All logic ships in console-logs.js (compiled from console-logs.ts). Loaded synchronously, NO async/defer, so console.* + window.onerror + unhandledrejection are patched BEFORE any other script runs. Public API on window.consoleLogs.{captureException, captureMessage, addBreadcrumb, path, sessionId, exists, size, read, readJSON, tail, clear, download}. JSON Lines on disk in the origin's OPFS sandbox at console.log. -->
+<script src="console-logs.js"></script>
+<!-- end console-log -->
+</head>
+<body>
+    <div class="shell">
+        <div class="galaxy-backdrop" aria-hidden="true"></div>
+
+        <!-- Decorative constellation — home screen only, toggled via .is-home on .shell -->
+        <button class="star star--sirius" id="star-sirius" type="button" aria-label="Open menu">✦</button>
+        <span class="star star--canopus" aria-hidden="true">✦</span>
+        <span class="star star--centauri" aria-hidden="true">✦</span>
+
+        <!-- Top island -->
+        <header class="toolbar-island">
+            <button class="icon-btn" id="hamburger-btn" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="drawer">
+                <img src="public/icons/menu.svg" alt="">
+            </button>
+            <button class="back-btn" id="back-btn" type="button" aria-label="Back" hidden>
+                <img src="public/icons/back.svg" alt="">
+            </button>
+            <div class="dynamic-island" aria-hidden="true">
+                <span class="dynamic-island__wave"></span>
+                <span class="dynamic-island__label">Cloud SuperApp</span>
+            </div>
+            <span class="toolbar-island__spacer" aria-hidden="true"></span>
+        </header>
+
+        <!-- Content host -->
+        <main class="content" id="content">
+            <h1 class="content__title" id="content-title">Home</h1>
+
+            <div class="tile-grid" id="tile-grid" role="list"></div>
+
+            <div class="page-tabs" id="page-tabs" hidden role="tablist"></div>
+            <div class="page-body" id="page-body" hidden></div>
+        </main>
+
+        <!-- Bottom island -->
+        <nav class="bottom-nav" id="bottom-nav" aria-label="Primary">
+            <button class="bottom-nav__item" data-section="communication" type="button">
+                <img src="public/icons/chat.svg" alt=""><span>Comms</span>
+            </button>
+            <button class="bottom-nav__item" data-section="infos" type="button">
+                <img src="public/icons/logs.svg" alt=""><span>Infos</span>
+            </button>
+            <button class="bottom-nav__item is-active" data-section="home" type="button">
+                <img src="public/icons/home.svg" alt=""><span>Home</span>
+            </button>
+            <button class="bottom-nav__item" data-section="suite" type="button">
+                <img src="public/icons/suite.svg" alt=""><span>Suite</span>
+            </button>
+            <button class="bottom-nav__item" data-section="tools" type="button">
+                <img src="public/icons/tools.svg" alt=""><span>Labs</span>
+            </button>
+        </nav>
+    </div>
+
+    <!-- Drawer -->
+    <div class="drawer-scrim" id="drawer-scrim"></div>
+    <aside class="drawer" id="drawer" aria-hidden="true">
+        <div class="drawer__banner drawer__banner--app" id="drawer-app-banner">
+            <img src="public/icons/home.svg" alt="" class="drawer__banner-icon">
+            <div class="drawer__banner-text">
+                <p class="drawer__title" id="drawer-app-name">Cloud SuperApp</p>
+                <p class="drawer__meta" id="drawer-app-build">cloud-mobile · web</p>
+            </div>
+        </div>
+        <div class="drawer__separator"></div>
+        <button class="drawer__banner drawer__banner--user" id="drawer-user-banner" type="button">
+            <span class="drawer__avatar" id="drawer-user-avatar">DCM</span>
+            <div class="drawer__banner-text">
+                <p class="drawer__title" id="drawer-user-name">Diego Coelho Marcos</p>
+                <p class="drawer__meta" id="drawer-user-email">me@diegonmarcos.com</p>
+                <p class="drawer__mode"><span id="drawer-user-mode">Mode: Apps</span> <img src="public/icons/refresh.svg" alt="Swap mode"></p>
+            </div>
+        </button>
+        <nav class="drawer__nav" id="drawer-nav"></nav>
+    </aside>
+
+    <script>window.PORTAL_DATA = window.PORTAL_DATA || {};</script>
+    <script src="data-cloud-mobile.json.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>

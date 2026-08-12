@@ -1,0 +1,59 @@
+// ==========================================================================
+// Mixins — standard front/ signatures (see front/README.md §B.7.4)
+// ==========================================================================
+
+@mixin mq($bp) {
+    @if $bp==sm {
+        @media (min-width: 480px) {
+            @content;
+        }
+    }
+
+    @else if $bp==md {
+        @media (min-width: 768px) {
+            @content;
+        }
+    }
+
+    @else if $bp==lg {
+        @media (min-width: 1024px) {
+            @content;
+        }
+    }
+
+    @else if $bp==xl {
+        @media (min-width: 1280px) {
+            @content;
+        }
+    }
+}
+
+@mixin flex-center {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+@mixin flex-row($justify: flex-start, $align: center, $gap: 0) {
+    display: flex;
+    flex-direction: row;
+    justify-content: $justify;
+    align-items: $align;
+    gap: $gap;
+}
+
+@mixin grid-auto-fit($min: 100px, $gap: 8px) {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax($min, 1fr));
+    gap: $gap;
+}
+
+// Frosted glass "island" surface — top toolbar / bottom nav chrome.
+@mixin glass-island {
+    background: var(--glass-bg);
+    border: 1px solid var(--glass-border);
+    border-radius: var(--radius-island);
+    backdrop-filter: blur(16px) saturate(160%);
+    -webkit-backdrop-filter: blur(16px) saturate(160%);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.45);
+}

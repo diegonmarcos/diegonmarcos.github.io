@@ -1,0 +1,71 @@
+// ==========================================================================
+// Base — reset, typography, shell scaffold
+// ==========================================================================
+
+@use 'mixins' as *;
+
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+
+html,
+body {
+    height: 100%;
+}
+
+body {
+    margin: 0;
+    font-family: 'Segoe UI', Roboto, -apple-system, BlinkMacSystemFont, sans-serif;
+    color: var(--text-primary);
+    background: var(--gradient-mid);
+    -webkit-font-smoothing: antialiased;
+}
+
+button {
+    font: inherit;
+    color: inherit;
+    background: none;
+    border: 0;
+    cursor: pointer;
+}
+
+img {
+    display: block;
+    max-width: 100%;
+}
+
+ul,
+ol {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+p {
+    margin: 0;
+}
+
+a {
+    color: inherit;
+}
+
+// ── Shell ─────────────────────────────────────────────────────────────
+// Full-bleed on phones; centers into a phone-proportioned column on wider
+// viewports so the launcher UI still reads as a phone screen on desktop.
+.shell {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    overflow: hidden;
+    background: linear-gradient(to bottom, var(--gradient-top), var(--gradient-mid), var(--gradient-bottom));
+
+    @include mq(sm) {
+        max-width: var(--phone-max-width);
+        min-height: 100dvh;
+        margin: 0 auto;
+        box-shadow: 0 0 60px rgba(0, 0, 0, 0.6);
+    }
+}

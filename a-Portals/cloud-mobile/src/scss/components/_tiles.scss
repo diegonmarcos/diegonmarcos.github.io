@@ -1,0 +1,104 @@
+@use '../mixins' as *;
+
+// ==========================================================================
+// Tiles — home screen tile grid
+// ==========================================================================
+
+.tile-grid {
+    @include grid-auto-fit(84px, 8px);
+    padding: 2px;
+}
+
+.tile {
+    @include flex-center;
+    flex-direction: column;
+    gap: 6px;
+    min-height: 104px;
+    border-radius: var(--radius-tile);
+    padding: 10px 6px;
+    transition: transform var(--transition-fast);
+    border: 0;
+}
+
+.tile:active {
+    transform: scale(0.96);
+}
+
+// SVG <img> renders in its own default stroke color — do not try to recolor
+// via CSS color/currentColor, that does not work through <img>. Leave as-is,
+// it reads fine on the light tile backgrounds below.
+.tile__icon {
+    width: 32px;
+    height: 32px;
+}
+
+.tile__label {
+    font-size: 12px;
+    font-weight: 500;
+    text-align: center;
+    line-height: 1.2;
+}
+
+.tile--blue {
+    background: var(--tile-blue-bg);
+}
+
+.tile--blue .tile__label {
+    color: var(--tile-blue-fg);
+}
+
+.tile--green {
+    background: var(--tile-green-bg);
+}
+
+.tile--green .tile__label {
+    color: var(--tile-green-fg);
+}
+
+.tile--purple {
+    background: var(--tile-purple-bg);
+}
+
+.tile--purple .tile__label {
+    color: var(--tile-purple-fg);
+}
+
+.tile--pink {
+    background: var(--tile-pink-bg);
+}
+
+.tile--pink .tile__label {
+    color: var(--tile-pink-fg);
+}
+
+.tile--orange {
+    background: var(--tile-orange-bg);
+}
+
+.tile--orange .tile__label {
+    color: var(--tile-orange-fg);
+}
+
+.tile--teal {
+    background: var(--tile-teal-bg);
+}
+
+.tile--teal .tile__label {
+    color: var(--tile-teal-fg);
+}
+
+.tile--amber {
+    background: var(--tile-amber-bg);
+}
+
+.tile--amber .tile__label {
+    color: var(--tile-amber-fg);
+}
+
+.tile--indigo {
+    background: var(--tile-indigo-bg);
+}
+
+.tile--indigo .tile__label {
+    color: var(--tile-indigo-fg);
+}

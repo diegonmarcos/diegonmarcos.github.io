@@ -1,0 +1,68 @@
+// ==========================================================================
+// Design tokens — transcribed 1:1 from ea_cloud-superapp
+// (app/src/main/res/values/colors.xml + themes.xml + drawable/bg_gradient_black_purple.xml)
+// Do not invent new colors here — this file is the single source of truth
+// for every hex value the rest of the stylesheet uses.
+// ==========================================================================
+
+:root {
+    // Backdrop — symmetric purple → black → purple vertical gradient
+    --gradient-top: #2d1b69;
+    --gradient-mid: #000000;
+    --gradient-bottom: #2d1b69;
+
+    // Island chrome — opaque black "glass" surfaces floating on the gradient
+    --glass-bg: #000000;
+    --glass-border: rgba(167, 139, 250, 0.2); // glass_border #33A78BFA
+    --island-accent: #b794f4;
+
+    // Drawer banners
+    --drawer-banner-app: #1a0033;
+    --drawer-banner-user: #0e0220;
+    --drawer-banner-text: #e9d8fd;
+    --drawer-avatar: #7c3aed;
+    --drawer-separator: rgba(183, 148, 244, 0.333); // #55B794F4
+
+    // Brand (Material 3, seed = cloud-blue)
+    --cloud-primary: #1565c0;
+    --cloud-on-primary: #ffffff;
+    --cloud-primary-container: #d0e4ff;
+    --cloud-on-primary-container: #001d36;
+    --cloud-secondary: #535f70;
+    --cloud-secondary-container: #d7e3f7;
+    --cloud-tertiary: #6b5778;
+
+    // Surface text (dark theme — body sits on the black/purple gradient)
+    --text-primary: #f2f0f7;
+    --text-secondary: rgba(242, 240, 247, 0.65);
+    --text-on-tile: #1a1a1a;
+
+    // Tile palette — 8 pastel bg/fg pairs, Google-Drive-style (colors.xml)
+    --tile-blue-bg: #e3f2fd;
+    --tile-blue-fg: #1565c0;
+    --tile-green-bg: #e8f5e9;
+    --tile-green-fg: #2e7d32;
+    --tile-purple-bg: #ede7f6;
+    --tile-purple-fg: #6a1b9a;
+    --tile-pink-bg: #fce4ec;
+    --tile-pink-fg: #c2185b;
+    --tile-orange-bg: #fff3e0;
+    --tile-orange-fg: #ef6c00;
+    --tile-teal-bg: #e0f2f1;
+    --tile-teal-fg: #00695c;
+    --tile-amber-bg: #fff8e1;
+    --tile-amber-fg: #b28704;
+    --tile-indigo-bg: #e8eaf6;
+    --tile-indigo-fg: #283593;
+
+    // Geometry — carried over from the Android dp values (1dp ≈ 1px baseline)
+    --radius-tile: 16px;
+    --radius-island: 24px;
+    --radius-drawer-avatar: 50%;
+    --island-margin: 12px;
+    --drawer-width: 280px;
+    --phone-max-width: 480px;
+
+    --transition-fast: 0.2s ease;
+    --transition-medium: 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+}

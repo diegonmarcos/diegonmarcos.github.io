@@ -1,0 +1,91 @@
+@use '../mixins' as *;
+
+// ==========================================================================
+// Islands — floating frosted-glass toolbar (top) and bottom nav
+// ==========================================================================
+
+.toolbar-island {
+    position: absolute;
+    top: 26px;
+    left: var(--island-margin);
+    right: var(--island-margin);
+    height: 56px;
+    @include glass-island;
+    @include flex-row(space-between, center, 8px);
+    padding: 0 8px;
+    z-index: 10;
+}
+
+.icon-btn,
+.back-btn {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    @include flex-center;
+}
+
+.icon-btn img,
+.back-btn img {
+    width: 22px;
+    height: 22px;
+}
+
+.icon-btn:hover,
+.icon-btn:active,
+.back-btn:hover,
+.back-btn:active {
+    background: var(--glass-border);
+}
+
+.dynamic-island {
+    flex: 1;
+    max-width: 140px;
+    margin: 0 auto;
+    height: 22px;
+    border-radius: 999px;
+    @include flex-center;
+    position: relative;
+    overflow: hidden;
+    background: linear-gradient(120deg, var(--drawer-avatar), var(--island-accent), var(--drawer-avatar));
+    background-size: 200% 100%;
+    animation: island-sheen 6s linear infinite;
+}
+
+@keyframes island-sheen {
+    from {
+        background-position: 0% 0;
+    }
+
+    to {
+        background-position: 200% 0;
+    }
+}
+
+.dynamic-island__wave {
+    position: absolute;
+    inset: 0;
+}
+
+.dynamic-island__label {
+    font-size: 9px;
+    color: var(--text-primary);
+    opacity: .9;
+    position: relative;
+    z-index: 1;
+}
+
+.toolbar-island__spacer {
+    // balances hamburger width so the pill stays centered
+    flex: 0 0 40px;
+}
+
+.bottom-nav {
+    position: absolute;
+    bottom: 12px;
+    left: var(--island-margin);
+    right: var(--island-margin);
+    @include glass-island;
+    @include flex-row(space-around, center, 0);
+    padding: 6px 4px;
+    z-index: 10;
+}

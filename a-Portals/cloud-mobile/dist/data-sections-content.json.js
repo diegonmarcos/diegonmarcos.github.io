@@ -267,7 +267,22 @@
         { "id": "import", "label": "Import", "target": "action:import_configs" },
         { "id": "keyboard", "label": "Keyboard", "target": "extapp:cloud-keyboard" },
         { "id": "update-all", "label": "Update All", "rows": [["Cloud SuperApp", "Up to date"], ["Cloud Mail", "Up to date"], ["Cloud Chat", "Up to date"]] },
-        { "id": "constellation", "label": "Constellation", "rows": [["cloud-mail", "Not installed"], ["cloud-chat", "Not installed"], ["cloud-matrix", "Not installed"], ["cloud-dialer", "Not installed"], ["cloud-ide", "Not installed"], ["cloud-wallet", "Not installed"], ["cloud-nav", "Not installed"], ["cloud-vault", "Not installed"], ["cloud-browser", "Not installed"], ["cloud-keyboard", "Not installed"]] },
+        { "id": "constellation", "label": "Constellation", "constellation": {
+          "autoUpdate": true,
+          "installPermGranted": true,
+          "apps": [
+            { "id": "cloud-mail", "label": "Cloud Mail", "pkg": "com.diegonmarcos.cloudmail", "image": "ghcr.io/diegonmarcos/cloud-mail", "status": "installed", "version": "2.3.1", "versionCode": "14", "sha": "a1b2c3d4e5f6" },
+            { "id": "cloud-chat", "label": "Cloud Chat", "pkg": "com.diegonmarcos.cloudchat", "image": "ghcr.io/diegonmarcos/cloud-chat", "status": "update", "version": "1.0.0", "remoteDigest": "f7e8d9a1b2c3" },
+            { "id": "cloud-matrix", "label": "Cloud Matrix", "pkg": "com.diegonmarcos.cloudmatrix", "image": "ghcr.io/diegonmarcos/cloud-matrix", "status": "missing" },
+            { "id": "cloud-dialer", "label": "Cloud Dialer", "pkg": "com.diegonmarcos.clouddialer", "image": "ghcr.io/diegonmarcos/cloud-dialer", "status": "blocked" },
+            { "id": "cloud-ide", "label": "Cloud IDE", "pkg": "com.diegonmarcos.cloudide", "image": "ghcr.io/diegonmarcos/cloud-ide", "status": "missing" },
+            { "id": "cloud-wallet", "label": "Cloud Wallet", "pkg": "com.diegonmarcos.cloudwallet", "image": "ghcr.io/diegonmarcos/cloud-wallet", "status": "installed", "version": "1.2.0", "versionCode": "8", "sha": "9f8e7d6c5b4a" },
+            { "id": "cloud-nav", "label": "Cloud Nav", "pkg": "com.diegonmarcos.cloudnav", "image": "ghcr.io/diegonmarcos/cloud-nav", "status": "missing" },
+            { "id": "cloud-vault", "label": "Cloud Vault", "pkg": "com.diegonmarcos.cloudvault", "image": "ghcr.io/diegonmarcos/cloud-vault", "status": "missing" },
+            { "id": "cloud-browser", "label": "Cloud Browser", "pkg": "com.diegonmarcos.cloudbrowser", "image": "ghcr.io/diegonmarcos/cloud-browser", "status": "update", "version": "3.1.4", "remoteDigest": "c4d5e6f7a8b9" },
+            { "id": "cloud-keyboard", "label": "Cloud Keyboard", "pkg": "com.diegonmarcos.cloudkeyboard", "image": "ghcr.io/diegonmarcos/cloud-keyboard", "status": "missing" }
+          ]
+        } },
         { "id": "onehand", "label": "One-Hand", "rows": [
           ["Edge handles", "On"],
           ["Left · Top", "Bitwarden"],

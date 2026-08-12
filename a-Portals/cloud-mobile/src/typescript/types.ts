@@ -11,7 +11,26 @@ export interface ItemRef {
   meta?: string;
 }
 
-export type PageEntry = string | { id: string; label: string; target?: string; rows?: [string, string][]; items?: ItemRef[] };
+export interface ConstellationApp {
+  id: string;
+  label: string;
+  pkg: string;
+  image: string;
+  status: 'installed' | 'update' | 'missing' | 'blocked' | 'error';
+  version?: string;
+  versionCode?: string;
+  sha?: string;
+  remoteDigest?: string;
+  message?: string;
+}
+
+export interface ConstellationData {
+  autoUpdate: boolean;
+  installPermGranted: boolean;
+  apps: ConstellationApp[];
+}
+
+export type PageEntry = string | { id: string; label: string; target?: string; rows?: [string, string][]; items?: ItemRef[]; constellation?: ConstellationData };
 
 export interface TileGroup {
   title: string;

@@ -69,7 +69,7 @@
       { "id": "home-apps", "label": "Home Apps", "icon": "home", "target": "page:home-apps" },
       { "id": "recent-apps", "label": "Recent Apps", "icon": "cube", "target": "page:recentapps/grid" },
       { "id": "tabs", "label": "Tabs", "icon": "suite", "target": "page:apptabs/grid" },
-      { "id": "update", "label": "Update", "icon": "refresh", "target": "action:open_update" }
+      { "id": "update", "label": "Update", "icon": "refresh", "target": "action:check_updates" }
     ],
     "communication": [
       { "id": "apps", "label": "Apps", "icon": "chat", "target": "section:communication" },

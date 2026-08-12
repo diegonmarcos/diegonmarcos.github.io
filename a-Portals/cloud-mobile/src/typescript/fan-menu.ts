@@ -130,9 +130,17 @@ export function initFanMenu(data: PortalData): void {
     closeFanMenu();
     if (!item) return;
 
-    // The Update overlay lives in a sibling module built in parallel — a
-    // dynamic import means this file never hard-depends on load order.
-    if (item.target === 'action:open_update') {
+    // Real target is action:check_updates (HomeFanMenu.kt) — it calls
+    // Updater.checkNow(), which drives an OBSERVED UpdateProgress state
+    // machine (MainActivity.kt's handleUpdateState): the overlay only
+    // actually appears once that state leaves Idle (an update is really
+    // in progress), otherwise checkNow() just toasts "up to date" and
+    // nothing else shows. openUpdateOverlay() here is standing in for
+    // that whole observed flow, not a direct "always open" trigger, but
+    // the target string itself needs to match the real one. The Update
+    // overlay lives in a sibling module built in parallel — a dynamic
+    // import means this file never hard-depends on load order.
+    if (item.target === 'action:check_updates') {
       import('./overlays').then((mod) => mod.openUpdateOverlay());
       return;
     }

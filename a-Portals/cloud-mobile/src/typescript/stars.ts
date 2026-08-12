@@ -73,7 +73,7 @@ function siriusItems(nodes: RadialNode[]): RadialItem[] {
     const href = resolveTarget(n.target).href;
     // node is kept for leaf items too (not just parents) so commitIndex()
     // below can still see the raw target string — needed to recognize the
-    // action:open_update special target, which resolveTarget() deliberately
+    // action:check_updates special target, which resolveTarget() deliberately
     // maps to a null href (see nav.ts).
     return { id: n.id, label: n.label, href, inert: href === null, node: n };
   });
@@ -254,12 +254,12 @@ export function initStars(data: PortalData): void {
       drillInto(item.node.children);
       return;
     }
-    // Any sirius leaf can carry the same action:open_update target the
+    // Any sirius leaf can carry the same action:check_updates target the
     // long-press fan menu handles (see fan-menu.ts's handleSelect) —
     // resolveTarget() has no web href for it, so it must be special-cased
     // here too, ahead of the plain href branch below.
     const actionTarget = item.node?.target;
-    if (actionTarget === 'action:open_update') {
+    if (actionTarget === 'action:check_updates') {
       closeMenu();
       import('./overlays').then((mod) => mod.openUpdateOverlay());
       return;

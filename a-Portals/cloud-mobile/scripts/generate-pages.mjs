@@ -248,6 +248,62 @@ function itemListBody(items) {
             </div>`;
 }
 
+// Configs > Constellation — port of ConstellationFragment.kt. Every action
+// here (install/update/uninstall/open a native APK, grant an Android
+// permission) is fundamentally something a website cannot do, so all
+// buttons render inert (decorative, not fake-clickable) — same treatment
+// as every other real-device-only action elsewhere in this build. The
+// per-app status line and its 5-way color coding (installed/update/
+// missing/blocked/error) is real, verbatim from Fleet.State.
+const CONSTELLATION_STATUS = {
+  installed: { color: '#48BB78', glyph: '✓' },
+  update: { color: '#ED8936', glyph: '⬆' },
+  missing: { color: '#63B3ED', glyph: '◯' },
+  blocked: { color: '#F56565', glyph: '⛔' },
+  error: { color: '#ECC94B', glyph: '⚠' },
+};
+function constellationStatusText(app) {
+  switch (app.status) {
+    case 'installed': return `up to date  ·  v${app.version} (${app.versionCode})  ·  sha ${app.sha}`;
+    case 'update': return `update available  ·  installed v${app.version ?? '—'} → ${app.remoteDigest}`;
+    case 'missing': return 'not installed  ·  tap Install';
+    case 'blocked': return 'not published yet';
+    case 'error': return app.message ?? 'error';
+    default: return '';
+  }
+}
+function constellationBody(data) {
+  const cards = data.apps.map((app) => {
+    const st = CONSTELLATION_STATUS[app.status];
+    const showInstall = app.status !== 'blocked';
+    return `<div class="constellation__card">
+                <p class="constellation__card-label">${app.label}</p>
+                <p class="constellation__mono">${app.pkg}  ·  ${app.image}</p>
+                <p class="constellation__status" style="color:${st.color}">${st.glyph} ${constellationStatusText(app)}</p>
+                <div class="constellation__actions">
+                    <span class="constellation__btn constellation__btn--inert">Open</span>
+                    ${showInstall ? '<span class="constellation__btn constellation__btn--inert constellation__btn--accent">Install / Update</span>' : ''}
+                    <span class="constellation__btn constellation__btn--inert">Uninstall</span>
+                </div>
+            </div>`;
+  }).join('');
+  return `<p class="constellation__title">Constellation AppStore</p>
+            <p class="constellation__caption">${data.apps.length} apps · superapp is the fleet manager</p>
+            <div class="constellation__btn-row">
+                <span class="constellation__btn constellation__btn--inert constellation__btn--accent">⬆ Update all</span>
+                <span class="constellation__btn constellation__btn--inert constellation__btn--blue">⬇ Install all</span>
+            </div>
+            <div class="constellation__btn-row">
+                <span class="constellation__btn constellation__btn--inert">↻ Check all</span>
+            </div>
+            <div class="constellation__btn-row">
+                <span class="constellation__btn constellation__btn--inert${data.autoUpdate ? ' constellation__btn--on' : ''}">Auto-update: ${data.autoUpdate ? 'ON' : 'OFF'}</span>
+                <span class="constellation__btn constellation__btn--inert${data.installPermGranted ? '' : ' constellation__btn--accent'}">${data.installPermGranted ? '✓ Install perm' : 'Grant install'}</span>
+            </div>
+            <p class="constellation__caption">${data.installPermGranted ? 'Silent installs enabled.' : "Grant 'Install unknown apps' for no-tap updates."}</p>
+            <div class="constellation__list">${cards}</div>`;
+}
+
 // ── the home cube — Home3DFragment's real centerpiece, CSS 3D transforms ─
 function homeCubeHtml() {
   const face = (cls) => `<div class="home-cube__face home-cube__face--${cls}"></div>`;
@@ -503,7 +559,8 @@ for (const id of ['mail', 'rss', 'calendar', 'drive', 'vault', 'chat', 'wg', 'so
     if (typeof p === 'object' && p.target) continue; // routes elsewhere or inert — no own page
     const tabs = s.pages.length > 1 ? `${pageTabsHtml(s.pages, id, pid, rel2)}\n            ` : '';
     let inner;
-    if (typeof p === 'object' && p.rows) inner = settingsListBody(p.rows);
+    if (typeof p === 'object' && p.constellation) inner = constellationBody(p.constellation);
+    else if (typeof p === 'object' && p.rows) inner = settingsListBody(p.rows);
     else if (typeof p === 'object' && p.items) inner = itemListBody(p.items);
     else inner = skeletonBody();
     write([id, pid], `${s.label} · ${label}`, id, tabs + inner, routeHref([id]));

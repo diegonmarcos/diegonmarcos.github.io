@@ -8,7 +8,7 @@
 // Notification Center owns its own trigger (#dynamic-island) directly. The
 // Update overlay is instead opened from elsewhere entirely — the long-press
 // fan menu and Sirius's radial menu, both driven by the special
-// action:open_update target string resolved by other modules — so it's
+// action:check_updates target string resolved by other modules — so it's
 // exposed as a plain exported function for that other code to call:
 //   import { openUpdateOverlay } from './overlays';
 

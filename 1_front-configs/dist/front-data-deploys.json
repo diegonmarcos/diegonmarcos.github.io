@@ -8,6 +8,10 @@
     "deploy_name": "cloud"
   },
   {
+    "path": "a-Portals/cloud-mobile",
+    "deploy_name": "cloud-mobile"
+  },
+  {
     "path": "a-Portals/linktree",
     "deploy_name": "linktree"
   },

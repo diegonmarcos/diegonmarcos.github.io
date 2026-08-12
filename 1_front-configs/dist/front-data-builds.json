@@ -544,9 +544,9 @@
         "output": "style.css"
       },
       {
-        "mod": "copy",
-        "files": "index.html",
-        "from": "src"
+        "_doc": "Generates every real independent page (home, sections, suite cloud/phone x quickmarks/all, content-section subpages) from src/data/cloud-mobile.json. Runs after sass/esbuild so generated pages can reference the real style.css/script.js paths; the shell template registers the service worker itself (see main.ts) rather than relying on the sw_register injector, since that mod only targets a fixed file list and this project has dozens of generated pages at varying depths.",
+        "mod": "page_gen",
+        "manifest": "src/data/cloud-mobile.json"
       },
       {
         "mod": "copy",
@@ -556,16 +556,6 @@
       {
         "mod": "symlink",
         "files": "src/public"
-      },
-      {
-        "_doc": "Inject navigator.serviceWorker.register(...) before </head>. MUST run BEFORE esbuild_sw so the modified HTML feeds into BUILD_HASH.",
-        "mod": "sw_register",
-        "files": "index.html"
-      },
-      {
-        "_doc": "Inject single-namespace observability SDK (Sentry/OpenObserve-style). Mirrors console.* + errors + SW lifecycle to OPFS console.log. window.consoleLogs.{captureException, captureMessage, addBreadcrumb, read, readJSON, tail, clear, download}.",
-        "mod": "console_log",
-        "files": "index.html"
       },
       {
         "_doc": "MUST run last — hashes the dist artifacts above to derive BUILD_HASH and inject it into the SW bundle.",

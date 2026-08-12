@@ -173,11 +173,9 @@
         "copy",
         "esbuild",
         "sass",
-        "copy",
+        "page_gen",
         "copy",
         "symlink",
-        "sw_register",
-        "console_log",
         "esbuild_sw"
       ],
       "dep_count": 8,

@@ -70,6 +70,16 @@
     "url": "https://diegonmarcos.github.io/cloud"
   },
   {
+    "id": "a-Portals__cloud-mobile",
+    "project": "cloud-mobile",
+    "path": "a-Portals/cloud-mobile",
+    "category": "a-Portals",
+    "name": "Cloud Mobile",
+    "framework": "vanilla",
+    "deploy_name": "cloud-mobile",
+    "url": "https://diegonmarcos.github.io/cloud-mobile"
+  },
+  {
     "id": "a-Portals__linktree",
     "project": "linktree",
     "path": "a-Portals/linktree",

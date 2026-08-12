@@ -142,34 +142,55 @@
     @include flex-center;
     position: relative;
     overflow: hidden;
-    background: linear-gradient(120deg, var(--drawer-avatar), var(--island-accent), var(--drawer-avatar));
-    background-size: 200% 100%;
-    animation: island-sheen 6s linear infinite;
+    // Real drawable (res/drawable/bg_dynamic_island.xml): pure black fill +
+    // a faint 1dp violet hairline stroke, plain and static — all the color
+    // and motion comes from IslandWaveView (the canvas) and
+    // PrismaticShimmerView (the rotating rainbow ring) drawn on top, not
+    // from the pill background itself.
+    background: #000;
+    border: 1px solid rgba(183, 148, 244, 0.33);
     -webkit-appearance: none;
     appearance: none;
 }
 
-@keyframes island-sheen {
-    from {
-        background-position: 0% 0;
-    }
-
-    to {
-        background-position: 200% 0;
-    }
-}
-
+// Canvas port of IslandWaveView — 4 layered sine-composite waveform
+// channels, drawn/animated by island-wave.ts. Fills the pill; the canvas
+// itself needs no clip-path since border-radius + the parent's
+// overflow:hidden already clip it to the pill shape.
 .dynamic-island__wave {
     position: absolute;
     inset: 0;
+    width: 100%;
+    height: 100%;
 }
 
-.dynamic-island__label {
-    font-size: 9px;
-    color: var(--text-primary);
-    opacity: .9;
-    position: relative;
+// Canvas port of PrismaticShimmerView — full rainbow SweepGradient stroke
+// rotating around the pill perimeter, real timing (3.6s/rotation). A plain
+// rotating conic-gradient ring is a closer CSS match to a SweepGradient
+// than anything canvas/SVG would buy here, so this stays CSS-only.
+.dynamic-island__shimmer {
+    position: absolute;
+    inset: -2px;
     z-index: 1;
+    border-radius: inherit;
+    padding: 2px;
+    background: conic-gradient(from 0deg, #ff1744, #ff9100, #ffea00, #00e676, #00e5ff, #2979ff, #aa00ff, #ff1744);
+    -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+    -webkit-mask-composite: xor;
+    mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+    mask-composite: exclude;
+    animation: shimmer-spin 3.6s linear infinite;
+    pointer-events: none;
+}
+
+@keyframes shimmer-spin {
+    from {
+        transform: rotate(0deg);
+    }
+
+    to {
+        transform: rotate(360deg);
+    }
 }
 
 .bottom-nav {

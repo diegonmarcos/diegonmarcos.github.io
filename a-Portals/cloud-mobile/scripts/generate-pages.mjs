@@ -344,8 +344,8 @@ function renderShell({ title, sectionId, depth, bodyHtml, backHref }) {
                 ${iconImg('menu', rel, '')}
             </button>
             <button class="dynamic-island" id="dynamic-island" type="button" aria-label="Notifications">
-                <span class="dynamic-island__wave"></span>
-                <span class="dynamic-island__label">Cloud SuperApp</span>
+                <canvas class="dynamic-island__wave" id="island-wave"></canvas>
+                <span class="dynamic-island__shimmer" aria-hidden="true"></span>
             </button>
             ${rightIcon}
         </header>

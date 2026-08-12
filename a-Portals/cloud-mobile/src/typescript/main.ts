@@ -12,6 +12,7 @@ import { initStars } from './stars';
 import { initOverlays } from './overlays';
 import { initFanMenu } from './fan-menu';
 import { initStackCards } from './cards';
+import { initIslandWave } from './ui/island-wave';
 
 // document.currentScript is only valid synchronously while this script is
 // the one executing — capture it now, before any async boundary, for use
@@ -41,6 +42,7 @@ function initApp(): void {
   initFanMenu(data);
   initStackCards();
   initStatusClock();
+  initIslandWave();
 }
 
 document.addEventListener('DOMContentLoaded', () => {

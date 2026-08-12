@@ -24,7 +24,7 @@
 #   • Same hash_of bytes → identical BUILD_HASH; one byte change → diff.
 set -e
 
-REPO_ROOT="$(cd "$(dirname "$0")/../../.." && pwd)"
+REPO_ROOT="$(cd "$(dirname "$0")/../.." && pwd)"
 ENGINE="$REPO_ROOT/1_cicd/src/scripts/front-sw-build.sh"
 FIXTURE="$REPO_ROOT/9_others/test/fixtures/sw-min"
 

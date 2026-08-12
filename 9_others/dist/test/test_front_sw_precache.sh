@@ -21,7 +21,7 @@
 #   • Special chars in URLs (e.g. backslash, quote) are JSON-escaped
 set -e
 
-REPO_ROOT="$(cd "$(dirname "$0")/../../.." && pwd)"
+REPO_ROOT="$(cd "$(dirname "$0")/../.." && pwd)"
 ENGINE="$REPO_ROOT/1_cicd/src/scripts/front-sw-precache.sh"
 
 fail() { echo "FAIL: $1" >&2; exit 1; }

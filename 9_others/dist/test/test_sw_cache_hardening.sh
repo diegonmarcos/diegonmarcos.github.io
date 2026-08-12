@@ -33,7 +33,7 @@
 # runtime required, fast enough to gate every CI build.
 set -e
 
-REPO_ROOT="$(cd "$(dirname "$0")/../../.." && pwd)"
+REPO_ROOT="$(cd "$(dirname "$0")/../.." && pwd)"
 FIXTURE="$REPO_ROOT/9_others/test/fixtures/sw-min"
 
 fail() { echo "FAIL: $1" >&2; exit 1; }

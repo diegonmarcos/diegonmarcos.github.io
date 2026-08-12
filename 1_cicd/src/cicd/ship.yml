@@ -147,6 +147,17 @@ jobs:
           bash build.sh build
           cd ../..
           echo "✅ Cloud Dashboard build complete"
+      - name: 🔨 Build Cloud Mobile
+        id: build-cloud-mobile
+        if:
+          contains(steps.changed-files.outputs.all_changed_files, 'a-Portals/cloud-mobile/src/')
+
+        run: |
+          echo "🔨 Building Cloud Mobile..."
+          cd a-Portals/cloud-mobile
+          bash build.sh build
+          cd ../..
+          echo "✅ Cloud Mobile build complete"
       - name: 🔨 Build MyHealth FeedYourself
         id: build-myhealth-feedyourself
         if:
@@ -552,6 +563,7 @@ jobs:
           PROJECTS=(
             "e-Root:."
             "a-Portals/cloud:cloud"
+            "a-Portals/cloud-mobile:cloud-mobile"
             "a-Portals/linktree:linktree"
             "a-Portals/linktree_mindmap:linktree_mindmap"
             "a-Portals/linktree_pixel-world:linktree_pixel-world"

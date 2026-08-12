@@ -544,9 +544,9 @@
         "output": "style.css"
       },
       {
-        "_doc": "Generates every real independent page (home, sections, suite cloud/phone x quickmarks/all, content-section subpages) from src/data/cloud-mobile.json. Runs after sass/esbuild so generated pages can reference the real style.css/script.js paths; the shell template registers the service worker itself (see main.ts) rather than relying on the sw_register injector, since that mod only targets a fixed file list and this project has dozens of generated pages at varying depths.",
+        "_doc": "Generates every real independent page from the data manifests under src/data/ (shell.json + sections-core.json + sections-content.json + mock-apps.json — split by domain, see generate-pages.mjs). Runs after sass/esbuild so generated pages can reference the real style.css/script.js paths; the shell template registers the service worker itself (see main.ts) rather than relying on the sw_register injector, since that mod only targets a fixed file list and this project has dozens of generated pages at varying depths. 'manifest' here just anchors the data directory — generate-pages.mjs reads all 4 files from dirname(manifest).",
         "mod": "page_gen",
-        "manifest": "src/data/cloud-mobile.json"
+        "manifest": "src/data/shell.json"
       },
       {
         "mod": "copy",

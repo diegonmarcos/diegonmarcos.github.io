@@ -5546,7 +5546,7 @@
         "slide": "projects",
         "column": "HM FLAKES",
         "label": "CI/CD",
-        "url": "https://github.com/diegonmarcos/unix/tree/main/1_configs/src/gha/cicd",
+        "url": "https://github.com/diegonmarcos/unix/tree/main/1_cicd/src/cicd",
         "icon": "git-branch.svg"
       },
       {

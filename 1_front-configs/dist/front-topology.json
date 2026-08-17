@@ -190,6 +190,7 @@
       "framework": "vanilla",
       "port": 8001,
       "build_steps": [
+        "gh_commits",
         "data_wrap",
         "pwa_icons",
         "qrcode_gen",

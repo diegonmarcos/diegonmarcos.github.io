@@ -1815,10 +1815,11 @@
             "target": "es2020"
           },
           {
-            "_doc": "Each theme is a real static page (index.html=mySocials media aggregator, orkut.html, instagram.html, ...) so every route is a bookmarkable, crawlable file.",
+            "_doc": "Each theme is a real static page (index.html=mySocials media aggregator, orkut.html, instagram.html, ...) so every route is a bookmarkable, crawlable file. The 3 instagram-*.html pages are symlinks to _instagram-profile.html — cp dereferences them into 3 real files here, so the shared source itself must NOT ship as its own route.",
             "mod": "copy",
             "files": "*.html",
-            "from": "src"
+            "from": "src",
+            "exclude": "_instagram-profile.html"
           },
           {
             "_doc": "Inject navigator.serviceWorker.register(...) before </head>. MUST run BEFORE esbuild_sw so the modified HTML feeds into BUILD_HASH. sw_register takes literal filenames, not globs.",

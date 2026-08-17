@@ -7,7 +7,7 @@
 
 import { openPanel } from './panel';
 
-const REPO_URL = 'https://github.com/diegonmarcos/front';
+const REPO_URL = 'https://github.com/diegonmarcos/diegonmarcos.github.io';
 const LINKTREE_PATH = 'a-Portals/linktree';
 
 function renderRuntimeFacts(): string {

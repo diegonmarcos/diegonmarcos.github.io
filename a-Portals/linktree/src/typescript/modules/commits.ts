@@ -1,12 +1,19 @@
-// Commits panel — the repository's recent history plus aggregate stats,
-// pulled live from the public GitHub REST API (no token: 60 requests/hour
-// per IP, which is far more than a human clicking a menu item will use).
+// Commits panel — the repository's recent history plus aggregate stats.
+//
+// The history is baked in at BUILD time by the `gh_commits` module (see this
+// project's build.json), which writes ../../data/commits.json and is inlined
+// into the bundle by esbuild below. It is deliberately NOT fetched from
+// api.github.com at runtime: an unauthenticated browser call shares a
+// 60-requests-per-hour budget per client IP across all of api.github.com, so
+// the live version reliably rendered "rate limit reached" instead of
+// commits. Building it in also means the panel works offline and costs the
+// visitor no request at all.
 
 import { openPanel } from './panel';
+import commitsData from '../../data/commits.json';
 
-const REPO = 'diegonmarcos/front';
+const REPO = 'diegonmarcos/diegonmarcos.github.io';
 const REPO_URL = `https://github.com/${REPO}`;
-const PAGE_SIZE = 100;
 const ACTIVITY_WEEKS = 12;
 
 export interface RepoCommit {
@@ -17,29 +24,8 @@ export interface RepoCommit {
   url: string;
 }
 
-export async function getRepoCommits(path?: string): Promise<RepoCommit[]> {
-  try {
-    const query = new URLSearchParams({ per_page: String(PAGE_SIZE) });
-    if (path) query.set('path', path);
-    const response = await fetch(`https://api.github.com/repos/${REPO}/commits?${query}`, {
-      headers: { Accept: 'application/vnd.github.v3+json' },
-    });
-    if (!response.ok) return [];
-    const data = (await response.json()) as Array<{
-      sha: string;
-      html_url: string;
-      commit: { message: string; author: { name: string; date: string } };
-    }>;
-    return data.map((c) => ({
-      sha: c.sha.slice(0, 7),
-      message: c.commit.message.split('\n')[0] ?? '',
-      author: c.commit.author.name,
-      date: c.commit.author.date,
-      url: c.html_url,
-    }));
-  } catch {
-    return [];
-  }
+export function getRepoCommits(): RepoCommit[] {
+  return commitsData as RepoCommit[];
 }
 
 // Escape before interpolating — commit subjects are arbitrary author text
@@ -139,7 +125,7 @@ function renderStats(stats: CommitStats): string {
 function renderCommits(commits: RepoCommit[]): string {
   if (commits.length === 0) {
     return `<div class="diagnostics-container">
-      <p class="diag-no-data">Could not fetch commits — GitHub API rate limit reached, or you are offline.</p>
+      <p class="diag-no-data">No commit history in this build — the gh_commits build step could not reach the GitHub API.</p>
     </div>`;
   }
 
@@ -180,10 +166,11 @@ function renderCommits(commits: RepoCommit[]): string {
 
 export function initCommitsPanel(): void {
   document.getElementById('commits-toggle')?.addEventListener('click', () => {
+    // Synchronous — the history is already in the bundle, so there is no
+    // spinner and no failure path to handle here.
     openPanel({
       title: 'Commits',
-      loadingLabel: 'Fetching commit history…',
-      render: async () => renderCommits(await getRepoCommits()),
+      render: () => renderCommits(getRepoCommits()),
     });
   });
 }

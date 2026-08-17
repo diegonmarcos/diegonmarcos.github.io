@@ -6,6 +6,14 @@
   "dist": "dist",
   "build": [
     {
+      "_doc": "Bake this page's commit history into src/data/commits.json so the Commits panel renders from the bundle instead of calling api.github.com from the visitor's browser, where the unauthenticated 60/hour-per-IP limit meant it almost always showed 'rate limit reached'. MUST run before esbuild, which inlines the JSON. Never fails the build: on a fetch error the previous file is kept.",
+      "mod": "gh_commits",
+      "repo": "diegonmarcos/diegonmarcos.github.io",
+      "dir": "a-Portals/linktree",
+      "output": "src/data/commits.json",
+      "limit": 100
+    },
+    {
       "_doc": "Wrap every *.json in src/data/ as a globalThis.PORTAL_DATA[<key>] companion (data-*.json.js). Engine: front-data-json-js-wrapper.sh.",
       "mod": "data_wrap",
       "dir": "src/data"

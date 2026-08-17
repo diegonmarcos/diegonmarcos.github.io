@@ -26,7 +26,7 @@ import {
   formatBytes,
 } from './diagnostics';
 
-const REPO = 'diegonmarcos/front';
+const REPO = 'diegonmarcos/diegonmarcos.github.io';
 const REPO_URL = `https://github.com/${REPO}`;
 
 /**

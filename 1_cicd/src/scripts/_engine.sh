@@ -126,7 +126,7 @@ var b = c.build || [];
 p("CFG_BN", b.length);
 b.forEach(function(s, i) {
     var x = "CFG_B" + i + "_";
-    ["mod","input","output","files","format","target","html","css","js","from","exclude","script","dir","hash_of","precache","verify","source","out","bg","manifest"].forEach(function(k) {
+    ["mod","input","output","files","format","target","html","css","js","from","exclude","script","dir","hash_of","precache","verify","source","out","bg","manifest","repo","limit"].forEach(function(k) {
         var v = s[k];
         if (Array.isArray(v)) v = v.join(",");
         p(x + k.toUpperCase(), v);
@@ -174,7 +174,7 @@ b = c.get("build",[])
 p("CFG_BN", len(b))
 for i,s in enumerate(b):
     x = f"CFG_B{i}_"
-    for k in ["mod","input","output","files","format","target","html","css","js","from","exclude","script","dir","hash_of","precache","verify","source","out","bg","manifest"]:
+    for k in ["mod","input","output","files","format","target","html","css","js","from","exclude","script","dir","hash_of","precache","verify","source","out","bg","manifest","repo","limit"]:
         v = s.get(k,"")
         if isinstance(v, list): v = ",".join(str(x) for x in v)
         p(x + k.upper(), v)
@@ -722,6 +722,94 @@ mod_page_gen() {
     log_success "page_gen: $n page(s) generated from $manifest"
 }
 
+# ─── mod_gh_commits — bake the repository's commit history into a JSON file at
+# BUILD time, so pages can render a commit feed without calling the GitHub API
+# from the visitor's browser. Unauthenticated browser calls share a 60/hour
+# budget per client IP against all of api.github.com, so a live feed reliably
+# renders "rate limit reached" instead of commits. In CI the runner's
+# GITHUB_TOKEN raises the same call to 1000/hour and it runs once per build.
+#
+# Never fails the build: a fetch problem (offline, rate limit, API outage)
+# leaves any existing output untouched, so the page keeps serving the last
+# known-good history rather than losing the feature. Only a genuinely absent
+# output is an error worth reporting, and even then the build continues.
+mod_gh_commits() {
+    local repo="$1" path="$2" output="$3" limit="${4:-100}"
+    [ -n "$repo" ]   || { log_error "gh_commits: 'repo' is required (owner/name)"; return $EXIT_BUILD; }
+    [ -n "$output" ] || { log_error "gh_commits: 'output' is required"; return $EXIT_BUILD; }
+
+    local dest="$PROJECT_DIR/$output"
+    mkdir -p "$(dirname "$dest")"
+
+    local url="https://api.github.com/repos/$repo/commits?per_page=$limit"
+    [ -n "$path" ] && url="$url&path=$path"
+
+    # GITHUB_TOKEN is present in CI and absent locally; both work, they just
+    # get different rate limits.
+    local raw
+    if [ -n "${GITHUB_TOKEN:-}" ]; then
+        raw="$(curl -fsSL -H "Accept: application/vnd.github+json" -H "Authorization: Bearer $GITHUB_TOKEN" "$url" 2>/dev/null)" || raw=""
+    else
+        raw="$(curl -fsSL -H "Accept: application/vnd.github+json" "$url" 2>/dev/null)" || raw=""
+    fi
+
+    if [ -z "$raw" ]; then
+        if [ -f "$dest" ]; then
+            log_warn "gh_commits: fetch failed — keeping existing $output ($(_gh_commits_count "$dest") commits)"
+            return 0
+        fi
+        log_warn "gh_commits: fetch failed and no existing $output — commit feed will render empty"
+        printf '[]\n' > "$dest"
+        return 0
+    fi
+
+    # Project the API response down to what the page actually renders, so the
+    # bundled JSON stays small and the page never depends on GitHub's schema.
+    local projected
+    projected="$(printf '%s' "$raw" | node -e '
+var input = "";
+process.stdin.on("data", function (d) { input += d; });
+process.stdin.on("end", function () {
+  var out;
+  try {
+    var data = JSON.parse(input);
+    if (!Array.isArray(data)) throw new Error("not an array (API error payload?)");
+    out = data.map(function (c) {
+      return {
+        sha:     String(c.sha || "").slice(0, 7),
+        message: String((c.commit && c.commit.message) || "").split("\n")[0],
+        author:  (c.commit && c.commit.author && c.commit.author.name) || "unknown",
+        date:    (c.commit && c.commit.author && c.commit.author.date) || "",
+        url:     c.html_url || ""
+      };
+    });
+  } catch (e) {
+    process.stderr.write(String(e.message) + "\n");
+    process.exit(1);
+  }
+  process.stdout.write(JSON.stringify(out, null, 2) + "\n");
+});
+' 2>/dev/null)" || projected=""
+
+    if [ -z "$projected" ]; then
+        if [ -f "$dest" ]; then
+            log_warn "gh_commits: unexpected API response — keeping existing $output"
+            return 0
+        fi
+        log_warn "gh_commits: unexpected API response and no existing $output — commit feed will render empty"
+        printf '[]\n' > "$dest"
+        return 0
+    fi
+
+    printf '%s' "$projected" > "$dest"
+    log_success "gh_commits: $(_gh_commits_count "$dest") commits from $repo${path:+ (path: $path)} -> $output"
+}
+
+# Commit count of a generated file, for log lines only.
+_gh_commits_count() {
+    node -e 'try{process.stdout.write(String(JSON.parse(require("fs").readFileSync(process.argv[1],"utf8")).length))}catch(e){process.stdout.write("?")}' "$1" 2>/dev/null || printf '?'
+}
+
 # ─── BUILD RUNNER ───────────────────────────────────────────
 run_build() {
     local i=0
@@ -752,6 +840,8 @@ run_build() {
         eval "local _out=\$CFG_B${i}_OUT"
         eval "local _bg=\$CFG_B${i}_BG"
         eval "local _manifest=\$CFG_B${i}_MANIFEST"
+        eval "local _repo=\$CFG_B${i}_REPO"
+        eval "local _limit=\$CFG_B${i}_LIMIT"
 
         log_info "Step $_n/$step_n: $_mod"
 
@@ -784,6 +874,7 @@ run_build() {
             data_wrap)    mod_data_wrap "$_dir" ;;
             qrcode_gen)   mod_qrcode_gen "$_manifest" ;;
             page_gen)     mod_page_gen "$_manifest" ;;
+            gh_commits)   mod_gh_commits "$_repo" "$_dir" "$_output" "$_limit" ;;
             *)            log_warn "Unknown module: $_mod" ;;
         esac
 

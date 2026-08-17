@@ -28,7 +28,10 @@ html[data-theme='linkedin']  body { background: #1b1f23; color: rgba(255, 255, 2
 html[data-theme='pinterest'] body { background: #111111; color: #f5f5f5; }
 html[data-theme='tidal']     body { background: #000000; color: #ffffff; }
 html[data-theme='strava']    body { background: #f7f7f7; color: #242428; }
-html[data-theme='youtube']   body { background: #f9f9f9; color: #0f0f0f; }
+// Dark, matching YouTube's dark theme — and matching _youtube.scss, whose
+// surfaces/text ($yt-bg #0f0f0f, $yt-text #f1f1f1) were already dark. This
+// line was the light one, so dark cards rendered on a near-white page.
+html[data-theme='youtube']   body { background: #0f0f0f; color: #f1f1f1; }
 html[data-theme='icq']       body { background: #0c2624; color: #e6e6e6; } // dark teal desktop
 html[data-theme='shelf']      body { background: #1a0f05; color: #c49a3c; }
 html[data-theme='bar-cellar'] body { background: #08060302; color: #c49a3c; }

@@ -338,68 +338,12 @@ $ig-gradient: linear-gradient(45deg, #f09433, #e6683c 25%, #dc2743 50%, #cc2366 
   &__ov { position: absolute; top: 6px; right: 6px; width: 18px; height: 18px; color: #fff; filter: drop-shadow(0 1px 2px rgba(0,0,0,.6)); }
 }
 
-// Real post card: image + caption/more + like/metadata actions (front-page grid).
-.ig-post-card {
-  display: flex;
-  flex-direction: column;
-  background: $ig-surface;
-  border: 1px solid $ig-border;
-
-  .ig-tile { aspect-ratio: 1; }
-
-  &__cap {
-    padding: 8px 10px 0;
-    font-size: 12px;
-    line-height: 1.4;
-    color: $ig-text;
-  }
-
-  &__cap-text {
-    display: -webkit-box;
-    -webkit-line-clamp: 2;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
-  }
-
-  &.is-expanded &__cap-text { -webkit-line-clamp: unset; }
-
-  &__more {
-    background: none;
-    border: none;
-    color: $ig-muted;
-    font-size: 12px;
-    cursor: pointer;
-    padding: 2px 0;
-  }
-
-  &__actions {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    padding: 6px 10px 10px;
-  }
-
-  &__like, &__meta-btn, &__comment-btn {
-    background: none;
-    border: none;
-    color: $ig-text;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    gap: 4px;
-    svg { width: 20px; height: 20px; fill: currentColor; }
-  }
-
-  &__like.is-liked { color: #ed4956; }
-  &__meta-btn, &__comment-btn { color: $ig-muted; font-size: 11px; }
-  &__meta-btn { margin-left: auto; }
-
-  &__tags {
-    padding: 0 4px 6px;
-    font-size: 12px;
-    color: $ig-blue;
-  }
-}
+// Grid tiles are pure squares (see .ig-tile / .ig-grid above) — the old
+// .ig-post-card put a caption, hashtag line and an action row inside each
+// grid cell, so every cell was a different height and the 3-column grid
+// broke into a ragged stack. Captions and actions now live in the post
+// modal, which is where Instagram puts them too.
+.ig-tile--post img { background: $ig-surface; }
 
 // Maps pane: posts grouped by location, list layout (not a real map yet).
 .ig-loc-group {
@@ -614,4 +558,44 @@ $ig-gradient: linear-gradient(45deg, #f09433, #e6683c 25%, #dc2743 50%, #cc2366 
     position: relative;
     min-height: 80vh;
   }
+}
+
+// ── Responsive layout ────────────────────────────────────
+// Mobile-first. On a phone the photo grid runs edge-to-edge exactly like the
+// Instagram app — only the text blocks carry a gutter — so the squares get
+// the full viewport width instead of losing 40px to page padding. From `sm`
+// up the page goes back to a centred column with a uniform gutter.
+$ig-gutter: 12px;
+
+.ig-page {
+  padding: 12px 0 80px;
+  @include mq(sm) { padding: 30px 20px 90px; }
+}
+
+// Everything except .ig-grid / .ig-pane keeps a gutter on phones.
+.ig-head,
+.ig-tabs,
+.ig-subtabs,
+.ig-highlights,
+.ig-stories,
+.ig-comments,
+.ig-loc-group__title,
+.ig-empty {
+  padding-left: $ig-gutter;
+  padding-right: $ig-gutter;
+  @include mq(sm) { padding-left: 0; padding-right: 0; }
+}
+
+// Three uppercase letter-spaced tabs do not fit a 360px phone at a 40px gap.
+.ig-tabs {
+  gap: 0;
+  justify-content: space-around;
+  @include mq(sm) { gap: 40px; justify-content: flex-start; }
+}
+
+// Nothing on this page is allowed to widen the viewport — a single overflowing
+// child is what makes a phone render the whole page zoomed out.
+html[data-theme^='instagram'] {
+  body { overflow-x: hidden; }
+  img, video { max-width: 100%; }
 }

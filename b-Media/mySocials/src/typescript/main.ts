@@ -309,25 +309,19 @@ function renderInstagram(): void {
     const uniq = [...new Set([...fromLocation, ...words].map(w => w.toLowerCase()))];
     return uniq.slice(0, 5).map(w => `#${w}`);
   };
-  const realPosts = sortedPosts.map((post, i) => {
+  // Grid tiles are pure squares, like the real Instagram grid: every cell is
+  // the same size regardless of the photo's own aspect ratio, so the rows stay
+  // flush. Caption, hashtags and the like/metadata actions live in the post
+  // modal (openPost) — putting them in the cell made each one a different
+  // height and broke the grid into a ragged stack.
+  const tagsFor = (post: { caption: string; location?: string }) => {
     const realTags = post.caption.match(/#\w+/g) || [];
-    const tags = realTags.length ? realTags : deriveTags(post.caption, post.location);
-    return `
-    <div class="ig-post-card">
-      <a class="ig-tile" href="#" data-post-idx="${i}"><img src="${post.media}" alt="post" loading="lazy" decoding="async"></a>
-      ${post.caption ? `
-      <div class="ig-post-card__cap">
-        <span class="ig-post-card__cap-text">${esc(post.caption)}</span>
-        <button class="ig-post-card__more" data-more-idx="${i}">more</button>
-      </div>` : ''}
-      ${tags.length ? `<div class="ig-post-card__tags">${esc(tags.join(' '))}</div>` : ''}
-      <div class="ig-post-card__actions">
-        <button class="ig-post-card__like" data-like-idx="${i}" aria-label="Like">${IG_ICON.heart}</button>
-        <button class="ig-post-card__meta-btn" data-meta-idx="${i}" aria-label="Photo metadata">${IG_ICON.info}</button>
-        <button class="ig-post-card__comment-btn" data-post-idx="${i}" aria-label="Comments">${IG_ICON.comment}</button>
-      </div>
-    </div>`;
-  });
+    return realTags.length ? realTags : deriveTags(post.caption, post.location);
+  };
+  const realPosts = sortedPosts.map((post, i) => `
+    <a class="ig-tile ig-tile--post" href="#" data-post-idx="${i}">
+      <img src="${post.media}" alt="${esc(post.caption.slice(0, 80)) || 'post'}" loading="lazy" decoding="async">
+    </a>`);
   const locGroups = new Map<string, typeof sortedPosts>();
   sortedPosts.forEach(post => {
     const key = post.location?.trim() || 'Unknown location';
@@ -535,25 +529,18 @@ function renderInstagram(): void {
     activePost = post.media_all?.length ? post.media_all : [post.media];
     activeIdx = 0;
     renderPostFrame();
-    postCaption.innerHTML = post.caption ? esc(post.caption) : '<em>No caption.</em>';
+    // Caption + hashtags — these used to sit in the grid cell, which is what
+    // made the tiles different heights.
+    const tags = tagsFor(post);
+    postCaption.innerHTML =
+      (post.caption ? esc(post.caption) : '<em>No caption.</em>') +
+      (tags.length ? `<span class="ig-post-modal__tags">${esc(tags.join(' '))}</span>` : '');
     postLikeBtn.classList.toggle('is-liked', likedIdx.has(idx));
     postComments.innerHTML = '<p class="ig-empty">No per-post comment data in this export.</p>';
     postModal.classList.add('is-open');
   };
   view.querySelectorAll<HTMLElement>('.ig-tile[data-post-idx]').forEach(tile =>
     tile.addEventListener('click', e => { e.preventDefault(); openPost(Number(tile.dataset.postIdx)); }));
-  view.querySelectorAll<HTMLElement>('.ig-post-card__more[data-more-idx]').forEach(btn =>
-    btn.addEventListener('click', () => btn.closest('.ig-post-card')?.classList.toggle('is-expanded')));
-  view.querySelectorAll<HTMLElement>('.ig-post-card__like[data-like-idx]').forEach(btn =>
-    btn.addEventListener('click', () => {
-      const i = Number(btn.dataset.likeIdx);
-      likedIdx.has(i) ? likedIdx.delete(i) : likedIdx.add(i);
-      btn.classList.toggle('is-liked', likedIdx.has(i));
-    }));
-  view.querySelectorAll<HTMLElement>('.ig-post-card__meta-btn[data-meta-idx]').forEach(btn =>
-    btn.addEventListener('click', () => openMeta(Number(btn.dataset.metaIdx))));
-  view.querySelectorAll<HTMLElement>('.ig-post-card__comment-btn[data-post-idx]').forEach(btn =>
-    btn.addEventListener('click', () => openPost(Number(btn.dataset.postIdx))));
   postLikeBtn.addEventListener('click', () => {
     if (currentPostIdx < 0) return;
     likedIdx.has(currentPostIdx) ? likedIdx.delete(currentPostIdx) : likedIdx.add(currentPostIdx);

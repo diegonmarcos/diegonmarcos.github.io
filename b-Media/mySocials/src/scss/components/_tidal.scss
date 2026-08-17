@@ -258,3 +258,77 @@ $tid-cyan: #00ffff;
     &:hover { color: $tid-text; background: $tid-elev; }
   }
 }
+
+// ── Responsive layout ────────────────────────────────────
+// The page was authored at desktop sizes only: a 1100px column with a fixed
+// 20px gutter, a nav that tries to fit logo + 320px search + user on one
+// 60px row, and 34px section headings. On a 360px phone that overflows
+// horizontally, which is what makes the browser render the whole page
+// zoomed out. Below `sm` everything scales down; from `sm` up the original
+// desktop sizing is restored unchanged.
+.tid-nav {
+  height: 52px;
+  @include mq(sm) { height: 60px; }
+
+  &__inner {
+    padding: 0 12px;
+    gap: 10px;
+    @include mq(sm) { padding: 0 20px; }
+  }
+
+  // No room for a search field next to the logo on a phone — same call the
+  // Instagram nav already makes.
+  &__search {
+    display: none;
+    @include mq(md) { display: block; }
+  }
+
+  &__user {
+    margin-left: auto;
+    font-size: 12px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+}
+
+.tid-main {
+  padding: 16px 12px 80px;
+  @include mq(sm) { padding: 28px 20px 90px; }
+}
+
+.tid-head {
+  &__title {
+    font-size: 20px;
+    @include mq(sm) { font-size: 26px; }
+  }
+  &__sections {
+    gap: 10px;
+    @include mq(sm) { gap: 16px; }
+  }
+}
+
+.tid-section-head {
+  font-size: 22px;
+  margin: 34px 0 18px;
+  padding-top: 18px;
+  scroll-margin-top: 60px;
+  @include mq(sm) {
+    font-size: 34px;
+    margin: 52px 0 24px;
+    padding-top: 26px;
+    scroll-margin-top: 76px;
+  }
+}
+
+.tid-grid {
+  gap: 12px;
+  @include mq(sm) { gap: 18px; }
+}
+
+.tid-card { padding: 8px; @include mq(sm) { padding: 12px; } }
+
+html[data-theme='tidal'] {
+  body { overflow-x: hidden; }
+  img, video { max-width: 100%; }
+}

@@ -61,16 +61,16 @@ step_populate_src() {
   done < <(list_projects)
   log "  builds:        $n_b symlinks"
 
-  # data-links — linktree's hand-authored box JSONs (skip wrappers and any
-  # build artifact). commits.json is regenerated on every build by the
-  # gh_commits module, so linking it here would consolidate a file that
-  # changes on its own and race the ship workflow's dist commit.
+  # data-links — linktree's hand-authored box JSONs (skip wrappers).
+  # Generated data must NOT live in src/data/ — everything here gets
+  # consolidated, and a file the build rewrites each run would race the ship
+  # workflow's dist commit. Build outputs go to src/data-generated/ instead.
   find "$SRC/data-links" -maxdepth 1 -type l -delete 2>/dev/null || true
   local n_d=0
   for f in "$ROOT/a-Portals/linktree/src/data/"*.json; do
     [ -f "$f" ] || continue
     base=$(basename "$f")
-    case "$base" in *.json.js|commits.json) continue ;; esac
+    case "$base" in *.json.js) continue ;; esac
     ln -sf "../../../a-Portals/linktree/src/data/$base" "$SRC/data-links/$base"
     n_d=$((n_d+1))
   done

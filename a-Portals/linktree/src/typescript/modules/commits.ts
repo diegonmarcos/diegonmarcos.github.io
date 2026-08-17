@@ -10,7 +10,7 @@
 // visitor no request at all.
 
 import { openPanel } from './panel';
-import commitsData from '../../data/commits.json';
+import commitsData from '../../data-generated/commits.json';
 
 const REPO = 'diegonmarcos/diegonmarcos.github.io';
 const REPO_URL = `https://github.com/${REPO}`;

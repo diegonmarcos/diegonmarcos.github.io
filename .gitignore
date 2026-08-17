@@ -131,4 +131,4 @@ build.log
 # (see a-Portals/linktree/build.json). Committing it made the config
 # emitter symlink it into 1_front-configs/src/data-links/ alongside the
 # hand-authored content JSONs, which raced the ship workflow's dist commit.
-a-Portals/linktree/src/data/commits.json
+a-Portals/linktree/src/data-generated/

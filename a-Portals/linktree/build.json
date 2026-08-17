@@ -6,11 +6,11 @@
   "dist": "dist",
   "build": [
     {
-      "_doc": "Bake this page's commit history into src/data/commits.json so the Commits panel renders from the bundle instead of calling api.github.com from the visitor's browser, where the unauthenticated 60/hour-per-IP limit meant it almost always showed 'rate limit reached'. MUST run before esbuild, which inlines the JSON. Never fails the build: on a fetch error the previous file is kept.",
+      "_doc": "Bake this page's commit history into src/data-generated/commits.json so the Commits panel renders from the bundle instead of calling api.github.com from the visitor's browser, where the unauthenticated 60/hour-per-IP limit meant it almost always showed 'rate limit reached'. MUST run before esbuild, which inlines the JSON. Kept OUT of src/data/ on purpose: that directory is for hand-authored content, every *.json in it gets a PORTAL_DATA wrapper shipped to dist (dead weight here, the JSON is imported directly) and gets consolidated by 1_front-configs. Never fails the build: on a fetch error the previous file is kept.",
       "mod": "gh_commits",
       "repo": "diegonmarcos/diegonmarcos.github.io",
       "dir": "a-Portals/linktree",
-      "output": "src/data/commits.json",
+      "output": "src/data-generated/commits.json",
       "limit": 100
     },
     {
@@ -19,14 +19,14 @@
       "dir": "src/data"
     },
     {
-      "_doc": "Generate the full PWA app-icon set from one source image. Idempotent — skips when outputs are newer than source. Re-runs only when public/favicon.jpg changes.",
+      "_doc": "Generate the full PWA app-icon set from one source image. Idempotent \u2014 skips when outputs are newer than source. Re-runs only when public/favicon.jpg changes.",
       "mod": "pwa_icons",
       "source": "src/public/favicon.jpg",
       "out": "src/public/pwa",
       "bg": "#000000"
     },
     {
-      "_doc": "Generate vCard files + styled QR PNGs + qrcode.html from src/typescript/qrcode/qrcodes.json. Engine: front-qrcode-gen.sh (compiles with LOCAL tsc then runs with node — deps declared in package.json: typescript, qr-code-styling, qrcode, sharp, jsdom). MUST run BEFORE the copy steps that ship qrcode.html + qrcodes.json + the PNGs to dist/.",
+      "_doc": "Generate vCard files + styled QR PNGs + qrcode.html from src/typescript/qrcode/qrcodes.json. Engine: front-qrcode-gen.sh (compiles with LOCAL tsc then runs with node \u2014 deps declared in package.json: typescript, qr-code-styling, qrcode, sharp, jsdom). MUST run BEFORE the copy steps that ship qrcode.html + qrcodes.json + the PNGs to dist/.",
       "mod": "qrcode_gen",
       "manifest": "src/typescript/qrcode/qrcodes.json"
     },
@@ -48,13 +48,13 @@
       "from": "src"
     },
     {
-      "_doc": "QR code gallery page (data-driven — fetches qrcodes.json at runtime).",
+      "_doc": "QR code gallery page (data-driven \u2014 fetches qrcodes.json at runtime).",
       "mod": "copy",
       "files": "qrcode.html",
       "from": "src"
     },
     {
-      "_doc": "Manifest consumed at runtime by qrcode.html (the cards) — same JSON the qr-code generator reads (the QRs + vCard files). Copied flat to dist root; the HTML fetches it as './qrcodes.json'.",
+      "_doc": "Manifest consumed at runtime by qrcode.html (the cards) \u2014 same JSON the qr-code generator reads (the QRs + vCard files). Copied flat to dist root; the HTML fetches it as './qrcodes.json'.",
       "mod": "copy",
       "files": "qrcodes.json",
       "from": "src/typescript/qrcode"
@@ -85,7 +85,7 @@
       "files": "index.html"
     },
     {
-      "_doc": "MUST run last — hashes the dist artifacts above to derive BUILD_HASH and inject it into the SW bundle.",
+      "_doc": "MUST run last \u2014 hashes the dist artifacts above to derive BUILD_HASH and inject it into the SW bundle.",
       "mod": "esbuild_sw",
       "input": "src/typescript/script-service-worker.ts",
       "output": "script-service-worker.js",

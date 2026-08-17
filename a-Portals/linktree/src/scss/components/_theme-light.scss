@@ -52,17 +52,42 @@ body.light-theme {
     }
 
     // SVG icons are white-stroked for the dark theme — invert them to
-    // become dark-stroked under the light theme.
+    // become dark-stroked under the light theme. Photo images (.profile-pic,
+    // banner images) are excluded — only UI icon elements get inverted.
     img.icon,
-    .profile-icons a img,
+    .inline-icon,
     .icon-btn img,
     [data-fab-img] {
         filter: invert(1) !important;
     }
 
-    // Status / badges.
-    p, span, small {
-        color: #333 !important;
+    // Box/section titles — sticky headers with explicit white text + glass bg.
+    .box-title {
+        color: #111 !important;
+        background: rgba(255, 255, 255, 0.92) !important;
+        border-color: rgba(0, 0, 0, 0.1) !important;
+    }
+
+    // Collapsible arrow chevron.
+    .arrow {
+        color: rgba(0, 0, 0, 0.45) !important;
+    }
+
+    // Hamburger nav panel — glass on dark becomes near-invisible on white.
+    .hamburger-nav {
+        background: rgba(255, 255, 255, 0.97) !important;
+        border-right-color: rgba(0, 0, 0, 0.1) !important;
+        box-shadow: 4px 0 24px rgba(0, 0, 0, 0.1) !important;
+    }
+    .hamburger-group + .hamburger-group {
+        border-top-color: rgba(0, 0, 0, 0.08) !important;
+    }
+    .hamburger-item {
+        color: #1a1a1a !important;
+        &:hover { background: rgba(0, 0, 0, 0.06) !important; }
+    }
+    .hamburger-group__label {
+        color: rgba(0, 0, 0, 0.45) !important;
     }
 
     // Footer.

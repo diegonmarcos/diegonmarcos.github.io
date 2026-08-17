@@ -1,6 +1,6 @@
-// Light / Dark theme toggle for the linktree page. Persists in localStorage,
-// auto-detects `prefers-color-scheme: light` on first visit, listens for OS
-// changes. Adds/removes `light-theme` on <body>; the actual color swap is
+// Light / Dark theme toggle for the linktree page. Persists in localStorage.
+// Dark is always the default — never auto-applied from OS preference.
+// Adds/removes `light-theme` on <body>; the actual color swap is
 // fully declarative in scss/components/_theme-light.scss.
 
 import { getElementById, addClass, removeClass } from '../utils/dom';
@@ -31,15 +31,9 @@ function isLight(): boolean {
 export function initThemeToggle(): void {
   const toggle = getElementById<HTMLButtonElement>('theme-toggle');
 
-  // 1. Resolve initial theme: localStorage > OS preference > dark default.
+  // 1. Resolve initial theme: localStorage only → dark by default.
   const saved = localStorage.getItem(STORAGE_KEY);
   if (saved === 'light') {
-    applyLight();
-    if (toggle) addClass(toggle, 'active');
-  } else if (saved === 'dark') {
-    applyDark();
-    if (toggle) removeClass(toggle, 'active');
-  } else if (window.matchMedia('(prefers-color-scheme: light)').matches) {
     applyLight();
     if (toggle) addClass(toggle, 'active');
   }
@@ -59,15 +53,4 @@ export function initThemeToggle(): void {
     }
   });
 
-  // 3. React to OS preference changes only when user hasn't explicitly chosen.
-  window.matchMedia('(prefers-color-scheme: light)').addEventListener('change', (e) => {
-    if (localStorage.getItem(STORAGE_KEY)) return;  // user has a saved choice; respect it
-    if (e.matches) {
-      applyLight();
-      addClass(toggle, 'active');
-    } else {
-      applyDark();
-      removeClass(toggle, 'active');
-    }
-  });
 }

@@ -1,0 +1,57 @@
+@use '../mixins' as *;
+
+// ==========================================================================
+// Settings list — Configs page real content rows
+// ==========================================================================
+
+.settings-list {
+    display: flex;
+    flex-direction: column;
+}
+
+.settings-list__row {
+    @include flex-row(space-between, center, 12px);
+    padding: 14px 4px;
+    border-bottom: 1px solid var(--glass-border);
+}
+
+.settings-list__row:last-child {
+    border-bottom: 0;
+}
+
+.settings-list__label {
+    color: var(--text-primary);
+    font-size: 14px;
+}
+
+.settings-list__value {
+    color: var(--text-secondary);
+    font-size: 13px;
+    text-align: right;
+}
+
+// Group header — a divider between subsections of a settings-list (e.g.
+// "Theme" / "Profile" / "Toggles" on config/launcher).
+.settings-list__group {
+    padding: 16px 4px 6px;
+    color: var(--text-secondary);
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+}
+
+.settings-list__group:first-child {
+    padding-top: 4px;
+}
+
+// Active/current choice (e.g. the currently-selected theme or profile).
+.settings-list__row--active .settings-list__label {
+    color: var(--text-primary);
+    font-weight: 600;
+}
+
+.settings-list__active-badge {
+    color: #48bb78;
+    font-weight: 700;
+}

@@ -1,0 +1,74 @@
+@use '../../mixins' as *;
+
+// ==========================================================================
+// Content blocks — Suite tile groups, app tiles/folders, inert states,
+// page-list footer link
+// ==========================================================================
+
+.tile--inert {
+    opacity: .55;
+    cursor: default;
+}
+
+.tile-group {
+    margin-bottom: 20px;
+}
+
+.tile-group__title {
+    font-size: 13px;
+    text-transform: uppercase;
+    letter-spacing: .04em;
+    color: var(--text-secondary);
+    margin: 0 4px 10px;
+}
+
+.tile-grid--dense {
+    @include grid-auto-fit(72px, 6px);
+}
+
+// App tiles sit on the default tile bg, not a color modifier — give them the
+// full bg_glass_tile.xml treatment (the pastel-colored tiles above keep
+// their own flat colors.xml background instead, see _tiles.scss). Box/
+// padding/radius/border are inherited from .tile.
+.tile--app {
+    background: var(--glass-tile-gradient);
+}
+
+.tile--app .tile__label {
+    color: var(--text-on-tile);
+}
+
+// Liquid-glass card surface (bg_glass_liquid.xml) — layered over the flat
+// --glass-bg backdrop so the folder still reads as an opaque black island
+// while carrying the same tint the drawer/overlay-sheet/stack-card surfaces
+// use. Radius stays at the folder's own 14px rather than switching to
+// --glass-liquid-radius (24px reads too round at this element's size).
+.app-folder {
+    margin: 10px 2px 0;
+    padding: 10px;
+    border-radius: 14px;
+    background-color: var(--glass-bg);
+    background-image: var(--glass-liquid-gradient);
+    border: var(--glass-liquid-border);
+}
+
+.app-folder__title {
+    font-size: 12px;
+    color: var(--text-secondary);
+    margin: 0 0 8px;
+}
+
+.footer-link {
+    display: block;
+    text-align: center;
+    margin-top: 16px;
+    padding: 12px;
+    border-radius: 14px;
+    background-color: var(--glass-bg);
+    background-image: var(--glass-liquid-gradient);
+    border: var(--glass-liquid-border);
+    color: var(--cloud-primary);
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 600;
+}

@@ -15,6 +15,6 @@
     "noImplicitReturns": true,
     "noFallthroughCasesInSwitch": true
   },
-  "include": ["src/typescript/**/*"],
+  "include": ["src/lib/**/*", "src/app/**/*"],
   "exclude": ["node_modules", "dist"]
 }

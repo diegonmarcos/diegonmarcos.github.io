@@ -61,9 +61,12 @@
     "tools": {
       "label": "Labs", "icon": "tools", "color": "teal",
       "tiles": [
-        { "id": "data-ml", "label": "Data & ML", "icon": "brain", "target": "stub:data-ml" },
-        { "id": "eng", "label": "Engineering", "icon": "code", "target": "stub:eng" },
-        { "id": "circus", "label": "Circus", "icon": "sparkles", "target": "stub:circus" }
+        { "id": "c3", "label": "C3", "icon": "mesh", "target": "section:c3" },
+        { "id": "data-ml", "label": "Data & ML", "icon": "brain", "target": "page:tools/data-ml" },
+        { "id": "eng", "label": "Engineering", "icon": "code", "target": "page:tools/engineering" },
+        { "id": "quant", "label": "Quant & Markets", "icon": "chart", "target": "page:tools/quant" },
+        { "id": "aero-space", "label": "Aero & Space", "icon": "rocket", "target": "page:tools/aero-space" },
+        { "id": "circus", "label": "Circus", "icon": "sparkles", "target": "page:tools/circus" }
       ],
       "apps": { "type": "stack", "cards": [
         { "kind": "link_grid", "title": "Data & ML", "subtitle": "Datasets · ML pipelines · model registry" },
@@ -78,7 +81,40 @@
         { "kind": "cloud_dashboard", "title": "User Apps" },
         { "kind": "section_title", "title": "Stack" },
         { "kind": "cloud_dashboard", "title": "Stack" }
-      ]}
+      ]},
+      "pages": [
+        { "id": "data-ml", "label": "Data & ML", "items": [
+          { "title": "eu-central-1 · feature-store", "subtitle": "Postgres + parquet lake", "meta": "OK" },
+          { "title": "model-registry", "subtitle": "MLflow · 14 registered models", "meta": "OK" },
+          { "title": "nightly-retrain", "subtitle": "Dagu DAG · churn-model", "meta": "success" },
+          { "title": "labeling-queue", "subtitle": "212 items pending review" },
+          { "title": "notebook-runner", "subtitle": "Jupyter kernels · oci-analytics", "meta": "2 active" }
+        ]},
+        { "id": "engineering", "label": "Engineering", "items": [
+          { "title": "ea_cloud-superapp", "subtitle": "GitHub · diegonmarcos", "meta": "main" },
+          { "title": "front", "subtitle": "GitHub · diegonmarcos", "meta": "main" },
+          { "title": "unix", "subtitle": "GitHub · diegonmarcos", "meta": "main" },
+          { "title": "cloud-ship-container-engine", "subtitle": "Build & deploy engine" },
+          { "title": "GHA runners", "subtitle": "6 self-hosted VMs", "meta": "green" }
+        ]},
+        { "id": "quant", "label": "Quant & Markets", "items": [
+          { "title": "eod-price-fetcher", "subtitle": "Daily OHLCV · 340 tickers", "meta": "OK" },
+          { "title": "backtest-runner", "subtitle": "Strategy: momentum-v3", "meta": "queued" },
+          { "title": "portfolio-tracker", "subtitle": "Paper account · +4.2% YTD" },
+          { "title": "risk-report", "subtitle": "Nightly VaR snapshot", "meta": "OK" }
+        ]},
+        { "id": "aero-space", "label": "Aero & Space", "items": [
+          { "title": "orbital-tle-sync", "subtitle": "Celestrak feed · 12,400 objects", "meta": "OK" },
+          { "title": "launch-tracker", "subtitle": "Upcoming launches · next 30d", "meta": "6" },
+          { "title": "mission-notes", "subtitle": "Amateur telemetry logs" },
+          { "title": "groundstation-sim", "subtitle": "SDR pass predictor" }
+        ]},
+        { "id": "circus", "label": "Circus", "items": [
+          { "title": "weird-side-quests", "subtitle": "Misc experiments repo" },
+          { "title": "font-playground", "subtitle": "Type specimen sandbox" },
+          { "title": "esoteric-cli-toys", "subtitle": "Terminal art & games" }
+        ]}
+      ]
     }
   }
 }

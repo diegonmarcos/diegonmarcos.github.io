@@ -1,0 +1,122 @@
+@use '../../mixins' as *;
+
+// ==========================================================================
+// Tiles — home screen tile grid
+// ==========================================================================
+
+.tile-grid {
+    @include grid-auto-fit(84px, 8px);
+    padding: 2px;
+}
+
+// 128dp is the real app's default tile height (item_tile.xml) — only the
+// weight-based grouped grids (Suite's dense variant below) shrink it.
+//
+// border-radius/border here use the --glass-tile-* tokens (Android
+// bg_glass_tile.xml) — this supersedes --radius-tile for tiles specifically;
+// --radius-tile is left untouched for anything else still referencing it.
+// Background stays per-variant below (pastel colors kept as-is; only
+// .tile--app, the colorless app-grid tile, takes the full glass gradient —
+// see _content-blocks.scss).
+.tile {
+    position: relative;
+    @include flex-center;
+    flex-direction: column;
+    gap: 6px;
+    min-height: 128px;
+    border-radius: var(--glass-tile-radius);
+    padding: 10px 6px;
+    border: var(--glass-tile-border);
+    // Release (ACTION_UP/CANCEL) leg of tile_press.xml — the base rule wins
+    // once :active is no longer matched, so this is what plays on release.
+    transition: transform var(--duration-press-up) ease-out;
+}
+
+.tile-grid--dense .tile {
+    min-height: 96px;
+}
+
+// Press (ACTION_DOWN) leg of tile_press.xml — scale 1 → 0.92 over 80ms.
+.tile:active {
+    transform: scale(var(--scale-press));
+    transition: transform var(--duration-press-down) ease-out;
+}
+
+// SVG <img> renders in its own default stroke color — do not try to recolor
+// via CSS color/currentColor, that does not work through <img>. Leave as-is,
+// it reads fine on the light tile backgrounds below.
+.tile__icon {
+    width: 32px;
+    height: 32px;
+}
+
+.tile__label {
+    font-size: 12px;
+    font-weight: 500;
+    text-align: center;
+    line-height: 1.2;
+}
+
+.tile--blue {
+    background: var(--tile-blue-bg);
+}
+
+.tile--blue .tile__label {
+    color: var(--tile-blue-fg);
+}
+
+.tile--green {
+    background: var(--tile-green-bg);
+}
+
+.tile--green .tile__label {
+    color: var(--tile-green-fg);
+}
+
+.tile--purple {
+    background: var(--tile-purple-bg);
+}
+
+.tile--purple .tile__label {
+    color: var(--tile-purple-fg);
+}
+
+.tile--pink {
+    background: var(--tile-pink-bg);
+}
+
+.tile--pink .tile__label {
+    color: var(--tile-pink-fg);
+}
+
+.tile--orange {
+    background: var(--tile-orange-bg);
+}
+
+.tile--orange .tile__label {
+    color: var(--tile-orange-fg);
+}
+
+.tile--teal {
+    background: var(--tile-teal-bg);
+}
+
+.tile--teal .tile__label {
+    color: var(--tile-teal-fg);
+}
+
+.tile--amber {
+    background: var(--tile-amber-bg);
+}
+
+.tile--amber .tile__label {
+    color: var(--tile-amber-fg);
+}
+
+.tile--indigo {
+    background: var(--tile-indigo-bg);
+}
+
+.tile--indigo .tile__label {
+    color: var(--tile-indigo-fg);
+}

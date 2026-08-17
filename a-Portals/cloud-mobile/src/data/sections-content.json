@@ -92,6 +92,10 @@
         ]},
         { "id": "settings", "label": "Settings", "rows": [
           ["Sync", "Every 5 min"], ["Notifications", "On"], ["Signature", "Enabled"]
+        ]},
+        { "id": "more", "label": "More", "rows": [
+          ["Storage used", "1.8 GB / 15 GB"], ["Backend", "Stalwart JMAP/IMAP"],
+          ["Outbound relay", "External only — no internal loops"], ["Spam filter", "On"], ["Vacation responder", "Off"]
         ]}
       ] },
 
@@ -225,6 +229,65 @@
         { "id": "settings", "label": "Settings", "rows": [ ["Notifications", "Mentions only"], ["Theme", "Dark"] ] }
       ] },
 
+    "c3": { "label": "C3", "icon": "mesh", "color": "amber",
+      "pages": [
+        { "id": "reports", "label": "Reports", "items": [
+          { "title": "Nightly CRITICAL-only gate", "subtitle": "Dagu · report DAGs", "meta": "green" },
+          { "title": "Weekly fleet summary", "subtitle": "6 VMs · 2 architectures", "meta": "sent" },
+          { "title": "Cert expiry scan", "subtitle": "Caddy + WG certs", "meta": "0 expiring" },
+          { "title": "Backup verification", "subtitle": "oci-mail nightly snapshot", "meta": "OK" }
+        ]},
+        { "id": "stack", "label": "Stack", "items": [
+          { "title": "Caddy", "subtitle": "Edge reverse proxy", "meta": "running" },
+          { "title": "Authelia", "subtitle": "SSO + bearer gate", "meta": "running" },
+          { "title": "WireGuard mesh", "subtitle": "wg0 · 7 peers", "meta": "up" },
+          { "title": "Stalwart", "subtitle": "JMAP/IMAP mail store", "meta": "running" },
+          { "title": "Dagu", "subtitle": "Workflow scheduler", "meta": "running" },
+          { "title": "Grafana", "subtitle": "Metrics dashboards", "meta": "running" }
+        ]},
+        { "id": "health", "label": "Health", "items": [
+          { "title": "gcp-proxy", "subtitle": "WireGuard hub · private", "meta": "OK" },
+          { "title": "gcp-t4", "subtitle": "GPU worker · x86_64", "meta": "OK" },
+          { "title": "oci-mail", "subtitle": "maddy + stalwart", "meta": "OK" },
+          { "title": "oci-analytics", "subtitle": "public edge · x86_64", "meta": "OK" },
+          { "title": "oci-apps", "subtitle": "docker host · aarch64", "meta": "WARN" },
+          { "title": "oci-apps-2", "subtitle": "docker host · aarch64", "meta": "OK" }
+        ]},
+        { "id": "workflows", "label": "Workflows", "items": [
+          { "title": "nightly-report-gate", "subtitle": "Dagu DAG · CRITICAL-only", "meta": "success" },
+          { "title": "ship-front", "subtitle": "Dagu DAG · deploy front sites", "meta": "success" },
+          { "title": "ship-infra", "subtitle": "Dagu DAG · VM fleet rollout", "meta": "success" },
+          { "title": "mail-puller-backfill", "subtitle": "Dagu DAG · stalwart backfill", "meta": "running" },
+          { "title": "cert-renew", "subtitle": "Dagu DAG · Caddy/WG certs", "meta": "success" }
+        ]},
+        { "id": "vms", "label": "VMs", "items": [
+          { "title": "gcp-proxy", "subtitle": "2 vCPU · 4 GB RAM", "meta": "x86_64" },
+          { "title": "gcp-t4", "subtitle": "4 vCPU · 16 GB RAM · T4 GPU", "meta": "x86_64" },
+          { "title": "oci-mail", "subtitle": "2 vCPU · 8 GB RAM", "meta": "x86_64" },
+          { "title": "oci-analytics", "subtitle": "4 vCPU · 24 GB RAM", "meta": "x86_64" },
+          { "title": "oci-apps", "subtitle": "4 vCPU · 24 GB RAM", "meta": "aarch64" },
+          { "title": "oci-apps-2", "subtitle": "4 vCPU · 24 GB RAM", "meta": "aarch64" }
+        ]},
+        { "id": "logs", "label": "Logs", "items": [
+          { "title": "caddy access log", "subtitle": "edge · last 15 min", "meta": "1.2k lines" },
+          { "title": "introspect-proxy", "subtitle": "bearer gate audit", "meta": "0 errors" },
+          { "title": "load-shedder", "subtitle": "PSI + RAM floor events", "meta": "0 sheds" },
+          { "title": "wg handshake log", "subtitle": "wg0 · 7 peers", "meta": "all fresh" }
+        ]}
+      ] },
+
+    "browser": { "label": "Browser", "icon": "browser", "color": "purple",
+      "pages": [
+        { "id": "all", "label": "All", "items": [
+          { "title": "diegonmarcos.com", "subtitle": "Portfolio", "meta": "pinned" },
+          { "title": "grafana.diegonmarcos.com", "subtitle": "Dashboards" },
+          { "title": "github.com/diegonmarcos", "subtitle": "Repos" },
+          { "title": "auth.diegonmarcos.com", "subtitle": "SSO login" },
+          { "title": "mail.diegonmarcos.com", "subtitle": "Webmail" }
+        ]},
+        { "id": "linktree", "label": "Linktree" }
+      ] },
+
     "wg": { "label": "WG", "icon": "mesh", "color": "amber",
       "pages": [
         { "id": "wireguard", "label": "WireGuard", "items": [
@@ -240,25 +303,116 @@
         ]},
         { "id": "personal", "label": "Personal", "items": [
           { "title": "Berlin, Germany" }, { "title": "diegonmarcos.com" }
+        ]},
+        { "id": "tools", "label": "Tools", "items": [
+          { "title": "Kotlin / Android", "subtitle": "HeliBoard fork, native launchers" },
+          { "title": "TypeScript / SCSS", "subtitle": "Vanilla static-site generators" },
+          { "title": "Nix / NixOS", "subtitle": "Declarative VM + home-manager configs" },
+          { "title": "Rust", "subtitle": "my-ai self-contained binaries" }
+        ]},
+        { "id": "cloud", "label": "Cloud", "items": [
+          { "title": "GCP", "subtitle": "WireGuard hub · GPU worker" },
+          { "title": "OCI", "subtitle": "Mail store · public edge · docker hosts" },
+          { "title": "Cloudflare", "subtitle": "DNS + Workers edge" },
+          { "title": "GitHub Actions", "subtitle": "All builds & deploys — never on-device" }
+        ]},
+        { "id": "other", "label": "Other", "items": [
+          { "title": "Civil Engineering B.Sc.", "subtitle": "Structural design background" },
+          { "title": "Venture Capital & Portfolio Analysis", "subtitle": "Early-stage due diligence" },
+          { "title": "Open source", "subtitle": "github.com/diegonmarcos" }
         ]}
       ] },
     "apptabs": { "label": "Tabs", "icon": "suite", "color": "teal",
-      "pages": [{ "id": "grid", "label": "Grid" }] },
+      "pages": [{ "id": "grid", "label": "Grid", "tiles": [
+        { "id": "tab-mail", "label": "Mail", "icon": "mail", "target": "section:mail" },
+        { "id": "tab-chat", "label": "Chat", "icon": "chat", "target": "section:chat" },
+        { "id": "tab-calendar", "label": "Calendar", "icon": "calendar", "target": "section:calendar" },
+        { "id": "tab-drive", "label": "Drive", "icon": "database", "target": "section:drive" },
+        { "id": "tab-ide", "label": "IDE", "icon": "code", "target": "extapp:cloud-ide" },
+        { "id": "tab-news", "label": "News", "icon": "rss", "target": "section:rss" },
+        { "id": "tab-wallet", "label": "Wallet", "icon": "wallet", "target": "section:wallet" },
+        { "id": "tab-browser", "label": "Browser", "icon": "browser", "target": "section:browser" }
+      ] }] },
     "myfin": { "label": "MyFin", "icon": "chart", "color": "green",
-      "pages": [{ "id": "dashboard", "label": "Dashboard" }] },
+      "pages": [{ "id": "dashboard", "label": "Dashboard",
+        "stack": [
+          { "kind": "stats", "title": "Net Worth", "subtitle": "Personal finance · paper snapshot",
+            "rows": [["Net worth", "€48,210"], ["This month", "+€1,140"], ["Spending", "€2,380"], ["Holdings", "€31,900"]] }
+        ],
+        "items": [
+          { "title": "Checking", "subtitle": "Personal account", "meta": "€6,120" },
+          { "title": "Savings", "subtitle": "Emergency fund", "meta": "€10,190" },
+          { "title": "Brokerage", "subtitle": "Paper portfolio", "meta": "€31,900" },
+          { "title": "Rent", "subtitle": "Monthly", "meta": "-€980" },
+          { "title": "Groceries", "subtitle": "This week", "meta": "-€64" },
+          { "title": "Salary", "subtitle": "Monthly deposit", "meta": "+€3,400" },
+          { "title": "GitHub Sponsors", "subtitle": "Open source", "meta": "+€18" },
+          { "title": "Utilities", "subtitle": "This month", "meta": "-€112" }
+        ] }] },
     "health": { "label": "MyHealth", "icon": "heart", "color": "pink",
-      "pages": [{ "id": "summary", "label": "Summary" }] },
+      "pages": [
+        { "id": "summary", "label": "Summary", "stack": [
+          { "kind": "stats", "title": "Today", "subtitle": "Health & fitness",
+            "rows": [["Steps", "8,412"], ["Sleep", "7h 12m"], ["Resting HR", "58 bpm"], ["Workouts (wk)", "3"]] }
+        ] },
+        { "id": "timeline", "label": "Timeline", "items": [
+          { "title": "Morning run", "subtitle": "5.2 km · 27 min", "meta": "07:10" },
+          { "title": "Standing break", "subtitle": "Reminder dismissed", "meta": "11:45" },
+          { "title": "Evening walk", "subtitle": "2.1 km · 20 min", "meta": "19:30" },
+          { "title": "Sleep logged", "subtitle": "7h 12m · 2 wake-ups", "meta": "23:50" }
+        ]},
+        { "id": "configs", "label": "Configs", "items": [
+          { "title": "Data source", "subtitle": "Health Connect (Android)" },
+          { "title": "Sync frequency", "meta": "Every 15 min" },
+          { "title": "Step goal", "meta": "10,000 / day" },
+          { "title": "Sleep goal", "meta": "8h" },
+          { "title": "Share with MyFin dashboard", "meta": "Off" }
+        ]}
+      ] },
     "wallet": { "label": "Wallet", "icon": "wallet", "color": "indigo",
-      "pages": [{ "id": "cards", "label": "Cards" }] },
+      "pages": [{ "id": "cards", "label": "Cards", "items": [
+        { "title": "Visa Debit", "subtitle": "•••• 4821 · Personal", "meta": "Default" },
+        { "title": "Mastercard Credit", "subtitle": "•••• 2290 · Ops", "meta": "Active" },
+        { "title": "+ Add card", "subtitle": "Scan or enter card details" }
+      ] }] },
 
     "config": {
       "label": "Configs", "icon": "settings", "color": "blue",
       "pages": [
-        { "id": "profile", "label": "Profile", "rows": [["Name", "Diego Coelho Marcos"], ["Email", "me@diegonmarcos.com"], ["Initials", "DCM"], ["Mode", "Apps"]] },
+        { "id": "profile", "label": "Profile", "rows": [
+          ["Name", "Diego N. Marcos"],
+          ["Mail", "me@diegonmarcos.com"],
+          ["Site", "diegonmarcos.com"],
+          { "group": "Business card" },
+          { "type": "qrcard", "caption": "Scan to save contact" }
+        ] },
         { "id": "wg", "label": "WireGuard", "target": "section:wg" },
         { "id": "kde", "label": "KDE", "rows": [["This device", "cloud-mobile · web"], ["Paired devices", "0"], ["Plugins enabled", "0 / 0"]] },
         { "id": "ai", "label": "AI", "rows": [["Default provider", "Claude"], ["API keys configured", "—"], ["Local model", "Off"]] },
-        { "id": "launcher", "label": "Launcher", "rows": [["Theme", "Cloud"], ["Cube animation", "On"], ["Cube drag-to-spin", "Off"]] },
+        { "id": "launcher", "label": "Launcher", "rows": [
+          { "group": "Theme" },
+          ["Cloud", "3D home · dynamic island · animations", { "active": true }],
+          ["Cloud Minimalist Black", "terminal aesthetic, no chrome"],
+          ["Cloud Power Saving", "OLED black, animations off, WG stays on"],
+          { "group": "Profile" },
+          ["Personal", "default account, full access", { "active": true }],
+          ["Work", "separate work profile"],
+          ["Guest", "browser-only, WG off"],
+          { "group": "Toggles" },
+          ["Pets animation", "On"],
+          ["Cube animation", "On"],
+          ["Cube interactive", "Off"],
+          ["Island animation", "On"],
+          ["Stars animation", "On"],
+          ["Live status", "On"],
+          ["Haptics", "On"],
+          ["Eye protection", "Off"],
+          ["Star twinkle", "On"],
+          ["Fleet check", "On"],
+          { "group": "Sliders" },
+          ["Brightness", "80%"],
+          ["Screensaver timeout", "5 min"]
+        ] },
         { "id": "import", "label": "Import", "target": "action:import_configs" },
         { "id": "keyboard", "label": "Keyboard", "target": "extapp:cloud-keyboard" },
         { "id": "update-all", "label": "Update All", "rows": [["Cloud SuperApp", "Up to date"], ["Cloud Mail", "Up to date"], ["Cloud Chat", "Up to date"]] },
@@ -280,17 +434,45 @@
         } },
         { "id": "onehand", "label": "One-Hand", "rows": [
           ["Edge handles", "On"],
-          ["Left · Top", "Bitwarden"],
-          ["Left · Center", "Back"],
-          ["Left · Down", "Google Maps"],
-          ["Right · Top", "WhatsApp Business"],
-          ["Right · Center", "Back"],
-          ["Right · Down", "Instagram"],
-          ["Sirius (circular menu)", "On"],
-          ["Canopus (arc menu)", "On"],
-          ["Centauri (recent apps)", "On"]
+          { "group": "Left" },
+          ["Top", "Bitwarden"],
+          ["Upper", "Brave"],
+          ["Center", "Back"],
+          ["Lower", "Gemini"],
+          ["Bottom", "Google Maps"],
+          { "group": "Right" },
+          ["Top", "WhatsApp Business"],
+          ["Upper", "Google Translate"],
+          ["Center", "Back"],
+          ["Lower", "Obsidian"],
+          ["Bottom", "Instagram"],
+          ["Sirius (circular menu)", "On · radius 130"],
+          ["Canopus (arc menu)", "On · radius 200 · section config"],
+          ["Centauri (recent apps)", "On"],
+          { "group": "Home swipes" },
+          ["Up", "All apps"],
+          ["Down", "Suite"],
+          ["Left", "Back"],
+          ["Right", "Forward"]
         ] },
-        { "id": "permissions", "label": "Permissions", "rows": [["Notifications", "Granted"], ["Location", "Not requested"], ["Contacts", "Not requested"], ["Nearby devices", "Not requested"]] },
+        { "id": "permissions", "label": "Permissions", "rows": [
+          ["Camera", "Granted"],
+          ["Microphone", "Granted"],
+          ["Notifications", "Granted"],
+          ["Location (fine)", "Ask"],
+          ["Location (coarse)", "Ask"],
+          ["Nearby devices", "Ask"],
+          ["Bluetooth Connect", "Granted"],
+          ["Contacts", "Ask"],
+          ["Audio", "Granted"],
+          ["Images", "Granted"],
+          ["Video", "Granted"],
+          ["SMS", "Ask"],
+          ["Phone", "Ask"],
+          { "group": "Roles" },
+          ["Default phone app", "Held"],
+          ["Spam filter (call screening)", "Held"]
+        ] },
         { "id": "about", "label": "About", "rows": [["Version", "1.0.0"], ["Build", "cloud-mobile · web"], ["Source", "ea_cloud-superapp"]] }
       ]
     }

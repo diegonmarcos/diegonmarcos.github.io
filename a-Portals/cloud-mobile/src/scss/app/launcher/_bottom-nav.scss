@@ -1,0 +1,39 @@
+@use '../../mixins' as *;
+
+// ==========================================================================
+// Bottom nav — items inside the .bottom-nav glass island (see _islands.scss)
+// ==========================================================================
+
+.bottom-nav__item {
+    flex: 1;
+    @include flex-center;
+    flex-direction: column;
+    gap: 2px;
+    padding: 8px 2px;
+    border-radius: 16px;
+    color: var(--text-secondary);
+    transition: color var(--transition-fast), background var(--transition-fast);
+}
+
+// white icon on the dark glass island
+.bottom-nav__item img {
+    width: 22px;
+    height: 22px;
+    opacity: .75;
+    filter: brightness(0) invert(1);
+}
+
+.bottom-nav__item span {
+    font-size: 10px;
+}
+
+.bottom-nav__item.is-active {
+    color: var(--cloud-on-primary-container);
+    background: var(--cloud-primary-container);
+}
+
+// sits on a LIGHT chip now — do not invert to white here, that would be invisible
+.bottom-nav__item.is-active img {
+    opacity: 1;
+    filter: none;
+}

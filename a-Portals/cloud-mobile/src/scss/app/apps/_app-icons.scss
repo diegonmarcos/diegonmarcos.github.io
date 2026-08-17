@@ -1,0 +1,52 @@
+@use '../../mixins' as *;
+
+// ==========================================================================
+// App icons — colored per-app badge, replaces the removed .tile__avatar.
+// Solid, more-saturated tones of the same 8 tile hue families (matched to
+// each --tile-*-bg's actual hue, not just its name — e.g. --tile-purple-bg
+// is Material "Deep Purple", so the badge below follows that family too),
+// so the Phone tab's app drawer reads as a real varied app grid instead of
+// the uniform outline icons used on the Cloud tab.
+// ==========================================================================
+
+.tile__app-icon {
+    width: 32px;
+    height: 32px;
+    border-radius: 10px;
+    @include flex-center;
+    font-weight: 700;
+    font-size: 13px;
+    color: #1a1a1a;
+}
+
+.tile__app-icon--blue {
+    background: #64b5f6;
+}
+
+.tile__app-icon--green {
+    background: #81c784;
+}
+
+.tile__app-icon--purple {
+    background: #9575cd;
+}
+
+.tile__app-icon--pink {
+    background: #f06292;
+}
+
+.tile__app-icon--orange {
+    background: #ffb74d;
+}
+
+.tile__app-icon--teal {
+    background: #4db6ac;
+}
+
+.tile__app-icon--amber {
+    background: #ffd54f;
+}
+
+.tile__app-icon--indigo {
+    background: #7986cb;
+}

@@ -64,9 +64,35 @@
     },
     "canopus": { "fixedSection": "config" },
     "centauri": {
-      "_doc": "No web equivalent of Android usage-stats — deterministic stand-in list, not truly random (keeps builds reproducible).",
+      "_doc": "No web equivalent of Android usage-stats — deterministic stand-in list, not truly random (keeps builds reproducible). Stays plain strings here (not {name,icon} objects): scripts/generate-pages.mjs's own avatarTileHtml() also reads this exact array (Recent Apps grid page) and expects a bare string name — see stars.ts's RECENT_APP_ICONS for where the icon lookup actually lives.",
       "recentApps": ["Mail", "Brave", "Mattermost", "Obsidian", "Calendar", "Tidal", "Vault", "Claude", "Settings"]
     }
+  },
+  "onehand": {
+    "_doc": "Sirius one-hand edge menus — two vertical grab-bar handles (left/right, 5 sectors each) that fan open a small arc menu on an inward swipe. See src/lib/onehand/edge-menu.ts.",
+    "handles": [
+      {
+        "edge": "right",
+        "sectors": {
+          "top": { "label": "WhatsApp Business" },
+          "top_middle": { "label": "Google Translate" },
+          "center": { "label": "Back", "action": "back" },
+          "down_middle": { "label": "Obsidian" },
+          "down": { "label": "Instagram" }
+        }
+      },
+      {
+        "edge": "left",
+        "sectors": {
+          "top": { "label": "Bitwarden" },
+          "top_middle": { "label": "Brave" },
+          "center": { "label": "Back", "action": "back" },
+          "down_middle": { "label": "Gemini" },
+          "down": { "label": "Google Maps" }
+        }
+      }
+    ],
+    "defaults": { "length_dp": 220, "thickness_dp": 32, "swipe_threshold_dp": 24 }
   },
   "longPress": {
     "_doc": "Bottom-nav long-press fan menus (real app: 380ms hold, PopupWindow anchored above the icon). Home uses a fixed 4-item menu; communication/infos/tools read from each's Apps|Admin mode toggle; suite reads its own Cloud|Phone|More set.",
@@ -95,9 +121,44 @@
     ]
   },
   "notificationCenter": {
-    "_doc": "NotificationStore — the app's own event log (crash reports, version-bump notices), not live OS notifications. Normally near-empty in real usage; shipped here with the same 'No notifications yet' placeholder copy as the real fragment.",
+    "_doc": "NotificationStore — the app's own event log (crash reports, version-bump notices), not live OS notifications. Normally near-empty in real usage; shipped here with the same 'No notifications yet' placeholder copy as the real fragment. groups is the Android-parity grouped mock feed (Cloud SA · Alerts / Cloud SA · Comms / Cloud / App) rendered when non-empty; the empty state above still ships as the fallback when groups is absent/empty.",
     "emptyTitle": "No notifications yet.",
-    "emptyBody": "Producers wired:\n• Updater — version-bump on launch\n• Crash — uncaught exceptions"
+    "emptyBody": "Producers wired:\n• Updater — version-bump on launch\n• Crash — uncaught exceptions",
+    "groups": [
+      { "title": "Cloud SA · Alerts", "items": [
+          { "title": "WG handshake ok · gcp-proxy" },
+          { "title": "Fleet check: 10/10 healthy" }
+        ] },
+      { "title": "Cloud SA · Comms", "items": [
+          { "title": "12 unread · Mail" },
+          { "title": "Mattermost mention · @diego in #ops" }
+        ] },
+      { "title": "Cloud", "items": [
+          { "title": "Constellation update available" }
+        ] },
+      { "title": "App", "items": [
+          { "title": "Update installed · 20260812" }
+        ] }
+    ]
+  },
+  "footer": {
+    "_doc": "Global site footer — Google-Play-style APK download badge + the 13-app Constellation fleet as small glass chips, rendered by scripts/generate-pages.mjs's footerHtml() on every generated page.",
+    "apk": { "label": "Cloud SuperApp", "sub": "Download APK · arm64", "url": "https://github.com/diegonmarcos/unix/releases/latest/download/Cloud-SuperApp.apk" },
+    "constellation": [
+      { "id": "cloud-mail", "label": "Mail", "url": "https://github.com/diegonmarcos/unix/releases/latest/download/cloud-comms-mail.apk" },
+      { "id": "cloud-chat", "label": "Chat", "url": "https://github.com/diegonmarcos/unix/releases/latest/download/cloud-comms-chat.apk" },
+      { "id": "cloud-matrix", "label": "Messenger", "url": "https://github.com/diegonmarcos/unix/releases/latest/download/cloud-comms-matrix.apk" },
+      { "id": "cloud-dialer", "label": "Dialer", "url": "https://github.com/diegonmarcos/unix/releases/latest/download/cloud-comms-dialer.apk" },
+      { "id": "cloud-ide", "label": "IDE", "url": "https://github.com/diegonmarcos/unix/releases/latest/download/Cloud-IDE-Hub.apk" },
+      { "id": "cloud-nav", "label": "Nav", "url": "https://github.com/diegonmarcos/unix/releases/latest/download/Cloud-Nav.apk" },
+      { "id": "cloud-calendar", "label": "Calendar", "url": "https://github.com/diegonmarcos/unix/releases/latest/download/Cloud-Calendar.apk" },
+      { "id": "cloud-news", "label": "News", "url": "https://github.com/diegonmarcos/unix/releases/latest/download/Cloud-News.apk" },
+      { "id": "cloud-keyboard", "label": "Keyboard", "url": "https://github.com/diegonmarcos/unix/releases/latest/download/Cloud-Keyboard.apk" },
+      { "id": "cloud-wallet", "label": "Wallet", "url": "https://github.com/diegonmarcos/unix/releases/latest/download/Cloud-Wallet.apk" },
+      { "id": "cloud-browser", "label": "Browser", "url": "https://github.com/diegonmarcos/unix/releases/latest/download/Cloud-Browser.apk" },
+      { "id": "cloud-vault", "label": "Vault", "url": "https://github.com/diegonmarcos/unix/releases/latest/download/Cloud-Vault.apk" },
+      { "id": "cloud-media-center", "label": "Media", "url": "https://github.com/diegonmarcos/unix/releases/latest/download/cloud-media-center.apk" }
+    ]
   },
   "updateOverlay": {
     "title": "Cloud SuperApp",

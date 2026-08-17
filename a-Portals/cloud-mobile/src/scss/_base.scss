@@ -79,3 +79,31 @@ a {
         box-shadow: 0 0 60px rgba(0, 0, 0, 0.6);
     }
 }
+
+// ── Reduced motion ───────────────────────────────────────────────────────
+// Neutralizes the animation-tokens additions (see _variables.scss's
+// --duration-*/--ease-*/--scale-press): the tile press bounce collapses to
+// a near-instant transition instead of scaling, and every slide-in/slide-
+// out/fade this design system added (drawer, overlay sheet, fan menu) drops
+// to a near-instant transition too, so the end state still lands but
+// without the animated motion.
+@media (prefers-reduced-motion: reduce) {
+    .tile,
+    .tile:active {
+        transition-duration: 0.01ms;
+    }
+
+    .drawer-scrim,
+    .drawer,
+    .drawer.is-open,
+    .overlay-sheet,
+    .overlay-sheet.is-open,
+    .overlay-sheet__panel,
+    .overlay-sheet.is-open .overlay-sheet__panel,
+    .fan-menu,
+    .fan-menu.is-open,
+    .fan-menu-scrim,
+    .fan-menu-scrim.is-open {
+        transition-duration: 0.01ms;
+    }
+}

@@ -18,23 +18,76 @@ const shell = readJson('shell.json');
 const core = readJson('sections-core.json');
 const content = readJson('sections-content.json');
 const mockData = readJson('mock-apps.json');
+const linktreeData = readJson('linktree.json');
 
-const { app, bottomNav, cube, stars, longPress, notificationCenter, updateOverlay, statusBar } = shell;
+const { app, bottomNav, cube, stars, longPress, notificationCenter, updateOverlay, statusBar, footer } = shell;
 const sections = { ...core.sections, ...content.sections, home: { label: 'Home', icon: 'home', color: 'blue' } };
 
-// Both suite/phone/quickmarks and suite/phone/all are DERIVED from mock-apps
-// (filtered by category + pinned flag), not hand-duplicated per view.
+// suite/phone/quickmarks is DERIVED from mock-apps (filtered by category +
+// pinned flag), not hand-duplicated per view. suite/phone/all no longer
+// groups by category — see computeSmartFolders/topicalFoldersBody below,
+// which group by the richer Smart Folder rules + phoneFolders instead.
 function phoneGroupsFromMockData(pinnedOnly) {
   const categories = [...new Set(mockData.apps.map((a) => a.category))];
   return categories.map((category) => {
     const apps = mockData.apps
       .filter((a) => a.category === category && (!pinnedOnly || a.pinned))
       .map((a) => ({ name: a.name }));
-    const folders = mockData.folders
-      .filter((f) => f.category === category)
-      .map((f) => ({ label: f.label, apps: f.apps.map((a) => ({ name: a.name })) }));
-    return { title: category, apps, folders };
+    return { title: category, apps };
   });
+}
+
+// ── Smart Folders (suite/phone/all) — RULE-DRIVEN from each app's simulated
+// Android metadata (package/installSource/first-install/last-used/usage),
+// never hand-listed membership. Mirrors a real launcher's auto-generated
+// "Recently installed" / "Recently used" / usage-ranked smart groups.
+const INSTALL_SOURCE_LABELS = { play: 'Google Play', fdroid: 'F-Droid', uptodown: 'Uptodown', direct: 'Direct' };
+function computeSmartFolders(apps) {
+  const topBy = (key) => [...apps].sort((a, b) => b[key] - a[key]).slice(0, 7);
+  const bySource = Object.keys(INSTALL_SOURCE_LABELS).map((src) => ({
+    id: `smart_src_${src}`,
+    label: INSTALL_SOURCE_LABELS[src],
+    apps: apps.filter((a) => a.installSource === src),
+  }));
+  return [
+    { id: 'smart_cloud', label: 'Cloud', apps: apps.filter((a) => a.package?.startsWith('com.diegonmarcos.')) },
+    ...bySource,
+    { id: 'smart_new', label: 'New Apps', apps: apps.filter((a) => a.firstInstallDaysAgo <= 14) },
+    { id: 'smart_recent48', label: 'Recent 48h', apps: apps.filter((a) => a.lastUsedHoursAgo <= 48) },
+    { id: 'smart_recent7d', label: 'Recent 7d', apps: apps.filter((a) => a.lastUsedHoursAgo <= 168) },
+    { id: 'smart_top_opens', label: 'Top 7 Open', apps: topBy('opens7d') },
+    { id: 'smart_top_battery', label: 'Top 7 Battery', apps: topBy('batteryPct7d') },
+    { id: 'smart_top_time', label: 'Top 7 Time', apps: topBy('usageMin7d') },
+  ];
+}
+function smartFoldersBody(smartFolders, rel) {
+  const blocks = smartFolders.map((f) => `
+            <details class="smart-folder">
+                <summary class="smart-folder__summary"><span class="smart-folder__label">${f.label}</span><span class="smart-folder__badge">${f.apps.length}</span></summary>
+                <div class="tile-grid tile-grid--dense" role="list">
+                    ${f.apps.map((a) => avatarTileHtml(a.name, rel, null)).join('\n                    ')}
+                </div>
+            </details>`).join('\n');
+  return `<section class="smart-folders">
+                <h2 class="tile-group__title">Smart Folders</h2>${blocks}
+            </section>`;
+}
+
+// ── topical folders (suite/phone/all) — every app carries a folderId, this
+// just groups by it in phoneFolders' declared order.
+function topicalFoldersBody(apps, phoneFolders, rel) {
+  const ordered = [...phoneFolders].sort((a, b) => a.order - b.order);
+  return ordered.map((f) => {
+    const members = apps.filter((a) => a.folderId === f.id);
+    if (!members.length) return '';
+    return `
+            <section class="tile-group">
+                <h2 class="tile-group__title">${f.label} <span class="smart-folder__badge">${members.length}</span></h2>
+                <div class="tile-grid tile-grid--dense" role="list">
+                    ${members.map((a) => avatarTileHtml(a.name, rel, null)).join('\n                    ')}
+                </div>
+            </section>`;
+  }).join('\n');
 }
 
 // ── target grammar → href (mirrors LauncherNavController's dispatch table) ─
@@ -182,25 +235,18 @@ function groupListBody(groups, rel, footer, footerHref) {
   return `${blocks}\n            ${footerHtml}`;
 }
 
-// groups come pre-filtered from phoneGroupsFromMockData(pinnedOnly).
-function appListBody(groups, rel, footer, isAllMode, footerHref) {
-  const blocks = groups.map((g) => {
-    const folderHtml = (g.folders || []).map((f) => `
-                <div class="app-folder">
-                    <h3 class="app-folder__title">${f.label}</h3>
-                    <div class="tile-grid tile-grid--dense" role="list">
-                        ${f.apps.map((a) => avatarTileHtml(a.name, rel, null)).join('\n                        ')}
-                    </div>
-                </div>`).join('');
-    return `
+// groups come pre-filtered from phoneGroupsFromMockData(pinnedOnly). Used
+// only by suite/phone/quickmarks now — suite/phone/all uses
+// smartFoldersBody + topicalFoldersBody instead (see above).
+function appListBody(groups, rel, footer, footerHref) {
+  const blocks = groups.map((g) => `
             <section class="tile-group">
                 <h2 class="tile-group__title">${g.title}</h2>
                 <div class="tile-grid tile-grid--dense" role="list">
                     ${g.apps.map((a) => avatarTileHtml(a.name, rel, null)).join('\n                    ')}
-                </div>${folderHtml}
-            </section>`;
-  }).join('\n');
-  const footerHtml = footer && !isAllMode && footerHref ? `<a class="footer-link" href="${footerHref}">${footer.label}</a>` : '';
+                </div>
+            </section>`).join('\n');
+  const footerHtml = footer && footerHref ? `<a class="footer-link" href="${footerHref}">${footer.label}</a>` : '';
   return `${blocks}\n            ${footerHtml}`;
 }
 
@@ -246,12 +292,45 @@ function skeletonBody() {
 // Real config pages carry actual rows (settings values) instead of generic
 // shimmer placeholders — it's a fully enumerable settings screen, not
 // backend-fed content, so there's no reason to fake-load it.
+//
+// A row is one of:
+//   [label, value]                — plain settings row
+//   [label, value, { active }]    — plain row, "active" marks the current
+//                                    choice (theme/profile pickers etc.)
+//   { group: "Title" }            — section header/divider, groups the
+//                                    rows that follow (still backward
+//                                    compatible with pages that only ever
+//                                    used flat [label, value] rows)
+//   { type: "qrcard", caption }   — the business-card QR block
+function qrCardHtml(block) {
+  return `
+                <div class="qrcard">
+                    <div class="qrcard__frame">
+                        <div class="qrcard__plate">
+                            <span class="qrcard__glyph">QR</span>
+                        </div>
+                    </div>
+                    ${block.caption ? `<p class="qrcard__caption">${block.caption}</p>` : ''}
+                </div>`;
+}
 function settingsListBody(rows) {
-  const items = rows.map(([label, value]) => `
-                <div class="settings-list__row">
+  const items = rows.map((row) => {
+    if (Array.isArray(row)) {
+      const [label, value, opts] = row;
+      const active = opts?.active;
+      return `
+                <div class="settings-list__row${active ? ' settings-list__row--active' : ''}">
                     <span class="settings-list__label">${label}</span>
-                    <span class="settings-list__value">${value}</span>
-                </div>`).join('');
+                    <span class="settings-list__value">${value}${active ? ' <span class="settings-list__active-badge" aria-hidden="true">✓</span>' : ''}</span>
+                </div>`;
+    }
+    if (row.group) {
+      return `
+                <div class="settings-list__group">${row.group}</div>`;
+    }
+    if (row.type === 'qrcard') return qrCardHtml(row);
+    return '';
+  }).join('');
   return `<div class="settings-list">${items}
             </div>`;
 }
@@ -372,6 +451,47 @@ function statusStripHtml() {
         </div>`;
 }
 
+// ── global footer — every generated page, very bottom of .content: a
+// Google-Play-style APK download badge + the Constellation fleet as small
+// glass icon chips. Data-driven from shell.json's "footer" key. Icon
+// mapping is a sensible reuse of the existing generic-functional icon set
+// (no bundled per-app trademarked icons, same reasoning as appIconHtml()
+// above for the Phone tab's app tiles).
+const FOOTER_ICON_MAP = {
+  'cloud-mail': 'mail',
+  'cloud-chat': 'chat',
+  'cloud-matrix': 'chat',
+  'cloud-dialer': 'phone',
+  'cloud-ide': 'code',
+  'cloud-nav': 'mesh',
+  'cloud-calendar': 'calendar',
+  'cloud-news': 'rss',
+  'cloud-keyboard': 'tools',
+  'cloud-wallet': 'wallet',
+  'cloud-browser': 'browser',
+  'cloud-vault': 'lock',
+  'cloud-media-center': 'music',
+};
+function footerHtml(rel) {
+  const { apk, constellation } = footer;
+  const chips = constellation.map((c) => `
+                    <a class="footer-chip" href="${c.url}" download>
+                        <span class="footer-chip__icon-wrap">${iconImg(FOOTER_ICON_MAP[c.id] ?? 'suite', rel, 'footer-chip__icon')}</span>
+                        <span class="footer-chip__label">${c.label}</span>
+                    </a>`).join('');
+  return `<footer class="site-footer">
+                <a class="footer-badge" href="${apk.url}" download>
+                    ${iconImg('play-badge', rel, 'footer-badge__icon')}
+                    <span class="footer-badge__text">
+                        <span class="footer-badge__label">${apk.label}</span>
+                        <span class="footer-badge__sub">${apk.sub}</span>
+                    </span>
+                </a>
+                <div class="footer-constellation">${chips}
+                </div>
+            </footer>`;
+}
+
 function renderShell({ title, sectionId, depth, bodyHtml, backHref }) {
   const rel = relPrefix(depth);
   const isHome = sectionId === 'home' ? ' is-home' : '';
@@ -400,6 +520,7 @@ function renderShell({ title, sectionId, depth, bodyHtml, backHref }) {
     <link rel="icon" type="image/svg+xml" href="${rel}public/favicon.svg">
     <link rel="manifest" href="${rel}manifest.webmanifest">
     <meta name="theme-color" content="#000000">
+    <script type="speculationrules">{"prerender":[{"where":{"and":[{"href_matches":"/*"}]},"eagerness":"moderate"}]}</script>
 <script>
   var _mtm = window._mtm = window._mtm || [];
   _mtm.push({'mtm.startTime': (new Date().getTime()), 'event': 'mtm.Start'});
@@ -443,6 +564,7 @@ function renderShell({ title, sectionId, depth, bodyHtml, backHref }) {
 
         <main class="content" id="content">
             ${bodyHtml}
+            ${footerHtml(rel)}
         </main>
 
         <nav class="bottom-nav" id="bottom-nav" aria-label="Primary">
@@ -483,6 +605,7 @@ function renderShell({ title, sectionId, depth, bodyHtml, backHref }) {
     <script src="${rel}data-sections-core.json.js"></script>
     <script src="${rel}data-sections-content.json.js"></script>
     <script src="${rel}data-mock-apps.json.js"></script>
+    <script src="${rel}data-linktree.json.js"></script>
     <script src="${rel}script.js"></script>
 </body>
 </html>
@@ -564,15 +687,16 @@ for (const id of ['communication', 'infos', 'tools']) {
 
   write(['suite', 'phone', 'quickmarks'], 'Suite · Phone', 'suite',
     cloudPhoneTabs('quickmarks', 'phone', rel3) + '\n            ' +
-    appListBody(phoneGroupsFromMockData(true), rel3, s.phone.footer, false, routeHref(['suite', 'phone', 'all'])), routeHref([]));
+    appListBody(phoneGroupsFromMockData(true), rel3, s.phone.footer, routeHref(['suite', 'phone', 'all'])), routeHref([]));
   write(['suite', 'phone', 'all'], 'Suite · Phone · All', 'suite',
     cloudPhoneTabs('all', 'phone', rel3) + '\n            ' +
-    appListBody(phoneGroupsFromMockData(false), rel3, null, true), routeHref(['suite']));
+    smartFoldersBody(computeSmartFolders(mockData.apps), rel3) + '\n            ' +
+    topicalFoldersBody(mockData.apps, mockData.phoneFolders, rel3), routeHref(['suite']));
 }
 
 // Content-only sections. Config carries real settings rows; everything else
 // still gets skeleton placeholders (no real backend to reflect either way).
-for (const id of ['mail', 'rss', 'calendar', 'drive', 'vault', 'chat', 'wg', 'solutions', 'apptabs', 'myfin', 'health', 'wallet', 'config']) {
+for (const id of ['mail', 'rss', 'calendar', 'drive', 'vault', 'chat', 'wg', 'solutions', 'apptabs', 'myfin', 'health', 'wallet', 'config', 'c3', 'browser']) {
   const s = sections[id];
   const rel1 = relPrefix(1);
   write([id], s.label, id, pageListBody(s.pages, id, rel1), routeHref([]));
@@ -585,10 +709,37 @@ for (const id of ['mail', 'rss', 'calendar', 'drive', 'vault', 'chat', 'wg', 'so
     const tabs = s.pages.length > 1 ? `${pageTabsHtml(s.pages, id, pid, rel2)}\n            ` : '';
     let inner;
     if (typeof p === 'object' && p.constellation) inner = constellationBody(p.constellation);
+    else if (id === 'browser' && pid === 'linktree') {
+      // Suite > Browser > Linktree — renders linktree.json's groups through
+      // the same groupListBody used for suite's own tileGroups (a list of
+      // titled tile groups), just fed from a separate data file.
+      inner = groupListBody(linktreeData.groups.map((g) => ({
+        title: g.label,
+        tiles: g.tiles.map((t) => ({ label: t.label, icon: t.icon, target: t.href })),
+      })), rel2, null, null);
+    } else if (typeof p === 'object' && (p.tiles || p.stack)) {
+      const parts = [];
+      if (p.tiles) parts.push(tileGridBody(p.tiles, rel2, () => s.color));
+      if (p.stack) parts.push(stackBody(p.stack, rel2));
+      if (p.items) parts.push(itemListBody(p.items));
+      inner = parts.join('\n            ');
+    }
     else if (typeof p === 'object' && p.rows) inner = settingsListBody(p.rows);
     else if (typeof p === 'object' && p.items) inner = itemListBody(p.items);
     else inner = skeletonBody();
     write([id, pid], `${s.label} · ${label}`, id, tabs + inner, routeHref([id]));
+  }
+}
+
+// Labs (tools) sub-pages — the stub tiles removed from sections-core.json's
+// tools.tiles now point at real item-list pages here. tools itself stays a
+// TabbedSectionFragment (Apps|Admin, see the aggregator loop above), so its
+// extra "pages" array (additive, ignored by tabbedSectionBody) is walked
+// separately rather than folded into the generic content-only loop above.
+{
+  const toolsSection = sections.tools;
+  for (const p of toolsSection.pages ?? []) {
+    write(['tools', p.id], `${toolsSection.label} · ${p.label}`, 'tools', itemListBody(p.items), routeHref(['tools']));
   }
 }
 

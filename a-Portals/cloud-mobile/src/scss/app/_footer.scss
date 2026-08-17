@@ -8,8 +8,8 @@
 // ==========================================================================
 
 .site-footer {
-    margin-top: 32px;
-    padding-top: 20px;
+    margin-top: auto; // pin to the bottom of .content: end of scroll on long pages, viewport floor on short ones
+    padding: 20px 0 12px;
     border-top: 1px solid var(--glass-border);
     display: flex;
     flex-direction: column;
@@ -27,7 +27,6 @@
     border-radius: var(--glass-pill-radius);
     background: var(--glass-pill-bg);
     border: var(--glass-pill-border);
-    text-decoration: none;
 }
 
 .footer-badge__icon {
@@ -65,7 +64,6 @@
     align-items: center;
     gap: 4px;
     width: 44px;
-    text-decoration: none;
 }
 
 .footer-chip__icon-wrap {

@@ -14,16 +14,48 @@
     margin-bottom: 20px;
 }
 
+// APK: bold ~16sp mixed-case lavender (not the uppercase/tracked-out
+// secondary-text label other headings use).
 .tile-group__title {
-    font-size: 13px;
-    text-transform: uppercase;
-    letter-spacing: .04em;
-    color: var(--text-secondary);
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--drawer-banner-text, #E9D8FD);
     margin: 0 4px 10px;
 }
 
+// auto-fill, not auto-fit — see the matching note on .tile-grid in
+// _tiles.scss; auto-fit stretched sparse groups (e.g. a 3-app smart folder)
+// into a handful of wide cards instead of small square tiles.
 .tile-grid--dense {
-    @include grid-auto-fit(72px, 6px);
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(72px, 1fr));
+    gap: 6px;
+}
+
+// Suite → Cloud tile groups (GroupedTilesFragment on the real app): each
+// group is a single-row HorizontalScrollView of fixed-size cells that never
+// wraps, unlike the wrapping square grid every other tile-grid uses above.
+.tile-grid--strip {
+    display: flex;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    scroll-snap-type: x proximity;
+    gap: 6px;
+    scrollbar-width: none;
+
+    &::-webkit-scrollbar {
+        display: none;
+    }
+
+    // APK cells are 60dp wide, wrap-content height — not the square
+    // aspect-ratio tile every other grid uses (.tile in _tiles.scss).
+    .tile {
+        width: 60px;
+        aspect-ratio: auto;
+        height: auto;
+        flex-shrink: 0;
+        scroll-snap-align: start;
+    }
 }
 
 // App tiles sit on the default tile bg, not a color modifier — give them the
@@ -58,17 +90,59 @@
     margin: 0 0 8px;
 }
 
+// "More" row at the end of a tile group (generate-pages.mjs's footerHtml —
+// always the "more" icon) — APK: a bare centered icon + caption, no
+// pill/background/border. The generator ships a plain <img src=…more.svg>,
+// which can't be recolored via CSS color/currentColor (same constraint
+// _tiles.scss's .tile__icon and _app-icons.scss's .tile__app-icon__glyph
+// document); unlike fan-menu.ts's icons — which only ever need white, via
+// filter: brightness(0) invert(1) — this needs an arbitrary lavender, so it
+// uses .tile__app-icon__glyph's other convention instead: mask-image +
+// background-color, pointed at the icon's own root-anchored path (same
+// absolute-path convention fan-menu.ts's iconSrc uses, since this single
+// stylesheet is shared unmodified across every generated page regardless
+// of nesting depth).
+.tile-group__footer,
 .footer-link {
-    display: block;
-    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
     margin-top: 16px;
-    padding: 12px;
-    border-radius: 14px;
-    background-color: var(--glass-bg);
-    background-image: var(--glass-liquid-gradient);
-    border: var(--glass-liquid-border);
-    color: var(--cloud-primary);
+    padding: 8px 0;
+    background: none;
+    border: none;
     text-decoration: none;
-    font-size: 14px;
+    color: var(--drawer-banner-text);
+    font-size: 11px;
     font-weight: 600;
+    text-align: center;
+}
+
+.tile-group__footer-icon {
+    width: 32px;
+    height: 32px;
+}
+
+.tile-group__footer-icon,
+.footer-link::before {
+    background-color: var(--drawer-banner-text);
+    -webkit-mask-image: url('/cloud-mobile/public/icons/more.svg');
+    mask-image: url('/cloud-mobile/public/icons/more.svg');
+    -webkit-mask-size: contain;
+    mask-size: contain;
+    -webkit-mask-repeat: no-repeat;
+    mask-repeat: no-repeat;
+    -webkit-mask-position: center;
+    mask-position: center;
+}
+
+// Transitional — .footer-link (old text-only pill) shares the layout/color
+// rules above; it just has no markup to hang a real <img> off of, so its
+// icon is a decorative ::before using the same mask-tint rule above.
+.footer-link::before {
+    content: '';
+    display: block;
+    width: 32px;
+    height: 32px;
 }

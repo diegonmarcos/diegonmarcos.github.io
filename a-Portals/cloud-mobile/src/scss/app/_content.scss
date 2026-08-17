@@ -13,6 +13,11 @@
     padding: 118px 12px 96px; // clears .toolbar-island (top:68px + height:56px, see _islands.scss)
     position: relative;
     z-index: 1;
+    // Flex column so .site-footer (last child, see generate-pages.mjs's
+    // renderShell) can margin-top:auto itself to the bottom of the viewport
+    // on short pages, while still flowing after long content on tall ones.
+    display: flex;
+    flex-direction: column;
 }
 
 // Home Apps page — real app: a search bar sits above the section tile grid
@@ -23,14 +28,14 @@
     padding: 14px 16px;
     margin-bottom: 12px;
     border-radius: 999px;
-    background: var(--glass-bg);
-    border: 1px solid var(--glass-border);
+    background: var(--glass-liquid-gradient);
+    border: var(--glass-liquid-border);
     color: var(--text-secondary);
     font-size: 14px;
 }
 
 .page-tabs {
-    @include flex-row(flex-start, center, 8px);
+    @include flex-row(center, center, 8px);
     overflow-x: auto;
     padding-bottom: 8px;
     margin-bottom: 12px;
@@ -38,19 +43,20 @@
 
 .page-tabs__item {
     padding: 8px 14px;
-    border-radius: 999px;
-    background: var(--glass-bg);
-    border: 1px solid var(--glass-border);
+    border-radius: var(--glass-pill-radius);
+    background: var(--glass-liquid-gradient);
+    border: var(--glass-pill-border);
     color: var(--text-secondary);
     font-size: 13px;
     white-space: nowrap;
     flex-shrink: 0;
-    text-decoration: none;
 }
 
+// --island-accent (#b794f4) tinted fill, matching the violet hairline the
+// inactive pills already use for their border.
 .page-tabs__item.is-active {
-    background: var(--cloud-primary-container);
-    color: var(--cloud-on-primary-container);
+    background: rgba(183, 148, 244, 0.33);
+    color: #fff;
     border-color: transparent;
 }
 

@@ -44,6 +44,31 @@ function buildItemButton(item: LongPressItem, index: number): HTMLButtonElement 
   return button;
 }
 
+// HomeFanMenu.kt lays items out as a triangle, not a flat row: one item
+// centered above a row of up to 3 items below. Appends that shape straight
+// onto rootEl — a lone bottom row for <=3 items (no top item to balance),
+// top+bottom split for 4.
+function appendFanMenuLayout(rootEl: HTMLElement, items: LongPressItem[]): void {
+  if (items.length <= 3) {
+    const rowEl = document.createElement('div');
+    rowEl.className = 'fan-menu__row fan-menu__row--bottom';
+    items.forEach((item, index) => rowEl.appendChild(buildItemButton(item, index)));
+    rootEl.appendChild(rowEl);
+    return;
+  }
+
+  const topRowEl = document.createElement('div');
+  topRowEl.className = 'fan-menu__row fan-menu__row--top';
+  topRowEl.appendChild(buildItemButton(items[0], 0));
+
+  const bottomRowEl = document.createElement('div');
+  bottomRowEl.className = 'fan-menu__row fan-menu__row--bottom';
+  items.slice(1).forEach((item, index) => bottomRowEl.appendChild(buildItemButton(item, index + 1)));
+
+  rootEl.appendChild(topRowEl);
+  rootEl.appendChild(bottomRowEl);
+}
+
 export function initFanMenu(data: PortalData): void {
   const bottomNavEl = document.getElementById('bottom-nav');
   const fanMenuRoot = document.getElementById('fan-menu');
@@ -104,7 +129,7 @@ export function initFanMenu(data: PortalData): void {
     currentItems = items;
 
     fanMenuEl.innerHTML = '';
-    items.forEach((item, index) => fanMenuEl.appendChild(buildItemButton(item, index)));
+    appendFanMenuLayout(fanMenuEl, items);
 
     // Centered above the icon: fixed left at the icon's horizontal center,
     // shifted back by half its own width via transform.

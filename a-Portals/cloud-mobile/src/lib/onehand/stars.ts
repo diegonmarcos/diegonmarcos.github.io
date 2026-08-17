@@ -59,6 +59,14 @@ const SIRIUS_SUBLEVEL_STEP_PX = 120;
 const ARC_RADIUS_PX = 200;
 const DEAD_ZONE_PX = 28;
 const MOVE_THRESHOLD_PX = 6;
+// Dual-mode gesture split (matches the real Android app): a quick tap that
+// releases within TAP_MAX_MS of pointerdown AND never travels past
+// TAP_MAX_MOVE_PX from the press point opens the menu PERSISTENTLY (stays
+// on screen, hover-to-highlight, click-to-activate) instead of evaluating a
+// drag-release commit. Anything slower/farther is a real press-drag and
+// keeps the existing behavior untouched.
+const TAP_MAX_MS = 300;
+const TAP_MAX_MOVE_PX = 10;
 const FLASH_MS = 220;
 const TWO_PI = Math.PI * 2;
 // Follow-finger arrow (Sirius only) — arrowhead geometry.
@@ -142,6 +150,14 @@ function iconSrc(icon: string): string {
 }
 
 export function initStars(data: PortalData): void {
+  // Stars are decorative "home screen" widgets only — the real Android app
+  // never shows them outside Home. The build-time HTML currently bakes
+  // #star-sirius/-canopus/-centauri and #radial-menu into every generated
+  // page (see generate-pages.mjs's renderShell()), so detection has to
+  // happen here at runtime. Same marker home-swipes.ts already uses: the
+  // decorative .home-cube element, server-rendered only into home.html.
+  if (!document.querySelector('.home-cube')) return;
+
   const menuRoot = document.getElementById('radial-menu');
   if (!menuRoot) return;
   // Rebind to a non-nullable const: narrowing from the guard above doesn't
@@ -171,6 +187,13 @@ export function initStars(data: PortalData): void {
   // Shared overlay state — only one menu (and one #radial-menu) exists at a
   // time, so this lives at initStars scope and every star funnels into it.
   let isOpen = false;
+  // Persistent mode: entered by a quick tap (see TAP_MAX_MS/TAP_MAX_MOVE_PX
+  // above) instead of a press-drag. The menu stays open after release;
+  // hovering highlights a node (reusing the same .is-highlighted class the
+  // drag path already toggles via setHighlight()) and a click/tap on a node
+  // activates it through the same commitIndex()/goBack() paths the
+  // drag-release commit already uses.
+  let persistent = false;
   let originX = 0;
   let originY = 0;
   let currentItems: RadialItem[] = [];
@@ -315,8 +338,13 @@ export function initStars(data: PortalData): void {
     renderItems(siriusItems(level), siriusStack.length - 1, 'sirius');
   }
 
+  function enterPersistentMode(): void {
+    persistent = true;
+  }
+
   function closeMenu(): void {
     isOpen = false;
+    persistent = false;
     siriusStack = [];
     currentItems = [];
     currentAngles = [];
@@ -414,11 +442,17 @@ export function initStars(data: PortalData): void {
   function attachStar(starEl: HTMLElement, kind: StarKind): void {
     let pointerId: number | null = null;
     let moved = false;
+    let downTime = 0;
+    let downX = 0;
+    let downY = 0;
 
     starEl.addEventListener('pointerdown', (e) => {
       e.preventDefault();
       pointerId = e.pointerId;
       moved = false;
+      downTime = Date.now();
+      downX = e.clientX;
+      downY = e.clientY;
       starEl.setPointerCapture(e.pointerId);
       openFor(kind, starEl);
     });
@@ -435,10 +469,21 @@ export function initStars(data: PortalData): void {
       if (starEl.hasPointerCapture(pointerId)) starEl.releasePointerCapture(pointerId);
       pointerId = null;
       if (!isOpen) return;
-      // A plain tap (press+release with no drag) only opens the menu — it
-      // leaves it open for a discrete second tap on a node (see the click
-      // delegation below), rather than immediately evaluating a commit.
-      if (!moved) return;
+      // Dual-mode split: a quick tap (fast release, never traveled past
+      // TAP_MAX_MOVE_PX) OR a press that never crossed the drag
+      // move-threshold at all (moved stays false, the same signal the old
+      // single-mode code checked) both mean "this was not a press-drag" —
+      // open the menu PERSISTENTLY instead of evaluating a drag-release
+      // commit. Node clicks/hover are handled by the persistent-mode
+      // listeners below (menuEl 'pointermove' for hover, existing menuEl
+      // 'click' delegation for activation).
+      const elapsedMs = Date.now() - downTime;
+      const totalMovePx = Math.hypot(e.clientX - downX, e.clientY - downY);
+      const wasQuickTapOrNoDrag = !moved || (elapsedMs <= TAP_MAX_MS && totalMovePx <= TAP_MAX_MOVE_PX);
+      if (wasQuickTapOrNoDrag) {
+        enterPersistentMode();
+        return;
+      }
       if (Math.hypot(e.clientX - originX, e.clientY - originY) < DEAD_ZONE_PX) {
         // Pulling back into the dead zone pops one level of the circular
         // drill-down (goBack() itself falls back to a full close at the
@@ -457,6 +502,21 @@ export function initStars(data: PortalData): void {
   }
 
   starEls.forEach(({ el, kind }) => attachStar(el, kind));
+
+  // Persistent-mode hover highlight — same setHighlight()/.is-highlighted
+  // path the press-drag gesture already drives via updateHighlightFromPointer(),
+  // just triggered by plain pointer movement over a node instead of an
+  // active drag. No-op while a press-drag is in progress (that path already
+  // owns highlighting via its own pointermove listener on the star).
+  menuEl.addEventListener('pointermove', (e) => {
+    if (!isOpen || !persistent) return;
+    const target = e.target;
+    if (!(target instanceof HTMLElement)) return;
+    const nodeEl = target.closest<HTMLElement>('.radial-menu__node');
+    if (!nodeEl) return;
+    const index = Number(nodeEl.dataset.index);
+    if (!Number.isNaN(index)) setHighlight(index);
+  });
 
   menuEl.addEventListener('click', (e) => {
     if (!isOpen) return;

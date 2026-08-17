@@ -11,38 +11,40 @@
     pointer-events: none;
     transition: opacity var(--transition-medium);
     background-image:
-        radial-gradient(1px 1px at 10% 20%, #fff, transparent),
-        radial-gradient(1px 1px at 80% 15%, #fff, transparent),
-        radial-gradient(1px 1px at 40% 70%, #fff, transparent),
-        radial-gradient(1px 1px at 65% 85%, #fff, transparent),
-        radial-gradient(1px 1px at 90% 60%, #fff, transparent),
-        radial-gradient(1px 1px at 25% 45%, #fff, transparent),
         radial-gradient(120px 120px at 15% 85%, rgba(124, 58, 237, 0.18), transparent),
         radial-gradient(140px 140px at 90% 10%, rgba(183, 148, 244, 0.15), transparent);
     background-repeat: no-repeat;
     opacity: 0.6;
 }
 
+// Twinkling stars + comets, rendered by app/ui/galaxy-backdrop.ts onto a
+// canvas it injects as the first child of .galaxy-backdrop, above the
+// nebula blobs (background-image, above) and below everything else.
+.galaxy-backdrop__canvas {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+}
+
 .star {
     position: absolute;
     left: 50%;
     transform: translateX(-50%);
-    color: var(--island-accent);
-    text-shadow: 0 0 8px var(--island-accent), 0 0 16px rgba(183, 148, 244, 0.6);
+    color: #f2f7ff;
+    text-shadow: 0 0 12px #9cc2ff;
     font-size: 16px;
     z-index: 1;
     animation: star-pulse 2.6s ease-in-out infinite;
 }
 
-// Golden glow + twinkle (scale 1→1.05, opacity 0.7→1, 1800ms alternate) —
-// Sirius is the biggest/brightest star in the constellation, so it gets its
-// own glow color and pulse timing instead of the shared star-pulse below.
+// Sirius — same bluish-white glow as every star, own twinkle timing
+// (scale 1→1.05, opacity 0.7→1, 1800ms alternate).
 .star--sirius {
-    top: 40%;
-    font-size: 24px;
+    top: 50%;
+    font-size: 13px;
     cursor: pointer;
     pointer-events: auto;
-    text-shadow: 0 0 18px rgba(255, 220, 80, 0.78);
     animation: star-twinkle 1800ms ease-in-out infinite alternate;
 }
 
@@ -56,6 +58,8 @@
 // island padding + 8px item padding + 22px icon + 2px gap + ~12px label,
 // top+bottom, + 2px border), so its top edge is bottom:78px — 12px above
 // that is bottom:90px.
+//
+// Canopus is the largest star in the constellation (matches Home3DFragment).
 .star--canopus {
     bottom: 90px;
     font-size: 20px;
@@ -64,26 +68,15 @@
     animation-delay: 0.8s;
 }
 
-// Exactly midway between Sirius (top: 40%) and Canopus (bottom: 90px, i.e.
+// Exactly midway between Sirius (top: 50%) and Canopus (bottom: 90px, i.e.
 // top: calc(100% - 90px)) — averaging a %-based and px-based anchor needs
-// calc(): (40% + (100% - 90px)) / 2 = 70% - 45px.
+// calc(): (50% + (100% - 90px)) / 2 = 75% - 45px.
 .star--centauri {
-    top: calc(70% - 45px);
-    font-size: 22px;
+    top: calc(75% - 45px);
+    font-size: 17px;
     cursor: pointer;
     pointer-events: auto;
     animation-delay: 1.5s;
-}
-
-// Canopus swaps its "✦" text glyph for a real settings icon (source SVGs
-// are black) — same brightness(0) invert(1) white recolor already used for
-// every other icon in the shell (bottom-nav, drawer), plus a drop-shadow
-// glow standing in for the text-only glyphs' text-shadow, which doesn't
-// apply to <img>.
-.star__icon {
-    width: 20px;
-    height: 20px;
-    filter: brightness(0) invert(1) drop-shadow(0 0 6px var(--island-accent));
 }
 
 @keyframes star-pulse {

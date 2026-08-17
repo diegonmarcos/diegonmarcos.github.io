@@ -1,52 +1,76 @@
 @use '../../mixins' as *;
 
 // ==========================================================================
-// App icons — colored per-app badge, replaces the removed .tile__avatar.
-// Solid, more-saturated tones of the same 8 tile hue families (matched to
-// each --tile-*-bg's actual hue, not just its name — e.g. --tile-purple-bg
-// is Material "Deep Purple", so the badge below follows that family too),
-// so the Phone tab's app drawer reads as a real varied app grid instead of
-// the uniform outline icons used on the Cloud tab.
+// App icons — Android-adaptive-icon-style squircle badge, replaces the
+// removed .tile__avatar. Background hue is hashed deterministically per app
+// name (see hash()/TILE_COLORS in generate-pages.mjs); the badge holds
+// either a 1-2 letter monogram or — for the ~26 apps that are our own real
+// cloud services and already have a matching icon in the shared set (see
+// .tile__app-icon__glyph below) — that icon recolored white, so the Phone
+// tab's app drawer reads as a real varied app grid instead of a wall of
+// repeated generic glyphs.
 // ==========================================================================
 
 .tile__app-icon {
-    width: 32px;
-    height: 32px;
-    border-radius: 10px;
+    width: 48px;
+    height: 48px;
+    // squircle approximation, not a perfect circle/rounded-square.
+    border-radius: 38%;
     @include flex-center;
+    flex-shrink: 0;
     font-weight: 700;
-    font-size: 13px;
-    color: #1a1a1a;
+    font-size: 18px;
+    color: #fff;
+}
+
+// Real icon exception (mock-apps.json `real: true`) — the shared icon set's
+// SVGs use stroke="currentColor", which only applies to inline <svg>, not
+// an <img src="…svg">; generate-pages.mjs renders them via <img> (see
+// iconImg()), so recoloring white here goes through a CSS mask instead of
+// color/currentColor (same constraint documented on .tile__icon in
+// _tiles.scss).
+.tile__app-icon__glyph {
+    width: 26px;
+    height: 26px;
+    background-color: #fff;
+    -webkit-mask-image: var(--icon-url);
+    mask-image: var(--icon-url);
+    -webkit-mask-size: contain;
+    mask-size: contain;
+    -webkit-mask-repeat: no-repeat;
+    mask-repeat: no-repeat;
+    -webkit-mask-position: center;
+    mask-position: center;
 }
 
 .tile__app-icon--blue {
-    background: #64b5f6;
+    background: #1565C0;
 }
 
 .tile__app-icon--green {
-    background: #81c784;
+    background: #2E7D32;
 }
 
 .tile__app-icon--purple {
-    background: #9575cd;
+    background: #6A1B9A;
 }
 
 .tile__app-icon--pink {
-    background: #f06292;
+    background: #C2185B;
 }
 
 .tile__app-icon--orange {
-    background: #ffb74d;
+    background: #EF6C00;
 }
 
 .tile__app-icon--teal {
-    background: #4db6ac;
+    background: #00695C;
 }
 
 .tile__app-icon--amber {
-    background: #ffd54f;
+    background: #B28704;
 }
 
 .tile__app-icon--indigo {
-    background: #7986cb;
+    background: #283593;
 }

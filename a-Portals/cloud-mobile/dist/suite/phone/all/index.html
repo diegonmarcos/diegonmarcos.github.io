@@ -22,7 +22,7 @@
     <div class="shell">
         <div class="status-strip">
             <div class="status-strip__row">
-                <div class="status-strip__cluster status-strip__cluster--left"><span class="status-strip__chip is-active">5G</span><span class="status-strip__chip is-active">WiFi</span><span class="status-strip__chip is-active">WG</span><span class="status-strip__chip">KDE</span><span class="status-strip__chip is-active">BT</span></div>
+                <div class="status-strip__cluster status-strip__cluster--left"><span class="status-strip__chip is-active">5G</span><span class="status-strip__chip is-active">WiFi</span><span class="status-strip__chip is-active">WG</span><span class="status-strip__chip">KDE</span><span class="status-strip__chip is-active">BT</span><span class="status-strip__chip">USB</span></div>
                 <div class="status-strip__camera" aria-hidden="true"></div>
                 <div class="status-strip__cluster status-strip__cluster--right"><span class="status-strip__chip">RAM 62%</span><span class="status-strip__chip">STO 48%</span><span class="status-strip__chip">CPU 17%</span><span class="status-strip__chip">BAT 84%</span></div>
             </div>
@@ -32,7 +32,7 @@
         
 
         <button class="star star--sirius" id="star-sirius" type="button" aria-label="Open menu">✦</button>
-        <button class="star star--canopus" id="star-canopus" type="button" aria-label="Quick configs"><img class="star__icon" src="../../../public/icons/settings.svg" alt=""></button>
+        <button class="star star--canopus" id="star-canopus" type="button" aria-label="Quick configs">✦</button>
         <button class="star star--centauri" id="star-centauri" type="button" aria-label="Recent apps">✦</button>
 
         <button class="icon-btn icon-btn--hamburger" id="hamburger-btn" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="drawer">
@@ -61,365 +61,25 @@
                 <a class="page-tabs__item" href="/cloud-mobile/suite/cloud/all/">Cloud</a>
                 <a class="page-tabs__item is-active" href="/cloud-mobile/suite/phone/all/">Phone</a>
             </div>
-            <section class="smart-folders">
-                <h2 class="tile-group__title">Smart Folders</h2>
-            <details class="smart-folder">
-                <summary class="smart-folder__summary"><span class="smart-folder__label">Cloud</span><span class="smart-folder__badge">6</span></summary>
-                <div class="tile-grid tile-grid--dense" role="list">
-                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--amber">C</span><span class="tile__label">Claude</span></div>
-                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--green">C</span><span class="tile__label">Cloud SuperApp</span></div>
-                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--orange">G</span><span class="tile__label">Grafana</span></div>
-                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--purple">P</span><span class="tile__label">Portainer</span></div>
-                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--amber">U</span><span class="tile__label">Uptime Kuma</span></div>
-                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--blue">V</span><span class="tile__label">VS Code</span></div>
-                </div>
-            </details>
-
-            <details class="smart-folder">
-                <summary class="smart-folder__summary"><span class="smart-folder__label">Google Play</span><span class="smart-folder__badge">78</span></summary>
-                <div class="tile-grid tile-grid--dense" role="list">
-                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--teal">G</span><span class="tile__label">Gemini</span></div>
-                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--purple">P</span><span class="tile__label">Perplexity</span></div>
-                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--pink">C</span><span class="tile__label">ChatGPT</span></div>
-                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--orange">C</span><span class="tile__label">Copilot</span></div>
-                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--amber">P</span><span class="tile__label">Poe</span></div>
-                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--teal">D</span><span class="tile__label">Dialer</span></div>
-                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--amber">P</span><span class="tile__label">Phone</span></div>
-                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--blue">S</span><span class="tile__label">Slack</span></div>
-                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--orange">D</span><span class="tile__label">Discord</span></div>
-                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--blue">Z</span><span class="tile__label">Zulip</span></div>
-                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--purple">G</span><span class="tile__label">Gallery</span></div>
-                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--amber">C</span><span class="tile__label">Calendar</span></div>
-                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--pink">C</span><span class="tile__label">Contacts</span></div>
-                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--purple">T</span><span class="tile__label">Tidal</span></div>
-                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--purple">S</span><span class="tile__label">Spotify</span></div>
-                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--teal">N</span><span class="tile__label">Notion</span></div>
-                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--orange">T</span><span class="tile__label">Todoist</span></div>
-                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--orange">1</span><span class="tile__label">1Password</span></div>
-                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--blue">B</span><span class="tile__label">Brave</span></div>
-                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--pink">N</span><span class="tile__label">News</span></div>
-                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--indigo">M</span><span class="tile__label">Maps</span></div>
-                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--green">W</span><span class="tile__label">Wallet</span></div>
-                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--amber">T</span><span class="tile__label">Translate</span></div>
-                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--amber">C</span><span class="tile__label">Clock</span></div>
-                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--purple">C</span><span class="tile__label">Calculator</span></div>
-                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--green">F</span><span class="tile__label">Firefox</span></div>
-                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--purple">U</span><span class="tile__label">Uber</span></div>
-                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--orange">W</span><span class="tile__label">Weather</span></div>
-                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--teal">C</span><span class="tile__label">Camera</span></div>
-                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--teal">P</span><span class="tile__label">Play Store</span></div>
-                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--pink">S</span><span class="tile__label">Settings</span></div>
-                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--pink">T</span><span class="tile__label">Termius</span></div>
-                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--purple">T</span><span class="tile__label">Tasker</span></div>
-                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--orange">N</span><span class="tile__label">Nova Launcher</span></div>
-                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--green">F</span><span class="tile__label">Files by Google</span></div>
-                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--pink">M</span><span class="tile__label">My Files</span></div>
-                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--purple">G</span><span class="tile__label">Google Docs</span></div>
-                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--amber">S</span><span class="tile__label">Samsung Email</span></div>
-                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--amber">W</span><span class="tile__label">WhatsApp Business</span></div>
-                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--amber">G</span><span class="tile__label">Gmail</span></div>
-                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--green">T</span><span class="tile__label">Telegram</span></div>
-                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--purple">I</span><span class="tile__label">Instagram</span></div>
-                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--amber">L</span><span class="tile__label">LinkedIn</span></div>
-                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--purple">W</span><span class="tile__label">WhatsApp</span></div>
-                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--amber">S</span><span class="tile__label">Skype</span></div>
-                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--amber">F</span><span class="tile__label">Facebook</span></div>
-                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--pink">M</span><span class="tile__label">Messenger</span></div>
-                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--amber">R</span><span class="tile__label">Reddit</span></div>
-                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--purple">S</span><span class="tile__label">Snapchat</span></div>
-                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--blue">X</span><span class="tile__label">X</span></div>
-                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--purple">P</span><span class="tile__label">Pinterest</span></div>
-                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--pink">Y</span><span class="tile__label">YouTube</span></div>
-                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--blue">Y</span><span class="tile__label">YouTube Music</span></div>
-                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--purple">N</span><span class="tile__label">Netflix</span></div>
-                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--blue">G</span><span class="tile__label">Google Photos</span></div>
-                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--pink">S</span><span class="tile__label">Snapseed</span></div>
-                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--teal">W</span><span class="tile__label">Waze</span></div>
-                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--orange">B</span><span class="tile__label">Booking.com</span></div>
-                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--orange">A</span><span class="tile__label">Airbnb</span></div>
-                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--orange">C</span><span class="tile__label">Citymapper</span></div>
-                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--amber">C</span><span class="tile__label">Chase Bank</span></div>
-                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--green">B</span><span class="tile__label">Bank of America</span></div>
-                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--indigo">R</span><span class="tile__label">Revolut</span></div>
-                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--pink">P</span><span class="tile__label">PayPal</span></div>
-                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--orange">A</span><span class="tile__label">Amazon Shopping</span></div>
-                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--teal">E</span><span class="tile__label">eBay</span></div>
-                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--blue">B</span><span class="tile__label">BBC News</span></div>
-                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--purple">G</span><span class="tile__label">Google Fit</span></div>
-                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--pink">S</span><span class="tile__label">Strava</span></div>
-                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--amber">H</span><span class="tile__label">Headspace</span></div>
-                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--pink">G</span><span class="tile__label">Google Drive</span></div>
-                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--pink">G</span><span class="tile__label">Google Sheets</span></div>
-                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--blue">T</span><span class="tile__label">Trello</span></div>
-                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--amber">K</span><span class="tile__label">Keep Notes</span></div>
-                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--pink">D</span><span class="tile__label">Duolingo</span></div>
-                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--orange">G</span><span class="tile__label">Google Authenticator</span></div>
-                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--amber">S</span><span class="tile__label">Solitaire</span></div>
-                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--pink">W</span><span class="tile__label">Wordle</span></div>
-                </div>
-            </details>
-
-            <details class="smart-folder">
-                <summary class="smart-folder__summary"><span class="smart-folder__label">F-Droid</span><span class="smart-folder__badge">23</span></summary>
-                <div class="tile-grid tile-grid--dense" role="list">
-                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--indigo">T</span><span class="tile__label">Termux</span></div>
-                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--blue">F</span><span class="tile__label">FairEmail</span></div>
-                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--blue">K</span><span class="tile__label">K-9 Mail</span></div>
-                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--blue">S</span><span class="tile__label">Signal</span></div>
-                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--pink">O</span><span class="tile__label">Obsidian</span></div>
-                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--purple">B</span><span class="tile__label">Bitwarden</span></div>
-                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--teal">H</span><span class="tile__label">Home Assistant</span></div>
-                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--teal">F</span><span class="tile__label">F-Droid</span></div>
-                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--green">G</span><span class="tile__label">Git Sync</span></div>
-                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--amber">A</span><span class="tile__label">Acode</span></div>
-                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--indigo">T</span><span class="tile__label">Turbo Editor</span></div>
-                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--orange">E</span><span class="tile__label">Element</span></div>
-                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--indigo">P</span><span class="tile__label">Plex</span></div>
-                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--teal">V</span><span class="tile__label">VLC</span></div>
-                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--pink">O</span><span class="tile__label">Open Camera</span></div>
-                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--amber">O</span><span class="tile__label">OsmAnd</span></div>
-                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--pink">F</span><span class="tile__label">Feedly</span></div>
-                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--teal">H</span><span class="tile__label">Hacker News</span></div>
-                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--indigo">T</span><span class="tile__label">Termux:API</span></div>
-                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--pink">S</span><span class="tile__label">Syncthing</span></div>
-                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--teal">I</span><span class="tile__label">IceRaven</span></div>
-                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--blue">A</span><span class="tile__label">Aegis Authenticator</span></div>
-                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--blue">W</span><span class="tile__label">WireGuard</span></div>
-                </div>
-            </details>
-
-            <details class="smart-folder">
-                <summary class="smart-folder__summary"><span class="smart-folder__label">Uptodown</span><span class="smart-folder__badge">6</span></summary>
-                <div class="tile-grid tile-grid--dense" role="list">
-                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--green">X</span><span class="tile__label">X-plore</span></div>
-                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--orange">V</span><span class="tile__label">Viber</span></div>
-                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--purple">T</span><span class="tile__label">TikTok</span></div>
-                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--amber">S</span><span class="tile__label">SoundCloud</span></div>
-                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--teal">E</span><span class="tile__label">Etsy</span></div>
-                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--pink">C</span><span class="tile__label">Chess.com</span></div>
-                </div>
-            </details>
-
-            <details class="smart-folder">
-                <summary class="smart-folder__summary"><span class="smart-folder__label">Direct</span><span class="smart-folder__badge">8</span></summary>
-                <div class="tile-grid tile-grid--dense" role="list">
-                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--amber">C</span><span class="tile__label">Claude</span></div>
-                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--orange">M</span><span class="tile__label">Mattermost</span></div>
-                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--pink">B</span><span class="tile__label">Beeper</span></div>
-                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--green">C</span><span class="tile__label">Cloud SuperApp</span></div>
-                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--orange">G</span><span class="tile__label">Grafana</span></div>
-                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--purple">P</span><span class="tile__label">Portainer</span></div>
-                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--amber">U</span><span class="tile__label">Uptime Kuma</span></div>
-                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--blue">V</span><span class="tile__label">VS Code</span></div>
-                </div>
-            </details>
-
-            <details class="smart-folder">
-                <summary class="smart-folder__summary"><span class="smart-folder__label">New Apps</span><span class="smart-folder__badge">5</span></summary>
-                <div class="tile-grid tile-grid--dense" role="list">
-                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--orange">C</span><span class="tile__label">Citymapper</span></div>
-                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--indigo">T</span><span class="tile__label">Termux:API</span></div>
-                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--teal">I</span><span class="tile__label">IceRaven</span></div>
-                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--blue">A</span><span class="tile__label">Aegis Authenticator</span></div>
-                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--pink">C</span><span class="tile__label">Chess.com</span></div>
-                </div>
-            </details>
-
-            <details class="smart-folder">
-                <summary class="smart-folder__summary"><span class="smart-folder__label">Recent 48h</span><span class="smart-folder__badge">47</span></summary>
-                <div class="tile-grid tile-grid--dense" role="list">
-                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--amber">C</span><span class="tile__label">Claude</span></div>
-                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--teal">G</span><span class="tile__label">Gemini</span></div>
-                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--indigo">T</span><span class="tile__label">Termux</span></div>
-                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--pink">C</span><span class="tile__label">ChatGPT</span></div>
-                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--blue">F</span><span class="tile__label">FairEmail</span></div>
-                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--orange">M</span><span class="tile__label">Mattermost</span></div>
-                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--pink">B</span><span class="tile__label">Beeper</span></div>
-                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--amber">P</span><span class="tile__label">Phone</span></div>
-                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--blue">S</span><span class="tile__label">Signal</span></div>
-                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--blue">S</span><span class="tile__label">Slack</span></div>
-                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--orange">D</span><span class="tile__label">Discord</span></div>
-                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--pink">O</span><span class="tile__label">Obsidian</span></div>
-                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--amber">C</span><span class="tile__label">Calendar</span></div>
-                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--purple">S</span><span class="tile__label">Spotify</span></div>
-                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--blue">B</span><span class="tile__label">Brave</span></div>
-                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--indigo">M</span><span class="tile__label">Maps</span></div>
-                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--amber">T</span><span class="tile__label">Translate</span></div>
-                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--teal">C</span><span class="tile__label">Camera</span></div>
-                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--green">C</span><span class="tile__label">Cloud SuperApp</span></div>
-                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--teal">F</span><span class="tile__label">F-Droid</span></div>
-                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--pink">S</span><span class="tile__label">Settings</span></div>
-                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--amber">G</span><span class="tile__label">Gmail</span></div>
-                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--green">T</span><span class="tile__label">Telegram</span></div>
-                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--purple">I</span><span class="tile__label">Instagram</span></div>
-                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--amber">L</span><span class="tile__label">LinkedIn</span></div>
-                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--purple">W</span><span class="tile__label">WhatsApp</span></div>
-                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--amber">F</span><span class="tile__label">Facebook</span></div>
-                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--pink">M</span><span class="tile__label">Messenger</span></div>
-                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--purple">T</span><span class="tile__label">TikTok</span></div>
-                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--purple">S</span><span class="tile__label">Snapchat</span></div>
-                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--blue">X</span><span class="tile__label">X</span></div>
-                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--purple">P</span><span class="tile__label">Pinterest</span></div>
-                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--pink">Y</span><span class="tile__label">YouTube</span></div>
-                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--blue">Y</span><span class="tile__label">YouTube Music</span></div>
-                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--blue">G</span><span class="tile__label">Google Photos</span></div>
-                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--amber">O</span><span class="tile__label">OsmAnd</span></div>
-                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--teal">W</span><span class="tile__label">Waze</span></div>
-                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--orange">C</span><span class="tile__label">Citymapper</span></div>
-                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--indigo">R</span><span class="tile__label">Revolut</span></div>
-                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--orange">A</span><span class="tile__label">Amazon Shopping</span></div>
-                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--pink">G</span><span class="tile__label">Google Drive</span></div>
-                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--indigo">T</span><span class="tile__label">Termux:API</span></div>
-                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--teal">I</span><span class="tile__label">IceRaven</span></div>
-                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--orange">G</span><span class="tile__label">Google Authenticator</span></div>
-                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--blue">A</span><span class="tile__label">Aegis Authenticator</span></div>
-                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--blue">W</span><span class="tile__label">WireGuard</span></div>
-                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--pink">C</span><span class="tile__label">Chess.com</span></div>
-                </div>
-            </details>
-
-            <details class="smart-folder">
-                <summary class="smart-folder__summary"><span class="smart-folder__label">Recent 7d</span><span class="smart-folder__badge">78</span></summary>
-                <div class="tile-grid tile-grid--dense" role="list">
-                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--amber">C</span><span class="tile__label">Claude</span></div>
-                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--teal">G</span><span class="tile__label">Gemini</span></div>
-                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--indigo">T</span><span class="tile__label">Termux</span></div>
-                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--purple">P</span><span class="tile__label">Perplexity</span></div>
-                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--pink">C</span><span class="tile__label">ChatGPT</span></div>
-                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--orange">C</span><span class="tile__label">Copilot</span></div>
-                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--amber">P</span><span class="tile__label">Poe</span></div>
-                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--blue">F</span><span class="tile__label">FairEmail</span></div>
-                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--orange">M</span><span class="tile__label">Mattermost</span></div>
-                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--pink">B</span><span class="tile__label">Beeper</span></div>
-                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--teal">D</span><span class="tile__label">Dialer</span></div>
-                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--amber">P</span><span class="tile__label">Phone</span></div>
-                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--blue">S</span><span class="tile__label">Signal</span></div>
-                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--blue">S</span><span class="tile__label">Slack</span></div>
-                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--orange">D</span><span class="tile__label">Discord</span></div>
-                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--blue">Z</span><span class="tile__label">Zulip</span></div>
-                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--pink">O</span><span class="tile__label">Obsidian</span></div>
-                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--purple">G</span><span class="tile__label">Gallery</span></div>
-                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--amber">C</span><span class="tile__label">Calendar</span></div>
-                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--purple">T</span><span class="tile__label">Tidal</span></div>
-                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--purple">S</span><span class="tile__label">Spotify</span></div>
-                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--orange">T</span><span class="tile__label">Todoist</span></div>
-                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--orange">1</span><span class="tile__label">1Password</span></div>
-                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--blue">B</span><span class="tile__label">Brave</span></div>
-                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--indigo">M</span><span class="tile__label">Maps</span></div>
-                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--green">W</span><span class="tile__label">Wallet</span></div>
-                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--amber">T</span><span class="tile__label">Translate</span></div>
-                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--amber">C</span><span class="tile__label">Clock</span></div>
-                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--purple">C</span><span class="tile__label">Calculator</span></div>
-                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--green">F</span><span class="tile__label">Firefox</span></div>
-                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--purple">U</span><span class="tile__label">Uber</span></div>
-                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--orange">W</span><span class="tile__label">Weather</span></div>
-                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--teal">C</span><span class="tile__label">Camera</span></div>
-                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--green">C</span><span class="tile__label">Cloud SuperApp</span></div>
-                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--teal">H</span><span class="tile__label">Home Assistant</span></div>
-                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--teal">P</span><span class="tile__label">Play Store</span></div>
-                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--teal">F</span><span class="tile__label">F-Droid</span></div>
-                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--pink">S</span><span class="tile__label">Settings</span></div>
-                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--purple">G</span><span class="tile__label">Google Docs</span></div>
-                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--amber">A</span><span class="tile__label">Acode</span></div>
-                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--amber">W</span><span class="tile__label">WhatsApp Business</span></div>
-                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--amber">G</span><span class="tile__label">Gmail</span></div>
-                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--green">T</span><span class="tile__label">Telegram</span></div>
-                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--purple">I</span><span class="tile__label">Instagram</span></div>
-                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--amber">L</span><span class="tile__label">LinkedIn</span></div>
-                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--purple">W</span><span class="tile__label">WhatsApp</span></div>
-                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--orange">V</span><span class="tile__label">Viber</span></div>
-                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--orange">E</span><span class="tile__label">Element</span></div>
-                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--amber">F</span><span class="tile__label">Facebook</span></div>
-                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--pink">M</span><span class="tile__label">Messenger</span></div>
-                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--amber">R</span><span class="tile__label">Reddit</span></div>
-                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--purple">T</span><span class="tile__label">TikTok</span></div>
-                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--purple">S</span><span class="tile__label">Snapchat</span></div>
-                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--blue">X</span><span class="tile__label">X</span></div>
-                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--purple">P</span><span class="tile__label">Pinterest</span></div>
-                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--pink">Y</span><span class="tile__label">YouTube</span></div>
-                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--blue">Y</span><span class="tile__label">YouTube Music</span></div>
-                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--purple">N</span><span class="tile__label">Netflix</span></div>
-                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--blue">G</span><span class="tile__label">Google Photos</span></div>
-                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--pink">O</span><span class="tile__label">Open Camera</span></div>
-                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--amber">O</span><span class="tile__label">OsmAnd</span></div>
-                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--teal">W</span><span class="tile__label">Waze</span></div>
-                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--orange">C</span><span class="tile__label">Citymapper</span></div>
-                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--green">B</span><span class="tile__label">Bank of America</span></div>
-                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--indigo">R</span><span class="tile__label">Revolut</span></div>
-                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--pink">P</span><span class="tile__label">PayPal</span></div>
-                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--orange">A</span><span class="tile__label">Amazon Shopping</span></div>
-                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--teal">H</span><span class="tile__label">Hacker News</span></div>
-                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--pink">S</span><span class="tile__label">Strava</span></div>
-                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--pink">G</span><span class="tile__label">Google Drive</span></div>
-                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--pink">G</span><span class="tile__label">Google Sheets</span></div>
-                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--indigo">T</span><span class="tile__label">Termux:API</span></div>
-                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--teal">I</span><span class="tile__label">IceRaven</span></div>
-                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--orange">G</span><span class="tile__label">Google Authenticator</span></div>
-                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--blue">A</span><span class="tile__label">Aegis Authenticator</span></div>
-                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--blue">W</span><span class="tile__label">WireGuard</span></div>
-                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--amber">S</span><span class="tile__label">Solitaire</span></div>
-                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--pink">C</span><span class="tile__label">Chess.com</span></div>
-                </div>
-            </details>
-
-            <details class="smart-folder">
-                <summary class="smart-folder__summary"><span class="smart-folder__label">Top 7 Open</span><span class="smart-folder__badge">7</span></summary>
-                <div class="tile-grid tile-grid--dense" role="list">
-                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--purple">T</span><span class="tile__label">TikTok</span></div>
-                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--teal">G</span><span class="tile__label">Gemini</span></div>
-                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--purple">I</span><span class="tile__label">Instagram</span></div>
-                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--orange">M</span><span class="tile__label">Mattermost</span></div>
-                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--indigo">M</span><span class="tile__label">Maps</span></div>
-                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--amber">G</span><span class="tile__label">Gmail</span></div>
-                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--amber">C</span><span class="tile__label">Claude</span></div>
-                </div>
-            </details>
-
-            <details class="smart-folder">
-                <summary class="smart-folder__summary"><span class="smart-folder__label">Top 7 Battery</span><span class="smart-folder__badge">7</span></summary>
-                <div class="tile-grid tile-grid--dense" role="list">
-                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--amber">C</span><span class="tile__label">Claude</span></div>
-                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--indigo">T</span><span class="tile__label">Termux</span></div>
-                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--blue">S</span><span class="tile__label">Signal</span></div>
-                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--orange">M</span><span class="tile__label">Mattermost</span></div>
-                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--purple">W</span><span class="tile__label">WhatsApp</span></div>
-                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--teal">G</span><span class="tile__label">Gemini</span></div>
-                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--blue">B</span><span class="tile__label">Brave</span></div>
-                </div>
-            </details>
-
-            <details class="smart-folder">
-                <summary class="smart-folder__summary"><span class="smart-folder__label">Top 7 Time</span><span class="smart-folder__badge">7</span></summary>
-                <div class="tile-grid tile-grid--dense" role="list">
-                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--green">T</span><span class="tile__label">Telegram</span></div>
-                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--purple">I</span><span class="tile__label">Instagram</span></div>
-                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--indigo">T</span><span class="tile__label">Termux</span></div>
-                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--green">C</span><span class="tile__label">Cloud SuperApp</span></div>
-                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--amber">C</span><span class="tile__label">Claude</span></div>
-                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--purple">S</span><span class="tile__label">Spotify</span></div>
-                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--purple">T</span><span class="tile__label">TikTok</span></div>
-                </div>
-            </details>
-            </section>
             
             <section class="tile-group">
                 <h2 class="tile-group__title">#SYSTEM <span class="smart-folder__badge">16</span></h2>
                 <div class="tile-grid tile-grid--dense" role="list">
-                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--purple">B</span><span class="tile__label">Bitwarden</span></div>
+                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--purple"><span class="tile__app-icon__glyph" style="--icon-url: url('../../../public/icons/lock.svg')"></span></span><span class="tile__label">Bitwarden</span></div>
                     <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--orange">1</span><span class="tile__label">1Password</span></div>
-                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--green">C</span><span class="tile__label">Cloud SuperApp</span></div>
+                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--green"><span class="tile__app-icon__glyph" style="--icon-url: url('../../../public/icons/home.svg')"></span></span><span class="tile__label">Cloud SuperApp</span></div>
                     <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--orange">G</span><span class="tile__label">Grafana</span></div>
                     <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--purple">P</span><span class="tile__label">Portainer</span></div>
-                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--amber">U</span><span class="tile__label">Uptime Kuma</span></div>
-                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--teal">H</span><span class="tile__label">Home Assistant</span></div>
-                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--teal">P</span><span class="tile__label">Play Store</span></div>
-                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--teal">F</span><span class="tile__label">F-Droid</span></div>
-                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--pink">S</span><span class="tile__label">Settings</span></div>
-                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--orange">N</span><span class="tile__label">Nova Launcher</span></div>
-                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--green">F</span><span class="tile__label">Files by Google</span></div>
+                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--amber">UK</span><span class="tile__label">Uptime Kuma</span></div>
+                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--teal">HA</span><span class="tile__label">Home Assistant</span></div>
+                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--teal"><span class="tile__app-icon__glyph" style="--icon-url: url('../../../public/icons/suite.svg')"></span></span><span class="tile__label">Play Store</span></div>
+                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--teal"><span class="tile__app-icon__glyph" style="--icon-url: url('../../../public/icons/suite.svg')"></span></span><span class="tile__label">F-Droid</span></div>
+                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--pink"><span class="tile__app-icon__glyph" style="--icon-url: url('../../../public/icons/settings.svg')"></span></span><span class="tile__label">Settings</span></div>
+                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--orange">NL</span><span class="tile__label">Nova Launcher</span></div>
+                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--green">FB</span><span class="tile__label">Files by Google</span></div>
                     <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--green">X</span><span class="tile__label">X-plore</span></div>
-                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--pink">M</span><span class="tile__label">My Files</span></div>
-                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--orange">G</span><span class="tile__label">Google Authenticator</span></div>
+                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--pink">MF</span><span class="tile__label">My Files</span></div>
+                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--orange">GA</span><span class="tile__label">Google Authenticator</span></div>
                     <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--blue">W</span><span class="tile__label">WireGuard</span></div>
                 </div>
             </section>
@@ -427,8 +87,8 @@
             <section class="tile-group">
                 <h2 class="tile-group__title">.a0_LLM <span class="smart-folder__badge">6</span></h2>
                 <div class="tile-grid tile-grid--dense" role="list">
-                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--amber">C</span><span class="tile__label">Claude</span></div>
-                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--teal">G</span><span class="tile__label">Gemini</span></div>
+                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--amber"><span class="tile__app-icon__glyph" style="--icon-url: url('../../../public/icons/sparkles.svg')"></span></span><span class="tile__label">Claude</span></div>
+                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--teal"><span class="tile__app-icon__glyph" style="--icon-url: url('../../../public/icons/sparkles.svg')"></span></span><span class="tile__label">Gemini</span></div>
                     <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--purple">P</span><span class="tile__label">Perplexity</span></div>
                     <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--pink">C</span><span class="tile__label">ChatGPT</span></div>
                     <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--orange">C</span><span class="tile__label">Copilot</span></div>
@@ -439,12 +99,12 @@
             <section class="tile-group">
                 <h2 class="tile-group__title">$DevTools <span class="smart-folder__badge">7</span></h2>
                 <div class="tile-grid tile-grid--dense" role="list">
-                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--indigo">T</span><span class="tile__label">Termux</span></div>
+                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--indigo"><span class="tile__app-icon__glyph" style="--icon-url: url('../../../public/icons/code.svg')"></span></span><span class="tile__label">Termux</span></div>
                     <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--pink">T</span><span class="tile__label">Termius</span></div>
-                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--green">G</span><span class="tile__label">Git Sync</span></div>
+                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--green">GS</span><span class="tile__label">Git Sync</span></div>
                     <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--amber">A</span><span class="tile__label">Acode</span></div>
-                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--indigo">T</span><span class="tile__label">Turbo Editor</span></div>
-                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--blue">V</span><span class="tile__label">VS Code</span></div>
+                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--indigo">TE</span><span class="tile__label">Turbo Editor</span></div>
+                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--blue">VC</span><span class="tile__label">VS Code</span></div>
                     <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--pink">S</span><span class="tile__label">Syncthing</span></div>
                 </div>
             </section>
@@ -452,9 +112,9 @@
             <section class="tile-group">
                 <h2 class="tile-group__title">-Banking <span class="smart-folder__badge">5</span></h2>
                 <div class="tile-grid tile-grid--dense" role="list">
-                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--green">W</span><span class="tile__label">Wallet</span></div>
-                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--amber">C</span><span class="tile__label">Chase Bank</span></div>
-                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--green">B</span><span class="tile__label">Bank of America</span></div>
+                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--green"><span class="tile__app-icon__glyph" style="--icon-url: url('../../../public/icons/wallet.svg')"></span></span><span class="tile__label">Wallet</span></div>
+                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--amber">CB</span><span class="tile__label">Chase Bank</span></div>
+                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--green">BO</span><span class="tile__label">Bank of America</span></div>
                     <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--indigo">R</span><span class="tile__label">Revolut</span></div>
                     <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--pink">P</span><span class="tile__label">PayPal</span></div>
                 </div>
@@ -463,7 +123,7 @@
             <section class="tile-group">
                 <h2 class="tile-group__title">=Shopping <span class="smart-folder__badge">3</span></h2>
                 <div class="tile-grid tile-grid--dense" role="list">
-                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--orange">A</span><span class="tile__label">Amazon Shopping</span></div>
+                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--orange">AS</span><span class="tile__label">Amazon Shopping</span></div>
                     <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--teal">E</span><span class="tile__label">eBay</span></div>
                     <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--teal">E</span><span class="tile__label">Etsy</span></div>
                 </div>
@@ -472,18 +132,18 @@
             <section class="tile-group">
                 <h2 class="tile-group__title">@Comms <span class="smart-folder__badge">18</span></h2>
                 <div class="tile-grid tile-grid--dense" role="list">
-                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--blue">F</span><span class="tile__label">FairEmail</span></div>
-                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--blue">K</span><span class="tile__label">K-9 Mail</span></div>
-                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--orange">M</span><span class="tile__label">Mattermost</span></div>
-                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--pink">B</span><span class="tile__label">Beeper</span></div>
-                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--teal">D</span><span class="tile__label">Dialer</span></div>
-                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--amber">P</span><span class="tile__label">Phone</span></div>
+                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--blue"><span class="tile__app-icon__glyph" style="--icon-url: url('../../../public/icons/mail.svg')"></span></span><span class="tile__label">FairEmail</span></div>
+                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--blue"><span class="tile__app-icon__glyph" style="--icon-url: url('../../../public/icons/mail.svg')"></span></span><span class="tile__label">K-9 Mail</span></div>
+                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--orange"><span class="tile__app-icon__glyph" style="--icon-url: url('../../../public/icons/chat.svg')"></span></span><span class="tile__label">Mattermost</span></div>
+                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--pink"><span class="tile__app-icon__glyph" style="--icon-url: url('../../../public/icons/chat.svg')"></span></span><span class="tile__label">Beeper</span></div>
+                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--teal"><span class="tile__app-icon__glyph" style="--icon-url: url('../../../public/icons/phone.svg')"></span></span><span class="tile__label">Dialer</span></div>
+                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--amber"><span class="tile__app-icon__glyph" style="--icon-url: url('../../../public/icons/phone.svg')"></span></span><span class="tile__label">Phone</span></div>
                     <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--blue">S</span><span class="tile__label">Signal</span></div>
                     <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--blue">S</span><span class="tile__label">Slack</span></div>
                     <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--blue">Z</span><span class="tile__label">Zulip</span></div>
-                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--pink">C</span><span class="tile__label">Contacts</span></div>
-                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--amber">S</span><span class="tile__label">Samsung Email</span></div>
-                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--amber">W</span><span class="tile__label">WhatsApp Business</span></div>
+                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--pink"><span class="tile__app-icon__glyph" style="--icon-url: url('../../../public/icons/user.svg')"></span></span><span class="tile__label">Contacts</span></div>
+                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--amber">SE</span><span class="tile__label">Samsung Email</span></div>
+                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--amber">WB</span><span class="tile__label">WhatsApp Business</span></div>
                     <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--amber">G</span><span class="tile__label">Gmail</span></div>
                     <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--green">T</span><span class="tile__label">Telegram</span></div>
                     <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--purple">W</span><span class="tile__label">WhatsApp</span></div>
@@ -512,10 +172,10 @@
             <section class="tile-group">
                 <h2 class="tile-group__title">*Media <span class="smart-folder__badge">8</span></h2>
                 <div class="tile-grid tile-grid--dense" role="list">
-                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--purple">T</span><span class="tile__label">Tidal</span></div>
+                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--purple"><span class="tile__app-icon__glyph" style="--icon-url: url('../../../public/icons/music.svg')"></span></span><span class="tile__label">Tidal</span></div>
                     <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--purple">S</span><span class="tile__label">Spotify</span></div>
                     <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--pink">Y</span><span class="tile__label">YouTube</span></div>
-                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--blue">Y</span><span class="tile__label">YouTube Music</span></div>
+                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--blue">YM</span><span class="tile__label">YouTube Music</span></div>
                     <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--purple">N</span><span class="tile__label">Netflix</span></div>
                     <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--indigo">P</span><span class="tile__label">Plex</span></div>
                     <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--teal">V</span><span class="tile__label">VLC</span></div>
@@ -526,33 +186,33 @@
             <section class="tile-group">
                 <h2 class="tile-group__title"><Camera.Photo <span class="smart-folder__badge">5</span></h2>
                 <div class="tile-grid tile-grid--dense" role="list">
-                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--purple">G</span><span class="tile__label">Gallery</span></div>
+                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--purple"><span class="tile__app-icon__glyph" style="--icon-url: url('../../../public/icons/photos.svg')"></span></span><span class="tile__label">Gallery</span></div>
                     <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--teal">C</span><span class="tile__label">Camera</span></div>
-                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--blue">G</span><span class="tile__label">Google Photos</span></div>
+                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--blue">GP</span><span class="tile__label">Google Photos</span></div>
                     <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--pink">S</span><span class="tile__label">Snapseed</span></div>
-                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--pink">O</span><span class="tile__label">Open Camera</span></div>
+                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--pink">OC</span><span class="tile__label">Open Camera</span></div>
                 </div>
             </section>
 
             <section class="tile-group">
                 <h2 class="tile-group__title">^Productivity <span class="smart-folder__badge">9</span></h2>
                 <div class="tile-grid tile-grid--dense" role="list">
-                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--pink">O</span><span class="tile__label">Obsidian</span></div>
-                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--amber">C</span><span class="tile__label">Calendar</span></div>
+                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--pink"><span class="tile__app-icon__glyph" style="--icon-url: url('../../../public/icons/logs.svg')"></span></span><span class="tile__label">Obsidian</span></div>
+                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--amber"><span class="tile__app-icon__glyph" style="--icon-url: url('../../../public/icons/calendar.svg')"></span></span><span class="tile__label">Calendar</span></div>
                     <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--teal">N</span><span class="tile__label">Notion</span></div>
                     <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--orange">T</span><span class="tile__label">Todoist</span></div>
-                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--purple">G</span><span class="tile__label">Google Docs</span></div>
-                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--pink">G</span><span class="tile__label">Google Drive</span></div>
-                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--pink">G</span><span class="tile__label">Google Sheets</span></div>
+                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--purple">GD</span><span class="tile__label">Google Docs</span></div>
+                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--pink">GD</span><span class="tile__label">Google Drive</span></div>
+                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--pink">GS</span><span class="tile__label">Google Sheets</span></div>
                     <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--blue">T</span><span class="tile__label">Trello</span></div>
-                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--amber">K</span><span class="tile__label">Keep Notes</span></div>
+                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--amber">KN</span><span class="tile__label">Keep Notes</span></div>
                 </div>
             </section>
 
             <section class="tile-group">
                 <h2 class="tile-group__title">!Maps.Travel <span class="smart-folder__badge">6</span></h2>
                 <div class="tile-grid tile-grid--dense" role="list">
-                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--indigo">M</span><span class="tile__label">Maps</span></div>
+                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--indigo"><span class="tile__app-icon__glyph" style="--icon-url: url('../../../public/icons/pin.svg')"></span></span><span class="tile__label">Maps</span></div>
                     <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--purple">U</span><span class="tile__label">Uber</span></div>
                     <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--amber">O</span><span class="tile__label">OsmAnd</span></div>
                     <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--teal">W</span><span class="tile__label">Waze</span></div>
@@ -564,10 +224,10 @@
             <section class="tile-group">
                 <h2 class="tile-group__title">%Utilities <span class="smart-folder__badge">8</span></h2>
                 <div class="tile-grid tile-grid--dense" role="list">
-                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--blue">B</span><span class="tile__label">Brave</span></div>
-                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--amber">T</span><span class="tile__label">Translate</span></div>
-                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--amber">C</span><span class="tile__label">Clock</span></div>
-                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--purple">C</span><span class="tile__label">Calculator</span></div>
+                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--blue"><span class="tile__app-icon__glyph" style="--icon-url: url('../../../public/icons/browser.svg')"></span></span><span class="tile__label">Brave</span></div>
+                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--amber"><span class="tile__app-icon__glyph" style="--icon-url: url('../../../public/icons/chat.svg')"></span></span><span class="tile__label">Translate</span></div>
+                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--amber"><span class="tile__app-icon__glyph" style="--icon-url: url('../../../public/icons/bell.svg')"></span></span><span class="tile__label">Clock</span></div>
+                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--purple"><span class="tile__app-icon__glyph" style="--icon-url: url('../../../public/icons/chart.svg')"></span></span><span class="tile__label">Calculator</span></div>
                     <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--green">F</span><span class="tile__label">Firefox</span></div>
                     <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--orange">W</span><span class="tile__label">Weather</span></div>
                     <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--purple">T</span><span class="tile__label">Tasker</span></div>
@@ -578,7 +238,7 @@
             <section class="tile-group">
                 <h2 class="tile-group__title">&Health <span class="smart-folder__badge">3</span></h2>
                 <div class="tile-grid tile-grid--dense" role="list">
-                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--purple">G</span><span class="tile__label">Google Fit</span></div>
+                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--purple">GF</span><span class="tile__label">Google Fit</span></div>
                     <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--pink">S</span><span class="tile__label">Strava</span></div>
                     <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--amber">H</span><span class="tile__label">Headspace</span></div>
                 </div>
@@ -587,10 +247,10 @@
             <section class="tile-group">
                 <h2 class="tile-group__title">?News <span class="smart-folder__badge">4</span></h2>
                 <div class="tile-grid tile-grid--dense" role="list">
-                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--pink">N</span><span class="tile__label">News</span></div>
-                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--blue">B</span><span class="tile__label">BBC News</span></div>
+                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--pink"><span class="tile__app-icon__glyph" style="--icon-url: url('../../../public/icons/rss.svg')"></span></span><span class="tile__label">News</span></div>
+                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--blue">BN</span><span class="tile__label">BBC News</span></div>
                     <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--pink">F</span><span class="tile__label">Feedly</span></div>
-                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--teal">H</span><span class="tile__label">Hacker News</span></div>
+                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--teal">HN</span><span class="tile__label">Hacker News</span></div>
                 </div>
             </section>
 
@@ -600,7 +260,7 @@
                     <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--orange">C</span><span class="tile__label">Citymapper</span></div>
                     <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--indigo">T</span><span class="tile__label">Termux:API</span></div>
                     <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--teal">I</span><span class="tile__label">IceRaven</span></div>
-                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--blue">A</span><span class="tile__label">Aegis Authenticator</span></div>
+                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--blue">AA</span><span class="tile__label">Aegis Authenticator</span></div>
                     <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--pink">C</span><span class="tile__label">Chess.com</span></div>
                 </div>
             </section>
@@ -611,6 +271,346 @@
                     <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--amber">S</span><span class="tile__label">Solitaire</span></div>
                     <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--pink">W</span><span class="tile__label">Wordle</span></div>
                 </div>
+            </section>
+            <section class="smart-folders">
+                <h2 class="tile-group__title">Smart Folders</h2>
+            <section class="tile-group">
+                <h2 class="tile-group__title">Cloud <span class="smart-folder__badge">6</span></h2>
+                <div class="tile-grid tile-grid--dense" role="list">
+                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--amber"><span class="tile__app-icon__glyph" style="--icon-url: url('../../../public/icons/sparkles.svg')"></span></span><span class="tile__label">Claude</span></div>
+                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--green"><span class="tile__app-icon__glyph" style="--icon-url: url('../../../public/icons/home.svg')"></span></span><span class="tile__label">Cloud SuperApp</span></div>
+                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--orange">G</span><span class="tile__label">Grafana</span></div>
+                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--purple">P</span><span class="tile__label">Portainer</span></div>
+                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--amber">UK</span><span class="tile__label">Uptime Kuma</span></div>
+                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--blue">VC</span><span class="tile__label">VS Code</span></div>
+                </div>
+            </section>
+
+            <section class="tile-group">
+                <h2 class="tile-group__title">Google Play <span class="smart-folder__badge">78</span></h2>
+                <div class="tile-grid tile-grid--dense" role="list">
+                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--teal"><span class="tile__app-icon__glyph" style="--icon-url: url('../../../public/icons/sparkles.svg')"></span></span><span class="tile__label">Gemini</span></div>
+                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--purple">P</span><span class="tile__label">Perplexity</span></div>
+                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--pink">C</span><span class="tile__label">ChatGPT</span></div>
+                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--orange">C</span><span class="tile__label">Copilot</span></div>
+                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--amber">P</span><span class="tile__label">Poe</span></div>
+                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--teal"><span class="tile__app-icon__glyph" style="--icon-url: url('../../../public/icons/phone.svg')"></span></span><span class="tile__label">Dialer</span></div>
+                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--amber"><span class="tile__app-icon__glyph" style="--icon-url: url('../../../public/icons/phone.svg')"></span></span><span class="tile__label">Phone</span></div>
+                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--blue">S</span><span class="tile__label">Slack</span></div>
+                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--orange">D</span><span class="tile__label">Discord</span></div>
+                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--blue">Z</span><span class="tile__label">Zulip</span></div>
+                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--purple"><span class="tile__app-icon__glyph" style="--icon-url: url('../../../public/icons/photos.svg')"></span></span><span class="tile__label">Gallery</span></div>
+                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--amber"><span class="tile__app-icon__glyph" style="--icon-url: url('../../../public/icons/calendar.svg')"></span></span><span class="tile__label">Calendar</span></div>
+                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--pink"><span class="tile__app-icon__glyph" style="--icon-url: url('../../../public/icons/user.svg')"></span></span><span class="tile__label">Contacts</span></div>
+                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--purple"><span class="tile__app-icon__glyph" style="--icon-url: url('../../../public/icons/music.svg')"></span></span><span class="tile__label">Tidal</span></div>
+                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--purple">S</span><span class="tile__label">Spotify</span></div>
+                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--teal">N</span><span class="tile__label">Notion</span></div>
+                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--orange">T</span><span class="tile__label">Todoist</span></div>
+                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--orange">1</span><span class="tile__label">1Password</span></div>
+                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--blue"><span class="tile__app-icon__glyph" style="--icon-url: url('../../../public/icons/browser.svg')"></span></span><span class="tile__label">Brave</span></div>
+                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--pink"><span class="tile__app-icon__glyph" style="--icon-url: url('../../../public/icons/rss.svg')"></span></span><span class="tile__label">News</span></div>
+                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--indigo"><span class="tile__app-icon__glyph" style="--icon-url: url('../../../public/icons/pin.svg')"></span></span><span class="tile__label">Maps</span></div>
+                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--green"><span class="tile__app-icon__glyph" style="--icon-url: url('../../../public/icons/wallet.svg')"></span></span><span class="tile__label">Wallet</span></div>
+                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--amber"><span class="tile__app-icon__glyph" style="--icon-url: url('../../../public/icons/chat.svg')"></span></span><span class="tile__label">Translate</span></div>
+                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--amber"><span class="tile__app-icon__glyph" style="--icon-url: url('../../../public/icons/bell.svg')"></span></span><span class="tile__label">Clock</span></div>
+                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--purple"><span class="tile__app-icon__glyph" style="--icon-url: url('../../../public/icons/chart.svg')"></span></span><span class="tile__label">Calculator</span></div>
+                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--green">F</span><span class="tile__label">Firefox</span></div>
+                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--purple">U</span><span class="tile__label">Uber</span></div>
+                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--orange">W</span><span class="tile__label">Weather</span></div>
+                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--teal">C</span><span class="tile__label">Camera</span></div>
+                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--teal"><span class="tile__app-icon__glyph" style="--icon-url: url('../../../public/icons/suite.svg')"></span></span><span class="tile__label">Play Store</span></div>
+                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--pink"><span class="tile__app-icon__glyph" style="--icon-url: url('../../../public/icons/settings.svg')"></span></span><span class="tile__label">Settings</span></div>
+                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--pink">T</span><span class="tile__label">Termius</span></div>
+                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--purple">T</span><span class="tile__label">Tasker</span></div>
+                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--orange">NL</span><span class="tile__label">Nova Launcher</span></div>
+                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--green">FB</span><span class="tile__label">Files by Google</span></div>
+                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--pink">MF</span><span class="tile__label">My Files</span></div>
+                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--purple">GD</span><span class="tile__label">Google Docs</span></div>
+                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--amber">SE</span><span class="tile__label">Samsung Email</span></div>
+                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--amber">WB</span><span class="tile__label">WhatsApp Business</span></div>
+                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--amber">G</span><span class="tile__label">Gmail</span></div>
+                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--green">T</span><span class="tile__label">Telegram</span></div>
+                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--purple">I</span><span class="tile__label">Instagram</span></div>
+                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--amber">L</span><span class="tile__label">LinkedIn</span></div>
+                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--purple">W</span><span class="tile__label">WhatsApp</span></div>
+                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--amber">S</span><span class="tile__label">Skype</span></div>
+                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--amber">F</span><span class="tile__label">Facebook</span></div>
+                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--pink">M</span><span class="tile__label">Messenger</span></div>
+                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--amber">R</span><span class="tile__label">Reddit</span></div>
+                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--purple">S</span><span class="tile__label">Snapchat</span></div>
+                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--blue">X</span><span class="tile__label">X</span></div>
+                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--purple">P</span><span class="tile__label">Pinterest</span></div>
+                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--pink">Y</span><span class="tile__label">YouTube</span></div>
+                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--blue">YM</span><span class="tile__label">YouTube Music</span></div>
+                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--purple">N</span><span class="tile__label">Netflix</span></div>
+                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--blue">GP</span><span class="tile__label">Google Photos</span></div>
+                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--pink">S</span><span class="tile__label">Snapseed</span></div>
+                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--teal">W</span><span class="tile__label">Waze</span></div>
+                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--orange">B</span><span class="tile__label">Booking.com</span></div>
+                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--orange">A</span><span class="tile__label">Airbnb</span></div>
+                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--orange">C</span><span class="tile__label">Citymapper</span></div>
+                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--amber">CB</span><span class="tile__label">Chase Bank</span></div>
+                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--green">BO</span><span class="tile__label">Bank of America</span></div>
+                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--indigo">R</span><span class="tile__label">Revolut</span></div>
+                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--pink">P</span><span class="tile__label">PayPal</span></div>
+                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--orange">AS</span><span class="tile__label">Amazon Shopping</span></div>
+                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--teal">E</span><span class="tile__label">eBay</span></div>
+                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--blue">BN</span><span class="tile__label">BBC News</span></div>
+                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--purple">GF</span><span class="tile__label">Google Fit</span></div>
+                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--pink">S</span><span class="tile__label">Strava</span></div>
+                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--amber">H</span><span class="tile__label">Headspace</span></div>
+                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--pink">GD</span><span class="tile__label">Google Drive</span></div>
+                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--pink">GS</span><span class="tile__label">Google Sheets</span></div>
+                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--blue">T</span><span class="tile__label">Trello</span></div>
+                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--amber">KN</span><span class="tile__label">Keep Notes</span></div>
+                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--pink">D</span><span class="tile__label">Duolingo</span></div>
+                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--orange">GA</span><span class="tile__label">Google Authenticator</span></div>
+                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--amber">S</span><span class="tile__label">Solitaire</span></div>
+                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--pink">W</span><span class="tile__label">Wordle</span></div>
+                </div>
+            </section>
+
+            <section class="tile-group">
+                <h2 class="tile-group__title">F-Droid <span class="smart-folder__badge">23</span></h2>
+                <div class="tile-grid tile-grid--dense" role="list">
+                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--indigo"><span class="tile__app-icon__glyph" style="--icon-url: url('../../../public/icons/code.svg')"></span></span><span class="tile__label">Termux</span></div>
+                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--blue"><span class="tile__app-icon__glyph" style="--icon-url: url('../../../public/icons/mail.svg')"></span></span><span class="tile__label">FairEmail</span></div>
+                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--blue"><span class="tile__app-icon__glyph" style="--icon-url: url('../../../public/icons/mail.svg')"></span></span><span class="tile__label">K-9 Mail</span></div>
+                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--blue">S</span><span class="tile__label">Signal</span></div>
+                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--pink"><span class="tile__app-icon__glyph" style="--icon-url: url('../../../public/icons/logs.svg')"></span></span><span class="tile__label">Obsidian</span></div>
+                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--purple"><span class="tile__app-icon__glyph" style="--icon-url: url('../../../public/icons/lock.svg')"></span></span><span class="tile__label">Bitwarden</span></div>
+                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--teal">HA</span><span class="tile__label">Home Assistant</span></div>
+                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--teal"><span class="tile__app-icon__glyph" style="--icon-url: url('../../../public/icons/suite.svg')"></span></span><span class="tile__label">F-Droid</span></div>
+                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--green">GS</span><span class="tile__label">Git Sync</span></div>
+                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--amber">A</span><span class="tile__label">Acode</span></div>
+                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--indigo">TE</span><span class="tile__label">Turbo Editor</span></div>
+                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--orange">E</span><span class="tile__label">Element</span></div>
+                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--indigo">P</span><span class="tile__label">Plex</span></div>
+                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--teal">V</span><span class="tile__label">VLC</span></div>
+                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--pink">OC</span><span class="tile__label">Open Camera</span></div>
+                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--amber">O</span><span class="tile__label">OsmAnd</span></div>
+                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--pink">F</span><span class="tile__label">Feedly</span></div>
+                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--teal">HN</span><span class="tile__label">Hacker News</span></div>
+                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--indigo">T</span><span class="tile__label">Termux:API</span></div>
+                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--pink">S</span><span class="tile__label">Syncthing</span></div>
+                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--teal">I</span><span class="tile__label">IceRaven</span></div>
+                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--blue">AA</span><span class="tile__label">Aegis Authenticator</span></div>
+                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--blue">W</span><span class="tile__label">WireGuard</span></div>
+                </div>
+            </section>
+
+            <section class="tile-group">
+                <h2 class="tile-group__title">Uptodown <span class="smart-folder__badge">6</span></h2>
+                <div class="tile-grid tile-grid--dense" role="list">
+                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--green">X</span><span class="tile__label">X-plore</span></div>
+                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--orange">V</span><span class="tile__label">Viber</span></div>
+                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--purple">T</span><span class="tile__label">TikTok</span></div>
+                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--amber">S</span><span class="tile__label">SoundCloud</span></div>
+                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--teal">E</span><span class="tile__label">Etsy</span></div>
+                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--pink">C</span><span class="tile__label">Chess.com</span></div>
+                </div>
+            </section>
+
+            <section class="tile-group">
+                <h2 class="tile-group__title">Direct <span class="smart-folder__badge">8</span></h2>
+                <div class="tile-grid tile-grid--dense" role="list">
+                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--amber"><span class="tile__app-icon__glyph" style="--icon-url: url('../../../public/icons/sparkles.svg')"></span></span><span class="tile__label">Claude</span></div>
+                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--orange"><span class="tile__app-icon__glyph" style="--icon-url: url('../../../public/icons/chat.svg')"></span></span><span class="tile__label">Mattermost</span></div>
+                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--pink"><span class="tile__app-icon__glyph" style="--icon-url: url('../../../public/icons/chat.svg')"></span></span><span class="tile__label">Beeper</span></div>
+                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--green"><span class="tile__app-icon__glyph" style="--icon-url: url('../../../public/icons/home.svg')"></span></span><span class="tile__label">Cloud SuperApp</span></div>
+                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--orange">G</span><span class="tile__label">Grafana</span></div>
+                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--purple">P</span><span class="tile__label">Portainer</span></div>
+                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--amber">UK</span><span class="tile__label">Uptime Kuma</span></div>
+                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--blue">VC</span><span class="tile__label">VS Code</span></div>
+                </div>
+            </section>
+
+            <section class="tile-group">
+                <h2 class="tile-group__title">New Apps <span class="smart-folder__badge">5</span></h2>
+                <div class="tile-grid tile-grid--dense" role="list">
+                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--orange">C</span><span class="tile__label">Citymapper</span></div>
+                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--indigo">T</span><span class="tile__label">Termux:API</span></div>
+                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--teal">I</span><span class="tile__label">IceRaven</span></div>
+                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--blue">AA</span><span class="tile__label">Aegis Authenticator</span></div>
+                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--pink">C</span><span class="tile__label">Chess.com</span></div>
+                </div>
+            </section>
+
+            <section class="tile-group">
+                <h2 class="tile-group__title">Recent 48h <span class="smart-folder__badge">47</span></h2>
+                <div class="tile-grid tile-grid--dense" role="list">
+                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--amber"><span class="tile__app-icon__glyph" style="--icon-url: url('../../../public/icons/sparkles.svg')"></span></span><span class="tile__label">Claude</span></div>
+                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--teal"><span class="tile__app-icon__glyph" style="--icon-url: url('../../../public/icons/sparkles.svg')"></span></span><span class="tile__label">Gemini</span></div>
+                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--indigo"><span class="tile__app-icon__glyph" style="--icon-url: url('../../../public/icons/code.svg')"></span></span><span class="tile__label">Termux</span></div>
+                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--pink">C</span><span class="tile__label">ChatGPT</span></div>
+                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--blue"><span class="tile__app-icon__glyph" style="--icon-url: url('../../../public/icons/mail.svg')"></span></span><span class="tile__label">FairEmail</span></div>
+                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--orange"><span class="tile__app-icon__glyph" style="--icon-url: url('../../../public/icons/chat.svg')"></span></span><span class="tile__label">Mattermost</span></div>
+                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--pink"><span class="tile__app-icon__glyph" style="--icon-url: url('../../../public/icons/chat.svg')"></span></span><span class="tile__label">Beeper</span></div>
+                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--amber"><span class="tile__app-icon__glyph" style="--icon-url: url('../../../public/icons/phone.svg')"></span></span><span class="tile__label">Phone</span></div>
+                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--blue">S</span><span class="tile__label">Signal</span></div>
+                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--blue">S</span><span class="tile__label">Slack</span></div>
+                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--orange">D</span><span class="tile__label">Discord</span></div>
+                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--pink"><span class="tile__app-icon__glyph" style="--icon-url: url('../../../public/icons/logs.svg')"></span></span><span class="tile__label">Obsidian</span></div>
+                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--amber"><span class="tile__app-icon__glyph" style="--icon-url: url('../../../public/icons/calendar.svg')"></span></span><span class="tile__label">Calendar</span></div>
+                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--purple">S</span><span class="tile__label">Spotify</span></div>
+                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--blue"><span class="tile__app-icon__glyph" style="--icon-url: url('../../../public/icons/browser.svg')"></span></span><span class="tile__label">Brave</span></div>
+                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--indigo"><span class="tile__app-icon__glyph" style="--icon-url: url('../../../public/icons/pin.svg')"></span></span><span class="tile__label">Maps</span></div>
+                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--amber"><span class="tile__app-icon__glyph" style="--icon-url: url('../../../public/icons/chat.svg')"></span></span><span class="tile__label">Translate</span></div>
+                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--teal">C</span><span class="tile__label">Camera</span></div>
+                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--green"><span class="tile__app-icon__glyph" style="--icon-url: url('../../../public/icons/home.svg')"></span></span><span class="tile__label">Cloud SuperApp</span></div>
+                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--teal"><span class="tile__app-icon__glyph" style="--icon-url: url('../../../public/icons/suite.svg')"></span></span><span class="tile__label">F-Droid</span></div>
+                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--pink"><span class="tile__app-icon__glyph" style="--icon-url: url('../../../public/icons/settings.svg')"></span></span><span class="tile__label">Settings</span></div>
+                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--amber">G</span><span class="tile__label">Gmail</span></div>
+                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--green">T</span><span class="tile__label">Telegram</span></div>
+                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--purple">I</span><span class="tile__label">Instagram</span></div>
+                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--amber">L</span><span class="tile__label">LinkedIn</span></div>
+                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--purple">W</span><span class="tile__label">WhatsApp</span></div>
+                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--amber">F</span><span class="tile__label">Facebook</span></div>
+                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--pink">M</span><span class="tile__label">Messenger</span></div>
+                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--purple">T</span><span class="tile__label">TikTok</span></div>
+                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--purple">S</span><span class="tile__label">Snapchat</span></div>
+                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--blue">X</span><span class="tile__label">X</span></div>
+                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--purple">P</span><span class="tile__label">Pinterest</span></div>
+                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--pink">Y</span><span class="tile__label">YouTube</span></div>
+                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--blue">YM</span><span class="tile__label">YouTube Music</span></div>
+                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--blue">GP</span><span class="tile__label">Google Photos</span></div>
+                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--amber">O</span><span class="tile__label">OsmAnd</span></div>
+                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--teal">W</span><span class="tile__label">Waze</span></div>
+                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--orange">C</span><span class="tile__label">Citymapper</span></div>
+                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--indigo">R</span><span class="tile__label">Revolut</span></div>
+                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--orange">AS</span><span class="tile__label">Amazon Shopping</span></div>
+                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--pink">GD</span><span class="tile__label">Google Drive</span></div>
+                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--indigo">T</span><span class="tile__label">Termux:API</span></div>
+                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--teal">I</span><span class="tile__label">IceRaven</span></div>
+                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--orange">GA</span><span class="tile__label">Google Authenticator</span></div>
+                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--blue">AA</span><span class="tile__label">Aegis Authenticator</span></div>
+                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--blue">W</span><span class="tile__label">WireGuard</span></div>
+                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--pink">C</span><span class="tile__label">Chess.com</span></div>
+                </div>
+            </section>
+
+            <section class="tile-group">
+                <h2 class="tile-group__title">Recent 7d <span class="smart-folder__badge">78</span></h2>
+                <div class="tile-grid tile-grid--dense" role="list">
+                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--amber"><span class="tile__app-icon__glyph" style="--icon-url: url('../../../public/icons/sparkles.svg')"></span></span><span class="tile__label">Claude</span></div>
+                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--teal"><span class="tile__app-icon__glyph" style="--icon-url: url('../../../public/icons/sparkles.svg')"></span></span><span class="tile__label">Gemini</span></div>
+                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--indigo"><span class="tile__app-icon__glyph" style="--icon-url: url('../../../public/icons/code.svg')"></span></span><span class="tile__label">Termux</span></div>
+                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--purple">P</span><span class="tile__label">Perplexity</span></div>
+                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--pink">C</span><span class="tile__label">ChatGPT</span></div>
+                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--orange">C</span><span class="tile__label">Copilot</span></div>
+                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--amber">P</span><span class="tile__label">Poe</span></div>
+                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--blue"><span class="tile__app-icon__glyph" style="--icon-url: url('../../../public/icons/mail.svg')"></span></span><span class="tile__label">FairEmail</span></div>
+                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--orange"><span class="tile__app-icon__glyph" style="--icon-url: url('../../../public/icons/chat.svg')"></span></span><span class="tile__label">Mattermost</span></div>
+                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--pink"><span class="tile__app-icon__glyph" style="--icon-url: url('../../../public/icons/chat.svg')"></span></span><span class="tile__label">Beeper</span></div>
+                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--teal"><span class="tile__app-icon__glyph" style="--icon-url: url('../../../public/icons/phone.svg')"></span></span><span class="tile__label">Dialer</span></div>
+                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--amber"><span class="tile__app-icon__glyph" style="--icon-url: url('../../../public/icons/phone.svg')"></span></span><span class="tile__label">Phone</span></div>
+                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--blue">S</span><span class="tile__label">Signal</span></div>
+                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--blue">S</span><span class="tile__label">Slack</span></div>
+                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--orange">D</span><span class="tile__label">Discord</span></div>
+                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--blue">Z</span><span class="tile__label">Zulip</span></div>
+                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--pink"><span class="tile__app-icon__glyph" style="--icon-url: url('../../../public/icons/logs.svg')"></span></span><span class="tile__label">Obsidian</span></div>
+                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--purple"><span class="tile__app-icon__glyph" style="--icon-url: url('../../../public/icons/photos.svg')"></span></span><span class="tile__label">Gallery</span></div>
+                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--amber"><span class="tile__app-icon__glyph" style="--icon-url: url('../../../public/icons/calendar.svg')"></span></span><span class="tile__label">Calendar</span></div>
+                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--purple"><span class="tile__app-icon__glyph" style="--icon-url: url('../../../public/icons/music.svg')"></span></span><span class="tile__label">Tidal</span></div>
+                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--purple">S</span><span class="tile__label">Spotify</span></div>
+                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--orange">T</span><span class="tile__label">Todoist</span></div>
+                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--orange">1</span><span class="tile__label">1Password</span></div>
+                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--blue"><span class="tile__app-icon__glyph" style="--icon-url: url('../../../public/icons/browser.svg')"></span></span><span class="tile__label">Brave</span></div>
+                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--indigo"><span class="tile__app-icon__glyph" style="--icon-url: url('../../../public/icons/pin.svg')"></span></span><span class="tile__label">Maps</span></div>
+                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--green"><span class="tile__app-icon__glyph" style="--icon-url: url('../../../public/icons/wallet.svg')"></span></span><span class="tile__label">Wallet</span></div>
+                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--amber"><span class="tile__app-icon__glyph" style="--icon-url: url('../../../public/icons/chat.svg')"></span></span><span class="tile__label">Translate</span></div>
+                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--amber"><span class="tile__app-icon__glyph" style="--icon-url: url('../../../public/icons/bell.svg')"></span></span><span class="tile__label">Clock</span></div>
+                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--purple"><span class="tile__app-icon__glyph" style="--icon-url: url('../../../public/icons/chart.svg')"></span></span><span class="tile__label">Calculator</span></div>
+                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--green">F</span><span class="tile__label">Firefox</span></div>
+                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--purple">U</span><span class="tile__label">Uber</span></div>
+                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--orange">W</span><span class="tile__label">Weather</span></div>
+                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--teal">C</span><span class="tile__label">Camera</span></div>
+                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--green"><span class="tile__app-icon__glyph" style="--icon-url: url('../../../public/icons/home.svg')"></span></span><span class="tile__label">Cloud SuperApp</span></div>
+                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--teal">HA</span><span class="tile__label">Home Assistant</span></div>
+                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--teal"><span class="tile__app-icon__glyph" style="--icon-url: url('../../../public/icons/suite.svg')"></span></span><span class="tile__label">Play Store</span></div>
+                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--teal"><span class="tile__app-icon__glyph" style="--icon-url: url('../../../public/icons/suite.svg')"></span></span><span class="tile__label">F-Droid</span></div>
+                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--pink"><span class="tile__app-icon__glyph" style="--icon-url: url('../../../public/icons/settings.svg')"></span></span><span class="tile__label">Settings</span></div>
+                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--purple">GD</span><span class="tile__label">Google Docs</span></div>
+                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--amber">A</span><span class="tile__label">Acode</span></div>
+                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--amber">WB</span><span class="tile__label">WhatsApp Business</span></div>
+                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--amber">G</span><span class="tile__label">Gmail</span></div>
+                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--green">T</span><span class="tile__label">Telegram</span></div>
+                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--purple">I</span><span class="tile__label">Instagram</span></div>
+                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--amber">L</span><span class="tile__label">LinkedIn</span></div>
+                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--purple">W</span><span class="tile__label">WhatsApp</span></div>
+                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--orange">V</span><span class="tile__label">Viber</span></div>
+                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--orange">E</span><span class="tile__label">Element</span></div>
+                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--amber">F</span><span class="tile__label">Facebook</span></div>
+                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--pink">M</span><span class="tile__label">Messenger</span></div>
+                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--amber">R</span><span class="tile__label">Reddit</span></div>
+                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--purple">T</span><span class="tile__label">TikTok</span></div>
+                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--purple">S</span><span class="tile__label">Snapchat</span></div>
+                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--blue">X</span><span class="tile__label">X</span></div>
+                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--purple">P</span><span class="tile__label">Pinterest</span></div>
+                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--pink">Y</span><span class="tile__label">YouTube</span></div>
+                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--blue">YM</span><span class="tile__label">YouTube Music</span></div>
+                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--purple">N</span><span class="tile__label">Netflix</span></div>
+                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--blue">GP</span><span class="tile__label">Google Photos</span></div>
+                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--pink">OC</span><span class="tile__label">Open Camera</span></div>
+                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--amber">O</span><span class="tile__label">OsmAnd</span></div>
+                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--teal">W</span><span class="tile__label">Waze</span></div>
+                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--orange">C</span><span class="tile__label">Citymapper</span></div>
+                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--green">BO</span><span class="tile__label">Bank of America</span></div>
+                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--indigo">R</span><span class="tile__label">Revolut</span></div>
+                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--pink">P</span><span class="tile__label">PayPal</span></div>
+                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--orange">AS</span><span class="tile__label">Amazon Shopping</span></div>
+                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--teal">HN</span><span class="tile__label">Hacker News</span></div>
+                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--pink">S</span><span class="tile__label">Strava</span></div>
+                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--pink">GD</span><span class="tile__label">Google Drive</span></div>
+                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--pink">GS</span><span class="tile__label">Google Sheets</span></div>
+                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--indigo">T</span><span class="tile__label">Termux:API</span></div>
+                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--teal">I</span><span class="tile__label">IceRaven</span></div>
+                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--orange">GA</span><span class="tile__label">Google Authenticator</span></div>
+                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--blue">AA</span><span class="tile__label">Aegis Authenticator</span></div>
+                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--blue">W</span><span class="tile__label">WireGuard</span></div>
+                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--amber">S</span><span class="tile__label">Solitaire</span></div>
+                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--pink">C</span><span class="tile__label">Chess.com</span></div>
+                </div>
+            </section>
+
+            <section class="tile-group">
+                <h2 class="tile-group__title">Top 7 Open <span class="smart-folder__badge">7</span></h2>
+                <div class="tile-grid tile-grid--dense" role="list">
+                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--purple">T</span><span class="tile__label">TikTok</span></div>
+                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--teal"><span class="tile__app-icon__glyph" style="--icon-url: url('../../../public/icons/sparkles.svg')"></span></span><span class="tile__label">Gemini</span></div>
+                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--purple">I</span><span class="tile__label">Instagram</span></div>
+                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--orange"><span class="tile__app-icon__glyph" style="--icon-url: url('../../../public/icons/chat.svg')"></span></span><span class="tile__label">Mattermost</span></div>
+                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--indigo"><span class="tile__app-icon__glyph" style="--icon-url: url('../../../public/icons/pin.svg')"></span></span><span class="tile__label">Maps</span></div>
+                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--amber">G</span><span class="tile__label">Gmail</span></div>
+                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--amber"><span class="tile__app-icon__glyph" style="--icon-url: url('../../../public/icons/sparkles.svg')"></span></span><span class="tile__label">Claude</span></div>
+                </div>
+            </section>
+
+            <section class="tile-group">
+                <h2 class="tile-group__title">Top 7 Battery <span class="smart-folder__badge">7</span></h2>
+                <div class="tile-grid tile-grid--dense" role="list">
+                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--amber"><span class="tile__app-icon__glyph" style="--icon-url: url('../../../public/icons/sparkles.svg')"></span></span><span class="tile__label">Claude</span></div>
+                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--indigo"><span class="tile__app-icon__glyph" style="--icon-url: url('../../../public/icons/code.svg')"></span></span><span class="tile__label">Termux</span></div>
+                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--blue">S</span><span class="tile__label">Signal</span></div>
+                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--orange"><span class="tile__app-icon__glyph" style="--icon-url: url('../../../public/icons/chat.svg')"></span></span><span class="tile__label">Mattermost</span></div>
+                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--purple">W</span><span class="tile__label">WhatsApp</span></div>
+                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--teal"><span class="tile__app-icon__glyph" style="--icon-url: url('../../../public/icons/sparkles.svg')"></span></span><span class="tile__label">Gemini</span></div>
+                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--blue"><span class="tile__app-icon__glyph" style="--icon-url: url('../../../public/icons/browser.svg')"></span></span><span class="tile__label">Brave</span></div>
+                </div>
+            </section>
+
+            <section class="tile-group">
+                <h2 class="tile-group__title">Top 7 Time <span class="smart-folder__badge">7</span></h2>
+                <div class="tile-grid tile-grid--dense" role="list">
+                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--green">T</span><span class="tile__label">Telegram</span></div>
+                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--purple">I</span><span class="tile__label">Instagram</span></div>
+                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--indigo"><span class="tile__app-icon__glyph" style="--icon-url: url('../../../public/icons/code.svg')"></span></span><span class="tile__label">Termux</span></div>
+                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--green"><span class="tile__app-icon__glyph" style="--icon-url: url('../../../public/icons/home.svg')"></span></span><span class="tile__label">Cloud SuperApp</span></div>
+                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--amber"><span class="tile__app-icon__glyph" style="--icon-url: url('../../../public/icons/sparkles.svg')"></span></span><span class="tile__label">Claude</span></div>
+                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--purple">S</span><span class="tile__label">Spotify</span></div>
+                    <div class="tile tile--app tile--inert" role="listitem" aria-disabled="true"><span class="tile__app-icon tile__app-icon--purple">T</span><span class="tile__label">TikTok</span></div>
+                </div>
+            </section>
             </section>
             <footer class="site-footer">
                 <a class="footer-badge" href="https://github.com/diegonmarcos/unix/releases/latest/download/Cloud-SuperApp.apk" download>
@@ -695,14 +695,13 @@
                 </div>
             </div>
             <div class="drawer__separator"></div>
-            <button class="drawer__banner drawer__banner--user" id="drawer-user-banner" type="button">
-                <span class="drawer__avatar" id="drawer-user-avatar">DCM</span>
+            <div class="drawer__banner drawer__banner--user" id="drawer-user-banner">
+                <a class="drawer__avatar" id="drawer-user-avatar" href="/cloud-mobile/config/profile/">DCM</a>
                 <div class="drawer__banner-text">
                     <p class="drawer__title" id="drawer-user-name">Diego Coelho Marcos</p>
                     <p class="drawer__meta" id="drawer-user-email">me@diegonmarcos.com</p>
-                    <p class="drawer__mode"><span id="drawer-user-mode">Mode: Apps</span> <img class="" src="../../../public/icons/refresh.svg" alt=""></p>
                 </div>
-            </button>
+            </div>
             <nav class="drawer__nav" id="drawer-nav"></nav>
         </aside>
 

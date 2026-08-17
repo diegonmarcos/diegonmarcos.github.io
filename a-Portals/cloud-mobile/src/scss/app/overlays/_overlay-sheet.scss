@@ -139,3 +139,24 @@
     background: var(--island-accent);
     width: 40%;
 }
+
+// Update overlay's "checking"/"installing" phases have no real percentage
+// to show — a pulsing bar instead of a static/frozen one, same intent as
+// the page-list skeleton row's shimmer (_content.scss).
+.overlay-sheet__progress-bar--indeterminate {
+    animation: overlay-progress-pulse 1.2s ease-in-out infinite;
+}
+
+@keyframes overlay-progress-pulse {
+    0% {
+        width: 30%;
+    }
+
+    50% {
+        width: 70%;
+    }
+
+    100% {
+        width: 30%;
+    }
+}

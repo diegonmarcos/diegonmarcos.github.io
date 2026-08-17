@@ -14,9 +14,19 @@
 
 import type { PortalData } from '../../lib/core/types';
 
-// Purely a visual demo timing (no real download to track) — see
-// buildUpdateOverlay().
-const UPDATE_DONE_DELAY_MS = 900;
+// Purely visual demo timings (no real download to track) — see
+// buildUpdateOverlay(). Each constant is how long its phase's status text
+// stays on screen before the state machine moves on to the next phase.
+const CHECKING_DELAY_MS = 700;
+const AVAILABLE_DELAY_MS = 500;
+const DOWNLOAD_DURATION_MS = 2500;
+const INSTALLING_DELAY_MS = 800;
+
+// Mock download total + tick cadence for the determinate "downloading"
+// phase's progress text (e.g. "12.3 MiB / 48.0 MiB").
+const DOWNLOAD_TOTAL_MIB = 48.0;
+const DOWNLOAD_TICK_MS = 100;
+const DOWNLOAD_TICK_COUNT = DOWNLOAD_DURATION_MS / DOWNLOAD_TICK_MS;
 
 // Closed state is native [hidden] (JS toggles the attribute), same
 // contract as #radial-menu (see stars.ts + _radial-menu.scss's "Closed
@@ -92,16 +102,14 @@ function buildNotificationCenter(data: PortalData): void {
   const scrim = buildScrim();
   const panel = document.createElement('div');
   panel.className = 'overlay-sheet__panel';
-  panel.appendChild(buildHeader('Notifications'));
+  const header = buildHeader('Notifications');
+  panel.appendChild(header);
 
-  const groups = data.notificationCenter.groups;
-  if (groups && groups.length > 0) {
-    for (const group of groups) panel.appendChild(buildGroup(group));
-  } else {
-    // Bold-ish first line (emptyTitle) + the body below it. emptyBody carries
-    // real \n line breaks and overlay-sheet__empty already has
-    // white-space:pre-line in CSS, so a plain textContent assignment on the
-    // body paragraph is enough — no manual <br> insertion.
+  // Bold-ish first line (emptyTitle) + the body below it. emptyBody carries
+  // real \n line breaks and overlay-sheet__empty already has
+  // white-space:pre-line in CSS, so a plain textContent assignment on the
+  // body paragraph is enough — no manual <br> insertion.
+  function buildEmptyState(): HTMLDivElement {
     const empty = document.createElement('div');
     empty.className = 'overlay-sheet__empty';
     const titleLine = document.createElement('p');
@@ -112,7 +120,29 @@ function buildNotificationCenter(data: PortalData): void {
     bodyLine.textContent = data.notificationCenter.emptyBody;
     empty.appendChild(titleLine);
     empty.appendChild(bodyLine);
-    panel.appendChild(empty);
+    return empty;
+  }
+
+  const groups = data.notificationCenter.groups;
+  if (groups && groups.length > 0) {
+    for (const group of groups) panel.appendChild(buildGroup(group));
+
+    // Violet text action next to the title, matching the APK's Clear
+    // action — clears the rendered groups in place and falls back to the
+    // same empty state shown when there was never anything to clear.
+    const clearBtn = document.createElement('button');
+    clearBtn.type = 'button';
+    clearBtn.className = 'overlay-sheet__action';
+    clearBtn.style.color = '#B794F4';
+    clearBtn.textContent = 'Clear';
+    clearBtn.addEventListener('click', () => {
+      for (const groupEl of panel.querySelectorAll('.overlay-sheet__group')) groupEl.remove();
+      clearBtn.remove();
+      panel.appendChild(buildEmptyState());
+    });
+    header.appendChild(clearBtn);
+  } else {
+    panel.appendChild(buildEmptyState());
   }
 
   root.appendChild(scrim);
@@ -175,25 +205,76 @@ function buildUpdateOverlay(data: PortalData): (() => void) | null {
   root.appendChild(scrim);
   root.appendChild(panel);
 
-  let doneTimer: number | null = null;
+  // Every pending timer/interval from the currently-running mock sequence —
+  // close() (dismiss click, or a fresh opener run) clears all of them so
+  // nothing keeps ticking after the sheet is gone.
+  let pendingTimers: number[] = [];
+
+  const clearPendingTimers = (): void => {
+    for (const id of pendingTimers) {
+      window.clearTimeout(id);
+      window.clearInterval(id);
+    }
+    pendingTimers = [];
+  };
+
+  const setIndeterminate = (on: boolean): void => {
+    progressBar.classList.toggle('overlay-sheet__progress-bar--indeterminate', on);
+  };
 
   const close = (): void => {
-    if (doneTimer !== null) {
-      window.clearTimeout(doneTimer);
-      doneTimer = null;
-    }
+    clearPendingTimers();
     hide(root);
   };
   dismissBtn.addEventListener('click', close);
 
   return (): void => {
-    if (doneTimer !== null) window.clearTimeout(doneTimer);
-    status.textContent = data.updateOverlay.states.checking;
+    clearPendingTimers();
+    dismissBtn.textContent = 'Dismiss';
     show(root);
-    doneTimer = window.setTimeout(() => {
-      status.textContent = data.updateOverlay.states.done;
-      doneTimer = null;
-    }, UPDATE_DONE_DELAY_MS);
+
+    // Phase 1 — checking: indeterminate pulse while we "reach the server".
+    status.textContent = data.updateOverlay.states.checking;
+    setIndeterminate(true);
+
+    const availableTimer = window.setTimeout(() => {
+      // Phase 2 — available: brief pause, bar stays indeterminate.
+      status.textContent = data.updateOverlay.states.available;
+
+      const downloadStartTimer = window.setTimeout(() => {
+        // Phase 3 — downloading: determinate, real-looking MiB/MiB progress.
+        setIndeterminate(false);
+        progressBar.style.width = '0%';
+        let tick = 0;
+        const downloadInterval = window.setInterval(() => {
+          tick += 1;
+          const downloadedMib = (DOWNLOAD_TOTAL_MIB * tick) / DOWNLOAD_TICK_COUNT;
+          const pct = (tick / DOWNLOAD_TICK_COUNT) * 100;
+          progressBar.style.width = `${pct}%`;
+          status.textContent = `${downloadedMib.toFixed(1)} MiB / ${DOWNLOAD_TOTAL_MIB.toFixed(1)} MiB`;
+
+          if (tick >= DOWNLOAD_TICK_COUNT) {
+            window.clearInterval(downloadInterval);
+
+            // Phase 4 — installing: back to indeterminate.
+            setIndeterminate(true);
+            status.textContent = data.updateOverlay.states.installing;
+
+            const doneTimer = window.setTimeout(() => {
+              // Phase 5 — done: determinate, full bar.
+              setIndeterminate(false);
+              progressBar.style.width = '100%';
+              status.textContent = data.updateOverlay.states.done;
+              dismissBtn.textContent = 'Close';
+            }, INSTALLING_DELAY_MS);
+            pendingTimers.push(doneTimer);
+          }
+        }, DOWNLOAD_TICK_MS);
+        pendingTimers.push(downloadInterval);
+      }, AVAILABLE_DELAY_MS);
+      pendingTimers.push(downloadStartTimer);
+    }, CHECKING_DELAY_MS);
+    pendingTimers.push(availableTimer);
   };
 }
 

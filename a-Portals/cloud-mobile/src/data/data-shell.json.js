@@ -20,7 +20,8 @@
     "_doc": "LauncherStatusStripView — real device metrics (RAM/storage/CPU/battery/radio state) with no web equivalent, so left/right clusters are static mock values; the center clock is genuinely live (real Date, updated client-side).",
     "left": [
       { "label": "5G", "active": true }, { "label": "WiFi", "active": true },
-      { "label": "WG", "active": true }, { "label": "KDE", "active": false }, { "label": "BT", "active": true }
+      { "label": "WG", "active": true }, { "label": "KDE", "active": false }, { "label": "BT", "active": true },
+      { "label": "USB", "active": false }
     ],
     "right": [
       { "label": "RAM", "value": "62%" }, { "label": "STO", "value": "48%" },

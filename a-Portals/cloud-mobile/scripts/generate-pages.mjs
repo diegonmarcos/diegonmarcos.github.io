@@ -62,12 +62,12 @@ function computeSmartFolders(apps) {
 }
 function smartFoldersBody(smartFolders, rel) {
   const blocks = smartFolders.map((f) => `
-            <details class="smart-folder">
-                <summary class="smart-folder__summary"><span class="smart-folder__label">${f.label}</span><span class="smart-folder__badge">${f.apps.length}</span></summary>
+            <section class="tile-group">
+                <h2 class="tile-group__title">${f.label} <span class="smart-folder__badge">${f.apps.length}</span></h2>
                 <div class="tile-grid tile-grid--dense" role="list">
                     ${f.apps.map((a) => avatarTileHtml(a.name, rel, null)).join('\n                    ')}
                 </div>
-            </details>`).join('\n');
+            </section>`).join('\n');
   return `<section class="smart-folders">
                 <h2 class="tile-group__title">Smart Folders</h2>${blocks}
             </section>`;
@@ -114,6 +114,14 @@ function hash(str) {
   return h;
 }
 const TILE_COLORS = ['blue', 'green', 'purple', 'pink', 'orange', 'teal', 'amber', 'indigo'];
+// name -> mock-apps.json entry (icon/real), used by appIconHtml below to
+// decide between a real matching glyph and a monogram badge.
+const APP_BY_NAME = new Map(mockData.apps.map((a) => [a.name, a]));
+// First letter of up to the first 2 words, uppercased — "Google Maps" -> "GM",
+// "Slack" -> "S" (only 1 word to take a first letter from).
+function monogram(name) {
+  return name.trim().split(/\s+/).slice(0, 2).map((w) => w.charAt(0).toUpperCase()).join('');
+}
 
 // ── icon + tile markup ──────────────────────────────────────────────────
 function iconImg(icon, rel, cls) {
@@ -133,19 +141,26 @@ function tileHtml(tile, color, rel) {
 // Cloud tab tiles are our own self-hosted services — generic functional
 // icons (mail/calendar/chat) make sense there. Phone tab tiles represent
 // real installed Android apps, which each have a distinct branded icon on a
-// real phone. We can't bundle real trademarked app icons, but showing them
-// as uniform outline icons erases exactly the visual distinction the real
-// app has between "our services" and "your apps" — so these render as a
-// colored initial-letter badge instead, deterministic per name (stable
-// across quickmarks/all, not random), so the grid reads as visually varied
-// like a real app drawer rather than a second copy of the Cloud tab style.
-function appIconHtml(name) {
+// real phone. We can't bundle real trademarked app icons, so most of the
+// 115 mock apps render as an Android-adaptive-icon-style squircle: a color
+// hashed deterministically from the name (stable across quickmarks/all/
+// recentapps, not random) behind a 1-2 letter monogram. The ~26 apps that
+// are our own real cloud services (mock-apps.json `real: true`) already
+// have a distinct, sensible icon in the shared icon set — those keep that
+// icon instead of a monogram, recolored white via CSS mask (an <img>'s
+// currentColor doesn't apply through the element — see .tile__icon's note
+// in _tiles.scss) and centered on the same hashed squircle background.
+function appIconHtml(name, rel) {
   const color = TILE_COLORS[hash(name) % TILE_COLORS.length];
-  const initial = name.charAt(0).toUpperCase();
-  return `<span class="tile__app-icon tile__app-icon--${color}">${initial}</span>`;
+  const app = APP_BY_NAME.get(name);
+  if (app?.real) {
+    const iconUrl = `${rel}public/icons/${app.icon}.svg`;
+    return `<span class="tile__app-icon tile__app-icon--${color}"><span class="tile__app-icon__glyph" style="--icon-url: url('${iconUrl}')"></span></span>`;
+  }
+  return `<span class="tile__app-icon tile__app-icon--${color}">${monogram(name)}</span>`;
 }
 function avatarTileHtml(name, rel, href) {
-  const body = `${appIconHtml(name)}<span class="tile__label">${name}</span>`;
+  const body = `${appIconHtml(name, rel)}<span class="tile__label">${name}</span>`;
   return href
     ? `<a class="tile tile--app" href="${href}" role="listitem">${body}</a>`
     : `<div class="tile tile--app tile--inert" role="listitem" aria-disabled="true">${body}</div>`;
@@ -167,10 +182,13 @@ function cardHtml(card, rel) {
   if (card.kind === 'stats' && card.rows) {
     body = `<div class="stack-card__stats">${card.rows.map(([l, v]) => `<div class="stack-card__stat"><span>${l}</span><b>${v}</b></div>`).join('')}</div>`;
   } else if (card.kind === 'mail_accounts' && card.rows) {
-    // Real: one row per declared account (build.json::ui.mail_accounts) —
-    // unread/total counts are pending a real JMAP/IMAP backend in the real
-    // app too, so a caption explaining that is honest, not a placeholder.
-    body = `<div class="stack-card__stats">${card.rows.map(([l, v]) => `<div class="stack-card__stat"><span>${l}</span><b>${v}</b></div>`).join('')}</div>${caption}`;
+    // Real: one full-width tappable row per declared account (build.json::
+    // ui.mail_accounts) — every row shares the card's own single target
+    // (e.g. "section:mail"), the left side is the account label, the right
+    // side surfaces the raw target string itself. Unread/total counts are
+    // pending a real JMAP/IMAP backend in the real app too, so a caption
+    // explaining that is honest, not a placeholder.
+    body = `${card.rows.map(([l]) => `<a class="stack-card__link-row stack-card__link-row--account" href="${href}"${external ? ' target="_blank" rel="noopener"' : ''}>${l}<span class="stack-card__target">${card.target}</span></a>`).join('')}${caption}`;
   } else if ((card.kind === 'chat_matrix' || card.kind === 'chat_mattermost') && card.linkLabel) {
     // Real: a single "Open Matrix"/"Open Mattermost" row — the real app has
     // no richer server-list content here either.
@@ -223,15 +241,19 @@ function tileGridBody(tiles, rel, colorFn) {
             </div>`;
 }
 
-function groupListBody(groups, rel, footer, footerHref) {
+// strip=true renders each group as a single-row horizontal scroll strip
+// (GroupedTilesFragment's HorizontalScrollView, never wraps) instead of the
+// default wrapping square grid — used only by Suite's Cloud tileGroups.
+function groupListBody(groups, rel, footer, footerHref, strip = false) {
+  const gridCls = strip ? 'tile-grid tile-grid--strip' : 'tile-grid tile-grid--dense';
   const blocks = groups.map((g) => `
             <section class="tile-group">
                 <h2 class="tile-group__title">${g.title}</h2>
-                <div class="tile-grid tile-grid--dense" role="list">
+                <div class="${gridCls}" role="list">
                     ${g.tiles.map((t) => tileHtml(t, 'blue', rel)).join('\n                    ')}
                 </div>
             </section>`).join('\n');
-  const footerHtml = footer && footerHref ? `<a class="footer-link" href="${footerHref}">${footer.label}</a>` : '';
+  const footerHtml = footer && footerHref ? `<a class="tile-group__footer" href="${footerHref}">${iconImg(footer.icon, rel, 'tile-group__footer-icon')}<span>${footer.label}</span></a>` : '';
   return `${blocks}\n            ${footerHtml}`;
 }
 
@@ -246,21 +268,26 @@ function appListBody(groups, rel, footer, footerHref) {
                     ${g.apps.map((a) => avatarTileHtml(a.name, rel, null)).join('\n                    ')}
                 </div>
             </section>`).join('\n');
-  const footerHtml = footer && footerHref ? `<a class="footer-link" href="${footerHref}">${footer.label}</a>` : '';
+  const footerHtml = footer && footerHref ? `<a class="tile-group__footer" href="${footerHref}">${iconImg(footer.icon, rel, 'tile-group__footer-icon')}<span>${footer.label}</span></a>` : '';
   return `${blocks}\n            ${footerHtml}`;
 }
 
-function pageListBody(pages, sectionId, rel) {
-  const items = pages.map((p) => {
+// SectionMenuFragment's section index page — real app: a tile grid of the
+// section's own pages (not a text row list), reusing the same tile markup
+// every other tile grid uses. Each page's own `icon` field if declared,
+// else the parent section's icon; each tile individually tinted from a
+// hash of the page id (not one flat section-wide color).
+function sectionPagesTileGridBody(pages, sectionId, rel) {
+  const sectionIcon = sections[sectionId].icon;
+  const tiles = pages.map((p) => {
     const label = typeof p === 'string' ? p : p.label;
     const id = typeof p === 'string' ? slug(p) : p.id;
-    const override = typeof p === 'object' && p.target ? resolveTarget(p.target) : null;
-    const href = override ? override.href : routeHref([sectionId, id]);
-    return href
-      ? `<a class="page-list__item" href="${href}">${label}</a>`
-      : `<span class="page-list__item page-list__item--inert" aria-disabled="true">${label}</span>`;
-  }).join('\n                ');
-  return `<div class="page-list">
+    const icon = (typeof p === 'object' && p.icon) || sectionIcon;
+    const target = (typeof p === 'object' && p.target) || `page:${sectionId}/${id}`;
+    return { id, label, icon, target };
+  });
+  const items = tiles.map((t) => tileHtml(t, TILE_COLORS[hash(t.id) % TILE_COLORS.length], rel)).join('\n                ');
+  return `<div class="tile-grid" role="list">
                 ${items}
             </div>`;
 }
@@ -313,11 +340,41 @@ function qrCardHtml(block) {
                     ${block.caption ? `<p class="qrcard__caption">${block.caption}</p>` : ''}
                 </div>`;
 }
+// A row's opts (the 3rd array element) may additionally carry:
+//   { control: "switch", on: true|false }              — checkbox toggle
+//   { control: "range", value, min, max }               — numeric slider
+//   { control: "perm", granted: true|false }             — grant/ask button
+// Rows without a `control` render exactly as before (label/value, plus the
+// existing `active` badge behavior) — fully backward compatible.
 function settingsListBody(rows) {
   const items = rows.map((row) => {
     if (Array.isArray(row)) {
       const [label, value, opts] = row;
       const active = opts?.active;
+      if (opts?.control === 'switch') {
+        return `
+                <div class="settings-list__row settings-list__row--control">
+                    <span class="settings-list__label">${label}</span>
+                    <input class="settings-list__switch" type="checkbox" aria-label="${label}"${opts.on ? ' checked' : ''} disabled>
+                </div>`;
+      }
+      if (opts?.control === 'range') {
+        const min = opts.min ?? 0;
+        const max = opts.max ?? 100;
+        return `
+                <div class="settings-list__row settings-list__row--control">
+                    <span class="settings-list__label">${label}</span>
+                    <input class="settings-list__range" type="range" aria-label="${label}" min="${min}" max="${max}" value="${opts.value}" disabled>
+                </div>`;
+      }
+      if (opts?.control === 'perm') {
+        const granted = opts.granted;
+        return `
+                <div class="settings-list__row settings-list__row--control">
+                    <span class="settings-list__label">${label}</span>
+                    <button class="perm-btn${granted ? '' : ' perm-btn--needs-action'}" type="button" disabled>${value}</button>
+                </div>`;
+      }
       return `
                 <div class="settings-list__row${active ? ' settings-list__row--active' : ''}">
                     <span class="settings-list__label">${label}</span>
@@ -329,6 +386,10 @@ function settingsListBody(rows) {
                 <div class="settings-list__group">${row.group}</div>`;
     }
     if (row.type === 'qrcard') return qrCardHtml(row);
+    if (row.type === 'permActions') {
+      return `
+                <div class="perm-btn-grid">${row.buttons.map((b) => `<button class="perm-btn${b.granted ? '' : ' perm-btn--needs-action'}" type="button" disabled>${b.label}</button>`).join('')}</div>`;
+    }
     return '';
   }).join('');
   return `<div class="settings-list">${items}
@@ -339,15 +400,45 @@ function settingsListBody(rows) {
 // content (title/subtitle/meta) so every leaf page has believable real-shaped
 // content instead of a shimmer placeholder, without needing a bespoke
 // renderer per content type.
-function itemListBody(items) {
-  const rows = items.map((it) => `
+// item_page_row's 4dp x 36dp colored accent bar, leading every row — color
+// deterministically hashed from (pageId + row index), reusing the same
+// hash() helper appIconHtml uses for its squircle backgrounds, just over
+// its own 8-color palette instead of TILE_COLORS.
+const ITEM_ACCENT_COLORS = ['#1565C0', '#2E7D32', '#6A1B9A', '#C2185B', '#EF6C00', '#00695C', '#B28704', '#283593'];
+function itemListBody(items, pageId, sectionId) {
+  // c3/health carries structured fleet-status fields (dot/domainPublic/
+  // domainPrivate/vm) instead of the generic meta string — render its own
+  // status-dot + domain-column row shape. Every other page (c3's other
+  // pages included) keeps the generic accent-bar row.
+  if (sectionId === 'c3' && pageId === 'health') {
+    const rows = items.map((it) => `
+                <div class="item-list__row item-list__row--c3">
+                    <span class="item-list__dot item-list__dot--${it.dot}" aria-hidden="true"></span>
+                    <div class="item-list__text">
+                        <span class="item-list__title">${it.title}</span>
+                        <span class="item-list__subtitle">${it.subtitle}</span>
+                    </div>
+                    <div class="item-list__domain">
+                        <span>${it.domainPublic}</span>
+                        <span class="item-list__domain-private">${it.domainPrivate}</span>
+                    </div>
+                    <span class="item-list__meta">${it.vm}</span>
+                </div>`).join('');
+    return `<div class="item-list">${rows}
+            </div>`;
+  }
+  const rows = items.map((it, i) => {
+    const color = ITEM_ACCENT_COLORS[hash(`${pageId}:${i}`) % ITEM_ACCENT_COLORS.length];
+    return `
                 <div class="item-list__row">
+                    <span class="item-list__accent" style="background:${color}" aria-hidden="true"></span>
                     <div class="item-list__text">
                         <span class="item-list__title">${it.title}</span>
                         ${it.subtitle ? `<span class="item-list__subtitle">${it.subtitle}</span>` : ''}
                     </div>
                     ${it.meta ? `<span class="item-list__meta">${it.meta}</span>` : ''}
-                </div>`).join('');
+                </div>`;
+  }).join('');
   return `<div class="item-list">${rows}
             </div>`;
 }
@@ -410,10 +501,18 @@ function constellationBody(data) {
 
 // ── the home cube — Home3DFragment's real centerpiece, CSS 3D transforms ─
 function homeCubeHtml() {
-  const face = (cls) => `<div class="home-cube__face home-cube__face--${cls}"></div>`;
+  const edges = [
+    'xtf', 'xtb', 'xbf', 'xbb',
+    'yfl', 'yfr', 'ybl', 'ybr',
+    'ztl', 'ztr', 'zbl', 'zbr',
+  ];
+  const dots = ['tfl', 'tfr', 'tbl', 'tbr', 'bfl', 'bfr', 'bbl', 'bbr'];
+  const edge = (cls) => `<div class="home-cube__edge home-cube__edge--${cls}"></div>`;
+  const dot = (cls) => `<div class="home-cube__dot home-cube__dot--${cls}"></div>`;
   return `<div class="home-cube" aria-hidden="true">
                 <div class="home-cube__inner">
-                    ${['front', 'back', 'right', 'left', 'top', 'bottom'].map(face).join('\n                    ')}
+                    ${edges.map(edge).join('\n                    ')}
+                    ${dots.map(dot).join('\n                    ')}
                 </div>
             </div>`;
 }
@@ -538,7 +637,7 @@ function renderShell({ title, sectionId, depth, bodyHtml, backHref }) {
         ${sectionId === 'home' ? homeCubeHtml() : ''}
 
         <button class="star star--sirius" id="star-sirius" type="button" aria-label="Open menu">✦</button>
-        <button class="star star--canopus" id="star-canopus" type="button" aria-label="Quick configs">${iconImg('settings', rel, 'star__icon')}</button>
+        <button class="star star--canopus" id="star-canopus" type="button" aria-label="Quick configs">✦</button>
         <button class="star star--centauri" id="star-centauri" type="button" aria-label="Recent apps">✦</button>
 
         <button class="icon-btn icon-btn--hamburger" id="hamburger-btn" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="drawer">
@@ -564,7 +663,7 @@ function renderShell({ title, sectionId, depth, bodyHtml, backHref }) {
 
         <main class="content" id="content">
             ${bodyHtml}
-            ${footerHtml(rel)}
+            ${sectionId === 'home' ? '' : footerHtml(rel)}
         </main>
 
         <nav class="bottom-nav" id="bottom-nav" aria-label="Primary">
@@ -581,14 +680,13 @@ function renderShell({ title, sectionId, depth, bodyHtml, backHref }) {
                 </div>
             </div>
             <div class="drawer__separator"></div>
-            <button class="drawer__banner drawer__banner--user" id="drawer-user-banner" type="button">
-                <span class="drawer__avatar" id="drawer-user-avatar">DCM</span>
+            <div class="drawer__banner drawer__banner--user" id="drawer-user-banner">
+                <a class="drawer__avatar" id="drawer-user-avatar" href="${routeHref(['config', 'profile'])}">DCM</a>
                 <div class="drawer__banner-text">
                     <p class="drawer__title" id="drawer-user-name">Diego Coelho Marcos</p>
                     <p class="drawer__meta" id="drawer-user-email">me@diegonmarcos.com</p>
-                    <p class="drawer__mode"><span id="drawer-user-mode">Mode: Apps</span> ${iconImg('refresh', rel, '')}</p>
                 </div>
-            </button>
+            </div>
             <nav class="drawer__nav" id="drawer-nav"></nav>
         </aside>
 
@@ -673,25 +771,25 @@ for (const id of ['communication', 'infos', 'tools']) {
 
   write(['suite'], s.label, 'suite',
     cloudPhoneTabs('quickmarks', 'cloud', rel1) + '\n            ' +
-    groupListBody(s.cloud.tileGroups, rel1, s.cloud.footer, routeHref(['suite', 'cloud', 'all'])), routeHref([]));
+    groupListBody(s.cloud.tileGroups, rel1, s.cloud.footer, routeHref(['suite', 'cloud', 'all']), true), routeHref([]));
 
   write(['suite', 'cloud', 'quickmarks'], 'Suite · Cloud', 'suite',
     cloudPhoneTabs('quickmarks', 'cloud', rel3) + '\n            ' +
-    groupListBody(s.cloud.tileGroups, rel3, s.cloud.footer, routeHref(['suite', 'cloud', 'all'])), routeHref([]));
+    groupListBody(s.cloud.tileGroups, rel3, s.cloud.footer, routeHref(['suite', 'cloud', 'all']), true), routeHref([]));
   // Cloud's "all" (real app: action:open_suite_cloud_all, full-screen push of
   // the same tile_groups with no tab chrome) has no larger real-data universe
   // to reveal than quickmarks — unlike Phone, there's no bigger "installed
   // cloud services" list to pad out, so this reuses the same tileGroups.
   write(['suite', 'cloud', 'all'], 'Suite · Cloud · All', 'suite',
-    groupListBody(s.cloud.tileGroups, rel3, null), routeHref(['suite']));
+    groupListBody(s.cloud.tileGroups, rel3, null, null, true), routeHref(['suite']));
 
   write(['suite', 'phone', 'quickmarks'], 'Suite · Phone', 'suite',
     cloudPhoneTabs('quickmarks', 'phone', rel3) + '\n            ' +
     appListBody(phoneGroupsFromMockData(true), rel3, s.phone.footer, routeHref(['suite', 'phone', 'all'])), routeHref([]));
   write(['suite', 'phone', 'all'], 'Suite · Phone · All', 'suite',
     cloudPhoneTabs('all', 'phone', rel3) + '\n            ' +
-    smartFoldersBody(computeSmartFolders(mockData.apps), rel3) + '\n            ' +
-    topicalFoldersBody(mockData.apps, mockData.phoneFolders, rel3), routeHref(['suite']));
+    topicalFoldersBody(mockData.apps, mockData.phoneFolders, rel3) + '\n            ' +
+    smartFoldersBody(computeSmartFolders(mockData.apps), rel3), routeHref(['suite']));
 }
 
 // Content-only sections. Config carries real settings rows; everything else
@@ -699,7 +797,7 @@ for (const id of ['communication', 'infos', 'tools']) {
 for (const id of ['mail', 'rss', 'calendar', 'drive', 'vault', 'chat', 'wg', 'solutions', 'apptabs', 'myfin', 'health', 'wallet', 'config', 'c3', 'browser']) {
   const s = sections[id];
   const rel1 = relPrefix(1);
-  write([id], s.label, id, pageListBody(s.pages, id, rel1), routeHref([]));
+  write([id], s.label, id, sectionPagesTileGridBody(s.pages, id, rel1), routeHref([]));
 
   const rel2 = relPrefix(2);
   for (const p of s.pages) {
@@ -721,11 +819,11 @@ for (const id of ['mail', 'rss', 'calendar', 'drive', 'vault', 'chat', 'wg', 'so
       const parts = [];
       if (p.tiles) parts.push(tileGridBody(p.tiles, rel2, () => s.color));
       if (p.stack) parts.push(stackBody(p.stack, rel2));
-      if (p.items) parts.push(itemListBody(p.items));
+      if (p.items) parts.push(itemListBody(p.items, pid, id));
       inner = parts.join('\n            ');
     }
     else if (typeof p === 'object' && p.rows) inner = settingsListBody(p.rows);
-    else if (typeof p === 'object' && p.items) inner = itemListBody(p.items);
+    else if (typeof p === 'object' && p.items) inner = itemListBody(p.items, pid, id);
     else inner = skeletonBody();
     write([id, pid], `${s.label} · ${label}`, id, tabs + inner, routeHref([id]));
   }
@@ -739,7 +837,7 @@ for (const id of ['mail', 'rss', 'calendar', 'drive', 'vault', 'chat', 'wg', 'so
 {
   const toolsSection = sections.tools;
   for (const p of toolsSection.pages ?? []) {
-    write(['tools', p.id], `${toolsSection.label} · ${p.label}`, 'tools', itemListBody(p.items), routeHref(['tools']));
+    write(['tools', p.id], `${toolsSection.label} · ${p.label}`, 'tools', itemListBody(p.items, p.id, 'tools'), routeHref(['tools']));
   }
 }
 

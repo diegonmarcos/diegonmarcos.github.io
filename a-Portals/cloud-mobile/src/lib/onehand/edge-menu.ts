@@ -12,6 +12,13 @@ const SWIPE_THRESHOLD_PX = 24;
 const ARC_RADIUS_PX = 130;
 const ARC_SPREAD_DEG = 45;
 const DEAD_ZONE_PX = 20;
+// Dual-mode gesture split (matches stars.ts / the real Android app): a quick
+// tap on the edge handle — releases within TAP_MAX_MS of pointerdown and
+// never travels past TAP_MAX_MOVE_PX — opens that sector's arc PERSISTENTLY
+// instead of requiring the inward swipe. The existing inward-swipe-past-
+// SWIPE_THRESHOLD_PX drag-to-open-and-select gesture is untouched.
+const TAP_MAX_MS = 300;
+const TAP_MAX_MOVE_PX = 10;
 const FLASH_MS = 220;
 const ARROW_HEAD_LENGTH_PX = 10;
 const ARROW_HEAD_ANGLE_RAD = Math.PI / 7;
@@ -94,6 +101,13 @@ export function initEdgeMenu(data: PortalData): void {
   shellEl.appendChild(menuEl);
 
   let isOpen = false;
+  // Persistent mode: entered by a quick tap on the edge handle (see
+  // TAP_MAX_MS/TAP_MAX_MOVE_PX above) instead of an inward swipe-drag. The
+  // arc stays open after release; hovering highlights a node (reusing the
+  // same .is-highlighted class the swipe-drag path already toggles via
+  // setHighlight()) and a click/tap on a node activates it through the same
+  // commitIndex() path the swipe-release commit already uses.
+  let persistent = false;
   let originX = 0;
   let originY = 0;
   let currentItems: ArcItem[] = [];
@@ -117,8 +131,13 @@ export function initEdgeMenu(data: PortalData): void {
     if (next) next.classList.add('is-highlighted');
   }
 
+  function enterPersistentMode(): void {
+    persistent = true;
+  }
+
   function closeMenu(): void {
     isOpen = false;
+    persistent = false;
     currentItems = [];
     currentAngles = [];
     nodeEls = [];
@@ -246,6 +265,7 @@ export function initEdgeMenu(data: PortalData): void {
     let pointerId: number | null = null;
     let startX = 0;
     let startY = 0;
+    let startTime = 0;
     let opened = false;
 
     sectorEl.addEventListener('pointerdown', (e) => {
@@ -254,6 +274,7 @@ export function initEdgeMenu(data: PortalData): void {
       pointerId = e.pointerId;
       startX = e.clientX;
       startY = e.clientY;
+      startTime = Date.now();
       opened = false;
       sectorEl.setPointerCapture(e.pointerId);
     });
@@ -281,7 +302,25 @@ export function initEdgeMenu(data: PortalData): void {
       if (pointerId === null || e.pointerId !== pointerId) return;
       if (sectorEl.hasPointerCapture(pointerId)) sectorEl.releasePointerCapture(pointerId);
       pointerId = null;
-      if (!opened || !isOpen) return;
+      if (!opened) {
+        // Never crossed SWIPE_THRESHOLD_PX — this wasn't an inward-swipe
+        // drag. A quick tap/click still opens the arc, just persistently
+        // (see enterPersistentMode()) instead of via drag-release commit.
+        // No real swipe direction exists yet, so the arc opens along the
+        // handle's own inward axis (left handle -> pointing right into the
+        // screen, right handle -> pointing left), matching what an actual
+        // inward swipe from this edge would have produced.
+        const elapsedMs = Date.now() - startTime;
+        const totalMovePx = Math.hypot(e.clientX - startX, e.clientY - startY);
+        if (elapsedMs > TAP_MAX_MS || totalMovePx > TAP_MAX_MOVE_PX) return;
+        const items = arcItemsFor(handle.sectors, key);
+        if (items.length === 0) return;
+        const inwardAngle = handle.edge === 'left' ? 0 : Math.PI;
+        openArc(sectorEl, items, inwardAngle);
+        enterPersistentMode();
+        return;
+      }
+      if (!isOpen) return;
       if (Math.hypot(e.clientX - originX, e.clientY - originY) < DEAD_ZONE_PX) {
         closeMenu();
         return;
@@ -311,11 +350,33 @@ export function initEdgeMenu(data: PortalData): void {
 
   config.handles.forEach((handle) => buildHandle(handle));
 
+  // Persistent-mode hover highlight — same setHighlight()/.is-highlighted
+  // path the swipe-drag gesture already drives via updateHighlightFromPointer(),
+  // just triggered by plain pointer movement over a node instead of an
+  // active drag. No-op while a swipe-drag is in progress (that path already
+  // owns highlighting via its own pointermove listener on the sector).
+  menuEl.addEventListener('pointermove', (e) => {
+    if (!isOpen || !persistent) return;
+    const target = e.target;
+    if (!(target instanceof HTMLElement)) return;
+    const nodeEl = target.closest<HTMLElement>('.edge-menu__node');
+    if (!nodeEl) return;
+    const index = Number(nodeEl.dataset.index);
+    if (!Number.isNaN(index)) setHighlight(index);
+  });
+
   menuEl.addEventListener('click', (e) => {
     if (!isOpen) return;
     const target = e.target;
     if (!(target instanceof HTMLElement)) return;
-    if (target.closest('.edge-menu__scrim')) closeMenu();
+    if (target.closest('.edge-menu__scrim')) {
+      closeMenu();
+      return;
+    }
+    const nodeEl = target.closest<HTMLElement>('.edge-menu__node');
+    if (!nodeEl) return;
+    const index = Number(nodeEl.dataset.index);
+    if (!Number.isNaN(index)) commitIndex(index);
   });
 
   document.addEventListener('keydown', (e) => {

@@ -1,20 +1,20 @@
 // src/app/launcher/drawer.ts — slide-in nav drawer.
 //
 // The real Android app's drawer (HomeDrawerFragment) is a single
-// NavigationView list, never tabs: a prepend row ("Home Apps"), then
-// build.json's ui.home_groups rendered as titled submenus. Only the first
-// group ("Home": Inboxes/Infos/Suite/Labs/Configs) is a plain nav list —
-// the rest (Suite/Labs/Configs quick-tiles, 4 Linktree slides) are
-// horizontal-scroll tile strips, a distinct pattern not yet replicated here.
-// When a "Home" group tile is `section:X` and that section declares
-// .pages, each page renders as an indented child row directly beneath it
-// (real: "      └─── {label}"). This module only populates and wires the
-// drawer markup the generated HTML shell already contains (see
-// scripts/generate-pages.mjs); it never creates that markup itself, and it
-// never navigates on its own — every link it builds is a real <a href>.
+// NavigationView list, never tabs, and never horizontal strips: a prepend
+// row ("Home Apps"), then build.json's ui.home_groups rendered as titled
+// submenus, one continuous dense vertical list — Home, Suite, Labs,
+// Configs, and each Linktree group in turn. When a group's tile is
+// `section:X` and that section declares .pages, each page renders as an
+// indented child row directly beneath it (real: "      └─── {label}").
+// This module only populates and wires the drawer markup the generated
+// HTML shell already contains (see scripts/generate-pages.mjs); it never
+// creates that markup itself, and it never navigates on its own — every
+// link it builds is a real <a href>.
 
 import type { PageEntry, PortalData, Section } from '../../lib/core/types';
 import { resolveTarget, routeHref } from '../../lib/core/nav';
+import { getLinktree } from '../../lib/core/data';
 import { initLongPressMenu } from './long-press-menu';
 
 // The shared script.js runs unmodified on every page regardless of nesting
@@ -72,34 +72,12 @@ function buildGroupTitle(title: string): HTMLElement {
   return el;
 }
 
-const MODE_STORAGE_KEY = 'cloud-mobile-mode';
-
-// The real app's user banner is tappable to flip a persistent Apps/Admin
-// mode. This site doesn't (yet) render separate admin content per section,
-// but the toggle affordance itself — tap, flip, persist across visits — is
-// part of the real UI and is replicated faithfully here rather than left as
-// a dead button.
-function readMode(fallback: string): string {
-  try {
-    return window.localStorage.getItem(MODE_STORAGE_KEY) ?? fallback;
-  } catch {
-    return fallback;
-  }
-}
-
-function writeMode(mode: string): void {
-  try {
-    window.localStorage.setItem(MODE_STORAGE_KEY, mode);
-  } catch {
-    /* localStorage unavailable (private mode, etc.) — mode just won't persist */
-  }
-}
-
-// onModeChange fires after the persisted mode actually flips, so callers
-// (initDrawer) can re-render anything mode-dependent — namely the drawer's
-// own nav links (see fillDrawerList's admin-variant href below) — without a
-// page reload. This site stays MPA: only the <a href>s change, no redirect.
-function fillBanner(data: PortalData, onModeChange: () => void): void {
+// Real app: mode switching (Apps/Admin) now lives in per-section tabs, not
+// the drawer's user banner — the banner is display-only except for the
+// avatar, which is a plain link to the profile/config page (see
+// scripts/generate-pages.mjs's drawer markup, where it's already a real
+// <a href>; nothing to wire here).
+function fillBanner(data: PortalData): void {
   const setText = (id: string, text: string): void => {
     const el = document.getElementById(id);
     if (!el) return;
@@ -110,34 +88,73 @@ function fillBanner(data: PortalData, onModeChange: () => void): void {
   setText('drawer-user-avatar', data.app.user.initials);
   setText('drawer-user-name', data.app.user.name);
   setText('drawer-user-email', data.app.user.email);
+}
 
-  const modeEl = document.getElementById('drawer-user-mode');
-  const bannerBtn = document.getElementById('drawer-user-banner');
-  if (!modeEl || !bannerBtn) return;
+// A plain row descriptor shared by every group below (Suite/Labs/Configs/
+// Linktree tiles all reduce to this same {label, icon?, href} shape before
+// becoming a row).
+interface RowItem {
+  label: string;
+  icon?: string;
+  href: string | null;
+}
 
-  let mode = readMode(data.app.user.mode);
-  modeEl.textContent = `Mode: ${mode}`;
+// Suite's own home-group tiles all just point back at section:suite (see
+// suite.tiles in sections-content.json) — the real per-app shortcuts live
+// one level down, in the Cloud tab's tileGroups, which is what the real
+// app's Suite group actually lists.
+function suiteRowItems(data: PortalData): RowItem[] {
+  const groups = data.sections['suite']?.cloud?.tileGroups ?? [];
+  return groups
+    .flatMap((group) => group.tiles)
+    .map((tile) => ({ label: tile.label, icon: tile.icon, href: resolveTarget(tile.target).href }));
+}
 
-  bannerBtn.addEventListener('click', () => {
-    mode = mode === 'Apps' ? 'Admin' : 'Apps';
-    writeMode(mode);
-    modeEl.textContent = `Mode: ${mode}`;
-    onModeChange();
+function labsRowItems(data: PortalData): RowItem[] {
+  const tiles = data.sections['tools']?.tiles ?? [];
+  return tiles.map((tile) => ({ label: tile.label, icon: tile.icon, href: resolveTarget(tile.target).href }));
+}
+
+// Configs has no .tiles of its own (only .pages) — same href derivation as
+// the Home group's own Configs child rows below, minus the indentation:
+// this is a separate, later "Configs" group in the same continuous list
+// (deliberate duplication that mirrors the real app's own home_groups).
+function configRowItems(data: PortalData): RowItem[] {
+  const section = data.sections['config'];
+  if (!section?.pages) return [];
+  return section.pages.map((page) => {
+    const label = typeof page === 'string' ? page : page.label;
+    const pageId = typeof page === 'string' ? slugify(page) : page.id;
+    const href = typeof page === 'object' && page.target
+      ? resolveTarget(page.target).href
+      : routeHref(['config', pageId]);
+    return { label, icon: section.icon, href };
   });
 }
 
+function linktreeRowGroups(): [string, RowItem[]][] {
+  return getLinktree().groups.map((group) => [
+    group.label,
+    group.tiles.map((tile) => ({ label: tile.label, icon: tile.icon, href: tile.href ?? null })),
+  ]);
+}
+
+// Appends a group title + its rows, unless the group has no rows at all —
+// mirrors the old strip-building guard (skip the whole group, title
+// included, when empty).
+function appendGroup(container: HTMLElement, title: string, items: RowItem[]): void {
+  if (items.length === 0) return;
+  container.appendChild(buildGroupTitle(title));
+  items.forEach((item) => container.appendChild(buildNavRow(item.href, item.label, item.icon)));
+}
+
 // Real app: HomeDrawerFragment prepends build.json's ui.home_drawer_prepend
-// (one entry: "Home Apps") above the first titled group, then renders
-// ui.home_groups as submenus. Only home_groups[0] ("Home") is a plain nav
-// list; the rest are horizontal-scroll tile strips — a different pattern,
-// not yet built here. "Home" itself is deliberately excluded (self-
-// referential on a page reached from Home), matching how the real list
-// never contains a tile back to itself either.
-// mode is 'Apps' | 'Admin' (see readMode/writeMode) — sections that declare
-// both .apps and .admin (TabbedSectionFragment: communication/infos/tools)
-// have a real generated .../admin/ page (see generate-pages.mjs's
-// tabbedSectionBody); everything else only ever has the one plain page.
-function fillDrawerList(container: HTMLElement, data: PortalData, mode: string): void {
+// (one entry: "Home Apps") above the first titled group, then renders every
+// ui.home_groups entry — Home, Suite, Labs, Configs, and each Linktree
+// group — as one continuous dense vertical list, never tabs or horizontal
+// strips. "Home" itself is deliberately excluded from the Home group's own
+// rows (self-referential on a page reached from Home).
+function fillDrawerList(container: HTMLElement, data: PortalData): void {
   container.innerHTML = '';
 
   const homeApps = data.longPress['home']?.find((item) => item.id === 'home-apps');
@@ -151,8 +168,7 @@ function fillDrawerList(container: HTMLElement, data: PortalData, mode: string):
   groupIds.forEach((id) => {
     const section: Section | undefined = data.sections[id];
     if (!section) return;
-    const href = section.admin && mode === 'Admin' ? routeHref([id, 'admin']) : routeHref([id]);
-    container.appendChild(buildNavRow(href, section.label, section.icon));
+    container.appendChild(buildNavRow(routeHref([id]), section.label, section.icon));
 
     // Real app: when a "Home" group tile is `section:X` and that section
     // declares .pages, each page renders as an indented child row directly
@@ -166,135 +182,11 @@ function fillDrawerList(container: HTMLElement, data: PortalData, mode: string):
       container.appendChild(buildNavRow(href, label, undefined, true));
     });
   });
-}
 
-// ── Suite / Labs / Configs / Linktree horizontal-scroll tile strips ──────
-//
-// Real app: build.json's ui.home_groups entries other than "Home" (Suite,
-// Labs, Configs quick-tiles, plus Linktree slides) render as horizontal-
-// scroll tile strips below the plain nav list, not more nav rows. This
-// reuses whatever section data those groups already surface on the web
-// side rather than a separate strip-specific dataset.
-interface StripItem {
-  label: string;
-  icon?: string;
-  href: string | null;
-}
-
-// linktree isn't part of PortalData's declared shape yet — another agent
-// may add it to shell/sections data later. Read it defensively so this
-// module degrades to "render nothing" until (if ever) that lands.
-interface LinktreeTile {
-  label: string;
-  icon?: string;
-  href?: string;
-}
-interface LinktreeGroup {
-  id: string;
-  label: string;
-  tiles: LinktreeTile[];
-}
-
-function getLinktreeGroups(data: PortalData): LinktreeGroup[] {
-  const linktree = (data as unknown as { linktree?: { groups?: LinktreeGroup[] } }).linktree;
-  return linktree?.groups ?? [];
-}
-
-function buildStripTile(item: StripItem): HTMLElement {
-  let el: HTMLElement;
-  if (item.href) {
-    const anchor = document.createElement('a');
-    anchor.href = item.href;
-    el = anchor;
-  } else {
-    el = document.createElement('span');
-  }
-  el.classList.add('drawer__strip-tile');
-  if (!item.href) {
-    el.classList.add('drawer__strip-tile--inert');
-    el.setAttribute('aria-disabled', 'true');
-  }
-
-  if (item.icon) {
-    const iconEl = document.createElement('img');
-    iconEl.src = iconSrc(item.icon);
-    iconEl.alt = '';
-    el.appendChild(iconEl);
-  }
-
-  const labelEl = document.createElement('span');
-  labelEl.textContent = item.label;
-  el.appendChild(labelEl);
-
-  return el;
-}
-
-function buildTileStrip(title: string, items: StripItem[]): HTMLElement | null {
-  if (items.length === 0) return null;
-  const wrap = document.createElement('div');
-  wrap.className = 'drawer__strip';
-  wrap.appendChild(buildGroupTitle(title));
-
-  const track = document.createElement('div');
-  track.className = 'drawer__strip-track';
-  items.forEach((item) => track.appendChild(buildStripTile(item)));
-  wrap.appendChild(track);
-
-  return wrap;
-}
-
-// Suite's own home-group tiles all just point back at section:suite (see
-// suite.tiles in sections-content.json) — the real per-app shortcuts live
-// one level down, in the Cloud tab's tileGroups, which is what the real
-// app's Suite strip actually shows.
-function suiteStripItems(data: PortalData): StripItem[] {
-  const groups = data.sections['suite']?.cloud?.tileGroups ?? [];
-  return groups
-    .flatMap((group) => group.tiles)
-    .map((tile) => ({ label: tile.label, icon: tile.icon, href: resolveTarget(tile.target).href }));
-}
-
-function labsStripItems(data: PortalData): StripItem[] {
-  const tiles = data.sections['tools']?.tiles ?? [];
-  return tiles.map((tile) => ({ label: tile.label, icon: tile.icon, href: resolveTarget(tile.target).href }));
-}
-
-// Configs has no .tiles of its own (only .pages) — same href derivation as
-// fillDrawerList's own child rows above, minus the indentation, since here
-// each page is its own strip tile rather than a nested nav row.
-function configStripItems(data: PortalData): StripItem[] {
-  const section = data.sections['config'];
-  if (!section?.pages) return [];
-  return section.pages.map((page) => {
-    const label = typeof page === 'string' ? page : page.label;
-    const pageId = typeof page === 'string' ? slugify(page) : page.id;
-    const href = typeof page === 'object' && page.target
-      ? resolveTarget(page.target).href
-      : routeHref(['config', pageId]);
-    return { label, icon: section.icon, href };
-  });
-}
-
-function fillDrawerStrips(host: HTMLElement, data: PortalData): void {
-  const strips: [string, StripItem[]][] = [
-    ['Suite', suiteStripItems(data)],
-    ['Labs', labsStripItems(data)],
-    ['Configs', configStripItems(data)],
-  ];
-  strips.forEach(([title, items]) => {
-    const strip = buildTileStrip(title, items);
-    if (strip) host.appendChild(strip);
-  });
-
-  getLinktreeGroups(data).forEach((group) => {
-    const items: StripItem[] = group.tiles.map((tile) => ({
-      label: tile.label,
-      icon: tile.icon,
-      href: tile.href ?? null,
-    }));
-    const strip = buildTileStrip(group.label, items);
-    if (strip) host.appendChild(strip);
-  });
+  appendGroup(container, 'Suite', suiteRowItems(data));
+  appendGroup(container, 'Labs', labsRowItems(data));
+  appendGroup(container, 'Configs', configRowItems(data));
+  linktreeRowGroups().forEach(([title, items]) => appendGroup(container, title, items));
 }
 
 // Open/close mechanics. Note: the Sirius star no longer opens the drawer —
@@ -328,15 +220,9 @@ function wireOpenClose(): void {
 
 export function initDrawer(data: PortalData): void {
   const navEl = document.getElementById('drawer-nav');
-  const drawerEl = document.getElementById('drawer');
 
-  const refreshNav = (): void => {
-    if (navEl) fillDrawerList(navEl, data, readMode(data.app.user.mode));
-  };
-
-  fillBanner(data, refreshNav);
-  refreshNav();
-  if (drawerEl) fillDrawerStrips(drawerEl, data);
+  fillBanner(data);
+  if (navEl) fillDrawerList(navEl, data);
 
   wireOpenClose();
   initLongPressMenu();

@@ -22,7 +22,7 @@
     <div class="shell is-home">
         <div class="status-strip">
             <div class="status-strip__row">
-                <div class="status-strip__cluster status-strip__cluster--left"><span class="status-strip__chip is-active">5G</span><span class="status-strip__chip is-active">WiFi</span><span class="status-strip__chip is-active">WG</span><span class="status-strip__chip">KDE</span><span class="status-strip__chip is-active">BT</span></div>
+                <div class="status-strip__cluster status-strip__cluster--left"><span class="status-strip__chip is-active">5G</span><span class="status-strip__chip is-active">WiFi</span><span class="status-strip__chip is-active">WG</span><span class="status-strip__chip">KDE</span><span class="status-strip__chip is-active">BT</span><span class="status-strip__chip">USB</span></div>
                 <div class="status-strip__camera" aria-hidden="true"></div>
                 <div class="status-strip__cluster status-strip__cluster--right"><span class="status-strip__chip">RAM 62%</span><span class="status-strip__chip">STO 48%</span><span class="status-strip__chip">CPU 17%</span><span class="status-strip__chip">BAT 84%</span></div>
             </div>
@@ -31,17 +31,31 @@
         <div class="galaxy-backdrop" aria-hidden="true"></div>
         <div class="home-cube" aria-hidden="true">
                 <div class="home-cube__inner">
-                    <div class="home-cube__face home-cube__face--front"></div>
-                    <div class="home-cube__face home-cube__face--back"></div>
-                    <div class="home-cube__face home-cube__face--right"></div>
-                    <div class="home-cube__face home-cube__face--left"></div>
-                    <div class="home-cube__face home-cube__face--top"></div>
-                    <div class="home-cube__face home-cube__face--bottom"></div>
+                    <div class="home-cube__edge home-cube__edge--xtf"></div>
+                    <div class="home-cube__edge home-cube__edge--xtb"></div>
+                    <div class="home-cube__edge home-cube__edge--xbf"></div>
+                    <div class="home-cube__edge home-cube__edge--xbb"></div>
+                    <div class="home-cube__edge home-cube__edge--yfl"></div>
+                    <div class="home-cube__edge home-cube__edge--yfr"></div>
+                    <div class="home-cube__edge home-cube__edge--ybl"></div>
+                    <div class="home-cube__edge home-cube__edge--ybr"></div>
+                    <div class="home-cube__edge home-cube__edge--ztl"></div>
+                    <div class="home-cube__edge home-cube__edge--ztr"></div>
+                    <div class="home-cube__edge home-cube__edge--zbl"></div>
+                    <div class="home-cube__edge home-cube__edge--zbr"></div>
+                    <div class="home-cube__dot home-cube__dot--tfl"></div>
+                    <div class="home-cube__dot home-cube__dot--tfr"></div>
+                    <div class="home-cube__dot home-cube__dot--tbl"></div>
+                    <div class="home-cube__dot home-cube__dot--tbr"></div>
+                    <div class="home-cube__dot home-cube__dot--bfl"></div>
+                    <div class="home-cube__dot home-cube__dot--bfr"></div>
+                    <div class="home-cube__dot home-cube__dot--bbl"></div>
+                    <div class="home-cube__dot home-cube__dot--bbr"></div>
                 </div>
             </div>
 
         <button class="star star--sirius" id="star-sirius" type="button" aria-label="Open menu">✦</button>
-        <button class="star star--canopus" id="star-canopus" type="button" aria-label="Quick configs"><img class="star__icon" src="./public/icons/settings.svg" alt=""></button>
+        <button class="star star--canopus" id="star-canopus" type="button" aria-label="Quick configs">✦</button>
         <button class="star star--centauri" id="star-centauri" type="button" aria-label="Recent apps">✦</button>
 
         <button class="icon-btn icon-btn--hamburger" id="hamburger-btn" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="drawer">
@@ -67,69 +81,7 @@
 
         <main class="content" id="content">
             
-            <footer class="site-footer">
-                <a class="footer-badge" href="https://github.com/diegonmarcos/unix/releases/latest/download/Cloud-SuperApp.apk" download>
-                    <img class="footer-badge__icon" src="./public/icons/play-badge.svg" alt="">
-                    <span class="footer-badge__text">
-                        <span class="footer-badge__label">Cloud SuperApp</span>
-                        <span class="footer-badge__sub">Download APK · arm64</span>
-                    </span>
-                </a>
-                <div class="footer-constellation">
-                    <a class="footer-chip" href="https://github.com/diegonmarcos/unix/releases/latest/download/cloud-comms-mail.apk" download>
-                        <span class="footer-chip__icon-wrap"><img class="footer-chip__icon" src="./public/icons/mail.svg" alt=""></span>
-                        <span class="footer-chip__label">Mail</span>
-                    </a>
-                    <a class="footer-chip" href="https://github.com/diegonmarcos/unix/releases/latest/download/cloud-comms-chat.apk" download>
-                        <span class="footer-chip__icon-wrap"><img class="footer-chip__icon" src="./public/icons/chat.svg" alt=""></span>
-                        <span class="footer-chip__label">Chat</span>
-                    </a>
-                    <a class="footer-chip" href="https://github.com/diegonmarcos/unix/releases/latest/download/cloud-comms-matrix.apk" download>
-                        <span class="footer-chip__icon-wrap"><img class="footer-chip__icon" src="./public/icons/chat.svg" alt=""></span>
-                        <span class="footer-chip__label">Messenger</span>
-                    </a>
-                    <a class="footer-chip" href="https://github.com/diegonmarcos/unix/releases/latest/download/cloud-comms-dialer.apk" download>
-                        <span class="footer-chip__icon-wrap"><img class="footer-chip__icon" src="./public/icons/phone.svg" alt=""></span>
-                        <span class="footer-chip__label">Dialer</span>
-                    </a>
-                    <a class="footer-chip" href="https://github.com/diegonmarcos/unix/releases/latest/download/Cloud-IDE-Hub.apk" download>
-                        <span class="footer-chip__icon-wrap"><img class="footer-chip__icon" src="./public/icons/code.svg" alt=""></span>
-                        <span class="footer-chip__label">IDE</span>
-                    </a>
-                    <a class="footer-chip" href="https://github.com/diegonmarcos/unix/releases/latest/download/Cloud-Nav.apk" download>
-                        <span class="footer-chip__icon-wrap"><img class="footer-chip__icon" src="./public/icons/mesh.svg" alt=""></span>
-                        <span class="footer-chip__label">Nav</span>
-                    </a>
-                    <a class="footer-chip" href="https://github.com/diegonmarcos/unix/releases/latest/download/Cloud-Calendar.apk" download>
-                        <span class="footer-chip__icon-wrap"><img class="footer-chip__icon" src="./public/icons/calendar.svg" alt=""></span>
-                        <span class="footer-chip__label">Calendar</span>
-                    </a>
-                    <a class="footer-chip" href="https://github.com/diegonmarcos/unix/releases/latest/download/Cloud-News.apk" download>
-                        <span class="footer-chip__icon-wrap"><img class="footer-chip__icon" src="./public/icons/rss.svg" alt=""></span>
-                        <span class="footer-chip__label">News</span>
-                    </a>
-                    <a class="footer-chip" href="https://github.com/diegonmarcos/unix/releases/latest/download/Cloud-Keyboard.apk" download>
-                        <span class="footer-chip__icon-wrap"><img class="footer-chip__icon" src="./public/icons/tools.svg" alt=""></span>
-                        <span class="footer-chip__label">Keyboard</span>
-                    </a>
-                    <a class="footer-chip" href="https://github.com/diegonmarcos/unix/releases/latest/download/Cloud-Wallet.apk" download>
-                        <span class="footer-chip__icon-wrap"><img class="footer-chip__icon" src="./public/icons/wallet.svg" alt=""></span>
-                        <span class="footer-chip__label">Wallet</span>
-                    </a>
-                    <a class="footer-chip" href="https://github.com/diegonmarcos/unix/releases/latest/download/Cloud-Browser.apk" download>
-                        <span class="footer-chip__icon-wrap"><img class="footer-chip__icon" src="./public/icons/browser.svg" alt=""></span>
-                        <span class="footer-chip__label">Browser</span>
-                    </a>
-                    <a class="footer-chip" href="https://github.com/diegonmarcos/unix/releases/latest/download/Cloud-Vault.apk" download>
-                        <span class="footer-chip__icon-wrap"><img class="footer-chip__icon" src="./public/icons/lock.svg" alt=""></span>
-                        <span class="footer-chip__label">Vault</span>
-                    </a>
-                    <a class="footer-chip" href="https://github.com/diegonmarcos/unix/releases/latest/download/cloud-media-center.apk" download>
-                        <span class="footer-chip__icon-wrap"><img class="footer-chip__icon" src="./public/icons/music.svg" alt=""></span>
-                        <span class="footer-chip__label">Media</span>
-                    </a>
-                </div>
-            </footer>
+            
         </main>
 
         <nav class="bottom-nav" id="bottom-nav" aria-label="Primary">
@@ -150,14 +102,13 @@
                 </div>
             </div>
             <div class="drawer__separator"></div>
-            <button class="drawer__banner drawer__banner--user" id="drawer-user-banner" type="button">
-                <span class="drawer__avatar" id="drawer-user-avatar">DCM</span>
+            <div class="drawer__banner drawer__banner--user" id="drawer-user-banner">
+                <a class="drawer__avatar" id="drawer-user-avatar" href="/cloud-mobile/config/profile/">DCM</a>
                 <div class="drawer__banner-text">
                     <p class="drawer__title" id="drawer-user-name">Diego Coelho Marcos</p>
                     <p class="drawer__meta" id="drawer-user-email">me@diegonmarcos.com</p>
-                    <p class="drawer__mode"><span id="drawer-user-mode">Mode: Apps</span> <img class="" src="./public/icons/refresh.svg" alt=""></p>
                 </div>
-            </button>
+            </div>
             <nav class="drawer__nav" id="drawer-nav"></nav>
         </aside>
 

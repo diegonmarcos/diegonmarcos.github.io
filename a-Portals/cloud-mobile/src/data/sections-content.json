@@ -246,12 +246,12 @@
           { "title": "Grafana", "subtitle": "Metrics dashboards", "meta": "running" }
         ]},
         { "id": "health", "label": "Health", "items": [
-          { "title": "gcp-proxy", "subtitle": "WireGuard hub · private", "meta": "OK" },
-          { "title": "gcp-t4", "subtitle": "GPU worker · x86_64", "meta": "OK" },
-          { "title": "oci-mail", "subtitle": "maddy + stalwart", "meta": "OK" },
-          { "title": "oci-analytics", "subtitle": "public edge · x86_64", "meta": "OK" },
-          { "title": "oci-apps", "subtitle": "docker host · aarch64", "meta": "WARN" },
-          { "title": "oci-apps-2", "subtitle": "docker host · aarch64", "meta": "OK" }
+          { "title": "gcp-proxy", "subtitle": "WireGuard hub · private", "dot": "ok", "domainPublic": "—", "domainPrivate": "10.0.0.1", "vm": "2 vCPU · 4 GB · x86_64" },
+          { "title": "gcp-t4", "subtitle": "GPU worker · x86_64", "dot": "ok", "domainPublic": "—", "domainPrivate": "10.0.0.2", "vm": "4 vCPU · 16 GB · x86_64" },
+          { "title": "oci-mail", "subtitle": "maddy + stalwart", "dot": "ok", "domainPublic": "mail.diegonmarcos.com", "domainPrivate": "10.0.0.3", "vm": "2 vCPU · 8 GB · x86_64" },
+          { "title": "oci-analytics", "subtitle": "public edge · x86_64", "dot": "ok", "domainPublic": "grafana.diegonmarcos.com", "domainPrivate": "10.0.0.4", "vm": "4 vCPU · 24 GB · x86_64" },
+          { "title": "oci-apps", "subtitle": "docker host · aarch64", "dot": "warn", "domainPublic": "—", "domainPrivate": "10.0.0.5", "vm": "4 vCPU · 24 GB · aarch64" },
+          { "title": "oci-apps-2", "subtitle": "docker host · aarch64", "dot": "ok", "domainPublic": "—", "domainPrivate": "10.0.0.6", "vm": "4 vCPU · 24 GB · aarch64" }
         ]},
         { "id": "workflows", "label": "Workflows", "items": [
           { "title": "nightly-report-gate", "subtitle": "Dagu DAG · CRITICAL-only", "meta": "success" },
@@ -399,19 +399,19 @@
           ["Work", "separate work profile"],
           ["Guest", "browser-only, WG off"],
           { "group": "Toggles" },
-          ["Pets animation", "On"],
-          ["Cube animation", "On"],
-          ["Cube interactive", "Off"],
-          ["Island animation", "On"],
-          ["Stars animation", "On"],
-          ["Live status", "On"],
-          ["Haptics", "On"],
-          ["Eye protection", "Off"],
-          ["Star twinkle", "On"],
-          ["Fleet check", "On"],
+          ["Pets animation", "On", { "control": "switch", "on": true }],
+          ["Cube animation", "On", { "control": "switch", "on": true }],
+          ["Cube interactive", "Off", { "control": "switch", "on": false }],
+          ["Island animation", "On", { "control": "switch", "on": true }],
+          ["Stars animation", "On", { "control": "switch", "on": true }],
+          ["Live status", "On", { "control": "switch", "on": true }],
+          ["Haptics", "On", { "control": "switch", "on": true }],
+          ["Eye protection", "Off", { "control": "switch", "on": false }],
+          ["Star twinkle", "On", { "control": "switch", "on": true }],
+          ["Fleet check", "On", { "control": "switch", "on": true }],
           { "group": "Sliders" },
-          ["Brightness", "80%"],
-          ["Screensaver timeout", "5 min"]
+          ["Brightness", "80%", { "control": "range", "value": 80, "min": 0, "max": 100 }],
+          ["Screensaver timeout", "5 min", { "control": "range", "value": 5, "min": 1, "max": 30 }]
         ] },
         { "id": "import", "label": "Import", "target": "action:import_configs" },
         { "id": "keyboard", "label": "Keyboard", "target": "extapp:cloud-keyboard" },
@@ -471,7 +471,16 @@
           ["Phone", "Ask"],
           { "group": "Roles" },
           ["Default phone app", "Held"],
-          ["Spam filter (call screening)", "Held"]
+          ["Spam filter (call screening)", "Held"],
+          { "group": "Actions" },
+          { "type": "permActions", "buttons": [
+            { "label": "Grant Health Perms", "granted": false },
+            { "label": "Set Notif. (read)", "granted": false },
+            { "label": "Notif. Access", "granted": true },
+            { "label": "Usage Access", "granted": true },
+            { "label": "All Files", "granted": false },
+            { "label": "Overlay", "granted": true }
+          ] }
         ] },
         { "id": "about", "label": "About", "rows": [["Version", "1.0.0"], ["Build", "cloud-mobile · web"], ["Source", "ea_cloud-superapp"]] }
       ]

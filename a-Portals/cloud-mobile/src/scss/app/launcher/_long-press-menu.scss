@@ -1,7 +1,7 @@
 @use '../../mixins' as *;
 
 // ==========================================================================
-// Long-press context menu — app-tile PopupMenu (Open/App info/Pin/Add to Home)
+// Long-press context menu — app-tile PopupMenu (header / App info / Uninstall)
 // ==========================================================================
 
 .long-press-menu-scrim {
@@ -47,6 +47,24 @@
     transition: opacity var(--duration-fade) ease;
 }
 
+// Bold app-label header — identifies which tile the popup below belongs
+// to, not a control (AppLongPressMenu.kt's title row).
+.long-press-menu__header {
+    padding: 8px 12px 6px;
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--text-primary);
+}
+
+.long-press-menu__divider {
+    height: 1px;
+    margin: 4px 6px;
+    background: var(--glass-border);
+}
+
+// App info / Uninstall both read as normal, enabled menu rows (both are
+// real actions on the APK) — [aria-disabled] here only marks them inert
+// for a11y/no-op purposes, it never dims or greys the row out.
 .long-press-menu__row {
     all: unset;
     box-sizing: border-box;
@@ -56,27 +74,16 @@
     font-size: 13px;
     color: var(--text-primary);
     cursor: pointer;
+    transition: background var(--duration-press-up) ease-out;
 }
 
 .long-press-menu__row:hover {
     background: var(--glass-border);
 }
 
-.long-press-menu__row--inert {
-    opacity: .45;
-    cursor: default;
-    pointer-events: none;
-}
-
-// Pinned-star badge — toggled onto a `.tile` by long-press-menu.ts, no
-// re-layout involved. `.tile` needs position:relative for this to anchor
-// (added alongside it in _tiles.scss).
-.tile__pin-badge {
-    position: absolute;
-    top: 4px;
-    right: 4px;
-    font-size: 10px;
-    line-height: 1;
-    color: gold;
-    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.4);
+// Brief press flash on ACTION_DOWN, same idea as tile_press.xml — reads as
+// a real, responsive row even though the click itself is a no-op.
+.long-press-menu__row:active {
+    background: var(--glass-border);
+    transition: background var(--duration-press-down) ease-out;
 }

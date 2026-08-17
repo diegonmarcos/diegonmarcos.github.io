@@ -71,7 +71,6 @@
 
 .drawer__banner--user {
     background: var(--drawer-banner-user);
-    cursor: pointer;
 }
 
 .drawer__banner-icon {
@@ -111,24 +110,7 @@
     font-weight: 700;
     font-size: 13px;
     flex-shrink: 0;
-}
-
-.drawer__mode {
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    margin-top: 2px;
-    font-size: 11px;
-    font-family: monospace;
-    color: var(--drawer-banner-text);
-    opacity: .85;
-}
-
-.drawer__mode img {
-    width: 14px;
-    height: 14px;
-    filter: brightness(0) invert(1);
-    opacity: .8;
+    cursor: pointer;
 }
 
 .drawer__nav {
@@ -139,17 +121,19 @@
 }
 
 .drawer__nav-item {
-    @include flex-row(flex-start, center, 14px);
+    @include flex-row(flex-start, center, 10px);
     width: 100%;
-    padding: 10px 12px;
+    padding: 2px 12px;
+    min-height: 16px;
     border-radius: 12px;
     color: var(--text-primary);
-    font-size: 14px;
+    font-size: var(--drawer-dense-font-size, 12px);
+    line-height: var(--drawer-dense-line-height, 14px);
 }
 
 .drawer__nav-item img {
-    width: 20px;
-    height: 20px;
+    width: 18px;
+    height: 18px;
     opacity: .85;
     filter: brightness(0) invert(1);
 }
@@ -183,56 +167,5 @@
 // per-page icons where sections declare one.
 .drawer__nav-item--child {
     padding-left: 34px;
-    font-size: var(--drawer-dense-font-size);
-    line-height: var(--drawer-dense-line-height);
     color: var(--drawer-dense-color);
-}
-
-// Horizontal-scroll tile strips (Suite / Labs / Configs / Linktree groups)
-// — the real app's HomeDrawerFragment renders these below the plain "Home"
-// nav list for every other home_groups entry. Small square glass tiles,
-// scroll-snapped, distinct from the full-size home-screen `.tile` grid.
-.drawer__strip {
-    padding-bottom: 4px;
-}
-
-.drawer__strip-track {
-    display: flex;
-    gap: 8px;
-    padding: 4px 12px 6px;
-    overflow-x: auto;
-    scroll-snap-type: x proximity;
-}
-
-.drawer__strip-tile {
-    @include flex-center;
-    flex-direction: column;
-    flex: 0 0 auto;
-    gap: 4px;
-    width: 72px;
-    min-height: 72px;
-    padding: 8px 4px;
-    border-radius: var(--glass-tile-radius);
-    border: var(--glass-tile-border);
-    background-color: var(--drawer-banner-app);
-    background-image: var(--glass-icon-gradient);
-    color: var(--drawer-banner-text);
-    text-align: center;
-    scroll-snap-align: start;
-}
-
-.drawer__strip-tile img {
-    width: 20px;
-    height: 20px;
-    filter: brightness(0) invert(1);
-    opacity: .9;
-}
-
-.drawer__strip-tile span:last-child {
-    font-size: 10px;
-    line-height: 1.2;
-}
-
-.drawer__strip-tile--inert {
-    opacity: .5;
 }

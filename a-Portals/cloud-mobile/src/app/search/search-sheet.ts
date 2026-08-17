@@ -97,6 +97,11 @@ export function initSearchSheet(data: PortalData): void {
     { title: 'Configs', rows: collectConfigs(data) },
   ];
 
+  // All 3 scopes start active — chips only narrow the result set, they
+  // never hide anything on first open. The last active chip can't be
+  // switched off, so at least one scope is always visible (see toggle()).
+  const activeScopes = new Set(groupSources.map((source) => source.title));
+
   const root = document.createElement('div');
   root.className = 'search-sheet';
   root.id = 'search-sheet';
@@ -116,6 +121,40 @@ export function initSearchSheet(data: PortalData): void {
   input.placeholder = 'Search apps & content';
   input.autocomplete = 'off';
   panel.appendChild(input);
+
+  const chips = document.createElement('div');
+  chips.className = 'search-sheet__chips';
+  const chipEls = groupSources.map((source) => {
+    const chip = document.createElement('button');
+    chip.type = 'button';
+    chip.className = 'search-sheet__chip';
+    chip.textContent = source.title;
+    chip.addEventListener('click', () => toggleScope(source.title));
+    chips.appendChild(chip);
+    return { title: source.title, el: chip };
+  });
+  panel.appendChild(chips);
+
+  function renderChips(): void {
+    for (const chip of chipEls) {
+      chip.el.classList.toggle('is-active', activeScopes.has(chip.title));
+    }
+  }
+
+  // Refuses to deactivate the last active chip — at least one scope must
+  // always stay on, matching the APK's SearchSheetFragment behavior.
+  function toggleScope(title: string): void {
+    if (activeScopes.has(title)) {
+      if (activeScopes.size === 1) return;
+      activeScopes.delete(title);
+    } else {
+      activeScopes.add(title);
+    }
+    renderChips();
+    render(input.value);
+  }
+
+  renderChips();
 
   const results = document.createElement('div');
   results.className = 'search-sheet__results';
@@ -139,6 +178,7 @@ export function initSearchSheet(data: PortalData): void {
     if (!q) return;
 
     const groups: ResultGroup[] = groupSources
+      .filter((source) => activeScopes.has(source.title))
       .map((source) => ({ title: source.title, rows: source.rows.filter((row) => matches(row, q)) }))
       .filter((group) => group.rows.length > 0);
 
@@ -189,6 +229,7 @@ export function initSearchSheet(data: PortalData): void {
     const q = input.value.trim().toLowerCase();
     if (!q) return;
     const groups: ResultGroup[] = groupSources
+      .filter((source) => activeScopes.has(source.title))
       .map((source) => ({ title: source.title, rows: source.rows.filter((row) => matches(row, q)) }))
       .filter((group) => group.rows.length > 0);
     const href = firstResultHref(groups);

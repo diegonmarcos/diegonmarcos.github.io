@@ -17,6 +17,7 @@ import { initStackCards } from './launcher/stack-cards';
 import { initCalendarPopup } from './cloud/calendar-popup';
 import { initCalendarMonthCards } from './cloud/calendar-month-card';
 import { initSearchSheet } from './search/search-sheet';
+import { initGalaxyBackdrop } from './ui/galaxy-backdrop';
 
 // document.currentScript is only valid synchronously while this script is
 // the one executing — capture it now, before any async boundary, for use
@@ -55,6 +56,7 @@ function initApp(): void {
   initCalendarPopup();
   initCalendarMonthCards();
   initSearchSheet(data);
+  initGalaxyBackdrop();
 }
 
 document.addEventListener('DOMContentLoaded', () => {

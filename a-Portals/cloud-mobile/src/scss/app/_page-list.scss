@@ -9,14 +9,22 @@
 }
 
 .page-list__item {
-    display: block;
+    display: flex;
+    align-items: center;
     padding: 14px 16px;
     border-radius: 12px;
     color: var(--text-primary);
     font-size: 15px;
-    text-decoration: none;
-    background: var(--glass-bg);
-    border: 1px solid var(--glass-border);
+    background: var(--glass-liquid-gradient);
+    border: var(--glass-liquid-border);
+}
+
+// SectionMenuFragment sets an 18dp leading icon on every page row.
+.page-list__icon {
+    width: 18px;
+    height: 18px;
+    margin-right: 8px;
+    flex-shrink: 0;
 }
 
 .page-list__item + .page-list__item {
@@ -49,8 +57,19 @@
     gap: 10px;
     padding: 12px 14px;
     border-radius: 12px;
-    background: var(--glass-bg);
-    border: 1px solid var(--glass-border);
+    background: var(--glass-liquid-gradient);
+    border: var(--glass-liquid-border);
+}
+
+// item_page_row's 4dp x 36dp colored accent bar, leading every row — color
+// hashed from (pageId + row index) over a fixed 8-color palette, see
+// itemListBody() / ACCENT_COLORS in generate-pages.mjs.
+.item-list__accent {
+    width: 4px;
+    height: 36px;
+    border-radius: 2px;
+    flex-shrink: 0;
+    margin-right: 2px;
 }
 
 .item-list__text {
@@ -82,4 +101,43 @@
     font-size: 11px;
     font-family: monospace;
     flex-shrink: 0;
+}
+
+// ==========================================================================
+// c3/health's status-dot row variant — dot + text + a 2-line domain column
+// + the vm spec, instead of the generic accent bar + single meta chip.
+// ==========================================================================
+
+.item-list__row--c3 {
+    gap: 8px;
+}
+
+.item-list__dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    flex-shrink: 0;
+}
+
+.item-list__dot--ok {
+    background: #48BB78;
+}
+
+.item-list__dot--warn {
+    background: #ED8936;
+}
+
+.item-list__domain {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    align-items: flex-end;
+    flex-shrink: 0;
+}
+
+.item-list__domain-private {
+    font-family: monospace;
+    font-size: 10px;
+    color: var(--text-secondary);
+    opacity: .55;
 }

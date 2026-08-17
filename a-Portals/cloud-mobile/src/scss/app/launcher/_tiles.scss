@@ -4,36 +4,44 @@
 // Tiles — home screen tile grid
 // ==========================================================================
 
+// display:grid + auto-fill (NOT auto-fit — auto-fit stretches whatever
+// tracks are present to fill the row whenever a grid has fewer tiles than
+// fit a row, which is exactly what turned tiles into full-width "cards";
+// auto-fill keeps the empty tracks so tiles stay pinned to their intended
+// small width even when a group only has 2-3 items) — an Android
+// app-drawer grid of small square tiles, ~4 columns at a 390px phone
+// viewport, ~6+ on wider screens.
 .tile-grid {
-    @include grid-auto-fit(84px, 8px);
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(86px, 1fr));
+    gap: 8px;
     padding: 2px;
 }
 
-// 128dp is the real app's default tile height (item_tile.xml) — only the
-// weight-based grouped grids (Suite's dense variant below) shrink it.
-//
 // border-radius/border here use the --glass-tile-* tokens (Android
 // bg_glass_tile.xml) — this supersedes --radius-tile for tiles specifically;
 // --radius-tile is left untouched for anything else still referencing it.
 // Background stays per-variant below (pastel colors kept as-is; only
 // .tile--app, the colorless app-grid tile, takes the full glass gradient —
 // see _content-blocks.scss).
+//
+// aspect-ratio keeps the tile square-ish regardless of the grid column
+// width the auto-fill track resolves to (was a fixed min-height, which let
+// tiles run wide/short instead of square once the grid stopped stretching
+// them — see .tile-grid above).
 .tile {
     position: relative;
     @include flex-center;
     flex-direction: column;
     gap: 6px;
-    min-height: 128px;
+    aspect-ratio: 1;
     border-radius: var(--glass-tile-radius);
     padding: 10px 6px;
     border: var(--glass-tile-border);
+    overflow: hidden;
     // Release (ACTION_UP/CANCEL) leg of tile_press.xml — the base rule wins
     // once :active is no longer matched, so this is what plays on release.
     transition: transform var(--duration-press-up) ease-out;
-}
-
-.tile-grid--dense .tile {
-    min-height: 96px;
 }
 
 // Press (ACTION_DOWN) leg of tile_press.xml — scale 1 → 0.92 over 80ms.
@@ -51,10 +59,15 @@
 }
 
 .tile__label {
-    font-size: 12px;
+    font-size: 11px;
     font-weight: 500;
     text-align: center;
     line-height: 1.2;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    overflow: hidden;
+    width: 100%;
 }
 
 .tile--blue {

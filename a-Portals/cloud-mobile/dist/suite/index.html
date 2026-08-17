@@ -22,7 +22,7 @@
     <div class="shell">
         <div class="status-strip">
             <div class="status-strip__row">
-                <div class="status-strip__cluster status-strip__cluster--left"><span class="status-strip__chip is-active">5G</span><span class="status-strip__chip is-active">WiFi</span><span class="status-strip__chip is-active">WG</span><span class="status-strip__chip">KDE</span><span class="status-strip__chip is-active">BT</span></div>
+                <div class="status-strip__cluster status-strip__cluster--left"><span class="status-strip__chip is-active">5G</span><span class="status-strip__chip is-active">WiFi</span><span class="status-strip__chip is-active">WG</span><span class="status-strip__chip">KDE</span><span class="status-strip__chip is-active">BT</span><span class="status-strip__chip">USB</span></div>
                 <div class="status-strip__camera" aria-hidden="true"></div>
                 <div class="status-strip__cluster status-strip__cluster--right"><span class="status-strip__chip">RAM 62%</span><span class="status-strip__chip">STO 48%</span><span class="status-strip__chip">CPU 17%</span><span class="status-strip__chip">BAT 84%</span></div>
             </div>
@@ -32,7 +32,7 @@
         
 
         <button class="star star--sirius" id="star-sirius" type="button" aria-label="Open menu">✦</button>
-        <button class="star star--canopus" id="star-canopus" type="button" aria-label="Quick configs"><img class="star__icon" src="../public/icons/settings.svg" alt=""></button>
+        <button class="star star--canopus" id="star-canopus" type="button" aria-label="Quick configs">✦</button>
         <button class="star star--centauri" id="star-centauri" type="button" aria-label="Recent apps">✦</button>
 
         <button class="icon-btn icon-btn--hamburger" id="hamburger-btn" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="drawer">
@@ -64,7 +64,7 @@
             
             <section class="tile-group">
                 <h2 class="tile-group__title">AI</h2>
-                <div class="tile-grid tile-grid--dense" role="list">
+                <div class="tile-grid tile-grid--strip" role="list">
                     <div class="tile tile--blue tile--inert" role="listitem" aria-disabled="true"><img class="tile__icon" src="../public/icons/robot.svg" alt=""><span class="tile__label">AI-Tlg-Hermes</span></div>
                     <div class="tile tile--blue tile--inert" role="listitem" aria-disabled="true"><img class="tile__icon" src="../public/icons/robot.svg" alt=""><span class="tile__label">AI-Tlg-Goose</span></div>
                     <div class="tile tile--blue tile--inert" role="listitem" aria-disabled="true"><img class="tile__icon" src="../public/icons/sparkles.svg" alt=""><span class="tile__label">AI-Tmx</span></div>
@@ -74,7 +74,7 @@
 
             <section class="tile-group">
                 <h2 class="tile-group__title">Communications</h2>
-                <div class="tile-grid tile-grid--dense" role="list">
+                <div class="tile-grid tile-grid--strip" role="list">
                     <div class="tile tile--blue tile--inert" role="listitem" aria-disabled="true"><img class="tile__icon" src="../public/icons/mail.svg" alt=""><span class="tile__label">Mail</span></div>
                     <div class="tile tile--blue tile--inert" role="listitem" aria-disabled="true"><img class="tile__icon" src="../public/icons/chat.svg" alt=""><span class="tile__label">Chat (Mattermost)</span></div>
                     <div class="tile tile--blue tile--inert" role="listitem" aria-disabled="true"><img class="tile__icon" src="../public/icons/chat.svg" alt=""><span class="tile__label">Messenger (Element)</span></div>
@@ -85,7 +85,7 @@
 
             <section class="tile-group">
                 <h2 class="tile-group__title">Data Apps</h2>
-                <div class="tile-grid tile-grid--dense" role="list">
+                <div class="tile-grid tile-grid--strip" role="list">
                     <div class="tile tile--blue tile--inert" role="listitem" aria-disabled="true"><img class="tile__icon" src="../public/icons/calendar.svg" alt=""><span class="tile__label">Calendar</span></div>
                     <div class="tile tile--blue tile--inert" role="listitem" aria-disabled="true"><img class="tile__icon" src="../public/icons/rss.svg" alt=""><span class="tile__label">News</span></div>
                     <div class="tile tile--blue tile--inert" role="listitem" aria-disabled="true"><img class="tile__icon" src="../public/icons/user.svg" alt=""><span class="tile__label">Contacts</span></div>
@@ -99,7 +99,7 @@
 
             <section class="tile-group">
                 <h2 class="tile-group__title">Tools Primary</h2>
-                <div class="tile-grid tile-grid--dense" role="list">
+                <div class="tile-grid tile-grid--strip" role="list">
                     <div class="tile tile--blue tile--inert" role="listitem" aria-disabled="true"><img class="tile__icon" src="../public/icons/browser.svg" alt=""><span class="tile__label">Browser</span></div>
                     <a class="tile tile--blue" href="/cloud-mobile/apptabs/grid/" role="listitem"><img class="tile__icon" src="../public/icons/suite.svg" alt=""><span class="tile__label">Tabs</span></a>
                     <div class="tile tile--blue tile--inert" role="listitem" aria-disabled="true"><img class="tile__icon" src="../public/icons/wallet.svg" alt=""><span class="tile__label">Wallet</span></div>
@@ -110,14 +110,14 @@
 
             <section class="tile-group">
                 <h2 class="tile-group__title">Tools Dashboards</h2>
-                <div class="tile-grid tile-grid--dense" role="list">
+                <div class="tile-grid tile-grid--strip" role="list">
                     <a class="tile tile--blue" href="https://paca.diegonmarcos.com" target="_blank" rel="noopener" role="listitem"><img class="tile__icon" src="../public/icons/briefcase.svg" alt=""><span class="tile__label">PM Boards</span></a>
                     <a class="tile tile--blue" href="/cloud-mobile/myfin/dashboard/" role="listitem"><img class="tile__icon" src="../public/icons/chart.svg" alt=""><span class="tile__label">MyFin</span></a>
                     <a class="tile tile--blue" href="/cloud-mobile/health/summary/" role="listitem"><img class="tile__icon" src="../public/icons/heart.svg" alt=""><span class="tile__label">MyHealth</span></a>
                     <a class="tile tile--blue" href="https://diegonmarcos.github.io/my-data/" target="_blank" rel="noopener" role="listitem"><img class="tile__icon" src="../public/icons/database.svg" alt=""><span class="tile__label">MyData</span></a>
                 </div>
             </section>
-            <a class="footer-link" href="/cloud-mobile/suite/cloud/all/">More</a>
+            <a class="tile-group__footer" href="/cloud-mobile/suite/cloud/all/"><img class="tile-group__footer-icon" src="../public/icons/more.svg" alt=""><span>More</span></a>
             <footer class="site-footer">
                 <a class="footer-badge" href="https://github.com/diegonmarcos/unix/releases/latest/download/Cloud-SuperApp.apk" download>
                     <img class="footer-badge__icon" src="../public/icons/play-badge.svg" alt="">
@@ -201,14 +201,13 @@
                 </div>
             </div>
             <div class="drawer__separator"></div>
-            <button class="drawer__banner drawer__banner--user" id="drawer-user-banner" type="button">
-                <span class="drawer__avatar" id="drawer-user-avatar">DCM</span>
+            <div class="drawer__banner drawer__banner--user" id="drawer-user-banner">
+                <a class="drawer__avatar" id="drawer-user-avatar" href="/cloud-mobile/config/profile/">DCM</a>
                 <div class="drawer__banner-text">
                     <p class="drawer__title" id="drawer-user-name">Diego Coelho Marcos</p>
                     <p class="drawer__meta" id="drawer-user-email">me@diegonmarcos.com</p>
-                    <p class="drawer__mode"><span id="drawer-user-mode">Mode: Apps</span> <img class="" src="../public/icons/refresh.svg" alt=""></p>
                 </div>
-            </button>
+            </div>
             <nav class="drawer__nav" id="drawer-nav"></nav>
         </aside>
 

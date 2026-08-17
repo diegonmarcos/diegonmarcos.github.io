@@ -232,5 +232,59 @@
     transition: background 0.15s;
 
     &:hover { background: rgba(255,255,255,0.1); }
+
+    // Currently-selected item (the active theme).
+    &.active { background: rgba(255,255,255,0.16); }
+}
+
+// Collapsible child menu — a parent row that expands a nested list.
+.hamburger-submenu {
+    display: flex;
+    flex-direction: column;
+
+    &__children {
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
+        max-height: 0;
+        transition: max-height 0.22s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    // ponytail: fixed max-height ceiling instead of a measured one — the
+    // open value just has to exceed the tallest submenu (4 theme rows).
+    // Switch to a JS scrollHeight measurement if a submenu ever grows past
+    // roughly a dozen items.
+    &.is-open &__children {
+        max-height: 30rem;
+    }
+}
+
+.hamburger-item--parent {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+
+    .hamburger-item__chevron {
+        display: inline-block;
+        font-size: 0.85em;
+        opacity: 0.6;
+        transition: transform 0.22s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    &[aria-expanded="true"] .hamburger-item__chevron {
+        transform: rotate(90deg);
+    }
+}
+
+.hamburger-item--child {
+    font-size: 1.1rem;
+    padding-left: 2rem;
+    opacity: 0.9;
+
+    // Tree guide so children read as belonging to the parent above.
+    border-left: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 0 0.4rem 0.4rem 0;
+    margin-left: 0.85rem;
+    width: calc(100% - 0.85rem);
 }
 

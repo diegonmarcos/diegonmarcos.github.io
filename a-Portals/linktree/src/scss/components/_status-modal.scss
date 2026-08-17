@@ -668,3 +668,125 @@
   font-size: 0.85rem;
   padding: 0.5rem 0;
 }
+
+// ─── Dev Tools hint ──────────────────────────────────────────────────
+// Explains how to dismiss the console, which draws its own overlay
+// outside our DOM and is otherwise easy to get stuck behind.
+.diag-hint {
+  grid-column: 1 / -1;
+  margin: 0 0 0.5rem;
+  font-size: 0.75rem;
+  line-height: 1.5;
+  color: rgba(255, 255, 255, 0.45);
+  text-align: right;
+}
+
+// ─── Commits panel: weekly activity bars ─────────────────────────────
+.commit-activity {
+  display: flex;
+  align-items: flex-end;
+  gap: 4px;
+  height: 88px;
+  padding: 0.5rem 0 0;
+}
+
+.commit-activity__col {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+  height: 100%;
+  gap: 4px;
+}
+
+.commit-activity__bar {
+  width: 100%;
+  min-height: 2px;
+  border-radius: 2px 2px 0 0;
+  background: linear-gradient(180deg, #60a5fa, #3b82f6);
+}
+
+.commit-activity__label {
+  font-size: 0.6rem;
+  color: rgba(255, 255, 255, 0.4);
+  white-space: nowrap;
+}
+
+// ─── Commits panel: per-author breakdown ─────────────────────────────
+.commit-authors {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  padding-top: 0.35rem;
+}
+
+.commit-author {
+  display: grid;
+  grid-template-columns: minmax(6rem, 30%) 1fr auto;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.75rem;
+}
+
+.commit-author__name {
+  color: rgba(255, 255, 255, 0.75);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.commit-author__bar {
+  height: 8px;
+  min-width: 2px;
+  border-radius: 4px;
+  background: linear-gradient(90deg, #3b82f6, #60a5fa);
+}
+
+.commit-author__count {
+  color: rgba(255, 255, 255, 0.55);
+  font-variant-numeric: tabular-nums;
+}
+
+// ─── About panel ─────────────────────────────────────────────────────
+.about-lede {
+  margin: 0;
+  font-size: 0.9rem;
+  line-height: 1.65;
+  color: rgba(255, 255, 255, 0.8);
+
+  strong { color: #fff; }
+}
+
+.about-note {
+  margin: 0.75rem 0 0;
+  font-size: 0.75rem;
+  line-height: 1.6;
+  color: rgba(255, 255, 255, 0.5);
+
+  code {
+    padding: 0.05rem 0.3rem;
+    border-radius: 3px;
+    background: rgba(255, 255, 255, 0.08);
+    font-family: ui-monospace, Menlo, Consolas, monospace;
+    font-size: 0.95em;
+  }
+}
+
+.about-tips {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.about-tip {
+  padding: 0.5rem 0.65rem;
+  border-radius: 6px;
+  border-left: 2px solid rgba(96, 165, 250, 0.6);
+  background: rgba(255, 255, 255, 0.03);
+  font-size: 0.78rem;
+  line-height: 1.55;
+  color: rgba(255, 255, 255, 0.7);
+
+  strong { color: #93c5fd; }
+}

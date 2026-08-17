@@ -7,20 +7,20 @@ import { initVideoBackground } from './modules/videoBackground';
 import { initCarousels } from './modules/carousel';
 import { initMobileScrollSelection } from './modules/mobileScroll';
 import { initGalleryToggle } from './modules/gallery';
-import { initPerformanceMode } from './modules/performanceMode';
+import { initAboutPanel } from './modules/about';
+import { initCommitsPanel } from './modules/commits';
 import { initMindmapOverlay } from './modules/mindmap-overlay';
 import { initIconViewToggle } from './modules/iconViewToggle';
 import { initAudioToggle } from './modules/audioToggle';
 import { initVmControl } from './modules/vmControl';
 import { initProfilePicSwiper } from './modules/profilePicSwiper';
 import { initScrollFab } from './modules/scrollFab';
-import { initErudaToggle } from './modules/eruda';
 import { initLogcatViewer } from './modules/logcat';
 import { initCardSwiper } from './modules/cardSwiper';
 import { initPortalRender } from './modules/portal-render';
 import { renderMenu } from './modules/menuRender';
 import { initZoomToggle } from './modules/zoomToggle';
-import { initThemeToggle } from './modules/themeToggle';
+import { initThemeSwitcher } from './modules/themeSwitcher';
 import { initTilt3d } from './modules/tilt3d';
 import { initCanvasBackground } from './modules/canvas-bg';
 import { setupSwAutoReload } from './utils/sw-auto-reload';
@@ -62,7 +62,6 @@ function initApp(): void {
   initAudioToggle();
   initZoomToggle();
   initScrollFab();
-  initErudaToggle();
   initLogcatViewer();
 
   // Initialize random background video (or WebGL canvas if opted in).
@@ -74,18 +73,18 @@ function initApp(): void {
   // Initialize Swiper carousels
   initCarousels();
 
-  // Initialize light/dark theme toggle (FAB)
-  initThemeToggle();
+  // Theme switcher: dark (default) / light / lightweight / terminal. Runs
+  // after renderMenu() because it binds to the buttons that renders.
+  initThemeSwitcher();
 
   // 3D mouse-tilt on link sections (compositor-only; no-ops in lite-mode).
   initTilt3d();
 
-  // Initialize performance/fast mode toggle (gate keeps lite-mode authoritative)
-  initPerformanceMode();
-
   // Defer non-critical, behind-FAB / off-screen init until the main thread
   // is idle. None of these are needed for first paint.
   onIdle(() => initStatusModal());
+  onIdle(() => initCommitsPanel());
+  onIdle(() => initAboutPanel());
   onIdle(() => initMobileScrollSelection());
   onIdle(() => initGalleryToggle());
   onIdle(() => initVmControl());

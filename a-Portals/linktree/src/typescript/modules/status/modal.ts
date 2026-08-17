@@ -1,6 +1,14 @@
-// Status Modal - UI/modal rendering
+// Dev Tools panel — device/network diagnostics plus the on-page console.
+//
+// Diagnostics ("Status") and the Eruda console used to be two separate menu
+// entries, and Eruda in particular opened a floating widget with no obvious
+// way back to the page. They are one window now: the console is launched
+// from a labelled row inside it, so the panel's close button is always the
+// way out.
 
-import type { DiagnosticData, RepoCommit, Warning } from './types';
+import type { DiagnosticData, Warning } from './types';
+import { openPanel, closePanel } from '../panel';
+import { openEruda, closeEruda, isErudaVisible } from '../eruda';
 import {
   getNetworkDiagnostics,
   getCacheDiagnostics,
@@ -20,31 +28,6 @@ import {
 
 const REPO = 'diegonmarcos/front';
 const REPO_URL = `https://github.com/${REPO}`;
-
-async function getRepoCommits(): Promise<RepoCommit[]> {
-  try {
-    const since = new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString();
-    const response = await fetch(
-      `https://api.github.com/repos/${REPO}/commits?per_page=100&path=a-Portals/linktree&since=${since}`,
-      { headers: { Accept: 'application/vnd.github.v3+json' } },
-    );
-    if (!response.ok) return [];
-    const data = await response.json() as Array<{
-      sha: string;
-      html_url: string;
-      commit: { message: string; author: { name: string; date: string } };
-    }>;
-    return data.map((c) => ({
-      sha: c.sha.slice(0, 7),
-      message: c.commit.message.split('\n')[0],
-      author: c.commit.author.name,
-      date: new Date(c.commit.author.date).toLocaleDateString(),
-      url: c.html_url,
-    }));
-  } catch {
-    return [];
-  }
-}
 
 /**
  * Render the warnings banner — severity-coloured advisories synthesised
@@ -92,12 +75,19 @@ function renderDiagnostics(data: DiagnosticData): string {
       <!-- Warnings banner — synthesized advisories, severity-coloured -->
       ${renderWarnings(data.warnings)}
 
-      <!-- Action bar: copy the full diagnostic snapshot as JSON -->
+      <!-- Action bar: launch the on-page console, or copy the snapshot -->
       <div class="diag-actions">
+        <button type="button" class="diag-copy-btn" id="diag-eruda-toggle" data-state="idle">
+          <span class="diag-eruda-label">${isErudaVisible() ? 'Close Console' : 'Open Console'}</span>
+        </button>
         <button type="button" class="diag-copy-btn" id="diag-copy-json" data-state="idle">
           <span class="diag-copy-label">Copy All Data (JSON)</span>
         </button>
       </div>
+      <p class="diag-hint">
+        The console (Eruda) opens over the page. Reopen Dev Tools and press
+        Close Console to dismiss it.
+      </p>
 
       <!-- GPU/CPU Usage Section -->
       <div class="diag-section">
@@ -344,20 +334,6 @@ function renderDiagnostics(data: DiagnosticData): string {
         </div>
       </div>
 
-      <!-- Repo News Section -->
-      <div class="diag-section">
-        <h3>Repo News (last 30 days)</h3>
-        ${data.commits.length === 0
-          ? '<p class="diag-no-data">Could not fetch commits (rate limit or offline).</p>'
-          : `<div class="diag-commits">${data.commits.map((c) => `
-            <div class="diag-commit">
-              <a class="diag-commit-sha" href="${c.url}" target="_blank" rel="noopener">${c.sha}</a>
-              <span class="diag-commit-msg">${c.message}</span>
-              <span class="diag-commit-meta">${c.author} · ${c.date}</span>
-            </div>`).join('')}</div>`
-        }
-      </div>
-
       <!-- Assets Section -->
       <div class="diag-section">
         <h3>Asset Information (${data.assets.length} files)</h3>
@@ -385,109 +361,120 @@ function renderDiagnostics(data: DiagnosticData): string {
 }
 
 /**
- * Initialize status modal
+ * Gather every diagnostic. Each gatherer is fault-tolerant; partial
+ * failures still produce a renderable snapshot with "Unknown"/"N/A"
+ * fallbacks rather than an empty panel.
+ */
+async function gather(): Promise<DiagnosticData> {
+  const [network, assets, gpuCpu, serviceWorker, storage] = await Promise.all([
+    getNetworkDiagnostics(),
+    getAssetInfo(),
+    getGPUCPUMetrics(),
+    getServiceWorkerInfo(),
+    getStorageInfo(),
+  ]);
+  const partial = {
+    network, assets, gpuCpu, serviceWorker, storage,
+    cache:       getCacheDiagnostics(),
+    system:      getSystemInfo(),
+    performance: getPerformanceMetrics(),
+    features:    getFeatureSupport(),
+    codecs:      getCodecSupport(),
+    display:     getDisplayInfo(),
+    vitals:      getWebVitals(),
+  };
+  return { ...partial, warnings: synthesizeWarnings(partial) };
+}
+
+/**
+ * Wire the "Copy All Data (JSON)" button — serialises the FULL captured
+ * snapshot as pretty JSON to the clipboard, with a hidden-textarea fallback
+ * for browsers without navigator.clipboard.
+ */
+function wireCopyButton(body: HTMLElement, data: DiagnosticData): void {
+  const copyBtn = body.querySelector('#diag-copy-json') as HTMLButtonElement | null;
+  if (!copyBtn) return;
+
+  copyBtn.addEventListener('click', async () => {
+    const payload = JSON.stringify(data, null, 2);
+    const label = copyBtn.querySelector('.diag-copy-label') as HTMLSpanElement | null;
+    const restore = (): void => {
+      if (label) label.textContent = 'Copy All Data (JSON)';
+      copyBtn.dataset.state = 'idle';
+      copyBtn.disabled = false;
+    };
+    try {
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        await navigator.clipboard.writeText(payload);
+      } else {
+        const ta = document.createElement('textarea');
+        ta.value = payload;
+        ta.setAttribute('readonly', '');
+        ta.style.position = 'fixed';
+        ta.style.opacity = '0';
+        document.body.appendChild(ta);
+        ta.select();
+        document.execCommand('copy');
+        document.body.removeChild(ta);
+      }
+      if (label) label.textContent = `Copied ${payload.length.toLocaleString()} chars`;
+      copyBtn.dataset.state = 'ok';
+    } catch (err) {
+      if (label) label.textContent = 'Copy failed (see console)';
+      copyBtn.dataset.state = 'err';
+      console.error('diag-copy-json failed:', err);
+    }
+    copyBtn.disabled = true;
+    setTimeout(restore, 1800);
+  });
+}
+
+/**
+ * Wire the console launcher. Opening Eruda closes this panel, because the
+ * console renders over the whole viewport and a panel underneath it is just
+ * in the way.
+ */
+function wireErudaButton(body: HTMLElement): void {
+  const btn = body.querySelector('#diag-eruda-toggle') as HTMLButtonElement | null;
+  if (!btn) return;
+  const label = btn.querySelector('.diag-eruda-label') as HTMLSpanElement | null;
+
+  btn.addEventListener('click', async () => {
+    if (isErudaVisible()) {
+      closeEruda();
+      if (label) label.textContent = 'Open Console';
+      return;
+    }
+    btn.disabled = true;
+    try {
+      await openEruda();
+      closePanel();
+    } catch (err) {
+      console.error('eruda failed to load:', err);
+      if (label) label.textContent = 'Console unavailable (offline?)';
+      btn.dataset.state = 'err';
+    }
+    btn.disabled = false;
+  });
+}
+
+/**
+ * Initialize the Dev Tools panel (diagnostics + console).
  */
 export function initStatusModal(): void {
-  const statusToggle = document.getElementById('status-toggle');
-  const statusModal = document.getElementById('status-modal');
-  const statusModalClose = document.getElementById('status-modal-close');
-  const statusModalBody = document.getElementById('status-modal-body');
-
-  if (!statusToggle || !statusModal || !statusModalClose || !statusModalBody) return;
-
-  statusToggle.addEventListener('click', async () => {
-    statusModal.style.display = 'flex';
-
-    // Show loading spinner
-    statusModalBody.innerHTML = `
-      <div class="status-loading">
-        <div class="status-spinner"></div>
-        <p>Gathering diagnostics...</p>
-      </div>
-    `;
-
-    // Gather all diagnostic data — parallelised where possible. Each
-    // gatherer is fault-tolerant; partial failures still produce a
-    // renderable snapshot with sensible "Unknown"/"N/A" fallbacks.
-    const [network, assets, gpuCpu, serviceWorker, storage, commits] = await Promise.all([
-      getNetworkDiagnostics(),
-      getAssetInfo(),
-      getGPUCPUMetrics(),
-      getServiceWorkerInfo(),
-      getStorageInfo(),
-      getRepoCommits(),
-    ]);
-    const partial = {
-      network, assets, gpuCpu, serviceWorker, storage,
-      cache:       getCacheDiagnostics(),
-      system:      getSystemInfo(),
-      performance: getPerformanceMetrics(),
-      features:    getFeatureSupport(),
-      codecs:      getCodecSupport(),
-      display:     getDisplayInfo(),
-      vitals:      getWebVitals(),
-    };
-    const diagnosticData: DiagnosticData = {
-      ...partial,
-      commits,
-      warnings: synthesizeWarnings(partial),
-    };
-
-    // Render diagnostics
-    statusModalBody.innerHTML = renderDiagnostics(diagnosticData);
-
-    // Wire the "Copy All Data (JSON)" button — serialises the FULL captured
-    // snapshot (network, cache, system, assets, performance, gpuCpu) as
-    // pretty JSON and writes it to the clipboard. Fallback to a hidden
-    // textarea + execCommand for browsers without navigator.clipboard.
-    const copyBtn = document.getElementById('diag-copy-json') as HTMLButtonElement | null;
-    if (copyBtn) {
-      copyBtn.addEventListener('click', async () => {
-        const payload = JSON.stringify(diagnosticData, null, 2);
-        const label = copyBtn.querySelector('.diag-copy-label') as HTMLSpanElement | null;
-        const restore = () => {
-          if (label) label.textContent = 'Copy All Data (JSON)';
-          copyBtn.dataset.state = 'idle';
-          copyBtn.disabled = false;
-        };
-        try {
-          if (navigator.clipboard && navigator.clipboard.writeText) {
-            await navigator.clipboard.writeText(payload);
-          } else {
-            const ta = document.createElement('textarea');
-            ta.value = payload;
-            ta.setAttribute('readonly', '');
-            ta.style.position = 'fixed';
-            ta.style.opacity = '0';
-            document.body.appendChild(ta);
-            ta.select();
-            document.execCommand('copy');
-            document.body.removeChild(ta);
-          }
-          if (label) label.textContent = `Copied ${payload.length.toLocaleString()} chars`;
-          copyBtn.dataset.state = 'ok';
-        } catch (err) {
-          if (label) label.textContent = 'Copy failed (see console)';
-          copyBtn.dataset.state = 'err';
-          console.error('diag-copy-json failed:', err);
-        }
-        copyBtn.disabled = true;
-        setTimeout(restore, 1800);
-      });
-    }
-  });
-
-  function closeModal(): void {
-    statusModal.style.display = 'none';
-    // Re-show FABs (scroll-hide may have hidden them)
-    document.querySelector('.controls-fab-container')?.classList.remove('fab-hidden');
-    document.getElementById('hamburger-menu')?.classList.remove('fab-hidden');
-  }
-
-  statusModalClose.addEventListener('click', closeModal);
-
-  // Close on outside click
-  statusModal.addEventListener('click', (e) => {
-    if (e.target === statusModal) closeModal();
+  document.getElementById('devtools-toggle')?.addEventListener('click', () => {
+    let data: DiagnosticData | null = null;
+    openPanel({
+      title: 'Dev Tools',
+      loadingLabel: 'Gathering diagnostics…',
+      render: async () => {
+        data = await gather();
+        return renderDiagnostics(data);
+      },
+      onMount: (body) => {
+        if (data) wireCopyButton(body, data);
+        wireErudaButton(body);
+      },
+    });
   });
 }

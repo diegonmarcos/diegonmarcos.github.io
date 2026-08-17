@@ -1,5 +1,12 @@
 // Renders the FAB control list and the hamburger nav from the same
 // MENU_GROUPS data, so the two menus can never drift out of sync.
+//
+// Nested items (MenuItem.children) render differently per menu: the
+// hamburger gets a real collapsible child menu, while the FAB — an
+// icon-only vertical rail with no room to nest — lays the children out
+// inline under the group label. Both still resolve to the same button ids,
+// because a hamburger item only proxies a click to the FAB button that
+// carries the actual behaviour.
 
 import { MENU_GROUPS, type MenuItem } from './menuData';
 
@@ -31,6 +38,38 @@ function renderHamburgerItem(item: MenuItem): HTMLElement {
   return btn;
 }
 
+// A parent + its collapsible child list. The parent carries no
+// `data-trigger`, so main.ts's delegated handler ignores it and the menu
+// stays open while the submenu expands.
+function renderHamburgerSubmenu(item: MenuItem): HTMLElement {
+  const wrapper = document.createElement('div');
+  wrapper.className = 'hamburger-submenu';
+
+  const parent = document.createElement('button');
+  parent.className = 'hamburger-item hamburger-item--parent';
+  parent.setAttribute('type', 'button');
+  parent.setAttribute('aria-expanded', 'false');
+  parent.innerHTML = `<span class="hamburger-item__chevron" aria-hidden="true">▸</span>`;
+  parent.append(item.label);
+
+  const children = document.createElement('div');
+  children.className = 'hamburger-submenu__children';
+  for (const child of item.children ?? []) {
+    const childBtn = renderHamburgerItem(child);
+    childBtn.classList.add('hamburger-item--child');
+    children.appendChild(childBtn);
+  }
+
+  parent.addEventListener('click', () => {
+    const open = parent.getAttribute('aria-expanded') === 'true';
+    parent.setAttribute('aria-expanded', String(!open));
+    wrapper.classList.toggle('is-open', !open);
+  });
+
+  wrapper.append(parent, children);
+  return wrapper;
+}
+
 export function renderMenu(): void {
   const controlsList = document.getElementById('controls-list');
   const hamburgerNav = document.getElementById('hamburger-nav');
@@ -55,8 +94,13 @@ export function renderMenu(): void {
     hbGroup.appendChild(hbLabel);
 
     for (const item of group.items) {
-      fabGroup.appendChild(renderFabButton(item));
-      hbGroup.appendChild(renderHamburgerItem(item));
+      if (item.children?.length) {
+        for (const child of item.children) fabGroup.appendChild(renderFabButton(child));
+        hbGroup.appendChild(renderHamburgerSubmenu(item));
+      } else {
+        fabGroup.appendChild(renderFabButton(item));
+        hbGroup.appendChild(renderHamburgerItem(item));
+      }
     }
 
     controlsList.appendChild(fabGroup);

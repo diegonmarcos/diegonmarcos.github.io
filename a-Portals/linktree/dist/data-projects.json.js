@@ -593,7 +593,7 @@
             },
             {
               "label": "CI/CD",
-              "url": "https://github.com/diegonmarcos/unix/tree/main/1_workflows/src/cicd",
+              "url": "https://github.com/diegonmarcos/unix/tree/main/1_cicd/src/cicd",
               "icon": "git-branch.svg",
               "item": 1
             },
@@ -1695,7 +1695,7 @@
             },
             {
               "label": "Solutions - User",
-              "url": "https://github.com/diegonmarcos/cloud/tree/main/2_configs",
+              "url": "https://github.com/diegonmarcos/cloud/tree/main/1_front-configs",
               "icon": "settings.svg",
               "item": 1
             },

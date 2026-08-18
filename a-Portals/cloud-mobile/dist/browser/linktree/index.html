@@ -23,10 +23,10 @@
         <div class="status-strip">
             <div class="status-strip__row">
                 <div class="status-strip__cluster status-strip__cluster--left"><span class="status-strip__chip is-active">5G</span><span class="status-strip__chip is-active">WiFi</span><span class="status-strip__chip is-active">WG</span><span class="status-strip__chip">KDE</span><span class="status-strip__chip is-active">BT</span><span class="status-strip__chip">USB</span></div>
-                <div class="status-strip__camera" aria-hidden="true"></div>
-                <div class="status-strip__cluster status-strip__cluster--right"><span class="status-strip__chip">RAM 62%</span><span class="status-strip__chip">STO 48%</span><span class="status-strip__chip">CPU 17%</span><span class="status-strip__chip">BAT 84%</span></div>
+                <button class="status-strip__clock" id="status-clock" type="button" aria-label="Calendar">--:--</button>
+                <div class="status-strip__cluster status-strip__cluster--right"><span class="status-strip__chip">R 62%</span><span class="status-strip__chip">S 48%</span><span class="status-strip__chip">C 17%</span><span class="status-strip__chip is-active" role="img" aria-label="Battery 84%"><svg width="22" height="11" viewBox="0 0 24 12" aria-hidden="true" focusable="false"><rect x="0.5" y="0.5" width="19" height="11" rx="2.5" fill="none" stroke="currentColor"/><rect x="2" y="2" width="13.4" height="8" rx="1" fill="currentColor"/><rect x="21" y="4" width="2" height="4" rx="1" fill="currentColor"/></svg></span></div>
             </div>
-            <button class="status-strip__clock" id="status-clock" type="button" aria-label="Calendar">--:--</button>
+            <div class="status-strip__hairline" aria-hidden="true"></div>
         </div>
         <div class="galaxy-backdrop" aria-hidden="true"></div>
         
@@ -65,43 +65,43 @@
             <section class="tile-group">
                 <h2 class="tile-group__title">Linktree · Suite</h2>
                 <div class="tile-grid tile-grid--dense" role="list">
-                    <a class="tile tile--blue" href="https://diegonmarcos.com" target="_blank" rel="noopener" role="listitem"><img class="tile__icon" src="../../public/icons/suite.svg" alt=""><span class="tile__label">Cloud SuperApp</span></a>
-                    <div class="tile tile--blue tile--inert" role="listitem" aria-disabled="true"><img class="tile__icon" src="../../public/icons/mail.svg" alt=""><span class="tile__label">Cloud Mail</span></div>
-                    <div class="tile tile--blue tile--inert" role="listitem" aria-disabled="true"><img class="tile__icon" src="../../public/icons/chat.svg" alt=""><span class="tile__label">Cloud Chat</span></div>
-                    <div class="tile tile--blue tile--inert" role="listitem" aria-disabled="true"><img class="tile__icon" src="../../public/icons/code.svg" alt=""><span class="tile__label">Cloud IDE</span></div>
-                    <div class="tile tile--blue tile--inert" role="listitem" aria-disabled="true"><img class="tile__icon" src="../../public/icons/wallet.svg" alt=""><span class="tile__label">Cloud Wallet</span></div>
+                    <a class="tile tile--blue" href="https://diegonmarcos.com" target="_blank" rel="noopener" role="listitem" aria-label="Cloud SuperApp"><span class="tile__icon" style="--icon-url: url('../../public/icons/suite.svg')"></span><span class="tile__label">Cloud SuperApp</span></a>
+                    <div class="tile tile--blue tile--inert" role="listitem" aria-disabled="true" aria-label="Cloud Mail"><span class="tile__icon" style="--icon-url: url('../../public/icons/mail.svg')"></span><span class="tile__label">Cloud Mail</span></div>
+                    <div class="tile tile--blue tile--inert" role="listitem" aria-disabled="true" aria-label="Cloud Chat"><span class="tile__icon" style="--icon-url: url('../../public/icons/chat.svg')"></span><span class="tile__label">Cloud Chat</span></div>
+                    <div class="tile tile--blue tile--inert" role="listitem" aria-disabled="true" aria-label="Cloud IDE"><span class="tile__icon" style="--icon-url: url('../../public/icons/code.svg')"></span><span class="tile__label">Cloud IDE</span></div>
+                    <div class="tile tile--blue tile--inert" role="listitem" aria-disabled="true" aria-label="Cloud Wallet"><span class="tile__icon" style="--icon-url: url('../../public/icons/wallet.svg')"></span><span class="tile__label">Cloud Wallet</span></div>
                 </div>
             </section>
 
             <section class="tile-group">
                 <h2 class="tile-group__title">Linktree · Cloud</h2>
                 <div class="tile-grid tile-grid--dense" role="list">
-                    <a class="tile tile--blue" href="https://diegonmarcos.com" target="_blank" rel="noopener" role="listitem"><img class="tile__icon" src="../../public/icons/home.svg" alt=""><span class="tile__label">diegonmarcos.com</span></a>
-                    <a class="tile tile--blue" href="https://github.com/diegonmarcos/ea_cloud-superapp" target="_blank" rel="noopener" role="listitem"><img class="tile__icon" src="../../public/icons/code.svg" alt=""><span class="tile__label">ea_cloud-superapp</span></a>
-                    <a class="tile tile--blue" href="https://github.com/diegonmarcos/front" target="_blank" rel="noopener" role="listitem"><img class="tile__icon" src="../../public/icons/code.svg" alt=""><span class="tile__label">front (this site)</span></a>
-                    <a class="tile tile--blue" href="https://github.com/diegonmarcos/unix" target="_blank" rel="noopener" role="listitem"><img class="tile__icon" src="../../public/icons/code.svg" alt=""><span class="tile__label">unix (tooling)</span></a>
-                    <div class="tile tile--blue tile--inert" role="listitem" aria-disabled="true"><img class="tile__icon" src="../../public/icons/mesh.svg" alt=""><span class="tile__label">WG Mesh</span></div>
+                    <a class="tile tile--blue" href="https://diegonmarcos.com" target="_blank" rel="noopener" role="listitem" aria-label="diegonmarcos.com"><span class="tile__icon" style="--icon-url: url('../../public/icons/home.svg')"></span><span class="tile__label">diegonmarcos.com</span></a>
+                    <a class="tile tile--blue" href="https://github.com/diegonmarcos/ea_cloud-superapp" target="_blank" rel="noopener" role="listitem" aria-label="ea_cloud-superapp"><span class="tile__icon" style="--icon-url: url('../../public/icons/code.svg')"></span><span class="tile__label">ea_cloud-superapp</span></a>
+                    <a class="tile tile--blue" href="https://github.com/diegonmarcos/front" target="_blank" rel="noopener" role="listitem" aria-label="front (this site)"><span class="tile__icon" style="--icon-url: url('../../public/icons/code.svg')"></span><span class="tile__label">front (this site)</span></a>
+                    <a class="tile tile--blue" href="https://github.com/diegonmarcos/unix" target="_blank" rel="noopener" role="listitem" aria-label="unix (tooling)"><span class="tile__icon" style="--icon-url: url('../../public/icons/code.svg')"></span><span class="tile__label">unix (tooling)</span></a>
+                    <div class="tile tile--blue tile--inert" role="listitem" aria-disabled="true" aria-label="WG Mesh"><span class="tile__icon" style="--icon-url: url('../../public/icons/mesh.svg')"></span><span class="tile__label">WG Mesh</span></div>
                 </div>
             </section>
 
             <section class="tile-group">
                 <h2 class="tile-group__title">Linktree · Lab & Tools</h2>
                 <div class="tile-grid tile-grid--dense" role="list">
-                    <a class="tile tile--blue" href="https://diegonmarcos.github.io/my-data/" target="_blank" rel="noopener" role="listitem"><img class="tile__icon" src="../../public/icons/database.svg" alt=""><span class="tile__label">MyData</span></a>
-                    <a class="tile tile--blue" href="https://github.com/diegonmarcos/my-ai" target="_blank" rel="noopener" role="listitem"><img class="tile__icon" src="../../public/icons/robot.svg" alt=""><span class="tile__label">my-ai</span></a>
-                    <div class="tile tile--blue tile--inert" role="listitem" aria-disabled="true"><img class="tile__icon" src="../../public/icons/workflow.svg" alt=""><span class="tile__label">Dagu Workflows</span></div>
-                    <div class="tile tile--blue tile--inert" role="listitem" aria-disabled="true"><img class="tile__icon" src="../../public/icons/chart.svg" alt=""><span class="tile__label">Grafana</span></div>
-                    <div class="tile tile--blue tile--inert" role="listitem" aria-disabled="true"><img class="tile__icon" src="../../public/icons/heart.svg" alt=""><span class="tile__label">C3 Health</span></div>
+                    <a class="tile tile--blue" href="https://diegonmarcos.github.io/my-data/" target="_blank" rel="noopener" role="listitem" aria-label="MyData"><span class="tile__icon" style="--icon-url: url('../../public/icons/database.svg')"></span><span class="tile__label">MyData</span></a>
+                    <a class="tile tile--blue" href="https://github.com/diegonmarcos/my-ai" target="_blank" rel="noopener" role="listitem" aria-label="my-ai"><span class="tile__icon" style="--icon-url: url('../../public/icons/robot.svg')"></span><span class="tile__label">my-ai</span></a>
+                    <div class="tile tile--blue tile--inert" role="listitem" aria-disabled="true" aria-label="Dagu Workflows"><span class="tile__icon" style="--icon-url: url('../../public/icons/workflow.svg')"></span><span class="tile__label">Dagu Workflows</span></div>
+                    <div class="tile tile--blue tile--inert" role="listitem" aria-disabled="true" aria-label="Grafana"><span class="tile__icon" style="--icon-url: url('../../public/icons/chart.svg')"></span><span class="tile__label">Grafana</span></div>
+                    <div class="tile tile--blue tile--inert" role="listitem" aria-disabled="true" aria-label="C3 Health"><span class="tile__icon" style="--icon-url: url('../../public/icons/heart.svg')"></span><span class="tile__label">C3 Health</span></div>
                 </div>
             </section>
 
             <section class="tile-group">
                 <h2 class="tile-group__title">Linktree · Circus</h2>
                 <div class="tile-grid tile-grid--dense" role="list">
-                    <div class="tile tile--blue tile--inert" role="listitem" aria-disabled="true"><img class="tile__icon" src="../../public/icons/rocket.svg" alt=""><span class="tile__label">Aero & Space</span></div>
-                    <div class="tile tile--blue tile--inert" role="listitem" aria-disabled="true"><img class="tile__icon" src="../../public/icons/chart.svg" alt=""><span class="tile__label">Quant & Markets</span></div>
-                    <div class="tile tile--blue tile--inert" role="listitem" aria-disabled="true"><img class="tile__icon" src="../../public/icons/sparkles.svg" alt=""><span class="tile__label">Circus</span></div>
-                    <div class="tile tile--blue tile--inert" role="listitem" aria-disabled="true"><img class="tile__icon" src="../../public/icons/cube.svg" alt=""><span class="tile__label">Side Quests</span></div>
+                    <div class="tile tile--blue tile--inert" role="listitem" aria-disabled="true" aria-label="Aero & Space"><span class="tile__icon" style="--icon-url: url('../../public/icons/rocket.svg')"></span><span class="tile__label">Aero & Space</span></div>
+                    <div class="tile tile--blue tile--inert" role="listitem" aria-disabled="true" aria-label="Quant & Markets"><span class="tile__icon" style="--icon-url: url('../../public/icons/chart.svg')"></span><span class="tile__label">Quant & Markets</span></div>
+                    <div class="tile tile--blue tile--inert" role="listitem" aria-disabled="true" aria-label="Circus"><span class="tile__icon" style="--icon-url: url('../../public/icons/sparkles.svg')"></span><span class="tile__label">Circus</span></div>
+                    <div class="tile tile--blue tile--inert" role="listitem" aria-disabled="true" aria-label="Side Quests"><span class="tile__icon" style="--icon-url: url('../../public/icons/cube.svg')"></span><span class="tile__label">Side Quests</span></div>
                 </div>
             </section>
             
@@ -185,6 +185,7 @@
                 <div class="drawer__banner-text">
                     <p class="drawer__title" id="drawer-app-name">Cloud SuperApp</p>
                     <p class="drawer__meta" id="drawer-app-build">cloud-mobile · web</p>
+                    <p class="drawer__meta drawer__meta--ts" id="drawer-app-timestamp">2026-08-18 07:52</p>
                 </div>
             </div>
             <div class="drawer__separator"></div>
@@ -193,6 +194,7 @@
                 <div class="drawer__banner-text">
                     <p class="drawer__title" id="drawer-user-name">Diego Coelho Marcos</p>
                     <p class="drawer__meta" id="drawer-user-email">me@diegonmarcos.com</p>
+                    <p class="drawer__mode" id="drawer-user-mode">Mode: Apps</p>
                 </div>
             </div>
             <nav class="drawer__nav" id="drawer-nav"></nav>

@@ -4,16 +4,20 @@
   var g = (typeof globalThis !== "undefined") ? globalThis : (typeof window !== "undefined" ? window : this);
   g.PORTAL_DATA = g.PORTAL_DATA || {};
   g.PORTAL_DATA["sections-core"] = {
-  "_doc": "The 4 real aggregator sections (communication/infos/suite/tools). Communication/Infos/Tools use TabbedSectionFragment in the real app: literal Apps|Admin tabs, and for most mode combinations the tab body is NOT a tile grid — it's AggregatorStackFragment, a stack of collapsible cards keyed by 'kind' (verbatim from build.json's stack_apps/stack_admin). Suite has neither — it keeps its own tiles_shared + tileGroups/appGroups structure in sections-content.json's suite entry.",
+  "_doc": "The 4 real aggregator sections (communication/infos/suite/tools). Communication/Infos/Tools use TabbedSectionFragment in the real app: literal Apps|Admin tabs. Each mode's body is ICONS-FIRST — the section's tiles_apps/tiles_admin icon grid (verbatim from ea_cloud-superapp build.json, per-mode `tiles` below) renders at the top, then AggregatorStackFragment's collapsible cards keyed by 'kind' (build.json stack_apps/stack_admin) underneath. Targets are remapped to the web routes that exist here when the Android target has no web destination (extapp:/page:feed/all/page:c3/gha …); labels + order + membership stay verbatim. Suite has neither — it keeps its own tiles_shared + tileGroups/appGroups structure in sections-content.json's suite entry.",
   "sections": {
     "communication": {
       "label": "Inboxes", "icon": "chat", "color": "green",
       "tiles": [
         { "id": "mail", "label": "Mail", "icon": "mail", "target": "section:mail" },
-        { "id": "chat-matrix", "label": "Chat · Matrix", "icon": "chat", "target": "section:chat" },
-        { "id": "chat-mm", "label": "Chat · Mattermost", "icon": "chat", "target": "section:chat" }
+        { "id": "chat-matrix", "label": "Chat-Matrix", "icon": "chat", "target": "section:chat" },
+        { "id": "chat-mm", "label": "Chat-Mattermost", "icon": "chat", "target": "page:chat/mattermost" }
       ],
-      "apps": { "type": "stack", "cards": [
+      "apps": { "type": "stack", "tiles": [
+        { "id": "mail", "label": "Mail", "icon": "mail", "target": "section:mail" },
+        { "id": "chat-matrix", "label": "Chat-Matrix", "icon": "chat", "target": "section:chat" },
+        { "id": "chat-mm", "label": "Chat-Mattermost", "icon": "chat", "target": "page:chat/mattermost" }
+      ], "cards": [
         { "kind": "mail_accounts", "title": "Mail · accounts", "target": "section:mail",
           "rows": [["me@diegonmarcos.com", "JMAP"], ["Add IMAP account…", "IMAPS"]],
           "caption": "Unread / total counts pending JMAP slice C2 + IMAP slice." },
@@ -34,11 +38,13 @@
     "infos": {
       "label": "Infos", "icon": "logs", "color": "purple",
       "tiles": [
-        { "id": "cal", "label": "Calendar", "icon": "calendar", "target": "section:calendar" },
-        { "id": "rss", "label": "RSS feeds", "icon": "rss", "target": "section:rss" },
-        { "id": "wg-mesh", "label": "WG mesh", "icon": "mesh", "target": "section:wg" }
+        { "id": "calendar", "label": "Calendar", "icon": "calendar", "target": "section:calendar" },
+        { "id": "rss-feeds", "label": "RSS feeds", "icon": "rss", "target": "section:rss" }
       ],
-      "apps": { "type": "stack", "cards": [
+      "apps": { "type": "stack", "tiles": [
+        { "id": "calendar", "label": "Calendar", "icon": "calendar", "target": "section:calendar" },
+        { "id": "rss-feeds", "label": "RSS feeds", "icon": "rss", "target": "section:rss" }
+      ], "cards": [
         { "kind": "calendar_month", "title": "Calendar", "subtitle": "Month view · CalDAV sync pending", "target": "section:calendar" },
         { "kind": "tasks", "title": "Tasks", "subtitle": "Agenda · Day · ToDo" },
         { "kind": "news_feeds", "title": "News & RSS", "subtitle": "Curated open channels (not ntfy)", "target": "section:rss" },
@@ -49,7 +55,14 @@
         { "kind": "stats", "title": "Nav Maps Tracker", "subtitle": "Cloud-Nav location tracker",
           "rows": [["Last location", "—"], ["Trips this week", "—"], ["Distance (wk)", "—"], ["Places logged", "—"]] }
       ]},
-      "admin": { "type": "stack", "cards": [
+      "admin": { "type": "stack", "tiles": [
+        { "id": "cal-workflows", "label": "Workflows cal", "icon": "calendar", "target": "page:c3/workflows" },
+        { "id": "gha-events", "label": "GHA events", "icon": "workflow", "target": "page:c3/workflows" },
+        { "id": "dagu", "label": "Dagu events", "icon": "workflow", "target": "page:c3/workflows" },
+        { "id": "rss-c3", "label": "C3 ntfy", "icon": "rss", "target": "section:rss" },
+        { "id": "c3-health", "label": "C3 health", "icon": "heart", "target": "page:c3/health" },
+        { "id": "wg-mesh", "label": "WG mesh", "icon": "mesh", "target": "page:wg/wireguard" }
+      ], "cards": [
         { "kind": "notifications", "title": "Cloud-SuperApp Notifications" },
         { "kind": "phone_notifications", "title": "Phone Notifications" },
         { "kind": "c3_public", "title": "C3 Health · Public" },
@@ -73,14 +86,30 @@
         { "id": "aero-space", "label": "Aero & Space", "icon": "rocket", "target": "page:tools/aero-space" },
         { "id": "circus", "label": "Circus", "icon": "sparkles", "target": "page:tools/circus" }
       ],
-      "apps": { "type": "stack", "cards": [
+      "apps": { "type": "stack", "tiles": [
+        { "id": "linktree", "label": "Linktree", "icon": "browser", "target": "page:solutions/personal" },
+        { "id": "mymovies", "label": "Movies", "icon": "photos", "target": "page:solutions/personal" },
+        { "id": "mymusic", "label": "Music", "icon": "music", "target": "page:solutions/personal" },
+        { "id": "mymaps", "label": "Maps", "icon": "mesh", "target": "page:solutions/personal" },
+        { "id": "myphotos", "label": "Photos", "icon": "photos", "target": "page:solutions/personal" },
+        { "id": "myanalytics", "label": "Analytics", "icon": "chart", "target": "page:solutions/cloud" }
+      ], "cards": [
         { "kind": "link_grid", "title": "Data & ML", "subtitle": "Datasets · ML pipelines · model registry" },
         { "kind": "link_grid", "title": "Engineering", "subtitle": "Build systems · ops tooling · infra notes" },
         { "kind": "link_grid", "title": "Quant & Markets", "subtitle": "Market data · strategies · backtests" },
         { "kind": "link_grid", "title": "Aero & Space", "subtitle": "Mission tracking · orbital data · launches" },
         { "kind": "link_grid", "title": "Circus", "subtitle": "Misc experiments and side quests" }
       ]},
-      "admin": { "type": "stack", "cards": [
+      "admin": { "type": "stack", "tiles": [
+        { "id": "c3-health", "label": "C3 health", "icon": "heart", "target": "page:c3/health" },
+        { "id": "c3-stack", "label": "C3 stack", "icon": "cube", "target": "page:c3/stack" },
+        { "id": "wg-mesh", "label": "WG mesh", "icon": "mesh", "target": "page:wg/wireguard" },
+        { "id": "vms", "label": "VMs", "icon": "database", "target": "page:c3/vms" },
+        { "id": "workflows", "label": "Workflows", "icon": "workflow", "target": "page:c3/workflows" },
+        { "id": "logs", "label": "Logs", "icon": "logs", "target": "page:c3/logs" },
+        { "id": "reports", "label": "Reports", "icon": "chart", "target": "page:c3/reports" },
+        { "id": "drive-conn", "label": "Drive · Connections", "icon": "database", "target": "page:drive/connections" }
+      ], "cards": [
         { "kind": "section_title", "title": "Containers" },
         { "_doc": "cloud_dashboard cards render an ICON GRID per subgroup (not a text body) — the real app's renderCloudDashboard, fed by data/cloud_services.json (generated from cloud/a_solutions by data/gen_cloud_services.py). Subgroups + membership below are that generator's own taxonomy verbatim; each entry's icon comes from its subgroup. Container hosts are *.app (WireGuard-only) and carry a live TCP-ping status light on device, so they render inert here — only the external consoles link out.",
           "kind": "cloud_dashboard", "title": "Infra Apps", "groups": [

@@ -17,16 +17,23 @@ const DEAD_ZONE_PX = 20;
 // never travels past TAP_MAX_MOVE_PX — opens that sector's arc PERSISTENTLY
 // instead of requiring the inward swipe. The existing inward-swipe-past-
 // SWIPE_THRESHOLD_PX drag-to-open-and-select gesture is untouched.
-const TAP_MAX_MS = 300;
-const TAP_MAX_MOVE_PX = 10;
+//
+// Touch-sized, same as stars.ts: a finger tap takes longer to release and
+// jitters further than a mouse click, so 300ms/10px rejected ordinary thumb
+// taps on the handle and the arc never opened at all.
+const TAP_MAX_MS = 450;
+const TAP_MAX_MOVE_PX = 16;
 // After a tap's pointerup, the browser still dispatches the tap's synthetic
 // `click` — hit-tested against the DOM as it exists AFTER our pointerup
 // handler ran. By then openArc() has inserted the full-bleed
 // .edge-menu__scrim over the handle, so that click lands on the scrim and the
 // delegated close-on-scrim handler below would shut the arc again instantly
 // (the arc appears never to open at all). Swallow exactly one click if it
-// arrives inside this window after entering persistent mode.
-const GHOST_CLICK_MS = 400;
+// arrives inside this window after entering persistent mode. Touch-sized
+// (see stars.ts): a phone's synthetic click trails its touchend far more than
+// a mouse's does, and 400ms was tight enough that the ghost click sometimes
+// escaped the window and closed the arc on the scrim.
+const GHOST_CLICK_MS = 700;
 const FLASH_MS = 220;
 const ARROW_HEAD_LENGTH_PX = 10;
 const ARROW_HEAD_ANGLE_RAD = Math.PI / 7;
@@ -64,6 +71,28 @@ function offsetsFor(count: number): number[] {
   if (count === 3) return [-ARC_SPREAD_DEG, 0, ARC_SPREAD_DEG];
   if (count === 2) return [-ARC_SPREAD_DEG, ARC_SPREAD_DEG];
   return [0];
+}
+
+// Capture keeps an inward swipe bound to the 32px-wide sector it started on
+// — the gesture leaves that box almost immediately by definition, and without
+// capture the browser retargets pointermove/pointerup at whatever is beneath
+// the finger, so the swipe dies one frame after it starts. Guarded because
+// setPointerCapture throws NotFoundError when the pointer is already gone,
+// and an unguarded throw aborts the rest of the pointerdown handler.
+function capturePointer(el: HTMLElement, pointerId: number): void {
+  try {
+    el.setPointerCapture(pointerId);
+  } catch {
+    // Pointer already released; implicit capture still covers the gesture.
+  }
+}
+
+function releasePointer(el: HTMLElement, pointerId: number): void {
+  try {
+    if (el.hasPointerCapture(pointerId)) el.releasePointerCapture(pointerId);
+  } catch {
+    // Nothing to release.
+  }
 }
 
 function polar(angle: number, radius: number): { tx: number; ty: number } {
@@ -290,7 +319,7 @@ export function initEdgeMenu(data: PortalData): void {
       startY = e.clientY;
       startTime = Date.now();
       opened = false;
-      sectorEl.setPointerCapture(e.pointerId);
+      capturePointer(sectorEl, e.pointerId);
     });
 
     sectorEl.addEventListener('pointermove', (e) => {
@@ -314,7 +343,7 @@ export function initEdgeMenu(data: PortalData): void {
 
     sectorEl.addEventListener('pointerup', (e) => {
       if (pointerId === null || e.pointerId !== pointerId) return;
-      if (sectorEl.hasPointerCapture(pointerId)) sectorEl.releasePointerCapture(pointerId);
+      releasePointer(sectorEl, pointerId);
       pointerId = null;
       if (!opened) {
         // Never crossed SWIPE_THRESHOLD_PX — this wasn't an inward-swipe
@@ -342,10 +371,22 @@ export function initEdgeMenu(data: PortalData): void {
       commitIndex(highlightIndex);
     });
 
+    // Cancel means the gesture was taken away mid-swipe and pointerup will
+    // never arrive. The edge handles are precisely where Android wants to run
+    // its own back-navigation swipe, so this is the *likeliest* outcome of a
+    // real edge drag, not an edge case.
+    //
+    // The old handler closed the arc outright, which is the one thing it must
+    // not do: the user had already swiped far enough to open it, the arc had
+    // been on screen, and it vanished the instant the system gesture won —
+    // "the edge menu doesn't work". Treat cancel like a tap instead and hand
+    // the already-open arc over to persistent mode (ghost click swallowed, so
+    // the synthetic click can't immediately close it on the scrim).
     sectorEl.addEventListener('pointercancel', (e) => {
       if (pointerId === null || e.pointerId !== pointerId) return;
+      releasePointer(sectorEl, pointerId);
       pointerId = null;
-      if (opened) closeMenu();
+      if (opened && isOpen) enterPersistentMode();
     });
   }
 

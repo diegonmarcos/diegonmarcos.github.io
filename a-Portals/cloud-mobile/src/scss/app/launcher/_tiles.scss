@@ -4,39 +4,35 @@
 // Tiles — home screen tile grid
 // ==========================================================================
 
-// display:grid + auto-fill (NOT auto-fit — auto-fit stretches whatever
-// tracks are present to fill the row whenever a grid has fewer tiles than
-// fit a row, which is exactly what turned tiles into full-width "cards";
-// auto-fill keeps the empty tracks so tiles stay pinned to their intended
-// small width even when a group only has 2-3 items) — an Android
-// app-drawer grid of small square tiles, ~4 columns at a 390px phone
-// viewport, ~6+ on wider screens.
+// APK TileGridFragment: tile_columns = 6, fixed — not an auto-fill grid
+// that reflows with viewport width. item_tile margins are 3dp a side, i.e.
+// a 6px gutter between neighbours.
 .tile-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(86px, 1fr));
-    gap: 8px;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 6px;
     padding: 2px;
 }
 
-// border-radius/border here use the --glass-tile-* tokens (Android
-// bg_glass_tile.xml) — this supersedes --radius-tile for tiles specifically;
-// --radius-tile is left untouched for anything else still referencing it.
-// Background stays per-variant below (pastel colors kept as-is; only
-// .tile--app, the colorless app-grid tile, takes the full glass gradient —
-// see _content-blocks.scss).
+// Every tile is dark glass (item_tile.xml paints bg_tile_glass on all of
+// them). TileGridFragment does compute a per-tile color palette, but never
+// applies it — the pastel .tile--<color> backgrounds this file used to
+// carry were a port of that dead code. The classes are still emitted to
+// mirror the APK, they just no longer paint anything.
 //
-// aspect-ratio keeps the tile square-ish regardless of the grid column
-// width the auto-fill track resolves to (was a fixed min-height, which let
-// tiles run wide/short instead of square once the grid stopped stretching
-// them — see .tile-grid above).
+// Height is the APK's fixed 128dp item_tile, not a square aspect-ratio:
+// icon pinned to the top, label taking whatever it needs underneath.
 .tile {
     position: relative;
     @include flex-center;
+    justify-content: flex-start;
     flex-direction: column;
     gap: 6px;
-    aspect-ratio: 1;
-    border-radius: var(--glass-tile-radius);
+    height: 128px;
+    border-radius: 20px;
     padding: 10px 6px;
+    background-color: transparent;
+    background-image: var(--glass-tile-gradient);
     border: var(--glass-tile-border);
     overflow: hidden;
     // Release (ACTION_UP/CANCEL) leg of tile_press.xml — the base rule wins
@@ -50,19 +46,33 @@
     transition: transform var(--duration-press-down) ease-out;
 }
 
-// SVG <img> renders in its own default stroke color — do not try to recolor
-// via CSS color/currentColor, that does not work through <img>. Leave as-is,
-// it reads fine on the light tile backgrounds below.
+// Lavender glyph on the dark glass. The shared icon set's SVGs are stroked
+// with currentColor, which does not apply through an <img src="…svg">, so
+// generate-pages.mjs emits an empty <span> carrying --icon-url and the tint
+// goes through a CSS mask instead — same convention as
+// .tile__app-icon__glyph (_app-icons.scss) and .tile-group__footer-icon
+// (_content-blocks.scss).
 .tile__icon {
     width: 32px;
     height: 32px;
+    flex-shrink: 0;
+    background-color: #E9D8FD;
+    -webkit-mask-image: var(--icon-url);
+    mask-image: var(--icon-url);
+    -webkit-mask-size: contain;
+    mask-size: contain;
+    -webkit-mask-repeat: no-repeat;
+    mask-repeat: no-repeat;
+    -webkit-mask-position: center;
+    mask-position: center;
 }
 
 .tile__label {
-    font-size: 11px;
+    font-size: clamp(9px, 2.4vw, 13px);
     font-weight: 500;
     text-align: center;
     line-height: 1.2;
+    color: #E6E0E9;
     display: -webkit-box;
     -webkit-box-orient: vertical;
     -webkit-line-clamp: 2;
@@ -70,66 +80,14 @@
     width: 100%;
 }
 
-.tile--blue {
-    background: var(--tile-blue-bg);
+// Phone grids are already 6-up (_app-icons.scss) — align their cell height
+// and label with the section grid above. The extra class in the selector is
+// specificity only: _app-icons.scss loads after this file and pins the
+// phone label to a flat 9px.
+.tile-grid.tile-grid--phone .tile {
+    height: 128px;
 }
 
-.tile--blue .tile__label {
-    color: var(--tile-blue-fg);
-}
-
-.tile--green {
-    background: var(--tile-green-bg);
-}
-
-.tile--green .tile__label {
-    color: var(--tile-green-fg);
-}
-
-.tile--purple {
-    background: var(--tile-purple-bg);
-}
-
-.tile--purple .tile__label {
-    color: var(--tile-purple-fg);
-}
-
-.tile--pink {
-    background: var(--tile-pink-bg);
-}
-
-.tile--pink .tile__label {
-    color: var(--tile-pink-fg);
-}
-
-.tile--orange {
-    background: var(--tile-orange-bg);
-}
-
-.tile--orange .tile__label {
-    color: var(--tile-orange-fg);
-}
-
-.tile--teal {
-    background: var(--tile-teal-bg);
-}
-
-.tile--teal .tile__label {
-    color: var(--tile-teal-fg);
-}
-
-.tile--amber {
-    background: var(--tile-amber-bg);
-}
-
-.tile--amber .tile__label {
-    color: var(--tile-amber-fg);
-}
-
-.tile--indigo {
-    background: var(--tile-indigo-bg);
-}
-
-.tile--indigo .tile__label {
-    color: var(--tile-indigo-fg);
+.tile-grid.tile-grid--phone .tile__label {
+    font-size: clamp(9px, 2.4vw, 13px);
 }

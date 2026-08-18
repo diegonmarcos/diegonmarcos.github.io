@@ -23,10 +23,10 @@
         <div class="status-strip">
             <div class="status-strip__row">
                 <div class="status-strip__cluster status-strip__cluster--left"><span class="status-strip__chip is-active">5G</span><span class="status-strip__chip is-active">WiFi</span><span class="status-strip__chip is-active">WG</span><span class="status-strip__chip">KDE</span><span class="status-strip__chip is-active">BT</span><span class="status-strip__chip">USB</span></div>
-                <div class="status-strip__camera" aria-hidden="true"></div>
-                <div class="status-strip__cluster status-strip__cluster--right"><span class="status-strip__chip">RAM 62%</span><span class="status-strip__chip">STO 48%</span><span class="status-strip__chip">CPU 17%</span><span class="status-strip__chip">BAT 84%</span></div>
+                <button class="status-strip__clock" id="status-clock" type="button" aria-label="Calendar">--:--</button>
+                <div class="status-strip__cluster status-strip__cluster--right"><span class="status-strip__chip">R 62%</span><span class="status-strip__chip">S 48%</span><span class="status-strip__chip">C 17%</span><span class="status-strip__chip is-active" role="img" aria-label="Battery 84%"><svg width="22" height="11" viewBox="0 0 24 12" aria-hidden="true" focusable="false"><rect x="0.5" y="0.5" width="19" height="11" rx="2.5" fill="none" stroke="currentColor"/><rect x="2" y="2" width="13.4" height="8" rx="1" fill="currentColor"/><rect x="21" y="4" width="2" height="4" rx="1" fill="currentColor"/></svg></span></div>
             </div>
-            <button class="status-strip__clock" id="status-clock" type="button" aria-label="Calendar">--:--</button>
+            <div class="status-strip__hairline" aria-hidden="true"></div>
         </div>
         <div class="galaxy-backdrop" aria-hidden="true"></div>
         
@@ -229,6 +229,7 @@
                 <div class="drawer__banner-text">
                     <p class="drawer__title" id="drawer-app-name">Cloud SuperApp</p>
                     <p class="drawer__meta" id="drawer-app-build">cloud-mobile · web</p>
+                    <p class="drawer__meta drawer__meta--ts" id="drawer-app-timestamp">2026-08-18 07:52</p>
                 </div>
             </div>
             <div class="drawer__separator"></div>
@@ -237,6 +238,7 @@
                 <div class="drawer__banner-text">
                     <p class="drawer__title" id="drawer-user-name">Diego Coelho Marcos</p>
                     <p class="drawer__meta" id="drawer-user-email">me@diegonmarcos.com</p>
+                    <p class="drawer__mode" id="drawer-user-mode">Mode: Apps</p>
                 </div>
             </div>
             <nav class="drawer__nav" id="drawer-nav"></nav>

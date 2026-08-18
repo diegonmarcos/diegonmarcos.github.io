@@ -11,22 +11,24 @@
     gap: 10px;
 }
 
+// section_title — 20sp bold lavender, mixed case (not an uppercase eyebrow).
 .stack-divider {
-    font-size: 12px;
-    text-transform: uppercase;
-    letter-spacing: .05em;
-    color: var(--text-secondary);
-    margin: 14px 4px 2px;
+    font-size: 20px;
+    font-weight: 700;
+    text-transform: none;
+    letter-spacing: normal;
+    color: #E9D8FD;
+    margin: 12px 4px 6px;
 }
 
-// Liquid-glass card surface (bg_glass_liquid.xml) layered over the flat
-// --glass-bg backdrop. Radius stays at 16px, not --glass-liquid-radius
-// (24px), to match this card's existing tighter corner.
+// MaterialCardView surface: opaque dark colorSurface + an elevation shadow,
+// no glass tint and no hairline border (the real card has neither).
 .stack-card {
-    background-color: var(--glass-bg);
-    background-image: var(--glass-liquid-gradient);
-    border: var(--glass-liquid-border);
+    background-color: #1D1B20;
+    background-image: none;
+    border: 0;
     border-radius: 14px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.45);
     overflow: hidden;
 }
 
@@ -39,8 +41,8 @@
 
 .stack-card__title {
     color: var(--cloud-primary);
-    font-weight: 600;
-    font-size: 15px;
+    font-weight: 700;
+    font-size: 20px;
 }
 
 a.stack-card__title:hover {
@@ -48,6 +50,7 @@ a.stack-card__title:hover {
 }
 
 .stack-card__chevron {
+    font-size: 20px;
     color: var(--text-secondary);
     transition: transform var(--transition-fast);
 }

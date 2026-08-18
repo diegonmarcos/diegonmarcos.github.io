@@ -17,7 +17,9 @@ body {
 
 body {
     margin: 0;
-    font-family: 'Segoe UI', Roboto, -apple-system, BlinkMacSystemFont, sans-serif;
+    // Roboto first (no Segoe UI ahead of it) so the web shell picks the same
+    // typeface the Android app does wherever Roboto exists.
+    font-family: Roboto, 'Helvetica Neue', Arial, sans-serif;
     color: var(--text-primary);
     background: var(--gradient-mid);
     -webkit-font-smoothing: antialiased;
@@ -77,10 +79,30 @@ a {
     // a real phone while the 118px did not, so the .page-tabs pill row ended
     // up underneath the toolbar icons. Everything now derives from these
     // four tokens instead: move the band and the content padding follows.
+    //
+    // FLATTENED ON PURPOSE — do not re-nest these. The first version built
+    // --content-top as a three-deep chain
+    //   env() -> --safe-area-top -> --chrome-band-top -> --content-top
+    // and every consumer (this file's .content padding AND all four island
+    // top: values in launcher/_islands.scss) bottomed out in that one chain
+    // with no fallback anywhere. var() substitution is a token-paste: if the
+    // env() at the root of the chain fails to substitute — which several
+    // mobile Chromium forks get wrong specifically for env() nested inside a
+    // var() inside a calc(), and which desktop never reproduces because
+    // there is no notch to exercise it — the pasted result is garbage and
+    // EVERY property built on it goes invalid-at-computed-value-time at
+    // once: .content's padding falls to 0 and the islands' top: falls to
+    // auto (static position, i.e. the top of the shell). Content and chrome
+    // then land on the same coordinate, which is exactly the "tabs render
+    // under the toolbar icons" symptom, on the phone only.
+    // So: env() sits DIRECTLY inside each calc(), one substitution level,
+    // and every consumption site passes a pixel fallback (see the paired
+    // plain-px declarations in app/_content.scss and launcher/_islands.scss).
     --safe-area-top: env(safe-area-inset-top, 0px);
-    --chrome-band-top: calc(var(--safe-area-top) + 68px);
+    --chrome-band-top: calc(env(safe-area-inset-top, 0px) + 36px);
     --chrome-band-height: 48px; // .icon-btn / .toolbar-action, the tallest members of the band
-    --content-top: calc(var(--chrome-band-top) + var(--chrome-band-height) + 12px);
+    // 36px band top + 48px band height + 12px gap.
+    --content-top: calc(env(safe-area-inset-top, 0px) + 96px);
 
     position: relative;
     display: flex;

@@ -144,16 +144,28 @@ function monogram(name) {
 function iconImg(icon, rel, cls) {
   return `<img class="${cls}" src="${rel}public/icons/${icon}.svg" alt="">`;
 }
+// Section-tile glyph. Not an <img>: the icon has to be tinted (lavender on
+// the grid, white in a strip), and the shared set's stroke="currentColor"
+// SVGs cannot be recolored through an <img>. So it ships as an empty span
+// carrying --icon-url, masked+tinted by .tile__icon — same convention as
+// .tile__app-icon__glyph. The span has no alt text to lose; the tile itself
+// carries an aria-label instead.
+function tileIconHtml(icon, rel) {
+  return `<span class="tile__icon" style="--icon-url: url('${rel}public/icons/${icon}.svg')"></span>`;
+}
 function tileHtml(tile, color, rel) {
   const { href, external } = resolveTarget(tile.target);
   const label = `<span class="tile__label">${tile.label}</span>`;
-  const icon = iconImg(tile.icon, rel, 'tile__icon');
+  const icon = tileIconHtml(tile.icon, rel);
+  // tile--<color> is kept purely to mirror the APK's computed-but-unused
+  // palette (TileGridFragment); it no longer paints anything.
   const cls = `tile tile--${color}`;
+  const aria = ` aria-label="${tile.label}"`;
   if (href) {
     const attrs = external ? ' target="_blank" rel="noopener"' : '';
-    return `<a class="${cls}" href="${href}"${attrs} role="listitem">${icon}${label}</a>`;
+    return `<a class="${cls}" href="${href}"${attrs} role="listitem"${aria}>${icon}${label}</a>`;
   }
-  return `<div class="${cls} tile--inert" role="listitem" aria-disabled="true">${icon}${label}</div>`;
+  return `<div class="${cls} tile--inert" role="listitem" aria-disabled="true"${aria}>${icon}${label}</div>`;
 }
 // Cloud tab tiles are our own self-hosted services — generic functional
 // icons (mail/calendar/chat) make sense there. Phone tab tiles represent
@@ -261,18 +273,25 @@ function modeTabsHtml(sectionId, active) {
                 <a class="page-tabs__item${active === 'admin' ? ' is-active' : ''}" href="${routeHref([sectionId, 'admin'])}">Admin</a>
             </div>`;
 }
+// Icons first: the real app opens every Apps/Admin tab on the mode's own
+// tiles_apps/tiles_admin icon grid (tile_columns-wide, i.e. the dense grid
+// here), and only then the AggregatorStack cards below a divider — so a tab
+// that also declares stack cards renders BOTH, grid on top.
 function tabbedSectionBody(section, sectionId, mode, rel) {
   const modeData = section[mode];
-  const inner = modeData.type === 'stack'
-    ? stackBody(modeData.cards, rel)
-    : tileGridBody(modeData.tiles, rel, () => section.color);
-  return `${modeTabsHtml(sectionId, mode)}\n            ${inner}`;
+  const parts = [];
+  if (modeData.tiles) parts.push(tileGridBody(modeData.tiles, rel, () => section.color, true));
+  if (modeData.cards) {
+    parts.push(`<h2 class="stack-divider">Details</h2>`);
+    parts.push(stackBody(modeData.cards, rel));
+  }
+  return `${modeTabsHtml(sectionId, mode)}\n            ${parts.join('\n            ')}`;
 }
 
 // ── page-type content renderers ─────────────────────────────────────────
-function tileGridBody(tiles, rel, colorFn) {
+function tileGridBody(tiles, rel, colorFn, dense = false) {
   const items = tiles.map((t) => tileHtml(t, colorFn(t), rel)).join('\n                ');
-  return `<div class="tile-grid" role="list">
+  return `<div class="tile-grid${dense ? ' tile-grid--dense' : ''}" role="list">
                 ${items}
             </div>`;
 }
@@ -568,9 +587,19 @@ function write(routeSegments, title, sectionId, bodyHtml, backHref) {
 // mock values; the center clock is genuinely live (see main.ts's tiny
 // setInterval clock updater — #status-clock's text is refreshed client-side,
 // this server-rendered value is just the correct initial paint).
+// Battery reads as a GLYPH in the app, not a "BAT 84%" text chip — body +
+// nub outline with the fill bar sized to the percentage.
+function batteryGlyphHtml(value) {
+  const pct = Math.max(0, Math.min(100, parseInt(value, 10) || 0));
+  const fill = (16 * pct / 100).toFixed(1);
+  return `<span class="status-strip__chip is-active" role="img" aria-label="Battery ${value}"><svg width="22" height="11" viewBox="0 0 24 12" aria-hidden="true" focusable="false"><rect x="0.5" y="0.5" width="19" height="11" rx="2.5" fill="none" stroke="currentColor"/><rect x="2" y="2" width="${fill}" height="8" rx="1" fill="currentColor"/><rect x="21" y="4" width="2" height="4" rx="1" fill="currentColor"/></svg></span>`;
+}
+
 function statusStripHtml() {
   const left = statusBar.left.map((i) => `<span class="status-strip__chip${i.active ? ' is-active' : ''}">${i.label}</span>`).join('');
-  const right = statusBar.right.map((i) => `<span class="status-strip__chip">${i.label} ${i.value}</span>`).join('');
+  const right = statusBar.right.map((i) => (i.label === 'BAT'
+    ? batteryGlyphHtml(i.value)
+    : `<span class="status-strip__chip">${i.label} ${i.value}</span>`)).join('');
   // No new Date() here on purpose — a build-time timestamp would make every
   // page's HTML differ across builds/redeploys with no source change,
   // breaking reproducibility (the whole dist/-is-committed-code convention
@@ -579,10 +608,10 @@ function statusStripHtml() {
   return `<div class="status-strip">
             <div class="status-strip__row">
                 <div class="status-strip__cluster status-strip__cluster--left">${left}</div>
-                <div class="status-strip__camera" aria-hidden="true"></div>
+                <button class="status-strip__clock" id="status-clock" type="button" aria-label="Calendar">--:--</button>
                 <div class="status-strip__cluster status-strip__cluster--right">${right}</div>
             </div>
-            <button class="status-strip__clock" id="status-clock" type="button" aria-label="Calendar">--:--</button>
+            <div class="status-strip__hairline" aria-hidden="true"></div>
         </div>`;
 }
 
@@ -713,6 +742,7 @@ function renderShell({ title, sectionId, depth, bodyHtml, backHref }) {
                 <div class="drawer__banner-text">
                     <p class="drawer__title" id="drawer-app-name">Cloud SuperApp</p>
                     <p class="drawer__meta" id="drawer-app-build">cloud-mobile · web</p>
+                    <p class="drawer__meta drawer__meta--ts" id="drawer-app-timestamp">2026-08-18 07:52</p>
                 </div>
             </div>
             <div class="drawer__separator"></div>
@@ -721,6 +751,7 @@ function renderShell({ title, sectionId, depth, bodyHtml, backHref }) {
                 <div class="drawer__banner-text">
                     <p class="drawer__title" id="drawer-user-name">Diego Coelho Marcos</p>
                     <p class="drawer__meta" id="drawer-user-email">me@diegonmarcos.com</p>
+                    <p class="drawer__mode" id="drawer-user-mode">Mode: Apps</p>
                 </div>
             </div>
             <nav class="drawer__nav" id="drawer-nav"></nav>

@@ -24,8 +24,8 @@
       { "label": "USB", "active": false }
     ],
     "right": [
-      { "label": "RAM", "value": "62%" }, { "label": "STO", "value": "48%" },
-      { "label": "CPU", "value": "17%" }, { "label": "BAT", "value": "84%" }
+      { "label": "R", "value": "62%" }, { "label": "S", "value": "48%" },
+      { "label": "C", "value": "17%" }, { "label": "BAT", "value": "84%" }
     ]
   },
   "cube": {

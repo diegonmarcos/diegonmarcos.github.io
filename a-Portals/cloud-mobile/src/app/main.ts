@@ -33,7 +33,8 @@ function initStatusClock(): void {
   const pad = (n: number): string => String(n).padStart(2, '0');
   const tick = (): void => {
     const now = new Date();
-    el.textContent = `${pad(now.getDate())}-${pad(now.getMonth() + 1)}-${now.getFullYear()} ${pad(now.getHours())}:${pad(now.getMinutes())}`;
+    const weekday = now.toLocaleDateString('en-US', { weekday: 'short' });
+    el.textContent = `${pad(now.getDate())}-${pad(now.getMonth() + 1)}-${now.getFullYear()} ${pad(now.getHours())}:${pad(now.getMinutes())} ${weekday}`;
   };
   tick();
   window.setInterval(tick, 15000);

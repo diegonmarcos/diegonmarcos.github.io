@@ -40,21 +40,35 @@
     flex-wrap: nowrap;
     overflow-x: auto;
     scroll-snap-type: x proximity;
-    gap: 6px;
+    gap: 0;
     scrollbar-width: none;
 
     &::-webkit-scrollbar {
         display: none;
     }
 
-    // APK cells are 60dp wide, wrap-content height — not the square
-    // aspect-ratio tile every other grid uses (.tile in _tiles.scss).
+    // GroupedTilesFragment.tileCell: 60dp wide, wrap-content height, 6dp
+    // padding and — unlike every other grid's tile — no background, border
+    // or corner radius at all. Icons are white here, not the section grid's
+    // lavender.
     .tile {
         width: 60px;
-        aspect-ratio: auto;
         height: auto;
+        padding: 6px;
+        background: none;
+        border: 0;
+        border-radius: 0;
         flex-shrink: 0;
         scroll-snap-align: start;
+    }
+
+    .tile__icon {
+        background-color: #FFFFFF;
+    }
+
+    .tile__label {
+        color: rgba(255, 255, 255, 0.8);
+        font-size: 12px;
     }
 }
 

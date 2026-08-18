@@ -65,6 +65,11 @@
     text-align: left;
 }
 
+// Ripple stand-in — the real banners are ?selectableItemBackground rows.
+.drawer__banner:active {
+    background-image: linear-gradient(rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.08));
+}
+
 .drawer__banner--app {
     background: var(--drawer-banner-app);
 }
@@ -82,12 +87,28 @@
 
 .drawer__title {
     color: var(--drawer-banner-text);
-    font-size: 15px;
-    font-weight: 600;
+    font-size: 16px;
+    font-weight: 500;
     margin: 0;
 }
 
 .drawer__meta {
+    color: var(--drawer-banner-text);
+    opacity: .7;
+    font-size: 11px;
+    font-family: monospace;
+    margin-top: 2px;
+}
+
+// nav_header.xml's third app-banner line: build timestamp, dimmer than the
+// build-flavour line above it.
+.drawer__meta--ts {
+    opacity: .55;
+}
+
+// nav_header.xml's labelSmall "Mode: Apps" row. The swap-mode icon that sits
+// beside it in the real header is View.GONE, so only the text ships here.
+.drawer__mode {
     color: var(--drawer-banner-text);
     opacity: .7;
     font-size: 11px;

@@ -12,6 +12,14 @@
     position: absolute;
     inset: 0;
     z-index: 50;
+    // Whole overlay is a gesture surface: touch-action is resolved against
+    // the hit element AND its ancestors, so declaring it once here covers the
+    // scrim, the nodes and the follow-finger arrow. Without it a drag across
+    // the open menu is a pan candidate and Chrome answers with pointercancel.
+    touch-action: none;
+    // Don't let a drag that reaches the overlay's edge chain out into the
+    // page's own scroll/overscroll (pull-to-refresh, back-navigation glow).
+    overscroll-behavior: none;
 }
 
 // Closed state is native [hidden] (JS toggles the attribute) — no display:

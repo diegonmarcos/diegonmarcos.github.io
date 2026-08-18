@@ -8,7 +8,7 @@
 // ==========================================================================
 
 .site-footer {
-    margin-top: auto; // pin to the bottom of .content: end of scroll on long pages, viewport floor on short ones
+    margin-top: 32px; // flows at the natural end of content — never pinned to the viewport floor on short pages
     padding: 20px 0 12px;
     border-top: 1px solid var(--glass-border);
     display: flex;

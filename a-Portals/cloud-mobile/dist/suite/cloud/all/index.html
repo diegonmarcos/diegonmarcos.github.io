@@ -23,10 +23,10 @@
         <div class="status-strip">
             <div class="status-strip__row">
                 <div class="status-strip__cluster status-strip__cluster--left"><span class="status-strip__chip is-active">5G</span><span class="status-strip__chip is-active">WiFi</span><span class="status-strip__chip is-active">WG</span><span class="status-strip__chip">KDE</span><span class="status-strip__chip is-active">BT</span><span class="status-strip__chip">USB</span></div>
-                <div class="status-strip__camera" aria-hidden="true"></div>
-                <div class="status-strip__cluster status-strip__cluster--right"><span class="status-strip__chip">RAM 62%</span><span class="status-strip__chip">STO 48%</span><span class="status-strip__chip">CPU 17%</span><span class="status-strip__chip">BAT 84%</span></div>
+                <button class="status-strip__clock" id="status-clock" type="button" aria-label="Calendar">--:--</button>
+                <div class="status-strip__cluster status-strip__cluster--right"><span class="status-strip__chip">R 62%</span><span class="status-strip__chip">S 48%</span><span class="status-strip__chip">C 17%</span><span class="status-strip__chip is-active" role="img" aria-label="Battery 84%"><svg width="22" height="11" viewBox="0 0 24 12" aria-hidden="true" focusable="false"><rect x="0.5" y="0.5" width="19" height="11" rx="2.5" fill="none" stroke="currentColor"/><rect x="2" y="2" width="13.4" height="8" rx="1" fill="currentColor"/><rect x="21" y="4" width="2" height="4" rx="1" fill="currentColor"/></svg></span></div>
             </div>
-            <button class="status-strip__clock" id="status-clock" type="button" aria-label="Calendar">--:--</button>
+            <div class="status-strip__hairline" aria-hidden="true"></div>
         </div>
         <div class="galaxy-backdrop" aria-hidden="true"></div>
         
@@ -61,56 +61,56 @@
             <section class="tile-group">
                 <h2 class="tile-group__title">AI</h2>
                 <div class="tile-grid tile-grid--strip" role="list">
-                    <div class="tile tile--blue tile--inert" role="listitem" aria-disabled="true"><img class="tile__icon" src="../../../public/icons/robot.svg" alt=""><span class="tile__label">AI-Tlg-Hermes</span></div>
-                    <div class="tile tile--blue tile--inert" role="listitem" aria-disabled="true"><img class="tile__icon" src="../../../public/icons/robot.svg" alt=""><span class="tile__label">AI-Tlg-Goose</span></div>
-                    <div class="tile tile--blue tile--inert" role="listitem" aria-disabled="true"><img class="tile__icon" src="../../../public/icons/sparkles.svg" alt=""><span class="tile__label">AI-Tmx</span></div>
-                    <div class="tile tile--blue tile--inert" role="listitem" aria-disabled="true"><img class="tile__icon" src="../../../public/icons/code.svg" alt=""><span class="tile__label">IDE (Files Editor)</span></div>
+                    <div class="tile tile--blue tile--inert" role="listitem" aria-disabled="true" aria-label="AI-Tlg-Hermes"><span class="tile__icon" style="--icon-url: url('../../../public/icons/robot.svg')"></span><span class="tile__label">AI-Tlg-Hermes</span></div>
+                    <div class="tile tile--blue tile--inert" role="listitem" aria-disabled="true" aria-label="AI-Tlg-Goose"><span class="tile__icon" style="--icon-url: url('../../../public/icons/robot.svg')"></span><span class="tile__label">AI-Tlg-Goose</span></div>
+                    <div class="tile tile--blue tile--inert" role="listitem" aria-disabled="true" aria-label="AI-Tmx"><span class="tile__icon" style="--icon-url: url('../../../public/icons/sparkles.svg')"></span><span class="tile__label">AI-Tmx</span></div>
+                    <div class="tile tile--blue tile--inert" role="listitem" aria-disabled="true" aria-label="IDE (Files Editor)"><span class="tile__icon" style="--icon-url: url('../../../public/icons/code.svg')"></span><span class="tile__label">IDE (Files Editor)</span></div>
                 </div>
             </section>
 
             <section class="tile-group">
                 <h2 class="tile-group__title">Communications</h2>
                 <div class="tile-grid tile-grid--strip" role="list">
-                    <div class="tile tile--blue tile--inert" role="listitem" aria-disabled="true"><img class="tile__icon" src="../../../public/icons/mail.svg" alt=""><span class="tile__label">Mail</span></div>
-                    <div class="tile tile--blue tile--inert" role="listitem" aria-disabled="true"><img class="tile__icon" src="../../../public/icons/chat.svg" alt=""><span class="tile__label">Chat (Mattermost)</span></div>
-                    <div class="tile tile--blue tile--inert" role="listitem" aria-disabled="true"><img class="tile__icon" src="../../../public/icons/chat.svg" alt=""><span class="tile__label">Messenger (Element)</span></div>
-                    <div class="tile tile--blue tile--inert" role="listitem" aria-disabled="true"><img class="tile__icon" src="../../../public/icons/phone.svg" alt=""><span class="tile__label">Dialer</span></div>
-                    <div class="tile tile--blue tile--inert" role="listitem" aria-disabled="true"><img class="tile__icon" src="../../../public/icons/robot.svg" alt=""><span class="tile__label">C3-Bot</span></div>
+                    <div class="tile tile--blue tile--inert" role="listitem" aria-disabled="true" aria-label="Mail"><span class="tile__icon" style="--icon-url: url('../../../public/icons/mail.svg')"></span><span class="tile__label">Mail</span></div>
+                    <div class="tile tile--blue tile--inert" role="listitem" aria-disabled="true" aria-label="Chat (Mattermost)"><span class="tile__icon" style="--icon-url: url('../../../public/icons/chat.svg')"></span><span class="tile__label">Chat (Mattermost)</span></div>
+                    <div class="tile tile--blue tile--inert" role="listitem" aria-disabled="true" aria-label="Messenger (Element)"><span class="tile__icon" style="--icon-url: url('../../../public/icons/chat.svg')"></span><span class="tile__label">Messenger (Element)</span></div>
+                    <div class="tile tile--blue tile--inert" role="listitem" aria-disabled="true" aria-label="Dialer"><span class="tile__icon" style="--icon-url: url('../../../public/icons/phone.svg')"></span><span class="tile__label">Dialer</span></div>
+                    <div class="tile tile--blue tile--inert" role="listitem" aria-disabled="true" aria-label="C3-Bot"><span class="tile__icon" style="--icon-url: url('../../../public/icons/robot.svg')"></span><span class="tile__label">C3-Bot</span></div>
                 </div>
             </section>
 
             <section class="tile-group">
                 <h2 class="tile-group__title">Data Apps</h2>
                 <div class="tile-grid tile-grid--strip" role="list">
-                    <div class="tile tile--blue tile--inert" role="listitem" aria-disabled="true"><img class="tile__icon" src="../../../public/icons/calendar.svg" alt=""><span class="tile__label">Calendar</span></div>
-                    <div class="tile tile--blue tile--inert" role="listitem" aria-disabled="true"><img class="tile__icon" src="../../../public/icons/rss.svg" alt=""><span class="tile__label">News</span></div>
-                    <div class="tile tile--blue tile--inert" role="listitem" aria-disabled="true"><img class="tile__icon" src="../../../public/icons/user.svg" alt=""><span class="tile__label">Contacts</span></div>
-                    <div class="tile tile--blue tile--inert" role="listitem" aria-disabled="true"><img class="tile__icon" src="../../../public/icons/logs.svg" alt=""><span class="tile__label">Notes (Obsidian)</span></div>
-                    <div class="tile tile--blue tile--inert" role="listitem" aria-disabled="true"><img class="tile__icon" src="../../../public/icons/database.svg" alt=""><span class="tile__label">Sheets</span></div>
-                    <div class="tile tile--blue tile--inert" role="listitem" aria-disabled="true"><img class="tile__icon" src="../../../public/icons/photos.svg" alt=""><span class="tile__label">Photos</span></div>
-                    <div class="tile tile--blue tile--inert" role="listitem" aria-disabled="true"><img class="tile__icon" src="../../../public/icons/photos.svg" alt=""><span class="tile__label">Media Center</span></div>
-                    <div class="tile tile--blue tile--inert" role="listitem" aria-disabled="true"><img class="tile__icon" src="../../../public/icons/music.svg" alt=""><span class="tile__label">Music</span></div>
+                    <div class="tile tile--blue tile--inert" role="listitem" aria-disabled="true" aria-label="Calendar"><span class="tile__icon" style="--icon-url: url('../../../public/icons/calendar.svg')"></span><span class="tile__label">Calendar</span></div>
+                    <div class="tile tile--blue tile--inert" role="listitem" aria-disabled="true" aria-label="News"><span class="tile__icon" style="--icon-url: url('../../../public/icons/rss.svg')"></span><span class="tile__label">News</span></div>
+                    <div class="tile tile--blue tile--inert" role="listitem" aria-disabled="true" aria-label="Contacts"><span class="tile__icon" style="--icon-url: url('../../../public/icons/user.svg')"></span><span class="tile__label">Contacts</span></div>
+                    <div class="tile tile--blue tile--inert" role="listitem" aria-disabled="true" aria-label="Notes (Obsidian)"><span class="tile__icon" style="--icon-url: url('../../../public/icons/logs.svg')"></span><span class="tile__label">Notes (Obsidian)</span></div>
+                    <div class="tile tile--blue tile--inert" role="listitem" aria-disabled="true" aria-label="Sheets"><span class="tile__icon" style="--icon-url: url('../../../public/icons/database.svg')"></span><span class="tile__label">Sheets</span></div>
+                    <div class="tile tile--blue tile--inert" role="listitem" aria-disabled="true" aria-label="Photos"><span class="tile__icon" style="--icon-url: url('../../../public/icons/photos.svg')"></span><span class="tile__label">Photos</span></div>
+                    <div class="tile tile--blue tile--inert" role="listitem" aria-disabled="true" aria-label="Media Center"><span class="tile__icon" style="--icon-url: url('../../../public/icons/photos.svg')"></span><span class="tile__label">Media Center</span></div>
+                    <div class="tile tile--blue tile--inert" role="listitem" aria-disabled="true" aria-label="Music"><span class="tile__icon" style="--icon-url: url('../../../public/icons/music.svg')"></span><span class="tile__label">Music</span></div>
                 </div>
             </section>
 
             <section class="tile-group">
                 <h2 class="tile-group__title">Tools Primary</h2>
                 <div class="tile-grid tile-grid--strip" role="list">
-                    <div class="tile tile--blue tile--inert" role="listitem" aria-disabled="true"><img class="tile__icon" src="../../../public/icons/browser.svg" alt=""><span class="tile__label">Browser</span></div>
-                    <a class="tile tile--blue" href="/cloud-mobile/apptabs/grid/" role="listitem"><img class="tile__icon" src="../../../public/icons/suite.svg" alt=""><span class="tile__label">Tabs</span></a>
-                    <div class="tile tile--blue tile--inert" role="listitem" aria-disabled="true"><img class="tile__icon" src="../../../public/icons/wallet.svg" alt=""><span class="tile__label">Wallet</span></div>
-                    <div class="tile tile--blue tile--inert" role="listitem" aria-disabled="true"><img class="tile__icon" src="../../../public/icons/pin.svg" alt=""><span class="tile__label">Navigation</span></div>
-                    <a class="tile tile--blue" href="/cloud-mobile/vault/" role="listitem"><img class="tile__icon" src="../../../public/icons/lock.svg" alt=""><span class="tile__label">Vault</span></a>
+                    <div class="tile tile--blue tile--inert" role="listitem" aria-disabled="true" aria-label="Browser"><span class="tile__icon" style="--icon-url: url('../../../public/icons/browser.svg')"></span><span class="tile__label">Browser</span></div>
+                    <a class="tile tile--blue" href="/cloud-mobile/apptabs/grid/" role="listitem" aria-label="Tabs"><span class="tile__icon" style="--icon-url: url('../../../public/icons/suite.svg')"></span><span class="tile__label">Tabs</span></a>
+                    <div class="tile tile--blue tile--inert" role="listitem" aria-disabled="true" aria-label="Wallet"><span class="tile__icon" style="--icon-url: url('../../../public/icons/wallet.svg')"></span><span class="tile__label">Wallet</span></div>
+                    <div class="tile tile--blue tile--inert" role="listitem" aria-disabled="true" aria-label="Navigation"><span class="tile__icon" style="--icon-url: url('../../../public/icons/pin.svg')"></span><span class="tile__label">Navigation</span></div>
+                    <a class="tile tile--blue" href="/cloud-mobile/vault/" role="listitem" aria-label="Vault"><span class="tile__icon" style="--icon-url: url('../../../public/icons/lock.svg')"></span><span class="tile__label">Vault</span></a>
                 </div>
             </section>
 
             <section class="tile-group">
                 <h2 class="tile-group__title">Tools Dashboards</h2>
                 <div class="tile-grid tile-grid--strip" role="list">
-                    <a class="tile tile--blue" href="https://paca.diegonmarcos.com" target="_blank" rel="noopener" role="listitem"><img class="tile__icon" src="../../../public/icons/briefcase.svg" alt=""><span class="tile__label">PM Boards</span></a>
-                    <a class="tile tile--blue" href="/cloud-mobile/myfin/dashboard/" role="listitem"><img class="tile__icon" src="../../../public/icons/chart.svg" alt=""><span class="tile__label">MyFin</span></a>
-                    <a class="tile tile--blue" href="/cloud-mobile/health/summary/" role="listitem"><img class="tile__icon" src="../../../public/icons/heart.svg" alt=""><span class="tile__label">MyHealth</span></a>
-                    <a class="tile tile--blue" href="https://diegonmarcos.github.io/my-data/" target="_blank" rel="noopener" role="listitem"><img class="tile__icon" src="../../../public/icons/database.svg" alt=""><span class="tile__label">MyData</span></a>
+                    <a class="tile tile--blue" href="https://paca.diegonmarcos.com" target="_blank" rel="noopener" role="listitem" aria-label="PM Boards"><span class="tile__icon" style="--icon-url: url('../../../public/icons/briefcase.svg')"></span><span class="tile__label">PM Boards</span></a>
+                    <a class="tile tile--blue" href="/cloud-mobile/myfin/dashboard/" role="listitem" aria-label="MyFin"><span class="tile__icon" style="--icon-url: url('../../../public/icons/chart.svg')"></span><span class="tile__label">MyFin</span></a>
+                    <a class="tile tile--blue" href="/cloud-mobile/health/summary/" role="listitem" aria-label="MyHealth"><span class="tile__icon" style="--icon-url: url('../../../public/icons/heart.svg')"></span><span class="tile__label">MyHealth</span></a>
+                    <a class="tile tile--blue" href="https://diegonmarcos.github.io/my-data/" target="_blank" rel="noopener" role="listitem" aria-label="MyData"><span class="tile__icon" style="--icon-url: url('../../../public/icons/database.svg')"></span><span class="tile__label">MyData</span></a>
                 </div>
             </section>
             
@@ -194,6 +194,7 @@
                 <div class="drawer__banner-text">
                     <p class="drawer__title" id="drawer-app-name">Cloud SuperApp</p>
                     <p class="drawer__meta" id="drawer-app-build">cloud-mobile · web</p>
+                    <p class="drawer__meta drawer__meta--ts" id="drawer-app-timestamp">2026-08-18 07:52</p>
                 </div>
             </div>
             <div class="drawer__separator"></div>
@@ -202,6 +203,7 @@
                 <div class="drawer__banner-text">
                     <p class="drawer__title" id="drawer-user-name">Diego Coelho Marcos</p>
                     <p class="drawer__meta" id="drawer-user-email">me@diegonmarcos.com</p>
+                    <p class="drawer__mode" id="drawer-user-mode">Mode: Apps</p>
                 </div>
             </div>
             <nav class="drawer__nav" id="drawer-nav"></nav>

@@ -65,22 +65,56 @@ const MOVE_THRESHOLD_PX = 6;
 // on screen, hover-to-highlight, click-to-activate) instead of evaluating a
 // drag-release commit. Anything slower/farther is a real press-drag and
 // keeps the existing behavior untouched.
-const TAP_MAX_MS = 300;
-const TAP_MAX_MOVE_PX = 10;
+//
+// Sized for touch, not mouse: a real finger tap routinely takes longer than
+// the 300ms a mouse click does (the pointerup can land behind compositor /
+// gesture-disambiguation work) and jitters much further than a mouse does
+// over the same "stationary" press. At 300ms/10px an ordinary thumb tap fell
+// out of the tap window and was scored as a press-drag, so it committed
+// whatever node happened to be highlighted instead of opening persistently.
+const TAP_MAX_MS = 450;
+const TAP_MAX_MOVE_PX = 16;
 // After a tap's pointerup, the browser still dispatches the tap's synthetic
 // `click` — hit-tested against the DOM as it exists AFTER our pointerup
 // handler ran. By then renderItems() has inserted the full-bleed
 // .radial-menu__scrim over the star, so that click lands on the scrim and the
 // delegated close-on-scrim handler below would shut the menu again instantly
 // (the menu appears never to open at all). Swallow exactly one click if it
-// arrives inside this window after entering persistent mode.
-const GHOST_CLICK_MS = 400;
+// arrives inside this window after entering persistent mode. Touch-sized:
+// a phone's synthetic click trails its touchend far more than a mouse's
+// does (legacy click-delay, gesture disambiguation), and 400ms was close
+// enough to that delay that the ghost click sometimes escaped the window and
+// closed the menu on the scrim — the exact "the menu never opened" symptom.
+const GHOST_CLICK_MS = 700;
 const FLASH_MS = 220;
 const TWO_PI = Math.PI * 2;
 // Follow-finger arrow (Sirius only) — arrowhead geometry.
 const ARROW_HEAD_LENGTH_PX = 10;
 const ARROW_HEAD_ANGLE_RAD = Math.PI / 7;
 const SVG_NS = 'http://www.w3.org/2000/svg';
+
+// Pointer capture is what keeps a touch drag bound to the star it started
+// on: without it, once the finger leaves the star's own (tiny) box the
+// browser retargets pointermove/pointerup at whatever is underneath and the
+// gesture silently dies. It has to be guarded though — setPointerCapture
+// throws NotFoundError if the pointer is already gone by the time the
+// handler runs, which on touch happens far more readily than with a mouse,
+// and an unguarded throw aborts the rest of the pointerdown handler.
+function capturePointer(el: HTMLElement, pointerId: number): void {
+  try {
+    el.setPointerCapture(pointerId);
+  } catch {
+    // Pointer already released; implicit capture still covers the gesture.
+  }
+}
+
+function releasePointer(el: HTMLElement, pointerId: number): void {
+  try {
+    if (el.hasPointerCapture(pointerId)) el.releasePointerCapture(pointerId);
+  } catch {
+    // Nothing to release.
+  }
+}
 
 function polar(angle: number, radius: number): { tx: number; ty: number } {
   return { tx: Math.cos(angle) * radius, ty: Math.sin(angle) * radius };
@@ -467,8 +501,8 @@ export function initStars(data: PortalData): void {
       downTime = Date.now();
       downX = e.clientX;
       downY = e.clientY;
-      starEl.setPointerCapture(e.pointerId);
       openFor(kind, starEl);
+      capturePointer(starEl, e.pointerId);
     });
 
     starEl.addEventListener('pointermove', (e) => {
@@ -480,7 +514,7 @@ export function initStars(data: PortalData): void {
 
     starEl.addEventListener('pointerup', (e) => {
       if (pointerId === null || e.pointerId !== pointerId) return;
-      if (starEl.hasPointerCapture(pointerId)) starEl.releasePointerCapture(pointerId);
+      releasePointer(starEl, pointerId);
       pointerId = null;
       if (!isOpen) return;
       // Dual-mode split: a quick tap (fast release, never traveled past
@@ -509,9 +543,28 @@ export function initStars(data: PortalData): void {
       commitIndex(highlightIndex);
     });
 
+    // A cancel means the browser (or the OS) took the gesture away mid-press
+    // — a pan/pinch candidate won disambiguation, an edge/back gesture fired,
+    // the app was backgrounded. The decisive part is that pointerup will
+    // NEVER arrive, so none of the release logic above ever runs.
+    //
+    // What the old handler did: null out pointerId and nothing else. The menu
+    // that pointerdown had already opened was therefore left in the worst
+    // possible state — isOpen with persistent === false and no ghost-click
+    // suppression armed — so the tap's synthetic click landed on the scrim
+    // renderItems() had just inserted and the delegated scrim handler closed
+    // it again within the same frame. On a phone that is indistinguishable
+    // from "tapping the star does nothing".
+    //
+    // Cancel is not a close. Settle into exactly the persistent mode a clean
+    // tap produces (menu stays up, ghost click swallowed), which is both
+    // usable now and leaves no state wedged for the next gesture.
     starEl.addEventListener('pointercancel', (e) => {
       if (pointerId === null || e.pointerId !== pointerId) return;
+      releasePointer(starEl, pointerId);
       pointerId = null;
+      if (!isOpen) return;
+      enterPersistentMode();
     });
   }
 

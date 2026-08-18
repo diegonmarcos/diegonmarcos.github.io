@@ -23,6 +23,10 @@
     height: 220px;
     transform: translateY(-50%);
     touch-action: none;
+    // These handles sit exactly where Android/Chrome want to start their own
+    // edge swipes (back-navigation, overscroll glow). touch-action alone stops
+    // the pan; overscroll-behavior stops the gesture from chaining outward.
+    overscroll-behavior: none;
     pointer-events: auto;
 }
 
@@ -54,8 +58,12 @@
     right: 0;
 }
 
+// The sectors — not the handle — are what edge-menu.ts binds pointerdown to,
+// so they carry touch-action in their own right rather than relying purely on
+// inheriting the handle's restriction through the hit-test ancestor walk.
 .edge-menu__sector {
     flex: 1;
+    touch-action: none;
 }
 
 // Overlay — one #radial-menu-style scrim + fanned arc, built and torn down
@@ -64,6 +72,10 @@
     position: absolute;
     inset: 0;
     z-index: 51; // above the radial star menu's own scrim/nodes
+    // Same reasoning as .radial-menu: one declaration on the overlay root
+    // covers the scrim/nodes/arrow for the ancestor touch-action walk.
+    touch-action: none;
+    overscroll-behavior: none;
 }
 
 .edge-menu.is-open {

@@ -10,12 +10,28 @@
     min-width: 0;  // let wide inner content (tab strips, grids) clip/scroll here, not overflow the page
     overflow-y: auto;
     overflow-x: hidden;
+    // Android scrollbars fade out instead of parking a persistent track.
+    scrollbar-width: none;
+
+    &::-webkit-scrollbar {
+        display: none;
+    }
+
     // Reserves the whole absolutely-positioned top chrome band + a 12px gap,
     // derived from the --chrome-band-* tokens on .shell (see _base.scss) so
     // the first child (.page-tabs on tabbed pages) always starts below the
     // toolbar icons instead of under them. z-index:1 vs the islands' 10/11
     // keeps content scrolling UNDER the chrome, like the Android toolbar.
-    padding: var(--content-top) 12px 96px;
+    // Two declarations, three failure modes covered: the plain-px one wins
+    // if the browser drops the env()/var() line at PARSE time (no support at
+    // all); the var() fallback covers --content-top being undefined (any
+    // future .content rendered outside .shell, where the token doesn't
+    // inherit); and _base.scss keeps env() one level deep so the token
+    // itself can't substitute to garbage. Never collapse this to a single
+    // var()-only declaration — see the FLATTENED ON PURPOSE note in
+    // _base.scss for what that regression looks like on a real phone.
+    padding: 96px 12px 96px;
+    padding: var(--content-top, 96px) 12px 96px;
     position: relative;
     z-index: 1;
     // Flex column so .site-footer (last child, see generate-pages.mjs's
@@ -44,6 +60,11 @@
     overflow-x: auto;
     padding-bottom: 8px;
     margin-bottom: 12px;
+    scrollbar-width: none;
+
+    &::-webkit-scrollbar {
+        display: none;
+    }
 }
 
 .page-tabs__item {

@@ -23,10 +23,10 @@
         <div class="status-strip">
             <div class="status-strip__row">
                 <div class="status-strip__cluster status-strip__cluster--left"><span class="status-strip__chip is-active">5G</span><span class="status-strip__chip is-active">WiFi</span><span class="status-strip__chip is-active">WG</span><span class="status-strip__chip">KDE</span><span class="status-strip__chip is-active">BT</span><span class="status-strip__chip">USB</span></div>
-                <div class="status-strip__camera" aria-hidden="true"></div>
-                <div class="status-strip__cluster status-strip__cluster--right"><span class="status-strip__chip">RAM 62%</span><span class="status-strip__chip">STO 48%</span><span class="status-strip__chip">CPU 17%</span><span class="status-strip__chip">BAT 84%</span></div>
+                <button class="status-strip__clock" id="status-clock" type="button" aria-label="Calendar">--:--</button>
+                <div class="status-strip__cluster status-strip__cluster--right"><span class="status-strip__chip">R 62%</span><span class="status-strip__chip">S 48%</span><span class="status-strip__chip">C 17%</span><span class="status-strip__chip is-active" role="img" aria-label="Battery 84%"><svg width="22" height="11" viewBox="0 0 24 12" aria-hidden="true" focusable="false"><rect x="0.5" y="0.5" width="19" height="11" rx="2.5" fill="none" stroke="currentColor"/><rect x="2" y="2" width="13.4" height="8" rx="1" fill="currentColor"/><rect x="21" y="4" width="2" height="4" rx="1" fill="currentColor"/></svg></span></div>
             </div>
-            <button class="status-strip__clock" id="status-clock" type="button" aria-label="Calendar">--:--</button>
+            <div class="status-strip__hairline" aria-hidden="true"></div>
         </div>
         <div class="galaxy-backdrop" aria-hidden="true"></div>
         
@@ -58,18 +58,18 @@
 
         <main class="content" id="content">
             <div class="tile-grid" role="list">
-                <a class="tile tile--green" href="/cloud-mobile/config/profile/" role="listitem"><img class="tile__icon" src="../public/icons/settings.svg" alt=""><span class="tile__label">Profile</span></a>
-                <a class="tile tile--blue" href="/cloud-mobile/wg/" role="listitem"><img class="tile__icon" src="../public/icons/settings.svg" alt=""><span class="tile__label">WireGuard</span></a>
-                <a class="tile tile--orange" href="/cloud-mobile/config/kde/" role="listitem"><img class="tile__icon" src="../public/icons/settings.svg" alt=""><span class="tile__label">KDE</span></a>
-                <a class="tile tile--blue" href="/cloud-mobile/config/ai/" role="listitem"><img class="tile__icon" src="../public/icons/settings.svg" alt=""><span class="tile__label">AI</span></a>
-                <a class="tile tile--blue" href="/cloud-mobile/config/launcher/" role="listitem"><img class="tile__icon" src="../public/icons/settings.svg" alt=""><span class="tile__label">Launcher</span></a>
-                <div class="tile tile--teal tile--inert" role="listitem" aria-disabled="true"><img class="tile__icon" src="../public/icons/settings.svg" alt=""><span class="tile__label">Import</span></div>
-                <div class="tile tile--indigo tile--inert" role="listitem" aria-disabled="true"><img class="tile__icon" src="../public/icons/settings.svg" alt=""><span class="tile__label">Keyboard</span></div>
-                <a class="tile tile--teal" href="/cloud-mobile/config/update-all/" role="listitem"><img class="tile__icon" src="../public/icons/settings.svg" alt=""><span class="tile__label">Update All</span></a>
-                <a class="tile tile--pink" href="/cloud-mobile/config/constellation/" role="listitem"><img class="tile__icon" src="../public/icons/settings.svg" alt=""><span class="tile__label">Constellation</span></a>
-                <a class="tile tile--teal" href="/cloud-mobile/config/onehand/" role="listitem"><img class="tile__icon" src="../public/icons/settings.svg" alt=""><span class="tile__label">One-Hand</span></a>
-                <a class="tile tile--orange" href="/cloud-mobile/config/permissions/" role="listitem"><img class="tile__icon" src="../public/icons/settings.svg" alt=""><span class="tile__label">Permissions</span></a>
-                <a class="tile tile--teal" href="/cloud-mobile/config/about/" role="listitem"><img class="tile__icon" src="../public/icons/settings.svg" alt=""><span class="tile__label">About</span></a>
+                <a class="tile tile--green" href="/cloud-mobile/config/profile/" role="listitem" aria-label="Profile"><span class="tile__icon" style="--icon-url: url('../public/icons/settings.svg')"></span><span class="tile__label">Profile</span></a>
+                <a class="tile tile--blue" href="/cloud-mobile/wg/" role="listitem" aria-label="WireGuard"><span class="tile__icon" style="--icon-url: url('../public/icons/settings.svg')"></span><span class="tile__label">WireGuard</span></a>
+                <a class="tile tile--orange" href="/cloud-mobile/config/kde/" role="listitem" aria-label="KDE"><span class="tile__icon" style="--icon-url: url('../public/icons/settings.svg')"></span><span class="tile__label">KDE</span></a>
+                <a class="tile tile--blue" href="/cloud-mobile/config/ai/" role="listitem" aria-label="AI"><span class="tile__icon" style="--icon-url: url('../public/icons/settings.svg')"></span><span class="tile__label">AI</span></a>
+                <a class="tile tile--blue" href="/cloud-mobile/config/launcher/" role="listitem" aria-label="Launcher"><span class="tile__icon" style="--icon-url: url('../public/icons/settings.svg')"></span><span class="tile__label">Launcher</span></a>
+                <div class="tile tile--teal tile--inert" role="listitem" aria-disabled="true" aria-label="Import"><span class="tile__icon" style="--icon-url: url('../public/icons/settings.svg')"></span><span class="tile__label">Import</span></div>
+                <div class="tile tile--indigo tile--inert" role="listitem" aria-disabled="true" aria-label="Keyboard"><span class="tile__icon" style="--icon-url: url('../public/icons/settings.svg')"></span><span class="tile__label">Keyboard</span></div>
+                <a class="tile tile--teal" href="/cloud-mobile/config/update-all/" role="listitem" aria-label="Update All"><span class="tile__icon" style="--icon-url: url('../public/icons/settings.svg')"></span><span class="tile__label">Update All</span></a>
+                <a class="tile tile--pink" href="/cloud-mobile/config/constellation/" role="listitem" aria-label="Constellation"><span class="tile__icon" style="--icon-url: url('../public/icons/settings.svg')"></span><span class="tile__label">Constellation</span></a>
+                <a class="tile tile--teal" href="/cloud-mobile/config/onehand/" role="listitem" aria-label="One-Hand"><span class="tile__icon" style="--icon-url: url('../public/icons/settings.svg')"></span><span class="tile__label">One-Hand</span></a>
+                <a class="tile tile--orange" href="/cloud-mobile/config/permissions/" role="listitem" aria-label="Permissions"><span class="tile__icon" style="--icon-url: url('../public/icons/settings.svg')"></span><span class="tile__label">Permissions</span></a>
+                <a class="tile tile--teal" href="/cloud-mobile/config/about/" role="listitem" aria-label="About"><span class="tile__icon" style="--icon-url: url('../public/icons/settings.svg')"></span><span class="tile__label">About</span></a>
             </div>
             <footer class="site-footer">
                 <a class="footer-badge" href="https://github.com/diegonmarcos/unix/releases/latest/download/Cloud-SuperApp.apk" download>
@@ -151,6 +151,7 @@
                 <div class="drawer__banner-text">
                     <p class="drawer__title" id="drawer-app-name">Cloud SuperApp</p>
                     <p class="drawer__meta" id="drawer-app-build">cloud-mobile · web</p>
+                    <p class="drawer__meta drawer__meta--ts" id="drawer-app-timestamp">2026-08-18 07:52</p>
                 </div>
             </div>
             <div class="drawer__separator"></div>
@@ -159,6 +160,7 @@
                 <div class="drawer__banner-text">
                     <p class="drawer__title" id="drawer-user-name">Diego Coelho Marcos</p>
                     <p class="drawer__meta" id="drawer-user-email">me@diegonmarcos.com</p>
+                    <p class="drawer__mode" id="drawer-user-mode">Mode: Apps</p>
                 </div>
             </div>
             <nav class="drawer__nav" id="drawer-nav"></nav>

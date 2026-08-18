@@ -53,8 +53,8 @@
             },
             { "id": "suite-phone", "label": "Phone",
               "children": [
-                { "id": "phone-home", "label": "Home", "target": "page:suite/phone" },
-                { "id": "phone-more", "label": "More", "target": "page:suite/phone/all" }
+                { "id": "phone-home", "label": "Home", "target": "page:suite/phone/quickmarks" },
+                { "id": "phone-more", "label": "More", "target": "page:suite/phone/quickmarks" }
               ]
             }
           ]
@@ -114,7 +114,7 @@
     "suite": [
       { "id": "cloud", "label": "Cloud", "icon": "suite", "target": "page:suite/cloud/quickmarks" },
       { "id": "phone", "label": "Phone", "icon": "phone", "target": "page:suite/phone/quickmarks" },
-      { "id": "more", "label": "More", "icon": "more", "target": "page:suite/phone/all" }
+      { "id": "more", "label": "More", "icon": "more", "target": "page:suite/phone/quickmarks" }
     ],
     "tools": [
       { "id": "apps", "label": "Apps", "icon": "tools", "target": "section:tools" },

@@ -98,6 +98,22 @@
     background: none;
 }
 
+// Brand mini — same treatment as the app tile badge (see _app-icons.scss):
+// the brand color arrives as an inline style, the inlined simple-icons path
+// paints white through currentColor at ~60% of the slot.
+.phone-folder__mini--brand {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+
+    > svg {
+        display: block;
+        width: 60%;
+        height: 60%;
+    }
+}
+
 @each $c in ('blue', 'green', 'purple', 'pink', 'orange', 'teal', 'amber', 'indigo') {
     .phone-folder__mini--#{$c} {
         background: var(--tile-#{$c}-bg);

@@ -79,6 +79,16 @@
     }
 }
 
+// Brand-mark exception (mock-apps.json `iconSlug`) — the squircle takes the
+// app's own brand color from an inline style and the simple-icons glyph,
+// which is a single fill="currentColor" path, paints white on top of it at
+// ~60% of the badge. Sized here rather than reusing .tile__app-icon__glyph's
+// 26px so the brand mark keeps its usual optical weight.
+.tile__app-icon--brand .tile__app-icon__glyph {
+    width: 60%;
+    height: 60%;
+}
+
 .tile__app-icon--blue {
     background: #1565C0;
 }

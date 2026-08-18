@@ -180,6 +180,8 @@
     },
     {
       "name": "Gemini",
+      "iconSlug": "googlegemini",
+      "brandColor": "#8E75B2",
       "icon": "sparkles",
       "category": "AI",
       "pinned": true,
@@ -210,6 +212,8 @@
     },
     {
       "name": "Perplexity",
+      "iconSlug": "perplexity",
+      "brandColor": "#1FB8CD",
       "icon": "sparkles",
       "category": "AI",
       "pinned": false,
@@ -224,6 +228,8 @@
     },
     {
       "name": "ChatGPT",
+      "iconSlug": "openai",
+      "brandColor": "#412991",
       "icon": "sparkles",
       "category": "AI",
       "pinned": false,
@@ -238,6 +244,8 @@
     },
     {
       "name": "Copilot",
+      "iconSlug": "githubcopilot",
+      "brandColor": "#6E40C9",
       "icon": "code",
       "category": "AI",
       "pinned": false,
@@ -252,6 +260,8 @@
     },
     {
       "name": "Poe",
+      "iconSlug": "quora",
+      "brandColor": "#B92B27",
       "icon": "chat",
       "category": "AI",
       "pinned": false,
@@ -266,6 +276,8 @@
     },
     {
       "name": "FairEmail",
+      "iconSlug": "protonmail",
+      "brandColor": "#6D4AFF",
       "icon": "mail",
       "category": "Communications",
       "pinned": true,
@@ -281,6 +293,8 @@
     },
     {
       "name": "K-9 Mail",
+      "iconSlug": "thunderbird",
+      "brandColor": "#0A84FF",
       "icon": "mail",
       "category": "Communications",
       "pinned": true,
@@ -296,6 +310,8 @@
     },
     {
       "name": "Mattermost",
+      "iconSlug": "mattermost",
+      "brandColor": "#0058CC",
       "icon": "chat",
       "category": "Communications",
       "pinned": true,
@@ -356,6 +372,8 @@
     },
     {
       "name": "Signal",
+      "iconSlug": "signal",
+      "brandColor": "#3A76F0",
       "icon": "chat",
       "category": "Communications",
       "pinned": false,
@@ -370,6 +388,8 @@
     },
     {
       "name": "Slack",
+      "iconSlug": "slack",
+      "brandColor": "#4A154B",
       "icon": "chat",
       "category": "Communications",
       "pinned": false,
@@ -384,6 +404,8 @@
     },
     {
       "name": "Discord",
+      "iconSlug": "discord",
+      "brandColor": "#5865F2",
       "icon": "chat",
       "category": "Communications",
       "pinned": false,
@@ -398,6 +420,8 @@
     },
     {
       "name": "Zulip",
+      "iconSlug": "zulip",
+      "brandColor": "#6492FE",
       "icon": "chat",
       "category": "Communications",
       "pinned": false,
@@ -412,6 +436,8 @@
     },
     {
       "name": "Obsidian",
+      "iconSlug": "obsidian",
+      "brandColor": "#7C3AED",
       "icon": "logs",
       "category": "Data Apps",
       "pinned": true,
@@ -427,6 +453,8 @@
     },
     {
       "name": "Gallery",
+      "iconSlug": "googlephotos",
+      "brandColor": "#4285F4",
       "icon": "photos",
       "category": "Data Apps",
       "pinned": true,
@@ -442,6 +470,8 @@
     },
     {
       "name": "Calendar",
+      "iconSlug": "googlecalendar",
+      "brandColor": "#4285F4",
       "icon": "calendar",
       "category": "Data Apps",
       "pinned": true,
@@ -472,6 +502,8 @@
     },
     {
       "name": "Tidal",
+      "iconSlug": "tidal",
+      "brandColor": "#2C2C2C",
       "icon": "music",
       "category": "Data Apps",
       "pinned": true,
@@ -487,6 +519,8 @@
     },
     {
       "name": "Bitwarden",
+      "iconSlug": "bitwarden",
+      "brandColor": "#175DDC",
       "icon": "lock",
       "category": "Data Apps",
       "pinned": true,
@@ -502,6 +536,8 @@
     },
     {
       "name": "Spotify",
+      "iconSlug": "spotify",
+      "brandColor": "#1DB954",
       "icon": "music",
       "category": "Data Apps",
       "pinned": false,
@@ -516,6 +552,8 @@
     },
     {
       "name": "Notion",
+      "iconSlug": "notion",
+      "brandColor": "#2F3437",
       "icon": "logs",
       "category": "Data Apps",
       "pinned": false,
@@ -530,6 +568,8 @@
     },
     {
       "name": "Todoist",
+      "iconSlug": "todoist",
+      "brandColor": "#E44332",
       "icon": "logs",
       "category": "Data Apps",
       "pinned": false,
@@ -544,6 +584,8 @@
     },
     {
       "name": "1Password",
+      "iconSlug": "1password",
+      "brandColor": "#3B66BC",
       "icon": "lock",
       "category": "Data Apps",
       "pinned": false,
@@ -558,6 +600,8 @@
     },
     {
       "name": "Brave",
+      "iconSlug": "brave",
+      "brandColor": "#FB542B",
       "icon": "browser",
       "category": "Tools Primary",
       "pinned": true,
@@ -573,6 +617,8 @@
     },
     {
       "name": "News",
+      "iconSlug": "googlenews",
+      "brandColor": "#4285F4",
       "icon": "rss",
       "category": "Tools Primary",
       "pinned": true,
@@ -588,6 +634,8 @@
     },
     {
       "name": "Maps",
+      "iconSlug": "googlemaps",
+      "brandColor": "#4285F4",
       "icon": "pin",
       "category": "Tools Primary",
       "pinned": true,
@@ -603,6 +651,8 @@
     },
     {
       "name": "Wallet",
+      "iconSlug": "googlepay",
+      "brandColor": "#4285F4",
       "icon": "wallet",
       "category": "Tools Primary",
       "pinned": true,
@@ -618,6 +668,8 @@
     },
     {
       "name": "Translate",
+      "iconSlug": "googletranslate",
+      "brandColor": "#4285F4",
       "icon": "chat",
       "category": "Tools Primary",
       "pinned": true,
@@ -663,6 +715,8 @@
     },
     {
       "name": "Firefox",
+      "iconSlug": "firefoxbrowser",
+      "brandColor": "#FF7139",
       "icon": "browser",
       "category": "Tools Primary",
       "pinned": false,
@@ -677,6 +731,8 @@
     },
     {
       "name": "Uber",
+      "iconSlug": "uber",
+      "brandColor": "#202020",
       "icon": "pin",
       "category": "Tools Primary",
       "pinned": false,
@@ -776,6 +832,8 @@
     },
     {
       "name": "Home Assistant",
+      "iconSlug": "homeassistant",
+      "brandColor": "#18BCF2",
       "icon": "home",
       "category": "Tools Dashboards",
       "pinned": false,
@@ -790,6 +848,8 @@
     },
     {
       "name": "Play Store",
+      "iconSlug": "googleplay",
+      "brandColor": "#01875F",
       "icon": "suite",
       "category": "Configs",
       "pinned": true,
@@ -805,6 +865,8 @@
     },
     {
       "name": "F-Droid",
+      "iconSlug": "fdroid",
+      "brandColor": "#1976D2",
       "icon": "suite",
       "category": "Configs",
       "pinned": true,
@@ -835,6 +897,8 @@
     },
     {
       "name": "Termius",
+      "iconSlug": "termius",
+      "brandColor": "#2B2F36",
       "icon": "code",
       "category": "Configs",
       "pinned": false,
@@ -863,6 +927,8 @@
     },
     {
       "name": "Nova Launcher",
+      "iconSlug": "android",
+      "brandColor": "#3DDC84",
       "icon": "suite",
       "category": "Configs",
       "pinned": false,
@@ -877,6 +943,8 @@
     },
     {
       "name": "Files by Google",
+      "iconSlug": "google",
+      "brandColor": "#4285F4",
       "icon": "database",
       "category": "Configs",
       "pinned": false,
@@ -919,6 +987,8 @@
     },
     {
       "name": "Google Docs",
+      "iconSlug": "googledocs",
+      "brandColor": "#4285F4",
       "icon": "logs",
       "category": "AI",
       "pinned": false,
@@ -933,6 +1003,8 @@
     },
     {
       "name": "Git Sync",
+      "iconSlug": "git",
+      "brandColor": "#F05032",
       "icon": "workflow",
       "category": "AI",
       "pinned": false,
@@ -947,6 +1019,8 @@
     },
     {
       "name": "Acode",
+      "iconSlug": "codeium",
+      "brandColor": "#3DDC84",
       "icon": "code",
       "category": "AI",
       "pinned": false,
@@ -975,6 +1049,8 @@
     },
     {
       "name": "Samsung Email",
+      "iconSlug": "samsung",
+      "brandColor": "#1428A0",
       "icon": "mail",
       "category": "Communications",
       "pinned": false,
@@ -989,6 +1065,8 @@
     },
     {
       "name": "WhatsApp Business",
+      "iconSlug": "whatsapp",
+      "brandColor": "#25D366",
       "icon": "chat",
       "category": "Communications",
       "pinned": false,
@@ -1003,6 +1081,8 @@
     },
     {
       "name": "Gmail",
+      "iconSlug": "gmail",
+      "brandColor": "#EA4335",
       "icon": "mail",
       "category": "Communications",
       "pinned": false,
@@ -1017,6 +1097,8 @@
     },
     {
       "name": "Telegram",
+      "iconSlug": "telegram",
+      "brandColor": "#26A5E4",
       "icon": "chat",
       "category": "Communications",
       "pinned": false,
@@ -1031,6 +1113,8 @@
     },
     {
       "name": "Instagram",
+      "iconSlug": "instagram",
+      "brandColor": "#E4405F",
       "icon": "photos",
       "category": "Communications",
       "pinned": false,
@@ -1045,6 +1129,8 @@
     },
     {
       "name": "LinkedIn",
+      "iconSlug": "linkedin",
+      "brandColor": "#0A66C2",
       "icon": "briefcase",
       "category": "Communications",
       "pinned": false,
@@ -1059,6 +1145,8 @@
     },
     {
       "name": "WhatsApp",
+      "iconSlug": "whatsapp",
+      "brandColor": "#25D366",
       "icon": "chat",
       "category": "Communications",
       "pinned": false,
@@ -1073,6 +1161,8 @@
     },
     {
       "name": "Viber",
+      "iconSlug": "viber",
+      "brandColor": "#7360F2",
       "icon": "chat",
       "category": "Communications",
       "pinned": false,
@@ -1101,6 +1191,8 @@
     },
     {
       "name": "Element",
+      "iconSlug": "element",
+      "brandColor": "#0DBD8B",
       "icon": "chat",
       "category": "Communications",
       "pinned": false,
@@ -1115,6 +1207,8 @@
     },
     {
       "name": "Facebook",
+      "iconSlug": "facebook",
+      "brandColor": "#0866FF",
       "icon": "photos",
       "category": "Tools Primary",
       "pinned": false,
@@ -1129,6 +1223,8 @@
     },
     {
       "name": "Messenger",
+      "iconSlug": "messenger",
+      "brandColor": "#0099FF",
       "icon": "chat",
       "category": "Communications",
       "pinned": false,
@@ -1143,6 +1239,8 @@
     },
     {
       "name": "Reddit",
+      "iconSlug": "reddit",
+      "brandColor": "#FF4500",
       "icon": "logs",
       "category": "Tools Primary",
       "pinned": false,
@@ -1157,6 +1255,8 @@
     },
     {
       "name": "TikTok",
+      "iconSlug": "tiktok",
+      "brandColor": "#1C1C1C",
       "icon": "photos",
       "category": "Tools Primary",
       "pinned": false,
@@ -1171,6 +1271,8 @@
     },
     {
       "name": "Snapchat",
+      "iconSlug": "snapchat",
+      "brandColor": "#C7A600",
       "icon": "photos",
       "category": "Tools Primary",
       "pinned": false,
@@ -1185,6 +1287,8 @@
     },
     {
       "name": "X",
+      "iconSlug": "x",
+      "brandColor": "#14171A",
       "icon": "chat",
       "category": "Tools Primary",
       "pinned": false,
@@ -1199,6 +1303,8 @@
     },
     {
       "name": "Pinterest",
+      "iconSlug": "pinterest",
+      "brandColor": "#BD081C",
       "icon": "photos",
       "category": "Tools Primary",
       "pinned": false,
@@ -1213,6 +1319,8 @@
     },
     {
       "name": "YouTube",
+      "iconSlug": "youtube",
+      "brandColor": "#FF0000",
       "icon": "photos",
       "category": "Data Apps",
       "pinned": false,
@@ -1227,6 +1335,8 @@
     },
     {
       "name": "YouTube Music",
+      "iconSlug": "youtubemusic",
+      "brandColor": "#FF0000",
       "icon": "music",
       "category": "Data Apps",
       "pinned": false,
@@ -1241,6 +1351,8 @@
     },
     {
       "name": "Netflix",
+      "iconSlug": "netflix",
+      "brandColor": "#E50914",
       "icon": "photos",
       "category": "Data Apps",
       "pinned": false,
@@ -1255,6 +1367,8 @@
     },
     {
       "name": "Plex",
+      "iconSlug": "plex",
+      "brandColor": "#E5A00D",
       "icon": "photos",
       "category": "Data Apps",
       "pinned": false,
@@ -1269,6 +1383,8 @@
     },
     {
       "name": "VLC",
+      "iconSlug": "vlcmediaplayer",
+      "brandColor": "#FF8800",
       "icon": "photos",
       "category": "Data Apps",
       "pinned": false,
@@ -1283,6 +1399,8 @@
     },
     {
       "name": "SoundCloud",
+      "iconSlug": "soundcloud",
+      "brandColor": "#FF5500",
       "icon": "music",
       "category": "Data Apps",
       "pinned": false,
@@ -1297,6 +1415,8 @@
     },
     {
       "name": "Google Photos",
+      "iconSlug": "googlephotos",
+      "brandColor": "#4285F4",
       "icon": "photos",
       "category": "Tools Primary",
       "pinned": false,
@@ -1311,6 +1431,8 @@
     },
     {
       "name": "Snapseed",
+      "iconSlug": "google",
+      "brandColor": "#4285F4",
       "icon": "photos",
       "category": "Tools Primary",
       "pinned": false,
@@ -1339,6 +1461,8 @@
     },
     {
       "name": "OsmAnd",
+      "iconSlug": "openstreetmap",
+      "brandColor": "#5F9E3F",
       "icon": "pin",
       "category": "Tools Primary",
       "pinned": false,
@@ -1353,6 +1477,8 @@
     },
     {
       "name": "Waze",
+      "iconSlug": "waze",
+      "brandColor": "#1AB5E8",
       "icon": "pin",
       "category": "Tools Primary",
       "pinned": false,
@@ -1381,6 +1507,8 @@
     },
     {
       "name": "Airbnb",
+      "iconSlug": "airbnb",
+      "brandColor": "#FF5A5F",
       "icon": "home",
       "category": "Tools Primary",
       "pinned": false,
@@ -1409,6 +1537,8 @@
     },
     {
       "name": "Chase Bank",
+      "iconSlug": "chase",
+      "brandColor": "#117ACA",
       "icon": "wallet",
       "category": "Tools Primary",
       "pinned": false,
@@ -1423,6 +1553,8 @@
     },
     {
       "name": "Bank of America",
+      "iconSlug": "bankofamerica",
+      "brandColor": "#E31837",
       "icon": "wallet",
       "category": "Tools Primary",
       "pinned": false,
@@ -1437,6 +1569,8 @@
     },
     {
       "name": "Revolut",
+      "iconSlug": "revolut",
+      "brandColor": "#2B3036",
       "icon": "wallet",
       "category": "Tools Primary",
       "pinned": false,
@@ -1451,6 +1585,8 @@
     },
     {
       "name": "PayPal",
+      "iconSlug": "paypal",
+      "brandColor": "#00457C",
       "icon": "wallet",
       "category": "Tools Primary",
       "pinned": false,
@@ -1465,6 +1601,8 @@
     },
     {
       "name": "Amazon Shopping",
+      "iconSlug": "amazon",
+      "brandColor": "#E47911",
       "icon": "suite",
       "category": "Tools Primary",
       "pinned": false,
@@ -1479,6 +1617,8 @@
     },
     {
       "name": "eBay",
+      "iconSlug": "ebay",
+      "brandColor": "#E53238",
       "icon": "suite",
       "category": "Tools Primary",
       "pinned": false,
@@ -1493,6 +1633,8 @@
     },
     {
       "name": "Etsy",
+      "iconSlug": "etsy",
+      "brandColor": "#F16521",
       "icon": "suite",
       "category": "Tools Primary",
       "pinned": false,
@@ -1521,6 +1663,8 @@
     },
     {
       "name": "Feedly",
+      "iconSlug": "feedly",
+      "brandColor": "#2BB24C",
       "icon": "rss",
       "category": "Tools Primary",
       "pinned": false,
@@ -1535,6 +1679,8 @@
     },
     {
       "name": "Hacker News",
+      "iconSlug": "ycombinator",
+      "brandColor": "#F0652F",
       "icon": "rss",
       "category": "Tools Primary",
       "pinned": false,
@@ -1549,6 +1695,8 @@
     },
     {
       "name": "Google Fit",
+      "iconSlug": "googlefit",
+      "brandColor": "#4285F4",
       "icon": "heart",
       "category": "Tools Dashboards",
       "pinned": false,
@@ -1563,6 +1711,8 @@
     },
     {
       "name": "Strava",
+      "iconSlug": "strava",
+      "brandColor": "#FC4C02",
       "icon": "heart",
       "category": "Tools Dashboards",
       "pinned": false,
@@ -1577,6 +1727,8 @@
     },
     {
       "name": "Headspace",
+      "iconSlug": "headspace",
+      "brandColor": "#F47D31",
       "icon": "heart",
       "category": "Tools Dashboards",
       "pinned": false,
@@ -1591,6 +1743,8 @@
     },
     {
       "name": "Google Drive",
+      "iconSlug": "googledrive",
+      "brandColor": "#4285F4",
       "icon": "database",
       "category": "Data Apps",
       "pinned": false,
@@ -1605,6 +1759,8 @@
     },
     {
       "name": "Google Sheets",
+      "iconSlug": "googlesheets",
+      "brandColor": "#34A853",
       "icon": "logs",
       "category": "Data Apps",
       "pinned": false,
@@ -1619,6 +1775,8 @@
     },
     {
       "name": "Trello",
+      "iconSlug": "trello",
+      "brandColor": "#0052CC",
       "icon": "logs",
       "category": "Data Apps",
       "pinned": false,
@@ -1633,6 +1791,8 @@
     },
     {
       "name": "Keep Notes",
+      "iconSlug": "googlekeep",
+      "brandColor": "#D9A400",
       "icon": "logs",
       "category": "Data Apps",
       "pinned": false,
@@ -1675,6 +1835,8 @@
     },
     {
       "name": "Syncthing",
+      "iconSlug": "syncthing",
+      "brandColor": "#0891D1",
       "icon": "workflow",
       "category": "Configs",
       "pinned": false,
@@ -1689,6 +1851,8 @@
     },
     {
       "name": "IceRaven",
+      "iconSlug": "firefoxbrowser",
+      "brandColor": "#B5479B",
       "icon": "browser",
       "category": "Tools Primary",
       "pinned": false,
@@ -1703,6 +1867,8 @@
     },
     {
       "name": "Duolingo",
+      "iconSlug": "duolingo",
+      "brandColor": "#4FAF02",
       "icon": "chat",
       "category": "Tools Primary",
       "pinned": false,
@@ -1717,6 +1883,8 @@
     },
     {
       "name": "Google Authenticator",
+      "iconSlug": "googleauthenticator",
+      "brandColor": "#4285F4",
       "icon": "lock",
       "category": "Data Apps",
       "pinned": false,
@@ -1745,6 +1913,8 @@
     },
     {
       "name": "WireGuard",
+      "iconSlug": "wireguard",
+      "brandColor": "#88171A",
       "icon": "mesh",
       "category": "Configs",
       "pinned": false,
@@ -1787,6 +1957,8 @@
     },
     {
       "name": "Chess.com",
+      "iconSlug": "chessdotcom",
+      "brandColor": "#6E9B41",
       "icon": "suite",
       "category": "Tools Primary",
       "pinned": false,
@@ -1801,6 +1973,8 @@
     },
     {
       "name": "One UI Home",
+      "iconSlug": "samsung",
+      "brandColor": "#1428A0",
       "icon": "home",
       "category": "Configs",
       "pinned": false,
@@ -1816,6 +1990,8 @@
     },
     {
       "name": "Device Care",
+      "iconSlug": "samsung",
+      "brandColor": "#1428A0",
       "icon": "settings",
       "category": "Configs",
       "pinned": false,
@@ -1831,6 +2007,8 @@
     },
     {
       "name": "AccuBattery",
+      "iconSlug": "android",
+      "brandColor": "#3DDC84",
       "icon": "chart",
       "category": "Tools Dashboards",
       "pinned": false,
@@ -1951,6 +2129,8 @@
     },
     {
       "name": "Wolfram Alpha",
+      "iconSlug": "wolfram",
+      "brandColor": "#DD1100",
       "icon": "brain",
       "category": "Tools Primary",
       "pinned": false,
@@ -1981,6 +2161,8 @@
     },
     {
       "name": "Shazam",
+      "iconSlug": "shazam",
+      "brandColor": "#0088FF",
       "icon": "music",
       "category": "Data Apps",
       "pinned": false,
@@ -2011,6 +2193,8 @@
     },
     {
       "name": "Pocket Casts",
+      "iconSlug": "pocketcasts",
+      "brandColor": "#F43E37",
       "icon": "music",
       "category": "Data Apps",
       "pinned": false,
@@ -2041,6 +2225,8 @@
     },
     {
       "name": "Meetup",
+      "iconSlug": "meetup",
+      "brandColor": "#ED1C40",
       "icon": "user",
       "category": "Tools Primary",
       "pinned": false,
@@ -2071,6 +2257,8 @@
     },
     {
       "name": "Indeed",
+      "iconSlug": "indeed",
+      "brandColor": "#003A9B",
       "icon": "briefcase",
       "category": "Tools Primary",
       "pinned": false,
@@ -2086,6 +2274,8 @@
     },
     {
       "name": "Glassdoor",
+      "iconSlug": "glassdoor",
+      "brandColor": "#0CAA41",
       "icon": "briefcase",
       "category": "Tools Primary",
       "pinned": false,
@@ -2101,6 +2291,8 @@
     },
     {
       "name": "AnkiDroid",
+      "iconSlug": "anki",
+      "brandColor": "#3178C6",
       "icon": "brain",
       "category": "Tools Primary",
       "pinned": false,
@@ -2116,6 +2308,8 @@
     },
     {
       "name": "Kindle",
+      "iconSlug": "amazon",
+      "brandColor": "#E47911",
       "icon": "logs",
       "category": "Tools Primary",
       "pinned": false,
@@ -2131,6 +2325,8 @@
     },
     {
       "name": "Samsung Notes",
+      "iconSlug": "samsung",
+      "brandColor": "#1428A0",
       "icon": "logs",
       "category": "Data Apps",
       "pinned": false,
@@ -2146,6 +2342,8 @@
     },
     {
       "name": "Samsung Health",
+      "iconSlug": "samsung",
+      "brandColor": "#1428A0",
       "icon": "heart",
       "category": "Tools Dashboards",
       "pinned": false,
@@ -2161,6 +2359,8 @@
     },
     {
       "name": "Galaxy Store",
+      "iconSlug": "samsung",
+      "brandColor": "#1428A0",
       "icon": "play-badge",
       "category": "Configs",
       "pinned": false,
@@ -2176,6 +2376,8 @@
     },
     {
       "name": "QR Scanner",
+      "iconSlug": "android",
+      "brandColor": "#3DDC84",
       "icon": "browser",
       "category": "Configs",
       "pinned": false,
@@ -2206,6 +2408,8 @@
     },
     {
       "name": "Bluesky",
+      "iconSlug": "bluesky",
+      "brandColor": "#0285FF",
       "icon": "chat",
       "category": "Communications",
       "pinned": false,
@@ -2221,6 +2425,8 @@
     },
     {
       "name": "Immich",
+      "iconSlug": "immich",
+      "brandColor": "#4250AF",
       "icon": "photos",
       "category": "Data Apps",
       "pinned": false,

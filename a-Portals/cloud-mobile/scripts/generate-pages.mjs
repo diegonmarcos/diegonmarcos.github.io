@@ -79,9 +79,14 @@ function computeSmartFolders(apps) {
 // badge exists on-device. Tap opens every app inside (showFolderDialog,
 // :389-441) — on the web that's a native <details>: the card IS the
 // <summary>, the expanded sheet renders below it, zero JS.
-// Mini icons are plain colored squircles (same hashed palette as the app
-// tiles) — a stand-in for the real Drawable the launcher blits in.
+// Mini icons mirror the app tiles: a brand-colored square holding the app's
+// simple-icons glyph when it has one (mock-apps.json iconSlug), otherwise a
+// plain hashed squircle stand-in for the real Drawable.
 function folderMiniHtml(name) {
+  const app = APP_BY_NAME.get(name);
+  if (app?.iconSlug) {
+    return `<span class="phone-folder__mini phone-folder__mini--brand" style="background:${app.brandColor}">${inlineBrandIcon(app.iconSlug)}</span>`;
+  }
   const color = TILE_COLORS[hash(name) % TILE_COLORS.length];
   return `<span class="phone-folder__mini phone-folder__mini--${color}"></span>`;
 }
@@ -109,7 +114,8 @@ function folderGridHtml(folders, rel, dense = false) {
             </div>`;
 }
 
-// Rendered AFTER the topical folders, under a "Smart Folders" subhead, with
+// Rendered AFTER the topical folders, under the page's "Smart-Folders"
+// stack-divider (emitted by phoneMergedBody, not here), with
 // each rule filed under its group header (Dev / Stores / Usage / Rank) and
 // drawn as SMALLER folder cards — PhoneAppsFragment.kt:241-264 renders smart
 // folders with a 44dp cell and columns+1 (=7) per row.
@@ -118,7 +124,6 @@ function smartFoldersBody(smartFolders, rel) {
   const blocks = groups.map((group) => `<h3 class="phone-folders__subhead">${group}</h3>
             ${folderGridHtml(smartFolders.filter((f) => f.group === group), rel, true)}`).join('\n            ');
   return `<section class="phone-folders">
-                <h2 class="phone-folders__subhead">Smart Folders</h2>
             ${blocks}
             </section>`;
 }
@@ -152,6 +157,23 @@ function topicalFoldersBody(apps, phoneFolders, rel) {
             ${buckets.filter((b) => b.folders.length).map((b) => `<h2 class="phone-folders__subhead">${b.title}</h2>
             ${folderGridHtml(b.folders, rel)}`).join('\n            ')}
             </section>`;
+}
+
+// ── the single Phone page — one scroll, three parts in order: Quickmarks
+// (pinned apps as one plain 6-per-row grid, no folders), All-Apps (the
+// topical folder-card sections), Smart-Folders (the rule-driven groups).
+// Served verbatim at suite/phone/quickmarks AND suite/phone/all, so every
+// existing deep link lands on the same merged page.
+function phoneMergedBody(rel) {
+  const pinned = phoneGroupsFromMockData(true).flatMap((g) => g.apps);
+  return `<h2 class="stack-divider">Quickmarks</h2>
+            <div class="tile-grid tile-grid--dense tile-grid--phone" role="list">
+                ${pinned.map((a) => avatarTileHtml(a.name, rel, null)).join('\n                ')}
+            </div>
+            <h2 class="stack-divider">All-Apps</h2>
+            ${topicalFoldersBody(mockData.apps, mockData.phoneFolders, rel)}
+            <h2 class="stack-divider">Smart-Folders</h2>
+            ${smartFoldersBody(computeSmartFolders(mockData.apps), rel)}`;
 }
 
 // ── target grammar → href (mirrors LauncherNavController's dispatch table) ─
@@ -217,6 +239,28 @@ function inlineIcon(icon) {
   }
   return svg;
 }
+const APP_ICONS_DIR = join(ICONS_DIR, 'apps');
+const brandIconCache = new Map();
+// Brand glyph for a real-world app — a CC0 simple-icons SVG (single filled
+// path, 24×24 viewBox, `<title>` for the brand name). Inlined for the same
+// reason as inlineIcon(): the white comes from `color` through
+// fill="currentColor", which an <img src="…svg"> would not resolve. The
+// <title> is dropped because the badge is aria-hidden and the tile already
+// carries the app name as its label.
+function inlineBrandIcon(slug) {
+  let svg = brandIconCache.get(slug);
+  if (svg === undefined) {
+    svg = readFileSync(join(APP_ICONS_DIR, `${slug}.svg`), 'utf8')
+      .replace(/<\?xml[\s\S]*?\?>/g, '')
+      .replace(/<title>[\s\S]*?<\/title>/g, '')
+      .replace(/<svg\b[^>]*>/, (tag) => tag
+        .replace(/\s(?:role|width|height|fill)="[^"]*"/g, '')
+        .replace(/<svg/, '<svg width="24" height="24" fill="currentColor"'))
+      .trim();
+    brandIconCache.set(slug, svg);
+  }
+  return svg;
+}
 // Section-tile glyph — inline SVG, tinted by .tile__icon's `color` (lavender
 // on the grid, white in a strip). Decorative: the tile itself carries an
 // aria-label.
@@ -252,6 +296,12 @@ function tileHtml(tile, color, rel) {
 function appIconHtml(name, rel) {
   const color = TILE_COLORS[hash(name) % TILE_COLORS.length];
   const app = APP_BY_NAME.get(name);
+  // Real-world third-party apps (mock-apps.json iconSlug) get their actual
+  // brand mark from the CC0 simple-icons set — white glyph on the brand
+  // color — so the drawer reads like a real Android home screen.
+  if (app?.iconSlug) {
+    return `<span class="tile__app-icon tile__app-icon--brand" style="background:${app.brandColor}"><span class="tile__app-icon__glyph" aria-hidden="true">${inlineBrandIcon(app.iconSlug)}</span></span>`;
+  }
   if (app?.real) {
     return `<span class="tile__app-icon tile__app-icon--${color}"><span class="tile__app-icon__glyph" aria-hidden="true">${inlineIcon(app.icon)}</span></span>`;
   }
@@ -375,21 +425,6 @@ function groupListBody(groups, rel, footer, footerHref, strip = false) {
                 <h2 class="tile-group__title">${g.title}</h2>
                 <div class="${gridCls}" role="list">
                     ${g.tiles.map((t) => tileHtml(t, 'blue', rel)).join('\n                    ')}
-                </div>
-            </section>`).join('\n');
-  const footerHtml = footer && footerHref ? `<a class="tile-group__footer" href="${footerHref}"><span class="tile-group__footer-icon" aria-hidden="true">${inlineIcon(footer.icon)}</span><span>${footer.label}</span></a>` : '';
-  return `${blocks}\n            ${footerHtml}`;
-}
-
-// groups come pre-filtered from phoneGroupsFromMockData(pinnedOnly). Used
-// only by suite/phone/quickmarks now — suite/phone/all uses
-// smartFoldersBody + topicalFoldersBody instead (see above).
-function appListBody(groups, rel, footer, footerHref) {
-  const blocks = groups.map((g) => `
-            <section class="tile-group">
-                <h2 class="tile-group__title">${g.title}</h2>
-                <div class="tile-grid tile-grid--dense tile-grid--phone" role="list">
-                    ${g.apps.map((a) => avatarTileHtml(a.name, rel, null)).join('\n                    ')}
                 </div>
             </section>`).join('\n');
   const footerHtml = footer && footerHref ? `<a class="tile-group__footer" href="${footerHref}"><span class="tile-group__footer-icon" aria-hidden="true">${inlineIcon(footer.icon)}</span><span>${footer.label}</span></a>` : '';
@@ -919,13 +954,11 @@ for (const id of ['communication', 'infos', 'tools']) {
   write(['suite', 'cloud', 'all'], 'Suite · Cloud · All', 'suite',
     groupListBody(s.cloud.tileGroups, rel3, null, null, true), routeHref(['suite']));
 
-  write(['suite', 'phone', 'quickmarks'], 'Suite · Phone', 'suite',
-    cloudPhoneTabs('quickmarks', 'phone', rel3) + '\n            ' +
-    appListBody(phoneGroupsFromMockData(true), rel3, s.phone.footer, routeHref(['suite', 'phone', 'all'])), routeHref([]));
-  write(['suite', 'phone', 'all'], 'Suite · Phone · All', 'suite',
-    cloudPhoneTabs('all', 'phone', rel3) + '\n            ' +
-    topicalFoldersBody(mockData.apps, mockData.phoneFolders, rel3) + '\n            ' +
-    smartFoldersBody(computeSmartFolders(mockData.apps), rel3), routeHref(['suite']));
+  // Both Phone URLs serve the one merged page (Quickmarks + All-Apps +
+  // Smart-Folders), tabs Cloud | Phone with Phone active on each.
+  const phoneBody = cloudPhoneTabs('quickmarks', 'phone', rel3) + '\n            ' + phoneMergedBody(rel3);
+  write(['suite', 'phone', 'quickmarks'], 'Suite · Phone', 'suite', phoneBody, routeHref([]));
+  write(['suite', 'phone', 'all'], 'Suite · Phone', 'suite', phoneBody, routeHref([]));
 }
 
 // Content-only sections. Config carries real settings rows; everything else

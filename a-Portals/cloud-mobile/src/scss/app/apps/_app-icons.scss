@@ -21,6 +21,19 @@
     grid-template-columns: repeat(6, minmax(0, 1fr));
     gap: 6px;
 
+    // A phone app is BARE icon + label, Android-launcher style — no card
+    // behind it. SuitePhoneAppsFragment.makeAppTile (:286-296) builds a
+    // plain LinearLayout whose only background is the borderless ripple
+    // (selectableItemBackgroundBorderless), and makeExpandedAppTile
+    // (:462-467, the folder sheet) sets no background at all. The glass
+    // square is exclusively the FOLDER card's 2x2 preview (:358-361), which
+    // keeps its bg_liquid_glass here. Undoes .tile's glass (_tiles.scss) for
+    // phone grids only.
+    .tile {
+        background: none;
+        border: 0;
+    }
+
     .tile__app-icon {
         width: 40px;
         height: 40px;

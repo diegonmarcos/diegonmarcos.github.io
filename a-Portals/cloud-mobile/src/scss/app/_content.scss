@@ -22,6 +22,21 @@
     // the first child (.page-tabs on tabbed pages) always starts below the
     // toolbar icons instead of under them. z-index:1 vs the islands' 10/11
     // keeps content scrolling UNDER the chrome, like the Android toolbar.
+    //
+    // This offset is a MARGIN, not scroll-area padding: padding-top would
+    // sit *inside* the scrollport, so on long pages (suite/phone) scrolled
+    // content slides up past y:0 and passes behind the chrome band, which
+    // has no background to hide it — visibly sliding under the toolbar
+    // icons. Short pages (suite/cloud) never scroll far enough to expose
+    // this, which is why the bug only showed up on long pages. margin-top
+    // instead shrinks .content's own flex-basis inside .shell (a flex
+    // column) — the scrollport itself starts below the band, so scrolled
+    // content clips at the band edge instead of sliding under it, matching
+    // how the Android app lays content out below the app bar. Bottom stays
+    // padding (96px, in-scroll) since the bottom nav floats over the END of
+    // the scroll area and content should still scroll under it, matching
+    // pre-existing bottom behavior.
+    //
     // Two declarations, three failure modes covered: the plain-px one wins
     // if the browser drops the env()/var() line at PARSE time (no support at
     // all); the var() fallback covers --content-top being undefined (any
@@ -30,8 +45,9 @@
     // itself can't substitute to garbage. Never collapse this to a single
     // var()-only declaration — see the FLATTENED ON PURPOSE note in
     // _base.scss for what that regression looks like on a real phone.
-    padding: 96px 12px 96px;
-    padding: var(--content-top, 96px) 12px 96px;
+    margin-top: 96px;
+    margin-top: var(--content-top, 96px);
+    padding: 12px 12px 96px;
     position: relative;
     z-index: 1;
     // Flex column so .site-footer (last child, see generate-pages.mjs's

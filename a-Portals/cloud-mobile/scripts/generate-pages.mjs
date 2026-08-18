@@ -160,16 +160,25 @@ function topicalFoldersBody(apps, phoneFolders, rel) {
 }
 
 // ── the single Phone page — one scroll, three parts in order: Quickmarks
-// (pinned apps as one plain 6-per-row grid, no folders), All-Apps (the
-// topical folder-card sections), Smart-Folders (the rule-driven groups).
+// (pinned apps under one titled section per group), All-Apps (the topical
+// folder-card sections), Smart-Folders (the rule-driven groups).
 // Served verbatim at suite/phone/quickmarks AND suite/phone/all, so every
 // existing deep link lands on the same merged page.
+//
+// Quickmarks are GROUPED, not one flat grid: SuitePhoneAppsFragment.kt:119
+// emits one subhead() per group title above that group's own tile grid, and
+// :117 skips groups whose packages all resolve to nothing so the layout
+// never carries a dead header. subhead() (:274-279) is the same 16sp #E9D8FD
+// section title the folder sections use — .phone-folders__subhead here.
 function phoneMergedBody(rel) {
-  const pinned = phoneGroupsFromMockData(true).flatMap((g) => g.apps);
+  const pinnedGroups = phoneGroupsFromMockData(true).filter((g) => g.apps.length);
   return `<h2 class="stack-divider">Quickmarks</h2>
+            <section class="phone-folders">
+            ${pinnedGroups.map((g) => `<h3 class="phone-folders__subhead">${g.title}</h3>
             <div class="tile-grid tile-grid--dense tile-grid--phone" role="list">
-                ${pinned.map((a) => avatarTileHtml(a.name, rel, null)).join('\n                ')}
-            </div>
+                ${g.apps.map((a) => avatarTileHtml(a.name, rel, null)).join('\n                ')}
+            </div>`).join('\n            ')}
+            </section>
             <h2 class="stack-divider">All-Apps</h2>
             ${topicalFoldersBody(mockData.apps, mockData.phoneFolders, rel)}
             <h2 class="stack-divider">Smart-Folders</h2>

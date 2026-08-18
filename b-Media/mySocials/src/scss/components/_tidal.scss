@@ -168,10 +168,17 @@ $tid-cyan: #00ffff;
     padding: 28px 28px 20px;
     position: relative;
   }
+  // Padding widens the touch target toward the ~40px minimum for mobile tap
+  // targets (was ~16x26px, glyph-only). Panel's title has margin-right: 30px
+  // reserved for this button, and content width at a 360px viewport is
+  // 328 - 56 (panel padding) - 30 = 242px, so the enlarged ~32x42px button
+  // (right: 8, width ~16 + 16 padding) still clears the text edge with room
+  // to spare.
   &__close {
-    position: absolute; top: 14px; right: 16px;
+    position: absolute; top: 6px; right: 8px;
     background: none; border: none; color: $tid-text;
     font-size: 26px; line-height: 1; cursor: pointer;
+    padding: 8px;
   }
   &__title { font-size: 22px; font-weight: 800; margin-right: 30px; }
   &__meta { color: $tid-muted; font-size: 13px; margin-top: 4px; margin-bottom: 18px; }

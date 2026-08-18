@@ -804,16 +804,26 @@ function renderLinkedin(): void {
       </aside>
     </div>`;
 
-  // Description-text clamp toggles. Only clamp (hide the button) when the text
-  // actually overflows the collapsed height — short descriptions get no button at all.
+  // Description-text clamp toggles. The view is still `display: none` at this
+  // point, so scrollHeight/clientHeight both read 0 here — measuring overflow
+  // now would hide every button. Bind the click handler unconditionally, and
+  // defer the overflow check to an IntersectionObserver that fires once the
+  // wrapper actually becomes visible; only then hide the button if the text
+  // genuinely doesn't overflow.
   view.querySelectorAll<HTMLElement>('.li-clamp').forEach(wrap => {
     const body = wrap.querySelector<HTMLElement>('.li-clamp__body')!;
     const btn = wrap.querySelector<HTMLButtonElement>('.li-clamp__toggle')!;
-    if (body.scrollHeight <= body.clientHeight + 4) { btn.style.display = 'none'; return; }
     btn.addEventListener('click', () => {
       const open = wrap.classList.toggle('li-clamp--open');
       btn.textContent = open ? 'Show less' : 'Show more';
     });
+    if (typeof IntersectionObserver === 'undefined') return;
+    const io = new IntersectionObserver(entries => {
+      if (!entries[0].isIntersecting) return;
+      if (body.scrollHeight <= body.clientHeight + 4) btn.style.display = 'none';
+      io.unobserve(wrap);
+    });
+    io.observe(wrap);
   });
 }
 

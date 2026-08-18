@@ -30378,132 +30378,132 @@
   ],
   "archived_posts": [
     {
-      "media": "media/posts/17864184748536306.jpg",
+      "media": "https://cdn.jsdelivr.net/gh/diegonmarcos/front-assets-cdn@main/b-Media/mySocials/static/media/posts/17864184748536306.jpg",
       "media_all": [
-        "media/posts/17864184748536306.jpg"
+        "https://cdn.jsdelivr.net/gh/diegonmarcos/front-assets-cdn@main/b-Media/mySocials/static/media/posts/17864184748536306.jpg"
       ],
       "caption": "Birthplace of Silicon Valley",
       "time": "Oct 31, 2019 05:52 PM UTC"
     },
     {
-      "media": "media/posts/17930506747233120.jpg",
+      "media": "https://cdn.jsdelivr.net/gh/diegonmarcos/front-assets-cdn@main/b-Media/mySocials/static/media/posts/17930506747233120.jpg",
       "media_all": [
-        "media/posts/17930506747233120.jpg"
+        "https://cdn.jsdelivr.net/gh/diegonmarcos/front-assets-cdn@main/b-Media/mySocials/static/media/posts/17930506747233120.jpg"
       ],
       "caption": "\"Sob o céu e o sol da Bahia (...)\"",
       "time": "Nov 30, 2018 12:42 PM UTC"
     },
     {
-      "media": "media/posts/17913757489259774.jpg",
+      "media": "https://cdn.jsdelivr.net/gh/diegonmarcos/front-assets-cdn@main/b-Media/mySocials/static/media/posts/17913757489259774.jpg",
       "media_all": [
-        "media/posts/17913757489259774.jpg",
-        "media/posts/17966775217161966.jpg",
-        "media/posts/17989897378119553.jpg",
-        "media/posts/18005038048013898.jpg"
+        "https://cdn.jsdelivr.net/gh/diegonmarcos/front-assets-cdn@main/b-Media/mySocials/static/media/posts/17913757489259774.jpg",
+        "https://cdn.jsdelivr.net/gh/diegonmarcos/front-assets-cdn@main/b-Media/mySocials/static/media/posts/17966775217161966.jpg",
+        "https://cdn.jsdelivr.net/gh/diegonmarcos/front-assets-cdn@main/b-Media/mySocials/static/media/posts/17989897378119553.jpg",
+        "https://cdn.jsdelivr.net/gh/diegonmarcos/front-assets-cdn@main/b-Media/mySocials/static/media/posts/18005038048013898.jpg"
       ],
       "caption": "",
       "time": "Nov 29, 2018 04:36 PM UTC"
     },
     {
-      "media": "media/posts/17843463004039585.jpg",
+      "media": "https://cdn.jsdelivr.net/gh/diegonmarcos/front-assets-cdn@main/b-Media/mySocials/static/media/posts/17843463004039585.jpg",
       "media_all": [
-        "media/posts/17843463004039585.jpg"
+        "https://cdn.jsdelivr.net/gh/diegonmarcos/front-assets-cdn@main/b-Media/mySocials/static/media/posts/17843463004039585.jpg"
       ],
       "caption": "#feEPedro",
       "time": "Sep 06, 2015 12:38 AM UTC"
     },
     {
-      "media": "media/posts/17842631659039585.jpg",
+      "media": "https://cdn.jsdelivr.net/gh/diegonmarcos/front-assets-cdn@main/b-Media/mySocials/static/media/posts/17842631659039585.jpg",
       "media_all": [
-        "media/posts/17842631659039585.jpg"
+        "https://cdn.jsdelivr.net/gh/diegonmarcos/front-assets-cdn@main/b-Media/mySocials/static/media/posts/17842631659039585.jpg"
       ],
       "caption": "Gás pra continuar com ânimo...",
       "time": "Dec 05, 2014 05:41 PM UTC"
     },
     {
-      "media": "media/posts/17842461676039585.jpg",
+      "media": "https://cdn.jsdelivr.net/gh/diegonmarcos/front-assets-cdn@main/b-Media/mySocials/static/media/posts/17842461676039585.jpg",
       "media_all": [
-        "media/posts/17842461676039585.jpg"
+        "https://cdn.jsdelivr.net/gh/diegonmarcos/front-assets-cdn@main/b-Media/mySocials/static/media/posts/17842461676039585.jpg"
       ],
       "caption": "Uma semana comendo 328 tipos de carne e vinho, mas na hora de curar a ressaca esse veneno é a melhor opção do menu...",
       "time": "Jul 21, 2013 09:09 PM UTC"
     },
     {
-      "media": "media/posts/17842442932039585.jpg",
+      "media": "https://cdn.jsdelivr.net/gh/diegonmarcos/front-assets-cdn@main/b-Media/mySocials/static/media/posts/17842442932039585.jpg",
       "media_all": [
-        "media/posts/17842442932039585.jpg"
+        "https://cdn.jsdelivr.net/gh/diegonmarcos/front-assets-cdn@main/b-Media/mySocials/static/media/posts/17842442932039585.jpg"
       ],
       "caption": "End of the party...",
       "time": "May 18, 2013 07:59 AM UTC"
     },
     {
-      "media": "media/posts/17842412704039585.jpg",
+      "media": "https://cdn.jsdelivr.net/gh/diegonmarcos/front-assets-cdn@main/b-Media/mySocials/static/media/posts/17842412704039585.jpg",
       "media_all": [
-        "media/posts/17842412704039585.jpg"
+        "https://cdn.jsdelivr.net/gh/diegonmarcos/front-assets-cdn@main/b-Media/mySocials/static/media/posts/17842412704039585.jpg"
       ],
       "caption": "Furikaki lovers... @karinaysuzuki",
       "time": "Jan 02, 2013 11:56 PM UTC"
     },
     {
-      "media": "media/posts/17842389682039585.jpg",
+      "media": "https://cdn.jsdelivr.net/gh/diegonmarcos/front-assets-cdn@main/b-Media/mySocials/static/media/posts/17842389682039585.jpg",
       "media_all": [
-        "media/posts/17842389682039585.jpg"
+        "https://cdn.jsdelivr.net/gh/diegonmarcos/front-assets-cdn@main/b-Media/mySocials/static/media/posts/17842389682039585.jpg"
       ],
       "caption": "Tá começando a ficar divertido...",
       "time": "Aug 27, 2012 12:06 AM UTC"
     },
     {
-      "media": "media/posts/17842388971039585.jpg",
+      "media": "https://cdn.jsdelivr.net/gh/diegonmarcos/front-assets-cdn@main/b-Media/mySocials/static/media/posts/17842388971039585.jpg",
       "media_all": [
-        "media/posts/17842388971039585.jpg"
+        "https://cdn.jsdelivr.net/gh/diegonmarcos/front-assets-cdn@main/b-Media/mySocials/static/media/posts/17842388971039585.jpg"
       ],
       "caption": "Bike@Metro! Deixando o carro em casa e praticando um pouco de cidadania!!!",
       "time": "Aug 23, 2012 01:19 AM UTC"
     },
     {
-      "media": "media/posts/17842386520039585.jpg",
+      "media": "https://cdn.jsdelivr.net/gh/diegonmarcos/front-assets-cdn@main/b-Media/mySocials/static/media/posts/17842386520039585.jpg",
       "media_all": [
-        "media/posts/17842386520039585.jpg"
+        "https://cdn.jsdelivr.net/gh/diegonmarcos/front-assets-cdn@main/b-Media/mySocials/static/media/posts/17842386520039585.jpg"
       ],
       "caption": "Night sessions",
       "time": "Aug 12, 2012 03:07 AM UTC"
     },
     {
-      "media": "media/posts/17842385392039585.jpg",
+      "media": "https://cdn.jsdelivr.net/gh/diegonmarcos/front-assets-cdn@main/b-Media/mySocials/static/media/posts/17842385392039585.jpg",
       "media_all": [
-        "media/posts/17842385392039585.jpg"
+        "https://cdn.jsdelivr.net/gh/diegonmarcos/front-assets-cdn@main/b-Media/mySocials/static/media/posts/17842385392039585.jpg"
       ],
       "caption": "",
       "time": "Aug 05, 2012 10:51 PM UTC"
     },
     {
-      "media": "media/posts/17842384843039585.jpg",
+      "media": "https://cdn.jsdelivr.net/gh/diegonmarcos/front-assets-cdn@main/b-Media/mySocials/static/media/posts/17842384843039585.jpg",
       "media_all": [
-        "media/posts/17842384843039585.jpg"
+        "https://cdn.jsdelivr.net/gh/diegonmarcos/front-assets-cdn@main/b-Media/mySocials/static/media/posts/17842384843039585.jpg"
       ],
       "caption": "Magrelinha in the House!!",
       "time": "Aug 02, 2012 02:50 AM UTC"
     },
     {
-      "media": "media/posts/17842366387039585.jpg",
+      "media": "https://cdn.jsdelivr.net/gh/diegonmarcos/front-assets-cdn@main/b-Media/mySocials/static/media/posts/17842366387039585.jpg",
       "media_all": [
-        "media/posts/17842366387039585.jpg"
+        "https://cdn.jsdelivr.net/gh/diegonmarcos/front-assets-cdn@main/b-Media/mySocials/static/media/posts/17842366387039585.jpg"
       ],
       "caption": "",
       "time": "Feb 02, 2012 03:51 AM UTC"
     },
     {
-      "media": "media/posts/17842366327039585.jpg",
+      "media": "https://cdn.jsdelivr.net/gh/diegonmarcos/front-assets-cdn@main/b-Media/mySocials/static/media/posts/17842366327039585.jpg",
       "media_all": [
-        "media/posts/17842366327039585.jpg"
+        "https://cdn.jsdelivr.net/gh/diegonmarcos/front-assets-cdn@main/b-Media/mySocials/static/media/posts/17842366327039585.jpg"
       ],
       "caption": "",
       "time": "Jan 29, 2012 10:11 PM UTC"
     },
     {
-      "media": "media/posts/17842128607039585.jpg",
+      "media": "https://cdn.jsdelivr.net/gh/diegonmarcos/front-assets-cdn@main/b-Media/mySocials/static/media/posts/17842128607039585.jpg",
       "media_all": [
-        "media/posts/17842128607039585.jpg"
+        "https://cdn.jsdelivr.net/gh/diegonmarcos/front-assets-cdn@main/b-Media/mySocials/static/media/posts/17842128607039585.jpg"
       ],
       "caption": "Undercover",
       "time": "Aug 08, 2015 05:04 PM UTC"

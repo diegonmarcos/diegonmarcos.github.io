@@ -13,7 +13,7 @@
   "posts": [
     {
       "timestamp": "mai 30, 2013 8:58:06 da tarde/noite",
-      "content": "\"(...)Até aqui, o homem só tinha voado em sonho...\"",
+      "content": "Dia dos pais, dos mestres! Aqueles que fizeram acontecer...",
       "media": [
         "https://cdn.jsdelivr.net/gh/diegonmarcos/front-assets-cdn@main/b-Media/mySocials/static/media/facebook-diegonmarcos/posts/455362317817387.jpg"
       ],
@@ -21,7 +21,7 @@
     },
     {
       "timestamp": "ago 12, 2012 9:07:10 da tarde/noite",
-      "content": "Dia dos pais, dos mestres! Aqueles que fizeram acontecer...",
+      "content": "Só quem comeu confete vai entender!!!  #chamaoSíndico #vlwXtella #caracadeomeuFlango",
       "media": [
         "https://cdn.jsdelivr.net/gh/diegonmarcos/front-assets-cdn@main/b-Media/mySocials/static/media/facebook-diegonmarcos/posts/1075824095771203.jpg"
       ],
@@ -29,7 +29,7 @@
     },
     {
       "timestamp": "fev 16, 2016 3:12:41 da manhã",
-      "content": "Só quem comeu confete vai entender!!!  #chamaoSíndico #vlwXtella #caracadeomeuFlango",
+      "content": "E são geralmente as pessoas que menos tem a oferecer que lhe estenderão a mão!    A Dona Zezé, mulher com quem fiquei 6 dias andando pela comunidade e me mostrou um pouco da vida dela naquela região de mata atlantica e mangue, da convivência com uma tribo indígena e com vizinhos, das chuvas na região, e como ela lutou para conseguir o que já tinha!  Mulher que hoje ajuda os outros com as inúmeras plantas medicinais que plantou em sua casa, que cozinha para os amigos e é chamada de segunda mãe pelos filhos da região!    Recebi dela esse pingente, mas mais que isso, cresci um pouco mais com ela!    Guerreiras como ela nos inspiram!    #TETOémaisquecasa #TDI #vilaatlantica",
       "media": [
         "https://cdn.jsdelivr.net/gh/diegonmarcos/front-assets-cdn@main/b-Media/mySocials/static/media/facebook-diegonmarcos/posts/975919722428308.jpg"
       ],
@@ -37,7 +37,7 @@
     },
     {
       "timestamp": "jul 29, 2015 3:59:46 da tarde/noite",
-      "content": "E são geralmente as pessoas que menos tem a oferecer que lhe estenderão a mão!    A Dona Zezé, mulher com quem fiquei 6 dias andando pela comunidade e me mostrou um pouco da vida dela naquela região de mata atlantica e mangue, da convivência com uma tribo indígena e com vizinhos, das chuvas na região, e como ela lutou para conseguir o que já tinha!  Mulher que hoje ajuda os outros com as inúmeras plantas medicinais que plantou em sua casa, que cozinha para os amigos e é chamada de segunda mãe pelos filhos da região!    Recebi dela esse pingente, mas mais que isso, cresci um pouco mais com ela!    Guerreiras como ela nos inspiram!    #TETOémaisquecasa #TDI #vilaatlantica",
+      "content": "O que vem primeiro: a ciclofaixa ou o ciclista?",
       "media": [
         "https://cdn.jsdelivr.net/gh/diegonmarcos/front-assets-cdn@main/b-Media/mySocials/static/media/facebook-diegonmarcos/posts/923012971052317.jpg"
       ],
@@ -45,7 +45,7 @@
     },
     {
       "timestamp": "abr 16, 2015 4:32:36 da tarde/noite",
-      "content": "O que vem primeiro: a ciclofaixa ou o ciclista?",
+      "content": "The roster's gonna crow",
       "media": [
         "https://cdn.jsdelivr.net/gh/diegonmarcos/front-assets-cdn@main/b-Media/mySocials/static/media/facebook-diegonmarcos/posts/805787589441523.jpg"
       ],
@@ -53,7 +53,7 @@
     },
     {
       "timestamp": "set 01, 2014 2:36:49 da manhã",
-      "content": "The roster's gonna crow",
+      "content": "Uma semana comendo 328 tipos de carne e vinho, mas na hora de curar a ressaca esse veneno é a melhor opção do menu...",
       "media": [
         "https://cdn.jsdelivr.net/gh/diegonmarcos/front-assets-cdn@main/b-Media/mySocials/static/media/facebook-diegonmarcos/posts/610548672298750.jpg"
       ],
@@ -61,7 +61,7 @@
     },
     {
       "timestamp": "jul 22, 2013 12:10:32 da manhã",
-      "content": "Uma semana comendo 328 tipos de carne e vinho, mas na hora de curar a ressaca esse veneno é a melhor opção do menu...",
+      "content": "End of the party...",
       "media": [
         "https://cdn.jsdelivr.net/gh/diegonmarcos/front-assets-cdn@main/b-Media/mySocials/static/media/facebook-diegonmarcos/posts/576063005747317.jpg"
       ],
@@ -69,7 +69,7 @@
     },
     {
       "timestamp": "mai 18, 2013 10:59:20 da manhã",
-      "content": "End of the party...",
+      "content": "Desafio: Procure o Sr. Tonetti frango na foto!!!",
       "media": [
         "https://cdn.jsdelivr.net/gh/diegonmarcos/front-assets-cdn@main/b-Media/mySocials/static/media/facebook-diegonmarcos/posts/554558507897767.jpg"
       ],
@@ -77,7 +77,7 @@
     },
     {
       "timestamp": "mar 25, 2013 7:53:10 da manhã",
-      "content": "Desafio: Procure o Sr. Tonetti frango na foto!!!",
+      "content": "Pode se \"por\" que de pré não tem nada!!",
       "media": [
         "https://cdn.jsdelivr.net/gh/diegonmarcos/front-assets-cdn@main/b-Media/mySocials/static/media/facebook-diegonmarcos/posts/531682030185415.jpg"
       ],
@@ -85,7 +85,7 @@
     },
     {
       "timestamp": "fev 03, 2013 2:29:55 da manhã",
-      "content": "Pode se \"por\" que de pré não tem nada!!",
+      "content": "Thanks Jack...",
       "media": [
         "https://cdn.jsdelivr.net/gh/diegonmarcos/front-assets-cdn@main/b-Media/mySocials/static/media/facebook-diegonmarcos/posts/505098066177145.jpg"
       ],
@@ -93,7 +93,7 @@
     },
     {
       "timestamp": "dez 16, 2012 7:08:35 da manhã",
-      "content": "Thanks Jack...",
+      "content": "Joule!!!",
       "media": [
         "https://cdn.jsdelivr.net/gh/diegonmarcos/front-assets-cdn@main/b-Media/mySocials/static/media/facebook-diegonmarcos/posts/476669919019960.jpg"
       ],
@@ -101,7 +101,7 @@
     },
     {
       "timestamp": "out 07, 2012 6:07:56 da tarde/noite",
-      "content": "Joule!!!",
+      "content": "\"La mano ganadora\"",
       "media": [
         "https://cdn.jsdelivr.net/gh/diegonmarcos/front-assets-cdn@main/b-Media/mySocials/static/media/facebook-diegonmarcos/posts/465652060121746.jpg"
       ],
@@ -109,7 +109,7 @@
     },
     {
       "timestamp": "set 08, 2012 11:45:20 da tarde/noite",
-      "content": "\"La mano ganadora\"",
+      "content": "Tá começando a ficar divertido...",
       "media": [
         "https://cdn.jsdelivr.net/gh/diegonmarcos/front-assets-cdn@main/b-Media/mySocials/static/media/facebook-diegonmarcos/posts/460392157314403.jpg"
       ],
@@ -117,7 +117,7 @@
     },
     {
       "timestamp": "ago 27, 2012 3:07:44 da manhã",
-      "content": "Tá começando a ficar divertido...",
+      "content": "Bike@Metro! Deixando o carro em casa e praticando um pouco de cidadania!!!",
       "media": [
         "https://cdn.jsdelivr.net/gh/diegonmarcos/front-assets-cdn@main/b-Media/mySocials/static/media/facebook-diegonmarcos/posts/458918624128423.jpg"
       ],
@@ -125,7 +125,7 @@
     },
     {
       "timestamp": "ago 23, 2012 4:38:12 da manhã",
-      "content": "Bike@Metro! Deixando o carro em casa e praticando um pouco de cidadania!!!",
+      "content": "Night sessions",
       "media": [
         "https://cdn.jsdelivr.net/gh/diegonmarcos/front-assets-cdn@main/b-Media/mySocials/static/media/facebook-diegonmarcos/posts/455152641171688.jpg"
       ],
@@ -133,7 +133,7 @@
     },
     {
       "timestamp": "ago 12, 2012 6:10:02 da manhã",
-      "content": "Night sessions",
+      "content": "Vila Madá  tem o seu DNA",
       "media": [
         "https://cdn.jsdelivr.net/gh/diegonmarcos/front-assets-cdn@main/b-Media/mySocials/static/media/facebook-diegonmarcos/posts/1022665871087026.mp4"
       ],
@@ -141,7 +141,7 @@
     },
     {
       "timestamp": "nov 01, 2015 2:46:16 da manhã",
-      "content": "Vila Madá  tem o seu DNA",
+      "content": "Uma homenagem, uma solidariedade, uma bela mensagem!    ''Que lo escuchen en todo el continente siempre recordaremos campeon al Chapecoense''    #forcachape",
       "media": [
         "https://cdn.jsdelivr.net/gh/diegonmarcos/front-assets-cdn@main/b-Media/mySocials/static/media/facebook-diegonmarcos/posts/2095687400451529.jpg",
         "https://cdn.jsdelivr.net/gh/diegonmarcos/front-assets-cdn@main/b-Media/mySocials/static/media/facebook-diegonmarcos/posts/2095687417118194.jpg",
@@ -155,7 +155,7 @@
     },
     {
       "timestamp": "nov 30, 2016 3:01:28 da tarde/noite",
-      "content": "Uma homenagem, uma solidariedade, uma bela mensagem!    ''Que lo escuchen en todo el continente siempre recordaremos campeon al Chapecoense''    #forcachape",
+      "content": "Depois de um hiato, em 2011 eles voltavam, mas só agora com Axl, Slash e Duff, pela primeira vez em 20 anos!",
       "media": [
         "https://cdn.jsdelivr.net/gh/diegonmarcos/front-assets-cdn@main/b-Media/mySocials/static/media/facebook-diegonmarcos/posts/1273883672631910.mp4"
       ],
@@ -163,7 +163,7 @@
     },
     {
       "timestamp": "nov 11, 2016 1:53:04 da tarde/noite",
-      "content": "Depois de um hiato, em 2011 eles voltavam, mas só agora com Axl, Slash e Duff, pela primeira vez em 20 anos!",
+      "content": "Goldfish is coming...",
       "media": [
         "https://cdn.jsdelivr.net/gh/diegonmarcos/front-assets-cdn@main/b-Media/mySocials/static/media/facebook-diegonmarcos/posts/1261875270499417.mp4"
       ],
@@ -171,7 +171,7 @@
     },
     {
       "timestamp": "out 30, 2016 8:11:50 da tarde/noite",
-      "content": "Goldfish is coming...",
+      "content": "boogie-woogie",
       "media": [
         "https://cdn.jsdelivr.net/gh/diegonmarcos/front-assets-cdn@main/b-Media/mySocials/static/media/facebook-diegonmarcos/posts/1252681698085441.mp4"
       ],
@@ -179,7 +179,7 @@
     },
     {
       "timestamp": "out 21, 2016 5:10:09 da manhã",
-      "content": "boogie-woogie",
+      "content": "fucking love science     http://www.gluon.com.br/blog/2014/12/13/ovelha-preservada-em-uma-turfeira/",
       "media": [
         "https://cdn.jsdelivr.net/gh/diegonmarcos/front-assets-cdn@main/b-Media/mySocials/static/media/facebook-diegonmarcos/posts/1126922317328047.jpg"
       ],
@@ -187,7 +187,7 @@
     },
     {
       "timestamp": "mai 03, 2016 12:12:26 da manhã",
-      "content": "fucking love science     http://www.gluon.com.br/blog/2014/12/13/ovelha-preservada-em-uma-turfeira/",
+      "content": "#Telegram      https://telegram.org/",
       "media": [
         "https://cdn.jsdelivr.net/gh/diegonmarcos/front-assets-cdn@main/b-Media/mySocials/static/media/facebook-diegonmarcos/posts/1043851515635128.jpg"
       ],
@@ -195,7 +195,7 @@
     },
     {
       "timestamp": "dez 17, 2015 5:26:40 da tarde/noite",
-      "content": "#Telegram      https://telegram.org/",
+      "content": "Ocupem as escolas hoje, para amanhã não serem como a \"elite intelectual\" atual!   Estudem muita matemática para terem noção do que representa 94 escolas(todas localizadas em regiões centrais e abastecidas de infra, sendo reorganizadas, sem nenhuma vaga sendo cortada, e cujo espaços serão usados para construir creches) em um universo de 5.100 escolas estaduais(2% da rede pública estadual)    E agora vejam o impacto que se gera um corte de R$9 BILHÕES na educação!!! Corte não é rearranjo, tá!!!  Corte no FIES, PRONATEC e CIÊNCIA SEM FRONTEIRAS!!!    Nada contra quem pensa com o coração, mas para se fazer gestão precisa muito mais do que amor, precisa de competência!   E querem \"bater\" no Alckmin por que ele tem esse perfil arrogante, mas não sabem deixar de serem egoístas e olharem para o país como um todo e se tocarem da situação que vivemos, por causa do egocentrismo destes mesmos...    O Alckmin é um político merecedor de todas críticas ditas!   Só sejam sensatos e saibam que essa ocupação é um movimento político e não social!!!     PS:  O PT conseguiu:   -um mês de folga nos jornais sem aparecer a palavra impeachment!!!   -Ninguém falou do voto que será no papel  -A Dilma, frente a posição da Argentina declarou publicamente seu apoio ao governo Venezuelano, uma ditadura que está apenas assassinando opositores!  -Omitiu qualquer culpa do Estado pelo o que ocorreu em Mariana/MG(como se a maquina pública só existisse para emitir multas e apontar dedos, e não existissem orgãos regulatórios, fiscalizadores e etc...)    Brasil....Brasil... Você será a eterna imagem da sua própria incoerência!",
       "media": [
         "https://cdn.jsdelivr.net/gh/diegonmarcos/front-assets-cdn@main/b-Media/mySocials/static/media/facebook-diegonmarcos/posts/1036921349661478.jpg"
       ],
@@ -203,7 +203,7 @@
     },
     {
       "timestamp": "dez 02, 2015 9:16:27 da tarde/noite",
-      "content": "Ocupem as escolas hoje, para amanhã não serem como a \"elite intelectual\" atual!   Estudem muita matemática para terem noção do que representa 94 escolas(todas localizadas em regiões centrais e abastecidas de infra, sendo reorganizadas, sem nenhuma vaga sendo cortada, e cujo espaços serão usados para construir creches) em um universo de 5.100 escolas estaduais(2% da rede pública estadual)    E agora vejam o impacto que se gera um corte de R$9 BILHÕES na educação!!! Corte não é rearranjo, tá!!!  Corte no FIES, PRONATEC e CIÊNCIA SEM FRONTEIRAS!!!    Nada contra quem pensa com o coração, mas para se fazer gestão precisa muito mais do que amor, precisa de competência!   E querem \"bater\" no Alckmin por que ele tem esse perfil arrogante, mas não sabem deixar de serem egoístas e olharem para o país como um todo e se tocarem da situação que vivemos, por causa do egocentrismo destes mesmos...    O Alckmin é um político merecedor de todas críticas ditas!   Só sejam sensatos e saibam que essa ocupação é um movimento político e não social!!!     PS:  O PT conseguiu:   -um mês de folga nos jornais sem aparecer a palavra impeachment!!!   -Ninguém falou do voto que será no papel  -A Dilma, frente a posição da Argentina declarou publicamente seu apoio ao governo Venezuelano, uma ditadura que está apenas assassinando opositores!  -Omitiu qualquer culpa do Estado pelo o que ocorreu em Mariana/MG(como se a maquina pública só existisse para emitir multas e apontar dedos, e não existissem orgãos regulatórios, fiscalizadores e etc...)    Brasil....Brasil... Você será a eterna imagem da sua própria incoerência!",
+      "content": "Taxistas:  -São 100% isentos de IPVA  -Isentos em sua totalidade do IPI(pagando as vezes até 50% mais barato na compra de um carro)  -Podem ser donos de vagas nas ruas para exercer o seu comércio  -Fazem tráfico deliberado de licensas(proibido por lei o seu aluguel/ venda)  -Não recolhem PIS/COFINS  -Preço abusivo e serviço de péssima quidade  -É controlado por uma máfia e não uma empresa que busca ser competitiva    Uber(não é taxi)  -Pagam IPVA  -Pagam IPI na compra do carro(assim como nós réles seres humanos)  -Recolhem PIS/COFINS  -Oferecem serviço de maior qualidade e com preço competitivo  - Uma empresa que busca a excelência no seu serviço    MAS AINDA ASSIM: o brasileirinho tem DÓ do taxista e por isso não usa/defende  o Uber!!!    #existemAntonioseexistemChicos",
       "media": [
         "https://cdn.jsdelivr.net/gh/diegonmarcos/front-assets-cdn@main/b-Media/mySocials/static/media/facebook-diegonmarcos/posts/1022655757754704.jpg"
       ],
@@ -211,7 +211,7 @@
     },
     {
       "timestamp": "nov 01, 2015 2:09:45 da manhã",
-      "content": "Taxistas:  -São 100% isentos de IPVA  -Isentos em sua totalidade do IPI(pagando as vezes até 50% mais barato na compra de um carro)  -Podem ser donos de vagas nas ruas para exercer o seu comércio  -Fazem tráfico deliberado de licensas(proibido por lei o seu aluguel/ venda)  -Não recolhem PIS/COFINS  -Preço abusivo e serviço de péssima quidade  -É controlado por uma máfia e não uma empresa que busca ser competitiva    Uber(não é taxi)  -Pagam IPVA  -Pagam IPI na compra do carro(assim como nós réles seres humanos)  -Recolhem PIS/COFINS  -Oferecem serviço de maior qualidade e com preço competitivo  - Uma empresa que busca a excelência no seu serviço    MAS AINDA ASSIM: o brasileirinho tem DÓ do taxista e por isso não usa/defende  o Uber!!!    #existemAntonioseexistemChicos",
+      "content": "Nesses tempos de pessoas com coração bom, mas tão incompetentes!!!  Estes que impõe cegamente e totalmente subjetiva a sua forma dita como mais humanista só tem este caminho:  A ditadura da ruína!!!",
       "media": [
         "https://cdn.jsdelivr.net/gh/diegonmarcos/front-assets-cdn@main/b-Media/mySocials/static/media/facebook-diegonmarcos/posts/1018713068148973.jpg"
       ],
@@ -219,7 +219,7 @@
     },
     {
       "timestamp": "out 23, 2015 7:50:39 da tarde/noite",
-      "content": "Nesses tempos de pessoas com coração bom, mas tão incompetentes!!!  Estes que impõe cegamente e totalmente subjetiva a sua forma dita como mais humanista só tem este caminho:  A ditadura da ruína!!!",
+      "content": "Arquivos do celular",
       "media": [
         "https://cdn.jsdelivr.net/gh/diegonmarcos/front-assets-cdn@main/b-Media/mySocials/static/media/facebook-diegonmarcos/posts/901446903208924.jpg",
         "https://cdn.jsdelivr.net/gh/diegonmarcos/front-assets-cdn@main/b-Media/mySocials/static/media/facebook-diegonmarcos/posts/901446913208923.jpg",
@@ -238,7 +238,7 @@
     },
     {
       "timestamp": "",
-      "content": "Arquivos do celular",
+      "content": "Pronto, foi eu mostrar que não precisa esperar o jornal chegar de manhã que eu perdi o meu note...",
       "media": [
         "https://cdn.jsdelivr.net/gh/diegonmarcos/front-assets-cdn@main/b-Media/mySocials/static/media/facebook-diegonmarcos/posts/472192956134323.jpg"
       ],
@@ -246,7 +246,7 @@
     },
     {
       "timestamp": "set 26, 2012 5:26:25 da manhã",
-      "content": "Pronto, foi eu mostrar que não precisa esperar o jornal chegar de manhã que eu perdi o meu note...",
+      "content": "sofro...",
       "media": [
         "https://cdn.jsdelivr.net/gh/diegonmarcos/front-assets-cdn@main/b-Media/mySocials/static/media/facebook-diegonmarcos/posts/137931112893844.jpg"
       ],
@@ -254,7 +254,7 @@
     },
     {
       "timestamp": "jul 16, 2010 11:01:08 da tarde/noite",
-      "content": "sofro...",
+      "content": "Uma paixão que poucos entenderam em 100 anos de um time que movimentou uma nação alvinegra a incessantemente entoar seus cânticos e vestir seu manto sagrado a cada partida de sua história!     VAI CORINTHIANS!!!",
       "media": [
         "https://cdn.jsdelivr.net/gh/diegonmarcos/front-assets-cdn@main/b-Media/mySocials/static/media/facebook-diegonmarcos/posts/149584561728499.jpg"
       ],
@@ -262,7 +262,7 @@
     },
     {
       "timestamp": "set 02, 2010 2:11:31 da manhã",
-      "content": "Uma paixão que poucos entenderam em 100 anos de um time que movimentou uma nação alvinegra a incessantemente entoar seus cânticos e vestir seu manto sagrado a cada partida de sua história!     VAI CORINTHIANS!!!",
+      "content": "medo...",
       "media": [
         "https://cdn.jsdelivr.net/gh/diegonmarcos/front-assets-cdn@main/b-Media/mySocials/static/media/facebook-diegonmarcos/posts/154459967907625.jpg"
       ],
@@ -270,7 +270,7 @@
     },
     {
       "timestamp": "set 21, 2010 6:03:20 da manhã",
-      "content": "medo...",
+      "content": "Erro numa quinta de pink",
       "media": [
         "https://cdn.jsdelivr.net/gh/diegonmarcos/front-assets-cdn@main/b-Media/mySocials/static/media/facebook-diegonmarcos/posts/158362824184006.jpg"
       ],
@@ -278,7 +278,7 @@
     },
     {
       "timestamp": "out 07, 2010 6:03:47 da tarde/noite",
-      "content": "Erro numa quinta de pink",
+      "content": "Gênio!!!",
       "media": [
         "https://cdn.jsdelivr.net/gh/diegonmarcos/front-assets-cdn@main/b-Media/mySocials/static/media/facebook-diegonmarcos/posts/160919313928357.jpg",
         "https://cdn.jsdelivr.net/gh/diegonmarcos/front-assets-cdn@main/b-Media/mySocials/static/media/facebook-diegonmarcos/posts/175818122438476.jpg"
@@ -287,7 +287,7 @@
     },
     {
       "timestamp": "dez 20, 2010 1:36:42 da tarde/noite",
-      "content": "Gênio!!!",
+      "content": "\" Eu sou cagado, vejam só como é que é:  Se der uma chuva de xuxa no meu colo cai pelé  É como aquele ditado que já dizia:  Pau que nasce torto mija fora da bacia    Money  Que é good nóis num have  Se nóis hevasse nóis num tava aqui playando  Mas nóis precisa de worká \"    15 anos da morte desses duentes!!!    Mamonas Vive!!!",
       "media": [
         "https://cdn.jsdelivr.net/gh/diegonmarcos/front-assets-cdn@main/b-Media/mySocials/static/media/facebook-diegonmarcos/posts/194468977240057.jpg"
       ],
@@ -295,7 +295,7 @@
     },
     {
       "timestamp": "mar 03, 2011 5:47:35 da manhã",
-      "content": "\" Eu sou cagado, vejam só como é que é:  Se der uma chuva de xuxa no meu colo cai pelé  É como aquele ditado que já dizia:  Pau que nasce torto mija fora da bacia    Money  Que é good nóis num have  Se nóis hevasse nóis num tava aqui playando  Mas nóis precisa de worká \"    15 anos da morte desses duentes!!!    Mamonas Vive!!!",
+      "content": "Eleito 3 vezes o melhor do mundo  Jogou 3 copas e ganhou 2  Maior artilheiro de todas a copas  Jogou nos 4 maiores times do mundo e foi idolo (Real x Barcelona) (Inter x Milan)  PORRA GORDO!!! VALEU HEIN!!! VOCE LITERALMENTE COMEU A BOLA NESSES SEUS ANOS DE FUTEBOL!!!    #prasemprefenomeno      vai curinthias!!!!!",
       "media": [
         "https://cdn.jsdelivr.net/gh/diegonmarcos/front-assets-cdn@main/b-Media/mySocials/static/media/facebook-diegonmarcos/posts/218047648215523.jpg"
       ],
@@ -303,7 +303,7 @@
     },
     {
       "timestamp": "jun 08, 2011 6:15:09 da tarde/noite",
-      "content": "Eleito 3 vezes o melhor do mundo  Jogou 3 copas e ganhou 2  Maior artilheiro de todas a copas  Jogou nos 4 maiores times do mundo e foi idolo (Real x Barcelona) (Inter x Milan)  PORRA GORDO!!! VALEU HEIN!!! VOCE LITERALMENTE COMEU A BOLA NESSES SEUS ANOS DE FUTEBOL!!!    #prasemprefenomeno      vai curinthias!!!!!",
+      "content": "@SubAstor today on VMadá !",
       "media": [
         "https://cdn.jsdelivr.net/gh/diegonmarcos/front-assets-cdn@main/b-Media/mySocials/static/media/facebook-diegonmarcos/posts/228387480514873.jpg"
       ],
@@ -311,7 +311,7 @@
     },
     {
       "timestamp": "jun 26, 2011 12:53:49 da manhã",
-      "content": "@SubAstor today on VMadá !",
+      "content": "\"Porque fregays bom é aquele que sempre volta\"",
       "media": [
         "https://cdn.jsdelivr.net/gh/diegonmarcos/front-assets-cdn@main/b-Media/mySocials/static/media/facebook-diegonmarcos/posts/228794283807526.jpg"
       ],
@@ -319,7 +319,7 @@
     },
     {
       "timestamp": "jun 27, 2011 5:39:47 da tarde/noite",
-      "content": "\"Porque fregays bom é aquele que sempre volta\"",
+      "content": "Primeira tentativa de reunir os Bandeirantinos da Faria Lima...",
       "media": [
         "https://cdn.jsdelivr.net/gh/diegonmarcos/front-assets-cdn@main/b-Media/mySocials/static/media/facebook-diegonmarcos/posts/248047988548822.jpg",
         "https://cdn.jsdelivr.net/gh/diegonmarcos/front-assets-cdn@main/b-Media/mySocials/static/media/facebook-diegonmarcos/posts/250458541641100.jpg"
@@ -328,7 +328,7 @@
     },
     {
       "timestamp": "ago 12, 2011 8:51:36 da tarde/noite",
-      "content": "Primeira tentativa de reunir os Bandeirantinos da Faria Lima...",
+      "content": "Priminhas!!!",
       "media": [
         "https://cdn.jsdelivr.net/gh/diegonmarcos/front-assets-cdn@main/b-Media/mySocials/static/media/facebook-diegonmarcos/posts/251430391543915.jpg"
       ],
@@ -336,7 +336,7 @@
     },
     {
       "timestamp": "ago 14, 2011 10:27:31 da tarde/noite",
-      "content": "Priminhas!!!",
+      "content": "\"(...) seu passado é uma bandeira, seu presente uma lição\"    Acaba a comemoração do centário, e o que fica é o que nos une : um time de raça, uma torcida fiel e um manto a ser honrado pela sua tradição!!!    Vai curinthias !!!!",
       "media": [
         "https://cdn.jsdelivr.net/gh/diegonmarcos/front-assets-cdn@main/b-Media/mySocials/static/media/facebook-diegonmarcos/posts/260302963989991.jpg"
       ],
@@ -344,7 +344,7 @@
     },
     {
       "timestamp": "set 01, 2011 4:27:02 da tarde/noite",
-      "content": "\"(...) seu passado é uma bandeira, seu presente uma lição\"    Acaba a comemoração do centário, e o que fica é o que nos une : um time de raça, uma torcida fiel e um manto a ser honrado pela sua tradição!!!    Vai curinthias !!!!",
+      "content": "Monstrinho... Vai explicar pra ele que era um churrasco de domingo!!",
       "media": [
         "https://cdn.jsdelivr.net/gh/diegonmarcos/front-assets-cdn@main/b-Media/mySocials/static/media/facebook-diegonmarcos/posts/262091453811142.jpg"
       ],
@@ -352,7 +352,7 @@
     },
     {
       "timestamp": "set 05, 2011 7:13:20 da manhã",
-      "content": "Monstrinho... Vai explicar pra ele que era um churrasco de domingo!!",
+      "content": "Run Forrest run... @corporaterun",
       "media": [
         "https://cdn.jsdelivr.net/gh/diegonmarcos/front-assets-cdn@main/b-Media/mySocials/static/media/facebook-diegonmarcos/posts/266496090037345.jpg"
       ],
@@ -360,7 +360,7 @@
     },
     {
       "timestamp": "set 14, 2011 3:46:12 da tarde/noite",
-      "content": "Run Forrest run... @corporaterun",
+      "content": "Da hora mais um fds virado pr causa de uma corrida... Quero ver ate quando vou sustentar essa ideia de ficar correndo 7h de domingo!!",
       "media": [
         "https://cdn.jsdelivr.net/gh/diegonmarcos/front-assets-cdn@main/b-Media/mySocials/static/media/facebook-diegonmarcos/posts/268497459837208.jpg"
       ],
@@ -368,7 +368,7 @@
     },
     {
       "timestamp": "set 19, 2011 1:46:22 da manhã",
-      "content": "Da hora mais um fds virado pr causa de uma corrida... Quero ver ate quando vou sustentar essa ideia de ficar correndo 7h de domingo!!",
+      "content": "Vai achando... Agora é nóis no rolê motoca!! (que o meu carro fique logo pronto antes que eu me mate...)",
       "media": [
         "https://cdn.jsdelivr.net/gh/diegonmarcos/front-assets-cdn@main/b-Media/mySocials/static/media/facebook-diegonmarcos/posts/268792116474409.jpg"
       ],
@@ -376,7 +376,7 @@
     },
     {
       "timestamp": "set 19, 2011 6:04:56 da tarde/noite",
-      "content": "Vai achando... Agora é nóis no rolê motoca!! (que o meu carro fique logo pronto antes que eu me mate...)",
+      "content": "4' 58'' / km !!   Depois de chegar virado pra corrida...nada como um smartcaps e um redbull na cabeça (ainda bem que não rola um anti-doping)",
       "media": [
         "https://cdn.jsdelivr.net/gh/diegonmarcos/front-assets-cdn@main/b-Media/mySocials/static/media/facebook-diegonmarcos/posts/269501976403423.jpg"
       ],
@@ -384,7 +384,7 @@
     },
     {
       "timestamp": "set 21, 2011 4:13:22 da manhã",
-      "content": "4' 58'' / km !!   Depois de chegar virado pra corrida...nada como um smartcaps e um redbull na cabeça (ainda bem que não rola um anti-doping)",
+      "content": "Doritos: checked!   Ener: checked!   Lista de Exerc: checked!  Ipod: Checked!  Companheira Casio: checked!  Agora é eu e vc Mohr até o galo cantar!!!",
       "media": [
         "https://cdn.jsdelivr.net/gh/diegonmarcos/front-assets-cdn@main/b-Media/mySocials/static/media/facebook-diegonmarcos/posts/274097795943841.jpg"
       ],
@@ -392,7 +392,7 @@
     },
     {
       "timestamp": "out 01, 2011 6:31:39 da manhã",
-      "content": "Doritos: checked!   Ener: checked!   Lista de Exerc: checked!  Ipod: Checked!  Companheira Casio: checked!  Agora é eu e vc Mohr até o galo cantar!!!",
+      "content": "Não lembro ( parte 1)",
       "media": [
         "https://cdn.jsdelivr.net/gh/diegonmarcos/front-assets-cdn@main/b-Media/mySocials/static/media/facebook-diegonmarcos/posts/274768505876770.jpg"
       ],
@@ -400,7 +400,7 @@
     },
     {
       "timestamp": "out 02, 2011 8:52:15 da tarde/noite",
-      "content": "Não lembro ( parte 1)",
+      "content": "Um homem que quis fazer a diferença... Um visionário...   Criou, mudou e deixou uma porta aberta para não esquecermos de que ainda não atingimos o ápice...de nada!!!      Rest in Peace Steve Jobs",
       "media": [
         "https://cdn.jsdelivr.net/gh/diegonmarcos/front-assets-cdn@main/b-Media/mySocials/static/media/facebook-diegonmarcos/posts/276306152389672.jpg"
       ],
@@ -408,7 +408,7 @@
     },
     {
       "timestamp": "out 06, 2011 5:31:13 da manhã",
-      "content": "Um homem que quis fazer a diferença... Um visionário...   Criou, mudou e deixou uma porta aberta para não esquecermos de que ainda não atingimos o ápice...de nada!!!      Rest in Peace Steve Jobs",
+      "content": "Conta ae Shira como se se acha o involtorio de deformação do solo não drenado a partir de uma amostra de um solo drenado!!!",
       "media": [
         "https://cdn.jsdelivr.net/gh/diegonmarcos/front-assets-cdn@main/b-Media/mySocials/static/media/facebook-diegonmarcos/posts/277415342278753.jpg"
       ],
@@ -416,7 +416,7 @@
     },
     {
       "timestamp": "out 08, 2011 6:32:46 da tarde/noite",
-      "content": "Conta ae Shira como se se acha o involtorio de deformação do solo não drenado a partir de uma amostra de um solo drenado!!!",
+      "content": "\"CPOR: Escola de Cidadania, Berço de Lideres\"",
       "media": [
         "https://cdn.jsdelivr.net/gh/diegonmarcos/front-assets-cdn@main/b-Media/mySocials/static/media/facebook-diegonmarcos/posts/297619870258300.jpg"
       ],
@@ -424,7 +424,7 @@
     },
     {
       "timestamp": "nov 19, 2011 11:43:16 da tarde/noite",
-      "content": "\"CPOR: Escola de Cidadania, Berço de Lideres\"",
+      "content": "Não tão óbvio quanto parece...",
       "media": [
         "https://cdn.jsdelivr.net/gh/diegonmarcos/front-assets-cdn@main/b-Media/mySocials/static/media/facebook-diegonmarcos/posts/299555300064757.jpg"
       ],
@@ -440,7 +440,7 @@
     },
     {
       "timestamp": "nov 23, 2011 3:37:30 da tarde/noite",
-      "content": "Não tão óbvio quanto parece...",
+      "content": "Ligeiro esse ae...",
       "media": [
         "https://cdn.jsdelivr.net/gh/diegonmarcos/front-assets-cdn@main/b-Media/mySocials/static/media/facebook-diegonmarcos/posts/306992835987670.jpg"
       ],
@@ -448,7 +448,7 @@
     },
     {
       "timestamp": "dez 06, 2011 5:18:51 da tarde/noite",
-      "content": "Ligeiro esse ae...",
+      "content": "Só rindo pra não chorar...",
       "media": [
         "https://cdn.jsdelivr.net/gh/diegonmarcos/front-assets-cdn@main/b-Media/mySocials/static/media/facebook-diegonmarcos/posts/310346878985599.jpg"
       ],
@@ -456,7 +456,7 @@
     },
     {
       "timestamp": "dez 11, 2011 8:36:59 da tarde/noite",
-      "content": "Só rindo pra não chorar...",
+      "content": "Desmotivador viu... Assim fica dificil Seu Pedro...",
       "media": [
         "https://cdn.jsdelivr.net/gh/diegonmarcos/front-assets-cdn@main/b-Media/mySocials/static/media/facebook-diegonmarcos/posts/315644371789183.jpg"
       ],
@@ -464,7 +464,7 @@
     },
     {
       "timestamp": "dez 20, 2011 4:27:40 da tarde/noite",
-      "content": "Desmotivador viu... Assim fica dificil Seu Pedro...",
+      "content": "And i wish you a merry christmas i wish you a merry christmas and a happy new year!!!",
       "media": [
         "https://cdn.jsdelivr.net/gh/diegonmarcos/front-assets-cdn@main/b-Media/mySocials/static/media/facebook-diegonmarcos/posts/318223238197963.jpg"
       ],
@@ -472,7 +472,7 @@
     },
     {
       "timestamp": "dez 25, 2011 4:24:35 da manhã",
-      "content": "And i wish you a merry christmas i wish you a merry christmas and a happy new year!!!",
+      "content": "O presente de natal mais lindo da priminha mais linda",
       "media": [
         "https://cdn.jsdelivr.net/gh/diegonmarcos/front-assets-cdn@main/b-Media/mySocials/static/media/facebook-diegonmarcos/posts/318227994864154.jpg"
       ],
@@ -480,7 +480,7 @@
     },
     {
       "timestamp": "dez 25, 2011 4:40:29 da manhã",
-      "content": "O presente de natal mais lindo da priminha mais linda",
+      "content": "Meus melhores presentes de natal!!!",
       "media": [
         "https://cdn.jsdelivr.net/gh/diegonmarcos/front-assets-cdn@main/b-Media/mySocials/static/media/facebook-diegonmarcos/posts/318364631517157.jpg"
       ],
@@ -488,7 +488,7 @@
     },
     {
       "timestamp": "dez 25, 2011 12:36:11 da tarde/noite",
-      "content": "Meus melhores presentes de natal!!!",
+      "content": "E olha quem estava me esperando dps do trabalho...",
       "media": [
         "https://cdn.jsdelivr.net/gh/diegonmarcos/front-assets-cdn@main/b-Media/mySocials/static/media/facebook-diegonmarcos/posts/321008481252772.jpg"
       ],
@@ -496,7 +496,7 @@
     },
     {
       "timestamp": "dez 30, 2011 1:05:06 da manhã",
-      "content": "E olha quem estava me esperando dps do trabalho...",
+      "content": "hahaha...",
       "media": [
         "https://cdn.jsdelivr.net/gh/diegonmarcos/front-assets-cdn@main/b-Media/mySocials/static/media/facebook-diegonmarcos/posts/325242384162715.jpg"
       ],
@@ -504,7 +504,7 @@
     },
     {
       "timestamp": "jan 05, 2012 10:00:56 da tarde/noite",
-      "content": "hahaha...",
+      "content": "Parabééns!!!! Essa garota merece!!!",
       "media": [
         "https://cdn.jsdelivr.net/gh/diegonmarcos/front-assets-cdn@main/b-Media/mySocials/static/media/facebook-diegonmarcos/posts/330667423620211.jpg"
       ],
@@ -512,7 +512,7 @@
     },
     {
       "timestamp": "jan 14, 2012 4:28:37 da tarde/noite",
-      "content": "Parabééns!!!! Essa garota merece!!!",
+      "content": "Como me disse uma pessoinha: \"Não existe o dono da verdade\"",
       "media": [
         "https://cdn.jsdelivr.net/gh/diegonmarcos/front-assets-cdn@main/b-Media/mySocials/static/media/facebook-diegonmarcos/posts/334319603254993.jpg"
       ],
@@ -520,7 +520,7 @@
     },
     {
       "timestamp": "jan 20, 2012 1:05:28 da tarde/noite",
-      "content": "Como me disse uma pessoinha: \"Não existe o dono da verdade\"",
+      "content": "E mais uma vez a meteorologia errou na mosca!!!!",
       "media": [
         "https://cdn.jsdelivr.net/gh/diegonmarcos/front-assets-cdn@main/b-Media/mySocials/static/media/facebook-diegonmarcos/posts/336399816380305.jpg"
       ],
@@ -528,7 +528,7 @@
     },
     {
       "timestamp": "jan 23, 2012 3:37:12 da tarde/noite",
-      "content": "E mais uma vez a meteorologia errou na mosca!!!!",
+      "content": "SP era a 4a e passou para 27a posição! Agora elogiar a polícia de SP ninguém quer né?",
       "media": [
         "https://cdn.jsdelivr.net/gh/diegonmarcos/front-assets-cdn@main/b-Media/mySocials/static/media/facebook-diegonmarcos/posts/344901902196763.jpg"
       ],
@@ -536,7 +536,7 @@
     },
     {
       "timestamp": "fev 05, 2012 1:48:15 da manhã",
-      "content": "SP era a 4a e passou para 27a posição! Agora elogiar a polícia de SP ninguém quer né?",
+      "content": "Parabéns por ainda estar vivo!!!  http://instagr.am/p/Gw_MY1x6f2/",
       "media": [
         "https://cdn.jsdelivr.net/gh/diegonmarcos/front-assets-cdn@main/b-Media/mySocials/static/media/facebook-diegonmarcos/posts/347782031908750.jpg"
       ],
@@ -544,7 +544,7 @@
     },
     {
       "timestamp": "fev 09, 2012 2:51:11 da manhã",
-      "content": "Parabéns por ainda estar vivo!!!  http://instagr.am/p/Gw_MY1x6f2/",
+      "content": "\"Domingo eu vou lá no pacaembu... Eu vou Eu vou!!!   A FIEL vai invadir...  Vou Levar Foguetes Bandeiras Não vai ser de brincadeira ele Vai Ser Campeão  O que eu não quero  É cadeira numerada   Eu vou de arquibancada pra sentir mais emoção!!! \"",
       "media": [
         "https://cdn.jsdelivr.net/gh/diegonmarcos/front-assets-cdn@main/b-Media/mySocials/static/media/facebook-diegonmarcos/posts/349462048407415.jpg"
       ],
@@ -552,7 +552,7 @@
     },
     {
       "timestamp": "fev 11, 2012 4:36:25 da tarde/noite",
-      "content": "\"Domingo eu vou lá no pacaembu... Eu vou Eu vou!!!   A FIEL vai invadir...  Vou Levar Foguetes Bandeiras Não vai ser de brincadeira ele Vai Ser Campeão  O que eu não quero  É cadeira numerada   Eu vou de arquibancada pra sentir mais emoção!!! \"",
+      "content": "Meu Iphone passando por uma pequena cirurgia…",
       "media": [
         "https://cdn.jsdelivr.net/gh/diegonmarcos/front-assets-cdn@main/b-Media/mySocials/static/media/facebook-diegonmarcos/posts/352529468100673.jpg"
       ],
@@ -560,7 +560,7 @@
     },
     {
       "timestamp": "fev 15, 2012 11:13:45 da tarde/noite",
-      "content": "Meu Iphone passando por uma pequena cirurgia…",
+      "content": "Sumaré x Bartira !!!   Tiraram o grafite dos Gemeos, mas ainda há esperança de uma cidade mais alegre...",
       "media": [
         "https://cdn.jsdelivr.net/gh/diegonmarcos/front-assets-cdn@main/b-Media/mySocials/static/media/facebook-diegonmarcos/posts/352875944732692.jpg"
       ],
@@ -568,7 +568,7 @@
     },
     {
       "timestamp": "fev 16, 2012 11:51:57 da manhã",
-      "content": "Sumaré x Bartira !!!   Tiraram o grafite dos Gemeos, mas ainda há esperança de uma cidade mais alegre...",
+      "content": "E quando a ultima aula da noite começa a ficar desinteressante...",
       "media": [
         "https://cdn.jsdelivr.net/gh/diegonmarcos/front-assets-cdn@main/b-Media/mySocials/static/media/facebook-diegonmarcos/posts/353510408002579.jpg"
       ],
@@ -576,7 +576,7 @@
     },
     {
       "timestamp": "fev 17, 2012 9:59:26 da manhã",
-      "content": "E quando a ultima aula da noite começa a ficar desinteressante...",
+      "content": "Não é todo dia que vemos numa manchete tanta justiça sendo feita!!!",
       "media": [
         "https://cdn.jsdelivr.net/gh/diegonmarcos/front-assets-cdn@main/b-Media/mySocials/static/media/facebook-diegonmarcos/posts/353543764665910.jpg"
       ],
@@ -584,7 +584,7 @@
     },
     {
       "timestamp": "fev 17, 2012 11:56:40 da manhã",
-      "content": "Não é todo dia que vemos numa manchete tanta justiça sendo feita!!!",
+      "content": "Por mim pode ganhar as 11 indicações!!!",
       "media": [
         "https://cdn.jsdelivr.net/gh/diegonmarcos/front-assets-cdn@main/b-Media/mySocials/static/media/facebook-diegonmarcos/posts/359186447434975.jpg"
       ],
@@ -592,7 +592,7 @@
     },
     {
       "timestamp": "fev 26, 2012 1:24:50 da manhã",
-      "content": "Por mim pode ganhar as 11 indicações!!!",
+      "content": "Enquanto a PM fizer greve, aonde a segurança estadual não faz a lei, quandos os temporais fizerem um estado determinar \"estado de calamidade pública\", adivinha quem estará lá...",
       "media": [
         "https://cdn.jsdelivr.net/gh/diegonmarcos/front-assets-cdn@main/b-Media/mySocials/static/media/facebook-diegonmarcos/posts/360301647323455.jpg"
       ],
@@ -608,7 +608,7 @@
     },
     {
       "timestamp": "fev 27, 2012 10:34:10 da tarde/noite",
-      "content": "Enquanto a PM fizer greve, aonde a segurança estadual não faz a lei, quandos os temporais fizerem um estado determinar \"estado de calamidade pública\", adivinha quem estará lá...",
+      "content": "Véi... Vem na minha!!!   Gohan com furikake e uma skol shot!!!",
       "media": [
         "https://cdn.jsdelivr.net/gh/diegonmarcos/front-assets-cdn@main/b-Media/mySocials/static/media/facebook-diegonmarcos/posts/360399040647049.jpg"
       ],
@@ -616,7 +616,7 @@
     },
     {
       "timestamp": "fev 28, 2012 1:41:29 da manhã",
-      "content": "Véi... Vem na minha!!!   Gohan com furikake e uma skol shot!!!",
+      "content": "Aqui tem um bando de louco!!!",
       "media": [
         "https://cdn.jsdelivr.net/gh/diegonmarcos/front-assets-cdn@main/b-Media/mySocials/static/media/facebook-diegonmarcos/posts/370394779647475.jpg"
       ],
@@ -624,7 +624,7 @@
     },
     {
       "timestamp": "mar 15, 2012 2:48:37 da manhã",
-      "content": "Aqui tem um bando de louco!!!",
+      "content": "Pessoa top, lugar top!!!",
       "media": [
         "https://cdn.jsdelivr.net/gh/diegonmarcos/front-assets-cdn@main/b-Media/mySocials/static/media/facebook-diegonmarcos/posts/371604906193129.jpg"
       ],
@@ -632,7 +632,7 @@
     },
     {
       "timestamp": "mar 17, 2012 5:01:35 da manhã",
-      "content": "Pessoa top, lugar top!!!",
+      "content": "Companhia top, lugar top",
       "media": [
         "https://cdn.jsdelivr.net/gh/diegonmarcos/front-assets-cdn@main/b-Media/mySocials/static/media/facebook-diegonmarcos/posts/371606112859675.jpg"
       ],
@@ -640,7 +640,7 @@
     },
     {
       "timestamp": "mar 17, 2012 5:04:41 da manhã",
-      "content": "Companhia top, lugar top",
+      "content": "Já que to ficando uma pipa, vamo pra esse tal de frozen light sei lá o que!!",
       "media": [
         "https://cdn.jsdelivr.net/gh/diegonmarcos/front-assets-cdn@main/b-Media/mySocials/static/media/facebook-diegonmarcos/posts/372609582759328.jpg"
       ],
@@ -648,7 +648,7 @@
     },
     {
       "timestamp": "mar 18, 2012 10:57:42 da tarde/noite",
-      "content": "Já que to ficando uma pipa, vamo pra esse tal de frozen light sei lá o que!!",
+      "content": "E qando te obrigam a assistir aula de Ética as 7:30am, olha o   que o individuo produz na sala...",
       "media": [
         "https://cdn.jsdelivr.net/gh/diegonmarcos/front-assets-cdn@main/b-Media/mySocials/static/media/facebook-diegonmarcos/posts/373003019386651.jpg"
       ],
@@ -656,7 +656,7 @@
     },
     {
       "timestamp": "mar 19, 2012 4:50:00 da tarde/noite",
-      "content": "E qando te obrigam a assistir aula de Ética as 7:30am, olha o   que o individuo produz na sala...",
+      "content": "Pelo jeito a minha Páscoa chegou mais cedo...Agora eu engato nos estudos!! Tks Kákáá!!",
       "media": [
         "https://cdn.jsdelivr.net/gh/diegonmarcos/front-assets-cdn@main/b-Media/mySocials/static/media/facebook-diegonmarcos/posts/375577069129246.jpg",
         "https://cdn.jsdelivr.net/gh/diegonmarcos/front-assets-cdn@main/b-Media/mySocials/static/media/facebook-diegonmarcos/posts/376149949071958.jpg"
@@ -665,7 +665,7 @@
     },
     {
       "timestamp": "mar 24, 2012 10:11:41 da tarde/noite",
-      "content": "Pelo jeito a minha Páscoa chegou mais cedo...Agora eu engato nos estudos!! Tks Kákáá!!",
+      "content": "Valeu Diego Ortiz pela feijoada proporcionada no Pacaembu!!!",
       "media": [
         "https://cdn.jsdelivr.net/gh/diegonmarcos/front-assets-cdn@main/b-Media/mySocials/static/media/facebook-diegonmarcos/posts/376807385672881.jpg"
       ],
@@ -673,7 +673,7 @@
     },
     {
       "timestamp": "mar 26, 2012 1:09:08 da manhã",
-      "content": "Valeu Diego Ortiz pela feijoada proporcionada no Pacaembu!!!",
+      "content": "Puta formatura, pena que só lembro metade dela!!! Parabéns Lipe você é o cara!!!",
       "media": [
         "https://cdn.jsdelivr.net/gh/diegonmarcos/front-assets-cdn@main/b-Media/mySocials/static/media/facebook-diegonmarcos/posts/380917901928496.jpg"
       ],
@@ -681,7 +681,7 @@
     },
     {
       "timestamp": "abr 01, 2012 8:05:58 da tarde/noite",
-      "content": "Puta formatura, pena que só lembro metade dela!!! Parabéns Lipe você é o cara!!!",
+      "content": "E a pergunta da monstrenga dps de comer o meu prato e o dela foi:\"O que tem de sobremesa?\"",
       "media": [
         "https://cdn.jsdelivr.net/gh/diegonmarcos/front-assets-cdn@main/b-Media/mySocials/static/media/facebook-diegonmarcos/posts/380963155257304.jpg"
       ],
@@ -689,7 +689,7 @@
     },
     {
       "timestamp": "abr 01, 2012 9:32:51 da tarde/noite",
-      "content": "E a pergunta da monstrenga dps de comer o meu prato e o dela foi:\"O que tem de sobremesa?\"",
+      "content": "\"Tempo estimado: cerca de 2 DIAS\" !!    É ai que você começa a sentir falta de um HD externo com conexão tunderbolt...",
       "media": [
         "https://cdn.jsdelivr.net/gh/diegonmarcos/front-assets-cdn@main/b-Media/mySocials/static/media/facebook-diegonmarcos/posts/381076911912595.jpg"
       ],
@@ -697,7 +697,7 @@
     },
     {
       "timestamp": "abr 02, 2012 1:22:52 da manhã",
-      "content": "\"Tempo estimado: cerca de 2 DIAS\" !!    É ai que você começa a sentir falta de um HD externo com conexão tunderbolt...",
+      "content": "Microsoft o lixo que nos rodeia...",
       "media": [
         "https://cdn.jsdelivr.net/gh/diegonmarcos/front-assets-cdn@main/b-Media/mySocials/static/media/facebook-diegonmarcos/posts/386207538066199.jpg"
       ],
@@ -705,7 +705,7 @@
     },
     {
       "timestamp": "abr 10, 2012 2:28:46 da tarde/noite",
-      "content": "Microsoft o lixo que nos rodeia...",
+      "content": "A coisa tá feia para o mercado de real estate nesse começo de ano...",
       "media": [
         "https://cdn.jsdelivr.net/gh/diegonmarcos/front-assets-cdn@main/b-Media/mySocials/static/media/facebook-diegonmarcos/posts/387352647951688.jpg"
       ],
@@ -713,7 +713,7 @@
     },
     {
       "timestamp": "abr 12, 2012 4:55:46 da manhã",
-      "content": "A coisa tá feia para o mercado de real estate nesse começo de ano...",
+      "content": "Um set a 0 !!!   Liedson vai se benzer meu quirido!!",
       "media": [
         "https://cdn.jsdelivr.net/gh/diegonmarcos/front-assets-cdn@main/b-Media/mySocials/static/media/facebook-diegonmarcos/posts/393806463972973.jpg"
       ],
@@ -721,7 +721,7 @@
     },
     {
       "timestamp": "abr 19, 2012 2:51:30 da tarde/noite",
-      "content": "Um set a 0 !!!   Liedson vai se benzer meu quirido!!",
+      "content": "Parabéns aqueles que um dia se forjaram a serem lapidados no desconforto, sob pressão de fazer o perfeito, sob o dever de cumprir a missão, o exercício de pensar sempre no coletivo, e que se você cair seu pelotão estará lá por você!  Tenha o exército como algo digno, pois quando não mais militar, essas são lições plenamente aplicaveis no mundo civil.  Dia do Exército!!!Parabéns ao EB, Entindade de respeito inabalavel!",
       "media": [
         "https://cdn.jsdelivr.net/gh/diegonmarcos/front-assets-cdn@main/b-Media/mySocials/static/media/facebook-diegonmarcos/posts/393913093962310.jpg"
       ],
@@ -729,7 +729,7 @@
     },
     {
       "timestamp": "abr 19, 2012 6:37:10 da tarde/noite",
-      "content": "Parabéns aqueles que um dia se forjaram a serem lapidados no desconforto, sob pressão de fazer o perfeito, sob o dever de cumprir a missão, o exercício de pensar sempre no coletivo, e que se você cair seu pelotão estará lá por você!  Tenha o exército como algo digno, pois quando não mais militar, essas são lições plenamente aplicaveis no mundo civil.  Dia do Exército!!!Parabéns ao EB, Entindade de respeito inabalavel!",
+      "content": "O convite até emociona...  http://instagr.am/p/JyN5P9x6Xr/",
       "media": [
         "https://cdn.jsdelivr.net/gh/diegonmarcos/front-assets-cdn@main/b-Media/mySocials/static/media/facebook-diegonmarcos/posts/396801877006765.jpg"
       ],
@@ -737,7 +737,7 @@
     },
     {
       "timestamp": "abr 24, 2012 5:12:31 da manhã",
-      "content": "O convite até emociona...  http://instagr.am/p/JyN5P9x6Xr/",
+      "content": "Mais do que uma honra...  http://instagr.am/p/JyN5P9x6Xr/",
       "media": [
         "https://cdn.jsdelivr.net/gh/diegonmarcos/front-assets-cdn@main/b-Media/mySocials/static/media/facebook-diegonmarcos/posts/396802943673325.jpg"
       ],
@@ -745,7 +745,7 @@
     },
     {
       "timestamp": "abr 24, 2012 5:14:29 da manhã",
-      "content": "Mais do que uma honra...  http://instagr.am/p/JyN5P9x6Xr/",
+      "content": "Operação Maré Vermelha do caramba!! O que era um mês virou três!! Mas chegou!! Viva os \"china\" !!!",
       "media": [
         "https://cdn.jsdelivr.net/gh/diegonmarcos/front-assets-cdn@main/b-Media/mySocials/static/media/facebook-diegonmarcos/posts/405160712837548.jpg"
       ],
@@ -753,7 +753,7 @@
     },
     {
       "timestamp": "mai 04, 2012 2:32:29 da manhã",
-      "content": "Operação Maré Vermelha do caramba!! O que era um mês virou três!! Mas chegou!! Viva os \"china\" !!!",
+      "content": "De volta ao Brasuca e armado...  \"Capitão isso vai dar merda\"",
       "media": [
         "https://cdn.jsdelivr.net/gh/diegonmarcos/front-assets-cdn@main/b-Media/mySocials/static/media/facebook-diegonmarcos/posts/406729896013963.jpg"
       ],
@@ -761,7 +761,7 @@
     },
     {
       "timestamp": "mai 05, 2012 9:35:48 da tarde/noite",
-      "content": "De volta ao Brasuca e armado...  \"Capitão isso vai dar merda\"",
+      "content": "A palavra é... Desnecessário!",
       "media": [
         "https://cdn.jsdelivr.net/gh/diegonmarcos/front-assets-cdn@main/b-Media/mySocials/static/media/facebook-diegonmarcos/posts/407567632596856.jpg"
       ],
@@ -769,7 +769,7 @@
     },
     {
       "timestamp": "mai 07, 2012 4:54:55 da manhã",
-      "content": "A palavra é... Desnecessário!",
+      "content": "Franguela vc não está fazendo isso certo...",
       "media": [
         "https://cdn.jsdelivr.net/gh/diegonmarcos/front-assets-cdn@main/b-Media/mySocials/static/media/facebook-diegonmarcos/posts/409732585713694.jpg"
       ],
@@ -777,7 +777,7 @@
     },
     {
       "timestamp": "mai 10, 2012 7:03:21 da tarde/noite",
-      "content": "Franguela vc não está fazendo isso certo...",
+      "content": "Espetinho de Cupim!!!! Interior feelings!!!",
       "media": [
         "https://cdn.jsdelivr.net/gh/diegonmarcos/front-assets-cdn@main/b-Media/mySocials/static/media/facebook-diegonmarcos/posts/410557405631212.jpg"
       ],
@@ -785,7 +785,7 @@
     },
     {
       "timestamp": "mai 12, 2012 2:57:27 da manhã",
-      "content": "Espetinho de Cupim!!!! Interior feelings!!!",
+      "content": "Batman abatido, faca na cavera!!!",
       "media": [
         "https://cdn.jsdelivr.net/gh/diegonmarcos/front-assets-cdn@main/b-Media/mySocials/static/media/facebook-diegonmarcos/posts/411101405576812.jpg"
       ],
@@ -793,7 +793,7 @@
     },
     {
       "timestamp": "mai 13, 2012 12:31:06 da manhã",
-      "content": "Batman abatido, faca na cavera!!!",
+      "content": "Depois de 5 horas dentro de um carro... Tinha que dar algum resultado!!",
       "media": [
         "https://cdn.jsdelivr.net/gh/diegonmarcos/front-assets-cdn@main/b-Media/mySocials/static/media/facebook-diegonmarcos/posts/412165915470361.jpg"
       ],
@@ -801,7 +801,7 @@
     },
     {
       "timestamp": "mai 14, 2012 7:21:58 da tarde/noite",
-      "content": "Depois de 5 horas dentro de um carro... Tinha que dar algum resultado!!",
+      "content": "Lió: Gênio da alta gastronomia mirandopolense!!   Aqui você almoça e sai jantado!!",
       "media": [
         "https://cdn.jsdelivr.net/gh/diegonmarcos/front-assets-cdn@main/b-Media/mySocials/static/media/facebook-diegonmarcos/posts/412372975449655.jpg"
       ],
@@ -809,7 +809,7 @@
     },
     {
       "timestamp": "mai 15, 2012 2:06:47 da manhã",
-      "content": "Lió: Gênio da alta gastronomia mirandopolense!!   Aqui você almoça e sai jantado!!",
+      "content": "Antes de fazer uma pergunta idiota veja a imagem abaixo...",
       "media": [
         "https://cdn.jsdelivr.net/gh/diegonmarcos/front-assets-cdn@main/b-Media/mySocials/static/media/facebook-diegonmarcos/posts/413132362040383.jpg"
       ],
@@ -817,7 +817,7 @@
     },
     {
       "timestamp": "mai 16, 2012 5:57:21 da manhã",
-      "content": "Antes de fazer uma pergunta idiota veja a imagem abaixo...",
+      "content": "Geeks vs Non Geeks in repetitive tasks...",
       "media": [
         "https://cdn.jsdelivr.net/gh/diegonmarcos/front-assets-cdn@main/b-Media/mySocials/static/media/facebook-diegonmarcos/posts/416069651746654.jpg"
       ],
@@ -825,7 +825,7 @@
     },
     {
       "timestamp": "mai 20, 2012 11:24:11 da tarde/noite",
-      "content": "Geeks vs Non Geeks in repetitive tasks...",
+      "content": "Aqui não, aqui é Pacaembu, aqui é Corinthians!!!",
       "media": [
         "https://cdn.jsdelivr.net/gh/diegonmarcos/front-assets-cdn@main/b-Media/mySocials/static/media/facebook-diegonmarcos/posts/418027128217573.jpg"
       ],
@@ -833,7 +833,7 @@
     },
     {
       "timestamp": "mai 24, 2012 6:30:54 da manhã",
-      "content": "Aqui não, aqui é Pacaembu, aqui é Corinthians!!!",
+      "content": "Engenharia CIVIL Rules!!!",
       "media": [
         "https://cdn.jsdelivr.net/gh/diegonmarcos/front-assets-cdn@main/b-Media/mySocials/static/media/facebook-diegonmarcos/posts/419996481353971.jpg"
       ],
@@ -841,7 +841,7 @@
     },
     {
       "timestamp": "mai 27, 2012 5:34:55 da tarde/noite",
-      "content": "Engenharia CIVIL Rules!!!",
+      "content": "Bodas de Diamante!! Parabéns Sr.Vovô Jarbas e Sra.Vovó Isaura!!! São 60 anos...  Exemplo de perseverança, esta que devemos tomar como exemplo!",
       "media": [
         "https://cdn.jsdelivr.net/gh/diegonmarcos/front-assets-cdn@main/b-Media/mySocials/static/media/facebook-diegonmarcos/posts/420112204675732.jpg"
       ],
@@ -849,7 +849,7 @@
     },
     {
       "timestamp": "mai 27, 2012 9:36:06 da tarde/noite",
-      "content": "Bodas de Diamante!! Parabéns Sr.Vovô Jarbas e Sra.Vovó Isaura!!! São 60 anos...  Exemplo de perseverança, esta que devemos tomar como exemplo!",
+      "content": "E que venha a famosa costela no bafo do sacha...",
       "media": [
         "https://cdn.jsdelivr.net/gh/diegonmarcos/front-assets-cdn@main/b-Media/mySocials/static/media/facebook-diegonmarcos/posts/423819237638362.jpg"
       ],
@@ -857,7 +857,7 @@
     },
     {
       "timestamp": "jun 02, 2012 8:36:40 da tarde/noite",
-      "content": "E que venha a famosa costela no bafo do sacha...",
+      "content": "Franguin cê tae fii??",
       "media": [
         "https://cdn.jsdelivr.net/gh/diegonmarcos/front-assets-cdn@main/b-Media/mySocials/static/media/facebook-diegonmarcos/posts/426595840694035.jpg"
       ],
@@ -865,7 +865,7 @@
     },
     {
       "timestamp": "jun 07, 2012 6:10:55 da manhã",
-      "content": "Franguin cê tae fii??",
+      "content": "Just Married...  Perco um soldado, mas a família ganha um ente muito querido!!!   Parabéns aos dois e no que depender de mim e estiver ao meu alcance o farei para apoia-los!!!",
       "media": [
         "https://cdn.jsdelivr.net/gh/diegonmarcos/front-assets-cdn@main/b-Media/mySocials/static/media/facebook-diegonmarcos/posts/428055053881447.jpg"
       ],
@@ -873,7 +873,7 @@
     },
     {
       "timestamp": "jun 10, 2012 3:09:21 da manhã",
-      "content": "Just Married...  Perco um soldado, mas a família ganha um ente muito querido!!!   Parabéns aos dois e no que depender de mim e estiver ao meu alcance o farei para apoia-los!!!",
+      "content": "Lançamento livro do Andres Sanchez! Vai Corinthians!!!",
       "media": [
         "https://cdn.jsdelivr.net/gh/diegonmarcos/front-assets-cdn@main/b-Media/mySocials/static/media/facebook-diegonmarcos/posts/433000980053521.jpg"
       ],
@@ -881,7 +881,7 @@
     },
     {
       "timestamp": "jun 19, 2012 2:50:59 da manhã",
-      "content": "Lançamento livro do Andres Sanchez! Vai Corinthians!!!",
+      "content": "Só tem ex-jogador em campo...",
       "media": [
         "https://cdn.jsdelivr.net/gh/diegonmarcos/front-assets-cdn@main/b-Media/mySocials/static/media/facebook-diegonmarcos/posts/433085643378388.jpg"
       ],
@@ -889,7 +889,7 @@
     },
     {
       "timestamp": "jun 19, 2012 6:13:06 da manhã",
-      "content": "Só tem ex-jogador em campo...",
+      "content": "Congrat's Brow!!!",
       "media": [
         "https://cdn.jsdelivr.net/gh/diegonmarcos/front-assets-cdn@main/b-Media/mySocials/static/media/facebook-diegonmarcos/posts/435091029844516.jpg"
       ],
@@ -897,7 +897,7 @@
     },
     {
       "timestamp": "jun 22, 2012 9:34:10 da tarde/noite",
-      "content": "Congrat's Brow!!!",
+      "content": "Parabéns ao Romarinho pela frieza ao encobrir o goleiro do \"meia Boca\", mas esse gol foi 65% do SHEIK!!! Joga mto, jogador com a cara do Corinthians!!!    #vaicorinthians",
       "media": [
         "https://cdn.jsdelivr.net/gh/diegonmarcos/front-assets-cdn@main/b-Media/mySocials/static/media/facebook-diegonmarcos/posts/438021649551454.jpg"
       ],
@@ -905,7 +905,7 @@
     },
     {
       "timestamp": "jun 28, 2012 6:23:48 da manhã",
-      "content": "Parabéns ao Romarinho pela frieza ao encobrir o goleiro do \"meia Boca\", mas esse gol foi 65% do SHEIK!!! Joga mto, jogador com a cara do Corinthians!!!    #vaicorinthians",
+      "content": "E mais uma vez o Brasil estampando entre os campeões!!   Se acostumem com isso... Engole essa Norte Americanos, Argentinos e os Ingleses que nos aguardem!!  Sonnel quero te ver no churras aqui no brasuca!!",
       "media": [
         "https://cdn.jsdelivr.net/gh/diegonmarcos/front-assets-cdn@main/b-Media/mySocials/static/media/facebook-diegonmarcos/posts/442837319069887.jpg"
       ],
@@ -913,7 +913,7 @@
     },
     {
       "timestamp": "jul 08, 2012 7:47:55 da manhã",
-      "content": "E mais uma vez o Brasil estampando entre os campeões!!   Se acostumem com isso... Engole essa Norte Americanos, Argentinos e os Ingleses que nos aguardem!!  Sonnel quero te ver no churras aqui no brasuca!!",
+      "content": "#quintafeira!",
       "media": [
         "https://cdn.jsdelivr.net/gh/diegonmarcos/front-assets-cdn@main/b-Media/mySocials/static/media/facebook-diegonmarcos/posts/444484208905198.jpg"
       ],
@@ -921,7 +921,7 @@
     },
     {
       "timestamp": "jul 13, 2012 1:14:50 da manhã",
-      "content": "#quintafeira!",
+      "content": "Até os mochileiros estavam na foto...",
       "media": [
         "https://cdn.jsdelivr.net/gh/diegonmarcos/front-assets-cdn@main/b-Media/mySocials/static/media/facebook-diegonmarcos/posts/446890518664567.jpg"
       ],
@@ -929,7 +929,7 @@
     },
     {
       "timestamp": "jul 19, 2012 10:20:24 da tarde/noite",
-      "content": "Até os mochileiros estavam na foto...",
+      "content": "Taxa de serviço!",
       "media": [
         "https://cdn.jsdelivr.net/gh/diegonmarcos/front-assets-cdn@main/b-Media/mySocials/static/media/facebook-diegonmarcos/posts/448376545182631.jpg"
       ],
@@ -937,7 +937,7 @@
     },
     {
       "timestamp": "jul 24, 2012 5:21:26 da manhã",
-      "content": "Taxa de serviço!",
+      "content": "É Rock n' Roll mesmo!!",
       "media": [
         "https://cdn.jsdelivr.net/gh/diegonmarcos/front-assets-cdn@main/b-Media/mySocials/static/media/facebook-diegonmarcos/posts/449649045055381.jpg"
       ],
@@ -945,7 +945,7 @@
     },
     {
       "timestamp": "jul 27, 2012 6:47:35 da tarde/noite",
-      "content": "É Rock n' Roll mesmo!!",
+      "content": "Sheik de Avelã com Nutela, as Mina Pira!",
       "media": [
         "https://cdn.jsdelivr.net/gh/diegonmarcos/front-assets-cdn@main/b-Media/mySocials/static/media/facebook-diegonmarcos/posts/450883081598644.jpg"
       ],
@@ -953,7 +953,7 @@
     },
     {
       "timestamp": "jul 31, 2012 4:20:00 da manhã",
-      "content": "Sheik de Avelã com Nutela, as Mina Pira!",
+      "content": "Magrelinha in the house!!!",
       "media": [
         "https://cdn.jsdelivr.net/gh/diegonmarcos/front-assets-cdn@main/b-Media/mySocials/static/media/facebook-diegonmarcos/posts/451626754857610.jpg"
       ],
@@ -961,7 +961,7 @@
     },
     {
       "timestamp": "ago 02, 2012 5:53:23 da manhã",
-      "content": "Magrelinha in the house!!!",
+      "content": "Domingo pede programa em família!!!",
       "media": [
         "https://cdn.jsdelivr.net/gh/diegonmarcos/front-assets-cdn@main/b-Media/mySocials/static/media/facebook-diegonmarcos/posts/452897274730558.jpg"
       ],
@@ -969,7 +969,7 @@
     },
     {
       "timestamp": "ago 06, 2012 1:51:49 da manhã",
-      "content": "Domingo pede programa em família!!!",
+      "content": "Parabéns Dilma, a Veja é escrota mas no fundo ela queria te elogiar!   Mal sabia que quem ela sempre criticou seria quem daria um chute na direção certa para esse país...",
       "media": [
         "https://cdn.jsdelivr.net/gh/diegonmarcos/front-assets-cdn@main/b-Media/mySocials/static/media/facebook-diegonmarcos/posts/455333487820270.jpg"
       ],
@@ -977,7 +977,7 @@
     },
     {
       "timestamp": "ago 12, 2012 7:15:10 da tarde/noite",
-      "content": "Parabéns Dilma, a Veja é escrota mas no fundo ela queria te elogiar!   Mal sabia que quem ela sempre criticou seria quem daria um chute na direção certa para esse país...",
+      "content": "O gu domando as vaca!!",
       "media": [
         "https://cdn.jsdelivr.net/gh/diegonmarcos/front-assets-cdn@main/b-Media/mySocials/static/media/facebook-diegonmarcos/posts/457276530959299.jpg"
       ],
@@ -985,7 +985,7 @@
     },
     {
       "timestamp": "ago 18, 2012 6:47:06 da manhã",
-      "content": "O gu domando as vaca!!",
+      "content": "Fim de churras do Gu...",
       "media": [
         "https://cdn.jsdelivr.net/gh/diegonmarcos/front-assets-cdn@main/b-Media/mySocials/static/media/facebook-diegonmarcos/posts/457628037590815.jpg"
       ],
@@ -993,7 +993,7 @@
     },
     {
       "timestamp": "ago 19, 2012 8:44:15 da manhã",
-      "content": "Fim de churras do Gu...",
+      "content": "Mais uma encomenda do DX... Esses chinas estão cada vez mais rápidos!!!",
       "media": [
         "https://cdn.jsdelivr.net/gh/diegonmarcos/front-assets-cdn@main/b-Media/mySocials/static/media/facebook-diegonmarcos/posts/461193297234289.jpg"
       ],
@@ -1001,7 +1001,7 @@
     },
     {
       "timestamp": "ago 29, 2012 1:30:42 da manhã",
-      "content": "Mais uma encomenda do DX... Esses chinas estão cada vez mais rápidos!!!",
+      "content": "Hahaha!!!",
       "media": [
         "https://cdn.jsdelivr.net/gh/diegonmarcos/front-assets-cdn@main/b-Media/mySocials/static/media/facebook-diegonmarcos/posts/462294483790837.jpg"
       ],
@@ -1009,7 +1009,7 @@
     },
     {
       "timestamp": "ago 31, 2012 7:18:04 da tarde/noite",
-      "content": "Hahaha!!!",
+      "content": "\"Gerenciamento Integrado da Arena Corinthians\"    #vaicorinthians",
       "media": [
         "https://cdn.jsdelivr.net/gh/diegonmarcos/front-assets-cdn@main/b-Media/mySocials/static/media/facebook-diegonmarcos/posts/464149000272052.jpg"
       ],
@@ -1017,7 +1017,7 @@
     },
     {
       "timestamp": "set 05, 2012 4:00:22 da manhã",
-      "content": "\"Gerenciamento Integrado da Arena Corinthians\"    #vaicorinthians",
+      "content": "Iéiéiéiéiéié!!!",
       "media": [
         "https://cdn.jsdelivr.net/gh/diegonmarcos/front-assets-cdn@main/b-Media/mySocials/static/media/facebook-diegonmarcos/posts/464618466891772.jpg"
       ],
@@ -1025,7 +1025,7 @@
     },
     {
       "timestamp": "set 06, 2012 7:26:27 da manhã",
-      "content": "Iéiéiéiéiéié!!!",
+      "content": "Alimentando o caçula!!!",
       "media": [
         "https://cdn.jsdelivr.net/gh/diegonmarcos/front-assets-cdn@main/b-Media/mySocials/static/media/facebook-diegonmarcos/posts/465330403487245.jpg",
         "https://cdn.jsdelivr.net/gh/diegonmarcos/front-assets-cdn@main/b-Media/mySocials/static/media/facebook-diegonmarcos/posts/468607956492823.jpg"
@@ -1034,7 +1034,7 @@
     },
     {
       "timestamp": "set 16, 2012 9:03:33 da tarde/noite",
-      "content": "Alimentando o caçula!!!",
+      "content": "Back to origins...",
       "media": [
         "https://cdn.jsdelivr.net/gh/diegonmarcos/front-assets-cdn@main/b-Media/mySocials/static/media/facebook-diegonmarcos/posts/470934999593452.jpg"
       ],
@@ -1042,7 +1042,7 @@
     },
     {
       "timestamp": "set 23, 2012 2:40:39 da manhã",
-      "content": "Back to origins...",
+      "content": "Protógenes Fail!",
       "media": [
         "https://cdn.jsdelivr.net/gh/diegonmarcos/front-assets-cdn@main/b-Media/mySocials/static/media/facebook-diegonmarcos/posts/479013275452291.jpg"
       ],
@@ -1050,7 +1050,7 @@
     },
     {
       "timestamp": "out 13, 2012 12:14:00 da manhã",
-      "content": "Protógenes Fail!",
+      "content": "Tratando bem os ouvidos...",
       "media": [
         "https://cdn.jsdelivr.net/gh/diegonmarcos/front-assets-cdn@main/b-Media/mySocials/static/media/facebook-diegonmarcos/posts/479135688773383.jpg"
       ],
@@ -1058,7 +1058,7 @@
     },
     {
       "timestamp": "out 13, 2012 8:05:35 da manhã",
-      "content": "Tratando bem os ouvidos...",
+      "content": "kkkk...",
       "media": [
         "https://cdn.jsdelivr.net/gh/diegonmarcos/front-assets-cdn@main/b-Media/mySocials/static/media/facebook-diegonmarcos/posts/486452091375076.jpg",
         "https://cdn.jsdelivr.net/gh/diegonmarcos/front-assets-cdn@main/b-Media/mySocials/static/media/facebook-diegonmarcos/posts/498756453477973.jpg"
@@ -1067,7 +1067,7 @@
     },
     {
       "timestamp": "dez 01, 2012 1:47:54 da tarde/noite",
-      "content": "kkkk...",
+      "content": "Vaaiii Corinthiaans!!!  Bi-Mundial... Fazendo o Japão ouvir um grito uníssono !!! Orgulho demais desses corinthianos raça!!!",
       "media": [
         "https://cdn.jsdelivr.net/gh/diegonmarcos/front-assets-cdn@main/b-Media/mySocials/static/media/facebook-diegonmarcos/posts/505503166136635.jpg"
       ],
@@ -1075,7 +1075,7 @@
     },
     {
       "timestamp": "dez 17, 2012 3:18:38 da manhã",
-      "content": "Vaaiii Corinthiaans!!!  Bi-Mundial... Fazendo o Japão ouvir um grito uníssono !!! Orgulho demais desses corinthianos raça!!!",
+      "content": "As primeiras mulheres da minha vida!!! Sou apaixonadas por essas garotas, primas que moram no meu coração!!!",
       "media": [
         "https://cdn.jsdelivr.net/gh/diegonmarcos/front-assets-cdn@main/b-Media/mySocials/static/media/facebook-diegonmarcos/posts/512784818741803.jpg"
       ],
@@ -1083,7 +1083,7 @@
     },
     {
       "timestamp": "jan 01, 2013 8:29:02 da manhã",
-      "content": "As primeiras mulheres da minha vida!!! Sou apaixonadas por essas garotas, primas que moram no meu coração!!!",
+      "content": "Mahatma Gandhi Africano!!  Mestre está de volta...",
       "media": [
         "https://cdn.jsdelivr.net/gh/diegonmarcos/front-assets-cdn@main/b-Media/mySocials/static/media/facebook-diegonmarcos/posts/532175140136104.jpg"
       ],
@@ -1091,7 +1091,7 @@
     },
     {
       "timestamp": "fev 04, 2013 5:17:36 da manhã",
-      "content": "Mahatma Gandhi Africano!!  Mestre está de volta...",
+      "content": "Outside Dog feelings...",
       "media": [
         "https://cdn.jsdelivr.net/gh/diegonmarcos/front-assets-cdn@main/b-Media/mySocials/static/media/facebook-diegonmarcos/posts/540918262595125.jpg"
       ],
@@ -1099,7 +1099,7 @@
     },
     {
       "timestamp": "fev 23, 2013 11:27:19 da tarde/noite",
-      "content": "Outside Dog feelings...",
+      "content": "Acho que colocaram um engenheiro para fazer a gestão do supermercado...",
       "media": [
         "https://cdn.jsdelivr.net/gh/diegonmarcos/front-assets-cdn@main/b-Media/mySocials/static/media/facebook-diegonmarcos/posts/548304425189842.jpg"
       ],
@@ -1107,7 +1107,7 @@
     },
     {
       "timestamp": "mar 10, 2013 1:25:33 da manhã",
-      "content": "Acho que colocaram um engenheiro para fazer a gestão do supermercado...",
+      "content": "Ae Dinera, vai vendo o que o Duda tirou do fundo do Baú…",
       "media": [
         "https://cdn.jsdelivr.net/gh/diegonmarcos/front-assets-cdn@main/b-Media/mySocials/static/media/facebook-diegonmarcos/posts/551687034851581.jpg"
       ],
@@ -1115,7 +1115,7 @@
     },
     {
       "timestamp": "mar 17, 2013 11:20:20 da tarde/noite",
-      "content": "Ae Dinera, vai vendo o que o Duda tirou do fundo do Baú…",
+      "content": "Hidrovias: A solução inteligente.   Mas apenas para países de grande dimensões, com uma enorme distribuição de bacias hidrográfcias e que exporta muito produto agrícola e minérios... Ops!!!",
       "media": [
         "https://cdn.jsdelivr.net/gh/diegonmarcos/front-assets-cdn@main/b-Media/mySocials/static/media/facebook-diegonmarcos/posts/557243314295953.jpg"
       ],
@@ -1123,7 +1123,7 @@
     },
     {
       "timestamp": "abr 01, 2013 1:57:28 da manhã",
-      "content": "Hidrovias: A solução inteligente.   Mas apenas para países de grande dimensões, com uma enorme distribuição de bacias hidrográfcias e que exporta muito produto agrícola e minérios... Ops!!!",
+      "content": "Desenhar é facil, calcular difícil, executar é outra história...     http://www.businessinsider.com/8-spruce-st-worlds-best-new-building-2012-12?op=1",
       "media": [
         "https://cdn.jsdelivr.net/gh/diegonmarcos/front-assets-cdn@main/b-Media/mySocials/static/media/facebook-diegonmarcos/posts/560420577311560.jpg"
       ],
@@ -1131,7 +1131,7 @@
     },
     {
       "timestamp": "abr 09, 2013 2:20:33 da manhã",
-      "content": "Desenhar é facil, calcular difícil, executar é outra história...     http://www.businessinsider.com/8-spruce-st-worlds-best-new-building-2012-12?op=1",
+      "content": "Meninas o bizú é: Banana, água de coco e mel!!!",
       "media": [
         "https://cdn.jsdelivr.net/gh/diegonmarcos/front-assets-cdn@main/b-Media/mySocials/static/media/facebook-diegonmarcos/posts/562619920424959.jpg"
       ],
@@ -1139,7 +1139,7 @@
     },
     {
       "timestamp": "abr 14, 2013 7:23:50 da tarde/noite",
-      "content": "Meninas o bizú é: Banana, água de coco e mel!!!",
+      "content": "Avante Borussia!!!",
       "media": [
         "https://cdn.jsdelivr.net/gh/diegonmarcos/front-assets-cdn@main/b-Media/mySocials/static/media/facebook-diegonmarcos/posts/579120615441556.jpg"
       ],
@@ -1147,7 +1147,7 @@
     },
     {
       "timestamp": "mai 25, 2013 9:49:20 da tarde/noite",
-      "content": "Avante Borussia!!!",
+      "content": "Agora que foi revogado o aumento, e o protesto continua!!!  Meu apoio será igual ao desse brasileirinho...   Com humildade e sabedoria iremos muito mais longe...    #vemprarua",
       "media": [
         "https://cdn.jsdelivr.net/gh/diegonmarcos/front-assets-cdn@main/b-Media/mySocials/static/media/facebook-diegonmarcos/posts/592871390733145.jpg"
       ],
@@ -1155,7 +1155,7 @@
     },
     {
       "timestamp": "jun 20, 2013 8:27:54 da tarde/noite",
-      "content": "Agora que foi revogado o aumento, e o protesto continua!!!  Meu apoio será igual ao desse brasileirinho...   Com humildade e sabedoria iremos muito mais longe...    #vemprarua",
+      "content": "Ninguém entende o militarismo porque só pensam em tempos de paz!    Há o que se pensar em tempos de guerra... afinal o maior objetivo da guerra é a paz, quando muitos morrem para hoje você se dar o luxo de reclamar do trânsito na cidade!",
       "media": [
         "https://cdn.jsdelivr.net/gh/diegonmarcos/front-assets-cdn@main/b-Media/mySocials/static/media/facebook-diegonmarcos/posts/617362634950687.jpg"
       ],
@@ -1163,7 +1163,7 @@
     },
     {
       "timestamp": "ago 06, 2013 1:29:33 da manhã",
-      "content": "Ninguém entende o militarismo porque só pensam em tempos de paz!    Há o que se pensar em tempos de guerra... afinal o maior objetivo da guerra é a paz, quando muitos morrem para hoje você se dar o luxo de reclamar do trânsito na cidade!",
+      "content": "Bourbon Street Fest, Jazz de New Orleans no Ibira!!!",
       "media": [
         "https://cdn.jsdelivr.net/gh/diegonmarcos/front-assets-cdn@main/b-Media/mySocials/static/media/facebook-diegonmarcos/posts/622144641139153.jpg",
         "https://cdn.jsdelivr.net/gh/diegonmarcos/front-assets-cdn@main/b-Media/mySocials/static/media/facebook-diegonmarcos/posts/626510517369232.jpg"
@@ -1172,7 +1172,7 @@
     },
     {
       "timestamp": "ago 26, 2013 3:06:19 da manhã",
-      "content": "Bourbon Street Fest, Jazz de New Orleans no Ibira!!!",
+      "content": "Na casa do avô sempre achamos coisas, que achávamos que nunca mais veríamos!!",
       "media": [
         "https://cdn.jsdelivr.net/gh/diegonmarcos/front-assets-cdn@main/b-Media/mySocials/static/media/facebook-diegonmarcos/posts/629034890450128.jpg"
       ],
@@ -1180,7 +1180,7 @@
     },
     {
       "timestamp": "ago 31, 2013 10:19:19 da tarde/noite",
-      "content": "Na casa do avô sempre achamos coisas, que achávamos que nunca mais veríamos!!",
+      "content": "Eu acho que os meus terceiros molares (siso) foram um pouco do contra...",
       "media": [
         "https://cdn.jsdelivr.net/gh/diegonmarcos/front-assets-cdn@main/b-Media/mySocials/static/media/facebook-diegonmarcos/posts/633283753358575.jpg"
       ],
@@ -1188,7 +1188,7 @@
     },
     {
       "timestamp": "set 10, 2013 2:24:48 da manhã",
-      "content": "Eu acho que os meus terceiros molares (siso) foram um pouco do contra...",
+      "content": "This is Iron...",
       "media": [
         "https://cdn.jsdelivr.net/gh/diegonmarcos/front-assets-cdn@main/b-Media/mySocials/static/media/facebook-diegonmarcos/posts/638628692824081.jpg"
       ],
@@ -1196,7 +1196,7 @@
     },
     {
       "timestamp": "set 21, 2013 6:22:09 da manhã",
-      "content": "This is Iron...",
+      "content": "Abre o olho fiiii!!",
       "media": [
         "https://cdn.jsdelivr.net/gh/diegonmarcos/front-assets-cdn@main/b-Media/mySocials/static/media/facebook-diegonmarcos/posts/646094712077479.jpg"
       ],
@@ -1204,7 +1204,7 @@
     },
     {
       "timestamp": "out 07, 2013 4:01:50 da tarde/noite",
-      "content": "Abre o olho fiiii!!",
+      "content": "O reajuste da tarifa de ônibus (que era algo contratual e por isso estava de acordo com os indices inflacionários do setor) culminou no maior protesto popular das ultimas décadas!    Imagina o tamanho do protesto se:    -As pessoas soubessem o mínimo de matemática e comparassem o aumento do IPTU que será em média 17% (varia de 0% a 35%)/2014+ 15%/2015 VS os 7% da passagem de ônibus…    -Se as pessoas soubessem votar, lembrassem dos seu vereadores e acompanhassem eles…    -As pessoas se informassem sobre o que está ocorrendo na cidade, ao invés de apenas seguir o “movimento”, e tivessem uma opinião mais sólida…  “(…)O congelamento da tarifa de ônibus implica, a cada dez centavos, em R$ 150 milhões. A tarifa, se fosse reajustada em junho, seria de R$ 3,45 só atualizando a inflação. Quarenta e cinco centavos são quase R$ 700 milhões. Portanto tem que se encontrar uma fonte para manter a tarifa congelada. Uma das fontes é o IPTU\", disse Donato.    Não tivesse pedido a diminuição do preço da passagem, mas mais ônibus na cidade, mais corredores, ar condicionado nos ônibus (jogasse a conta nas costas das concessionárias)…    Não que esse aumento do IPTU esteja fora da realidade, mas se é para sermos coerentes, se existiu movimento passe livre, me pergunto cade o movimento contra o aumento do IPTU?    Depois não adianta chegar o boleto em 2014 e querem fechar a paulista, se é que nossos universitários sabem que esse boleto existe, afinal são tão imediatistas que só quando sentem no bolso é que resolvem bater o pé!",
       "media": [
         "https://cdn.jsdelivr.net/gh/diegonmarcos/front-assets-cdn@main/b-Media/mySocials/static/media/facebook-diegonmarcos/posts/657692344251049.jpg"
       ],
@@ -1212,7 +1212,7 @@
     },
     {
       "timestamp": "out 30, 2013 2:55:56 da manhã",
-      "content": "O reajuste da tarifa de ônibus (que era algo contratual e por isso estava de acordo com os indices inflacionários do setor) culminou no maior protesto popular das ultimas décadas!    Imagina o tamanho do protesto se:    -As pessoas soubessem o mínimo de matemática e comparassem o aumento do IPTU que será em média 17% (varia de 0% a 35%)/2014+ 15%/2015 VS os 7% da passagem de ônibus…    -Se as pessoas soubessem votar, lembrassem dos seu vereadores e acompanhassem eles…    -As pessoas se informassem sobre o que está ocorrendo na cidade, ao invés de apenas seguir o “movimento”, e tivessem uma opinião mais sólida…  “(…)O congelamento da tarifa de ônibus implica, a cada dez centavos, em R$ 150 milhões. A tarifa, se fosse reajustada em junho, seria de R$ 3,45 só atualizando a inflação. Quarenta e cinco centavos são quase R$ 700 milhões. Portanto tem que se encontrar uma fonte para manter a tarifa congelada. Uma das fontes é o IPTU\", disse Donato.    Não tivesse pedido a diminuição do preço da passagem, mas mais ônibus na cidade, mais corredores, ar condicionado nos ônibus (jogasse a conta nas costas das concessionárias)…    Não que esse aumento do IPTU esteja fora da realidade, mas se é para sermos coerentes, se existiu movimento passe livre, me pergunto cade o movimento contra o aumento do IPTU?    Depois não adianta chegar o boleto em 2014 e querem fechar a paulista, se é que nossos universitários sabem que esse boleto existe, afinal são tão imediatistas que só quando sentem no bolso é que resolvem bater o pé!",
+      "content": "ExAR 2013 (Exercício de Apresentação da Reserva)",
       "media": [
         "https://cdn.jsdelivr.net/gh/diegonmarcos/front-assets-cdn@main/b-Media/mySocials/static/media/facebook-diegonmarcos/posts/661812377172379.jpg",
         "https://cdn.jsdelivr.net/gh/diegonmarcos/front-assets-cdn@main/b-Media/mySocials/static/media/facebook-diegonmarcos/posts/681349995218617.jpg"
@@ -1221,7 +1221,7 @@
     },
     {
       "timestamp": "dez 16, 2013 4:36:59 da tarde/noite",
-      "content": "ExAR 2013 (Exercício de Apresentação da Reserva)",
+      "content": "Grand Slam - Gin Open 2014!!",
       "media": [
         "https://cdn.jsdelivr.net/gh/diegonmarcos/front-assets-cdn@main/b-Media/mySocials/static/media/facebook-diegonmarcos/posts/698134526873497.jpg"
       ],
@@ -1229,7 +1229,7 @@
     },
     {
       "timestamp": "jan 21, 2014 1:44:41 da tarde/noite",
-      "content": "Grand Slam - Gin Open 2014!!",
+      "content": "As vezes você escolhe o filme pelo título, pela capa, pelos atores, pela história, diretor...   E quando eu escolhia pelo ator, esse foi um que sempre me vez assistir bons filmes!!!",
       "media": [
         "https://cdn.jsdelivr.net/gh/diegonmarcos/front-assets-cdn@main/b-Media/mySocials/static/media/facebook-diegonmarcos/posts/703928736294076.jpg"
       ],
@@ -1237,7 +1237,7 @@
     },
     {
       "timestamp": "fev 02, 2014 11:52:33 da tarde/noite",
-      "content": "As vezes você escolhe o filme pelo título, pela capa, pelos atores, pela história, diretor...   E quando eu escolhia pelo ator, esse foi um que sempre me vez assistir bons filmes!!!",
+      "content": "Cariocas aprendendo como se faz carnaval de rua!!!  Sgt Pimenta na av.Sumaré...",
       "media": [
         "https://cdn.jsdelivr.net/gh/diegonmarcos/front-assets-cdn@main/b-Media/mySocials/static/media/facebook-diegonmarcos/posts/713814915305458.jpg"
       ],
@@ -1245,7 +1245,7 @@
     },
     {
       "timestamp": "fev 24, 2014 1:22:30 da manhã",
-      "content": "Cariocas aprendendo como se faz carnaval de rua!!!  Sgt Pimenta na av.Sumaré...",
+      "content": "Trust me...",
       "media": [
         "https://cdn.jsdelivr.net/gh/diegonmarcos/front-assets-cdn@main/b-Media/mySocials/static/media/facebook-diegonmarcos/posts/713825568637726.jpg"
       ],
@@ -1253,7 +1253,7 @@
     },
     {
       "timestamp": "fev 24, 2014 2:06:45 da manhã",
-      "content": "Trust me...",
+      "content": "Alex and the Clowns... Playing around!",
       "media": [
         "https://cdn.jsdelivr.net/gh/diegonmarcos/front-assets-cdn@main/b-Media/mySocials/static/media/facebook-diegonmarcos/posts/720096154677334.jpg"
       ],
@@ -1261,7 +1261,7 @@
     },
     {
       "timestamp": "mar 10, 2014 2:41:28 da manhã",
-      "content": "Alex and the Clowns... Playing around!",
+      "content": "Ganhamos uma casa no RJ!",
       "media": [
         "https://cdn.jsdelivr.net/gh/diegonmarcos/front-assets-cdn@main/b-Media/mySocials/static/media/facebook-diegonmarcos/posts/735830189770597.jpg"
       ],
@@ -1269,7 +1269,7 @@
     },
     {
       "timestamp": "abr 13, 2014 9:24:34 da tarde/noite",
-      "content": "Ganhamos uma casa no RJ!",
+      "content": "Haha!! Jurava que só eu fazia isso...",
       "media": [
         "https://cdn.jsdelivr.net/gh/diegonmarcos/front-assets-cdn@main/b-Media/mySocials/static/media/facebook-diegonmarcos/posts/745116772175272.jpg"
       ],
@@ -1277,7 +1277,7 @@
     },
     {
       "timestamp": "mai 02, 2014 7:05:56 da tarde/noite",
-      "content": "Haha!! Jurava que só eu fazia isso...",
+      "content": "Ask Dexter's place now...",
       "media": [
         "https://cdn.jsdelivr.net/gh/diegonmarcos/front-assets-cdn@main/b-Media/mySocials/static/media/facebook-diegonmarcos/posts/757925664227716.jpg"
       ],
@@ -1285,7 +1285,7 @@
     },
     {
       "timestamp": "mai 27, 2014 8:49:57 da tarde/noite",
-      "content": "Ask Dexter's place now...",
+      "content": "Season Finale",
       "media": [
         "https://cdn.jsdelivr.net/gh/diegonmarcos/front-assets-cdn@main/b-Media/mySocials/static/media/facebook-diegonmarcos/posts/768429466510669.jpg"
       ],
@@ -1293,7 +1293,7 @@
     },
     {
       "timestamp": "jun 16, 2014 4:38:11 da manhã",
-      "content": "Season Finale",
+      "content": "Intrigante de um forma preocupante o poder dessa doença(depressão) de levar propagadores da alegria a uma reversão interna tão brusca...    Gastamos muita risada com esses dois!",
       "media": [
         "https://cdn.jsdelivr.net/gh/diegonmarcos/front-assets-cdn@main/b-Media/mySocials/static/media/facebook-diegonmarcos/posts/796898490330433.jpg"
       ],
@@ -1301,7 +1301,7 @@
     },
     {
       "timestamp": "ago 12, 2014 7:02:09 da tarde/noite",
-      "content": "Intrigante de um forma preocupante o poder dessa doença(depressão) de levar propagadores da alegria a uma reversão interna tão brusca...    Gastamos muita risada com esses dois!",
+      "content": "\"Oi...!!\"  A caçulinha da casa...",
       "media": [
         "https://cdn.jsdelivr.net/gh/diegonmarcos/front-assets-cdn@main/b-Media/mySocials/static/media/facebook-diegonmarcos/posts/800544299965852.jpg"
       ],
@@ -1309,7 +1309,7 @@
     },
     {
       "timestamp": "ago 20, 2014 9:32:58 da tarde/noite",
-      "content": "\"Oi...!!\"  A caçulinha da casa...",
+      "content": "\"Temos o sudeste brasileiro conectado graças aqueles que ainda trabalham em prol de ocuparmos a posição da qual somos capazes de pertencer dentro do cenário mundial!\" (notícia boa ufa!)",
       "media": [
         "https://cdn.jsdelivr.net/gh/diegonmarcos/front-assets-cdn@main/b-Media/mySocials/static/media/facebook-diegonmarcos/posts/804649152888700.jpg"
       ],
@@ -1317,7 +1317,7 @@
     },
     {
       "timestamp": "ago 29, 2014 9:43:02 da tarde/noite",
-      "content": "\"Temos o sudeste brasileiro conectado graças aqueles que ainda trabalham em prol de ocuparmos a posição da qual somos capazes de pertencer dentro do cenário mundial!\" (notícia boa ufa!)",
+      "content": "Adeus iPhone!!!",
       "media": [
         "https://cdn.jsdelivr.net/gh/diegonmarcos/front-assets-cdn@main/b-Media/mySocials/static/media/facebook-diegonmarcos/posts/828882680465347.jpg"
       ],
@@ -1325,7 +1325,7 @@
     },
     {
       "timestamp": "out 15, 2014 8:51:42 da tarde/noite",
-      "content": "Adeus iPhone!!!",
+      "content": "Será que o pessoal do PT tem smartphone?",
       "media": [
         "https://cdn.jsdelivr.net/gh/diegonmarcos/front-assets-cdn@main/b-Media/mySocials/static/media/facebook-diegonmarcos/posts/832706980082917.jpg"
       ],
@@ -1333,7 +1333,7 @@
     },
     {
       "timestamp": "out 23, 2014 6:18:24 da tarde/noite",
-      "content": "Será que o pessoal do PT tem smartphone?",
+      "content": "Bora ver The Hives no histórico Cine Joia!!!",
       "media": [
         "https://cdn.jsdelivr.net/gh/diegonmarcos/front-assets-cdn@main/b-Media/mySocials/static/media/facebook-diegonmarcos/posts/843982315622050.jpg"
       ],
@@ -1341,7 +1341,7 @@
     },
     {
       "timestamp": "nov 13, 2014 4:01:20 da tarde/noite",
-      "content": "Bora ver The Hives no histórico Cine Joia!!!",
+      "content": "Venho para o MASP e vejo a paulista lotada de pessoas que não querem ditadura, não pregam separatismo racial ou social, isso aqui é uma população de todos gêneros que cresceu com as próprias mãos e não compactua com o atual nivel de incompetência!",
       "media": [
         "https://cdn.jsdelivr.net/gh/diegonmarcos/front-assets-cdn@main/b-Media/mySocials/static/media/facebook-diegonmarcos/posts/844975752189373.jpg"
       ],
@@ -1349,7 +1349,7 @@
     },
     {
       "timestamp": "nov 15, 2014 7:41:28 da tarde/noite",
-      "content": "Venho para o MASP e vejo a paulista lotada de pessoas que não querem ditadura, não pregam separatismo racial ou social, isso aqui é uma população de todos gêneros que cresceu com as próprias mãos e não compactua com o atual nivel de incompetência!",
+      "content": "Show do The Hives com o grande compositor Kiko Zambianchi",
       "media": [
         "https://cdn.jsdelivr.net/gh/diegonmarcos/front-assets-cdn@main/b-Media/mySocials/static/media/facebook-diegonmarcos/posts/845597515460530.jpg"
       ],
@@ -1357,7 +1357,7 @@
     },
     {
       "timestamp": "nov 17, 2014 3:15:49 da manhã",
-      "content": "Show do The Hives com o grande compositor Kiko Zambianchi",
+      "content": "Yes my dear fellows, there is life after iOS and I can assure you that besides everything it comes with a lot of battery...",
       "media": [
         "https://cdn.jsdelivr.net/gh/diegonmarcos/front-assets-cdn@main/b-Media/mySocials/static/media/facebook-diegonmarcos/posts/853842917969323.jpg"
       ],
@@ -1365,7 +1365,7 @@
     },
     {
       "timestamp": "dez 04, 2014 4:41:11 da manhã",
-      "content": "Yes my dear fellows, there is life after iOS and I can assure you that besides everything it comes with a lot of battery...",
+      "content": "Pena que 20% se absteram e 40% deram prá trás!",
       "media": [
         "https://cdn.jsdelivr.net/gh/diegonmarcos/front-assets-cdn@main/b-Media/mySocials/static/media/facebook-diegonmarcos/posts/855168397836775.jpg"
       ],
@@ -1373,7 +1373,7 @@
     },
     {
       "timestamp": "dez 06, 2014 11:41:02 da tarde/noite",
-      "content": "Pena que 20% se absteram e 40% deram prá trás!",
+      "content": "Corridinha pra animar o combatente!!",
       "media": [
         "https://cdn.jsdelivr.net/gh/diegonmarcos/front-assets-cdn@main/b-Media/mySocials/static/media/facebook-diegonmarcos/posts/855170174503264.jpg"
       ],
@@ -1381,7 +1381,7 @@
     },
     {
       "timestamp": "dez 06, 2014 11:47:03 da tarde/noite",
-      "content": "Corridinha pra animar o combatente!!",
+      "content": "Vc pode tentar sair da engenharia... Mas ela não sai de vc!",
       "media": [
         "https://cdn.jsdelivr.net/gh/diegonmarcos/front-assets-cdn@main/b-Media/mySocials/static/media/facebook-diegonmarcos/posts/864254743594807.jpg"
       ],
@@ -1389,7 +1389,7 @@
     },
     {
       "timestamp": "dez 25, 2014 9:13:38 da tarde/noite",
-      "content": "Vc pode tentar sair da engenharia... Mas ela não sai de vc!",
+      "content": "Ninegagando....",
       "media": [
         "https://cdn.jsdelivr.net/gh/diegonmarcos/front-assets-cdn@main/b-Media/mySocials/static/media/facebook-diegonmarcos/posts/866925593327722.jpg",
         "https://cdn.jsdelivr.net/gh/diegonmarcos/front-assets-cdn@main/b-Media/mySocials/static/media/facebook-diegonmarcos/posts/866993139987634.jpg",
@@ -1399,7 +1399,7 @@
     },
     {
       "timestamp": "fev 05, 2015 12:49:10 da manhã",
-      "content": "Ninegagando....",
+      "content": "Descobri pra que serve esse apoio embaixo das mesas do Starbucks...",
       "media": [
         "https://cdn.jsdelivr.net/gh/diegonmarcos/front-assets-cdn@main/b-Media/mySocials/static/media/facebook-diegonmarcos/posts/927443757275905.jpg"
       ],
@@ -1407,7 +1407,7 @@
     },
     {
       "timestamp": "abr 24, 2015 10:38:17 da tarde/noite",
-      "content": "Descobri pra que serve esse apoio embaixo das mesas do Starbucks...",
+      "content": "Arquivos do celular",
       "media": [
         "https://cdn.jsdelivr.net/gh/diegonmarcos/front-assets-cdn@main/b-Media/mySocials/static/media/facebook-diegonmarcos/posts/928854030468211.jpg"
       ],
@@ -1415,7 +1415,7 @@
     },
     {
       "timestamp": "abr 27, 2015 9:31:57 da tarde/noite",
-      "content": "Arquivos do celular",
+      "content": "Não confundam ter raça com técnica!",
       "media": [
         "https://cdn.jsdelivr.net/gh/diegonmarcos/front-assets-cdn@main/b-Media/mySocials/static/media/facebook-diegonmarcos/posts/931444816875799.jpg"
       ],
@@ -1423,7 +1423,7 @@
     },
     {
       "timestamp": "mai 03, 2015 9:52:34 da tarde/noite",
-      "content": "Não confundam ter raça com técnica!",
+      "content": "5k corrida, 25k bike e 100m livre boiando com os tubarões!!! Ironman que me aguarde😎",
       "media": [
         "https://cdn.jsdelivr.net/gh/diegonmarcos/front-assets-cdn@main/b-Media/mySocials/static/media/facebook-diegonmarcos/posts/978662138820733.jpg"
       ],
@@ -1431,7 +1431,7 @@
     },
     {
       "timestamp": "ago 04, 2015 4:57:10 da manhã",
-      "content": "5k corrida, 25k bike e 100m livre boiando com os tubarões!!! Ironman que me aguarde😎",
+      "content": "My #vote for @UnTecho bcause one way to #UpgradeYourWorld is like:\"Think globally act locally\" and Techo is like that!",
       "media": [
         "https://cdn.jsdelivr.net/gh/diegonmarcos/front-assets-cdn@main/b-Media/mySocials/static/media/facebook-diegonmarcos/posts/979039162116364.jpg"
       ],
@@ -1439,7 +1439,7 @@
     },
     {
       "timestamp": "ago 05, 2015 1:33:57 da manhã",
-      "content": "My #vote for @UnTecho bcause one way to #UpgradeYourWorld is like:\"Think globally act locally\" and Techo is like that!",
+      "content": "Brilliant!!!",
       "media": [
         "https://cdn.jsdelivr.net/gh/diegonmarcos/front-assets-cdn@main/b-Media/mySocials/static/media/facebook-diegonmarcos/posts/987189694634644.jpg"
       ],
@@ -1447,7 +1447,7 @@
     },
     {
       "timestamp": "ago 20, 2015 6:36:14 da manhã",
-      "content": "Brilliant!!!",
+      "content": "Renuncia do Alexis Tsipras, após ele aceitar um duro acordo em troca do resgate europeu contrariando a vontade da esquerda nas urnas.    Engraçado que aqui no Brasil é a mesma coisa.    A  esquerda com o seu \"dedo de midas\" para fazer m$@#! e que quando acaba o colchão para se praticar ideologias... Eles se tornam racionais!    Pelos menos o Alexis Tsipras teve a compostura de renunciar, algo que faltou na nossa presidanta!    Mas vamos falar da cor do uniforme das empregadas, da velocidade máxima de uma cidade completamente engarrafada ou melhor vamos chamar todo mundo que é contra esse governo incompetente de coxinha, esses coxinhas que são desumanos, sem amor no coração e segregacionistas!!!    Brasiusiusiu!!!!     http://g1.globo.com/economia/noticia/2015/08/premie-da-grecia-renuncia-ao-cargo-e-pais-tera-eleicoes-antecipadas.html",
       "media": [
         "https://cdn.jsdelivr.net/gh/diegonmarcos/front-assets-cdn@main/b-Media/mySocials/static/media/facebook-diegonmarcos/posts/988104054543208.jpg"
       ],
@@ -1455,7 +1455,7 @@
     },
     {
       "timestamp": "ago 21, 2015 8:21:18 da tarde/noite",
-      "content": "Renuncia do Alexis Tsipras, após ele aceitar um duro acordo em troca do resgate europeu contrariando a vontade da esquerda nas urnas.    Engraçado que aqui no Brasil é a mesma coisa.    A  esquerda com o seu \"dedo de midas\" para fazer m$@#! e que quando acaba o colchão para se praticar ideologias... Eles se tornam racionais!    Pelos menos o Alexis Tsipras teve a compostura de renunciar, algo que faltou na nossa presidanta!    Mas vamos falar da cor do uniforme das empregadas, da velocidade máxima de uma cidade completamente engarrafada ou melhor vamos chamar todo mundo que é contra esse governo incompetente de coxinha, esses coxinhas que são desumanos, sem amor no coração e segregacionistas!!!    Brasiusiusiu!!!!     http://g1.globo.com/economia/noticia/2015/08/premie-da-grecia-renuncia-ao-cargo-e-pais-tera-eleicoes-antecipadas.html",
+      "content": "Olha fazia tempo que eu não dirigia em sp nos dias de semana(adepto da bike) e não é que essa tal máxima de 50km/h facilitou em muito o uso do 9GAG enquanto dirigindo...",
       "media": [
         "https://cdn.jsdelivr.net/gh/diegonmarcos/front-assets-cdn@main/b-Media/mySocials/static/media/facebook-diegonmarcos/posts/991583537528593.jpg"
       ],
@@ -1463,7 +1463,7 @@
     },
     {
       "timestamp": "ago 28, 2015 2:25:22 da manhã",
-      "content": "Olha fazia tempo que eu não dirigia em sp nos dias de semana(adepto da bike) e não é que essa tal máxima de 50km/h facilitou em muito o uso do 9GAG enquanto dirigindo...",
+      "content": "Putin is Putin!!! #9gag",
       "media": [
         "https://cdn.jsdelivr.net/gh/diegonmarcos/front-assets-cdn@main/b-Media/mySocials/static/media/facebook-diegonmarcos/posts/1013147098705570.mp4"
       ],
@@ -1471,7 +1471,7 @@
     },
     {
       "timestamp": "out 10, 2015 10:47:42 da tarde/noite",
-      "content": "Putin is Putin!!! #9gag",
+      "content": "Caneta Stylus e Apple?   Olha... Turma que está cortando árvore na Amazônia, galerinha da industria de papel e celulose, se juntem aos taxistas!   Vão fechar a paulista com eles, vão atrás do seus vereadores e pedem para criar uma lei obrigando a gente a continuar desenhando no papel...",
       "media": [
         "https://cdn.jsdelivr.net/gh/diegonmarcos/front-assets-cdn@main/b-Media/mySocials/static/media/facebook-diegonmarcos/posts/998279690192311.mp4"
       ],
@@ -1479,7 +1479,7 @@
     },
     {
       "timestamp": "set 10, 2015 1:01:53 da manhã",
-      "content": "Caneta Stylus e Apple?   Olha... Turma que está cortando árvore na Amazônia, galerinha da industria de papel e celulose, se juntem aos taxistas!   Vão fechar a paulista com eles, vão atrás do seus vereadores e pedem para criar uma lei obrigando a gente a continuar desenhando no papel...",
+      "content": "Hoje a Dilma falou em rede nacional, mas ouvi o povo falar mais alto...  Será que impeachment é algo inconcebível?  Não é Copa do Mundo não... É o PT em rede nacional!!!   #valeueleitorPTista",
       "media": [
         "https://cdn.jsdelivr.net/gh/diegonmarcos/front-assets-cdn@main/b-Media/mySocials/static/media/facebook-diegonmarcos/posts/903809759639305.mp4"
       ],
@@ -1487,7 +1487,7 @@
     },
     {
       "timestamp": "mar 09, 2015 2:28:32 da manhã",
-      "content": "Hoje a Dilma falou em rede nacional, mas ouvi o povo falar mais alto...  Será que impeachment é algo inconcebível?  Não é Copa do Mundo não... É o PT em rede nacional!!!   #valeueleitorPTista",
+      "content": "Whatsapp no iPhone bombando... Sqn!",
       "media": [
         "https://cdn.jsdelivr.net/gh/diegonmarcos/front-assets-cdn@main/b-Media/mySocials/static/media/facebook-diegonmarcos/posts/785027101517572.mp4"
       ],
@@ -1495,7 +1495,7 @@
     },
     {
       "timestamp": "jul 19, 2014 12:53:47 da manhã",
-      "content": "Whatsapp no iPhone bombando... Sqn!",
+      "content": "Vai Corinthians!! Vai torcida fiel!!",
       "media": [
         "https://cdn.jsdelivr.net/gh/diegonmarcos/front-assets-cdn@main/b-Media/mySocials/static/media/facebook-diegonmarcos/posts/172318279455127.mp4"
       ],
@@ -1503,7 +1503,7 @@
     },
     {
       "timestamp": "dez 06, 2010 4:14:04 da manhã",
-      "content": "Vai Corinthians!! Vai torcida fiel!!",
+      "content": "Clique para o vídeo:",
       "media": [
         "https://cdn.jsdelivr.net/gh/diegonmarcos/front-assets-cdn@main/b-Media/mySocials/static/media/facebook-diegonmarcos/posts/127805417239747.mp4"
       ],
@@ -1511,7 +1511,7 @@
     },
     {
       "timestamp": "jun 07, 2010 12:28:24 da manhã",
-      "content": "Clique para o vídeo:",
+      "content": "ahhh... Chegou a semana tão esperada!!!",
       "media": [
         "https://cdn.jsdelivr.net/gh/diegonmarcos/front-assets-cdn@main/b-Media/mySocials/static/media/facebook-diegonmarcos/posts/124973320856290.mp4"
       ],
@@ -1519,10 +1519,11 @@
     },
     {
       "timestamp": "mai 27, 2010 5:04:32 da manhã",
-      "content": "ahhh... Chegou a semana tão esperada!!!",
+      "content": "",
       "media": [],
       "album": ""
     }
   ]
-};
+}
+;
 })();

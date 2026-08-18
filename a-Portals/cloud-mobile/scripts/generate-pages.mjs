@@ -70,41 +70,88 @@ function computeSmartFolders(apps) {
     { id: 'top_time_usage', group: 'Rank', label: 'Top 7 Time Usage', apps: topBy('usageMin7d') },
   ];
 }
-// Rendered AFTER the topical folders, with each rule filed under its group
-// header (Dev / Stores / Usage / Rank) exactly like PhoneSmartFolders groups
-// them on-device.
+// ── Folder cards — the APK's One-UI folder anatomy, transcribed from
+// PhoneAppsFragment.makeFolderCard (app/src/main/java/.../apps/
+// PhoneAppsFragment.kt:326-385): a 60dp rounded "liquid glass" square
+// (R.drawable.bg_liquid_glass, 24dp radius) holding a 2x2 GridLayout
+// mini-preview of the first FOUR apps inside (empty slots stay blank), with
+// the folder label centered underneath (10sp, #E9D8FD, single line). No count
+// badge exists on-device. Tap opens every app inside (showFolderDialog,
+// :389-441) — on the web that's a native <details>: the card IS the
+// <summary>, the expanded sheet renders below it, zero JS.
+// Mini icons are plain colored squircles (same hashed palette as the app
+// tiles) — a stand-in for the real Drawable the launcher blits in.
+function folderMiniHtml(name) {
+  const color = TILE_COLORS[hash(name) % TILE_COLORS.length];
+  return `<span class="phone-folder__mini phone-folder__mini--${color}"></span>`;
+}
+function folderCardHtml(label, members, rel) {
+  const minis = Array.from({ length: 4 }, (_, i) => (members[i]
+    ? folderMiniHtml(members[i].name)
+    : '<span class="phone-folder__mini phone-folder__mini--empty"></span>')).join('');
+  return `
+                <details class="phone-folder">
+                    <summary class="phone-folder__card">
+                        <span class="phone-folder__square">${minis}</span>
+                        <span class="phone-folder__label">${label}</span>
+                    </summary>
+                    <div class="phone-folder__sheet">
+                        <h3 class="phone-folder__sheet-title">${label}</h3>
+                        <div class="tile-grid tile-grid--dense tile-grid--phone" role="list">
+                            ${members.map((a) => avatarTileHtml(a.name, rel, null)).join('\n                            ')}
+                        </div>
+                    </div>
+                </details>`;
+}
+function folderGridHtml(folders, rel, dense = false) {
+  const cls = dense ? 'phone-folder-grid phone-folder-grid--smart' : 'phone-folder-grid';
+  return `<div class="${cls}">${folders.map((f) => folderCardHtml(f.label, f.apps, rel)).join('')}
+            </div>`;
+}
+
+// Rendered AFTER the topical folders, under a "Smart Folders" subhead, with
+// each rule filed under its group header (Dev / Stores / Usage / Rank) and
+// drawn as SMALLER folder cards — PhoneAppsFragment.kt:241-264 renders smart
+// folders with a 44dp cell and columns+1 (=7) per row.
 function smartFoldersBody(smartFolders, rel) {
   const groups = [...new Set(smartFolders.map((f) => f.group))];
-  const blocks = groups.map((group) => {
-    const folders = smartFolders.filter((f) => f.group === group).map((f) => `
-            <section class="tile-group">
-                <h2 class="tile-group__title">${f.label} <span class="smart-folder__badge">${f.apps.length}</span></h2>
-                <div class="tile-grid tile-grid--dense tile-grid--phone" role="list">
-                    ${f.apps.map((a) => avatarTileHtml(a.name, rel, null)).join('\n                    ')}
-                </div>
-            </section>`).join('\n');
-    return `<h3 class="smart-folders__group">${group}</h3>${folders}`;
-  }).join('\n');
-  return `<section class="smart-folders">
-                <h2 class="tile-group__title">Smart Folders</h2>${blocks}
+  const blocks = groups.map((group) => `<h3 class="phone-folders__subhead">${group}</h3>
+            ${folderGridHtml(smartFolders.filter((f) => f.group === group), rel, true)}`).join('\n            ');
+  return `<section class="phone-folders">
+                <h2 class="phone-folders__subhead">Smart Folders</h2>
+            ${blocks}
             </section>`;
 }
 
 // ── topical folders (suite/phone/all) — every app carries a folderId, this
-// just groups by it in phoneFolders' declared order.
+// groups by it in phoneFolders' declared order, then buckets the folders into
+// the top-level sections by the label's launcher-naming prefix and gives each
+// section a subhead + its own folder grid (PhoneAppsFragment.kt:207-229,
+// prefixes from build.json::ui.phone_sections / PhoneSections.kt). Folders
+// matching no prefix fall through to "Other" so none disappear silently.
+const PHONE_SECTIONS = [
+  { title: 'System', prefix: '_' },
+  { title: 'Services', prefix: '-' },
+  { title: 'Tools A', prefix: '.' },
+  { title: 'Tools B', prefix: '>' },
+];
 function topicalFoldersBody(apps, phoneFolders, rel) {
-  const ordered = [...phoneFolders].sort((a, b) => a.order - b.order);
-  return ordered.map((f) => {
-    const members = apps.filter((a) => a.folderId === f.id);
-    if (!members.length) return '';
-    return `
-            <section class="tile-group">
-                <h2 class="tile-group__title">${f.label} <span class="smart-folder__badge">${members.length}</span></h2>
-                <div class="tile-grid tile-grid--dense tile-grid--phone" role="list">
-                    ${members.map((a) => avatarTileHtml(a.name, rel, null)).join('\n                    ')}
-                </div>
+  const visible = [...phoneFolders]
+    .sort((a, b) => a.order - b.order)
+    .map((f) => ({ label: f.label, apps: apps.filter((a) => a.folderId === f.id) }))
+    .filter((f) => f.apps.length);
+  const buckets = PHONE_SECTIONS.map((sec) => ({
+    title: sec.title,
+    folders: visible.filter((f) => f.label.startsWith(sec.prefix)),
+  }));
+  buckets.push({
+    title: 'Other',
+    folders: visible.filter((f) => !PHONE_SECTIONS.some((s) => f.label.startsWith(s.prefix))),
+  });
+  return `<section class="phone-folders">
+            ${buckets.filter((b) => b.folders.length).map((b) => `<h2 class="phone-folders__subhead">${b.title}</h2>
+            ${folderGridHtml(b.folders, rel)}`).join('\n            ')}
             </section>`;
-  }).join('\n');
 }
 
 // ── target grammar → href (mirrors LauncherNavController's dispatch table) ─
@@ -144,14 +191,37 @@ function monogram(name) {
 function iconImg(icon, rel, cls) {
   return `<img class="${cls}" src="${rel}public/icons/${icon}.svg" alt="">`;
 }
-// Section-tile glyph. Not an <img>: the icon has to be tinted (lavender on
-// the grid, white in a strip), and the shared set's stroke="currentColor"
-// SVGs cannot be recolored through an <img>. So it ships as an empty span
-// carrying --icon-url, masked+tinted by .tile__icon — same convention as
-// .tile__app-icon__glyph. The span has no alt text to lose; the tile itself
-// carries an aria-label instead.
+const ICONS_DIR = join(PROJECT_DIR, 'src/public/icons');
+const iconCache = new Map();
+// Tintable glyph: the shared set's SVGs are stroked/filled with
+// currentColor, which does not apply through an <img src="…svg">. The tint
+// used to go through `mask-image: var(--icon-url)`, but Android WebView does
+// not resolve a url() held in a custom property and painted every one of
+// these as a solid square. So the SVG is inlined at build time instead and
+// takes its tint straight from the CSS `color` it inherits.
+function inlineIcon(icon) {
+  let svg = iconCache.get(icon);
+  if (svg === undefined) {
+    svg = readFileSync(join(ICONS_DIR, `${icon}.svg`), 'utf8')
+      .replace(/<\?xml[\s\S]*?\?>/g, '')
+      .replace(/<!DOCTYPE[\s\S]*?>/g, '')
+      // any hardcoded hue has to follow `color` like the rest of the set
+      .replace(/#[0-9a-fA-F]{3,8}\b/g, 'currentColor')
+      // pin the box to the 32px the CSS reserves, keeping viewBox and the
+      // root stroke attributes (stroke-width/linecap) the paths rely on
+      .replace(/<svg\b[^>]*>/, (tag) => tag
+        .replace(/\s(?:width|height|fill)="[^"]*"/g, '')
+        .replace(/<svg/, '<svg width="32" height="32" fill="none"'))
+      .trim();
+    iconCache.set(icon, svg);
+  }
+  return svg;
+}
+// Section-tile glyph — inline SVG, tinted by .tile__icon's `color` (lavender
+// on the grid, white in a strip). Decorative: the tile itself carries an
+// aria-label.
 function tileIconHtml(icon, rel) {
-  return `<span class="tile__icon" style="--icon-url: url('${rel}public/icons/${icon}.svg')"></span>`;
+  return `<span class="tile__icon" aria-hidden="true">${inlineIcon(icon)}</span>`;
 }
 function tileHtml(tile, color, rel) {
   const { href, external } = resolveTarget(tile.target);
@@ -176,15 +246,14 @@ function tileHtml(tile, color, rel) {
 // recentapps, not random) behind a 1-2 letter monogram. The ~26 apps that
 // are our own real cloud services (mock-apps.json `real: true`) already
 // have a distinct, sensible icon in the shared icon set — those keep that
-// icon instead of a monogram, recolored white via CSS mask (an <img>'s
-// currentColor doesn't apply through the element — see .tile__icon's note
-// in _tiles.scss) and centered on the same hashed squircle background.
+// icon instead of a monogram, inlined and recolored white through
+// currentColor (see inlineIcon above) and centered on the same hashed
+// squircle background.
 function appIconHtml(name, rel) {
   const color = TILE_COLORS[hash(name) % TILE_COLORS.length];
   const app = APP_BY_NAME.get(name);
   if (app?.real) {
-    const iconUrl = `${rel}public/icons/${app.icon}.svg`;
-    return `<span class="tile__app-icon tile__app-icon--${color}"><span class="tile__app-icon__glyph" style="--icon-url: url('${iconUrl}')"></span></span>`;
+    return `<span class="tile__app-icon tile__app-icon--${color}"><span class="tile__app-icon__glyph" aria-hidden="true">${inlineIcon(app.icon)}</span></span>`;
   }
   return `<span class="tile__app-icon tile__app-icon--${color}">${monogram(name)}</span>`;
 }
@@ -308,7 +377,7 @@ function groupListBody(groups, rel, footer, footerHref, strip = false) {
                     ${g.tiles.map((t) => tileHtml(t, 'blue', rel)).join('\n                    ')}
                 </div>
             </section>`).join('\n');
-  const footerHtml = footer && footerHref ? `<a class="tile-group__footer" href="${footerHref}">${iconImg(footer.icon, rel, 'tile-group__footer-icon')}<span>${footer.label}</span></a>` : '';
+  const footerHtml = footer && footerHref ? `<a class="tile-group__footer" href="${footerHref}"><span class="tile-group__footer-icon" aria-hidden="true">${inlineIcon(footer.icon)}</span><span>${footer.label}</span></a>` : '';
   return `${blocks}\n            ${footerHtml}`;
 }
 
@@ -323,7 +392,7 @@ function appListBody(groups, rel, footer, footerHref) {
                     ${g.apps.map((a) => avatarTileHtml(a.name, rel, null)).join('\n                    ')}
                 </div>
             </section>`).join('\n');
-  const footerHtml = footer && footerHref ? `<a class="tile-group__footer" href="${footerHref}">${iconImg(footer.icon, rel, 'tile-group__footer-icon')}<span>${footer.label}</span></a>` : '';
+  const footerHtml = footer && footerHref ? `<a class="tile-group__footer" href="${footerHref}"><span class="tile-group__footer-icon" aria-hidden="true">${inlineIcon(footer.icon)}</span><span>${footer.label}</span></a>` : '';
   return `${blocks}\n            ${footerHtml}`;
 }
 

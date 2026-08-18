@@ -9,7 +9,7 @@
 // a 6px gutter between neighbours.
 .tile-grid {
     display: grid;
-    grid-template-columns: repeat(6, 1fr);
+    grid-template-columns: repeat(6, minmax(0, 1fr));
     gap: 6px;
     padding: 2px;
 }
@@ -29,6 +29,9 @@
     flex-direction: column;
     gap: 6px;
     height: 128px;
+    // grid cells are minmax(0, 1fr); this stops a long label's min-content
+    // width from growing its column and pushing the row past the viewport.
+    min-width: 0;
     border-radius: 20px;
     padding: 10px 6px;
     background-color: transparent;
@@ -46,25 +49,23 @@
     transition: transform var(--duration-press-down) ease-out;
 }
 
-// Lavender glyph on the dark glass. The shared icon set's SVGs are stroked
-// with currentColor, which does not apply through an <img src="…svg">, so
-// generate-pages.mjs emits an empty <span> carrying --icon-url and the tint
-// goes through a CSS mask instead — same convention as
-// .tile__app-icon__glyph (_app-icons.scss) and .tile-group__footer-icon
-// (_content-blocks.scss).
+// Lavender glyph on the dark glass. generate-pages.mjs inlines the shared
+// set's SVG into this span (see inlineIcon()), so the stroke/fill
+// currentColor picks the tint up from `color` here — a CSS mask can't do it,
+// Android WebView renders `mask-image: var(--icon-url)` as a solid square.
+// Same convention as .tile__app-icon__glyph (_app-icons.scss) and
+// .tile-group__footer-icon (_content-blocks.scss).
 .tile__icon {
     width: 32px;
     height: 32px;
     flex-shrink: 0;
-    background-color: #E9D8FD;
-    -webkit-mask-image: var(--icon-url);
-    mask-image: var(--icon-url);
-    -webkit-mask-size: contain;
-    mask-size: contain;
-    -webkit-mask-repeat: no-repeat;
-    mask-repeat: no-repeat;
-    -webkit-mask-position: center;
-    mask-position: center;
+    color: #E9D8FD;
+
+    > svg {
+        display: block;
+        width: 100%;
+        height: 100%;
+    }
 }
 
 .tile__label {
@@ -78,6 +79,9 @@
     -webkit-line-clamp: 2;
     overflow: hidden;
     width: 100%;
+    // a single long unbroken name would otherwise set the cell's min-content
+    // width and blow the 6-column row out horizontally.
+    overflow-wrap: anywhere;
 }
 
 // Phone grids are already 6-up (_app-icons.scss) — align their cell height

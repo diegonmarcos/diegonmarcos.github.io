@@ -62,23 +62,21 @@
 }
 
 // Real icon exception (mock-apps.json `real: true`) — the shared icon set's
-// SVGs use stroke="currentColor", which only applies to inline <svg>, not
-// an <img src="…svg">; generate-pages.mjs renders them via <img> (see
-// iconImg()), so recoloring white here goes through a CSS mask instead of
-// color/currentColor (same constraint documented on .tile__icon in
-// _tiles.scss).
+// SVGs use stroke="currentColor", which only applies to an inline <svg>, so
+// generate-pages.mjs inlines them here (see inlineIcon()) and the white
+// comes from `color` rather than a CSS mask, which Android WebView painted
+// as a solid square (same note on .tile__icon in _tiles.scss).
 .tile__app-icon__glyph {
     width: 26px;
     height: 26px;
-    background-color: #fff;
-    -webkit-mask-image: var(--icon-url);
-    mask-image: var(--icon-url);
-    -webkit-mask-size: contain;
-    mask-size: contain;
-    -webkit-mask-repeat: no-repeat;
-    mask-repeat: no-repeat;
-    -webkit-mask-position: center;
-    mask-position: center;
+    color: #fff;
+
+    // inlineIcon() pins the SVG at 32px; every glyph box is smaller
+    > svg {
+        display: block;
+        width: 100%;
+        height: 100%;
+    }
 }
 
 .tile__app-icon--blue {

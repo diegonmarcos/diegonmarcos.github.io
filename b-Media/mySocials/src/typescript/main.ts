@@ -2995,7 +2995,9 @@ function renderFacebook(): void {
       : `<img class="fb-post__photo" src="${esc(m)}" loading="lazy" alt="" />`
   ).join('');
 
-  const postsHtml = posts.slice(0, 50).map(p => `
+  // Single per-post template, shared by the initial batch and every batch the
+  // IntersectionObserver appends later — never build this markup two ways.
+  const postHtml = (p: typeof posts[number]) => `
     <article class="fb-post">
       <header class="fb-post__header">
         <div class="fb-post__avatar" aria-hidden="true" ${profile.photo ? `style="background-image:url('${esc(profile.photo)}');background-size:cover"` : ''}></div>
@@ -3013,7 +3015,14 @@ function renderFacebook(): void {
         <button class="fb-post__action" type="button">↗ Share</button>
       </div>
     </article>
-  `).join('');
+  `;
+
+  // Rendering all ~185 posts' worth of DOM in one pass is slow on mobile (images
+  // are already loading="lazy", so the DOM construction itself is the cost).
+  // Render the first batch synchronously, then grow the timeline in batches as
+  // a sentinel scrolls into view, so the initial paint only pays for 20 posts.
+  const FB_BATCH_SIZE = 20;
+  const firstBatchHtml = posts.slice(0, FB_BATCH_SIZE).map(postHtml).join('');
 
   // Albums grid for the Photos tab
   const albumsHtml = [...albums.entries()].map(([name, aps]) => `
@@ -3045,7 +3054,8 @@ function renderFacebook(): void {
         <span class="fb-tab" data-fb-tab="about">About</span>
       </nav>
       <main class="fb-timeline" data-fb-pane="timeline">
-        ${postsHtml}
+        ${firstBatchHtml}
+        ${posts.length > FB_BATCH_SIZE ? '<div class="fb-timeline__sentinel" id="fb-timeline-sentinel"></div>' : ''}
       </main>
       <main class="fb-photos-pane" data-fb-pane="photos" hidden>
         <div class="fb-albums-grid">${albumsHtml}</div>
@@ -3071,6 +3081,36 @@ function renderFacebook(): void {
       });
     });
   });
+
+  // Incrementally append the remaining posts as the sentinel scrolls into
+  // view, batch by batch, so already-rendered images are never re-fetched
+  // or re-decoded (insertAdjacentHTML only, never a full innerHTML rebuild).
+  const sentinel = el.querySelector('#fb-timeline-sentinel');
+  if (sentinel) {
+    let nextIdx = FB_BATCH_SIZE;
+    let observer: IntersectionObserver | null = null;
+    const renderNextBatch = () => {
+      const batch = posts.slice(nextIdx, nextIdx + FB_BATCH_SIZE);
+      nextIdx += FB_BATCH_SIZE;
+      const batchHtml = batch.map(postHtml).join('');
+      sentinel.insertAdjacentHTML('beforebegin', batchHtml);
+      if (nextIdx >= posts.length) {
+        observer?.disconnect();
+        sentinel.remove();
+      }
+    };
+    if (typeof IntersectionObserver === 'undefined') {
+      // No IntersectionObserver support — render everything at once.
+      const rest = posts.slice(nextIdx).map(postHtml).join('');
+      sentinel.insertAdjacentHTML('beforebegin', rest);
+      sentinel.remove();
+    } else {
+      observer = new IntersectionObserver(entries => {
+        if (entries.some(e => e.isIntersecting)) renderNextBatch();
+      }, { root: null, rootMargin: '200px' });
+      observer.observe(sentinel);
+    }
+  }
 }
 
 // ─── THEME SWITCHER ──────────────────────────────────────────────────────────
@@ -3190,6 +3230,71 @@ function renderDMs(): void {
   `;
 }
 
+// The bottom nav used to be copy-pasted verbatim into all 17 mySocials pages, and
+// drifted (4 instagram pages lost an entire row). Single-sourced here instead: one
+// place to add/remove a theme button, rendered into the empty #theme-switch shell
+// that every page ships. All 17 pages are mySocials pages, so the hub row's active
+// hub is hardcoded to mySocials.
+interface ThemeSwitchButton {
+  theme: string;
+  label: string;
+}
+type ThemeSwitchEntry = ThemeSwitchButton | 'divider';
+
+const THEME_SWITCH_ROW_SOCIALS: ThemeSwitchEntry[] = [
+  { theme: 'shelf', label: 'Shelf' },
+  'divider',
+  { theme: 'vinyl', label: 'Vinyl' },
+  'divider',
+  { theme: 'bar-cellar', label: 'Bar' },
+  'divider',
+  { theme: 'menu', label: 'Menu' },
+  'divider',
+  { theme: 'theater', label: 'Theater' },
+  'divider',
+  { theme: 'story', label: 'Story' },
+];
+
+const THEME_SWITCH_ROW_ACCOUNTS: ThemeSwitchEntry[] = [
+  { theme: 'instagram-diegocnmarcos_', label: 'ig0' },
+  { theme: 'instagram-diegocmarcos_', label: 'ig1' },
+  { theme: 'instagram-diegonmarcos', label: 'ig2' },
+  { theme: 'facebook-diegonmarcos', label: 'face0' },
+  'divider',
+  { theme: 'pinterest', label: 'Pinterest' },
+  { theme: 'youtube', label: 'YouTube' },
+  { theme: 'tidal', label: 'TIDAL' },
+  'divider',
+  { theme: 'linkedin', label: 'LinkedIn' },
+  'divider',
+  { theme: 'orkut', label: 'Orkut' },
+];
+
+function themeSwitchRowHtml(entries: ThemeSwitchEntry[]): string {
+  return entries.map(entry =>
+    entry === 'divider'
+      ? '<span class="theme-switch__divider">|</span>'
+      : `<button class="theme-switch__btn" data-theme-btn="${entry.theme}">${entry.label}</button>`
+  ).join('');
+}
+
+function renderThemeSwitch(): void {
+  const container = document.getElementById('theme-switch');
+  if (!container) return;
+  container.innerHTML = `
+    <div class="theme-switch__row theme-switch__row--parents">
+      <a class="theme-switch__label theme-switch__hub-link" href="/myprofile" style="opacity:1;font-weight:700">myProfile</a><span class="theme-switch__label"> :</span>
+      <a class="theme-switch__hub-link" href="/DMs">DMs</a>
+      <span class="theme-switch__divider">|</span>
+      <a class="theme-switch__hub-link theme-switch__hub-link--active" href="/mySocials/">mySocials</a>
+      <span class="theme-switch__divider">|</span>
+      <a class="theme-switch__hub-link" href="/myTrackers/">myTrackers</a>
+    </div>
+    <div class="theme-switch__row">${themeSwitchRowHtml(THEME_SWITCH_ROW_SOCIALS)}</div>
+    <div class="theme-switch__row">${themeSwitchRowHtml(THEME_SWITCH_ROW_ACCOUNTS)}</div>
+  `;
+}
+
 function initThemeSwitcher(): void {
   // The page's own baked-in data-theme is authoritative on load (deep links work).
   const current = (document.documentElement.dataset.theme as Theme) || 'mysocials';
@@ -3240,6 +3345,7 @@ function init(): void {
   renderStory();
   renderFacebook();
   renderDMs();
+  renderThemeSwitch();
   initThemeSwitcher();
 
   // Animate trust meter bars on load

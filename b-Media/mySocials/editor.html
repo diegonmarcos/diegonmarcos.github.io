@@ -129,6 +129,7 @@
   <button id="addBtn">Add post</button>
   <button id="saveBtn">Save</button>
   <button id="publishBtn">Publish</button>
+  <button id="tokenBtn">Token</button>
   <span id="status">loading…</span>
 </div>
 <div id="profileCard" class="card">
@@ -144,11 +145,169 @@
 <pre id="log" style="display:none;"></pre>
 
 <script>
+// Data-driven account registry — ported from serve.mjs.
+const ACCOUNTS = {
+  "ig0-diegocnmarcos_": { media_dir: "diegocnmarcos_", schema: "ig" },
+  "ig1-diegocmarcos_": { media_dir: "diegocmarcos_", schema: "ig" },
+  "ig2-diegonmarcos": { media_dir: "", schema: "ig" },
+  "facebook-diegonmarcos": { media_dir: "facebook-diegonmarcos", schema: "fb" },
+};
+
+const DATA_DIR = "/git/front/b-Media/mySocials/src/data";
+const DIST_DIR = "/git/front/b-Media/mySocials/dist";
+const CDN_MEDIA_ROOT = "/git/front-assets-cdn/b-Media/mySocials/static/media";
+const JSDELIVR_BASE = "https://cdn.jsdelivr.net/gh/diegonmarcos/front-assets-cdn@main/b-Media/mySocials/static/media";
+
+function accountJsonPath(account) {
+  return DATA_DIR + "/" + account + ".json";
+}
+
+function wrapperPaths(account) {
+  return [DATA_DIR + "/data-" + account + ".json.js", DIST_DIR + "/data-" + account + ".json.js"];
+}
+
+// Filesystem dir on the CDN repo for this account's post media.
+function mediaPostsDir(account) {
+  const mediaDir = ACCOUNTS[account].media_dir;
+  const parts = [mediaDir, "posts"].filter(Boolean);
+  return [CDN_MEDIA_ROOT].concat(parts).join("/");
+}
+
+function jsdelivrUrl(account, filename) {
+  const mediaDir = ACCOUNTS[account].media_dir;
+  const parts = [mediaDir, "posts", filename].filter(Boolean);
+  return JSDELIVR_BASE + "/" + parts.join("/");
+}
+
+// Filesystem dir on the CDN repo for all accounts' profile photos.
+function mediaProfilesDir() {
+  return CDN_MEDIA_ROOT + "/profiles";
+}
+
+function profileFilename(account, uploadedFilename) {
+  const ext = extname(uploadedFilename).toLowerCase();
+  return account + ext;
+}
+
+function jsdelivrProfileUrl(account, uploadedFilename) {
+  const filename = profileFilename(account, uploadedFilename);
+  return JSDELIVR_BASE + "/profiles/" + filename;
+}
+
+function extname(name) {
+  const idx = name.lastIndexOf(".");
+  return idx === -1 ? "" : name.slice(idx);
+}
+
+function sanitizeFilename(name) {
+  name = name.split("/").pop().split("\\").pop();
+  return name.replace(/[^A-Za-z0-9._-]/g, "_");
+}
+
+function wrapperContent(key, data) {
+  return (
+    "// GENERATED FROM " + key + ".json by front-data-json-js-wrapper.sh — DO NOT EDIT BY HAND.\n" +
+    "// Re-generate with: bash a-Portals/linktree/src/data/build.sh\n" +
+    "(function () {\n" +
+    "  var g = (typeof globalThis !== \"undefined\") ? globalThis : (typeof window !== \"undefined\" ? window : this);\n" +
+    "  g.PORTAL_DATA = g.PORTAL_DATA || {};\n" +
+    "  g.PORTAL_DATA[\"" + key + "\"] = " + JSON.stringify(data, null, 2) + ";\n" +
+    "})();\n"
+  );
+}
+
+// --- Host file-server API -------------------------------------------------
+
+const TOKEN_KEY = "mySocials_editor_token";
+
+function getToken() {
+  return localStorage.getItem(TOKEN_KEY) || "";
+}
+
+function setToken(t) {
+  localStorage.setItem(TOKEN_KEY, t);
+}
+
+function promptForToken() {
+  const t = prompt("Enter the shared secret token (cat ~/.cache/my-webserver.token):") || "";
+  if (t) setToken(t);
+  return t;
+}
+
+async function ensureToken() {
+  let t = getToken();
+  if (!t) t = promptForToken();
+  return t;
+}
+
+function mutatingHeaders() {
+  return {
+    "Content-Type": "application/json",
+    "X-Httpd-Write": "1",
+    "X-Httpd-Token": getToken(),
+  };
+}
+
+async function apiRead(path) {
+  const res = await fetch("/__api__/read?path=" + encodeURIComponent(path));
+  if (!res.ok) {
+    throw new Error("read failed (" + res.status + "): " + path);
+  }
+  return res.json();
+}
+
+async function apiWrite(path, payload, retry) {
+  await ensureToken();
+  const body = Object.assign({ path: path }, payload);
+  const res = await fetch("/__api__/write", {
+    method: "POST",
+    headers: mutatingHeaders(),
+    body: JSON.stringify(body),
+  });
+  if (res.status === 403) {
+    const data = await res.json().catch(() => ({}));
+    const msg = "Write forbidden (403) for " + path + ": " + (data.error || JSON.stringify(data));
+    if (!retry && confirm(msg + "\n\nRe-enter token and retry?")) {
+      if (promptForToken()) return apiWrite(path, payload, true);
+    }
+    throw new Error(msg);
+  }
+  if (!res.ok) {
+    const data = await res.json().catch(() => ({}));
+    throw new Error("write failed (" + res.status + ") for " + path + ": " + (data.error || ""));
+  }
+  return res.json();
+}
+
+async function apiGit(repo, message, paths, retry) {
+  await ensureToken();
+  const res = await fetch("/__api__/git", {
+    method: "POST",
+    headers: mutatingHeaders(),
+    body: JSON.stringify({ repo: repo, message: message, paths: paths }),
+  });
+  const data = await res.json().catch(() => ({}));
+  if (res.status === 403) {
+    const msg = "Git forbidden (403) for " + repo + ": " + (data.error || JSON.stringify(data));
+    if (!retry && confirm(msg + "\n\nRe-enter token and retry?")) {
+      if (promptForToken()) return apiGit(repo, message, paths, true);
+    }
+    throw new Error(msg);
+  }
+  if (!res.ok) {
+    throw new Error("git failed (" + res.status + ") for " + repo + ": " + (data.log || data.error || ""));
+  }
+  return data;
+}
+
+// --- Editor state ----------------------------------------------------------
+
 let currentAccount = null;
 let currentSchema = null;
+let currentData = null; // full parsed account json — only .posts / .profile get mutated
 let posts = [];
-let dirty = false;
 let profile = null;
+let dirty = false;
 let newProfilePhotoUrl = "";
 
 const postsEl = document.getElementById("posts");
@@ -290,7 +449,7 @@ function renderProfile() {
   profileNameEl.textContent = name || "—";
 }
 
-function onProfileImageChange() {
+async function onProfileImageChange() {
   const file = profileFileInputEl.files[0];
   if (!file) return;
   const reader = new FileReader();
@@ -298,22 +457,15 @@ function onProfileImageChange() {
     const dataUrl = reader.result;
     const b64 = dataUrl.substring(dataUrl.indexOf(",") + 1);
     try {
-      const res = await fetch("/api/image", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ account: currentAccount, filename: file.name, b64, kind: "profile" }),
-      });
-      const data = await res.json();
-      if (!data.ok) {
-        alert("Upload failed: " + data.error);
-        return;
-      }
-      newProfilePhotoUrl = data.url;
-      if (profile) profile._localPreview = data.local;
-      profileThumbEl.src = data.local;
+      const safeName = profileFilename(currentAccount, sanitizeFilename(file.name));
+      const targetFile = mediaProfilesDir() + "/" + safeName;
+      await apiWrite(targetFile, { b64: b64 });
+      newProfilePhotoUrl = jsdelivrProfileUrl(currentAccount, file.name);
+      if (profile) profile._localPreview = targetFile;
+      profileThumbEl.src = targetFile;
       markDirty();
     } catch (e) {
-      alert("Upload failed: " + e);
+      alert("Upload failed: " + e.message);
     }
   };
   reader.readAsDataURL(file);
@@ -328,46 +480,37 @@ function onImageChange(fileInput, post, imgEl) {
     const dataUrl = reader.result;
     const b64 = dataUrl.substring(dataUrl.indexOf(",") + 1);
     try {
-      const res = await fetch("/api/image", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ account: currentAccount, filename: file.name, b64 }),
-      });
-      const data = await res.json();
-      if (!data.ok) {
-        alert("Upload failed: " + data.error);
-        return;
-      }
+      const safeName = sanitizeFilename(file.name);
+      const targetFile = mediaPostsDir(currentAccount) + "/" + safeName;
+      await apiWrite(targetFile, { b64: b64 });
+      const url = jsdelivrUrl(currentAccount, safeName);
       if (currentSchema === "ig") {
-        post.media = data.url;
-        post.media_all = [data.url];
+        post.media = url;
+        post.media_all = [url];
       } else {
-        post.media = [data.url];
+        post.media = [url];
       }
-      post._localPreview = data.local;
-      imgEl.src = data.local;
+      post._localPreview = targetFile;
+      imgEl.src = targetFile;
       markDirty();
     } catch (e) {
-      alert("Upload failed: " + e);
+      alert("Upload failed: " + e.message);
     }
   };
   reader.readAsDataURL(file);
 }
 
-async function loadAccounts() {
-  const res = await fetch("/api/accounts");
-  const accounts = await res.json();
+function loadAccounts() {
   accountSelect.innerHTML = "";
-  accounts.forEach((a) => {
+  Object.keys(ACCOUNTS).forEach((key) => {
     const opt = document.createElement("option");
-    opt.value = a.key;
-    opt.dataset.schema = a.schema;
-    opt.textContent = a.key;
+    opt.value = key;
+    opt.dataset.schema = ACCOUNTS[key].schema;
+    opt.textContent = key;
     accountSelect.appendChild(opt);
   });
-  if (accounts.length) {
-    await loadAccount(accounts[0].key, accounts[0].schema);
-  }
+  const first = Object.keys(ACCOUNTS)[0];
+  if (first) loadAccount(first, ACCOUNTS[first].schema);
 }
 
 async function loadAccount(key, schema) {
@@ -377,14 +520,21 @@ async function loadAccount(key, schema) {
   }
   currentAccount = key;
   currentSchema = schema;
-  const res = await fetch("/api/data?account=" + encodeURIComponent(key));
-  const data = await res.json();
-  posts = data.posts || [];
-  profile = data.profile || null;
-  newProfilePhotoUrl = "";
-  markClean("loaded " + key);
-  render();
-  renderProfile();
+  accountSelect.value = key;
+  statusEl.textContent = "loading…";
+  try {
+    const file = await apiRead(accountJsonPath(key));
+    currentData = JSON.parse(file.content);
+    posts = currentData.posts || [];
+    profile = currentData.profile || null;
+    newProfilePhotoUrl = "";
+    markClean("loaded " + key);
+    render();
+    renderProfile();
+  } catch (e) {
+    statusEl.textContent = "load failed: " + e.message;
+    statusEl.className = "dirty";
+  }
 }
 
 accountSelect.addEventListener("change", () => {
@@ -398,6 +548,10 @@ document.getElementById("addBtn").addEventListener("click", () => {
   render();
 });
 
+document.getElementById("tokenBtn").addEventListener("click", () => {
+  promptForToken();
+});
+
 document.getElementById("saveBtn").addEventListener("click", async () => {
   statusEl.textContent = "saving…";
   const cleanPosts = posts.map((p) => {
@@ -405,40 +559,60 @@ document.getElementById("saveBtn").addEventListener("click", async () => {
     delete copy._localPreview;
     return copy;
   });
+  const data = Object.assign({}, currentData);
+  data.posts = cleanPosts;
+  if (data.profile && typeof data.profile === "object" && !Array.isArray(data.profile)) {
+    const profileCopy = Object.assign({}, data.profile);
+    delete profileCopy._localPreview;
+    if (typeof profileCopy.posts === "number") profileCopy.posts = cleanPosts.length;
+    if (newProfilePhotoUrl) profileCopy.photo = newProfilePhotoUrl;
+    data.profile = profileCopy;
+  }
   try {
-    const res = await fetch("/api/save", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ account: currentAccount, posts: cleanPosts, profile_photo: newProfilePhotoUrl }),
-    });
-    const data = await res.json();
-    if (data.ok) {
-      if (newProfilePhotoUrl && profile) {
-        profile.photo = newProfilePhotoUrl;
-      }
-      newProfilePhotoUrl = "";
-      markClean("saved");
-    } else {
-      statusEl.textContent = "save failed: " + data.error;
-      statusEl.className = "dirty";
+    // 2-space indent — matches how all four account jsons are already formatted.
+    // Using anything else reformats the whole file on every save and buries the
+    // real change under hundreds of whitespace-only diff lines.
+    const jsonContent = JSON.stringify(data, null, 2) + "\n";
+    await apiWrite(accountJsonPath(currentAccount), { content: jsonContent });
+    const [wrapperDataPath, wrapperDistPath] = wrapperPaths(currentAccount);
+    const wrapper = wrapperContent(currentAccount, data);
+    await apiWrite(wrapperDataPath, { content: wrapper });
+    await apiWrite(wrapperDistPath, { content: wrapper });
+    currentData = data;
+    if (profile) {
+      delete profile._localPreview;
+      if (newProfilePhotoUrl) profile.photo = newProfilePhotoUrl;
     }
+    newProfilePhotoUrl = "";
+    markClean("saved");
   } catch (e) {
-    statusEl.textContent = "save failed: " + e;
+    statusEl.textContent = "save failed: " + e.message;
     statusEl.className = "dirty";
   }
 });
 
 document.getElementById("publishBtn").addEventListener("click", async () => {
   statusEl.textContent = "publishing…";
+  const message = "content(mySocials): update posts via local editor";
   try {
-    const res = await fetch("/api/publish", { method: "POST" });
-    const data = await res.json();
+    const cdnResult = await apiGit(
+      "/git/front-assets-cdn",
+      message,
+      ["b-Media/mySocials/static/media"]
+    );
+    const frontResult = await apiGit(
+      "/git/front",
+      message,
+      ["b-Media/mySocials/src/data", "b-Media/mySocials/dist"]
+    );
     logEl.style.display = "block";
-    logEl.textContent = data.log || data.error || "";
-    statusEl.textContent = data.ok ? "published" : "publish failed";
-    statusEl.className = data.ok ? "" : "dirty";
+    logEl.textContent = (cdnResult.log || "") + "\n\n" + (frontResult.log || "");
+    statusEl.textContent = "published";
+    statusEl.className = "";
   } catch (e) {
-    statusEl.textContent = "publish failed: " + e;
+    logEl.style.display = "block";
+    logEl.textContent = e.message;
+    statusEl.textContent = "publish failed: " + e.message;
     statusEl.className = "dirty";
   }
 });

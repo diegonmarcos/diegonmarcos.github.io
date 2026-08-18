@@ -110,10 +110,10 @@
 .toolbar-action {
     position: absolute;
     // Paired plain-px + token declarations, same reasoning as .content's
-    // padding — these tops MUST degrade to the same 36px baseline .content
+    // padding — these tops MUST degrade to the same 44px baseline .content
     // reserves for, or the band and the content it clears disagree.
-    top: 36px;
-    top: var(--chrome-band-top, 36px);
+    top: 44px;
+    top: var(--chrome-band-top, 44px);
     width: 48px;
     height: 48px;
     height: var(--chrome-band-height, 48px);
@@ -179,8 +179,8 @@
 // mock now-playing content (same "real markup, mocked data" treatment as
 // the status-strip's device stats).
 .music-island {
-    top: 36px;
-    top: var(--chrome-band-top, 36px);
+    top: 44px;
+    top: var(--chrome-band-top, 44px);
     width: 90px;
     height: 16px;
     @include flex-row(flex-start, center, 4px);
@@ -227,11 +227,11 @@
 }
 
 // Centered in the same 56dp band the icons/music-island anchor to
-// (top:36px + (56px - 22px)/2 ≈ 53px) — sits just below music-island
-// (36-52px) without overlapping it.
+// (top:44px + (56px - 22px)/2 ≈ 61px) — sits just below music-island
+// (44-60px) without overlapping it.
 .dynamic-island {
-    top: 53px;
-    top: calc(var(--chrome-band-top, 36px) + 17px);
+    top: 61px;
+    top: calc(var(--chrome-band-top, 44px) + 17px);
     width: 100%;
     max-width: 120px;
     height: 22px;

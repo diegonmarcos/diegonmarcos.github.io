@@ -400,9 +400,11 @@ function stackBody(cards, rel) {
 
 // ── Apps|Admin tab strip + body, for Communication/Infos/Tools ──────────
 function modeTabsHtml(sectionId, active) {
-  return `<div class="page-tabs" role="tablist">
+  return `<div class="page-tabs-bar">
+                <div class="page-tabs" role="tablist">
                 <a class="page-tabs__item${active === 'apps' ? ' is-active' : ''}" href="${routeHref([sectionId])}">Apps</a>
                 <a class="page-tabs__item${active === 'admin' ? ' is-active' : ''}" href="${routeHref([sectionId, 'admin'])}">Admin</a>
+                </div>
             </div>`;
 }
 // Icons first: the real app opens every Apps/Admin tab on the mode's own
@@ -475,8 +477,10 @@ function pageTabsHtml(pages, sectionId, activeId, rel) {
       ? `<a class="page-tabs__item${active}" href="${href}">${label}</a>`
       : `<span class="page-tabs__item page-tabs__item--inert" aria-disabled="true">${label}</span>`;
   }).join('\n                ');
-  return `<div class="page-tabs" role="tablist">
+  return `<div class="page-tabs-bar">
+                <div class="page-tabs" role="tablist">
                 ${items}
+                </div>
             </div>`;
 }
 
@@ -951,9 +955,11 @@ for (const id of ['communication', 'infos', 'tools']) {
   const s = sections.suite;
   const rel1 = relPrefix(1);
   const rel3 = relPrefix(3);
-  const cloudPhoneTabs = (mode, active, rel) => `<div class="page-tabs" role="tablist">
+  const cloudPhoneTabs = (mode, active, rel) => `<div class="page-tabs-bar">
+                <div class="page-tabs" role="tablist">
                 <a class="page-tabs__item${active === 'cloud' ? ' is-active' : ''}" href="${routeHref(['suite', 'cloud', mode])}">Cloud</a>
                 <a class="page-tabs__item${active === 'phone' ? ' is-active' : ''}" href="${routeHref(['suite', 'phone', mode])}">Phone</a>
+                </div>
             </div>`;
 
   write(['suite'], s.label, 'suite',

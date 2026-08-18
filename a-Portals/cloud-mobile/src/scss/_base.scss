@@ -99,10 +99,15 @@ a {
     // and every consumption site passes a pixel fallback (see the paired
     // plain-px declarations in app/_content.scss and launcher/_islands.scss).
     --safe-area-top: env(safe-area-inset-top, 0px);
-    --chrome-band-top: calc(env(safe-area-inset-top, 0px) + 36px);
+    // 44px, not 36px: the status strip closes with its hairline at ~35px
+    // (4px top padding + chips row + 2px gap + clock row + the 1px rule), so
+    // a 36px band top parked the toolbar icons directly ON that hairline.
+    // 44px leaves the ~8px of breathing room the real app's toolbar has
+    // below the system status bar.
+    --chrome-band-top: calc(env(safe-area-inset-top, 0px) + 44px);
     --chrome-band-height: 48px; // .icon-btn / .toolbar-action, the tallest members of the band
-    // 36px band top + 48px band height + 12px gap.
-    --content-top: calc(env(safe-area-inset-top, 0px) + 96px);
+    // 44px band top + 48px band height + 12px gap.
+    --content-top: calc(env(safe-area-inset-top, 0px) + 104px);
 
     position: relative;
     display: flex;
@@ -130,10 +135,10 @@ a {
 // which is what the Android app gets for free by laying content out below
 // an opaque app bar rather than under a transparent one.
 //
-// Exactly the band: 0 → --chrome-band-top (36px) + --chrome-band-height
-// (48px) = 84px, plus the notch inset. Paired plain-px + env() declarations
+// Exactly the band: 0 → --chrome-band-top (44px) + --chrome-band-height
+// (48px) = 92px, plus the notch inset. Paired plain-px + env() declarations
 // per this file's FLATTENED ON PURPOSE note, so a browser that drops the
-// env() line at parse time still masks the full 84px.
+// env() line at parse time still masks the full 92px.
 //
 // z-index 2 threads the existing stack: above .content (1) so scrolled rows
 // are covered, below the stars (5) and the toolbar/status islands (10/11)
@@ -152,8 +157,8 @@ a {
     top: 0;
     left: 0;
     right: 0;
-    height: 84px;
-    height: calc(env(safe-area-inset-top, 0px) + 84px);
+    height: 92px;
+    height: calc(env(safe-area-inset-top, 0px) + 92px);
     z-index: 2;
     pointer-events: none;
     background: var(--gradient-top);

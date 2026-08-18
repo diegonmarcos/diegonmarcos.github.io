@@ -5,11 +5,11 @@
 // ==========================================================================
 
 // ── Status strip — LauncherStatusStripView, flush at the very top ──────
-// One row: the two widget clusters flanking the live clock, then a 1px
-// hairline underneath, exactly like the app. An earlier version drew a
-// black punch-hole "camera" circle in the middle column and pushed the
-// clock onto a second row below — both invented, the real strip has
-// neither.
+// Chips row with a drawn punch-hole camera dot centered between the
+// clusters (the real device shows the physical camera through the cutout;
+// the web replica has no camera there, so it must be drawn to read as a
+// Samsung punch-hole), then a second row for the live clock, then a 1px
+// hairline underneath.
 .status-strip {
     position: absolute;
     top: 0;
@@ -49,6 +49,17 @@
     justify-content: flex-end;
 }
 
+// Punch-hole camera dot — centered column of the chips row, between the
+// clusters. Sized like a real Samsung cutout, not a decorative blob.
+.status-strip__camera {
+    justify-self: center;
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    background: #000;
+    box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.08);
+}
+
 .status-strip__chip {
     white-space: nowrap;
     padding: 0 3px;
@@ -61,10 +72,15 @@
     color: #fff;
 }
 
-// Center column of the same row as the clusters — the app renders the clock
-// inline in the strip, not on a row of its own.
+// Second row, centered below the chips — the clock sits under the camera
+// dot, not inline with the clusters. Overrides the grid layout above with
+// a plain centered flex row since there are no left/right clusters here.
+.status-strip__row--clock {
+    display: flex;
+    justify-content: center;
+}
+
 .status-strip__clock {
-    justify-self: center;
     font-family: monospace;
     font-size: 12px;
     font-weight: 700;

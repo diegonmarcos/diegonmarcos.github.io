@@ -712,8 +712,11 @@ function statusStripHtml() {
   return `<div class="status-strip">
             <div class="status-strip__row">
                 <div class="status-strip__cluster status-strip__cluster--left">${left}</div>
-                <button class="status-strip__clock" id="status-clock" type="button" aria-label="Calendar">--:--</button>
+                <span class="status-strip__camera" aria-hidden="true"></span>
                 <div class="status-strip__cluster status-strip__cluster--right">${right}</div>
+            </div>
+            <div class="status-strip__row status-strip__row--clock">
+                <button class="status-strip__clock" id="status-clock" type="button" aria-label="Calendar">--:--</button>
             </div>
             <div class="status-strip__hairline" aria-hidden="true"></div>
         </div>`;

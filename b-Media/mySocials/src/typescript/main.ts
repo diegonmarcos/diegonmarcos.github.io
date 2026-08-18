@@ -1525,7 +1525,8 @@ function renderMySocials(): void {
   const headline = li?.profile.headline || '';
   const location = li?.profile.location || '';
   const bio = ig?.profile.bio || '';
-  const photo = li?.profile.photo || ig?.profile.photo;
+  // Index avatar = the ig2 Instagram profile picture, LinkedIn only as fallback.
+  const photo = ig?.profile.photo || li?.profile.photo;
 
   // Real post thumbnails for IG hub cards
   const ig0 = g['ig0-diegocnmarcos_'] as IGData | undefined;

@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>mySocials — local post editor</title>
+<style>
+  :root {
+    --bg: #0a0c14;
+    --fg: #e4e6eb;
+    --card: #171a24;
+    --border: #262b3b;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--fg);
+    font-family: system-ui, sans-serif;
+  }
+  #topbar {
+    position: sticky;
+    top: 0;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 14px;
+    background: var(--card);
+    border-bottom: 1px solid var(--border);
+    z-index: 10;
+  }
+  select, button, input, textarea {
+    background: var(--bg);
+    color: var(--fg);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 6px 8px;
+    font-family: inherit;
+    font-size: 13px;
+  }
+  button {
+    cursor: pointer;
+  }
+  button:hover { border-color: #4a5170; }
+  #status { margin-left: auto; opacity: 0.8; font-size: 13px; }
+  #status.dirty { color: #f0b429; }
+  #posts {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 14px;
+  }
+  .card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 10px;
+    display: flex;
+    gap: 12px;
+  }
+  .thumb {
+    width: 120px;
+    height: 120px;
+    object-fit: cover;
+    border-radius: 8px;
+    background: #0e1017;
+    flex: none;
+    border: 1px solid var(--border);
+  }
+  .fields {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+  .fields label {
+    font-size: 11px;
+    opacity: 0.65;
+    display: block;
+    margin-bottom: 2px;
+  }
+  .fields textarea {
+    width: 100%;
+    min-height: 50px;
+    resize: vertical;
+  }
+  .fields input[type="text"] {
+    width: 100%;
+  }
+  .row {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    flex-wrap: wrap;
+  }
+  .row > div { flex: 1; min-width: 140px; }
+  .card-actions {
+    display: flex;
+    gap: 6px;
+    flex: none;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+  #profileCard {
+    margin: 14px 14px 0 14px;
+  }
+  #profileCard .fields {
+    justify-content: center;
+  }
+  #profileName {
+    font-size: 13px;
+    opacity: 0.85;
+  }
+  #log {
+    margin: 14px;
+    padding: 10px;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    white-space: pre-wrap;
+    font-size: 12px;
+    max-height: 300px;
+    overflow: auto;
+  }
+</style>
+</head>
+<body>
+<div id="topbar">
+  <select id="accountSelect"></select>
+  <button id="addBtn">Add post</button>
+  <button id="saveBtn">Save</button>
+  <button id="publishBtn">Publish</button>
+  <span id="status">loading…</span>
+</div>
+<div id="profileCard" class="card">
+  <img id="profileThumb" class="thumb" src="" alt="">
+  <div class="fields">
+    <label>account</label>
+    <div id="profileName">—</div>
+    <label>replace profile photo</label>
+    <input id="profileFileInput" type="file" accept="image/*">
+  </div>
+</div>
+<div id="posts"></div>
+<pre id="log" style="display:none;"></pre>
+
+<script>
+let currentAccount = null;
+let currentSchema = null;
+let posts = [];
+let dirty = false;
+let profile = null;
+let newProfilePhotoUrl = "";
+
+const postsEl = document.getElementById("posts");
+const statusEl = document.getElementById("status");
+const accountSelect = document.getElementById("accountSelect");
+const logEl = document.getElementById("log");
+const profileThumbEl = document.getElementById("profileThumb");
+const profileNameEl = document.getElementById("profileName");
+const profileFileInputEl = document.getElementById("profileFileInput");
+
+const SCHEMA_FIELDS = {
+  ig: [
+    { key: "id", label: "id", type: "input" },
+    { key: "caption", label: "caption", type: "textarea" },
+    { key: "time", label: "time (unix seconds)", type: "input" },
+    { key: "location", label: "location", type: "input" },
+  ],
+  fb: [
+    { key: "content", label: "content", type: "textarea" },
+    { key: "timestamp", label: "timestamp", type: "input" },
+    { key: "album", label: "album", type: "input" },
+  ],
+};
+
+function emptyPost(schema) {
+  if (schema === "ig") {
+    return { id: "", media: "", caption: "", media_all: [], time: "", location: "" };
+  }
+  return { timestamp: "", content: "", media: [], album: "" };
+}
+
+function markDirty() {
+  dirty = true;
+  statusEl.textContent = "unsaved changes";
+  statusEl.className = "dirty";
+}
+
+function markClean(msg) {
+  dirty = false;
+  statusEl.textContent = msg || "up to date";
+  statusEl.className = "";
+}
+
+window.addEventListener("beforeunload", (e) => {
+  if (dirty) {
+    e.preventDefault();
+    e.returnValue = "";
+  }
+});
+
+function thumbSrc(post) {
+  if (currentSchema === "ig") {
+    return post._localPreview || post.media || "";
+  }
+  return post._localPreview || (Array.isArray(post.media) ? post.media[0] : "") || "";
+}
+
+function render() {
+  postsEl.innerHTML = "";
+  const fields = SCHEMA_FIELDS[currentSchema];
+  posts.forEach((post, idx) => {
+    const card = document.createElement("div");
+    card.className = "card";
+
+    const img = document.createElement("img");
+    img.className = "thumb";
+    img.src = thumbSrc(post);
+    img.onerror = () => { img.style.opacity = "0.3"; };
+    card.appendChild(img);
+
+    const fieldsWrap = document.createElement("div");
+    fieldsWrap.className = "fields";
+
+    const row = document.createElement("div");
+    row.className = "row";
+    fields.forEach((f) => {
+      const wrap = document.createElement("div");
+      const label = document.createElement("label");
+      label.textContent = f.label;
+      wrap.appendChild(label);
+      let input;
+      if (f.type === "textarea") {
+        input = document.createElement("textarea");
+      } else {
+        input = document.createElement("input");
+        input.type = "text";
+      }
+      input.value = post[f.key] ?? "";
+      input.addEventListener("input", () => {
+        post[f.key] = input.value;
+        markDirty();
+      });
+      wrap.appendChild(input);
+      if (f.type === "textarea") {
+        fieldsWrap.appendChild(wrap);
+      } else {
+        row.appendChild(wrap);
+      }
+    });
+    fieldsWrap.appendChild(row);
+
+    const fileWrap = document.createElement("div");
+    const fileLabel = document.createElement("label");
+    fileLabel.textContent = "replace image";
+    fileWrap.appendChild(fileLabel);
+    const fileInput = document.createElement("input");
+    fileInput.type = "file";
+    fileInput.accept = "image/*";
+    fileInput.addEventListener("change", () => onImageChange(fileInput, post, img));
+    fileWrap.appendChild(fileInput);
+    fieldsWrap.appendChild(fileWrap);
+
+    card.appendChild(fieldsWrap);
+
+    const actions = document.createElement("div");
+    actions.className = "card-actions";
+    const removeBtn = document.createElement("button");
+    removeBtn.textContent = "Remove";
+    removeBtn.addEventListener("click", () => {
+      if (confirm("Remove this post?")) {
+        posts.splice(idx, 1);
+        markDirty();
+        render();
+      }
+    });
+    actions.appendChild(removeBtn);
+    card.appendChild(actions);
+
+    postsEl.appendChild(card);
+  });
+}
+
+function renderProfile() {
+  const photo = newProfilePhotoUrl && profile && profile._localPreview
+    ? profile._localPreview
+    : (profile && profile.photo) || "";
+  profileThumbEl.src = photo;
+  const name = (profile && (profile.username || profile.name)) || "";
+  profileNameEl.textContent = name || "—";
+}
+
+function onProfileImageChange() {
+  const file = profileFileInputEl.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = async () => {
+    const dataUrl = reader.result;
+    const b64 = dataUrl.substring(dataUrl.indexOf(",") + 1);
+    try {
+      const res = await fetch("/api/image", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ account: currentAccount, filename: file.name, b64, kind: "profile" }),
+      });
+      const data = await res.json();
+      if (!data.ok) {
+        alert("Upload failed: " + data.error);
+        return;
+      }
+      newProfilePhotoUrl = data.url;
+      if (profile) profile._localPreview = data.local;
+      profileThumbEl.src = data.local;
+      markDirty();
+    } catch (e) {
+      alert("Upload failed: " + e);
+    }
+  };
+  reader.readAsDataURL(file);
+}
+profileFileInputEl.addEventListener("change", onProfileImageChange);
+
+function onImageChange(fileInput, post, imgEl) {
+  const file = fileInput.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = async () => {
+    const dataUrl = reader.result;
+    const b64 = dataUrl.substring(dataUrl.indexOf(",") + 1);
+    try {
+      const res = await fetch("/api/image", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ account: currentAccount, filename: file.name, b64 }),
+      });
+      const data = await res.json();
+      if (!data.ok) {
+        alert("Upload failed: " + data.error);
+        return;
+      }
+      if (currentSchema === "ig") {
+        post.media = data.url;
+        post.media_all = [data.url];
+      } else {
+        post.media = [data.url];
+      }
+      post._localPreview = data.local;
+      imgEl.src = data.local;
+      markDirty();
+    } catch (e) {
+      alert("Upload failed: " + e);
+    }
+  };
+  reader.readAsDataURL(file);
+}
+
+async function loadAccounts() {
+  const res = await fetch("/api/accounts");
+  const accounts = await res.json();
+  accountSelect.innerHTML = "";
+  accounts.forEach((a) => {
+    const opt = document.createElement("option");
+    opt.value = a.key;
+    opt.dataset.schema = a.schema;
+    opt.textContent = a.key;
+    accountSelect.appendChild(opt);
+  });
+  if (accounts.length) {
+    await loadAccount(accounts[0].key, accounts[0].schema);
+  }
+}
+
+async function loadAccount(key, schema) {
+  if (dirty && !confirm("You have unsaved changes. Discard them?")) {
+    accountSelect.value = currentAccount;
+    return;
+  }
+  currentAccount = key;
+  currentSchema = schema;
+  const res = await fetch("/api/data?account=" + encodeURIComponent(key));
+  const data = await res.json();
+  posts = data.posts || [];
+  profile = data.profile || null;
+  newProfilePhotoUrl = "";
+  markClean("loaded " + key);
+  render();
+  renderProfile();
+}
+
+accountSelect.addEventListener("change", () => {
+  const opt = accountSelect.selectedOptions[0];
+  loadAccount(opt.value, opt.dataset.schema);
+});
+
+document.getElementById("addBtn").addEventListener("click", () => {
+  posts.push(emptyPost(currentSchema));
+  markDirty();
+  render();
+});
+
+document.getElementById("saveBtn").addEventListener("click", async () => {
+  statusEl.textContent = "saving…";
+  const cleanPosts = posts.map((p) => {
+    const copy = Object.assign({}, p);
+    delete copy._localPreview;
+    return copy;
+  });
+  try {
+    const res = await fetch("/api/save", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ account: currentAccount, posts: cleanPosts, profile_photo: newProfilePhotoUrl }),
+    });
+    const data = await res.json();
+    if (data.ok) {
+      if (newProfilePhotoUrl && profile) {
+        profile.photo = newProfilePhotoUrl;
+      }
+      newProfilePhotoUrl = "";
+      markClean("saved");
+    } else {
+      statusEl.textContent = "save failed: " + data.error;
+      statusEl.className = "dirty";
+    }
+  } catch (e) {
+    statusEl.textContent = "save failed: " + e;
+    statusEl.className = "dirty";
+  }
+});
+
+document.getElementById("publishBtn").addEventListener("click", async () => {
+  statusEl.textContent = "publishing…";
+  try {
+    const res = await fetch("/api/publish", { method: "POST" });
+    const data = await res.json();
+    logEl.style.display = "block";
+    logEl.textContent = data.log || data.error || "";
+    statusEl.textContent = data.ok ? "published" : "publish failed";
+    statusEl.className = data.ok ? "" : "dirty";
+  } catch (e) {
+    statusEl.textContent = "publish failed: " + e;
+    statusEl.className = "dirty";
+  }
+});
+
+loadAccounts();
+</script>
+</body>
+</html>

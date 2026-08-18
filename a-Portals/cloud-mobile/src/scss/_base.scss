@@ -119,6 +119,47 @@ a {
     }
 }
 
+// ── Top chrome band mask ────────────────────────────────────────────────
+// The islands float over the shell gradient with no background of their own
+// (see launcher/_islands.scss), so anything that ends up inside the band —
+// a page's .page-tabs pill row, a long page scrolled far enough that a row
+// creeps above the scrollport edge, any future layout slip — shows THROUGH
+// the toolbar icons. .content's margin-top (app/_content.scss) prevents the
+// common case, but only as long as every offset resolves correctly; this
+// opaque layer makes the failure invisible instead of merely unlikely,
+// which is what the Android app gets for free by laying content out below
+// an opaque app bar rather than under a transparent one.
+//
+// Exactly the band: 0 → --chrome-band-top (36px) + --chrome-band-height
+// (48px) = 84px, plus the notch inset. Paired plain-px + env() declarations
+// per this file's FLATTENED ON PURPOSE note, so a browser that drops the
+// env() line at parse time still masks the full 84px.
+//
+// z-index 2 threads the existing stack: above .content (1) so scrolled rows
+// are covered, below the stars (5) and the toolbar/status islands (10/11)
+// so the chrome itself still paints on top. The stars never reach up here
+// anyway — sirius sits at top:50%, centauri at 75% - 45px, canopus at
+// bottom:90px, and all three are home-only.
+//
+// .shell is a flex column, but position:absolute takes this out of the flex
+// flow, so it adds no track. The fill is the shell's own gradient scaled to
+// the shell's own height, so the band shows the identical top slice and the
+// seam at its bottom edge is invisible; the flat --gradient-top ahead of it
+// covers browsers without dvh units.
+.shell::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 84px;
+    height: calc(env(safe-area-inset-top, 0px) + 84px);
+    z-index: 2;
+    pointer-events: none;
+    background: var(--gradient-top);
+    background: linear-gradient(to bottom, var(--gradient-top), var(--gradient-mid), var(--gradient-bottom)) top / 100% 100dvh no-repeat;
+}
+
 // ── Reduced motion ───────────────────────────────────────────────────────
 // Neutralizes the animation-tokens additions (see _variables.scss's
 // --duration-*/--ease-*/--scale-press): the tile press bounce collapses to

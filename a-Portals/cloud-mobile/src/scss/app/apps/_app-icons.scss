@@ -50,6 +50,28 @@
     }
 }
 
+// Quickmarks rows (the merged suite/phone page's pinned groups) are SEVEN
+// per row, not the drawer's six — SuitePhoneAppsFragment gives the pinned
+// strip columns+1. Their grids deliberately drop .tile-grid--dense: dense is
+// an auto-fill minmax(72px) template of equal specificity that loads AFTER
+// this file (launcher/_content-blocks.scss), so it won the cascade and the
+// row count came out as "however many 72px cells fit" rather than a fixed
+// number. This variant is emitted alongside .tile-grid--phone and, being
+// later in this same file, wins its 6-column template.
+.tile-grid--quickmarks {
+    grid-template-columns: repeat(7, minmax(0, 1fr));
+    // 7 cells at the 480px phone width leaves ~60px a side — tighter gutter
+    // than the 6-up drawer so the 40px squircle still breathes.
+    gap: 4px;
+}
+
+// Specificity tie with _tiles.scss's .tile-grid.tile-grid--phone .tile__label
+// (which re-inflates the label to clamp(9px, 2.4vw, 13px) ≈ 11.5px at 480px,
+// too wide for a 60px cell); this file loads later, so 9px wins.
+.tile-grid.tile-grid--quickmarks .tile__label {
+    font-size: 9px;
+}
+
 // Smart Folder group header (Dev / Stores / Usage / Rank) — the small
 // grouping label PhoneSmartFolders files each rule under, one step quieter
 // than the folder titles it heads.

@@ -170,12 +170,16 @@ function topicalFoldersBody(apps, phoneFolders, rel) {
 // :117 skips groups whose packages all resolve to nothing so the layout
 // never carries a dead header. subhead() (:274-279) is the same 16sp #E9D8FD
 // section title the folder sections use — .phone-folders__subhead here.
+// The grids carry .tile-grid--quickmarks, NOT the shared .tile-grid--dense:
+// dense is an auto-fill template and, loading later than _app-icons.scss at
+// equal specificity, it beat the fixed column count these rows need. The
+// quickmarks variant pins the seven-per-row template (see _app-icons.scss).
 function phoneMergedBody(rel) {
   const pinnedGroups = phoneGroupsFromMockData(true).filter((g) => g.apps.length);
   return `<h2 class="stack-divider">Quickmarks</h2>
             <section class="phone-folders">
             ${pinnedGroups.map((g) => `<h3 class="phone-folders__subhead">${g.title}</h3>
-            <div class="tile-grid tile-grid--dense tile-grid--phone" role="list">
+            <div class="tile-grid tile-grid--quickmarks tile-grid--phone" role="list">
                 ${g.apps.map((a) => avatarTileHtml(a.name, rel, null)).join('\n                ')}
             </div>`).join('\n            ')}
             </section>

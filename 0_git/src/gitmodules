@@ -1,4 +1,6 @@
-[submodule "tools"]
-	path = II_tools
-	url = git@github.com:diegonmarcos/ops-Tooling.git
-	shallow = true
+# Intentionally empty — front has NO submodules.
+# 2026-08-18: the [submodule "tools"] block (path II_tools, url ops-Tooling.git)
+# was removed: doubly stale — ops-Tooling was renamed tools years ago and is now
+# cloud-mykonsole-dtk; the II_tools checkout was deleted. The ship engine
+# reconciles declaratively against this file, so re-adding a section here
+# resurrects a submodule on the next ship.

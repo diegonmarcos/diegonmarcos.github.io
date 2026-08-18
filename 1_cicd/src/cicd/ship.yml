@@ -6,6 +6,10 @@ permissions:
   contents: write
   pages: write
   id-token: write
+# Pages deployments 400 when bursts race; queue them instead of cancelling.
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
 jobs:
   build:
     runs-on: ubuntu-latest

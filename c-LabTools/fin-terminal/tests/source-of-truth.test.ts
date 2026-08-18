@@ -4,10 +4,10 @@ import { resolve } from 'node:path';
 
 // Diff guard — fails when our local copy diverges from the fin-api source-of-truth.
 // If this fails, the egui side changed; reconcile by re-copying:
-//   cp ~/git/cloud/a_solutions/ac-fin_fin-api/src/code/screen-specs.json src/typescript/data/screen-specs.json
-//   cp ~/git/cloud/a_solutions/ac-fin_fin-api/src/code/assets/themes/dark.json src/typescript/data/palette-egui-dark.json
+//   cp ~/git/cloud-infra/a_solutions/ac-fin_fin-api/src/code/screen-specs.json src/typescript/data/screen-specs.json
+//   cp ~/git/cloud-infra/a_solutions/ac-fin_fin-api/src/code/assets/themes/dark.json src/typescript/data/palette-egui-dark.json
 
-const FIN_API_ROOT = resolve(process.env['FIN_API_ROOT'] ?? `${process.env['HOME']}/git/cloud/a_solutions/ac-fin_fin-api/src/code`);
+const FIN_API_ROOT = resolve(process.env['FIN_API_ROOT'] ?? `${process.env['HOME']}/git/cloud-infra/a_solutions/ac-fin_fin-api/src/code`);
 
 const PAIRS: Array<{ local: string; upstream: string; label: string }> = [
   {

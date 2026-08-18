@@ -1,5 +1,5 @@
 // Wire-level types for the fin-api REST + WebSocket surface.
-// Source of truth: ~/git/cloud/a_solutions/ac-fin_fin-api/src/code/crates/server/src/
+// Source of truth: ~/git/cloud-infra/a_solutions/ac-fin_fin-api/src/code/crates/server/src/
 
 export type ISO = string;
 

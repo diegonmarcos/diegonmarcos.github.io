@@ -91,5 +91,5 @@ The `_source` field on each document records provenance.
 1. Replace placeholder assets with the user's real (encrypted) scans.
 2. Wire EUDI-wallet selective-disclosure flows (W3C VC + ZK proofs).
 3. Add a "share bundle" view: pick docs → generate signed JWT envelope → recipient verifies.
-4. Plug into `~/git/vault` for live secret retrieval (sops-encrypted asset paths).
+4. Plug into `~/git/cloud-vault` for live secret retrieval (sops-encrypted asset paths).
 5. Reverse-link to mail-puller / financial APIs for live status (e.g. expiring docs alert).

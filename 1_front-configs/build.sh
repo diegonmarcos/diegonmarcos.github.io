@@ -340,7 +340,7 @@ step_derive() {
   # Symlinked into src_vue/src/data/ and linktree/src/data/ for Vite static import.
   # The cloud repo renamed its emitter module 1_front-configs → 1_cloud-configs.
   local cloud_dist_url="https://raw.githubusercontent.com/diegonmarcos/cloud/main/1_cloud-configs/dist"
-  local cloud_dist_local="$HOME/git/cloud/1_cloud-configs/dist"
+  local cloud_dist_local="$HOME/git/cloud-infra/1_cloud-configs/dist"
   for json_file in cloud-fleet-declared.json cloud-fleet-containers-declared.json _cloud-data-consolidated.json; do
     if [ -f "$cloud_dist_local/$json_file" ]; then
       cp "$cloud_dist_local/$json_file" "$DIST/$json_file"

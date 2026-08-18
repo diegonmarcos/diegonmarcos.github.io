@@ -5218,7 +5218,7 @@
         "slide": "projects",
         "column": "AI & IDE",
         "label": "my-ai",
-        "url": "https://github.com/diegonmarcos/unix/tree/main/da_my-ai",
+        "url": "https://github.com/diegonmarcos/cloud-unix/tree/main/da_my-ai",
         "icon": "brain.svg"
       },
       {
@@ -5226,7 +5226,7 @@
         "slide": "projects",
         "column": "AI & IDE",
         "label": "my-konsole",
-        "url": "https://github.com/diegonmarcos/unix/tree/main/da_my-konsole",
+        "url": "https://github.com/diegonmarcos/cloud-unix/tree/main/da_my-konsole",
         "icon": "device-desktop.svg"
       },
       {
@@ -5626,7 +5626,7 @@
         "slide": "projects",
         "column": "BOOT MANAGER",
         "label": "ReFind",
-        "url": "https://github.com/diegonmarcos/unix/tree/main/aa_bootloader",
+        "url": "https://github.com/diegonmarcos/cloud-unix/tree/main/aa_bootloader",
         "icon": "bolt.svg"
       },
       {
@@ -5634,7 +5634,7 @@
         "slide": "projects",
         "column": "BOOT MANAGER",
         "label": "NixOS",
-        "url": "https://github.com/diegonmarcos/unix/tree/main/aa_desk-usr_x86_surface-linux_nixos",
+        "url": "https://github.com/diegonmarcos/cloud-unix/tree/main/aa_desk-usr_x86_surface-linux_nixos",
         "icon": "world.svg"
       },
       {
@@ -5642,7 +5642,7 @@
         "slide": "projects",
         "column": "BOOT MANAGER",
         "label": "KDE Plasma",
-        "url": "https://github.com/diegonmarcos/unix/tree/main/ea_cloud-superapp/libs/kde-connect",
+        "url": "https://github.com/diegonmarcos/cloud-unix/tree/main/ea_cloud-superapp/libs/kde-connect",
         "icon": "settings.svg"
       },
       {
@@ -5650,7 +5650,7 @@
         "slide": "projects",
         "column": "BOOT MANAGER",
         "label": "Kali Linux",
-        "url": "https://github.com/diegonmarcos/unix/tree/main/ab_desk-security_x86_kali-linux_kali",
+        "url": "https://github.com/diegonmarcos/cloud-unix/tree/main/ab_desk-security_x86_kali-linux_kali",
         "icon": "bolt.svg"
       },
       {
@@ -5658,7 +5658,7 @@
         "slide": "projects",
         "column": "BOOT MANAGER",
         "label": "NixSlim",
-        "url": "https://github.com/diegonmarcos/unix/tree/main/ca_ventoy_fallback_usb/debian-slim-surface_fallback_usb",
+        "url": "https://github.com/diegonmarcos/cloud-unix/tree/main/ca_ventoy_fallback_usb/debian-slim-surface_fallback_usb",
         "icon": "settings.svg"
       },
       {
@@ -5666,7 +5666,7 @@
         "slide": "projects",
         "column": "OS FLAKES",
         "label": "OS Flakes",
-        "url": "https://github.com/diegonmarcos/unix/tree/main/ba_flakes_desktop",
+        "url": "https://github.com/diegonmarcos/cloud-unix/tree/main/ba_flakes_desktop",
         "icon": "world.svg"
       },
       {
@@ -5674,7 +5674,7 @@
         "slide": "projects",
         "column": "OS FLAKES",
         "label": "System Protection",
-        "url": "https://github.com/diegonmarcos/unix/tree/main/ba_flakes_desktop",
+        "url": "https://github.com/diegonmarcos/cloud-unix/tree/main/ba_flakes_desktop",
         "icon": "lock.svg"
       },
       {
@@ -5682,7 +5682,7 @@
         "slide": "projects",
         "column": "OS FLAKES",
         "label": "Watchdog",
-        "url": "https://github.com/diegonmarcos/unix/tree/main/_aba_cloud-servers-x/B1_vm-pilot-watchdog",
+        "url": "https://github.com/diegonmarcos/cloud-unix/tree/main/_aba_cloud-servers-x/B1_vm-pilot-watchdog",
         "icon": "bolt.svg"
       },
       {
@@ -5690,7 +5690,7 @@
         "slide": "projects",
         "column": "HM FLAKES",
         "label": "HM Flakes",
-        "url": "https://github.com/diegonmarcos/unix/tree/main/bb_flakes_termux",
+        "url": "https://github.com/diegonmarcos/cloud-unix/tree/main/bb_flakes_termux",
         "icon": "settings.svg"
       },
       {
@@ -5698,7 +5698,7 @@
         "slide": "projects",
         "column": "HM FLAKES",
         "label": "CI/CD",
-        "url": "https://github.com/diegonmarcos/unix/tree/main/1_cicd/src/cicd",
+        "url": "https://github.com/diegonmarcos/cloud-unix/tree/main/1_cicd/src/cicd",
         "icon": "git-branch.svg"
       },
       {
@@ -5706,7 +5706,7 @@
         "slide": "projects",
         "column": "HM FLAKES",
         "label": "VM Pilot",
-        "url": "https://github.com/diegonmarcos/unix/tree/main/_aba_cloud-servers-x",
+        "url": "https://github.com/diegonmarcos/cloud-unix/tree/main/_aba_cloud-servers-x",
         "icon": "device-desktop.svg"
       },
       {
@@ -5714,7 +5714,7 @@
         "slide": "projects",
         "column": "UNIX BIN",
         "label": "Unix Bin",
-        "url": "https://github.com/diegonmarcos/unix/tree/main/ca_containers_user",
+        "url": "https://github.com/diegonmarcos/cloud-unix/tree/main/ca_containers_user",
         "icon": "git-branch.svg"
       },
       {
@@ -5722,7 +5722,7 @@
         "slide": "projects",
         "column": "UNIX BIN",
         "label": "myAI",
-        "url": "https://github.com/diegonmarcos/unix/tree/main/da_my-ai",
+        "url": "https://github.com/diegonmarcos/cloud-unix/tree/main/da_my-ai",
         "icon": "brain.svg"
       },
       {
@@ -5730,7 +5730,7 @@
         "slide": "projects",
         "column": "UNIX BIN",
         "label": "myBrowser",
-        "url": "https://github.com/diegonmarcos/unix/tree/main/da_my-browser-qute",
+        "url": "https://github.com/diegonmarcos/cloud-unix/tree/main/da_my-browser-qute",
         "icon": "world.svg"
       },
       {
@@ -5738,7 +5738,7 @@
         "slide": "projects",
         "column": "UNIX BIN",
         "label": "myKonsole",
-        "url": "https://github.com/diegonmarcos/unix/tree/main/da_my-konsole",
+        "url": "https://github.com/diegonmarcos/cloud-unix/tree/main/da_my-konsole",
         "icon": "device-desktop.svg"
       },
       {
@@ -5746,7 +5746,7 @@
         "slide": "projects",
         "column": "ANDROID APK",
         "label": "Browser",
-        "url": "https://github.com/diegonmarcos/unix/tree/main/ea_cloud-browser",
+        "url": "https://github.com/diegonmarcos/cloud-unix/tree/main/ea_cloud-browser",
         "icon": "world.svg"
       },
       {
@@ -5754,7 +5754,7 @@
         "slide": "projects",
         "column": "ANDROID APK",
         "label": "Chat",
-        "url": "https://github.com/diegonmarcos/unix/tree/main/ea_cloud-chat",
+        "url": "https://github.com/diegonmarcos/cloud-unix/tree/main/ea_cloud-chat",
         "icon": "brand-whatsapp.svg"
       },
       {
@@ -5762,7 +5762,7 @@
         "slide": "projects",
         "column": "ANDROID APK",
         "label": "Dialer",
-        "url": "https://github.com/diegonmarcos/unix/tree/main/ea_cloud-dialer",
+        "url": "https://github.com/diegonmarcos/cloud-unix/tree/main/ea_cloud-dialer",
         "icon": "link.svg"
       },
       {
@@ -5770,7 +5770,7 @@
         "slide": "projects",
         "column": "ANDROID APK",
         "label": "IDE",
-        "url": "https://github.com/diegonmarcos/unix/tree/main/ea_cloud-ide",
+        "url": "https://github.com/diegonmarcos/cloud-unix/tree/main/ea_cloud-ide",
         "icon": "code.svg"
       },
       {
@@ -5778,7 +5778,7 @@
         "slide": "projects",
         "column": "ANDROID APK",
         "label": "Keyboard",
-        "url": "https://github.com/diegonmarcos/unix/tree/main/ea_cloud-keyboard",
+        "url": "https://github.com/diegonmarcos/cloud-unix/tree/main/ea_cloud-keyboard",
         "icon": "file-type-html.svg"
       },
       {
@@ -5786,7 +5786,7 @@
         "slide": "projects",
         "column": "ANDROID APK",
         "label": "Keyboard Libs",
-        "url": "https://github.com/diegonmarcos/unix/tree/main/ea_cloud-keyboard-libs",
+        "url": "https://github.com/diegonmarcos/cloud-unix/tree/main/ea_cloud-keyboard-libs",
         "icon": "file-type-html.svg"
       },
       {
@@ -5794,7 +5794,7 @@
         "slide": "projects",
         "column": "ANDROID APK",
         "label": "Mail",
-        "url": "https://github.com/diegonmarcos/unix/tree/main/ea_cloud-mail",
+        "url": "https://github.com/diegonmarcos/cloud-unix/tree/main/ea_cloud-mail",
         "icon": "mail.svg"
       },
       {
@@ -5802,7 +5802,7 @@
         "slide": "projects",
         "column": "ANDROID APK",
         "label": "Matrix",
-        "url": "https://github.com/diegonmarcos/unix/tree/main/ea_cloud-matrix",
+        "url": "https://github.com/diegonmarcos/cloud-unix/tree/main/ea_cloud-matrix",
         "icon": "brand-whatsapp.svg"
       },
       {
@@ -5810,7 +5810,7 @@
         "slide": "projects",
         "column": "ANDROID APK",
         "label": "Media Center",
-        "url": "https://github.com/diegonmarcos/unix/tree/main/ea_cloud-media-center",
+        "url": "https://github.com/diegonmarcos/cloud-unix/tree/main/ea_cloud-media-center",
         "icon": "headphones.svg"
       },
       {
@@ -5818,7 +5818,7 @@
         "slide": "projects",
         "column": "ANDROID APK",
         "label": "Nav",
-        "url": "https://github.com/diegonmarcos/unix/tree/main/ea_cloud-nav",
+        "url": "https://github.com/diegonmarcos/cloud-unix/tree/main/ea_cloud-nav",
         "icon": "world-longitude.svg"
       },
       {
@@ -5826,7 +5826,7 @@
         "slide": "projects",
         "column": "ANDROID APK",
         "label": "SuperApp",
-        "url": "https://github.com/diegonmarcos/unix/tree/main/ea_cloud-superapp",
+        "url": "https://github.com/diegonmarcos/cloud-unix/tree/main/ea_cloud-superapp",
         "icon": "device-gamepad.svg"
       },
       {
@@ -5834,7 +5834,7 @@
         "slide": "projects",
         "column": "ANDROID APK",
         "label": "Vault",
-        "url": "https://github.com/diegonmarcos/unix/tree/main/ea_cloud-vault",
+        "url": "https://github.com/diegonmarcos/cloud-unix/tree/main/ea_cloud-vault",
         "icon": "lock.svg"
       },
       {
@@ -5842,7 +5842,7 @@
         "slide": "projects",
         "column": "ANDROID APK",
         "label": "Wallet",
-        "url": "https://github.com/diegonmarcos/unix/tree/main/ea_cloud-wallet",
+        "url": "https://github.com/diegonmarcos/cloud-unix/tree/main/ea_cloud-wallet",
         "icon": "ledger.svg"
       },
       {
@@ -6610,7 +6610,7 @@
         "slide": "projects",
         "column": "UNIX",
         "label": "Boot Manager",
-        "url": "https://github.com/diegonmarcos/unix/tree/main/aa_bootloader",
+        "url": "https://github.com/diegonmarcos/cloud-unix/tree/main/aa_bootloader",
         "icon": "bolt.svg"
       },
       {
@@ -6618,7 +6618,7 @@
         "slide": "projects",
         "column": "UNIX",
         "label": "OS Flakes",
-        "url": "https://github.com/diegonmarcos/unix/tree/main/ba_flakes_desktop",
+        "url": "https://github.com/diegonmarcos/cloud-unix/tree/main/ba_flakes_desktop",
         "icon": "world.svg"
       },
       {
@@ -6626,7 +6626,7 @@
         "slide": "projects",
         "column": "UNIX",
         "label": "Home-Manager Flakes",
-        "url": "https://github.com/diegonmarcos/unix/tree/main/bb_flakes_termux",
+        "url": "https://github.com/diegonmarcos/cloud-unix/tree/main/bb_flakes_termux",
         "icon": "settings.svg"
       },
       {
@@ -6634,7 +6634,7 @@
         "slide": "projects",
         "column": "UNIX",
         "label": "Unix Binaries",
-        "url": "https://github.com/diegonmarcos/unix/tree/main/ca_containers_user",
+        "url": "https://github.com/diegonmarcos/cloud-unix/tree/main/ca_containers_user",
         "icon": "git-branch.svg"
       },
       {
@@ -6642,7 +6642,7 @@
         "slide": "projects",
         "column": "UNIX",
         "label": "Android Apks",
-        "url": "https://github.com/diegonmarcos/unix/tree/main/ea_cloud-superapp",
+        "url": "https://github.com/diegonmarcos/cloud-unix/tree/main/ea_cloud-superapp",
         "icon": "device-gamepad.svg"
       },
       {
@@ -6650,7 +6650,7 @@
         "slide": "projects",
         "column": "CLOUD",
         "label": "Solutions - Infra",
-        "url": "https://github.com/diegonmarcos/cloud/tree/main/a_solutions",
+        "url": "https://github.com/diegonmarcos/cloud-infra/tree/main/a_solutions",
         "icon": "world.svg"
       },
       {
@@ -6658,7 +6658,7 @@
         "slide": "projects",
         "column": "CLOUD",
         "label": "Solutions - User",
-        "url": "https://github.com/diegonmarcos/cloud/tree/main/1_front-configs",
+        "url": "https://github.com/diegonmarcos/cloud-infra/tree/main/1_front-configs",
         "icon": "settings.svg"
       },
       {
@@ -6666,7 +6666,7 @@
         "slide": "projects",
         "column": "CLOUD",
         "label": "Vault",
-        "url": "https://github.com/diegonmarcos/vault",
+        "url": "https://github.com/diegonmarcos/cloud-vault",
         "icon": "bolt.svg"
       },
       {
@@ -6674,7 +6674,7 @@
         "slide": "projects",
         "column": "CLOUD",
         "label": "Infra",
-        "url": "https://github.com/diegonmarcos/cloud/tree/main/b_infra",
+        "url": "https://github.com/diegonmarcos/cloud-infra/tree/main/b_infra",
         "icon": "git-branch.svg"
       },
       {
@@ -6682,7 +6682,7 @@
         "slide": "projects",
         "column": "CLOUD",
         "label": "VPS",
-        "url": "https://github.com/diegonmarcos/cloud/tree/main/c_vps",
+        "url": "https://github.com/diegonmarcos/cloud-infra/tree/main/c_vps",
         "icon": "device-desktop.svg"
       },
       {

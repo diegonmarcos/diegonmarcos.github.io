@@ -139,21 +139,21 @@
   },
   "footer": {
     "_doc": "Global site footer — Google-Play-style APK download badge + the 13-app Constellation fleet as small glass chips, rendered by scripts/generate-pages.mjs's footerHtml() on every generated page.",
-    "apk": { "label": "Cloud SuperApp", "sub": "Download APK · arm64", "url": "https://github.com/diegonmarcos/unix/releases/latest/download/Cloud-SuperApp.apk" },
+    "apk": { "label": "Cloud SuperApp", "sub": "Download APK · arm64", "url": "https://github.com/diegonmarcos/cloud-unix/releases/latest/download/Cloud-SuperApp.apk" },
     "constellation": [
-      { "id": "cloud-mail", "label": "Mail", "url": "https://github.com/diegonmarcos/unix/releases/latest/download/cloud-comms-mail.apk" },
-      { "id": "cloud-chat", "label": "Chat", "url": "https://github.com/diegonmarcos/unix/releases/latest/download/cloud-comms-chat.apk" },
-      { "id": "cloud-matrix", "label": "Messenger", "url": "https://github.com/diegonmarcos/unix/releases/latest/download/cloud-comms-matrix.apk" },
-      { "id": "cloud-dialer", "label": "Dialer", "url": "https://github.com/diegonmarcos/unix/releases/latest/download/cloud-comms-dialer.apk" },
-      { "id": "cloud-ide", "label": "IDE", "url": "https://github.com/diegonmarcos/unix/releases/latest/download/Cloud-IDE-Hub.apk" },
-      { "id": "cloud-nav", "label": "Nav", "url": "https://github.com/diegonmarcos/unix/releases/latest/download/Cloud-Nav.apk" },
-      { "id": "cloud-calendar", "label": "Calendar", "url": "https://github.com/diegonmarcos/unix/releases/latest/download/Cloud-Calendar.apk" },
-      { "id": "cloud-news", "label": "News", "url": "https://github.com/diegonmarcos/unix/releases/latest/download/Cloud-News.apk" },
-      { "id": "cloud-keyboard", "label": "Keyboard", "url": "https://github.com/diegonmarcos/unix/releases/latest/download/Cloud-Keyboard.apk" },
-      { "id": "cloud-wallet", "label": "Wallet", "url": "https://github.com/diegonmarcos/unix/releases/latest/download/Cloud-Wallet.apk" },
-      { "id": "cloud-browser", "label": "Browser", "url": "https://github.com/diegonmarcos/unix/releases/latest/download/Cloud-Browser.apk" },
-      { "id": "cloud-vault", "label": "Vault", "url": "https://github.com/diegonmarcos/unix/releases/latest/download/Cloud-Vault.apk" },
-      { "id": "cloud-media-center", "label": "Media", "url": "https://github.com/diegonmarcos/unix/releases/latest/download/cloud-media-center.apk" }
+      { "id": "cloud-mail", "label": "Mail", "url": "https://github.com/diegonmarcos/cloud-unix/releases/latest/download/cloud-comms-mail.apk" },
+      { "id": "cloud-chat", "label": "Chat", "url": "https://github.com/diegonmarcos/cloud-unix/releases/latest/download/cloud-comms-chat.apk" },
+      { "id": "cloud-matrix", "label": "Messenger", "url": "https://github.com/diegonmarcos/cloud-unix/releases/latest/download/cloud-comms-matrix.apk" },
+      { "id": "cloud-dialer", "label": "Dialer", "url": "https://github.com/diegonmarcos/cloud-unix/releases/latest/download/cloud-comms-dialer.apk" },
+      { "id": "cloud-ide", "label": "IDE", "url": "https://github.com/diegonmarcos/cloud-unix/releases/latest/download/Cloud-IDE-Hub.apk" },
+      { "id": "cloud-nav", "label": "Nav", "url": "https://github.com/diegonmarcos/cloud-unix/releases/latest/download/Cloud-Nav.apk" },
+      { "id": "cloud-calendar", "label": "Calendar", "url": "https://github.com/diegonmarcos/cloud-unix/releases/latest/download/Cloud-Calendar.apk" },
+      { "id": "cloud-news", "label": "News", "url": "https://github.com/diegonmarcos/cloud-unix/releases/latest/download/Cloud-News.apk" },
+      { "id": "cloud-keyboard", "label": "Keyboard", "url": "https://github.com/diegonmarcos/cloud-unix/releases/latest/download/Cloud-Keyboard.apk" },
+      { "id": "cloud-wallet", "label": "Wallet", "url": "https://github.com/diegonmarcos/cloud-unix/releases/latest/download/Cloud-Wallet.apk" },
+      { "id": "cloud-browser", "label": "Browser", "url": "https://github.com/diegonmarcos/cloud-unix/releases/latest/download/Cloud-Browser.apk" },
+      { "id": "cloud-vault", "label": "Vault", "url": "https://github.com/diegonmarcos/cloud-unix/releases/latest/download/Cloud-Vault.apk" },
+      { "id": "cloud-media-center", "label": "Media", "url": "https://github.com/diegonmarcos/cloud-unix/releases/latest/download/cloud-media-center.apk" }
     ]
   },
   "updateOverlay": {

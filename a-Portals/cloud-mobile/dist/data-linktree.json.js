@@ -17,7 +17,7 @@
       { "label": "diegonmarcos.com", "icon": "home", "href": "https://diegonmarcos.com" },
       { "label": "ea_cloud-superapp", "icon": "code", "href": "https://github.com/diegonmarcos/ea_cloud-superapp" },
       { "label": "front (this site)", "icon": "code", "href": "https://github.com/diegonmarcos/front" },
-      { "label": "unix (tooling)", "icon": "code", "href": "https://github.com/diegonmarcos/unix" },
+      { "label": "unix (tooling)", "icon": "code", "href": "https://github.com/diegonmarcos/cloud-unix" },
       { "label": "WG Mesh", "icon": "mesh" }
     ]},
     { "id": "lab-tools", "label": "Linktree · Lab & Tools", "tiles": [

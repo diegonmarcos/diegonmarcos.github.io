@@ -2293,11 +2293,11 @@
         "runner_workdir": "/tmp/runner/work",
         "registrations": [
           {
-            "repo_url": "https://github.com/diegonmarcos/cloud",
+            "repo_url": "https://github.com/diegonmarcos/cloud-infra",
             "runner_name": "oci-apps-arm64"
           },
           {
-            "repo_url": "https://github.com/diegonmarcos/unix",
+            "repo_url": "https://github.com/diegonmarcos/cloud-unix",
             "runner_name": "oci-apps-arm64-unix"
           }
         ],
@@ -2570,10 +2570,10 @@
         "org": "diego",
         "mirrors": {
           "unix": {
-            "upstream": "https://github.com/diegonmarcos/unix.git"
+            "upstream": "https://github.com/diegonmarcos/cloud-unix.git"
           },
           "cloud": {
-            "upstream": "https://github.com/diegonmarcos/cloud.git"
+            "upstream": "https://github.com/diegonmarcos/cloud-infra.git"
           },
           "cloud-data": {
             "upstream": "https://github.com/diegonmarcos/cloud-data.git"
@@ -2585,10 +2585,10 @@
             "upstream": "https://github.com/diegonmarcos/front-data.git"
           },
           "tools": {
-            "upstream": "https://github.com/diegonmarcos/tools.git"
+            "upstream": "https://github.com/diegonmarcos/cloud-mykonsole-dtk.git"
           },
           "vault": {
-            "upstream": "https://github.com/diegonmarcos/vault.git",
+            "upstream": "https://github.com/diegonmarcos/cloud-vault.git",
             "private": true
           }
         },

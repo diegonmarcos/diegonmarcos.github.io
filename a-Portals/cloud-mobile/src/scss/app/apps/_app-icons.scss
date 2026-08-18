@@ -11,6 +11,44 @@
 // repeated generic glyphs.
 // ==========================================================================
 
+// Phone-tab grids only (suite/phone/quickmarks + suite/phone/all) — the app
+// drawer is a fixed 6-per-row grid, not the shared auto-fill grid, mirroring
+// ea_cloud-superapp build.json ui.phone_grid_columns = 6. Overrides
+// .tile-grid's auto-fill template (owned by _tiles.scss) for this variant
+// only; at the 480px phone width that lands ~72px per cell, so the squircle
+// and its label shrink to match.
+.tile-grid--phone {
+    grid-template-columns: repeat(6, minmax(0, 1fr));
+    gap: 6px;
+
+    .tile__app-icon {
+        width: 40px;
+        height: 40px;
+        font-size: 15px;
+    }
+
+    .tile__app-icon__glyph {
+        width: 22px;
+        height: 22px;
+    }
+
+    .tile__label {
+        font-size: 9px;
+    }
+}
+
+// Smart Folder group header (Dev / Stores / Usage / Rank) — the small
+// grouping label PhoneSmartFolders files each rule under, one step quieter
+// than the folder titles it heads.
+.smart-folders__group {
+    margin: 16px 0 4px;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    opacity: 0.6;
+}
+
 .tile__app-icon {
     width: 48px;
     height: 48px;

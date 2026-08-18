@@ -82,10 +82,52 @@
       ]},
       "admin": { "type": "stack", "cards": [
         { "kind": "section_title", "title": "Containers" },
-        { "kind": "cloud_dashboard", "title": "Infra Apps" },
-        { "kind": "cloud_dashboard", "title": "User Apps" },
+        { "_doc": "cloud_dashboard cards render an ICON GRID per subgroup (not a text body) — the real app's renderCloudDashboard, fed by data/cloud_services.json (generated from cloud/a_solutions by data/gen_cloud_services.py). Subgroups + membership below are that generator's own taxonomy verbatim; each entry's icon comes from its subgroup. Container hosts are *.app (WireGuard-only) and carry a live TCP-ping status light on device, so they render inert here — only the external consoles link out.",
+          "kind": "cloud_dashboard", "title": "Infra Apps", "groups": [
+          { "label": "Security", "icon": "lock", "tiles": ["Authelia", "Caddy", "Caddy L4 Public", "Introspect Proxy"] },
+          { "label": "Network", "icon": "mesh", "tiles": ["Wireguard Mesh", "Wireguard Mesh Ws Tunnel", "Wireguard Public", "Hickory Dns"] },
+          { "label": "Observability", "icon": "logs", "tiles": ["Matomo", "Umami", "Openobserve", "Dagu", "Nocodb", "Dbgate", "Ntfy", "Sauron Forwarder", "Cloud Spec"] },
+          { "label": "Databases", "icon": "database", "tiles": ["Redis", "Umami Db", "Authelia Redis", "Kg Store", "Mattermost Postgres", "Photoprism Mariadb", "Etherpad Postgres", "Hedgedoc Postgres", "Paca Postgres", "Postlite"] },
+          { "label": "Data", "icon": "database", "tiles": ["Gitea", "Backup Borg", "Backup Bup", "Backup Gitea"] },
+          { "label": "APIs & MCPs", "icon": "code", "tiles": ["C3 Analytics Api", "C3 Infra Api", "C3 Public Api", "C3 Services Api", "C3 Infra Mcp", "C3 Services Mcp", "C3 Diego Personal Data Mcp", "Google Personal Mcp", "Google Workspace Mcp", "Mail Mcp", "Mattermost Mcp", "Http To Smtp Proxy Api"] },
+          { "label": "Build", "icon": "tools", "tiles": ["Cloud Builder X"] },
+          { "label": "Pilots", "icon": "workflow", "tiles": ["Pilot · gcp-E2-f_0", "Pilot · oci-E2-f_0", "Pilot · oci-E2-f_1", "Pilot · oci-A1-f_0"] }
+        ]},
+        { "kind": "cloud_dashboard", "title": "User Apps", "groups": [
+          { "label": "Communications", "icon": "chat", "tiles": ["Chat Mattermost", "Matrix Continuwuity", "Matrix Element", "Matrix Mautrix Whatsapp", "Maddy", "Stalwart", "Cypht", "Snappymail", "Mail Puller", "Tools Smtp Proxy"] },
+          { "label": "Productivity", "icon": "briefcase", "tiles": ["Etherpad", "Hedgedoc", "Grist", "Calendar Radicale", "Contacts Radicale", "Revealmd", "Code Server", "Filebrowser", "Paca"] },
+          { "label": "Media", "icon": "photos", "tiles": ["Photoprism"] },
+          { "label": "Finance", "icon": "chart", "tiles": ["Crawlee Cloud", "Fin Api"] },
+          { "label": "AI & Agents", "icon": "sparkles", "tiles": ["Ollama", "Ollama Arm", "Ollama Hai", "Rig Agentic", "Rig Agentic Hai 1.5Bq4", "Rig Agentic Sonn 14Bq8", "Db Agent", "Kg Graph", "Claude Openai Bridge", "Octocode (CGC)"] },
+          { "label": "Vault", "icon": "lock", "tiles": ["Vaultwarden"] },
+          { "label": "News", "icon": "rss", "tiles": ["News Gdelt"] },
+          { "label": "Web", "icon": "browser", "tiles": ["Front End"] },
+          { "label": "Storage", "icon": "database", "tiles": [
+            { "label": "Oracle S3", "target": "https://cloud.oracle.com" },
+            { "label": "Google Workspace", "target": "https://workspace.google.com" }
+          ]}
+        ]},
         { "kind": "section_title", "title": "Stack" },
-        { "kind": "cloud_dashboard", "title": "Stack" }
+        { "kind": "cloud_dashboard", "title": "Stack", "groups": [
+          { "label": "Providers (VPS)", "icon": "browser", "tiles": [
+            { "label": "Oracle", "target": "https://cloud.oracle.com" },
+            { "label": "GCloud", "target": "https://console.cloud.google.com" },
+            { "label": "Cloudflare", "target": "https://dash.cloudflare.com" },
+            { "label": "GitHub", "target": "https://github.com/diegonmarcos" },
+            { "label": "Hetzner", "target": "https://console.hetzner.cloud" },
+            { "label": "Nvidia", "target": "https://build.nvidia.com" }
+          ]},
+          { "label": "VMs", "icon": "mesh", "tiles": ["gcp-E2-f_0", "oci-E2-f_0", "oci-E2-f_1", "oci-A1-f_0", "Galaxy S21"] },
+          { "label": "Runners", "icon": "tools", "tiles": [
+            "ARM (Oci-Apps)",
+            { "label": "x86 (GHA)", "target": "https://github.com/diegonmarcos/unix/actions" }
+          ]},
+          { "label": "DBs", "icon": "database", "tiles": ["Redis", "Umami Db", "Authelia Redis", "Kg Store", "Mattermost Postgres", "Photoprism Mariadb", "Etherpad Postgres", "Hedgedoc Postgres", "Paca Postgres", "Postlite",
+            { "label": "Oracle S3 (backups)", "target": "https://cloud.oracle.com" }
+          ]},
+          { "label": "APIs", "icon": "code", "tiles": ["Alerts Api", "C3 Analytics Api", "C3 Infra Api", "C3 Public Api", "C3 Services Api", "Claude Superset Api", "Fin Api", "Http To Smtp Proxy Api", "My Ai Api", "Paca Api", "Scrappers Api"] },
+          { "label": "MCPs", "icon": "workflow", "tiles": ["C3 Diego Personal Data Mcp", "C3 Infra Mcp", "C3 Services Mcp", "Cloud Cgc Mcp", "Google Personal Mcp", "Google Workspace Mcp", "Mail Mcp", "Mattermost Mcp"] }
+        ]}
       ]},
       "pages": [
         { "id": "data-ml", "label": "Data & ML", "items": [

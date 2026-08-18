@@ -65,16 +65,210 @@
                 <h2 class="stack-divider">Containers</h2>
                 <div class="stack-card">
                 <button class="stack-card__header" type="button" aria-expanded="true"><span class="stack-card__title">Infra Apps</span><span class="stack-card__chevron" aria-hidden="true">⌄</span></button>
-                <div class="stack-card__content"><div class="stack-card__body"><div class="page-body__skeleton-row"></div></div></div>
+                <div class="stack-card__content"><h3 class="tile-group__title">Security</h3>
+                <div class="tile-grid" role="list">
+                <div class="tile tile--blue tile--inert" role="listitem" aria-disabled="true"><img class="tile__icon" src="../../public/icons/lock.svg" alt=""><span class="tile__label">Authelia</span></div>
+                <div class="tile tile--blue tile--inert" role="listitem" aria-disabled="true"><img class="tile__icon" src="../../public/icons/lock.svg" alt=""><span class="tile__label">Caddy</span></div>
+                <div class="tile tile--blue tile--inert" role="listitem" aria-disabled="true"><img class="tile__icon" src="../../public/icons/lock.svg" alt=""><span class="tile__label">Caddy L4 Public</span></div>
+                <div class="tile tile--blue tile--inert" role="listitem" aria-disabled="true"><img class="tile__icon" src="../../public/icons/lock.svg" alt=""><span class="tile__label">Introspect Proxy</span></div>
+            </div>
+                <h3 class="tile-group__title">Network</h3>
+                <div class="tile-grid" role="list">
+                <div class="tile tile--blue tile--inert" role="listitem" aria-disabled="true"><img class="tile__icon" src="../../public/icons/mesh.svg" alt=""><span class="tile__label">Wireguard Mesh</span></div>
+                <div class="tile tile--blue tile--inert" role="listitem" aria-disabled="true"><img class="tile__icon" src="../../public/icons/mesh.svg" alt=""><span class="tile__label">Wireguard Mesh Ws Tunnel</span></div>
+                <div class="tile tile--blue tile--inert" role="listitem" aria-disabled="true"><img class="tile__icon" src="../../public/icons/mesh.svg" alt=""><span class="tile__label">Wireguard Public</span></div>
+                <div class="tile tile--blue tile--inert" role="listitem" aria-disabled="true"><img class="tile__icon" src="../../public/icons/mesh.svg" alt=""><span class="tile__label">Hickory Dns</span></div>
+            </div>
+                <h3 class="tile-group__title">Observability</h3>
+                <div class="tile-grid" role="list">
+                <div class="tile tile--blue tile--inert" role="listitem" aria-disabled="true"><img class="tile__icon" src="../../public/icons/logs.svg" alt=""><span class="tile__label">Matomo</span></div>
+                <div class="tile tile--blue tile--inert" role="listitem" aria-disabled="true"><img class="tile__icon" src="../../public/icons/logs.svg" alt=""><span class="tile__label">Umami</span></div>
+                <div class="tile tile--blue tile--inert" role="listitem" aria-disabled="true"><img class="tile__icon" src="../../public/icons/logs.svg" alt=""><span class="tile__label">Openobserve</span></div>
+                <div class="tile tile--blue tile--inert" role="listitem" aria-disabled="true"><img class="tile__icon" src="../../public/icons/logs.svg" alt=""><span class="tile__label">Dagu</span></div>
+                <div class="tile tile--blue tile--inert" role="listitem" aria-disabled="true"><img class="tile__icon" src="../../public/icons/logs.svg" alt=""><span class="tile__label">Nocodb</span></div>
+                <div class="tile tile--blue tile--inert" role="listitem" aria-disabled="true"><img class="tile__icon" src="../../public/icons/logs.svg" alt=""><span class="tile__label">Dbgate</span></div>
+                <div class="tile tile--blue tile--inert" role="listitem" aria-disabled="true"><img class="tile__icon" src="../../public/icons/logs.svg" alt=""><span class="tile__label">Ntfy</span></div>
+                <div class="tile tile--blue tile--inert" role="listitem" aria-disabled="true"><img class="tile__icon" src="../../public/icons/logs.svg" alt=""><span class="tile__label">Sauron Forwarder</span></div>
+                <div class="tile tile--blue tile--inert" role="listitem" aria-disabled="true"><img class="tile__icon" src="../../public/icons/logs.svg" alt=""><span class="tile__label">Cloud Spec</span></div>
+            </div>
+                <h3 class="tile-group__title">Databases</h3>
+                <div class="tile-grid" role="list">
+                <div class="tile tile--blue tile--inert" role="listitem" aria-disabled="true"><img class="tile__icon" src="../../public/icons/database.svg" alt=""><span class="tile__label">Redis</span></div>
+                <div class="tile tile--blue tile--inert" role="listitem" aria-disabled="true"><img class="tile__icon" src="../../public/icons/database.svg" alt=""><span class="tile__label">Umami Db</span></div>
+                <div class="tile tile--blue tile--inert" role="listitem" aria-disabled="true"><img class="tile__icon" src="../../public/icons/database.svg" alt=""><span class="tile__label">Authelia Redis</span></div>
+                <div class="tile tile--blue tile--inert" role="listitem" aria-disabled="true"><img class="tile__icon" src="../../public/icons/database.svg" alt=""><span class="tile__label">Kg Store</span></div>
+                <div class="tile tile--blue tile--inert" role="listitem" aria-disabled="true"><img class="tile__icon" src="../../public/icons/database.svg" alt=""><span class="tile__label">Mattermost Postgres</span></div>
+                <div class="tile tile--blue tile--inert" role="listitem" aria-disabled="true"><img class="tile__icon" src="../../public/icons/database.svg" alt=""><span class="tile__label">Photoprism Mariadb</span></div>
+                <div class="tile tile--blue tile--inert" role="listitem" aria-disabled="true"><img class="tile__icon" src="../../public/icons/database.svg" alt=""><span class="tile__label">Etherpad Postgres</span></div>
+                <div class="tile tile--blue tile--inert" role="listitem" aria-disabled="true"><img class="tile__icon" src="../../public/icons/database.svg" alt=""><span class="tile__label">Hedgedoc Postgres</span></div>
+                <div class="tile tile--blue tile--inert" role="listitem" aria-disabled="true"><img class="tile__icon" src="../../public/icons/database.svg" alt=""><span class="tile__label">Paca Postgres</span></div>
+                <div class="tile tile--blue tile--inert" role="listitem" aria-disabled="true"><img class="tile__icon" src="../../public/icons/database.svg" alt=""><span class="tile__label">Postlite</span></div>
+            </div>
+                <h3 class="tile-group__title">Data</h3>
+                <div class="tile-grid" role="list">
+                <div class="tile tile--blue tile--inert" role="listitem" aria-disabled="true"><img class="tile__icon" src="../../public/icons/database.svg" alt=""><span class="tile__label">Gitea</span></div>
+                <div class="tile tile--blue tile--inert" role="listitem" aria-disabled="true"><img class="tile__icon" src="../../public/icons/database.svg" alt=""><span class="tile__label">Backup Borg</span></div>
+                <div class="tile tile--blue tile--inert" role="listitem" aria-disabled="true"><img class="tile__icon" src="../../public/icons/database.svg" alt=""><span class="tile__label">Backup Bup</span></div>
+                <div class="tile tile--blue tile--inert" role="listitem" aria-disabled="true"><img class="tile__icon" src="../../public/icons/database.svg" alt=""><span class="tile__label">Backup Gitea</span></div>
+            </div>
+                <h3 class="tile-group__title">APIs & MCPs</h3>
+                <div class="tile-grid" role="list">
+                <div class="tile tile--blue tile--inert" role="listitem" aria-disabled="true"><img class="tile__icon" src="../../public/icons/code.svg" alt=""><span class="tile__label">C3 Analytics Api</span></div>
+                <div class="tile tile--blue tile--inert" role="listitem" aria-disabled="true"><img class="tile__icon" src="../../public/icons/code.svg" alt=""><span class="tile__label">C3 Infra Api</span></div>
+                <div class="tile tile--blue tile--inert" role="listitem" aria-disabled="true"><img class="tile__icon" src="../../public/icons/code.svg" alt=""><span class="tile__label">C3 Public Api</span></div>
+                <div class="tile tile--blue tile--inert" role="listitem" aria-disabled="true"><img class="tile__icon" src="../../public/icons/code.svg" alt=""><span class="tile__label">C3 Services Api</span></div>
+                <div class="tile tile--blue tile--inert" role="listitem" aria-disabled="true"><img class="tile__icon" src="../../public/icons/code.svg" alt=""><span class="tile__label">C3 Infra Mcp</span></div>
+                <div class="tile tile--blue tile--inert" role="listitem" aria-disabled="true"><img class="tile__icon" src="../../public/icons/code.svg" alt=""><span class="tile__label">C3 Services Mcp</span></div>
+                <div class="tile tile--blue tile--inert" role="listitem" aria-disabled="true"><img class="tile__icon" src="../../public/icons/code.svg" alt=""><span class="tile__label">C3 Diego Personal Data Mcp</span></div>
+                <div class="tile tile--blue tile--inert" role="listitem" aria-disabled="true"><img class="tile__icon" src="../../public/icons/code.svg" alt=""><span class="tile__label">Google Personal Mcp</span></div>
+                <div class="tile tile--blue tile--inert" role="listitem" aria-disabled="true"><img class="tile__icon" src="../../public/icons/code.svg" alt=""><span class="tile__label">Google Workspace Mcp</span></div>
+                <div class="tile tile--blue tile--inert" role="listitem" aria-disabled="true"><img class="tile__icon" src="../../public/icons/code.svg" alt=""><span class="tile__label">Mail Mcp</span></div>
+                <div class="tile tile--blue tile--inert" role="listitem" aria-disabled="true"><img class="tile__icon" src="../../public/icons/code.svg" alt=""><span class="tile__label">Mattermost Mcp</span></div>
+                <div class="tile tile--blue tile--inert" role="listitem" aria-disabled="true"><img class="tile__icon" src="../../public/icons/code.svg" alt=""><span class="tile__label">Http To Smtp Proxy Api</span></div>
+            </div>
+                <h3 class="tile-group__title">Build</h3>
+                <div class="tile-grid" role="list">
+                <div class="tile tile--blue tile--inert" role="listitem" aria-disabled="true"><img class="tile__icon" src="../../public/icons/tools.svg" alt=""><span class="tile__label">Cloud Builder X</span></div>
+            </div>
+                <h3 class="tile-group__title">Pilots</h3>
+                <div class="tile-grid" role="list">
+                <div class="tile tile--blue tile--inert" role="listitem" aria-disabled="true"><img class="tile__icon" src="../../public/icons/workflow.svg" alt=""><span class="tile__label">Pilot · gcp-E2-f_0</span></div>
+                <div class="tile tile--blue tile--inert" role="listitem" aria-disabled="true"><img class="tile__icon" src="../../public/icons/workflow.svg" alt=""><span class="tile__label">Pilot · oci-E2-f_0</span></div>
+                <div class="tile tile--blue tile--inert" role="listitem" aria-disabled="true"><img class="tile__icon" src="../../public/icons/workflow.svg" alt=""><span class="tile__label">Pilot · oci-E2-f_1</span></div>
+                <div class="tile tile--blue tile--inert" role="listitem" aria-disabled="true"><img class="tile__icon" src="../../public/icons/workflow.svg" alt=""><span class="tile__label">Pilot · oci-A1-f_0</span></div>
+            </div></div>
             </div>
                 <div class="stack-card">
                 <button class="stack-card__header" type="button" aria-expanded="true"><span class="stack-card__title">User Apps</span><span class="stack-card__chevron" aria-hidden="true">⌄</span></button>
-                <div class="stack-card__content"><div class="stack-card__body"><div class="page-body__skeleton-row"></div></div></div>
+                <div class="stack-card__content"><h3 class="tile-group__title">Communications</h3>
+                <div class="tile-grid" role="list">
+                <div class="tile tile--blue tile--inert" role="listitem" aria-disabled="true"><img class="tile__icon" src="../../public/icons/chat.svg" alt=""><span class="tile__label">Chat Mattermost</span></div>
+                <div class="tile tile--blue tile--inert" role="listitem" aria-disabled="true"><img class="tile__icon" src="../../public/icons/chat.svg" alt=""><span class="tile__label">Matrix Continuwuity</span></div>
+                <div class="tile tile--blue tile--inert" role="listitem" aria-disabled="true"><img class="tile__icon" src="../../public/icons/chat.svg" alt=""><span class="tile__label">Matrix Element</span></div>
+                <div class="tile tile--blue tile--inert" role="listitem" aria-disabled="true"><img class="tile__icon" src="../../public/icons/chat.svg" alt=""><span class="tile__label">Matrix Mautrix Whatsapp</span></div>
+                <div class="tile tile--blue tile--inert" role="listitem" aria-disabled="true"><img class="tile__icon" src="../../public/icons/chat.svg" alt=""><span class="tile__label">Maddy</span></div>
+                <div class="tile tile--blue tile--inert" role="listitem" aria-disabled="true"><img class="tile__icon" src="../../public/icons/chat.svg" alt=""><span class="tile__label">Stalwart</span></div>
+                <div class="tile tile--blue tile--inert" role="listitem" aria-disabled="true"><img class="tile__icon" src="../../public/icons/chat.svg" alt=""><span class="tile__label">Cypht</span></div>
+                <div class="tile tile--blue tile--inert" role="listitem" aria-disabled="true"><img class="tile__icon" src="../../public/icons/chat.svg" alt=""><span class="tile__label">Snappymail</span></div>
+                <div class="tile tile--blue tile--inert" role="listitem" aria-disabled="true"><img class="tile__icon" src="../../public/icons/chat.svg" alt=""><span class="tile__label">Mail Puller</span></div>
+                <div class="tile tile--blue tile--inert" role="listitem" aria-disabled="true"><img class="tile__icon" src="../../public/icons/chat.svg" alt=""><span class="tile__label">Tools Smtp Proxy</span></div>
+            </div>
+                <h3 class="tile-group__title">Productivity</h3>
+                <div class="tile-grid" role="list">
+                <div class="tile tile--blue tile--inert" role="listitem" aria-disabled="true"><img class="tile__icon" src="../../public/icons/briefcase.svg" alt=""><span class="tile__label">Etherpad</span></div>
+                <div class="tile tile--blue tile--inert" role="listitem" aria-disabled="true"><img class="tile__icon" src="../../public/icons/briefcase.svg" alt=""><span class="tile__label">Hedgedoc</span></div>
+                <div class="tile tile--blue tile--inert" role="listitem" aria-disabled="true"><img class="tile__icon" src="../../public/icons/briefcase.svg" alt=""><span class="tile__label">Grist</span></div>
+                <div class="tile tile--blue tile--inert" role="listitem" aria-disabled="true"><img class="tile__icon" src="../../public/icons/briefcase.svg" alt=""><span class="tile__label">Calendar Radicale</span></div>
+                <div class="tile tile--blue tile--inert" role="listitem" aria-disabled="true"><img class="tile__icon" src="../../public/icons/briefcase.svg" alt=""><span class="tile__label">Contacts Radicale</span></div>
+                <div class="tile tile--blue tile--inert" role="listitem" aria-disabled="true"><img class="tile__icon" src="../../public/icons/briefcase.svg" alt=""><span class="tile__label">Revealmd</span></div>
+                <div class="tile tile--blue tile--inert" role="listitem" aria-disabled="true"><img class="tile__icon" src="../../public/icons/briefcase.svg" alt=""><span class="tile__label">Code Server</span></div>
+                <div class="tile tile--blue tile--inert" role="listitem" aria-disabled="true"><img class="tile__icon" src="../../public/icons/briefcase.svg" alt=""><span class="tile__label">Filebrowser</span></div>
+                <div class="tile tile--blue tile--inert" role="listitem" aria-disabled="true"><img class="tile__icon" src="../../public/icons/briefcase.svg" alt=""><span class="tile__label">Paca</span></div>
+            </div>
+                <h3 class="tile-group__title">Media</h3>
+                <div class="tile-grid" role="list">
+                <div class="tile tile--blue tile--inert" role="listitem" aria-disabled="true"><img class="tile__icon" src="../../public/icons/photos.svg" alt=""><span class="tile__label">Photoprism</span></div>
+            </div>
+                <h3 class="tile-group__title">Finance</h3>
+                <div class="tile-grid" role="list">
+                <div class="tile tile--blue tile--inert" role="listitem" aria-disabled="true"><img class="tile__icon" src="../../public/icons/chart.svg" alt=""><span class="tile__label">Crawlee Cloud</span></div>
+                <div class="tile tile--blue tile--inert" role="listitem" aria-disabled="true"><img class="tile__icon" src="../../public/icons/chart.svg" alt=""><span class="tile__label">Fin Api</span></div>
+            </div>
+                <h3 class="tile-group__title">AI & Agents</h3>
+                <div class="tile-grid" role="list">
+                <div class="tile tile--blue tile--inert" role="listitem" aria-disabled="true"><img class="tile__icon" src="../../public/icons/sparkles.svg" alt=""><span class="tile__label">Ollama</span></div>
+                <div class="tile tile--blue tile--inert" role="listitem" aria-disabled="true"><img class="tile__icon" src="../../public/icons/sparkles.svg" alt=""><span class="tile__label">Ollama Arm</span></div>
+                <div class="tile tile--blue tile--inert" role="listitem" aria-disabled="true"><img class="tile__icon" src="../../public/icons/sparkles.svg" alt=""><span class="tile__label">Ollama Hai</span></div>
+                <div class="tile tile--blue tile--inert" role="listitem" aria-disabled="true"><img class="tile__icon" src="../../public/icons/sparkles.svg" alt=""><span class="tile__label">Rig Agentic</span></div>
+                <div class="tile tile--blue tile--inert" role="listitem" aria-disabled="true"><img class="tile__icon" src="../../public/icons/sparkles.svg" alt=""><span class="tile__label">Rig Agentic Hai 1.5Bq4</span></div>
+                <div class="tile tile--blue tile--inert" role="listitem" aria-disabled="true"><img class="tile__icon" src="../../public/icons/sparkles.svg" alt=""><span class="tile__label">Rig Agentic Sonn 14Bq8</span></div>
+                <div class="tile tile--blue tile--inert" role="listitem" aria-disabled="true"><img class="tile__icon" src="../../public/icons/sparkles.svg" alt=""><span class="tile__label">Db Agent</span></div>
+                <div class="tile tile--blue tile--inert" role="listitem" aria-disabled="true"><img class="tile__icon" src="../../public/icons/sparkles.svg" alt=""><span class="tile__label">Kg Graph</span></div>
+                <div class="tile tile--blue tile--inert" role="listitem" aria-disabled="true"><img class="tile__icon" src="../../public/icons/sparkles.svg" alt=""><span class="tile__label">Claude Openai Bridge</span></div>
+                <div class="tile tile--blue tile--inert" role="listitem" aria-disabled="true"><img class="tile__icon" src="../../public/icons/sparkles.svg" alt=""><span class="tile__label">Octocode (CGC)</span></div>
+            </div>
+                <h3 class="tile-group__title">Vault</h3>
+                <div class="tile-grid" role="list">
+                <div class="tile tile--blue tile--inert" role="listitem" aria-disabled="true"><img class="tile__icon" src="../../public/icons/lock.svg" alt=""><span class="tile__label">Vaultwarden</span></div>
+            </div>
+                <h3 class="tile-group__title">News</h3>
+                <div class="tile-grid" role="list">
+                <div class="tile tile--blue tile--inert" role="listitem" aria-disabled="true"><img class="tile__icon" src="../../public/icons/rss.svg" alt=""><span class="tile__label">News Gdelt</span></div>
+            </div>
+                <h3 class="tile-group__title">Web</h3>
+                <div class="tile-grid" role="list">
+                <div class="tile tile--blue tile--inert" role="listitem" aria-disabled="true"><img class="tile__icon" src="../../public/icons/browser.svg" alt=""><span class="tile__label">Front End</span></div>
+            </div>
+                <h3 class="tile-group__title">Storage</h3>
+                <div class="tile-grid" role="list">
+                <a class="tile tile--blue" href="https://cloud.oracle.com" target="_blank" rel="noopener" role="listitem"><img class="tile__icon" src="../../public/icons/database.svg" alt=""><span class="tile__label">Oracle S3</span></a>
+                <a class="tile tile--blue" href="https://workspace.google.com" target="_blank" rel="noopener" role="listitem"><img class="tile__icon" src="../../public/icons/database.svg" alt=""><span class="tile__label">Google Workspace</span></a>
+            </div></div>
             </div>
                 <h2 class="stack-divider">Stack</h2>
                 <div class="stack-card">
                 <button class="stack-card__header" type="button" aria-expanded="true"><span class="stack-card__title">Stack</span><span class="stack-card__chevron" aria-hidden="true">⌄</span></button>
-                <div class="stack-card__content"><div class="stack-card__body"><div class="page-body__skeleton-row"></div></div></div>
+                <div class="stack-card__content"><h3 class="tile-group__title">Providers (VPS)</h3>
+                <div class="tile-grid" role="list">
+                <a class="tile tile--blue" href="https://cloud.oracle.com" target="_blank" rel="noopener" role="listitem"><img class="tile__icon" src="../../public/icons/browser.svg" alt=""><span class="tile__label">Oracle</span></a>
+                <a class="tile tile--blue" href="https://console.cloud.google.com" target="_blank" rel="noopener" role="listitem"><img class="tile__icon" src="../../public/icons/browser.svg" alt=""><span class="tile__label">GCloud</span></a>
+                <a class="tile tile--blue" href="https://dash.cloudflare.com" target="_blank" rel="noopener" role="listitem"><img class="tile__icon" src="../../public/icons/browser.svg" alt=""><span class="tile__label">Cloudflare</span></a>
+                <a class="tile tile--blue" href="https://github.com/diegonmarcos" target="_blank" rel="noopener" role="listitem"><img class="tile__icon" src="../../public/icons/browser.svg" alt=""><span class="tile__label">GitHub</span></a>
+                <a class="tile tile--blue" href="https://console.hetzner.cloud" target="_blank" rel="noopener" role="listitem"><img class="tile__icon" src="../../public/icons/browser.svg" alt=""><span class="tile__label">Hetzner</span></a>
+                <a class="tile tile--blue" href="https://build.nvidia.com" target="_blank" rel="noopener" role="listitem"><img class="tile__icon" src="../../public/icons/browser.svg" alt=""><span class="tile__label">Nvidia</span></a>
+            </div>
+                <h3 class="tile-group__title">VMs</h3>
+                <div class="tile-grid" role="list">
+                <div class="tile tile--blue tile--inert" role="listitem" aria-disabled="true"><img class="tile__icon" src="../../public/icons/mesh.svg" alt=""><span class="tile__label">gcp-E2-f_0</span></div>
+                <div class="tile tile--blue tile--inert" role="listitem" aria-disabled="true"><img class="tile__icon" src="../../public/icons/mesh.svg" alt=""><span class="tile__label">oci-E2-f_0</span></div>
+                <div class="tile tile--blue tile--inert" role="listitem" aria-disabled="true"><img class="tile__icon" src="../../public/icons/mesh.svg" alt=""><span class="tile__label">oci-E2-f_1</span></div>
+                <div class="tile tile--blue tile--inert" role="listitem" aria-disabled="true"><img class="tile__icon" src="../../public/icons/mesh.svg" alt=""><span class="tile__label">oci-A1-f_0</span></div>
+                <div class="tile tile--blue tile--inert" role="listitem" aria-disabled="true"><img class="tile__icon" src="../../public/icons/mesh.svg" alt=""><span class="tile__label">Galaxy S21</span></div>
+            </div>
+                <h3 class="tile-group__title">Runners</h3>
+                <div class="tile-grid" role="list">
+                <div class="tile tile--blue tile--inert" role="listitem" aria-disabled="true"><img class="tile__icon" src="../../public/icons/tools.svg" alt=""><span class="tile__label">ARM (Oci-Apps)</span></div>
+                <a class="tile tile--blue" href="https://github.com/diegonmarcos/unix/actions" target="_blank" rel="noopener" role="listitem"><img class="tile__icon" src="../../public/icons/tools.svg" alt=""><span class="tile__label">x86 (GHA)</span></a>
+            </div>
+                <h3 class="tile-group__title">DBs</h3>
+                <div class="tile-grid" role="list">
+                <div class="tile tile--blue tile--inert" role="listitem" aria-disabled="true"><img class="tile__icon" src="../../public/icons/database.svg" alt=""><span class="tile__label">Redis</span></div>
+                <div class="tile tile--blue tile--inert" role="listitem" aria-disabled="true"><img class="tile__icon" src="../../public/icons/database.svg" alt=""><span class="tile__label">Umami Db</span></div>
+                <div class="tile tile--blue tile--inert" role="listitem" aria-disabled="true"><img class="tile__icon" src="../../public/icons/database.svg" alt=""><span class="tile__label">Authelia Redis</span></div>
+                <div class="tile tile--blue tile--inert" role="listitem" aria-disabled="true"><img class="tile__icon" src="../../public/icons/database.svg" alt=""><span class="tile__label">Kg Store</span></div>
+                <div class="tile tile--blue tile--inert" role="listitem" aria-disabled="true"><img class="tile__icon" src="../../public/icons/database.svg" alt=""><span class="tile__label">Mattermost Postgres</span></div>
+                <div class="tile tile--blue tile--inert" role="listitem" aria-disabled="true"><img class="tile__icon" src="../../public/icons/database.svg" alt=""><span class="tile__label">Photoprism Mariadb</span></div>
+                <div class="tile tile--blue tile--inert" role="listitem" aria-disabled="true"><img class="tile__icon" src="../../public/icons/database.svg" alt=""><span class="tile__label">Etherpad Postgres</span></div>
+                <div class="tile tile--blue tile--inert" role="listitem" aria-disabled="true"><img class="tile__icon" src="../../public/icons/database.svg" alt=""><span class="tile__label">Hedgedoc Postgres</span></div>
+                <div class="tile tile--blue tile--inert" role="listitem" aria-disabled="true"><img class="tile__icon" src="../../public/icons/database.svg" alt=""><span class="tile__label">Paca Postgres</span></div>
+                <div class="tile tile--blue tile--inert" role="listitem" aria-disabled="true"><img class="tile__icon" src="../../public/icons/database.svg" alt=""><span class="tile__label">Postlite</span></div>
+                <a class="tile tile--blue" href="https://cloud.oracle.com" target="_blank" rel="noopener" role="listitem"><img class="tile__icon" src="../../public/icons/database.svg" alt=""><span class="tile__label">Oracle S3 (backups)</span></a>
+            </div>
+                <h3 class="tile-group__title">APIs</h3>
+                <div class="tile-grid" role="list">
+                <div class="tile tile--blue tile--inert" role="listitem" aria-disabled="true"><img class="tile__icon" src="../../public/icons/code.svg" alt=""><span class="tile__label">Alerts Api</span></div>
+                <div class="tile tile--blue tile--inert" role="listitem" aria-disabled="true"><img class="tile__icon" src="../../public/icons/code.svg" alt=""><span class="tile__label">C3 Analytics Api</span></div>
+                <div class="tile tile--blue tile--inert" role="listitem" aria-disabled="true"><img class="tile__icon" src="../../public/icons/code.svg" alt=""><span class="tile__label">C3 Infra Api</span></div>
+                <div class="tile tile--blue tile--inert" role="listitem" aria-disabled="true"><img class="tile__icon" src="../../public/icons/code.svg" alt=""><span class="tile__label">C3 Public Api</span></div>
+                <div class="tile tile--blue tile--inert" role="listitem" aria-disabled="true"><img class="tile__icon" src="../../public/icons/code.svg" alt=""><span class="tile__label">C3 Services Api</span></div>
+                <div class="tile tile--blue tile--inert" role="listitem" aria-disabled="true"><img class="tile__icon" src="../../public/icons/code.svg" alt=""><span class="tile__label">Claude Superset Api</span></div>
+                <div class="tile tile--blue tile--inert" role="listitem" aria-disabled="true"><img class="tile__icon" src="../../public/icons/code.svg" alt=""><span class="tile__label">Fin Api</span></div>
+                <div class="tile tile--blue tile--inert" role="listitem" aria-disabled="true"><img class="tile__icon" src="../../public/icons/code.svg" alt=""><span class="tile__label">Http To Smtp Proxy Api</span></div>
+                <div class="tile tile--blue tile--inert" role="listitem" aria-disabled="true"><img class="tile__icon" src="../../public/icons/code.svg" alt=""><span class="tile__label">My Ai Api</span></div>
+                <div class="tile tile--blue tile--inert" role="listitem" aria-disabled="true"><img class="tile__icon" src="../../public/icons/code.svg" alt=""><span class="tile__label">Paca Api</span></div>
+                <div class="tile tile--blue tile--inert" role="listitem" aria-disabled="true"><img class="tile__icon" src="../../public/icons/code.svg" alt=""><span class="tile__label">Scrappers Api</span></div>
+            </div>
+                <h3 class="tile-group__title">MCPs</h3>
+                <div class="tile-grid" role="list">
+                <div class="tile tile--blue tile--inert" role="listitem" aria-disabled="true"><img class="tile__icon" src="../../public/icons/workflow.svg" alt=""><span class="tile__label">C3 Diego Personal Data Mcp</span></div>
+                <div class="tile tile--blue tile--inert" role="listitem" aria-disabled="true"><img class="tile__icon" src="../../public/icons/workflow.svg" alt=""><span class="tile__label">C3 Infra Mcp</span></div>
+                <div class="tile tile--blue tile--inert" role="listitem" aria-disabled="true"><img class="tile__icon" src="../../public/icons/workflow.svg" alt=""><span class="tile__label">C3 Services Mcp</span></div>
+                <div class="tile tile--blue tile--inert" role="listitem" aria-disabled="true"><img class="tile__icon" src="../../public/icons/workflow.svg" alt=""><span class="tile__label">Cloud Cgc Mcp</span></div>
+                <div class="tile tile--blue tile--inert" role="listitem" aria-disabled="true"><img class="tile__icon" src="../../public/icons/workflow.svg" alt=""><span class="tile__label">Google Personal Mcp</span></div>
+                <div class="tile tile--blue tile--inert" role="listitem" aria-disabled="true"><img class="tile__icon" src="../../public/icons/workflow.svg" alt=""><span class="tile__label">Google Workspace Mcp</span></div>
+                <div class="tile tile--blue tile--inert" role="listitem" aria-disabled="true"><img class="tile__icon" src="../../public/icons/workflow.svg" alt=""><span class="tile__label">Mail Mcp</span></div>
+                <div class="tile tile--blue tile--inert" role="listitem" aria-disabled="true"><img class="tile__icon" src="../../public/icons/workflow.svg" alt=""><span class="tile__label">Mattermost Mcp</span></div>
+            </div></div>
             </div>
             </div>
             <footer class="site-footer">

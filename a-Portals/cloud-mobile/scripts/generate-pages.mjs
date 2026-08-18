@@ -41,33 +41,50 @@ function phoneGroupsFromMockData(pinnedOnly) {
 // Android metadata (package/installSource/first-install/last-used/usage),
 // never hand-listed membership. Mirrors a real launcher's auto-generated
 // "Recently installed" / "Recently used" / usage-ranked smart groups.
-const INSTALL_SOURCE_LABELS = { play: 'Google Play', fdroid: 'F-Droid', uptodown: 'Uptodown', direct: 'Direct' };
+// The 13 rules + their 4 groups are a verbatim port of ea_cloud-superapp's
+// build.json ui.phone_smart_folders (PhoneSmartFolders.select): Dev =
+// package-prefix fleets, Stores = install-source-of-record, Usage = install/
+// use recency, Rank = usage-ranked top 7s. installSource here is the mock's
+// short token for the on-device installer package (play =
+// com.android.vending, sideload = com.google.android.packageinstaller, …).
+const KNOWN_STORES = ['play', 'samsung', 'uptodown', 'fdroid', 'epic', 'facebook'];
 function computeSmartFolders(apps) {
+  const prefix = (...ps) => apps.filter((a) => ps.some((p) => a.package?.startsWith(p)));
+  const source = (...ss) => apps.filter((a) => ss.includes(a.installSource));
   const topBy = (key) => [...apps].sort((a, b) => b[key] - a[key]).slice(0, 7);
-  const bySource = Object.keys(INSTALL_SOURCE_LABELS).map((src) => ({
-    id: `smart_src_${src}`,
-    label: INSTALL_SOURCE_LABELS[src],
-    apps: apps.filter((a) => a.installSource === src),
-  }));
+  const soonestBy = (key) => [...apps].sort((a, b) => a[key] - b[key]).slice(0, 7);
   return [
-    { id: 'smart_cloud', label: 'Cloud', apps: apps.filter((a) => a.package?.startsWith('com.diegonmarcos.')) },
-    ...bySource,
-    { id: 'smart_new', label: 'New Apps', apps: apps.filter((a) => a.firstInstallDaysAgo <= 14) },
-    { id: 'smart_recent48', label: 'Recent 48h', apps: apps.filter((a) => a.lastUsedHoursAgo <= 48) },
-    { id: 'smart_recent7d', label: 'Recent 7d', apps: apps.filter((a) => a.lastUsedHoursAgo <= 168) },
-    { id: 'smart_top_opens', label: 'Top 7 Open', apps: topBy('opens7d') },
-    { id: 'smart_top_battery', label: 'Top 7 Battery', apps: topBy('batteryPct7d') },
-    { id: 'smart_top_time', label: 'Top 7 Time', apps: topBy('usageMin7d') },
+    { id: 'cloud', group: 'Dev', label: 'Cloud', apps: prefix('com.diegonmarcos.') },
+    { id: 'samsung', group: 'Dev', label: 'Samsung', apps: prefix('com.sec.', 'com.samsung.') },
+    { id: 'google', group: 'Dev', label: 'Google', apps: prefix('com.google.', 'com.android.vending') },
+    { id: 'google_play', group: 'Stores', label: 'Google Play', apps: source('play') },
+    { id: 'fdroid', group: 'Stores', label: 'F-Droid · Sideload', apps: source('fdroid', 'sideload') },
+    { id: 'uptodown', group: 'Stores', label: 'Uptodown', apps: source('uptodown') },
+    { id: 'direct', group: 'Stores', label: 'Direct', apps: apps.filter((a) => !KNOWN_STORES.includes(a.installSource)) },
+    { id: 'new_apps', group: 'Usage', label: 'New Apps', apps: soonestBy('firstInstallDaysAgo') },
+    { id: 'recent7', group: 'Usage', label: 'Recent 7', apps: soonestBy('lastUsedHoursAgo') },
+    { id: 'recent48h', group: 'Usage', label: 'Recent 48h', apps: apps.filter((a) => a.lastUsedHoursAgo <= 48) },
+    { id: 'active_apps', group: 'Usage', label: 'Active Apps', apps: apps.filter((a) => a.lastUsedHoursAgo <= 2) },
+    { id: 'top_opened', group: 'Rank', label: 'Top 7 Open', apps: topBy('opens7d') },
+    { id: 'top_battery', group: 'Rank', label: 'Top 7 Battery', apps: topBy('batteryPct7d') },
+    { id: 'top_time_usage', group: 'Rank', label: 'Top 7 Time Usage', apps: topBy('usageMin7d') },
   ];
 }
+// Rendered AFTER the topical folders, with each rule filed under its group
+// header (Dev / Stores / Usage / Rank) exactly like PhoneSmartFolders groups
+// them on-device.
 function smartFoldersBody(smartFolders, rel) {
-  const blocks = smartFolders.map((f) => `
+  const groups = [...new Set(smartFolders.map((f) => f.group))];
+  const blocks = groups.map((group) => {
+    const folders = smartFolders.filter((f) => f.group === group).map((f) => `
             <section class="tile-group">
                 <h2 class="tile-group__title">${f.label} <span class="smart-folder__badge">${f.apps.length}</span></h2>
-                <div class="tile-grid tile-grid--dense" role="list">
+                <div class="tile-grid tile-grid--dense tile-grid--phone" role="list">
                     ${f.apps.map((a) => avatarTileHtml(a.name, rel, null)).join('\n                    ')}
                 </div>
             </section>`).join('\n');
+    return `<h3 class="smart-folders__group">${group}</h3>${folders}`;
+  }).join('\n');
   return `<section class="smart-folders">
                 <h2 class="tile-group__title">Smart Folders</h2>${blocks}
             </section>`;
@@ -83,7 +100,7 @@ function topicalFoldersBody(apps, phoneFolders, rel) {
     return `
             <section class="tile-group">
                 <h2 class="tile-group__title">${f.label} <span class="smart-folder__badge">${members.length}</span></h2>
-                <div class="tile-grid tile-grid--dense" role="list">
+                <div class="tile-grid tile-grid--dense tile-grid--phone" role="list">
                     ${members.map((a) => avatarTileHtml(a.name, rel, null)).join('\n                    ')}
                 </div>
             </section>`;
@@ -167,6 +184,12 @@ function avatarTileHtml(name, rel, href) {
 }
 
 // ── AggregatorStackFragment card rendering (Communication/Infos/Tools) ───
+// A grid-bodied card ({tiles} / {groups:[{tiles}]}) may declare its entries as
+// bare strings — the icon then comes from the owning group, exactly like the
+// real app's CloudTile(it.label, sub.icon, …).
+function cardGridTiles(g) {
+  return g.tiles.map((t) => (typeof t === 'string' ? { label: t, icon: g.icon } : { icon: g.icon, ...t }));
+}
 function cardHtml(card, rel) {
   if (card.kind === 'section_title') {
     return `<h2 class="stack-divider">${card.title}</h2>`;
@@ -197,6 +220,19 @@ function cardHtml(card, rel) {
     // Real: a single tappable header row, no body at all — the generic
     // skeleton here was pure invention with nothing behind it.
     body = '';
+  } else if (card.groups) {
+    // Real (kind=cloud_dashboard, AggregatorStackFragment.renderCloudDashboard):
+    // the card body is NOT prose — it's one sub-header per subgroup, each
+    // followed by a tile_columns-wide ICON GRID of that subgroup's entries,
+    // with the icon coming from the SUBGROUP (sub.icon) and the label from the
+    // entry. Container hosts are *.app (WireGuard-only, plus a live TCP-ping
+    // status light we have no web equivalent for), so those tiles render inert
+    // here; the external consoles keep their real link.
+    body = card.groups.map((g) => `<h3 class="tile-group__title">${g.label}</h3>
+                ${tileGridBody(cardGridTiles(g), rel, () => 'blue')}`).join('\n                ');
+  } else if (card.tiles) {
+    // Real (kind=link_grid / tile_row): body IS an icon grid (addIconGrid).
+    body = tileGridBody(cardGridTiles(card), rel, () => 'blue');
   } else if (card.kind === 'calendar_month') {
     // Real: a month grid with working prev/next chevrons, today
     // highlighted — pure date math, so this mounts client-side (see
@@ -264,7 +300,7 @@ function appListBody(groups, rel, footer, footerHref) {
   const blocks = groups.map((g) => `
             <section class="tile-group">
                 <h2 class="tile-group__title">${g.title}</h2>
-                <div class="tile-grid tile-grid--dense" role="list">
+                <div class="tile-grid tile-grid--dense tile-grid--phone" role="list">
                     ${g.apps.map((a) => avatarTileHtml(a.name, rel, null)).join('\n                    ')}
                 </div>
             </section>`).join('\n');

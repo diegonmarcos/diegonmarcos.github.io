@@ -66,6 +66,22 @@ a {
 // (+ overflow:hidden here and min-height/min-width:0 on .content, see
 // components/content.scss) forces .content to be the only scroll surface.
 .shell {
+    // ── Top chrome band geometry — single source of truth ────────────────
+    // The status strip, the two toolbar icons, the music island and the
+    // dynamic island are all position:absolute (see launcher/_islands.scss),
+    // so they take no space and .content has to reserve it by hand. That
+    // reservation used to be a hardcoded 118px that no longer matched the
+    // band it was supposed to clear (icons: top 68px + height 48px = 116px,
+    // i.e. 2px of slack), and nothing accounted for env(safe-area-inset-top)
+    // — with viewport-fit=cover the chrome shifts down by the notch inset on
+    // a real phone while the 118px did not, so the .page-tabs pill row ended
+    // up underneath the toolbar icons. Everything now derives from these
+    // four tokens instead: move the band and the content padding follows.
+    --safe-area-top: env(safe-area-inset-top, 0px);
+    --chrome-band-top: calc(var(--safe-area-top) + 68px);
+    --chrome-band-height: 48px; // .icon-btn / .toolbar-action, the tallest members of the band
+    --content-top: calc(var(--chrome-band-top) + var(--chrome-band-height) + 12px);
+
     position: relative;
     display: flex;
     flex-direction: column;

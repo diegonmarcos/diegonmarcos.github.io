@@ -19,6 +19,14 @@ const DEAD_ZONE_PX = 20;
 // SWIPE_THRESHOLD_PX drag-to-open-and-select gesture is untouched.
 const TAP_MAX_MS = 300;
 const TAP_MAX_MOVE_PX = 10;
+// After a tap's pointerup, the browser still dispatches the tap's synthetic
+// `click` — hit-tested against the DOM as it exists AFTER our pointerup
+// handler ran. By then openArc() has inserted the full-bleed
+// .edge-menu__scrim over the handle, so that click lands on the scrim and the
+// delegated close-on-scrim handler below would shut the arc again instantly
+// (the arc appears never to open at all). Swallow exactly one click if it
+// arrives inside this window after entering persistent mode.
+const GHOST_CLICK_MS = 400;
 const FLASH_MS = 220;
 const ARROW_HEAD_LENGTH_PX = 10;
 const ARROW_HEAD_ANGLE_RAD = Math.PI / 7;
@@ -108,6 +116,10 @@ export function initEdgeMenu(data: PortalData): void {
   // setHighlight()) and a click/tap on a node activates it through the same
   // commitIndex() path the swipe-release commit already uses.
   let persistent = false;
+  // Timestamp before which one incoming click is a tap's ghost click (see
+  // GHOST_CLICK_MS) and must be ignored rather than treated as a real
+  // scrim/node activation.
+  let suppressClickUntil = 0;
   let originX = 0;
   let originY = 0;
   let currentItems: ArcItem[] = [];
@@ -133,11 +145,13 @@ export function initEdgeMenu(data: PortalData): void {
 
   function enterPersistentMode(): void {
     persistent = true;
+    suppressClickUntil = Date.now() + GHOST_CLICK_MS;
   }
 
   function closeMenu(): void {
     isOpen = false;
     persistent = false;
+    suppressClickUntil = 0;
     currentItems = [];
     currentAngles = [];
     nodeEls = [];
@@ -367,6 +381,10 @@ export function initEdgeMenu(data: PortalData): void {
 
   menuEl.addEventListener('click', (e) => {
     if (!isOpen) return;
+    if (Date.now() < suppressClickUntil) {
+      suppressClickUntil = 0;
+      return;
+    }
     const target = e.target;
     if (!(target instanceof HTMLElement)) return;
     if (target.closest('.edge-menu__scrim')) {

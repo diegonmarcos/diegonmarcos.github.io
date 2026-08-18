@@ -10,7 +10,12 @@
     min-width: 0;  // let wide inner content (tab strips, grids) clip/scroll here, not overflow the page
     overflow-y: auto;
     overflow-x: hidden;
-    padding: 118px 12px 96px; // clears .toolbar-island (top:68px + height:56px, see _islands.scss)
+    // Reserves the whole absolutely-positioned top chrome band + a 12px gap,
+    // derived from the --chrome-band-* tokens on .shell (see _base.scss) so
+    // the first child (.page-tabs on tabbed pages) always starts below the
+    // toolbar icons instead of under them. z-index:1 vs the islands' 10/11
+    // keeps content scrolling UNDER the chrome, like the Android toolbar.
+    padding: var(--content-top) 12px 96px;
     position: relative;
     z-index: 1;
     // Flex column so .site-footer (last child, see generate-pages.mjs's

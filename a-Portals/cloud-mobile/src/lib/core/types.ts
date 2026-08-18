@@ -45,7 +45,10 @@ export interface AppRef {
   real?: boolean;
   // Simulated Android metadata — deterministic mock values, no live device API.
   package?: string;
-  installSource?: 'play' | 'fdroid' | 'uptodown' | 'direct';
+  // Short token for the on-device installer package: play =
+  // com.android.vending, samsung = com.sec.android.app.samsungapps, sideload
+  // = com.google.android.packageinstaller, direct = no owning store.
+  installSource?: 'play' | 'samsung' | 'fdroid' | 'sideload' | 'uptodown' | 'direct';
   firstInstallDaysAgo?: number;
   lastUsedHoursAgo?: number;
   opens7d?: number;

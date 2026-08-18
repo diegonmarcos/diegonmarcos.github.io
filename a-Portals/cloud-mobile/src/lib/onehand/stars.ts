@@ -67,6 +67,14 @@ const MOVE_THRESHOLD_PX = 6;
 // keeps the existing behavior untouched.
 const TAP_MAX_MS = 300;
 const TAP_MAX_MOVE_PX = 10;
+// After a tap's pointerup, the browser still dispatches the tap's synthetic
+// `click` — hit-tested against the DOM as it exists AFTER our pointerup
+// handler ran. By then renderItems() has inserted the full-bleed
+// .radial-menu__scrim over the star, so that click lands on the scrim and the
+// delegated close-on-scrim handler below would shut the menu again instantly
+// (the menu appears never to open at all). Swallow exactly one click if it
+// arrives inside this window after entering persistent mode.
+const GHOST_CLICK_MS = 400;
 const FLASH_MS = 220;
 const TWO_PI = Math.PI * 2;
 // Follow-finger arrow (Sirius only) — arrowhead geometry.
@@ -194,6 +202,10 @@ export function initStars(data: PortalData): void {
   // activates it through the same commitIndex()/goBack() paths the
   // drag-release commit already uses.
   let persistent = false;
+  // Timestamp before which one incoming click is a tap's ghost click (see
+  // GHOST_CLICK_MS) and must be ignored rather than treated as a real
+  // scrim/node activation.
+  let suppressClickUntil = 0;
   let originX = 0;
   let originY = 0;
   let currentItems: RadialItem[] = [];
@@ -340,11 +352,13 @@ export function initStars(data: PortalData): void {
 
   function enterPersistentMode(): void {
     persistent = true;
+    suppressClickUntil = Date.now() + GHOST_CLICK_MS;
   }
 
   function closeMenu(): void {
     isOpen = false;
     persistent = false;
+    suppressClickUntil = 0;
     siriusStack = [];
     currentItems = [];
     currentAngles = [];
@@ -520,6 +534,10 @@ export function initStars(data: PortalData): void {
 
   menuEl.addEventListener('click', (e) => {
     if (!isOpen) return;
+    if (Date.now() < suppressClickUntil) {
+      suppressClickUntil = 0;
+      return;
+    }
     const target = e.target;
     if (!(target instanceof HTMLElement)) return;
     if (target.closest('.radial-menu__scrim')) {

@@ -20,7 +20,10 @@
     flex-direction: column;
     align-items: center;
     gap: 2px;
-    padding: 4px 16px 6px;
+    // Top padding carries the notch inset (viewport-fit=cover means the
+    // shell paints under the system status bar), so the chips/cutout row
+    // clears the punch-hole on a real device.
+    padding: calc(4px + var(--safe-area-top)) 16px 6px;
     font-family: monospace;
     font-size: 9px;
     font-weight: 700;
@@ -74,16 +77,16 @@
 
 // No shared toolbar bar — each icon floats independently on its own side,
 // same "each is its own floating chip" language as the stars, not one
-// connecting pill spanning the width. Same vertical position (top:68px,
-// clearing the status-strip — see _content.scss's matching padding-top)
+// connecting pill spanning the width. Same vertical position
+// (--chrome-band-top, clearing the status-strip— see _content.scss's matching padding-top)
 // and Material-spec sizing (48dp touch target / 24dp glyph) either way,
 // just without a shared background linking them.
 .icon-btn,
 .toolbar-action {
     position: absolute;
-    top: 68px;
+    top: var(--chrome-band-top);
     width: 48px;
-    height: 48px;
+    height: var(--chrome-band-height);
     @include flex-center;
     @include glass-island;
     // These are circular icon-background chips, not wide-bar islands — the
@@ -157,7 +160,7 @@
 // mock now-playing content (same "real markup, mocked data" treatment as
 // the status-strip's device stats).
 .music-island {
-    top: 68px;
+    top: var(--chrome-band-top);
     width: 90px;
     height: 16px;
     @include flex-row(flex-start, center, 4px);
@@ -207,7 +210,7 @@
 // (top:68px + (56px - 22px)/2 ≈ 85px) — sits just below music-island
 // (68-84px) without overlapping it.
 .dynamic-island {
-    top: 85px;
+    top: calc(var(--chrome-band-top) + 17px);
     width: 100%;
     max-width: 120px;
     height: 22px;

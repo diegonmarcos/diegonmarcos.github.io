@@ -4,87 +4,162 @@
   var g = (typeof globalThis !== "undefined") ? globalThis : (typeof window !== "undefined" ? window : this);
   g.PORTAL_DATA = g.PORTAL_DATA || {};
   g.PORTAL_DATA["mock-apps"] = {
-  "_doc": "Single source of truth for the Suite > Phone tab's installed-app grid. No real Android usage/package API exists on the web, so this is explicitly mock data \u2014 but it IS the data: generate-pages.mjs derives suite/phone/quickmarks (pinned apps, grouped by category) AND suite/phone/all (every app, grouped by Smart Folders + topical phoneFolders) from this one list, rather than hand-duplicating per-view arrays. 'real' entries are the actual packages transcribed from ea_cloud-superapp's phone_app_groups (formerly split between the flat list and a per-category 'folders' array \u2014 now merged into one flat list, each with a folderId); 'pinned:false' entries pad the app drawer out to a believable ~100-app full Android install, complete with simulated per-app usage metadata (package/installSource/firstInstallDaysAgo/lastUsedHoursAgo/opens7d/batteryPct7d/usageMin7d) that generate-pages.mjs's Smart Folders (Cloud/Play/F-Droid/Uptodown/Direct/New/Recent/Top-7s) are computed from at build time \u2014 deterministic literals, not randomly generated.",
+  "_doc": "Single source of truth for the Suite > Phone tab's installed-app grid. No real Android usage/package API exists on the web, so this is explicitly mock data — but it IS the data: generate-pages.mjs derives suite/phone/quickmarks (pinned apps, grouped by category) AND suite/phone/all (every app, grouped by the 31 topical phoneFolders + the 13 Smart Folders) from this one list, rather than hand-duplicating per-view arrays. phoneFolders is a verbatim transcription of ea_cloud-superapp's build.json ui.phone_folders — same ids, same labels including the user's prefix sort glyphs (_#, _, -, .#, .a, .b, >), same order keys, including both sinks (_New Apps = automatic, No Categorie = manual). Every app's folderId is the folder PhoneAppClassifier's match_keywords would put it in on-device. 'real' entries are actual packages transcribed from the APK; 'pinned:false' entries pad the drawer out to a believable full Android install, complete with simulated per-app usage metadata (package/installSource/firstInstallDaysAgo/lastUsedHoursAgo/opens7d/batteryPct7d/usageMin7d) that the Smart Folders (Dev/Stores/Usage/Rank groups, mirroring ui.phone_smart_folders) are computed from at build time — deterministic literals, not randomly generated.",
   "phoneFolders": [
     {
       "id": "sys_top",
-      "label": "#SYSTEM",
-      "order": 1
+      "label": "_#SYSTEM",
+      "order": 0
     },
     {
-      "id": "a_llm",
-      "label": ".a0_LLM",
-      "order": 2
+      "id": "sys_security",
+      "label": "_Security",
+      "order": 12
     },
     {
-      "id": "dev",
-      "label": "$DevTools",
-      "order": 3
+      "id": "sys_info",
+      "label": "_Sys_Info",
+      "order": 13
+    },
+    {
+      "id": "sys_tools",
+      "label": "_SysTools",
+      "order": 14
     },
     {
       "id": "civ_banking",
       "label": "-Banking",
-      "order": 4
+      "order": 20
     },
     {
-      "id": "shop",
-      "label": "=Shopping",
-      "order": 5
+      "id": "civ_gov_ids",
+      "label": "-Gov|IDs",
+      "order": 21
     },
     {
-      "id": "comm",
-      "label": "@Comms",
-      "order": 6
+      "id": "civ_health",
+      "label": "-Health",
+      "order": 22
     },
     {
-      "id": "soc_fun",
+      "id": "civ_maps",
+      "label": "-Maps",
+      "order": 23
+    },
+    {
+      "id": "civ_market",
+      "label": "-Market",
+      "order": 24
+    },
+    {
+      "id": "civ_real",
+      "label": "-Real Estate",
+      "order": 25
+    },
+    {
+      "id": "civ_trip",
+      "label": "-Trans (Trip)",
+      "order": 26
+    },
+    {
+      "id": "civ_transp",
+      "label": "-Transp",
+      "order": 27
+    },
+    {
+      "id": "civ_utility",
+      "label": "-Utilities",
+      "order": 28
+    },
+    {
+      "id": "tools_top",
+      "label": ".#TOOLS",
+      "order": 30
+    },
+    {
+      "id": "a_llm",
+      "label": ".a0_LLM",
+      "order": 40
+    },
+    {
+      "id": "a_db_photos",
+      "label": ".a1_DataBase|Photos",
+      "order": 41
+    },
+    {
+      "id": "a_pages_notes",
+      "label": ".a2_Pages|Notes",
+      "order": 42
+    },
+    {
+      "id": "a_todo_cal",
+      "label": ".a3_Todo|Calendar",
+      "order": 43
+    },
+    {
+      "id": "a_ide_code",
+      "label": ".a4_IDE|Code",
+      "order": 44
+    },
+    {
+      "id": "a_math_time",
+      "label": ".a4_Math&Time",
+      "order": 45
+    },
+    {
+      "id": "b_comm",
+      "label": ".b0_Communication",
+      "order": 50
+    },
+    {
+      "id": "b_media",
+      "label": ".b1_Media",
+      "order": 51
+    },
+    {
+      "id": "b_learning",
+      "label": ".b2_Learning",
+      "order": 52
+    },
+    {
+      "id": "v_audio",
+      "label": ">Audio",
+      "order": 60
+    },
+    {
+      "id": "v_games",
+      "label": ">Games",
+      "order": 61
+    },
+    {
+      "id": "v_soc_events",
+      "label": ">Social.Events",
+      "order": 62
+    },
+    {
+      "id": "v_soc_feed",
+      "label": ">Social.Feed",
+      "order": 63
+    },
+    {
+      "id": "v_soc_fun",
       "label": ">Social.Fun",
-      "order": 7
+      "order": 64
     },
     {
-      "id": "media",
-      "label": "*Media",
-      "order": 8
-    },
-    {
-      "id": "cam_photo",
-      "label": "<Camera.Photo",
-      "order": 9
-    },
-    {
-      "id": "prod",
-      "label": "^Productivity",
-      "order": 10
-    },
-    {
-      "id": "maps_travel",
-      "label": "!Maps.Travel",
-      "order": 11
-    },
-    {
-      "id": "util",
-      "label": "%Utilities",
-      "order": 12
-    },
-    {
-      "id": "health",
-      "label": "&Health",
-      "order": 13
-    },
-    {
-      "id": "news",
-      "label": "?News",
-      "order": 14
+      "id": "v_soc_work",
+      "label": ">Social.Work",
+      "order": 65
     },
     {
       "id": "new_apps",
-      "label": "+New",
-      "order": 15
+      "label": "_New Apps",
+      "order": 98
     },
     {
       "id": "misc",
-      "label": "~Misc",
-      "order": 16
+      "label": "No Categorie",
+      "order": 99
     }
   ],
   "apps": [
@@ -131,7 +206,7 @@
       "opens7d": 99,
       "batteryPct7d": 23.0,
       "usageMin7d": 784,
-      "folderId": "dev"
+      "folderId": "sys_tools"
     },
     {
       "name": "Perplexity",
@@ -180,7 +255,7 @@
       "icon": "chat",
       "category": "AI",
       "pinned": false,
-      "package": "com.quora.poe",
+      "package": "com.poe.android",
       "installSource": "play",
       "firstInstallDaysAgo": 408,
       "lastUsedHoursAgo": 67,
@@ -202,7 +277,7 @@
       "opens7d": 17,
       "batteryPct7d": 3.9,
       "usageMin7d": 184,
-      "folderId": "comm"
+      "folderId": "b_comm"
     },
     {
       "name": "K-9 Mail",
@@ -217,7 +292,7 @@
       "opens7d": 11,
       "batteryPct7d": 1.3,
       "usageMin7d": 46,
-      "folderId": "comm"
+      "folderId": "b_comm"
     },
     {
       "name": "Mattermost",
@@ -232,7 +307,7 @@
       "opens7d": 123,
       "batteryPct7d": 22.1,
       "usageMin7d": 520,
-      "folderId": "comm"
+      "folderId": "b_comm"
     },
     {
       "name": "Beeper",
@@ -240,14 +315,14 @@
       "category": "Communications",
       "pinned": true,
       "real": true,
-      "package": "chat.beeper.desktop",
+      "package": "com.beeper.android",
       "installSource": "direct",
       "firstInstallDaysAgo": 499,
       "lastUsedHoursAgo": 38,
       "opens7d": 41,
       "batteryPct7d": 2.4,
       "usageMin7d": 229,
-      "folderId": "comm"
+      "folderId": "b_comm"
     },
     {
       "name": "Dialer",
@@ -262,7 +337,7 @@
       "opens7d": 33,
       "batteryPct7d": 3.9,
       "usageMin7d": 220,
-      "folderId": "comm"
+      "folderId": "civ_utility"
     },
     {
       "name": "Phone",
@@ -277,7 +352,7 @@
       "opens7d": 64,
       "batteryPct7d": 18.9,
       "usageMin7d": 466,
-      "folderId": "comm"
+      "folderId": "civ_utility"
     },
     {
       "name": "Signal",
@@ -291,7 +366,7 @@
       "opens7d": 101,
       "batteryPct7d": 23.0,
       "usageMin7d": 375,
-      "folderId": "comm"
+      "folderId": "b_comm"
     },
     {
       "name": "Slack",
@@ -305,7 +380,7 @@
       "opens7d": 22,
       "batteryPct7d": 2.4,
       "usageMin7d": 165,
-      "folderId": "comm"
+      "folderId": "b_comm"
     },
     {
       "name": "Discord",
@@ -319,7 +394,7 @@
       "opens7d": 40,
       "batteryPct7d": 6.6,
       "usageMin7d": 192,
-      "folderId": "soc_fun"
+      "folderId": "b_comm"
     },
     {
       "name": "Zulip",
@@ -333,7 +408,7 @@
       "opens7d": 11,
       "batteryPct7d": 2.1,
       "usageMin7d": 54,
-      "folderId": "comm"
+      "folderId": "b_comm"
     },
     {
       "name": "Obsidian",
@@ -348,7 +423,7 @@
       "opens7d": 15,
       "batteryPct7d": 5.0,
       "usageMin7d": 55,
-      "folderId": "prod"
+      "folderId": "a_pages_notes"
     },
     {
       "name": "Gallery",
@@ -363,7 +438,7 @@
       "opens7d": 42,
       "batteryPct7d": 2.4,
       "usageMin7d": 256,
-      "folderId": "cam_photo"
+      "folderId": "a_db_photos"
     },
     {
       "name": "Calendar",
@@ -378,7 +453,7 @@
       "opens7d": 42,
       "batteryPct7d": 4.7,
       "usageMin7d": 119,
-      "folderId": "prod"
+      "folderId": "a_todo_cal"
     },
     {
       "name": "Contacts",
@@ -393,7 +468,7 @@
       "opens7d": 10,
       "batteryPct7d": 0.3,
       "usageMin7d": 31,
-      "folderId": "comm"
+      "folderId": "civ_utility"
     },
     {
       "name": "Tidal",
@@ -408,7 +483,7 @@
       "opens7d": 48,
       "batteryPct7d": 6.4,
       "usageMin7d": 247,
-      "folderId": "media"
+      "folderId": "b_media"
     },
     {
       "name": "Bitwarden",
@@ -423,7 +498,7 @@
       "opens7d": 11,
       "batteryPct7d": 1.7,
       "usageMin7d": 38,
-      "folderId": "sys_top"
+      "folderId": "sys_security"
     },
     {
       "name": "Spotify",
@@ -437,7 +512,7 @@
       "opens7d": 79,
       "batteryPct7d": 19.1,
       "usageMin7d": 667,
-      "folderId": "media"
+      "folderId": "b_media"
     },
     {
       "name": "Notion",
@@ -451,7 +526,7 @@
       "opens7d": 1,
       "batteryPct7d": 1.7,
       "usageMin7d": 17,
-      "folderId": "prod"
+      "folderId": "a_pages_notes"
     },
     {
       "name": "Todoist",
@@ -465,7 +540,7 @@
       "opens7d": 11,
       "batteryPct7d": 0.4,
       "usageMin7d": 23,
-      "folderId": "prod"
+      "folderId": "a_todo_cal"
     },
     {
       "name": "1Password",
@@ -479,7 +554,7 @@
       "opens7d": 12,
       "batteryPct7d": 0.6,
       "usageMin7d": 61,
-      "folderId": "sys_top"
+      "folderId": "sys_security"
     },
     {
       "name": "Brave",
@@ -494,7 +569,7 @@
       "opens7d": 67,
       "batteryPct7d": 21.1,
       "usageMin7d": 421,
-      "folderId": "util"
+      "folderId": "civ_utility"
     },
     {
       "name": "News",
@@ -509,7 +584,7 @@
       "opens7d": 10,
       "batteryPct7d": 0.5,
       "usageMin7d": 22,
-      "folderId": "news"
+      "folderId": "v_soc_feed"
     },
     {
       "name": "Maps",
@@ -524,7 +599,7 @@
       "opens7d": 116,
       "batteryPct7d": 16.7,
       "usageMin7d": 475,
-      "folderId": "maps_travel"
+      "folderId": "civ_maps"
     },
     {
       "name": "Wallet",
@@ -554,7 +629,7 @@
       "opens7d": 15,
       "batteryPct7d": 3.7,
       "usageMin7d": 204,
-      "folderId": "util"
+      "folderId": "civ_utility"
     },
     {
       "name": "Clock",
@@ -569,7 +644,7 @@
       "opens7d": 49,
       "batteryPct7d": 6.9,
       "usageMin7d": 154,
-      "folderId": "util"
+      "folderId": "civ_utility"
     },
     {
       "name": "Calculator",
@@ -584,7 +659,7 @@
       "opens7d": 5,
       "batteryPct7d": 0.5,
       "usageMin7d": 27,
-      "folderId": "util"
+      "folderId": "civ_utility"
     },
     {
       "name": "Firefox",
@@ -598,7 +673,7 @@
       "opens7d": 37,
       "batteryPct7d": 2.0,
       "usageMin7d": 90,
-      "folderId": "util"
+      "folderId": "civ_utility"
     },
     {
       "name": "Uber",
@@ -612,7 +687,7 @@
       "opens7d": 2,
       "batteryPct7d": 0.3,
       "usageMin7d": 25,
-      "folderId": "maps_travel"
+      "folderId": "civ_transp"
     },
     {
       "name": "Weather",
@@ -626,7 +701,7 @@
       "opens7d": 1,
       "batteryPct7d": 1.8,
       "usageMin7d": 39,
-      "folderId": "util"
+      "folderId": "civ_maps"
     },
     {
       "name": "Camera",
@@ -640,7 +715,7 @@
       "opens7d": 40,
       "batteryPct7d": 6.7,
       "usageMin7d": 181,
-      "folderId": "cam_photo"
+      "folderId": "civ_utility"
     },
     {
       "name": "Cloud SuperApp",
@@ -655,7 +730,7 @@
       "opens7d": 78,
       "batteryPct7d": 18.8,
       "usageMin7d": 748,
-      "folderId": "sys_top"
+      "folderId": "sys_tools"
     },
     {
       "name": "Grafana",
@@ -669,7 +744,7 @@
       "opens7d": 3,
       "batteryPct7d": 1.3,
       "usageMin7d": 52,
-      "folderId": "sys_top"
+      "folderId": "sys_info"
     },
     {
       "name": "Portainer",
@@ -683,7 +758,7 @@
       "opens7d": 7,
       "batteryPct7d": 2.1,
       "usageMin7d": 75,
-      "folderId": "sys_top"
+      "folderId": "sys_tools"
     },
     {
       "name": "Uptime Kuma",
@@ -697,7 +772,7 @@
       "opens7d": 1,
       "batteryPct7d": 0.7,
       "usageMin7d": 12,
-      "folderId": "sys_top"
+      "folderId": "sys_info"
     },
     {
       "name": "Home Assistant",
@@ -711,7 +786,7 @@
       "opens7d": 9,
       "batteryPct7d": 0.6,
       "usageMin7d": 62,
-      "folderId": "sys_top"
+      "folderId": "sys_tools"
     },
     {
       "name": "Play Store",
@@ -726,7 +801,7 @@
       "opens7d": 37,
       "batteryPct7d": 2.6,
       "usageMin7d": 231,
-      "folderId": "sys_top"
+      "folderId": "sys_tools"
     },
     {
       "name": "F-Droid",
@@ -741,7 +816,7 @@
       "opens7d": 16,
       "batteryPct7d": 6.0,
       "usageMin7d": 121,
-      "folderId": "sys_top"
+      "folderId": "sys_tools"
     },
     {
       "name": "Settings",
@@ -770,7 +845,7 @@
       "opens7d": 12,
       "batteryPct7d": 1.9,
       "usageMin7d": 40,
-      "folderId": "dev"
+      "folderId": "a_ide_code"
     },
     {
       "name": "Tasker",
@@ -784,7 +859,7 @@
       "opens7d": 7,
       "batteryPct7d": 1.4,
       "usageMin7d": 58,
-      "folderId": "util"
+      "folderId": "sys_tools"
     },
     {
       "name": "Nova Launcher",
@@ -812,7 +887,7 @@
       "opens7d": 12,
       "batteryPct7d": 2.0,
       "usageMin7d": 31,
-      "folderId": "sys_top"
+      "folderId": "civ_utility"
     },
     {
       "name": "X-plore",
@@ -826,7 +901,7 @@
       "opens7d": 6,
       "batteryPct7d": 0.8,
       "usageMin7d": 64,
-      "folderId": "sys_top"
+      "folderId": "civ_utility"
     },
     {
       "name": "My Files",
@@ -840,7 +915,7 @@
       "opens7d": 10,
       "batteryPct7d": 0.3,
       "usageMin7d": 43,
-      "folderId": "sys_top"
+      "folderId": "civ_utility"
     },
     {
       "name": "Google Docs",
@@ -854,7 +929,7 @@
       "opens7d": 5,
       "batteryPct7d": 1.9,
       "usageMin7d": 57,
-      "folderId": "prod"
+      "folderId": "a_db_photos"
     },
     {
       "name": "Git Sync",
@@ -868,7 +943,7 @@
       "opens7d": 2,
       "batteryPct7d": 0.7,
       "usageMin7d": 9,
-      "folderId": "dev"
+      "folderId": "a_ide_code"
     },
     {
       "name": "Acode",
@@ -882,7 +957,7 @@
       "opens7d": 10,
       "batteryPct7d": 0.5,
       "usageMin7d": 54,
-      "folderId": "dev"
+      "folderId": "a_ide_code"
     },
     {
       "name": "Turbo Editor",
@@ -896,7 +971,7 @@
       "opens7d": 2,
       "batteryPct7d": 1.6,
       "usageMin7d": 82,
-      "folderId": "dev"
+      "folderId": "a_ide_code"
     },
     {
       "name": "Samsung Email",
@@ -910,7 +985,7 @@
       "opens7d": 10,
       "batteryPct7d": 0.8,
       "usageMin7d": 34,
-      "folderId": "comm"
+      "folderId": "b_comm"
     },
     {
       "name": "WhatsApp Business",
@@ -924,7 +999,7 @@
       "opens7d": 47,
       "batteryPct7d": 5.4,
       "usageMin7d": 84,
-      "folderId": "comm"
+      "folderId": "b_comm"
     },
     {
       "name": "Gmail",
@@ -938,7 +1013,7 @@
       "opens7d": 116,
       "batteryPct7d": 12.2,
       "usageMin7d": 545,
-      "folderId": "comm"
+      "folderId": "b_comm"
     },
     {
       "name": "Telegram",
@@ -952,7 +1027,7 @@
       "opens7d": 97,
       "batteryPct7d": 15.1,
       "usageMin7d": 836,
-      "folderId": "comm"
+      "folderId": "b_comm"
     },
     {
       "name": "Instagram",
@@ -966,7 +1041,7 @@
       "opens7d": 125,
       "batteryPct7d": 18.5,
       "usageMin7d": 792,
-      "folderId": "soc_fun"
+      "folderId": "v_soc_feed"
     },
     {
       "name": "LinkedIn",
@@ -980,7 +1055,7 @@
       "opens7d": 4,
       "batteryPct7d": 1.5,
       "usageMin7d": 36,
-      "folderId": "soc_fun"
+      "folderId": "v_soc_work"
     },
     {
       "name": "WhatsApp",
@@ -994,7 +1069,7 @@
       "opens7d": 62,
       "batteryPct7d": 21.7,
       "usageMin7d": 467,
-      "folderId": "comm"
+      "folderId": "b_comm"
     },
     {
       "name": "Viber",
@@ -1008,7 +1083,7 @@
       "opens7d": 4,
       "batteryPct7d": 1.1,
       "usageMin7d": 30,
-      "folderId": "comm"
+      "folderId": "b_comm"
     },
     {
       "name": "Skype",
@@ -1022,7 +1097,7 @@
       "opens7d": 1,
       "batteryPct7d": 0.6,
       "usageMin7d": 6,
-      "folderId": "comm"
+      "folderId": "b_comm"
     },
     {
       "name": "Element",
@@ -1036,7 +1111,7 @@
       "opens7d": 10,
       "batteryPct7d": 1.3,
       "usageMin7d": 15,
-      "folderId": "comm"
+      "folderId": "b_comm"
     },
     {
       "name": "Facebook",
@@ -1050,7 +1125,7 @@
       "opens7d": 23,
       "batteryPct7d": 6.3,
       "usageMin7d": 87,
-      "folderId": "soc_fun"
+      "folderId": "v_soc_fun"
     },
     {
       "name": "Messenger",
@@ -1064,7 +1139,7 @@
       "opens7d": 18,
       "batteryPct7d": 6.7,
       "usageMin7d": 257,
-      "folderId": "soc_fun"
+      "folderId": "b_comm"
     },
     {
       "name": "Reddit",
@@ -1078,7 +1153,7 @@
       "opens7d": 45,
       "batteryPct7d": 7.3,
       "usageMin7d": 197,
-      "folderId": "soc_fun"
+      "folderId": "v_soc_feed"
     },
     {
       "name": "TikTok",
@@ -1092,7 +1167,7 @@
       "opens7d": 143,
       "batteryPct7d": 14.3,
       "usageMin7d": 648,
-      "folderId": "soc_fun"
+      "folderId": "v_soc_feed"
     },
     {
       "name": "Snapchat",
@@ -1106,7 +1181,7 @@
       "opens7d": 20,
       "batteryPct7d": 6.5,
       "usageMin7d": 46,
-      "folderId": "soc_fun"
+      "folderId": "v_soc_fun"
     },
     {
       "name": "X",
@@ -1120,7 +1195,7 @@
       "opens7d": 34,
       "batteryPct7d": 6.6,
       "usageMin7d": 164,
-      "folderId": "soc_fun"
+      "folderId": "v_soc_feed"
     },
     {
       "name": "Pinterest",
@@ -1134,7 +1209,7 @@
       "opens7d": 2,
       "batteryPct7d": 1.1,
       "usageMin7d": 11,
-      "folderId": "soc_fun"
+      "folderId": "v_soc_fun"
     },
     {
       "name": "YouTube",
@@ -1148,7 +1223,7 @@
       "opens7d": 102,
       "batteryPct7d": 15.6,
       "usageMin7d": 325,
-      "folderId": "media"
+      "folderId": "b_media"
     },
     {
       "name": "YouTube Music",
@@ -1162,7 +1237,7 @@
       "opens7d": 10,
       "batteryPct7d": 4.5,
       "usageMin7d": 270,
-      "folderId": "media"
+      "folderId": "b_media"
     },
     {
       "name": "Netflix",
@@ -1176,7 +1251,7 @@
       "opens7d": 35,
       "batteryPct7d": 3.1,
       "usageMin7d": 264,
-      "folderId": "media"
+      "folderId": "b_media"
     },
     {
       "name": "Plex",
@@ -1190,7 +1265,7 @@
       "opens7d": 3,
       "batteryPct7d": 0.9,
       "usageMin7d": 53,
-      "folderId": "media"
+      "folderId": "b_media"
     },
     {
       "name": "VLC",
@@ -1204,7 +1279,7 @@
       "opens7d": 5,
       "batteryPct7d": 1.6,
       "usageMin7d": 55,
-      "folderId": "media"
+      "folderId": "b_media"
     },
     {
       "name": "SoundCloud",
@@ -1218,7 +1293,7 @@
       "opens7d": 9,
       "batteryPct7d": 2.1,
       "usageMin7d": 42,
-      "folderId": "media"
+      "folderId": "b_media"
     },
     {
       "name": "Google Photos",
@@ -1232,7 +1307,7 @@
       "opens7d": 45,
       "batteryPct7d": 4.9,
       "usageMin7d": 250,
-      "folderId": "cam_photo"
+      "folderId": "a_db_photos"
     },
     {
       "name": "Snapseed",
@@ -1246,7 +1321,7 @@
       "opens7d": 11,
       "batteryPct7d": 0.3,
       "usageMin7d": 33,
-      "folderId": "cam_photo"
+      "folderId": "a_db_photos"
     },
     {
       "name": "Open Camera",
@@ -1260,7 +1335,7 @@
       "opens7d": 7,
       "batteryPct7d": 0.3,
       "usageMin7d": 5,
-      "folderId": "cam_photo"
+      "folderId": "a_db_photos"
     },
     {
       "name": "OsmAnd",
@@ -1274,7 +1349,7 @@
       "opens7d": 38,
       "batteryPct7d": 3.8,
       "usageMin7d": 242,
-      "folderId": "maps_travel"
+      "folderId": "civ_maps"
     },
     {
       "name": "Waze",
@@ -1288,7 +1363,7 @@
       "opens7d": 45,
       "batteryPct7d": 4.4,
       "usageMin7d": 247,
-      "folderId": "maps_travel"
+      "folderId": "civ_maps"
     },
     {
       "name": "Booking.com",
@@ -1302,7 +1377,7 @@
       "opens7d": 3,
       "batteryPct7d": 0.7,
       "usageMin7d": 31,
-      "folderId": "maps_travel"
+      "folderId": "civ_trip"
     },
     {
       "name": "Airbnb",
@@ -1316,7 +1391,7 @@
       "opens7d": 9,
       "batteryPct7d": 0.3,
       "usageMin7d": 29,
-      "folderId": "maps_travel"
+      "folderId": "civ_trip"
     },
     {
       "name": "Citymapper",
@@ -1330,7 +1405,7 @@
       "opens7d": 3,
       "batteryPct7d": 1.2,
       "usageMin7d": 36,
-      "folderId": "new_apps"
+      "folderId": "civ_transp"
     },
     {
       "name": "Chase Bank",
@@ -1400,7 +1475,7 @@
       "opens7d": 21,
       "batteryPct7d": 4.0,
       "usageMin7d": 194,
-      "folderId": "shop"
+      "folderId": "civ_market"
     },
     {
       "name": "eBay",
@@ -1414,7 +1489,7 @@
       "opens7d": 4,
       "batteryPct7d": 1.7,
       "usageMin7d": 77,
-      "folderId": "shop"
+      "folderId": "civ_market"
     },
     {
       "name": "Etsy",
@@ -1428,7 +1503,7 @@
       "opens7d": 2,
       "batteryPct7d": 0.3,
       "usageMin7d": 6,
-      "folderId": "shop"
+      "folderId": "civ_market"
     },
     {
       "name": "BBC News",
@@ -1442,7 +1517,7 @@
       "opens7d": 4,
       "batteryPct7d": 1.4,
       "usageMin7d": 66,
-      "folderId": "news"
+      "folderId": "v_soc_feed"
     },
     {
       "name": "Feedly",
@@ -1456,7 +1531,7 @@
       "opens7d": 10,
       "batteryPct7d": 1.1,
       "usageMin7d": 49,
-      "folderId": "news"
+      "folderId": "v_soc_feed"
     },
     {
       "name": "Hacker News",
@@ -1470,7 +1545,7 @@
       "opens7d": 12,
       "batteryPct7d": 1.7,
       "usageMin7d": 73,
-      "folderId": "news"
+      "folderId": "v_soc_feed"
     },
     {
       "name": "Google Fit",
@@ -1484,7 +1559,7 @@
       "opens7d": 8,
       "batteryPct7d": 0.3,
       "usageMin7d": 32,
-      "folderId": "health"
+      "folderId": "civ_health"
     },
     {
       "name": "Strava",
@@ -1498,7 +1573,7 @@
       "opens7d": 33,
       "batteryPct7d": 2.4,
       "usageMin7d": 121,
-      "folderId": "health"
+      "folderId": "civ_health"
     },
     {
       "name": "Headspace",
@@ -1512,7 +1587,7 @@
       "opens7d": 1,
       "batteryPct7d": 0.2,
       "usageMin7d": 10,
-      "folderId": "health"
+      "folderId": "civ_health"
     },
     {
       "name": "Google Drive",
@@ -1526,7 +1601,7 @@
       "opens7d": 19,
       "batteryPct7d": 5.5,
       "usageMin7d": 164,
-      "folderId": "prod"
+      "folderId": "a_db_photos"
     },
     {
       "name": "Google Sheets",
@@ -1540,7 +1615,7 @@
       "opens7d": 8,
       "batteryPct7d": 0.5,
       "usageMin7d": 35,
-      "folderId": "prod"
+      "folderId": "a_db_photos"
     },
     {
       "name": "Trello",
@@ -1554,7 +1629,7 @@
       "opens7d": 3,
       "batteryPct7d": 0.3,
       "usageMin7d": 52,
-      "folderId": "prod"
+      "folderId": "a_todo_cal"
     },
     {
       "name": "Keep Notes",
@@ -1568,7 +1643,7 @@
       "opens7d": 9,
       "batteryPct7d": 0.3,
       "usageMin7d": 20,
-      "folderId": "prod"
+      "folderId": "a_pages_notes"
     },
     {
       "name": "VS Code",
@@ -1582,7 +1657,7 @@
       "opens7d": 6,
       "batteryPct7d": 1.1,
       "usageMin7d": 53,
-      "folderId": "dev"
+      "folderId": "a_ide_code"
     },
     {
       "name": "Termux:API",
@@ -1596,7 +1671,7 @@
       "opens7d": 3,
       "batteryPct7d": 1.8,
       "usageMin7d": 21,
-      "folderId": "new_apps"
+      "folderId": "sys_tools"
     },
     {
       "name": "Syncthing",
@@ -1610,7 +1685,7 @@
       "opens7d": 8,
       "batteryPct7d": 0.7,
       "usageMin7d": 42,
-      "folderId": "dev"
+      "folderId": "sys_tools"
     },
     {
       "name": "IceRaven",
@@ -1624,7 +1699,7 @@
       "opens7d": 5,
       "batteryPct7d": 1.8,
       "usageMin7d": 17,
-      "folderId": "new_apps"
+      "folderId": "civ_utility"
     },
     {
       "name": "Duolingo",
@@ -1638,7 +1713,7 @@
       "opens7d": 6,
       "batteryPct7d": 1.5,
       "usageMin7d": 41,
-      "folderId": "util"
+      "folderId": "b_learning"
     },
     {
       "name": "Google Authenticator",
@@ -1652,7 +1727,7 @@
       "opens7d": 17,
       "batteryPct7d": 7.0,
       "usageMin7d": 156,
-      "folderId": "sys_top"
+      "folderId": "sys_security"
     },
     {
       "name": "Aegis Authenticator",
@@ -1666,7 +1741,7 @@
       "opens7d": 9,
       "batteryPct7d": 0.3,
       "usageMin7d": 9,
-      "folderId": "new_apps"
+      "folderId": "sys_security"
     },
     {
       "name": "WireGuard",
@@ -1680,7 +1755,7 @@
       "opens7d": 12,
       "batteryPct7d": 1.6,
       "usageMin7d": 54,
-      "folderId": "sys_top"
+      "folderId": "sys_security"
     },
     {
       "name": "Solitaire",
@@ -1694,7 +1769,7 @@
       "opens7d": 10,
       "batteryPct7d": 2.1,
       "usageMin7d": 78,
-      "folderId": "misc"
+      "folderId": "v_games"
     },
     {
       "name": "Wordle",
@@ -1708,7 +1783,7 @@
       "opens7d": 2,
       "batteryPct7d": 0.5,
       "usageMin7d": 60,
-      "folderId": "misc"
+      "folderId": "v_games"
     },
     {
       "name": "Chess.com",
@@ -1722,6 +1797,441 @@
       "opens7d": 3,
       "batteryPct7d": 2.4,
       "usageMin7d": 18,
+      "folderId": "v_games"
+    },
+    {
+      "name": "One UI Home",
+      "icon": "home",
+      "category": "Configs",
+      "pinned": false,
+      "real": false,
+      "package": "com.sec.android.app.launcher",
+      "installSource": "samsung",
+      "firstInstallDaysAgo": 1200,
+      "lastUsedHoursAgo": 1,
+      "opens7d": 240,
+      "batteryPct7d": 9.4,
+      "usageMin7d": 610,
+      "folderId": "sys_top"
+    },
+    {
+      "name": "Device Care",
+      "icon": "settings",
+      "category": "Configs",
+      "pinned": false,
+      "real": false,
+      "package": "com.samsung.android.lool",
+      "installSource": "samsung",
+      "firstInstallDaysAgo": 1200,
+      "lastUsedHoursAgo": 26,
+      "opens7d": 6,
+      "batteryPct7d": 1.1,
+      "usageMin7d": 18,
+      "folderId": "sys_top"
+    },
+    {
+      "name": "AccuBattery",
+      "icon": "chart",
+      "category": "Tools Dashboards",
+      "pinned": false,
+      "real": false,
+      "package": "com.digibites.accubattery",
+      "installSource": "play",
+      "firstInstallDaysAgo": 430,
+      "lastUsedHoursAgo": 9,
+      "opens7d": 14,
+      "batteryPct7d": 2.6,
+      "usageMin7d": 44,
+      "folderId": "sys_info"
+    },
+    {
+      "name": "CPU-Z",
+      "icon": "chart",
+      "category": "Tools Dashboards",
+      "pinned": false,
+      "real": false,
+      "package": "com.cpuid.cpu_z",
+      "installSource": "play",
+      "firstInstallDaysAgo": 380,
+      "lastUsedHoursAgo": 72,
+      "opens7d": 3,
+      "batteryPct7d": 0.4,
+      "usageMin7d": 9,
+      "folderId": "sys_info"
+    },
+    {
+      "name": "MiDGT",
+      "icon": "user",
+      "category": "Configs",
+      "pinned": false,
+      "real": false,
+      "package": "com.dgt.midgt",
+      "installSource": "play",
+      "firstInstallDaysAgo": 260,
+      "lastUsedHoursAgo": 96,
+      "opens7d": 2,
+      "batteryPct7d": 0.3,
+      "usageMin7d": 7,
+      "folderId": "civ_gov_ids"
+    },
+    {
+      "name": "AusweisApp",
+      "icon": "lock",
+      "category": "Configs",
+      "pinned": false,
+      "real": false,
+      "package": "com.governikus.ausweisapp2",
+      "installSource": "play",
+      "firstInstallDaysAgo": 150,
+      "lastUsedHoursAgo": 240,
+      "opens7d": 1,
+      "batteryPct7d": 0.2,
+      "usageMin7d": 5,
+      "folderId": "civ_gov_ids"
+    },
+    {
+      "name": "Idealista",
+      "icon": "home",
+      "category": "Tools Primary",
+      "pinned": false,
+      "real": false,
+      "package": "com.idealista.android",
+      "installSource": "play",
+      "firstInstallDaysAgo": 210,
+      "lastUsedHoursAgo": 30,
+      "opens7d": 11,
+      "batteryPct7d": 1.9,
+      "usageMin7d": 63,
+      "folderId": "civ_real"
+    },
+    {
+      "name": "WG-Gesucht",
+      "icon": "home",
+      "category": "Tools Primary",
+      "pinned": false,
+      "real": false,
+      "package": "com.wggesucht.android",
+      "installSource": "play",
+      "firstInstallDaysAgo": 190,
+      "lastUsedHoursAgo": 54,
+      "opens7d": 7,
+      "batteryPct7d": 1.2,
+      "usageMin7d": 38,
+      "folderId": "civ_real"
+    },
+    {
+      "name": "NFC Tools",
+      "icon": "tools",
+      "category": "Configs",
+      "pinned": false,
+      "real": false,
+      "package": "com.wakdev.wdnfc",
+      "installSource": "fdroid",
+      "firstInstallDaysAgo": 320,
+      "lastUsedHoursAgo": 120,
+      "opens7d": 2,
+      "batteryPct7d": 0.3,
+      "usageMin7d": 6,
+      "folderId": "tools_top"
+    },
+    {
+      "name": "Wi-Fi Analyzer",
+      "icon": "mesh",
+      "category": "Configs",
+      "pinned": false,
+      "real": false,
+      "package": "com.vrem.wifianalyzer",
+      "installSource": "fdroid",
+      "firstInstallDaysAgo": 300,
+      "lastUsedHoursAgo": 44,
+      "opens7d": 5,
+      "batteryPct7d": 0.7,
+      "usageMin7d": 15,
+      "folderId": "tools_top"
+    },
+    {
+      "name": "Wolfram Alpha",
+      "icon": "brain",
+      "category": "Tools Primary",
+      "pinned": false,
+      "real": false,
+      "package": "com.wolfram.alpha",
+      "installSource": "play",
+      "firstInstallDaysAgo": 540,
+      "lastUsedHoursAgo": 58,
+      "opens7d": 4,
+      "batteryPct7d": 0.8,
+      "usageMin7d": 21,
+      "folderId": "a_math_time"
+    },
+    {
+      "name": "Forest",
+      "icon": "heart",
+      "category": "Tools Primary",
+      "pinned": false,
+      "real": false,
+      "package": "cc.forestapp",
+      "installSource": "play",
+      "firstInstallDaysAgo": 410,
+      "lastUsedHoursAgo": 20,
+      "opens7d": 9,
+      "batteryPct7d": 1.4,
+      "usageMin7d": 52,
+      "folderId": "a_math_time"
+    },
+    {
+      "name": "Shazam",
+      "icon": "music",
+      "category": "Data Apps",
+      "pinned": false,
+      "real": false,
+      "package": "com.shazam.android",
+      "installSource": "play",
+      "firstInstallDaysAgo": 700,
+      "lastUsedHoursAgo": 34,
+      "opens7d": 6,
+      "batteryPct7d": 0.9,
+      "usageMin7d": 12,
+      "folderId": "v_audio"
+    },
+    {
+      "name": "AntennaPod",
+      "icon": "rss",
+      "category": "Data Apps",
+      "pinned": false,
+      "real": false,
+      "package": "de.danoeh.antennapod",
+      "installSource": "fdroid",
+      "firstInstallDaysAgo": 620,
+      "lastUsedHoursAgo": 4,
+      "opens7d": 22,
+      "batteryPct7d": 6.8,
+      "usageMin7d": 310,
+      "folderId": "v_audio"
+    },
+    {
+      "name": "Pocket Casts",
+      "icon": "music",
+      "category": "Data Apps",
+      "pinned": false,
+      "real": false,
+      "package": "au.com.shiftyjelly.pocketcasts",
+      "installSource": "play",
+      "firstInstallDaysAgo": 480,
+      "lastUsedHoursAgo": 12,
+      "opens7d": 10,
+      "batteryPct7d": 3.1,
+      "usageMin7d": 140,
+      "folderId": "v_audio"
+    },
+    {
+      "name": "Minecraft",
+      "icon": "cube",
+      "category": "Tools Primary",
+      "pinned": false,
+      "real": false,
+      "package": "com.mojang.minecraftpe",
+      "installSource": "play",
+      "firstInstallDaysAgo": 760,
+      "lastUsedHoursAgo": 190,
+      "opens7d": 3,
+      "batteryPct7d": 4.2,
+      "usageMin7d": 66,
+      "folderId": "v_games"
+    },
+    {
+      "name": "Meetup",
+      "icon": "user",
+      "category": "Tools Primary",
+      "pinned": false,
+      "real": false,
+      "package": "com.meetup.android",
+      "installSource": "play",
+      "firstInstallDaysAgo": 280,
+      "lastUsedHoursAgo": 64,
+      "opens7d": 4,
+      "batteryPct7d": 0.6,
+      "usageMin7d": 17,
+      "folderId": "v_soc_events"
+    },
+    {
+      "name": "Resident Advisor",
+      "icon": "music",
+      "category": "Tools Primary",
+      "pinned": false,
+      "real": false,
+      "package": "net.residentadvisor.raguide",
+      "installSource": "play",
+      "firstInstallDaysAgo": 240,
+      "lastUsedHoursAgo": 40,
+      "opens7d": 5,
+      "batteryPct7d": 0.7,
+      "usageMin7d": 19,
+      "folderId": "v_soc_events"
+    },
+    {
+      "name": "Indeed",
+      "icon": "briefcase",
+      "category": "Tools Primary",
+      "pinned": false,
+      "real": false,
+      "package": "com.indeed.android.jobsearch",
+      "installSource": "play",
+      "firstInstallDaysAgo": 330,
+      "lastUsedHoursAgo": 80,
+      "opens7d": 3,
+      "batteryPct7d": 0.5,
+      "usageMin7d": 14,
+      "folderId": "v_soc_work"
+    },
+    {
+      "name": "Glassdoor",
+      "icon": "briefcase",
+      "category": "Tools Primary",
+      "pinned": false,
+      "real": false,
+      "package": "com.glassdoor.app",
+      "installSource": "play",
+      "firstInstallDaysAgo": 300,
+      "lastUsedHoursAgo": 110,
+      "opens7d": 2,
+      "batteryPct7d": 0.4,
+      "usageMin7d": 11,
+      "folderId": "v_soc_work"
+    },
+    {
+      "name": "AnkiDroid",
+      "icon": "brain",
+      "category": "Tools Primary",
+      "pinned": false,
+      "real": false,
+      "package": "com.ichi2.anki",
+      "installSource": "fdroid",
+      "firstInstallDaysAgo": 560,
+      "lastUsedHoursAgo": 6,
+      "opens7d": 18,
+      "batteryPct7d": 3.4,
+      "usageMin7d": 120,
+      "folderId": "b_learning"
+    },
+    {
+      "name": "Kindle",
+      "icon": "logs",
+      "category": "Tools Primary",
+      "pinned": false,
+      "real": false,
+      "package": "com.amazon.kindle",
+      "installSource": "play",
+      "firstInstallDaysAgo": 820,
+      "lastUsedHoursAgo": 28,
+      "opens7d": 8,
+      "batteryPct7d": 2.2,
+      "usageMin7d": 95,
+      "folderId": "b_learning"
+    },
+    {
+      "name": "Samsung Notes",
+      "icon": "logs",
+      "category": "Data Apps",
+      "pinned": false,
+      "real": false,
+      "package": "com.samsung.android.app.notes",
+      "installSource": "samsung",
+      "firstInstallDaysAgo": 1200,
+      "lastUsedHoursAgo": 16,
+      "opens7d": 12,
+      "batteryPct7d": 1.8,
+      "usageMin7d": 58,
+      "folderId": "a_pages_notes"
+    },
+    {
+      "name": "Samsung Health",
+      "icon": "heart",
+      "category": "Tools Dashboards",
+      "pinned": false,
+      "real": false,
+      "package": "com.samsung.android.app.shealth",
+      "installSource": "samsung",
+      "firstInstallDaysAgo": 1200,
+      "lastUsedHoursAgo": 1,
+      "opens7d": 31,
+      "batteryPct7d": 5.9,
+      "usageMin7d": 73,
+      "folderId": "civ_health"
+    },
+    {
+      "name": "Galaxy Store",
+      "icon": "play-badge",
+      "category": "Configs",
+      "pinned": false,
+      "real": false,
+      "package": "com.sec.android.app.samsungapps",
+      "installSource": "samsung",
+      "firstInstallDaysAgo": 1200,
+      "lastUsedHoursAgo": 70,
+      "opens7d": 4,
+      "batteryPct7d": 0.6,
+      "usageMin7d": 13,
+      "folderId": "sys_tools"
+    },
+    {
+      "name": "QR Scanner",
+      "icon": "browser",
+      "category": "Configs",
+      "pinned": false,
+      "real": false,
+      "package": "com.gamma.scan",
+      "installSource": "uptodown",
+      "firstInstallDaysAgo": 95,
+      "lastUsedHoursAgo": 140,
+      "opens7d": 2,
+      "batteryPct7d": 0.2,
+      "usageMin7d": 4,
+      "folderId": "misc"
+    },
+    {
+      "name": "Compass",
+      "icon": "mesh",
+      "category": "Configs",
+      "pinned": false,
+      "real": false,
+      "package": "com.gn.android.compass",
+      "installSource": "uptodown",
+      "firstInstallDaysAgo": 88,
+      "lastUsedHoursAgo": 200,
+      "opens7d": 1,
+      "batteryPct7d": 0.1,
+      "usageMin7d": 3,
+      "folderId": "misc"
+    },
+    {
+      "name": "Bluesky",
+      "icon": "chat",
+      "category": "Communications",
+      "pinned": false,
+      "real": false,
+      "package": "xyz.blueskyweb.app",
+      "installSource": "play",
+      "firstInstallDaysAgo": 9,
+      "lastUsedHoursAgo": 2,
+      "opens7d": 26,
+      "batteryPct7d": 3.7,
+      "usageMin7d": 88,
+      "folderId": "new_apps"
+    },
+    {
+      "name": "Immich",
+      "icon": "photos",
+      "category": "Data Apps",
+      "pinned": false,
+      "real": false,
+      "package": "app.alextran.immich",
+      "installSource": "sideload",
+      "firstInstallDaysAgo": 5,
+      "lastUsedHoursAgo": 7,
+      "opens7d": 13,
+      "batteryPct7d": 2.4,
+      "usageMin7d": 41,
       "folderId": "new_apps"
     }
   ]

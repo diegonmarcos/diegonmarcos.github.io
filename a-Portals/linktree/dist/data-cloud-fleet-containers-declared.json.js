@@ -2259,13 +2259,13 @@
           }
         },
         {
-          "id": "git#gh/front-asset-cdn",
+          "id": "git#gh/front-unity",
           "service": "gitea",
           "container": null,
           "engine": "git",
           "kind": "git-remote",
           "host": "github",
-          "repo": "diegonmarcos/front-asset-cdn",
+          "repo": "diegonmarcos/front-unity",
           "visibility": "private",
           "fork": false,
           "pushed_at": "2026-08-12T08:19:28Z",
@@ -2274,7 +2274,7 @@
           "mirrored": true,
           "persistence": {
             "type": "git",
-            "ref": "https://github.com/diegonmarcos/front-asset-cdn.git",
+            "ref": "https://github.com/diegonmarcos/front-unity.git",
             "mount": null
           },
           "vm": null,
@@ -2911,17 +2911,17 @@
           }
         },
         {
-          "id": "git#gitea/front-asset-cdn",
+          "id": "git#gitea/front-unity",
           "service": "gitea",
           "container": null,
           "engine": "git",
           "kind": "git-remote",
           "host": "gitea",
-          "repo": "front-asset-cdn",
-          "upstream": "https://github.com/diegonmarcos/front-asset-cdn.git",
+          "repo": "front-unity",
+          "upstream": "https://github.com/diegonmarcos/front-unity.git",
           "persistence": {
             "type": "git",
-            "ref": "https://github.com/diegonmarcos/front-asset-cdn.git",
+            "ref": "https://github.com/diegonmarcos/front-unity.git",
             "mount": null
           },
           "vm": "oci-A1-f_0",
@@ -5455,13 +5455,13 @@
         }
       },
       {
-        "id": "git#gh/front-asset-cdn",
+        "id": "git#gh/front-unity",
         "service": "gitea",
         "container": null,
         "engine": "git",
         "kind": "git-remote",
         "host": "github",
-        "repo": "diegonmarcos/front-asset-cdn",
+        "repo": "diegonmarcos/front-unity",
         "visibility": "private",
         "fork": false,
         "pushed_at": "2026-08-12T08:19:28Z",
@@ -5470,7 +5470,7 @@
         "mirrored": true,
         "persistence": {
           "type": "git",
-          "ref": "https://github.com/diegonmarcos/front-asset-cdn.git",
+          "ref": "https://github.com/diegonmarcos/front-unity.git",
           "mount": null
         },
         "vm": null,
@@ -6107,17 +6107,17 @@
         }
       },
       {
-        "id": "git#gitea/front-asset-cdn",
+        "id": "git#gitea/front-unity",
         "service": "gitea",
         "container": null,
         "engine": "git",
         "kind": "git-remote",
         "host": "gitea",
-        "repo": "front-asset-cdn",
-        "upstream": "https://github.com/diegonmarcos/front-asset-cdn.git",
+        "repo": "front-unity",
+        "upstream": "https://github.com/diegonmarcos/front-unity.git",
         "persistence": {
           "type": "git",
-          "ref": "https://github.com/diegonmarcos/front-asset-cdn.git",
+          "ref": "https://github.com/diegonmarcos/front-unity.git",
           "mount": null
         },
         "vm": "oci-A1-f_0",

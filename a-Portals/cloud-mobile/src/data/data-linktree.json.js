@@ -15,7 +15,7 @@
     ]},
     { "id": "cloud", "label": "Linktree · Cloud", "tiles": [
       { "label": "diegonmarcos.com", "icon": "home", "href": "https://diegonmarcos.com" },
-      { "label": "ea_cloud-superapp", "icon": "code", "href": "https://github.com/diegonmarcos/ea_cloud-superapp" },
+      { "label": "aa_cloud-superapp", "icon": "code", "href": "https://github.com/diegonmarcos/aa_cloud-superapp" },
       { "label": "front (this site)", "icon": "code", "href": "https://github.com/diegonmarcos/front" },
       { "label": "unix (tooling)", "icon": "code", "href": "https://github.com/diegonmarcos/cloud-unix" },
       { "label": "WG Mesh", "icon": "mesh" }

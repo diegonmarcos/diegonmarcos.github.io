@@ -837,7 +837,7 @@
       "slide": "projects",
       "column": "BOOT MANAGER",
       "label": "KDE Plasma",
-      "url": "https://github.com/diegonmarcos/cloud-unix/tree/main/ea_cloud-superapp/libs/kde-connect",
+      "url": "https://github.com/diegonmarcos/cloud-android/tree/main/aa_cloud-superapp/libs/kde-connect",
       "icon": "settings.svg"
     },
     {
@@ -941,7 +941,7 @@
       "slide": "projects",
       "column": "ANDROID APK",
       "label": "Browser",
-      "url": "https://github.com/diegonmarcos/cloud-unix/tree/main/ea_cloud-browser",
+      "url": "https://github.com/diegonmarcos/cloud-android/tree/main/aa_cloud-browser",
       "icon": "world.svg"
     },
     {
@@ -949,7 +949,7 @@
       "slide": "projects",
       "column": "ANDROID APK",
       "label": "Chat",
-      "url": "https://github.com/diegonmarcos/cloud-unix/tree/main/ea_cloud-chat",
+      "url": "https://github.com/diegonmarcos/cloud-android/tree/main/aa_cloud-chat",
       "icon": "brand-whatsapp.svg"
     },
     {
@@ -957,7 +957,7 @@
       "slide": "projects",
       "column": "ANDROID APK",
       "label": "Dialer",
-      "url": "https://github.com/diegonmarcos/cloud-unix/tree/main/ea_cloud-dialer",
+      "url": "https://github.com/diegonmarcos/cloud-android/tree/main/aa_cloud-dialer",
       "icon": "link.svg"
     },
     {
@@ -965,7 +965,7 @@
       "slide": "projects",
       "column": "ANDROID APK",
       "label": "IDE",
-      "url": "https://github.com/diegonmarcos/cloud-unix/tree/main/ea_cloud-ide",
+      "url": "https://github.com/diegonmarcos/cloud-android/tree/main/aa_cloud-ide",
       "icon": "code.svg"
     },
     {
@@ -973,7 +973,7 @@
       "slide": "projects",
       "column": "ANDROID APK",
       "label": "Keyboard",
-      "url": "https://github.com/diegonmarcos/cloud-unix/tree/main/ea_cloud-keyboard",
+      "url": "https://github.com/diegonmarcos/cloud-android/tree/main/aa_cloud-keyboard",
       "icon": "file-type-html.svg"
     },
     {
@@ -981,7 +981,7 @@
       "slide": "projects",
       "column": "ANDROID APK",
       "label": "Keyboard Libs",
-      "url": "https://github.com/diegonmarcos/cloud-unix/tree/main/ea_cloud-keyboard-libs",
+      "url": "https://github.com/diegonmarcos/cloud-android/tree/main/aa_cloud-keyboard-libs",
       "icon": "file-type-html.svg"
     },
     {
@@ -989,7 +989,7 @@
       "slide": "projects",
       "column": "ANDROID APK",
       "label": "Mail",
-      "url": "https://github.com/diegonmarcos/cloud-unix/tree/main/ea_cloud-mail",
+      "url": "https://github.com/diegonmarcos/cloud-android/tree/main/aa_cloud-mail",
       "icon": "mail.svg"
     },
     {
@@ -997,7 +997,7 @@
       "slide": "projects",
       "column": "ANDROID APK",
       "label": "Matrix",
-      "url": "https://github.com/diegonmarcos/cloud-unix/tree/main/ea_cloud-matrix",
+      "url": "https://github.com/diegonmarcos/cloud-android/tree/main/aa_cloud-matrix",
       "icon": "brand-whatsapp.svg"
     },
     {
@@ -1005,7 +1005,7 @@
       "slide": "projects",
       "column": "ANDROID APK",
       "label": "Media Center",
-      "url": "https://github.com/diegonmarcos/cloud-unix/tree/main/ea_cloud-media-center",
+      "url": "https://github.com/diegonmarcos/cloud-android/tree/main/aa_cloud-media-center",
       "icon": "headphones.svg"
     },
     {
@@ -1013,7 +1013,7 @@
       "slide": "projects",
       "column": "ANDROID APK",
       "label": "Nav",
-      "url": "https://github.com/diegonmarcos/cloud-unix/tree/main/ea_cloud-nav",
+      "url": "https://github.com/diegonmarcos/cloud-android/tree/main/aa_cloud-nav",
       "icon": "world-longitude.svg"
     },
     {
@@ -1021,7 +1021,7 @@
       "slide": "projects",
       "column": "ANDROID APK",
       "label": "SuperApp",
-      "url": "https://github.com/diegonmarcos/cloud-unix/tree/main/ea_cloud-superapp",
+      "url": "https://github.com/diegonmarcos/cloud-android/tree/main/aa_cloud-superapp",
       "icon": "device-gamepad.svg"
     },
     {
@@ -1029,7 +1029,7 @@
       "slide": "projects",
       "column": "ANDROID APK",
       "label": "Vault",
-      "url": "https://github.com/diegonmarcos/cloud-unix/tree/main/ea_cloud-vault",
+      "url": "https://github.com/diegonmarcos/cloud-android/tree/main/aa_cloud-vault",
       "icon": "lock.svg"
     },
     {
@@ -1037,7 +1037,7 @@
       "slide": "projects",
       "column": "ANDROID APK",
       "label": "Wallet",
-      "url": "https://github.com/diegonmarcos/cloud-unix/tree/main/ea_cloud-wallet",
+      "url": "https://github.com/diegonmarcos/cloud-android/tree/main/aa_cloud-wallet",
       "icon": "ledger.svg"
     },
     {
@@ -1837,7 +1837,7 @@
       "slide": "projects",
       "column": "UNIX",
       "label": "Android Apks",
-      "url": "https://github.com/diegonmarcos/cloud-unix/tree/main/ea_cloud-superapp",
+      "url": "https://github.com/diegonmarcos/cloud-android/tree/main/aa_cloud-superapp",
       "icon": "device-gamepad.svg"
     },
     {

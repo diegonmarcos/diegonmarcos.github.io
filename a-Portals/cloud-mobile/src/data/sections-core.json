@@ -1,5 +1,5 @@
 {
-  "_doc": "The 4 real aggregator sections (communication/infos/suite/tools). Communication/Infos/Tools use TabbedSectionFragment in the real app: literal Apps|Admin tabs. Each mode's body is ICONS-FIRST — the section's tiles_apps/tiles_admin icon grid (verbatim from ea_cloud-superapp build.json, per-mode `tiles` below) renders at the top, then AggregatorStackFragment's collapsible cards keyed by 'kind' (build.json stack_apps/stack_admin) underneath. Targets are remapped to the web routes that exist here when the Android target has no web destination (extapp:/page:feed/all/page:c3/gha …); labels + order + membership stay verbatim. Suite has neither — it keeps its own tiles_shared + tileGroups/appGroups structure in sections-content.json's suite entry.",
+  "_doc": "The 4 real aggregator sections (communication/infos/suite/tools). Communication/Infos/Tools use TabbedSectionFragment in the real app: literal Apps|Admin tabs. Each mode's body is ICONS-FIRST — the section's tiles_apps/tiles_admin icon grid (verbatim from aa_cloud-superapp build.json, per-mode `tiles` below) renders at the top, then AggregatorStackFragment's collapsible cards keyed by 'kind' (build.json stack_apps/stack_admin) underneath. Targets are remapped to the web routes that exist here when the Android target has no web destination (extapp:/page:feed/all/page:c3/gha …); labels + order + membership stay verbatim. Suite has neither — it keeps its own tiles_shared + tileGroups/appGroups structure in sections-content.json's suite entry.",
   "sections": {
     "communication": {
       "label": "Inboxes", "icon": "chat", "color": "green",
@@ -162,7 +162,7 @@
           { "title": "notebook-runner", "subtitle": "Jupyter kernels · oci-analytics", "meta": "2 active" }
         ]},
         { "id": "engineering", "label": "Engineering", "items": [
-          { "title": "ea_cloud-superapp", "subtitle": "GitHub · diegonmarcos", "meta": "main" },
+          { "title": "aa_cloud-superapp", "subtitle": "GitHub · diegonmarcos", "meta": "main" },
           { "title": "front", "subtitle": "GitHub · diegonmarcos", "meta": "main" },
           { "title": "unix", "subtitle": "GitHub · diegonmarcos", "meta": "main" },
           { "title": "cloud-ship-container-engine", "subtitle": "Build & deploy engine" },

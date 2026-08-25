@@ -487,7 +487,7 @@
             { "label": "Overlay", "granted": true }
           ] }
         ] },
-        { "id": "about", "label": "About", "rows": [["Version", "1.0.0"], ["Build", "cloud-mobile · web"], ["Source", "ea_cloud-superapp"]] }
+        { "id": "about", "label": "About", "rows": [["Version", "1.0.0"], ["Build", "cloud-mobile · web"], ["Source", "aa_cloud-superapp"]] }
       ]
     }
   }

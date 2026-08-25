@@ -41,7 +41,7 @@ function phoneGroupsFromMockData(pinnedOnly) {
 // Android metadata (package/installSource/first-install/last-used/usage),
 // never hand-listed membership. Mirrors a real launcher's auto-generated
 // "Recently installed" / "Recently used" / usage-ranked smart groups.
-// The 13 rules + their 4 groups are a verbatim port of ea_cloud-superapp's
+// The 13 rules + their 4 groups are a verbatim port of aa_cloud-superapp's
 // build.json ui.phone_smart_folders (PhoneSmartFolders.select): Dev =
 // package-prefix fleets, Stores = install-source-of-record, Usage = install/
 // use recency, Rank = usage-ranked top 7s. installSource here is the mock's

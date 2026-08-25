@@ -13,7 +13,7 @@
 
 // Phone-tab grids only (suite/phone/quickmarks + suite/phone/all) — the app
 // drawer is a fixed 6-per-row grid, not the shared auto-fill grid, mirroring
-// ea_cloud-superapp build.json ui.phone_grid_columns = 6. Overrides
+// aa_cloud-superapp build.json ui.phone_grid_columns = 6. Overrides
 // .tile-grid's auto-fill template (owned by _tiles.scss) for this variant
 // only; at the 480px phone width that lands ~72px per cell, so the squircle
 // and its label shrink to match.

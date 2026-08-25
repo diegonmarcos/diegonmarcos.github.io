@@ -72,18 +72,6 @@
     "has_pkg": false
   },
   {
-    "path": "a-Portals/cloud",
-    "category": "a-Portals",
-    "project": "cloud",
-    "key": "a-Portals__cloud",
-    "name": "Cloud",
-    "framework": "vanilla",
-    "port": 8006,
-    "deploy_name": "cloud",
-    "has_pwa": false,
-    "has_pkg": true
-  },
-  {
     "path": "a-Portals/cloud-mobile",
     "category": "a-Portals",
     "project": "cloud-mobile",
@@ -93,6 +81,18 @@
     "port": 8036,
     "deploy_name": "cloud-mobile",
     "has_pwa": true,
+    "has_pkg": true
+  },
+  {
+    "path": "a-Portals/cloud",
+    "category": "a-Portals",
+    "project": "cloud",
+    "key": "a-Portals__cloud",
+    "name": "Cloud",
+    "framework": "vanilla",
+    "port": 8006,
+    "deploy_name": "cloud",
+    "has_pwa": false,
     "has_pkg": true
   },
   {
@@ -192,14 +192,14 @@
     "has_pkg": false
   },
   {
-    "path": "b-MyData/myhealth",
+    "path": "b-MyData/myTrackers",
     "category": "b-MyData",
-    "project": "myhealth",
-    "key": "b-MyData__myhealth",
-    "name": "MyHealth",
+    "project": "myTrackers",
+    "key": "b-MyData__myTrackers",
+    "name": "MyTrackers",
     "framework": "vanilla",
     "port": 8026,
-    "deploy_name": "myhealth",
+    "deploy_name": "myTrackers",
     "has_pwa": false,
     "has_pkg": false
   },
@@ -224,6 +224,18 @@
     "framework": "vanilla",
     "port": 8025,
     "deploy_name": "myhealth-tracker",
+    "has_pwa": false,
+    "has_pkg": false
+  },
+  {
+    "path": "b-MyData/myhealth",
+    "category": "b-MyData",
+    "project": "myhealth",
+    "key": "b-MyData__myhealth",
+    "name": "MyHealth",
+    "framework": "vanilla",
+    "port": 8026,
+    "deploy_name": "myhealth",
     "has_pwa": false,
     "has_pkg": false
   },
@@ -264,18 +276,6 @@
     "has_pkg": false
   },
   {
-    "path": "b-MyData/myTrackers",
-    "category": "b-MyData",
-    "project": "myTrackers",
-    "key": "b-MyData__myTrackers",
-    "name": "MyTrackers",
-    "framework": "vanilla",
-    "port": 8026,
-    "deploy_name": "myTrackers",
-    "has_pwa": false,
-    "has_pkg": false
-  },
-  {
     "path": "b-Profiles/myprofile",
     "category": "b-Profiles",
     "project": "myprofile",
@@ -284,18 +284,6 @@
     "framework": "sveltekit",
     "port": 8013,
     "deploy_name": "myprofile",
-    "has_pwa": false,
-    "has_pkg": true
-  },
-  {
-    "path": "b-Projects/galaxy",
-    "category": "b-Projects",
-    "project": "galaxy",
-    "key": "b-Projects__galaxy",
-    "name": "Galaxy",
-    "framework": "sveltekit",
-    "port": 8024,
-    "deploy_name": "galaxy",
     "has_pwa": false,
     "has_pkg": true
   },
@@ -320,6 +308,18 @@
     "framework": "sveltekit",
     "port": 8023,
     "deploy_name": "galaxy-x1",
+    "has_pwa": false,
+    "has_pkg": true
+  },
+  {
+    "path": "b-Projects/galaxy",
+    "category": "b-Projects",
+    "project": "galaxy",
+    "key": "b-Projects__galaxy",
+    "name": "Galaxy",
+    "framework": "sveltekit",
+    "port": 8024,
+    "deploy_name": "galaxy",
     "has_pwa": false,
     "has_pkg": true
   },
@@ -372,6 +372,30 @@
     "has_pkg": true
   },
   {
+    "path": "c-LabTools/Music_DAW_LLMS",
+    "category": "c-LabTools",
+    "project": "Music_DAW_LLMS",
+    "key": "c-LabTools__Music_DAW_LLMS",
+    "name": "LMMS",
+    "framework": "vanilla",
+    "port": 8035,
+    "deploy_name": "Music_DAW_LLMS",
+    "has_pwa": false,
+    "has_pkg": false
+  },
+  {
+    "path": "c-LabTools/Music_DJ-Mixer_Mixxx",
+    "category": "c-LabTools",
+    "project": "Music_DJ-Mixer_Mixxx",
+    "key": "c-LabTools__Music_DJ-Mixer_Mixxx",
+    "name": "Mixxx",
+    "framework": "vanilla",
+    "port": 8034,
+    "deploy_name": "Music_DJ-Mixer_Mixxx",
+    "has_pwa": false,
+    "has_pkg": false
+  },
+  {
     "path": "c-LabTools/central_bank",
     "category": "c-LabTools",
     "project": "central_bank",
@@ -406,30 +430,6 @@
     "deploy_name": "market_watch",
     "has_pwa": false,
     "has_pkg": true
-  },
-  {
-    "path": "c-LabTools/Music_DAW_LLMS",
-    "category": "c-LabTools",
-    "project": "Music_DAW_LLMS",
-    "key": "c-LabTools__Music_DAW_LLMS",
-    "name": "LMMS",
-    "framework": "vanilla",
-    "port": 8035,
-    "deploy_name": "Music_DAW_LLMS",
-    "has_pwa": false,
-    "has_pkg": false
-  },
-  {
-    "path": "c-LabTools/Music_DJ-Mixer_Mixxx",
-    "category": "c-LabTools",
-    "project": "Music_DJ-Mixer_Mixxx",
-    "key": "c-LabTools__Music_DJ-Mixer_Mixxx",
-    "name": "Mixxx",
-    "framework": "vanilla",
-    "port": 8034,
-    "deploy_name": "Music_DJ-Mixer_Mixxx",
-    "has_pwa": false,
-    "has_pkg": false
   },
   {
     "path": "c-LabTools/news",
@@ -504,18 +504,6 @@
     "has_pkg": false
   },
   {
-    "path": "c-Suite/mymaps",
-    "category": "c-Suite",
-    "project": "mymaps",
-    "key": "c-Suite__mymaps",
-    "name": "MyMaps",
-    "framework": "vanilla",
-    "port": 8027,
-    "deploy_name": "mymaps",
-    "has_pwa": false,
-    "has_pkg": false
-  },
-  {
     "path": "c-Suite/mymaps-maps",
     "category": "c-Suite",
     "project": "mymaps-maps",
@@ -538,6 +526,18 @@
     "deploy_name": "mymaps-navigation",
     "has_pwa": false,
     "has_pkg": true
+  },
+  {
+    "path": "c-Suite/mymaps",
+    "category": "c-Suite",
+    "project": "mymaps",
+    "key": "c-Suite__mymaps",
+    "name": "MyMaps",
+    "framework": "vanilla",
+    "port": 8027,
+    "deploy_name": "mymaps",
+    "has_pwa": false,
+    "has_pkg": false
   },
   {
     "path": "c-Suite/suite",

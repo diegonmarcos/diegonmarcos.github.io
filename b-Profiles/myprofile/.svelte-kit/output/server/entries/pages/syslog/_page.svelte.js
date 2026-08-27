@@ -1,6 +1,5 @@
 import "clsx";
-import { a3 as ensure_array_like, a1 as attr_class, _ as stringify, a2 as attr } from "../../../chunks/index2.js";
-import { e as escape_html } from "../../../chunks/context.js";
+import { e as ensure_array_like, b as attr_class, s as stringify, f as escape_html, c as attr } from "../../../chunks/index.js";
 import "../../../chunks/navigation.js";
 function TerminalAI($$renderer, $$props) {
   $$renderer.component(($$renderer2) => {
@@ -9,7 +8,7 @@ function TerminalAI($$renderer, $$props) {
     let isTyping = false;
     $$renderer2.push(`<div class="terminal-ai-container"><div class="terminal-header"><div class="terminal-dots"><span class="dot red"></span> <span class="dot yellow"></span> <span class="dot green"></span></div> <span class="terminal-title">AI_TERMINAL // VISITOR ANALYSIS</span></div> <div class="terminal-body">`);
     {
-      $$renderer2.push("<!--[-->");
+      $$renderer2.push("<!--[0-->");
       $$renderer2.push(`<div class="terminal-loading"><span class="blink">Scanning your digital footprint...</span></div>`);
     }
     $$renderer2.push(`<!--]--> <!--[-->`);

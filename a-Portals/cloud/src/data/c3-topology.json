@@ -2291,7 +2291,7 @@
       "runner_name": "oci-apps-arm64"
      },
      {
-      "repo_url": "https://github.com/diegonmarcos/cloud-unix",
+      "repo_url": "https://github.com/diegonmarcos/cloud-infra-desktop",
       "runner_name": "oci-apps-arm64-unix"
      }
     ],
@@ -2564,7 +2564,7 @@
     "org": "diego",
     "mirrors": {
      "unix": {
-      "upstream": "https://github.com/diegonmarcos/cloud-unix.git"
+      "upstream": "https://github.com/diegonmarcos/cloud-infra-desktop.git"
      },
      "cloud": {
       "upstream": "https://github.com/diegonmarcos/cloud-infra.git"

@@ -1,10 +1,10 @@
-import { _ as noop, $ as getContext, a0 as escape_html } from "../../chunks/context.js";
+import { n as noop, g as getContext, f as escape_html } from "../../chunks/root.js";
 import "clsx";
+import { w as writable } from "../../chunks/url.js";
 import "@sveltejs/kit/internal/server";
 import "@sveltejs/kit/internal";
+import "../../chunks/utils2.js";
 import "../../chunks/exports.js";
-import "../../chunks/utils.js";
-import { w as writable } from "../../chunks/index.js";
 function create_updated_store() {
   const { set, subscribe } = writable(false);
   {
@@ -16,6 +16,7 @@ function create_updated_store() {
   }
 }
 const is_legacy = noop.toString().includes("$$") || /function \w+\(\) \{\}/.test(noop.toString());
+const placeholder_url = "a:";
 if (is_legacy) {
   ({
     data: {},
@@ -25,7 +26,7 @@ if (is_legacy) {
     route: { id: null },
     state: {},
     status: -1,
-    url: new URL("https://example.com")
+    url: new URL(placeholder_url)
   });
 }
 const stores = {

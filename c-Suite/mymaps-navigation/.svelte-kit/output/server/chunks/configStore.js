@@ -1,4 +1,4 @@
-import { d as derived, w as writable, g as get } from "./index.js";
+import { d as derived, w as writable, g as get } from "./url.js";
 function detectCapabilities(config) {
   const hasGooglePlaces = !!config.places.keys.google;
   const hasFoursquare = !!config.places.keys.foursquare;

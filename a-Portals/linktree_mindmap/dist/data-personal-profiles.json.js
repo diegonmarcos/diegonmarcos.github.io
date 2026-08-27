@@ -30,7 +30,7 @@
         }
       ],
       "contact_icons": {
-        "subsection": "MyContact",
+        "subsection": "Contact",
         "icons": [
           {
             "url": "https://t.me/diegonmarcos",
@@ -56,78 +56,6 @@
           "icon": "user.svg",
           "preview": "public/thumbnails/linktree_diegonmarcos_com.jpg"
         },
-        "icons": [
-          {
-            "url": "https://tidal.com/@diegonmarcos",
-            "title": "TIDAL",
-            "icon": "headphones.svg",
-            "preview": "public/thumbnails/tidal_com.jpg",
-            "item": 0
-          },
-          {
-            "url": "https://www.youtube.com/@diegonmarcos1",
-            "title": "YouTube",
-            "icon": "brand-youtube.svg",
-            "preview": "public/thumbnails/youtube_com.jpg",
-            "item": 1
-          },
-          {
-            "url": "https://www.pinterest.com/diegonmarcos",
-            "title": "Pinterest",
-            "icon": "slideshow.svg",
-            "preview": "public/thumbnails/pinterest_com.jpg",
-            "item": 2
-          },
-          {
-            "url": "https://www.instagram.com/diegonmarcos",
-            "title": "Instagram",
-            "icon": "brand-instagram.svg",
-            "preview": "public/thumbnails/instagram_com.jpg",
-            "item": 3
-          },
-          {
-            "url": "https://www.komoot.com/user/2474200810898/routes",
-            "title": "Komoot",
-            "icon": "christmas-tree.svg",
-            "preview": "public/thumbnails/komoot_com.jpg",
-            "item": 4
-          },
-          {
-            "url": "https://www.strava.com/athletes/4662170",
-            "title": "Strava",
-            "icon": "bike.svg",
-            "preview": "public/thumbnails/strava_com.jpg",
-            "item": 5
-          },
-          {
-            "url": "https://www.google.com/maps/d/u/0/edit?mid=1Wpors-fGHMZOYPx41nDtyF9vXOJcpsY&usp=sharing",
-            "title": "Maps",
-            "icon": "map-pin-2.svg",
-            "preview": "public/thumbnails/google_com.jpg",
-            "item": 6
-          },
-          {
-            "url": "https://bucketlistjourney.net/my-bucket-list",
-            "title": "MyBucket",
-            "icon": "checklist.svg",
-            "preview": "public/thumbnails/bucketlistjourney_net.jpg",
-            "item": 7
-          },
-          {
-            "url": "https://diegonmarcos.github.io/myAstro",
-            "title": "myAstro",
-            "icon": "world.svg",
-            "preview": "public/thumbnails/diegonmarcos_github_io.jpg",
-            "item": 8
-          },
-          {
-            "url": "https://diegonmarcos.github.io/mySocials",
-            "title": "My Socials",
-            "icon": "heart.svg",
-            "preview": "public/thumbnails/diegonmarcos_github_io.jpg",
-            "item": 9
-          }
-        ],
         "hub_icons": [
           {
             "label": "DMs",
@@ -256,6 +184,73 @@
               }
             ],
             "group": 3
+          }
+        ],
+        "sections": [
+          {
+            "layout": "contact-icons",
+            "items": [
+              {
+                "url": "https://tidal.com/@diegonmarcos",
+                "title": "TIDAL",
+                "icon": "headphones.svg",
+                "preview": "public/thumbnails/tidal_com.jpg"
+              },
+              {
+                "url": "https://www.youtube.com/@diegonmarcos1",
+                "title": "YouTube",
+                "icon": "brand-youtube.svg",
+                "preview": "public/thumbnails/youtube_com.jpg"
+              },
+              {
+                "url": "https://www.pinterest.com/diegonmarcos",
+                "title": "Pinterest",
+                "icon": "slideshow.svg",
+                "preview": "public/thumbnails/pinterest_com.jpg"
+              },
+              {
+                "url": "https://www.instagram.com/diegonmarcos",
+                "title": "Instagram",
+                "icon": "brand-instagram.svg",
+                "preview": "public/thumbnails/instagram_com.jpg"
+              },
+              {
+                "url": "https://www.komoot.com/user/2474200810898/routes",
+                "title": "Komoot",
+                "icon": "christmas-tree.svg",
+                "preview": "public/thumbnails/komoot_com.jpg"
+              },
+              {
+                "url": "https://www.strava.com/athletes/4662170",
+                "title": "Strava",
+                "icon": "bike.svg",
+                "preview": "public/thumbnails/strava_com.jpg"
+              },
+              {
+                "url": "https://www.google.com/maps/d/u/0/edit?mid=1Wpors-fGHMZOYPx41nDtyF9vXOJcpsY&usp=sharing",
+                "title": "Maps",
+                "icon": "map-pin-2.svg",
+                "preview": "public/thumbnails/google_com.jpg"
+              },
+              {
+                "url": "https://bucketlistjourney.net/my-bucket-list",
+                "title": "MyBucket",
+                "icon": "checklist.svg",
+                "preview": "public/thumbnails/bucketlistjourney_net.jpg"
+              },
+              {
+                "url": "https://diegonmarcos.github.io/myAstro",
+                "title": "myAstro",
+                "icon": "world.svg",
+                "preview": "public/thumbnails/diegonmarcos_github_io.jpg"
+              },
+              {
+                "url": "https://diegonmarcos.github.io/mySocials",
+                "title": "My Socials",
+                "icon": "heart.svg",
+                "preview": "public/thumbnails/diegonmarcos_github_io.jpg"
+              }
+            ]
           }
         ]
       },
@@ -468,105 +463,104 @@
       "extras": {
         "primary_link": {
           "label": "myTrackers",
-          "url": "https://diegonmarcos.github.io/myhealth-tracker",
+          "url": "https://diegonmarcos.github.io/myTrackers/",
           "icon": "heart.svg"
         }
       }
     },
     {
       "id": "dms",
-      "kind": "venture-card",
+      "kind": "tools",
       "slide": 3,
       "title": "DMs",
-      "image": "public/images/banners/dms.svg",
-      "sections": [
+      "image": {
+        "src": "public/images/banners/dms.svg",
+        "alt": "DMs"
+      },
+      "columns": [
         {
-          "layout": "contact-icons",
-          "items": [
-            {
-              "label": "Mail",
-              "icon": "mail.svg",
-              "url": "mailto:me@diegonmarcos.com"
-            }
-          ]
-        },
-        {
-          "layout": "links",
-          "items": [
-            {
-              "label": "mailMe",
-              "url": "mailto:me@diegonmarcos.com",
-              "icon": "mail.svg",
-              "style": "primary"
-            }
-          ]
-        },
-        {
-          "layout": "contact-icons",
-          "items": [
-            {
-              "label": "Wapp0",
-              "icon": "brand-whatsapp.svg",
-              "url": "https://wa.me/34680614213"
-            },
-            {
-              "label": "Wapp1",
-              "icon": "brand-whatsapp.svg",
-              "url": "https://wa.me/"
-            },
-            {
-              "label": "Telegram",
-              "icon": "brand-telegram.svg",
-              "url": "https://t.me/diegonmarcos"
-            },
-            {
-              "label": "Viber",
-              "icon": "brand-viber.svg",
-              "url": "viber://chat?number="
-            },
-            {
-              "label": "Matrix",
-              "icon": "brand-matrix.svg",
-              "url": "https://matrix.to/#/@diegonmarcos:matrix.org"
-            },
-            {
-              "label": "igDM",
-              "icon": "brand-instagram.svg",
-              "url": "https://ig.me/m/diegonmarcos"
-            },
-            {
-              "label": "XDM",
-              "icon": "brand-x.svg",
-              "url": "https://x.com/messages/compose?recipient_id="
-            },
-            {
-              "label": "LinkedinDM",
-              "icon": "brand-linkedin.svg",
-              "url": "https://linkedin.com/in/diegonmarcos"
-            },
-            {
-              "label": "ICQ",
-              "icon": "brand-icq.svg",
-              "url": "https://icq.com/chat"
-            },
-            {
-              "label": "Mail",
-              "icon": "mail.svg",
-              "url": "mailto:me@diegonmarcos.com"
-            }
-          ]
-        },
-        {
-          "layout": "links",
-          "items": [
+          "header": "HUBS",
+          "links": [
             {
               "label": "MyBeeper",
               "url": "https://beeper.com",
-              "style": "primary"
+              "icon": "link.svg"
+            }
+          ]
+        },
+        {
+          "header": "MAIL",
+          "links": [
+            {
+              "label": "mailMe",
+              "url": "mailto:me@diegonmarcos.com",
+              "icon": "mail.svg"
+            },
+            {
+              "label": "Mail",
+              "url": "mailto:me@diegonmarcos.com",
+              "icon": "mail.svg"
+            }
+          ]
+        },
+        {
+          "header": "CHATS",
+          "links": [
+            {
+              "label": "WhatsApp",
+              "url": "https://wa.me/34680614213",
+              "icon": "brand-whatsapp.svg"
+            },
+            {
+              "label": "Telegram",
+              "url": "https://t.me/diegonmarcos",
+              "icon": "brand-telegram.svg"
+            },
+            {
+              "label": "Viber",
+              "url": "viber://chat?number=",
+              "icon": "brand-viber.svg"
+            },
+            {
+              "label": "Matrix",
+              "url": "https://matrix.to/#/@diegonmarcos:matrix.org",
+              "icon": "brand-matrix.svg"
+            },
+            {
+              "label": "ICQ",
+              "url": "https://icq.com/chat",
+              "icon": "brand-icq.svg"
+            }
+          ]
+        },
+        {
+          "header": "SOCIAL",
+          "links": [
+            {
+              "label": "Instagram DM",
+              "url": "https://ig.me/m/diegonmarcos",
+              "icon": "brand-instagram.svg"
+            },
+            {
+              "label": "X DM",
+              "url": "https://x.com/messages/compose?recipient_id=",
+              "icon": "brand-x.svg"
+            },
+            {
+              "label": "LinkedIn DM",
+              "url": "https://linkedin.com/in/diegonmarcos",
+              "icon": "brand-linkedin.svg"
             }
           ]
         }
-      ]
+      ],
+      "extras": {
+        "primary_link": {
+          "label": "DMs",
+          "url": "https://diegonmarcos.github.io/DMs",
+          "icon": "mail.svg"
+        }
+      }
     }
   ]
 };

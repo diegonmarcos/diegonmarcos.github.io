@@ -5,7 +5,7 @@
   g.PORTAL_DATA = g.PORTAL_DATA || {};
   g.PORTAL_DATA["c3-front-apps"] = {
  "_meta": {
-  "generated_by": "2_configs/build.sh derive",
+  "generated_by": "1_front-configs/build.sh derive",
   "schema": "front-topology/v1",
   "project_count": 48
  },

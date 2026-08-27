@@ -1,7 +1,10 @@
 import "clsx";
 import { n as noop } from "./equality.js";
+import "./url.js";
 import "@sveltejs/kit/internal/server";
+import "./root.js";
 const is_legacy = noop.toString().includes("$$") || /function \w+\(\) \{\}/.test(noop.toString());
+const placeholder_url = "a:";
 if (is_legacy) {
   ({
     data: {},
@@ -11,6 +14,6 @@ if (is_legacy) {
     route: { id: null },
     state: {},
     status: -1,
-    url: new URL("https://example.com")
+    url: new URL(placeholder_url)
   });
 }

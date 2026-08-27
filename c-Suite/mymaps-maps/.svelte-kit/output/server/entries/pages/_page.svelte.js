@@ -1,10 +1,9 @@
-import { a as attr_style, s as stringify, b as attr_class, c as attr, e as ensure_array_like, d as store_get, u as unsubscribe_stores, h as head } from "../../chunks/index2.js";
+import { s as ssr_context, a as attr_style, b as attr_class, c as attr, e as ensure_array_like, d as store_get, f as escape_html, u as unsubscribe_stores, h as head } from "../../chunks/root.js";
+import { d as derived, w as writable } from "../../chunks/url.js";
 import "@sveltejs/kit/internal/server";
 import "topojson-client";
-import { d as derived, w as writable } from "../../chunks/index.js";
 import * as d3Geo from "d3-geo";
 import "clsx";
-import { a1 as ssr_context, a0 as escape_html } from "../../chunks/context.js";
 function onDestroy(fn) {
   /** @type {SSRContext} */
   ssr_context.r.on_destroy(fn);
@@ -58,7 +57,7 @@ const isGlobe = derived(
 );
 function GlobeCanvas($$renderer, $$props) {
   $$renderer.component(($$renderer2) => {
-    $$renderer2.push(`<div class="canvas-container"><canvas${attr_style(`cursor: ${stringify("grab")}; touch-action: none;`)}></canvas></div>`);
+    $$renderer2.push(`<div class="canvas-container"><canvas${attr_style(`cursor: ${"grab"}; touch-action: none;`)}></canvas></div>`);
   });
 }
 function StellariumCanvas($$renderer, $$props) {
@@ -67,7 +66,7 @@ function StellariumCanvas($$renderer, $$props) {
     });
     $$renderer2.push(`<div class="stellarium-container svelte-1n68bue"><canvas class="svelte-1n68bue"></canvas> `);
     {
-      $$renderer2.push("<!--[-->");
+      $$renderer2.push("<!--[0-->");
       $$renderer2.push(`<div class="overlay svelte-1n68bue">Loading sky…</div>`);
     }
     $$renderer2.push(`<!--]--></div>`);
@@ -203,7 +202,7 @@ function SideMenu($$renderer, $$props) {
     let isOpen = false;
     $$renderer2.push(`<button${attr_class("menu-toggle", void 0, { "menu-toggle--open": isOpen })}${attr("aria-label", "Open menu")}${attr("aria-expanded", isOpen)}><span class="menu-toggle-bar"></span> <span class="menu-toggle-bar"></span> <span class="menu-toggle-bar"></span></button> `);
     {
-      $$renderer2.push("<!--[!-->");
+      $$renderer2.push("<!--[-1-->");
     }
     $$renderer2.push(`<!--]--> <nav${attr_class("side-menu", void 0, { "side-menu--open": isOpen })} aria-label="Map categories"><div class="side-menu-header"><h2 class="side-menu-title">Maps</h2> <span class="side-menu-subtitle">Geographic Visualization</span></div> <div class="side-menu-content"><a href="/mymaps" class="menu-link" data-sveltekit-reload=""><div class="menu-link-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"></path><circle cx="12" cy="10" r="3"></circle></svg></div> <div class="menu-link-info"><span class="menu-link-name">MyMaps</span> <span class="menu-link-desc">Interactive map explorer</span></div> <svg class="menu-link-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"></path></svg></a> <div class="menu-divider"></div> <!--[-->`);
     const each_array = ensure_array_like(mapCategories);
@@ -215,7 +214,7 @@ function SideMenu($$renderer, $$props) {
         "menu-category-chevron--open": store_get($$store_subs ??= {}, "$selectedCategory", selectedCategory) === category.id
       })} viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg></button> `);
       if (store_get($$store_subs ??= {}, "$selectedCategory", selectedCategory) === category.id) {
-        $$renderer2.push("<!--[-->");
+        $$renderer2.push("<!--[0-->");
         $$renderer2.push(`<div class="menu-category-content"><!--[-->`);
         const each_array_1 = ensure_array_like(category.maps);
         for (let $$index = 0, $$length2 = each_array_1.length; $$index < $$length2; $$index++) {
@@ -226,7 +225,7 @@ function SideMenu($$renderer, $$props) {
         }
         $$renderer2.push(`<!--]--></div>`);
       } else {
-        $$renderer2.push("<!--[!-->");
+        $$renderer2.push("<!--[-1-->");
       }
       $$renderer2.push(`<!--]--></div>`);
     }
@@ -245,26 +244,26 @@ function _page($$renderer, $$props) {
       });
     });
     if (store_get($$store_subs ??= {}, "$viewMode", viewMode) === "sky") {
-      $$renderer2.push("<!--[-->");
+      $$renderer2.push("<!--[0-->");
       StellariumCanvas($$renderer2);
     } else {
-      $$renderer2.push("<!--[!-->");
+      $$renderer2.push("<!--[-1-->");
       GlobeCanvas($$renderer2);
     }
     $$renderer2.push(`<!--]--> `);
     SideMenu($$renderer2);
     $$renderer2.push(`<!----> <div class="controls"><div class="control-group"><button class="control-btn" title="Zoom in"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg></button> <button class="control-btn" title="Zoom out"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"></line></svg></button> <button class="control-btn" title="Reset view"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"></path><path d="M3 3v5h5"></path></svg></button></div> `);
     if (store_get($$store_subs ??= {}, "$isGlobe", isGlobe)) {
-      $$renderer2.push("<!--[-->");
+      $$renderer2.push("<!--[0-->");
       $$renderer2.push(`<div class="control-group"><button${attr_class("control-btn", void 0, {
         "active": store_get($$store_subs ??= {}, "$autoRotate", autoRotate)
       })}${attr("title", store_get($$store_subs ??= {}, "$autoRotate", autoRotate) ? "Stop rotation" : "Auto-rotate")}><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12a9 9 0 1 1-9-9c2.52 0 4.93 1 6.74 2.74L21 8"></path><path d="M21 3v5h-5"></path></svg></button></div>`);
     } else {
-      $$renderer2.push("<!--[!-->");
+      $$renderer2.push("<!--[-1-->");
     }
     $$renderer2.push(`<!--]--> <div class="control-group"><button class="control-btn"${attr("title", store_get($$store_subs ??= {}, "$viewMode", viewMode) === "map" ? "Switch to sky view" : "Switch to map view")}>${escape_html(store_get($$store_subs ??= {}, "$viewMode", viewMode) === "map" ? "🌍" : "✨")}</button></div> <div class="control-group"><button${attr_class("control-btn", void 0, { "active": showProjectionList })} title="Change projection"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><path d="M2 12h20"></path><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path></svg></button></div> `);
     {
-      $$renderer2.push("<!--[!-->");
+      $$renderer2.push("<!--[-1-->");
     }
     $$renderer2.push(`<!--]--></div> <div class="info-panel"><h2 class="info-title">${escape_html(store_get($$store_subs ??= {}, "$currentProjectionConfig", currentProjectionConfig).name)}</h2> <p class="info-subtitle">${escape_html(store_get($$store_subs ??= {}, "$currentProjectionConfig", currentProjectionConfig).description)}<br/> <strong>Preserves:</strong> ${escape_html(store_get($$store_subs ??= {}, "$currentProjectionConfig", currentProjectionConfig).preserves)}</p></div>`);
     if ($$store_subs) unsubscribe_stores($$store_subs);

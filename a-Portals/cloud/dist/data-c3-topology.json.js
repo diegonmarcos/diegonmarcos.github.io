@@ -4,11 +4,11 @@
   var g = (typeof globalThis !== "undefined") ? globalThis : (typeof window !== "undefined" ? window : this);
   g.PORTAL_DATA = g.PORTAL_DATA || {};
   g.PORTAL_DATA["c3-topology"] = {
- "_warning": "DO NOT EDIT \u2014 AUTO-GENERATED FILE. Source of truth lives in a_solutions/*/build.json + config.json + b_infra/*/build.json. Edits here are overwritten on every `bash 2_configs/build.sh all`.",
+ "_warning": "DO NOT EDIT \u2014 AUTO-GENERATED FILE. Source of truth lives in a_solutions/*/build.json + config.json + b_infra/*/build.json. Edits here are overwritten on every `bash 1_front-configs/build.sh all`.",
  "_meta": {
   "version": 2,
   "generated_at": "",
-  "generated_by": "2_configs/src/engines/cloud-data-config-consolidated.ts",
+  "generated_by": "1_front-configs/src/engines/cloud-data-config-consolidated.ts",
   "pipeline": {
    "description": "Two-stage build: consolidator merges all build.json + config.json sources into the master file; derive emits per-container + archived split files from the master.",
    "source_inputs": [
@@ -18,15 +18,15 @@
     "vault/secrets.yaml (sops-encrypted secrets per service, key names extracted)"
    ],
    "engines": {
-    "consolidator": "2_configs/src/engines/cloud-data-config-consolidated.ts",
-    "derive": "2_configs/src/engines/cloud-data-config-derive.ts"
+    "consolidator": "1_front-configs/src/engines/cloud-data-config-consolidated.ts",
+    "derive": "1_front-configs/src/engines/cloud-data-config-derive.ts"
    },
    "outputs": {
-    "master": "2_configs/dist/_cloud-data-consolidated.json (this file)",
-    "per_container": "2_configs/dist/build-{container_or_service_name}.json (one per container in topology, plus one for each container-less service)",
-    "archived": "2_configs/dist/z_archive/cloud-data-{slice}.json (deprecated split files \u2014 kept for soft-transition fallbacks; consumers should read consolidated instead)"
+    "master": "1_front-configs/dist/_cloud-data-consolidated.json (this file)",
+    "per_container": "1_front-configs/dist/build-{container_or_service_name}.json (one per container in topology, plus one for each container-less service)",
+    "archived": "1_front-configs/dist/z_archive/cloud-data-{slice}.json (deprecated split files \u2014 kept for soft-transition fallbacks; consumers should read consolidated instead)"
    },
-   "rebuild_command": "bash 2_configs/build.sh all"
+   "rebuild_command": "bash 1_front-configs/build.sh all"
   }
  },
  "owner": {
@@ -1376,7 +1376,7 @@
     "networks": []
    },
    "proxy": {
-    "_doc": "Mixed-auth service. Default for base_path = Bearer-gated via introspect-proxy (same as c3-infra-api write routes). The /health, /ready, /analytics/* sub-paths are public \u2014 declared via the engine-supported public_paths[] array (2_configs/src/engines/cloud-data-config-derive.ts:507 \u2192 caddyfile.nix:432 emits a pre-auth `handle <pp>` block per entry that strip_prefix base_path then reverse_proxy upstream).",
+    "_doc": "Mixed-auth service. Default for base_path = Bearer-gated via introspect-proxy (same as c3-infra-api write routes). The /health, /ready, /analytics/* sub-paths are public \u2014 declared via the engine-supported public_paths[] array (1_front-configs/src/engines/cloud-data-config-derive.ts:507 \u2192 caddyfile.nix:432 emits a pre-auth `handle <pp>` block per entry that strip_prefix base_path then reverse_proxy upstream).",
     "primary": {
      "wg_only": false,
      "auth": "two_factor",
@@ -2296,7 +2296,7 @@
       "runner_name": "oci-apps-arm64"
      },
      {
-      "repo_url": "https://github.com/diegonmarcos/cloud-unix",
+      "repo_url": "https://github.com/diegonmarcos/cloud-infra-desktop",
       "runner_name": "oci-apps-arm64-unix"
      }
     ],
@@ -2569,7 +2569,7 @@
     "org": "diego",
     "mirrors": {
      "unix": {
-      "upstream": "https://github.com/diegonmarcos/cloud-unix.git"
+      "upstream": "https://github.com/diegonmarcos/cloud-infra-desktop.git"
      },
      "cloud": {
       "upstream": "https://github.com/diegonmarcos/cloud-infra.git"
@@ -2961,11 +2961,11 @@
    "subcategory": "net",
    "data_sources": {
     "_doc": "Inputs the snapshot deriver reads \u2014 declarative cross-references, no hardcoded values in the panel. Single canonical SoT after the I_cloud-data restructure (post-2026-04): _cloud-data-consolidated.json carries every wg_ip / wg_public_key / public_port already merged.",
-    "consolidated": "2_configs/dist/_cloud-data-consolidated.json",
+    "consolidated": "1_front-configs/dist/_cloud-data-consolidated.json",
     "ws_tunnel": "a_solutions/bb-net_wireguard-mesh-ws-tunnel/build.json"
    },
    "data_outputs": {
-    "snapshot": "2_configs/dist/mesh-snapshot.json",
+    "snapshot": "1_front-configs/dist/mesh-snapshot.json",
     "_consumer_hint": "Symlinked into src/data/mesh.json at build-prep time; PORTAL_DATA[\"mesh\"] hydration. Bare name (not cloud-data-*) so it stays at dist/ root per cloud-data-config-derive.ts L26 archival rule."
    },
    "api": {
@@ -3797,7 +3797,7 @@
     "enabled": true
    },
    "timezone": "Europe/Paris",
-   "_topics_comment": "Source of truth for ntfy topics. Consumed by: (a) bc-obs_ntfy/src/code/topic-scanner.py (its own runtime topic list), (b) 2_configs/src/engines/parsers/ntfy.ts (publishes configs.ntfy.topics \u2014 incl. path/title \u2014 into _cloud-data-consolidated.json), (c) 2_configs/src/engines/cloud-data-config-derive.ts (emits topics into build-mattermost.json AND the RSS taxonomy build-ntfy-rss-channels.json consumed by the Cloud Mail SUPER RSS READER). 'path' = parent folder in the Cloud Mail feed tree (leaf = the topic itself, display = 'title'); topics sharing a 'path' become siblings under that folder, so e.g. the three dev_* topics form a nested CICD/GH group. Adding a topic = edit this array + rebuild.",
+   "_topics_comment": "Source of truth for ntfy topics. Consumed by: (a) bc-obs_ntfy/src/code/topic-scanner.py (its own runtime topic list), (b) 1_front-configs/src/engines/parsers/ntfy.ts (publishes configs.ntfy.topics \u2014 incl. path/title \u2014 into _cloud-data-consolidated.json), (c) 1_front-configs/src/engines/cloud-data-config-derive.ts (emits topics into build-mattermost.json AND the RSS taxonomy build-ntfy-rss-channels.json consumed by the Cloud Mail SUPER RSS READER). 'path' = parent folder in the Cloud Mail feed tree (leaf = the topic itself, display = 'title'); topics sharing a 'path' become siblings under that folder, so e.g. the three dev_* topics form a nested CICD/GH group. Adding a topic = edit this array + rebuild.",
    "topics": [
     {
      "name": "all",
@@ -5299,7 +5299,7 @@
     "path": "/mcp"
    },
    "db_publish": {
-    "_comment": "Durability: the octocode GraphRAG index (FastEmbed vectors + LLM relationship graph, a multi-hour build) lives only in the octocode_db volume on `host`. ship-kg-db.yml (GHA) snapshots it to image:tag on GHCR so a volume wipe is restorable by pulling the image. GHA (not the local ship) so the package can be flipped PUBLIC. Consumed by 1_workflows/src/scripts/cloud-kg-db-snapshot.sh.",
+    "_comment": "Durability: the octocode GraphRAG index (FastEmbed vectors + LLM relationship graph, a multi-hour build) lives only in the octocode_db volume on `host`. ship-kg-db.yml (GHA) snapshots it to image:tag on GHCR so a volume wipe is restorable by pulling the image. GHA (not the local ship) so the package can be flipped PUBLIC. Consumed by 1_cicd/src/scripts/cloud-kg-db-snapshot.sh.",
     "image": "ghcr.io/diegonmarcos/cloud-cgc-mcp-octocode-db",
     "tag": "latest",
     "volume": "octocode_db",

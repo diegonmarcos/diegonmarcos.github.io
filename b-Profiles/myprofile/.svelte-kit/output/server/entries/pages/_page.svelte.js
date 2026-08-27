@@ -1,9 +1,10 @@
 import "clsx";
-import { a1 as attr_class, a2 as attr, _ as stringify, a3 as ensure_array_like, Z as attr_style } from "../../chunks/index2.js";
+import { b as attr_class, c as attr, d as derived, s as stringify, e as ensure_array_like, a as attr_style, f as escape_html } from "../../chunks/index.js";
 import { b as base } from "../../chunks/server.js";
+import "../../chunks/url.js";
 import "@sveltejs/kit/internal/server";
+import "../../chunks/root.js";
 /* empty css                                              */
-import { e as escape_html } from "../../chunks/context.js";
 import "../../chunks/navigation.js";
 const cardsData = [
   {
@@ -137,8 +138,8 @@ function Icon($$renderer, $$props) {
     "cpu": "M9 3H5a2 2 0 0 0-2 2v4m6-6h6m-6 0V1m6 2h4a2 2 0 0 1 2 2v4m-6-6V1m6 8v6m0-6h2m-2 6v4a2 2 0 0 1-2 2h-4m6-6h2m-8 6H9m6 0v2m-6-2v2m-6-8v6m0-6H1m2 6a2 2 0 0 0 2 2h4m-6-8H1",
     "link": "M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71 M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"
   };
-  let pathData = icons[name] || icons["user"];
-  $$renderer.push(`<svg${attr_class(`icon ${stringify(className)}`, "svelte-1eqehiz")}${attr("width", size)}${attr("height", size)} viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path${attr("d", pathData)}></path></svg>`);
+  let pathData = derived(() => icons[name] || icons["user"]);
+  $$renderer.push(`<svg${attr_class(`icon ${stringify(className)}`, "svelte-1eqehiz")}${attr("width", size)}${attr("height", size)} viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path${attr("d", pathData())}></path></svg>`);
 }
 function CardsView($$renderer, $$props) {
   $$renderer.component(($$renderer2) => {

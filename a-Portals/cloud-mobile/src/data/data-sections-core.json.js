@@ -149,7 +149,7 @@
           { "label": "VMs", "icon": "mesh", "tiles": ["gcp-E2-f_0", "oci-E2-f_0", "oci-E2-f_1", "oci-A1-f_0", "Galaxy S21"] },
           { "label": "Runners", "icon": "tools", "tiles": [
             "ARM (Oci-Apps)",
-            { "label": "x86 (GHA)", "target": "https://github.com/diegonmarcos/cloud-unix/actions" }
+            { "label": "x86 (GHA)", "target": "https://github.com/diegonmarcos/cloud-infra-desktop/actions" }
           ]},
           { "label": "DBs", "icon": "database", "tiles": ["Redis", "Umami Db", "Authelia Redis", "Kg Store", "Mattermost Postgres", "Photoprism Mariadb", "Etherpad Postgres", "Hedgedoc Postgres", "Paca Postgres", "Postlite",
             { "label": "Oracle S3 (backups)", "target": "https://cloud.oracle.com" }

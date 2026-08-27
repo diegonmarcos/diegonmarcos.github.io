@@ -1,8 +1,6 @@
 
 
 export const index = 4;
-let component_cache;
-export const component = async () => component_cache ??= (await import('../entries/pages/bio/_page.svelte.js')).default;
-export const imports = ["_app/immutable/nodes/4.DpLPZTja.js","_app/immutable/chunks/CSeKS16j.js","_app/immutable/chunks/DeXqAH--.js","_app/immutable/chunks/BomfAg22.js","_app/immutable/chunks/CCRZcMTb.js","_app/immutable/chunks/BUxq1CGj.js"];
+export const imports = ["_app/immutable/nodes/4.DcjxOk9d.js","_app/immutable/chunks/TcwDEmaU.js","_app/immutable/chunks/CFxgbuDx.js","_app/immutable/chunks/UAQ4T5Ep.js","_app/immutable/chunks/BuDxADCf.js"];
 export const stylesheets = ["_app/immutable/assets/4.B87lEI7j.css"];
 export const fonts = [];

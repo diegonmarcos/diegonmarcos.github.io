@@ -1,13 +1,14 @@
-import { e as ensure_array_like, a as attr_class, s as store_get, b as attr, u as unsubscribe_stores, c as attr_style, d as stringify, h as head } from "../../chunks/index2.js";
-import { o as onDestroy, q as quickSearchCategories, a as quickSearch, s as searchResults, b as searchQuery, f as formatDuration, c as formatDistance, P as ProviderBadge, d as showDirectionsPanel, r as routeMode, i as isCalculatingRoute, e as routeError, g as selectedRoute, h as routeOrigin, j as routeDestination, k as showLayersPanel, m as mapStyles, l as currentStyleId, n as isTerrainLayer, p as isSatelliteLayer, t as isGlobeView, u as is3DTerrain, v as searchRadius, w as tempPinsCount, x as placeLists, y as listVisibility, M as MapCanvas, z as MapControls, A as PlacePanel, B as mapEngine } from "../../chunks/PlacePanel.js";
+import { e as escape_html, s as store_get, a as ensure_array_like, b as attr_class, c as attr, u as unsubscribe_stores, d as bind_props, f as derived, g as attr_style, i as stringify, h as head } from "../../chunks/index.js";
+import { o as onDestroy, P as ProviderBadge, s as searchResults, a as selectedResult, q as quickSearchCategories, b as quickSearch, i as isSearching, c as searchQuery, r as recentSearches, f as formatDuration, d as formatDistance, e as showDirectionsPanel, g as routeMode, h as isCalculatingRoute, j as routeError, k as selectedRoute, l as routeOrigin, m as routeDestination, n as showLayersPanel, p as mapStyles, t as currentStyleId, u as isTerrainLayer, v as isSatelliteLayer, w as isGlobeView, x as is3DTerrain, y as searchRadius, z as tempPinsCount, A as placeLists, B as listVisibility, M as MapCanvas, C as MapControls, D as PlacePanel, E as mapEngine } from "../../chunks/PlacePanel.js";
 import "clsx";
 import { c as capabilities } from "../../chunks/configStore.js";
 import "maplibre-gl";
-import { $ as escape_html } from "../../chunks/context.js";
 import "@mapbox/togeojson";
 import "jszip";
 import { b as base } from "../../chunks/server.js";
+import "../../chunks/url.js";
 import "@sveltejs/kit/internal/server";
+import "../../chunks/root.js";
 function CesiumCanvas($$renderer, $$props) {
   $$renderer.component(($$renderer2) => {
     let viewer;
@@ -16,6 +17,74 @@ function CesiumCanvas($$renderer, $$props) {
       viewer = void 0;
     });
     $$renderer2.push(`<div class="cesium-container svelte-wkkdor"></div>`);
+  });
+}
+function SearchResults($$renderer, $$props) {
+  $$renderer.component(($$renderer2) => {
+    var $$store_subs;
+    let contextMenuState = {
+      show: false,
+      x: 0,
+      y: 0,
+      coordinates: [0, 0],
+      placeName: "",
+      placeAddress: ""
+    };
+    function getContextMenuState() {
+      return contextMenuState;
+    }
+    function closeContextMenu() {
+      contextMenuState.show = false;
+    }
+    function formatDistance2(meters) {
+      if (!meters) return "";
+      if (meters < 1e3) return `${Math.round(meters)} m`;
+      return `${(meters / 1e3).toFixed(1)} km`;
+    }
+    function getCategoryIcon(category) {
+      const icons = {
+        amenity: "M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z",
+        building: "M12 3L2 12h3v8h14v-8h3L12 3zm0 12c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2z",
+        place: "M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z",
+        highway: "M12 2L4 7v15h16V7l-8-5zm0 2.5L18 8v11H6V8l6-3.5z",
+        shop: "M19 6h-2c0-2.76-2.24-5-5-5S7 3.24 7 6H5c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2z"
+      };
+      return icons[category || ""] || icons.place;
+    }
+    $$renderer2.push(`<div class="search-results"><div class="search-results-header"><span>${escape_html(store_get($$store_subs ??= {}, "$searchResults", searchResults).length)} result${escape_html(store_get($$store_subs ??= {}, "$searchResults", searchResults).length !== 1 ? "s" : "")}</span></div> <!--[-->`);
+    const each_array = ensure_array_like(store_get($$store_subs ??= {}, "$searchResults", searchResults));
+    for (let $$index = 0, $$length = each_array.length; $$index < $$length; $$index++) {
+      let result = each_array[$$index];
+      $$renderer2.push(`<div${attr_class("search-result", void 0, {
+        "search-result--selected": store_get($$store_subs ??= {}, "$selectedResult", selectedResult)?.id === result.id
+      })} role="button" tabindex="0"><div class="search-result-icon"><svg viewBox="0 0 24 24" fill="currentColor"><path${attr("d", getCategoryIcon(result.category))}></path></svg></div> <div class="search-result-content"><div class="search-result-name"><span class="search-result-title">${escape_html(result.name)}</span> `);
+      ProviderBadge($$renderer2, { source: result.source });
+      $$renderer2.push(`<!----></div> <div class="search-result-address">${escape_html(result.address)}</div> `);
+      if (result.distance || result.type) {
+        $$renderer2.push("<!--[0-->");
+        $$renderer2.push(`<div class="search-result-meta">`);
+        if (result.distance) {
+          $$renderer2.push("<!--[0-->");
+          $$renderer2.push(`<span class="search-result-distance">${escape_html(formatDistance2(result.distance))}</span>`);
+        } else {
+          $$renderer2.push("<!--[-1-->");
+        }
+        $$renderer2.push(`<!--]--> `);
+        if (result.type) {
+          $$renderer2.push("<!--[0-->");
+          $$renderer2.push(`<span>${escape_html(result.type)}</span>`);
+        } else {
+          $$renderer2.push("<!--[-1-->");
+        }
+        $$renderer2.push(`<!--]--></div>`);
+      } else {
+        $$renderer2.push("<!--[-1-->");
+      }
+      $$renderer2.push(`<!--]--></div> <button class="search-result-directions glass-button glass-button--icon glass-button--small" aria-label="Get directions"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><polygon points="3 11 22 2 13 21 11 13 3 11"></polygon></svg></button></div>`);
+    }
+    $$renderer2.push(`<!--]--></div>`);
+    if ($$store_subs) unsubscribe_stores($$store_subs);
+    bind_props($$props, { getContextMenuState, closeContextMenu });
   });
 }
 function QuickSearchBar($$renderer, $$props) {
@@ -42,16 +111,40 @@ function SearchBar($$renderer, $$props) {
   $$renderer.component(($$renderer2) => {
     var $$store_subs;
     let isFocused = false;
-    let showDropdown = isFocused;
-    store_get($$store_subs ??= {}, "$searchResults", searchResults).length > 0;
+    let showDropdown = derived(() => isFocused);
+    let hasResults = derived(() => store_get($$store_subs ??= {}, "$searchResults", searchResults).length > 0);
     $$renderer2.push(`<div class="search-container"><div${attr_class("search-bar", void 0, {
       "search-bar--focused": isFocused,
-      "search-bar--has-results": showDropdown
+      "search-bar--has-results": showDropdown() && (hasResults() || store_get($$store_subs ??= {}, "$isSearching", isSearching))
     })}><span class="search-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg></span> <input type="text" class="search-input" placeholder="Search places..."${attr("value", store_get($$store_subs ??= {}, "$searchQuery", searchQuery))} autocomplete="off" spellcheck="false"/> <button${attr_class("search-clear", void 0, {
       "search-clear--visible": store_get($$store_subs ??= {}, "$searchQuery", searchQuery).length > 0
     })} aria-label="Clear search"${attr("tabindex", store_get($$store_subs ??= {}, "$searchQuery", searchQuery).length > 0 ? 0 : -1)}><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg></button></div> `);
-    {
-      $$renderer2.push("<!--[!-->");
+    if (showDropdown()) {
+      $$renderer2.push("<!--[0-->");
+      if (store_get($$store_subs ??= {}, "$isSearching", isSearching)) {
+        $$renderer2.push("<!--[0-->");
+        $$renderer2.push(`<div class="search-results"><div class="search-loading"><div class="search-loading-spinner"></div> <span>Searching...</span></div></div>`);
+      } else if (hasResults()) {
+        $$renderer2.push("<!--[1-->");
+        SearchResults($$renderer2, {});
+      } else if (store_get($$store_subs ??= {}, "$searchQuery", searchQuery).length > 1 && !store_get($$store_subs ??= {}, "$isSearching", isSearching)) {
+        $$renderer2.push("<!--[2-->");
+        $$renderer2.push(`<div class="search-results"><div class="search-no-results"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"></circle><path d="M8 15s1.5-2 4-2 4 2 4 2"></path><circle cx="9" cy="9" r="1" fill="currentColor"></circle><circle cx="15" cy="9" r="1" fill="currentColor"></circle></svg> <p>No results found</p> <span>Try a different search term</span></div></div>`);
+      } else if (store_get($$store_subs ??= {}, "$recentSearches", recentSearches).length > 0) {
+        $$renderer2.push("<!--[3-->");
+        $$renderer2.push(`<div class="search-results"><div class="recent-searches"><div class="recent-searches-header"><span>Recent</span> <button>Clear</button></div> <!--[-->`);
+        const each_array = ensure_array_like(store_get($$store_subs ??= {}, "$recentSearches", recentSearches));
+        for (let $$index = 0, $$length = each_array.length; $$index < $$length; $$index++) {
+          let query = each_array[$$index];
+          $$renderer2.push(`<button class="recent-search-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg> <span>${escape_html(query)}</span></button>`);
+        }
+        $$renderer2.push(`<!--]--></div></div>`);
+      } else {
+        $$renderer2.push("<!--[-1-->");
+      }
+      $$renderer2.push(`<!--]-->`);
+    } else {
+      $$renderer2.push("<!--[-1-->");
     }
     $$renderer2.push(`<!--]--> `);
     QuickSearchBar($$renderer2);
@@ -71,8 +164,8 @@ function DirectionsPanel($$renderer, $$props) {
       transit: "M12 2c-4.42 0-8 .5-8 4v9.5C4 17.43 5.57 19 7.5 19L6 20.5v.5h12v-.5L16.5 19c1.93 0 3.5-1.57 3.5-3.5V6c0-3.5-3.58-4-8-4zM7.5 17c-.83 0-1.5-.67-1.5-1.5S6.67 14 7.5 14s1.5.67 1.5 1.5S8.33 17 7.5 17zm3.5-6H6V6h5v5zm5.5 6c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5zm1.5-6h-5V6h5v5z"
     };
     if (store_get($$store_subs ??= {}, "$showDirectionsPanel", showDirectionsPanel)) {
-      $$renderer2.push("<!--[-->");
-      $$renderer2.push(`<div class="directions-panel panel"><div class="panel-header"><h2 class="panel-title">Directions</h2> <button class="panel-close" aria-label="Close"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg></button></div> <div class="directions-inputs"><div class="directions-input-row"><span class="directions-dot directions-dot--origin"></span> <input type="text" class="directions-input" placeholder="Choose starting point..."${attr("value", originInput)} readonly/> <button class="directions-swap" aria-label="Use my location"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"></circle><path d="M12 2v4M12 18v4M2 12h4M18 12h4"></path></svg></button></div> <div class="directions-input-row"><span class="directions-dot directions-dot--destination"></span> <input type="text" class="directions-input" placeholder="Choose destination..."${attr("value", destinationInput)} readonly/> <button class="directions-swap" aria-label="Swap origin and destination"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="7 16 3 12 7 8"></polyline><polyline points="17 8 21 12 17 16"></polyline><line x1="3" y1="12" x2="21" y2="12"></line></svg></button></div></div> <div class="directions-modes"><!--[-->`);
+      $$renderer2.push("<!--[0-->");
+      $$renderer2.push(`<div class="directions-panel panel"><div class="panel-header"><h2 class="panel-title">Directions</h2> <button class="panel-close" aria-label="Close"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg></button></div> <div class="directions-inputs"><div class="directions-input-row"><span class="directions-dot directions-dot--origin"></span> <input type="text" class="directions-input" placeholder="Choose starting point..."${attr("value", originInput)} readonly=""/> <button class="directions-swap" aria-label="Use my location"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"></circle><path d="M12 2v4M12 18v4M2 12h4M18 12h4"></path></svg></button></div> <div class="directions-input-row"><span class="directions-dot directions-dot--destination"></span> <input type="text" class="directions-input" placeholder="Choose destination..."${attr("value", destinationInput)} readonly=""/> <button class="directions-swap" aria-label="Swap origin and destination"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="7 16 3 12 7 8"></polyline><polyline points="17 8 21 12 17 16"></polyline><line x1="3" y1="12" x2="21" y2="12"></line></svg></button></div></div> <div class="directions-modes"><!--[-->`);
       const each_array = ensure_array_like(["driving", "walking", "cycling", "transit"]);
       for (let $$index = 0, $$length = each_array.length; $$index < $$length; $$index++) {
         let mode = each_array[$$index];
@@ -83,61 +176,45 @@ function DirectionsPanel($$renderer, $$props) {
       }
       $$renderer2.push(`<!--]--></div> `);
       if (store_get($$store_subs ??= {}, "$isCalculatingRoute", isCalculatingRoute)) {
-        $$renderer2.push("<!--[-->");
+        $$renderer2.push("<!--[0-->");
         $$renderer2.push(`<div class="directions-loading"><div class="search-loading-spinner"></div> <span>Calculating route...</span></div>`);
-      } else {
-        $$renderer2.push("<!--[!-->");
-        if (store_get($$store_subs ??= {}, "$routeError", routeError)) {
-          $$renderer2.push("<!--[-->");
-          $$renderer2.push(`<div class="search-no-results"><p>${escape_html(store_get($$store_subs ??= {}, "$routeError", routeError))}</p></div>`);
-        } else {
-          $$renderer2.push("<!--[!-->");
-          if (store_get($$store_subs ??= {}, "$selectedRoute", selectedRoute)) {
-            $$renderer2.push("<!--[-->");
-            $$renderer2.push(`<div class="directions-summary"><div><div class="directions-duration">${escape_html(formatDuration(store_get($$store_subs ??= {}, "$selectedRoute", selectedRoute).duration))}</div> <div class="directions-distance">${escape_html(formatDistance(store_get($$store_subs ??= {}, "$selectedRoute", selectedRoute).distance))}</div></div> `);
-            ProviderBadge($$renderer2, {
-              source: store_get($$store_subs ??= {}, "$selectedRoute", selectedRoute).source
-            });
-            $$renderer2.push(`<!----></div> <div class="directions-steps"><!--[-->`);
-            const each_array_1 = ensure_array_like(store_get($$store_subs ??= {}, "$selectedRoute", selectedRoute).steps);
-            for (let i = 0, $$length = each_array_1.length; i < $$length; i++) {
-              let step = each_array_1[i];
-              $$renderer2.push(`<div class="directions-step"><div class="directions-step-icon"><svg viewBox="0 0 24 24" fill="currentColor" width="14" height="14">`);
-              if (i === 0) {
-                $$renderer2.push("<!--[-->");
-                $$renderer2.push(`<circle cx="12" cy="12" r="6"></circle>`);
-              } else {
-                $$renderer2.push("<!--[!-->");
-                if (i === store_get($$store_subs ??= {}, "$selectedRoute", selectedRoute).steps.length - 1) {
-                  $$renderer2.push("<!--[-->");
-                  $$renderer2.push(`<path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"></path>`);
-                } else {
-                  $$renderer2.push("<!--[!-->");
-                  $$renderer2.push(`<path d="M12 2L4.5 20.29l.71.71L12 18l6.79 3 .71-.71z"></path>`);
-                }
-                $$renderer2.push(`<!--]-->`);
-              }
-              $$renderer2.push(`<!--]--></svg></div> <div class="directions-step-content"><div class="directions-step-instruction">${escape_html(step.instruction)}</div> <div class="directions-step-meta">${escape_html(formatDistance(step.distance))} · ${escape_html(formatDuration(step.duration))}</div></div></div>`);
-            }
-            $$renderer2.push(`<!--]--></div>`);
+      } else if (store_get($$store_subs ??= {}, "$routeError", routeError)) {
+        $$renderer2.push("<!--[1-->");
+        $$renderer2.push(`<div class="search-no-results"><p>${escape_html(store_get($$store_subs ??= {}, "$routeError", routeError))}</p></div>`);
+      } else if (store_get($$store_subs ??= {}, "$selectedRoute", selectedRoute)) {
+        $$renderer2.push("<!--[2-->");
+        $$renderer2.push(`<div class="directions-summary"><div><div class="directions-duration">${escape_html(formatDuration(store_get($$store_subs ??= {}, "$selectedRoute", selectedRoute).duration))}</div> <div class="directions-distance">${escape_html(formatDistance(store_get($$store_subs ??= {}, "$selectedRoute", selectedRoute).distance))}</div></div> `);
+        ProviderBadge($$renderer2, {
+          source: store_get($$store_subs ??= {}, "$selectedRoute", selectedRoute).source
+        });
+        $$renderer2.push(`<!----></div> <div class="directions-steps"><!--[-->`);
+        const each_array_1 = ensure_array_like(store_get($$store_subs ??= {}, "$selectedRoute", selectedRoute).steps);
+        for (let i = 0, $$length = each_array_1.length; i < $$length; i++) {
+          let step = each_array_1[i];
+          $$renderer2.push(`<div class="directions-step"><div class="directions-step-icon"><svg viewBox="0 0 24 24" fill="currentColor" width="14" height="14">`);
+          if (i === 0) {
+            $$renderer2.push("<!--[0-->");
+            $$renderer2.push(`<circle cx="12" cy="12" r="6"></circle>`);
+          } else if (i === store_get($$store_subs ??= {}, "$selectedRoute", selectedRoute).steps.length - 1) {
+            $$renderer2.push("<!--[1-->");
+            $$renderer2.push(`<path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"></path>`);
           } else {
-            $$renderer2.push("<!--[!-->");
-            if (store_get($$store_subs ??= {}, "$routeOrigin", routeOrigin) && store_get($$store_subs ??= {}, "$routeDestination", routeDestination)) {
-              $$renderer2.push("<!--[-->");
-              $$renderer2.push(`<div class="directions-calculate"><button class="glass-button glass-button--primary">Get Directions</button></div>`);
-            } else {
-              $$renderer2.push("<!--[!-->");
-              $$renderer2.push(`<div class="empty-state"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><polygon points="3 11 22 2 13 21 11 13 3 11"></polygon></svg> <p>Select origin and destination</p></div>`);
-            }
-            $$renderer2.push(`<!--]-->`);
+            $$renderer2.push("<!--[-1-->");
+            $$renderer2.push(`<path d="M12 2L4.5 20.29l.71.71L12 18l6.79 3 .71-.71z"></path>`);
           }
-          $$renderer2.push(`<!--]-->`);
+          $$renderer2.push(`<!--]--></svg></div> <div class="directions-step-content"><div class="directions-step-instruction">${escape_html(step.instruction)}</div> <div class="directions-step-meta">${escape_html(formatDistance(step.distance))} · ${escape_html(formatDuration(step.duration))}</div></div></div>`);
         }
-        $$renderer2.push(`<!--]-->`);
+        $$renderer2.push(`<!--]--></div>`);
+      } else if (store_get($$store_subs ??= {}, "$routeOrigin", routeOrigin) && store_get($$store_subs ??= {}, "$routeDestination", routeDestination)) {
+        $$renderer2.push("<!--[3-->");
+        $$renderer2.push(`<div class="directions-calculate"><button class="glass-button glass-button--primary">Get Directions</button></div>`);
+      } else {
+        $$renderer2.push("<!--[-1-->");
+        $$renderer2.push(`<div class="empty-state"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><polygon points="3 11 22 2 13 21 11 13 3 11"></polygon></svg> <p>Select origin and destination</p></div>`);
       }
       $$renderer2.push(`<!--]--></div>`);
     } else {
-      $$renderer2.push("<!--[!-->");
+      $$renderer2.push("<!--[-1-->");
     }
     $$renderer2.push(`<!--]-->`);
     if ($$store_subs) unsubscribe_stores($$store_subs);
@@ -154,10 +231,10 @@ function LayersPanel($$renderer, $$props) {
       custom: false
     };
     if (store_get($$store_subs ??= {}, "$showLayersPanel", showLayersPanel)) {
-      $$renderer2.push("<!--[-->");
+      $$renderer2.push("<!--[0-->");
       $$renderer2.push(`<div class="layers-panel panel"><div class="panel-header"><h2 class="panel-title">Layers</h2> <button class="panel-close" aria-label="Close"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg></button></div> <div class="layers-section"><button class="layers-section-header"><h3 class="layers-section-title">Map Style</h3> <svg${attr_class("layers-section-chevron", void 0, { "layers-section-chevron--open": sectionsOpen.style })} viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><polyline points="6 9 12 15 18 9"></polyline></svg></button> `);
       {
-        $$renderer2.push("<!--[-->");
+        $$renderer2.push("<!--[0-->");
         $$renderer2.push(`<div class="layers-section-content"><!--[-->`);
         const each_array = ensure_array_like(mapStyles);
         for (let $$index = 0, $$length = each_array.length; $$index < $$length; $$index++) {
@@ -166,10 +243,10 @@ function LayersPanel($$renderer, $$props) {
             "layer-preview--active": store_get($$store_subs ??= {}, "$currentStyleId", currentStyleId) === style.id
           })}>`);
           if (style.preview) {
-            $$renderer2.push("<!--[-->");
+            $$renderer2.push("<!--[0-->");
             $$renderer2.push(`<img${attr("src", style.preview)}${attr("alt", style.name)}/>`);
           } else {
-            $$renderer2.push("<!--[!-->");
+            $$renderer2.push("<!--[-1-->");
             $$renderer2.push(`<div class="layer-preview-placeholder"></div>`);
           }
           $$renderer2.push(`<!--]--></div> <div class="layer-info"><div class="layer-name">${escape_html(style.name)}</div></div></button>`);
@@ -178,7 +255,7 @@ function LayersPanel($$renderer, $$props) {
       }
       $$renderer2.push(`<!--]--></div> <div class="layers-section"><button class="layers-section-header"><h3 class="layers-section-title">Layers</h3> <svg${attr_class("layers-section-chevron", void 0, { "layers-section-chevron--open": sectionsOpen.layers })} viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><polyline points="6 9 12 15 18 9"></polyline></svg></button> `);
       {
-        $$renderer2.push("<!--[-->");
+        $$renderer2.push("<!--[0-->");
         $$renderer2.push(`<div class="layers-section-content"><button class="layer-option"><div${attr_class("layer-preview", void 0, {
           "layer-preview--active": !store_get($$store_subs ??= {}, "$isTerrainLayer", isTerrainLayer) && !store_get($$store_subs ??= {}, "$isSatelliteLayer", isSatelliteLayer)
         })}><div class="layer-preview-placeholder layer-preview-placeholder--none"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="24" height="24"><rect x="3" y="3" width="18" height="18" rx="2"></rect><line x1="3" y1="12" x2="21" y2="12"></line><line x1="12" y1="3" x2="12" y2="21"></line></svg></div></div> <div class="layer-info"><div class="layer-name">None</div></div></button> <button class="layer-option"><div${attr_class("layer-preview", void 0, {
@@ -189,25 +266,25 @@ function LayersPanel($$renderer, $$props) {
       }
       $$renderer2.push(`<!--]--></div> <div class="layers-section"><button class="layers-section-header"><h3 class="layers-section-title">Options</h3> <svg${attr_class("layers-section-chevron", void 0, { "layers-section-chevron--open": sectionsOpen.options })} viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><polyline points="6 9 12 15 18 9"></polyline></svg></button> `);
       {
-        $$renderer2.push("<!--[-->");
+        $$renderer2.push("<!--[0-->");
         $$renderer2.push(`<div class="layers-section-content"><label class="layer-toggle" for="globe-view"><input type="checkbox" id="globe-view"${attr("checked", store_get($$store_subs ??= {}, "$isGlobeView", isGlobeView), true)}/> <span class="toggle-switch"></span> <span class="toggle-label">Globe View</span></label> <label class="layer-toggle" for="terrain-3d"><input type="checkbox" id="terrain-3d"${attr("checked", store_get($$store_subs ??= {}, "$is3DTerrain", is3DTerrain), true)}/> <span class="toggle-switch"></span> <span class="toggle-label">3D Elevation</span></label> <div class="option-input-row"><label class="option-label" for="search-radius">Search Radius</label> <div class="option-input-group"><input type="number" id="search-radius" class="option-input"${attr("value", store_get($$store_subs ??= {}, "$searchRadius", searchRadius))} min="1" max="100" step="1"/> <span class="option-input-suffix">km</span></div></div></div>`);
       }
       $$renderer2.push(`<!--]--></div> <div class="layers-section"><button class="layers-section-header"><h3 class="layers-section-title">Lists of Places `);
       if (store_get($$store_subs ??= {}, "$tempPinsCount", tempPinsCount) > 0) {
-        $$renderer2.push("<!--[-->");
+        $$renderer2.push("<!--[0-->");
         $$renderer2.push(`<span class="layers-section-badge">${escape_html(store_get($$store_subs ??= {}, "$tempPinsCount", tempPinsCount))} pins</span>`);
       } else {
-        $$renderer2.push("<!--[!-->");
+        $$renderer2.push("<!--[-1-->");
       }
       $$renderer2.push(`<!--]--></h3> <svg${attr_class("layers-section-chevron", void 0, { "layers-section-chevron--open": sectionsOpen.places })} viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><polyline points="6 9 12 15 18 9"></polyline></svg></button> `);
       {
-        $$renderer2.push("<!--[-->");
+        $$renderer2.push("<!--[0-->");
         $$renderer2.push(`<div class="layers-section-content">`);
         if (store_get($$store_subs ??= {}, "$tempPinsCount", tempPinsCount) > 0) {
-          $$renderer2.push("<!--[-->");
+          $$renderer2.push("<!--[0-->");
           $$renderer2.push(`<div class="places-temp-section"><div class="places-temp-header"><span class="places-temp-label">Search pins (${escape_html(store_get($$store_subs ??= {}, "$tempPinsCount", tempPinsCount))})</span> <button class="places-clear-btn">Clear all</button></div></div>`);
         } else {
-          $$renderer2.push("<!--[!-->");
+          $$renderer2.push("<!--[-1-->");
         }
         $$renderer2.push(`<!--]--> <!--[-->`);
         const each_array_1 = ensure_array_like(store_get($$store_subs ??= {}, "$placeLists", placeLists));
@@ -219,20 +296,20 @@ function LayersPanel($$renderer, $$props) {
         }
         $$renderer2.push(`<!--]--> `);
         if (store_get($$store_subs ??= {}, "$placeLists", placeLists).length === 0 && store_get($$store_subs ??= {}, "$tempPinsCount", tempPinsCount) === 0) {
-          $$renderer2.push("<!--[-->");
+          $$renderer2.push("<!--[0-->");
           $$renderer2.push(`<p class="layers-empty-text">No saved places yet</p>`);
         } else {
-          $$renderer2.push("<!--[!-->");
+          $$renderer2.push("<!--[-1-->");
         }
         $$renderer2.push(`<!--]--></div>`);
       }
       $$renderer2.push(`<!--]--></div> <div class="layers-section"><button class="layers-section-header"><h3 class="layers-section-title">Custom Layers</h3> <svg${attr_class("layers-section-chevron", void 0, { "layers-section-chevron--open": sectionsOpen.custom })} viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><polyline points="6 9 12 15 18 9"></polyline></svg></button> `);
       {
-        $$renderer2.push("<!--[!-->");
+        $$renderer2.push("<!--[-1-->");
       }
       $$renderer2.push(`<!--]--></div></div>`);
     } else {
-      $$renderer2.push("<!--[!-->");
+      $$renderer2.push("<!--[-1-->");
     }
     $$renderer2.push(`<!--]-->`);
     if ($$store_subs) unsubscribe_stores($$store_subs);
@@ -268,7 +345,6 @@ function SideMenu($$renderer, $$props) {
         description: "Travel journal"
       }
     ];
-    const tripsBaseUrl = "https://diegonmarcos.github.io/mymaps-mytrips";
     const tripPages = [
       { id: "home", label: "Home", icon: "🏠", hash: "" },
       { id: "atlas", label: "Atlas", icon: "🗺️", hash: "#atlas" },
@@ -302,7 +378,7 @@ function SideMenu($$renderer, $$props) {
     let activeSection = null;
     $$renderer2.push(`<button${attr_class("menu-toggle", void 0, { "menu-toggle--open": isOpen })}${attr("aria-label", "Open menu")}${attr("aria-expanded", isOpen)}><span class="menu-toggle-bar"></span> <span class="menu-toggle-bar"></span> <span class="menu-toggle-bar"></span></button> `);
     {
-      $$renderer2.push("<!--[!-->");
+      $$renderer2.push("<!--[-1-->");
     }
     $$renderer2.push(`<!--]--> <nav${attr_class("side-menu", void 0, { "side-menu--open": isOpen })} aria-label="Main menu"><div class="side-menu-header"><h2 class="side-menu-title">MyMaps</h2></div> <div class="side-menu-content"><!--[-->`);
     const each_array = ensure_array_like(menuSections);
@@ -310,15 +386,15 @@ function SideMenu($$renderer, $$props) {
       let section = each_array[$$index_4];
       $$renderer2.push(`<button${attr_class("menu-section", void 0, { "menu-section--active": activeSection === section.id })}><div class="menu-section-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path${attr("d", section.icon)}></path></svg></div> <div class="menu-section-info"><span class="menu-section-name">${escape_html(section.name)}</span> <span class="menu-section-desc">${escape_html(section.description)}</span></div> <svg class="menu-section-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"></polyline></svg></button> `);
       if (activeSection === section.id) {
-        $$renderer2.push("<!--[-->");
+        $$renderer2.push("<!--[0-->");
         $$renderer2.push(`<div class="menu-section-content">`);
         if (section.id === "list") {
-          $$renderer2.push("<!--[-->");
+          $$renderer2.push("<!--[0-->");
           if (store_get($$store_subs ??= {}, "$placeLists", placeLists).length === 0) {
-            $$renderer2.push("<!--[-->");
+            $$renderer2.push("<!--[0-->");
             $$renderer2.push(`<div class="menu-empty-state"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path></svg> <p>No saved places yet</p> <span>Search and save places to see them here</span></div>`);
           } else {
-            $$renderer2.push("<!--[!-->");
+            $$renderer2.push("<!--[-1-->");
             $$renderer2.push(`<!--[-->`);
             const each_array_1 = ensure_array_like(store_get($$store_subs ??= {}, "$placeLists", placeLists));
             for (let $$index_1 = 0, $$length2 = each_array_1.length; $$index_1 < $$length2; $$index_1++) {
@@ -327,7 +403,7 @@ function SideMenu($$renderer, $$props) {
                 "menu-list-header--active": store_get($$store_subs ??= {}, "$listVisibility", listVisibility)[list.id]
               })}><span class="menu-list-color"${attr_style(`background-color: ${stringify(list.color)}`)}></span> <span class="menu-list-name">${escape_html(list.name)}</span> <span class="menu-list-count">${escape_html(list.places.length)}</span></button> `);
               if (list.places.length > 0) {
-                $$renderer2.push("<!--[-->");
+                $$renderer2.push("<!--[0-->");
                 $$renderer2.push(`<div class="menu-list-places"><!--[-->`);
                 const each_array_2 = ensure_array_like(list.places);
                 for (let $$index = 0, $$length3 = each_array_2.length; $$index < $$length3; $$index++) {
@@ -336,52 +412,40 @@ function SideMenu($$renderer, $$props) {
                 }
                 $$renderer2.push(`<!--]--></div>`);
               } else {
-                $$renderer2.push("<!--[!-->");
+                $$renderer2.push("<!--[-1-->");
               }
               $$renderer2.push(`<!--]--></div>`);
             }
             $$renderer2.push(`<!--]-->`);
           }
           $$renderer2.push(`<!--]-->`);
-        } else {
-          $$renderer2.push("<!--[!-->");
-          if (section.id === "maps") {
-            $$renderer2.push("<!--[-->");
-            $$renderer2.push(`<div class="menu-maps-list"><a href="https://diegonmarcos.github.io/maps" class="menu-map-item" target="_blank" rel="noopener noreferrer"><span class="menu-map-icon">🏠</span> <span class="menu-map-name">Home</span></a> <!--[-->`);
-            const each_array_3 = ensure_array_like(mapProjections);
-            for (let $$index_2 = 0, $$length2 = each_array_3.length; $$index_2 < $$length2; $$index_2++) {
-              let projection = each_array_3[$$index_2];
-              $$renderer2.push(`<a${attr("href", `/maps/?projection=${stringify(projection.id)}`)} class="menu-map-item"><span class="menu-map-icon">${escape_html(projection.icon)}</span> <span class="menu-map-name">${escape_html(projection.name)}</span></a>`);
-            }
-            $$renderer2.push(`<!--]--></div>`);
-          } else {
-            $$renderer2.push("<!--[!-->");
-            if (section.id === "chronology") {
-              $$renderer2.push("<!--[-->");
-              $$renderer2.push(`<div class="menu-empty-state"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg> <p>No location history</p> <span>Your visited places will appear here</span></div>`);
-            } else {
-              $$renderer2.push("<!--[!-->");
-              if (section.id === "mytrips") {
-                $$renderer2.push("<!--[-->");
-                $$renderer2.push(`<div class="menu-maps-list"><!--[-->`);
-                const each_array_4 = ensure_array_like(tripPages);
-                for (let $$index_3 = 0, $$length2 = each_array_4.length; $$index_3 < $$length2; $$index_3++) {
-                  let trip = each_array_4[$$index_3];
-                  $$renderer2.push(`<a${attr("href", `${stringify(tripsBaseUrl)}${stringify(trip.path || "/")}${stringify(trip.hash || "")}`)} class="menu-map-item" target="_blank" rel="noopener noreferrer"><span class="menu-map-icon">${escape_html(trip.icon)}</span> <span class="menu-map-name">${escape_html(trip.label)}</span></a>`);
-                }
-                $$renderer2.push(`<!--]--></div>`);
-              } else {
-                $$renderer2.push("<!--[!-->");
-              }
-              $$renderer2.push(`<!--]-->`);
-            }
-            $$renderer2.push(`<!--]-->`);
+        } else if (section.id === "maps") {
+          $$renderer2.push("<!--[1-->");
+          $$renderer2.push(`<div class="menu-maps-list"><a href="https://diegonmarcos.github.io/maps" class="menu-map-item" target="_blank" rel="noopener noreferrer"><span class="menu-map-icon">🏠</span> <span class="menu-map-name">Home</span></a> <!--[-->`);
+          const each_array_3 = ensure_array_like(mapProjections);
+          for (let $$index_2 = 0, $$length2 = each_array_3.length; $$index_2 < $$length2; $$index_2++) {
+            let projection = each_array_3[$$index_2];
+            $$renderer2.push(`<a${attr("href", `/maps/?projection=${stringify(projection.id)}`)} class="menu-map-item"><span class="menu-map-icon">${escape_html(projection.icon)}</span> <span class="menu-map-name">${escape_html(projection.name)}</span></a>`);
           }
-          $$renderer2.push(`<!--]-->`);
+          $$renderer2.push(`<!--]--></div>`);
+        } else if (section.id === "chronology") {
+          $$renderer2.push("<!--[2-->");
+          $$renderer2.push(`<div class="menu-empty-state"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg> <p>No location history</p> <span>Your visited places will appear here</span></div>`);
+        } else if (section.id === "mytrips") {
+          $$renderer2.push("<!--[3-->");
+          $$renderer2.push(`<div class="menu-maps-list"><!--[-->`);
+          const each_array_4 = ensure_array_like(tripPages);
+          for (let $$index_3 = 0, $$length2 = each_array_4.length; $$index_3 < $$length2; $$index_3++) {
+            let trip = each_array_4[$$index_3];
+            $$renderer2.push(`<a${attr("href", `https://diegonmarcos.github.io/mymaps-mytrips${stringify(trip.path || "/")}${stringify(trip.hash || "")}`)} class="menu-map-item" target="_blank" rel="noopener noreferrer"><span class="menu-map-icon">${escape_html(trip.icon)}</span> <span class="menu-map-name">${escape_html(trip.label)}</span></a>`);
+          }
+          $$renderer2.push(`<!--]--></div>`);
+        } else {
+          $$renderer2.push("<!--[-1-->");
         }
         $$renderer2.push(`<!--]--></div>`);
       } else {
-        $$renderer2.push("<!--[!-->");
+        $$renderer2.push("<!--[-1-->");
       }
       $$renderer2.push(`<!--]-->`);
     }
@@ -399,10 +463,10 @@ function _page($$renderer, $$props) {
     });
     $$renderer2.push(`<div id="app"><div class="app-map">`);
     if (store_get($$store_subs ??= {}, "$mapEngine", mapEngine) === "cesium") {
-      $$renderer2.push("<!--[-->");
+      $$renderer2.push("<!--[0-->");
       CesiumCanvas($$renderer2);
     } else {
-      $$renderer2.push("<!--[!-->");
+      $$renderer2.push("<!--[-1-->");
       MapCanvas($$renderer2);
     }
     $$renderer2.push(`<!--]--></div> <div${attr_class("starfield", void 0, {
@@ -421,7 +485,7 @@ function _page($$renderer, $$props) {
     LayersPanel($$renderer2);
     $$renderer2.push(`<!----></div> `);
     {
-      $$renderer2.push("<!--[!-->");
+      $$renderer2.push("<!--[-1-->");
     }
     $$renderer2.push(`<!--]--></div>`);
     if ($$store_subs) unsubscribe_stores($$store_subs);

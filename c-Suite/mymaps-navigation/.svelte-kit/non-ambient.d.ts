@@ -26,18 +26,20 @@ export {};
 
 
 declare module "$app/types" {
+	type MatcherParam<M> = M extends (param : string) => param is (infer U extends string) ? U : string;
+
 	export interface AppTypes {
 		RouteId(): "/" | "/place" | "/place/[id]" | "/settings";
 		RouteParams(): {
 			"/place/[id]": { id: string }
 		};
 		LayoutParams(): {
-			"/": { id?: string };
-			"/place": { id?: string };
+			"/": { id?: string | undefined };
+			"/place": { id?: string | undefined };
 			"/place/[id]": { id: string };
 			"/settings": Record<string, never>
 		};
-		Pathname(): "/" | "/place" | "/place/" | `/place/${string}` & {} | `/place/${string}/` & {} | "/settings" | "/settings/";
+		Pathname(): "/" | `/place/${string}/` & {} | "/settings/";
 		ResolvedPathname(): `${"" | `/${string}`}${ReturnType<AppTypes['Pathname']>}`;
 		Asset(): "/favicon.svg" | string & {};
 	}

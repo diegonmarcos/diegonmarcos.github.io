@@ -1,14 +1,15 @@
-import { g, o, c, s, a, b } from "./chunks/internal.js";
-import { s as s2, a as a2 } from "./chunks/environment.js";
-import { s as s3 } from "./chunks/server.js";
+import "./chunks/root.js";
+import { s, a } from "./chunks/internal.js";
+import { s as s2 } from "./chunks/server.js";
+import { g, o, c, s as s3, a as a2, b } from "./chunks/internal2.js";
 export {
   g as get_hooks,
   o as options,
-  s3 as set_assets,
-  s2 as set_building,
+  s2 as set_assets,
+  s as set_building,
   c as set_manifest,
-  a2 as set_prerendering,
-  s as set_private_env,
-  a as set_public_env,
+  a as set_prerendering,
+  s3 as set_private_env,
+  a2 as set_public_env,
   b as set_read_implementation
 };

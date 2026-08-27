@@ -15,9 +15,9 @@ function set_assets(path) {
   assets = initial.assets = path;
 }
 export {
-  assets as a,
+  app_dir as a,
   base as b,
-  app_dir as c,
+  assets as c,
   reset as d,
   override as o,
   relative as r,

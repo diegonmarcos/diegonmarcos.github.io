@@ -8,6 +8,7 @@ var object_prototype = Object.prototype;
 var array_prototype = Array.prototype;
 var get_prototype_of = Object.getPrototypeOf;
 var is_extensible = Object.isExtensible;
+var has_own_property = Object.prototype.hasOwnProperty;
 const noop = () => {
 };
 function run_all(arr) {
@@ -34,18 +35,19 @@ function safe_equals(value) {
   return !safe_not_equal(value, this.v);
 }
 export {
-  array_from as a,
-  deferred as b,
-  array_prototype as c,
-  define_property as d,
-  equals as e,
-  get_prototype_of as f,
+  array_prototype as a,
+  get_prototype_of as b,
+  is_extensible as c,
+  deferred as d,
+  includes as e,
+  equals as f,
   get_descriptor as g,
-  is_array as h,
-  includes as i,
-  is_extensible as j,
-  index_of as k,
-  safe_not_equal as l,
+  index_of as h,
+  is_array as i,
+  define_property as j,
+  array_from as k,
+  has_own_property as l,
+  safe_not_equal as m,
   noop as n,
   object_prototype as o,
   run_all as r,

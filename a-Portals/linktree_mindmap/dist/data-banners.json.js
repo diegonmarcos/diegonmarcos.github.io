@@ -4,7 +4,7 @@
   var g = (typeof globalThis !== "undefined") ? globalThis : (typeof window !== "undefined" ? window : this);
   g.PORTAL_DATA = g.PORTAL_DATA || {};
   g.PORTAL_DATA["banners"] = {
-  "_description": "Source-of-truth manifest mapping remote banner URLs \u2192 local paths under linktree/public/. Read by 1_workflows/src/scripts/front-localize-assets.sh, which downloads each remote into the local path (idempotent) and rewrites every reference inside the sibling *.json files (projects.json / personal-profiles.json / professional-profiles.json) to the local path. Adding a new banner is purely declarative: insert a {remote, local} entry; the engine handles fetch + rewrite.",
+  "_description": "Source-of-truth manifest mapping remote banner URLs \u2192 local paths under linktree/public/. Read by 1_cicd/src/scripts/front-localize-assets.sh, which downloads each remote into the local path (idempotent) and rewrites every reference inside the sibling *.json files (projects.json / personal-profiles.json / professional-profiles.json) to the local path. Adding a new banner is purely declarative: insert a {remote, local} entry; the engine handles fetch + rewrite.",
   "assets": [
     {
       "slide": "professional-profile",

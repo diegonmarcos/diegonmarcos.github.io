@@ -1,13 +1,13 @@
 import "clsx";
-import { a0 as ssr_context, $ as escape_html } from "./context.js";
+import { j as ssr_context, s as store_get, b as attr_class, g as attr_style, c as attr, u as unsubscribe_stores, e as escape_html, i as stringify, a as ensure_array_like, f as derived$1 } from "./index.js";
 import "maplibre-gl";
 import "@sveltejs/kit/internal";
-import "./exports.js";
+import { d as derived, w as writable } from "./url.js";
 import "./utils.js";
 import "@sveltejs/kit/internal/server";
+import "./root.js";
+import "./exports.js";
 import "./state.svelte.js";
-import { d as derived, w as writable } from "./index.js";
-import { s as store_get, a as attr_class, c as attr_style, b as attr, u as unsubscribe_stores, d as stringify, e as ensure_array_like } from "./index2.js";
 import { c as capabilities } from "./configStore.js";
 function onDestroy(fn) {
   /** @type {SSRContext} */
@@ -537,10 +537,10 @@ function MapControls($$renderer, $$props) {
       "geolocate-btn--tracking": store_get($$store_subs ??= {}, "$userLocation", userLocation) !== null
     })} aria-label="Find my location" title="My location"${attr("disabled", store_get($$store_subs ??= {}, "$isLocating", isLocating), true)}>`);
     if (store_get($$store_subs ??= {}, "$isLocating", isLocating)) {
-      $$renderer2.push("<!--[-->");
+      $$renderer2.push("<!--[0-->");
       $$renderer2.push(`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10" stroke-dasharray="32" stroke-dashoffset="16"><animateTransform attributeName="transform" type="rotate" from="0 12 12" to="360 12 12" dur="1s" repeatCount="indefinite"></animateTransform></circle></svg>`);
     } else {
-      $$renderer2.push("<!--[!-->");
+      $$renderer2.push("<!--[-1-->");
       $$renderer2.push(`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"></circle><path d="M12 2v4M12 18v4M2 12h4M18 12h4"></path></svg>`);
     }
     $$renderer2.push(`<!--]--></button> <button class="map-control-btn map-control-btn--standalone" aria-label="Reset to world view" title="World view"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="2" y1="12" x2="22" y2="12"></line><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path></svg></button> <button${attr_class("map-control-btn map-control-btn--standalone", void 0, {
@@ -596,7 +596,7 @@ function createRecentSearchesStore() {
     }
   };
 }
-createRecentSearchesStore();
+const recentSearches = createRecentSearchesStore();
 derived(
   searchResults,
   ($results) => $results.length > 0
@@ -665,116 +665,112 @@ function PlacePanel($$renderer, $$props) {
       if (!phone) return "";
       return phone.replace(/\s+/g, " ").trim();
     }
-    let place = store_get($$store_subs ??= {}, "$selectedPlace", selectedPlace) || (store_get($$store_subs ??= {}, "$selectedResult", selectedResult) ? {
+    let place = derived$1(() => store_get($$store_subs ??= {}, "$selectedPlace", selectedPlace) || (store_get($$store_subs ??= {}, "$selectedResult", selectedResult) ? {
       id: store_get($$store_subs ??= {}, "$selectedResult", selectedResult).id,
       name: store_get($$store_subs ??= {}, "$selectedResult", selectedResult).name,
       address: store_get($$store_subs ??= {}, "$selectedResult", selectedResult).address,
       coordinates: store_get($$store_subs ??= {}, "$selectedResult", selectedResult).coordinates,
       source: store_get($$store_subs ??= {}, "$selectedResult", selectedResult).source,
       category: store_get($$store_subs ??= {}, "$selectedResult", selectedResult).category
-    } : null);
-    let showPanel = place !== null;
-    if (showPanel && place) {
-      $$renderer2.push("<!--[-->");
-      $$renderer2.push(`<div class="place-panel panel"><div class="panel-header"><div class="place-panel-header-content"><h2 class="panel-title">${escape_html(place.name)}</h2> `);
-      if (place.category) {
-        $$renderer2.push("<!--[-->");
-        $$renderer2.push(`<span class="place-category">${escape_html(formatCategory(place.category))}</span>`);
+    } : null));
+    let showPanel = derived$1(() => place() !== null);
+    if (showPanel() && place()) {
+      $$renderer2.push("<!--[0-->");
+      $$renderer2.push(`<div class="place-panel panel"><div class="panel-header"><div class="place-panel-header-content"><h2 class="panel-title">${escape_html(place().name)}</h2> `);
+      if (place().category) {
+        $$renderer2.push("<!--[0-->");
+        $$renderer2.push(`<span class="place-category">${escape_html(formatCategory(place().category))}</span>`);
       } else {
-        $$renderer2.push("<!--[!-->");
+        $$renderer2.push("<!--[-1-->");
       }
       $$renderer2.push(`<!--]--></div> <button class="panel-close" aria-label="Close"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg></button></div> `);
       if (store_get($$store_subs ??= {}, "$isLoadingPlace", isLoadingPlace)) {
-        $$renderer2.push("<!--[-->");
+        $$renderer2.push("<!--[0-->");
         $$renderer2.push(`<div class="place-loading"><div class="search-loading-spinner"></div> <span>Loading details...</span></div>`);
       } else {
-        $$renderer2.push("<!--[!-->");
-        $$renderer2.push(`<div class="place-content"><div class="place-info-row"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="place-info-icon"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg> <span class="place-info-text">${escape_html(place.address)}</span></div> `);
-        if (place.phone) {
-          $$renderer2.push("<!--[-->");
-          $$renderer2.push(`<a${attr("href", `tel:${stringify(place.phone)}`)} class="place-info-row place-info-row--link"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="place-info-icon"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path></svg> <span class="place-info-text">${escape_html(formatPhone(place.phone))}</span></a>`);
+        $$renderer2.push("<!--[-1-->");
+        $$renderer2.push(`<div class="place-content"><div class="place-info-row"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="place-info-icon"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg> <span class="place-info-text">${escape_html(place().address)}</span></div> `);
+        if (place().phone) {
+          $$renderer2.push("<!--[0-->");
+          $$renderer2.push(`<a${attr("href", `tel:${stringify(place().phone)}`)} class="place-info-row place-info-row--link"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="place-info-icon"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path></svg> <span class="place-info-text">${escape_html(formatPhone(place().phone))}</span></a>`);
         } else {
-          $$renderer2.push("<!--[!-->");
+          $$renderer2.push("<!--[-1-->");
         }
         $$renderer2.push(`<!--]--> `);
-        if (place.website) {
-          $$renderer2.push("<!--[-->");
-          $$renderer2.push(`<a${attr("href", place.website)} target="_blank" rel="noopener noreferrer" class="place-info-row place-info-row--link"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="place-info-icon"><circle cx="12" cy="12" r="10"></circle><line x1="2" y1="12" x2="22" y2="12"></line><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path></svg> <span class="place-info-text place-info-text--truncate">${escape_html(place.website.replace(/^https?:\/\/(www\.)?/, ""))}</span></a>`);
+        if (place().website) {
+          $$renderer2.push("<!--[0-->");
+          $$renderer2.push(`<a${attr("href", place().website)} target="_blank" rel="noopener noreferrer" class="place-info-row place-info-row--link"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="place-info-icon"><circle cx="12" cy="12" r="10"></circle><line x1="2" y1="12" x2="22" y2="12"></line><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path></svg> <span class="place-info-text place-info-text--truncate">${escape_html(place().website.replace(/^https?:\/\/(www\.)?/, ""))}</span></a>`);
         } else {
-          $$renderer2.push("<!--[!-->");
+          $$renderer2.push("<!--[-1-->");
         }
         $$renderer2.push(`<!--]--> `);
-        if (place.rating) {
-          $$renderer2.push("<!--[-->");
-          $$renderer2.push(`<div class="place-info-row"><svg viewBox="0 0 24 24" fill="currentColor" class="place-info-icon place-info-icon--star"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg> <span class="place-info-text">${escape_html(place.rating.toFixed(1))} `);
-          if (place.reviewCount) {
-            $$renderer2.push("<!--[-->");
-            $$renderer2.push(`<span class="place-review-count">(${escape_html(place.reviewCount)} reviews)</span>`);
+        if (place().rating) {
+          $$renderer2.push("<!--[0-->");
+          $$renderer2.push(`<div class="place-info-row"><svg viewBox="0 0 24 24" fill="currentColor" class="place-info-icon place-info-icon--star"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg> <span class="place-info-text">${escape_html(place().rating.toFixed(1))} `);
+          if (place().reviewCount) {
+            $$renderer2.push("<!--[0-->");
+            $$renderer2.push(`<span class="place-review-count">(${escape_html(place().reviewCount)} reviews)</span>`);
           } else {
-            $$renderer2.push("<!--[!-->");
+            $$renderer2.push("<!--[-1-->");
           }
           $$renderer2.push(`<!--]--></span></div>`);
         } else {
-          $$renderer2.push("<!--[!-->");
+          $$renderer2.push("<!--[-1-->");
         }
         $$renderer2.push(`<!--]--> `);
-        if (place.hours) {
-          $$renderer2.push("<!--[-->");
-          $$renderer2.push(`<div class="place-hours"><div class="place-hours-header"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="place-info-icon"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg> <span${attr_class("place-hours-status", void 0, { "place-hours-status--open": place.hours.isOpen })}>${escape_html(place.hours.isOpen ? "Open now" : "Closed")}</span></div> `);
-          if (place.hours.schedule?.length > 0) {
-            $$renderer2.push("<!--[-->");
+        if (place().hours) {
+          $$renderer2.push("<!--[0-->");
+          $$renderer2.push(`<div class="place-hours"><div class="place-hours-header"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="place-info-icon"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg> <span${attr_class("place-hours-status", void 0, { "place-hours-status--open": place().hours.isOpen })}>${escape_html(place().hours.isOpen ? "Open now" : "Closed")}</span></div> `);
+          if (place().hours.schedule?.length > 0) {
+            $$renderer2.push("<!--[0-->");
             $$renderer2.push(`<div class="place-hours-schedule"><!--[-->`);
-            const each_array = ensure_array_like(place.hours.schedule);
+            const each_array = ensure_array_like(place().hours.schedule);
             for (let $$index = 0, $$length = each_array.length; $$index < $$length; $$index++) {
               let day = each_array[$$index];
               $$renderer2.push(`<div class="place-hours-day"><span>${escape_html(day.day)}</span> <span>${escape_html(day.hours)}</span></div>`);
             }
             $$renderer2.push(`<!--]--></div>`);
           } else {
-            $$renderer2.push("<!--[!-->");
+            $$renderer2.push("<!--[-1-->");
           }
           $$renderer2.push(`<!--]--></div>`);
         } else {
-          $$renderer2.push("<!--[!-->");
+          $$renderer2.push("<!--[-1-->");
         }
         $$renderer2.push(`<!--]--> `);
-        if (place.attributes && Object.keys(place.attributes).length > 0) {
-          $$renderer2.push("<!--[-->");
+        if (place().attributes && Object.keys(place().attributes).length > 0) {
+          $$renderer2.push("<!--[0-->");
           $$renderer2.push(`<div class="place-attributes"><!--[-->`);
-          const each_array_1 = ensure_array_like(Object.entries(place.attributes));
+          const each_array_1 = ensure_array_like(Object.entries(place().attributes));
           for (let $$index_1 = 0, $$length = each_array_1.length; $$index_1 < $$length; $$index_1++) {
             let [key, value] = each_array_1[$$index_1];
             $$renderer2.push(`<span class="place-attribute">${escape_html(key.replace(/[_:]/g, " "))}: ${escape_html(value)}</span>`);
           }
           $$renderer2.push(`<!--]--></div>`);
         } else {
-          $$renderer2.push("<!--[!-->");
+          $$renderer2.push("<!--[-1-->");
         }
         $$renderer2.push(`<!--]--> `);
-        if (place.photos && place.photos.length > 0 && store_get($$store_subs ??= {}, "$capabilities", capabilities).places.photos) {
-          $$renderer2.push("<!--[-->");
+        if (place().photos && place().photos.length > 0 && store_get($$store_subs ??= {}, "$capabilities", capabilities).places.photos) {
+          $$renderer2.push("<!--[0-->");
           $$renderer2.push(`<div class="place-photos"><!--[-->`);
-          const each_array_2 = ensure_array_like(place.photos.slice(0, 4));
+          const each_array_2 = ensure_array_like(place().photos.slice(0, 4));
           for (let $$index_2 = 0, $$length = each_array_2.length; $$index_2 < $$length; $$index_2++) {
             let photo = each_array_2[$$index_2];
-            $$renderer2.push(`<div class="place-photo"><img${attr("src", photo.url)}${attr("alt", place.name)} loading="lazy"/></div>`);
+            $$renderer2.push(`<div class="place-photo"><img${attr("src", photo.url)}${attr("alt", place().name)} loading="lazy"/></div>`);
           }
           $$renderer2.push(`<!--]--></div>`);
+        } else if (!store_get($$store_subs ??= {}, "$capabilities", capabilities).places.photos) {
+          $$renderer2.push("<!--[1-->");
+          $$renderer2.push(`<div class="place-premium-hint"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><circle cx="8.5" cy="8.5" r="1.5"></circle><polyline points="21 15 16 10 5 21"></polyline></svg> <span>Add Foursquare or Google API key for photos</span></div>`);
         } else {
-          $$renderer2.push("<!--[!-->");
-          if (!store_get($$store_subs ??= {}, "$capabilities", capabilities).places.photos) {
-            $$renderer2.push("<!--[-->");
-            $$renderer2.push(`<div class="place-premium-hint"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><circle cx="8.5" cy="8.5" r="1.5"></circle><polyline points="21 15 16 10 5 21"></polyline></svg> <span>Add Foursquare or Google API key for photos</span></div>`);
-          } else {
-            $$renderer2.push("<!--[!-->");
-          }
-          $$renderer2.push(`<!--]-->`);
+          $$renderer2.push("<!--[-1-->");
         }
         $$renderer2.push(`<!--]--> `);
-        if (place.reviews && place.reviews.length > 0 && store_get($$store_subs ??= {}, "$capabilities", capabilities).places.reviews) {
-          $$renderer2.push("<!--[-->");
+        if (place().reviews && place().reviews.length > 0 && store_get($$store_subs ??= {}, "$capabilities", capabilities).places.reviews) {
+          $$renderer2.push("<!--[0-->");
           $$renderer2.push(`<div class="place-reviews"><h3 class="place-section-title">Reviews</h3> <!--[-->`);
-          const each_array_3 = ensure_array_like(place.reviews.slice(0, 3));
+          const each_array_3 = ensure_array_like(place().reviews.slice(0, 3));
           for (let $$index_4 = 0, $$length = each_array_3.length; $$index_4 < $$length; $$index_4++) {
             let review = each_array_3[$$index_4];
             $$renderer2.push(`<div class="place-review"><div class="place-review-header"><span class="place-review-author">${escape_html(review.author)}</span> <div class="place-review-rating"><!--[-->`);
@@ -787,51 +783,54 @@ function PlacePanel($$renderer, $$props) {
           }
           $$renderer2.push(`<!--]--></div>`);
         } else {
-          $$renderer2.push("<!--[!-->");
+          $$renderer2.push("<!--[-1-->");
         }
         $$renderer2.push(`<!--]--> <div class="place-source"><span>Data from</span> `);
-        ProviderBadge($$renderer2, { source: place.source });
+        ProviderBadge($$renderer2, { source: place().source });
         $$renderer2.push(`<!----></div></div> <div class="place-actions"><button class="glass-button glass-button--primary"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="3 11 22 2 13 21 11 13 3 11"></polygon></svg> Directions</button> <button class="glass-button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="18" cy="5" r="3"></circle><circle cx="6" cy="12" r="3"></circle><circle cx="18" cy="19" r="3"></circle><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line></svg> Share</button></div>`);
       }
       $$renderer2.push(`<!--]--></div>`);
     } else {
-      $$renderer2.push("<!--[!-->");
+      $$renderer2.push("<!--[-1-->");
     }
     $$renderer2.push(`<!--]-->`);
     if ($$store_subs) unsubscribe_stores($$store_subs);
   });
 }
 export {
-  PlacePanel as A,
-  mapEngine as B,
-  selectedPlace as C,
-  isLoadingPlace as D,
+  placeLists as A,
+  listVisibility as B,
+  MapControls as C,
+  PlacePanel as D,
+  mapEngine as E,
+  selectedPlace as F,
+  isLoadingPlace as G,
   MapCanvas as M,
   ProviderBadge as P,
-  quickSearch as a,
-  searchQuery as b,
-  formatDistance as c,
-  showDirectionsPanel as d,
-  routeError as e,
+  selectedResult as a,
+  quickSearch as b,
+  searchQuery as c,
+  formatDistance as d,
+  showDirectionsPanel as e,
   formatDuration as f,
-  selectedRoute as g,
-  routeOrigin as h,
-  isCalculatingRoute as i,
-  routeDestination as j,
-  showLayersPanel as k,
-  currentStyleId as l,
-  mapStyles as m,
-  isTerrainLayer as n,
+  routeMode as g,
+  isCalculatingRoute as h,
+  isSearching as i,
+  routeError as j,
+  selectedRoute as k,
+  routeOrigin as l,
+  routeDestination as m,
+  showLayersPanel as n,
   onDestroy as o,
-  isSatelliteLayer as p,
+  mapStyles as p,
   quickSearchCategories as q,
-  routeMode as r,
+  recentSearches as r,
   searchResults as s,
-  isGlobeView as t,
-  is3DTerrain as u,
-  searchRadius as v,
-  tempPinsCount as w,
-  placeLists as x,
-  listVisibility as y,
-  MapControls as z
+  currentStyleId as t,
+  isTerrainLayer as u,
+  isSatelliteLayer as v,
+  isGlobeView as w,
+  is3DTerrain as x,
+  searchRadius as y,
+  tempPinsCount as z
 };

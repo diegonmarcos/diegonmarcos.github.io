@@ -4,14 +4,14 @@
   var g = (typeof globalThis !== "undefined") ? globalThis : (typeof window !== "undefined" ? window : this);
   g.PORTAL_DATA = g.PORTAL_DATA || {};
   g.PORTAL_DATA["cloud-fleet-declared"] = {
-  "_warning": "DO NOT EDIT — AUTO-GENERATED FILE. Source of truth lives in a_solutions/*/build.json + config.json + b_infra/*/build.json. Edits here are overwritten on every `bash 2_configs/build.sh all`.",
+  "_warning": "DO NOT EDIT — AUTO-GENERATED FILE. Source of truth lives in a_solutions/*/build.json + config.json + b_infra/*/build.json. Edits here are overwritten on every `bash 9_others/build.sh all`.",
   "_meta": {
     "description": "Full declared fleet — cloud containers + GH Pages front projects. Source of truth for all fleet display.",
     "source_inputs": [
-      "2_configs/dist/cloud-fleet-containers-declared.json",
-      "front/2_configs/dist/front-fleet-gh-declared.json"
+      "1_cloud-configs/dist/cloud-fleet-containers-declared.json",
+      "front/1_cloud-configs/dist/front-fleet-gh-declared.json"
     ],
-    "generated_by": "2_configs/src/engines/cloud-data-config-derive.ts",
+    "generated_by": "1_cloud-configs/src/derive/cloud-data-config-derive.ts",
     "generated_at": "",
     "pipeline": {
       "description": "Two-stage build: consolidator merges all build.json + config.json sources into the master file; derive emits per-container + archived split files from the master.",
@@ -22,45 +22,24 @@
         "vault/secrets.yaml (sops-encrypted secrets per service, key names extracted)"
       ],
       "engines": {
-        "consolidator": "2_configs/src/engines/cloud-data-config-consolidated.ts",
-        "derive": "2_configs/src/engines/cloud-data-config-derive.ts (THIS engine)"
+        "consolidator": "1_cloud-configs/src/derive/cloud-data-config-consolidated.ts",
+        "derive": "1_cloud-configs/src/derive/cloud-data-config-derive.ts (THIS engine)"
       },
       "outputs": {
-        "master": "2_configs/dist/_cloud-data-consolidated.json (consolidator output)",
-        "per_container": "2_configs/dist/build-{container_or_service_name}.json (one per container, plus one per container-less service — derive output)",
-        "archived": "2_configs/dist/z_archive/cloud-data-{slice}.json (deprecated split files — kept for soft-transition fallbacks; consumers should read consolidated instead)"
+        "master": "1_cloud-configs/dist/_cloud-data-consolidated.json (consolidator output)",
+        "per_container": "1_cloud-configs/dist/build-{container_or_service_name}.json (one per container, plus one per container-less service — derive output)",
+        "archived": "1_cloud-configs/dist/z_archive/cloud-data-{slice}.json (deprecated split files — kept for soft-transition fallbacks; consumers should read consolidated instead)"
       },
-      "rebuild_command": "bash 2_configs/build.sh all"
+      "rebuild_command": "bash 9_others/build.sh all"
     }
   },
   "cloud": {
-    "_warning": "DO NOT EDIT — AUTO-GENERATED FILE. Source of truth lives in a_solutions/*/build.json + config.json + b_infra/*/build.json. Edits here are overwritten on every `bash 2_configs/build.sh all`.",
     "_meta": {
       "description": "Declared cloud fleet — containers, VMs, storage, providers. Source of truth for all fleet display frontends.",
       "source_inputs": [
         "_cloud-data-consolidated.json"
       ],
-      "generated_by": "2_configs/src/engines/cloud-data-config-derive.ts",
-      "generated_at": "",
-      "pipeline": {
-        "description": "Two-stage build: consolidator merges all build.json + config.json sources into the master file; derive emits per-container + archived split files from the master.",
-        "source_inputs": [
-          "a_solutions/*/build.json (per-service declarations)",
-          "config.json (global topology + vms + dns + wireguard)",
-          "b_infra/*/build.json (per-VM HM config)",
-          "vault/secrets.yaml (sops-encrypted secrets per service, key names extracted)"
-        ],
-        "engines": {
-          "consolidator": "2_configs/src/engines/cloud-data-config-consolidated.ts",
-          "derive": "2_configs/src/engines/cloud-data-config-derive.ts (THIS engine)"
-        },
-        "outputs": {
-          "master": "2_configs/dist/_cloud-data-consolidated.json (consolidator output)",
-          "per_container": "2_configs/dist/build-{container_or_service_name}.json (one per container, plus one per container-less service — derive output)",
-          "archived": "2_configs/dist/z_archive/cloud-data-{slice}.json (deprecated split files — kept for soft-transition fallbacks; consumers should read consolidated instead)"
-        },
-        "rebuild_command": "bash 2_configs/build.sh all"
-      }
+      "generated_by": "cloud-data-config-derive.ts/cloud-fleet-containers-declared"
     },
     "fleet": {
       "containers": {
@@ -99,18 +78,6 @@
             "public_url": "https://api.diegonmarcos.com/c3-infra-api"
           },
           {
-            "id": "c3-infra-mcp",
-            "name": "c3-infra-mcp",
-            "vm": "oci-A1-f_0",
-            "category": "sec",
-            "subgroup": "APIs-MCPs",
-            "port": 3100,
-            "private_ip": "10.0.0.6",
-            "private_url": "https://c3-infra-mcp.app",
-            "public_url": "https://mcp.diegonmarcos.com/c3-infra-mcp",
-            "mcp": true
-          },
-          {
             "id": "c3-public-api",
             "name": "c3-public-api",
             "vm": "oci-E2-f_1",
@@ -133,27 +100,28 @@
             "public_url": "https://api.diegonmarcos.com/c3-services-api"
           },
           {
-            "id": "c3-services-mcp",
-            "name": "c3-services-mcp",
+            "id": "cloud-infra-mcp",
+            "name": "cloud-infra-mcp",
+            "vm": "oci-A1-f_0",
+            "category": "sec",
+            "subgroup": "APIs-MCPs",
+            "port": 3100,
+            "private_ip": "10.0.0.6",
+            "private_url": "https://cloud-infra-mcp.app",
+            "public_url": "https://mcp.diegonmarcos.com/c3-infra-mcp",
+            "mcp": true
+          },
+          {
+            "id": "cloud-services-mcp",
+            "name": "cloud-services-mcp",
             "vm": "oci-A1-f_0",
             "category": "obs",
             "subgroup": "APIs-MCPs",
             "port": 3101,
             "private_ip": "10.0.0.6",
-            "private_url": "https://c3-services-mcp.app",
+            "private_url": "https://cloud-services-mcp.app",
             "public_url": null,
             "mcp": true
-          },
-          {
-            "id": "cloud-builder-x",
-            "name": "cloud-builder-x",
-            "vm": "oci-A1-f_0",
-            "category": "tools",
-            "subgroup": "Build",
-            "port": null,
-            "private_ip": "10.0.0.6",
-            "private_url": null,
-            "public_url": null
           },
           {
             "id": "gha-runner",
@@ -304,7 +272,7 @@
             "vm": "oci-A1-f_0",
             "category": "tools",
             "subgroup": "Observability",
-            "port": 8084,
+            "port": 8080,
             "private_ip": "10.0.0.6",
             "private_url": "https://matomo.app",
             "public_url": "https://analytics.diegonmarcos.com/matomo"
@@ -334,11 +302,11 @@
           {
             "id": "umami",
             "name": "umami",
-            "vm": "oci-A1-f_0",
+            "vm": "oci-E2-f_1",
             "category": "tools",
             "subgroup": "Observability",
             "port": 3006,
-            "private_ip": "10.0.0.6",
+            "private_ip": "10.0.0.4",
             "private_url": "https://umami.app",
             "public_url": "https://analytics.diegonmarcos.com"
           },
@@ -398,14 +366,14 @@
             "public_url": null
           },
           {
-            "id": "cloud-cgc-mcp",
-            "name": "cloud-cgc-mcp",
+            "id": "cloud-cgc-pub-mcp",
+            "name": "cloud-cgc-pub-mcp",
             "vm": "oci-A1-f_0",
             "category": "obs",
             "subgroup": "APIs-MCPs",
             "port": 3105,
             "private_ip": "10.0.0.6",
-            "private_url": "https://cloud-cgc-mcp.app",
+            "private_url": "https://cloud-cgc-pub-mcp.app",
             "public_url": null,
             "mcp": true
           },
@@ -456,15 +424,40 @@
         ],
         "user-apps": [
           {
-            "id": "matrix-continuwuity",
-            "name": "matrix-continuwuity",
+            "id": "cloud-drive-mcp",
+            "name": "cloud-drive-mcp",
             "vm": "oci-A1-f_0",
             "category": "app",
-            "subgroup": "Communications",
-            "port": 8008,
+            "subgroup": "Productivity",
+            "port": 3109,
             "private_ip": "10.0.0.6",
-            "private_url": "https://matrix-continuwuity.app",
-            "public_url": "https://matrix.diegonmarcos.com"
+            "private_url": "https://cloud-drive-mcp.app",
+            "public_url": "https://mcp.diegonmarcos.com",
+            "mcp": true
+          },
+          {
+            "id": "cloud-mail-mcp",
+            "name": "cloud-mail-mcp",
+            "vm": "oci-A1-f_0",
+            "category": "app",
+            "subgroup": "AI-Agents",
+            "port": 3103,
+            "private_ip": "10.0.0.6",
+            "private_url": "https://cloud-mail-mcp.app",
+            "public_url": "https://mcp.diegonmarcos.com",
+            "mcp": true
+          },
+          {
+            "id": "cloud-mattermost-mcp",
+            "name": "cloud-mattermost-mcp",
+            "vm": "oci-A1-f_0",
+            "category": "app",
+            "subgroup": "AI-Agents",
+            "port": 3102,
+            "private_ip": "10.0.0.6",
+            "private_url": "https://cloud-mattermost-mcp.app",
+            "public_url": null,
+            "mcp": true
           },
           {
             "id": "google-personal-mcp",
@@ -488,30 +481,6 @@
             "private_ip": "10.0.0.6",
             "private_url": "https://google-workspace-mcp.app",
             "public_url": "https://mcp.diegonmarcos.com",
-            "mcp": true
-          },
-          {
-            "id": "mail-mcp",
-            "name": "mail-mcp",
-            "vm": "oci-A1-f_0",
-            "category": "app",
-            "subgroup": "AI-Agents",
-            "port": 3103,
-            "private_ip": "10.0.0.6",
-            "private_url": "https://mail-mcp.app",
-            "public_url": "https://mcp.diegonmarcos.com",
-            "mcp": true
-          },
-          {
-            "id": "mattermost-mcp",
-            "name": "mattermost-mcp",
-            "vm": "oci-A1-f_0",
-            "category": "app",
-            "subgroup": "AI-Agents",
-            "port": 3102,
-            "private_ip": "10.0.0.6",
-            "private_url": "https://mattermost-mcp.app",
-            "public_url": null,
             "mcp": true
           },
           {
@@ -592,6 +561,17 @@
             "public_url": "https://mail-puller.diegonmarcos.com"
           },
           {
+            "id": "matrix-continuwuity",
+            "name": "matrix-continuwuity",
+            "vm": "oci-A1-f_0",
+            "category": "app",
+            "subgroup": "Communications",
+            "port": 8008,
+            "private_ip": "10.0.0.6",
+            "private_url": "https://matrix-continuwuity.app",
+            "public_url": "https://matrix.diegonmarcos.com"
+          },
+          {
             "id": "matrix-element",
             "name": "matrix-element",
             "vm": "oci-A1-f_0",
@@ -667,6 +647,17 @@
             "private_ip": "10.0.0.6",
             "private_url": "https://photoprism.app",
             "public_url": "https://photos.diegonmarcos.com"
+          },
+          {
+            "id": "playlist-syncer",
+            "name": "playlist-syncer",
+            "vm": "oci-A1-f_0",
+            "category": "app",
+            "subgroup": "Productivity",
+            "port": 8090,
+            "private_ip": "10.0.0.6",
+            "private_url": "https://playlist-syncer.app",
+            "public_url": "https://playlist.diegonmarcos.com"
           },
           {
             "id": "calendar-radicale",
@@ -792,102 +783,2663 @@
         ]
       },
       "db": {
-        "db-s3": [
-          {
-            "id": "cloud-backups-binaries-medias",
-            "name": "cloud-backups-binaries-medias",
-            "dns": "s3-backups-binaries.app",
-            "region": "eu-marseille-1",
-            "provider": "oci",
-            "endpoint": "https://axpmn3qtq4ig.compat.objectstorage.eu-marseille-1.oraclecloud.com"
-          },
-          {
-            "id": "cloud-backups-db",
-            "name": "cloud-backups-db",
-            "dns": "s3-backups-db.app",
-            "region": "eu-marseille-1",
-            "provider": "oci",
-            "endpoint": "https://axpmn3qtq4ig.compat.objectstorage.eu-marseille-1.oraclecloud.com"
-          },
-          {
-            "id": "cloud-backups-media",
-            "name": "cloud-backups-media",
-            "dns": "s3-backups-media.app",
-            "region": "eu-marseille-1",
-            "provider": "oci",
-            "endpoint": "https://axpmn3qtq4ig.compat.objectstorage.eu-marseille-1.oraclecloud.com"
-          },
-          {
-            "id": "cloud-backups-non-binaries",
-            "name": "cloud-backups-non-binaries",
-            "dns": "s3-backups-nonbin.app",
-            "region": "eu-marseille-1",
-            "provider": "oci",
-            "endpoint": "https://axpmn3qtq4ig.compat.objectstorage.eu-marseille-1.oraclecloud.com"
-          },
-          {
-            "id": "my-photos",
-            "name": "my-photos",
-            "dns": "s3-photos.app",
-            "region": "eu-marseille-1",
-            "provider": "oci",
-            "endpoint": "https://axpmn3qtq4ig.compat.objectstorage.eu-marseille-1.oraclecloud.com"
-          }
-        ],
-        "db-hd": [
+        "db-dockers": [
           {
             "id": "redis/app",
             "service": "redis",
             "container": "app",
-            "engine": "redis"
+            "engine": "redis",
+            "kind": "container",
+            "persistence": {
+              "type": "docker-bind",
+              "ref": "/data/redis",
+              "mount": "/data"
+            },
+            "port": 6379,
+            "vm": "gcp-E2-f_0",
+            "backup": {
+              "enabled": true,
+              "strategy": null
+            }
           },
           {
             "id": "umami/db",
             "service": "umami",
             "container": "db",
-            "engine": "postgres"
+            "engine": "postgres",
+            "kind": "container",
+            "persistence": {
+              "type": "docker-volume",
+              "ref": "umami_db_data",
+              "mount": "/var/lib/postgresql/data"
+            },
+            "port": 5442,
+            "vm": "oci-E2-f_1",
+            "backup": {
+              "enabled": true,
+              "strategy": null
+            }
           },
           {
             "id": "authelia/redis",
             "service": "authelia",
             "container": "redis",
-            "engine": "redis"
+            "engine": "redis",
+            "kind": "container",
+            "persistence": {
+              "type": "docker-volume",
+              "ref": "authelia_redis_data",
+              "mount": "/data"
+            },
+            "port": 6380,
+            "vm": "gcp-E2-f_0",
+            "backup": {
+              "enabled": true,
+              "strategy": null
+            }
           },
           {
             "id": "kg-store/app",
             "service": "kg-store",
             "container": "app",
-            "engine": "surrealdb"
+            "engine": "surrealdb",
+            "kind": "container",
+            "persistence": {
+              "type": "unknown",
+              "ref": null,
+              "mount": null
+            },
+            "port": 8001,
+            "vm": "oci-A1-f_0",
+            "backup": {
+              "enabled": true,
+              "strategy": null
+            }
           },
           {
             "id": "chat-mattermost/db",
             "service": "chat-mattermost",
             "container": "db",
-            "engine": "postgres"
+            "engine": "postgres",
+            "kind": "container",
+            "persistence": {
+              "type": "docker-volume",
+              "ref": "./data/postgres",
+              "mount": "/var/lib/postgresql/data"
+            },
+            "port": 5435,
+            "vm": "oci-A1-f_0",
+            "backup": {
+              "enabled": true,
+              "strategy": null
+            }
           },
           {
             "id": "photoprism/db",
             "service": "photoprism",
             "container": "db",
-            "engine": "mariadb"
+            "engine": "mariadb",
+            "kind": "container",
+            "persistence": {
+              "type": "docker-volume",
+              "ref": "mariadb_data",
+              "mount": "/var/lib/mysql"
+            },
+            "port": null,
+            "vm": "oci-A1-f_0",
+            "backup": {
+              "enabled": true,
+              "strategy": null
+            }
           },
           {
             "id": "etherpad/db",
             "service": "etherpad",
             "container": "db",
-            "engine": "postgres"
+            "engine": "postgres",
+            "kind": "container",
+            "persistence": {
+              "type": "docker-volume",
+              "ref": "postgres_data",
+              "mount": "/var/lib/postgresql/data"
+            },
+            "port": 5436,
+            "vm": "oci-A1-f_0",
+            "backup": {
+              "enabled": true,
+              "strategy": null
+            }
           },
           {
             "id": "hedgedoc/db",
             "service": "hedgedoc",
             "container": "db",
-            "engine": "postgres"
+            "engine": "postgres",
+            "kind": "container",
+            "persistence": {
+              "type": "docker-volume",
+              "ref": "postgres_data",
+              "mount": "/var/lib/postgresql/data"
+            },
+            "port": 5439,
+            "vm": "oci-A1-f_0",
+            "backup": {
+              "enabled": true,
+              "strategy": null
+            }
           },
           {
             "id": "paca/db",
             "service": "paca",
             "container": "db",
-            "engine": "postgres"
+            "engine": "postgres",
+            "kind": "container",
+            "persistence": {
+              "type": "docker-volume",
+              "ref": "paca_postgres",
+              "mount": "/var/lib/postgresql/data"
+            },
+            "port": 5432,
+            "vm": "oci-A1-f_0",
+            "backup": {
+              "enabled": true,
+              "strategy": null
+            }
+          }
+        ],
+        "db-embedded": [
+          {
+            "id": "gitea/app#sqlite",
+            "service": "gitea",
+            "container": "app",
+            "engine": "sqlite",
+            "kind": "embedded",
+            "path": "/data/gitea/gitea.db",
+            "persistence": {
+              "type": "docker-volume",
+              "ref": "gitea_data",
+              "mount": "/data"
+            },
+            "port": null,
+            "vm": "oci-A1-f_0",
+            "backup": {
+              "enabled": true,
+              "strategy": null
+            }
+          },
+          {
+            "id": "dagu/app#sqlite",
+            "service": "dagu",
+            "container": "app",
+            "engine": "sqlite",
+            "kind": "embedded",
+            "path": "/var/lib/dagu/dagu.db",
+            "persistence": {
+              "type": "docker-volume",
+              "ref": "./data",
+              "mount": "/var/lib/dagu/data"
+            },
+            "port": null,
+            "vm": "oci-A1-f_0",
+            "backup": {
+              "enabled": false,
+              "strategy": null
+            }
+          },
+          {
+            "id": "matomo/app#mariadb",
+            "service": "matomo",
+            "container": "app",
+            "engine": "mariadb",
+            "kind": "embedded",
+            "path": "/var/lib/mysql",
+            "persistence": {
+              "type": "docker-volume",
+              "ref": "matomo_matomo_db",
+              "mount": "/var/lib/mysql"
+            },
+            "port": 3306,
+            "vm": "oci-A1-f_0",
+            "backup": {
+              "enabled": true,
+              "strategy": null
+            }
+          },
+          {
+            "id": "ntfy/app#sqlite",
+            "service": "ntfy",
+            "container": "app",
+            "engine": "sqlite",
+            "kind": "embedded",
+            "path": "/var/cache/ntfy/cache.db",
+            "persistence": {
+              "type": "docker-volume",
+              "ref": "./cache",
+              "mount": "/var/cache/ntfy"
+            },
+            "port": null,
+            "vm": "oci-A1-f_0",
+            "backup": {
+              "enabled": true,
+              "strategy": null
+            }
+          },
+          {
+            "id": "openobserve/app#parquet",
+            "service": "openobserve",
+            "container": "app",
+            "engine": "parquet",
+            "kind": "embedded",
+            "path": "/data",
+            "persistence": {
+              "type": "docker-volume",
+              "ref": "openobserve_data",
+              "mount": "/data"
+            },
+            "port": null,
+            "vm": "oci-A1-f_0",
+            "backup": {
+              "enabled": false,
+              "strategy": null
+            }
+          },
+          {
+            "id": "authelia/app#sqlite",
+            "service": "authelia",
+            "container": "app",
+            "engine": "sqlite",
+            "kind": "embedded",
+            "path": "/data/db.sqlite3",
+            "persistence": {
+              "type": "docker-volume",
+              "ref": "authelia_data",
+              "mount": "/data"
+            },
+            "port": null,
+            "vm": "gcp-E2-f_0",
+            "backup": {
+              "enabled": true,
+              "strategy": null
+            }
+          },
+          {
+            "id": "mail-puller/app#sqlite",
+            "service": "mail-puller",
+            "container": "app",
+            "engine": "sqlite",
+            "kind": "embedded",
+            "path": "/var/lib/mail-puller/state.db",
+            "persistence": {
+              "type": "docker-volume",
+              "ref": "mail_puller_state",
+              "mount": "/var/lib/mail-puller"
+            },
+            "port": null,
+            "vm": "oci-E2-f_0",
+            "backup": {
+              "enabled": true,
+              "strategy": null
+            }
+          },
+          {
+            "id": "snappymail/app#files",
+            "service": "snappymail",
+            "container": "app",
+            "engine": "files",
+            "kind": "embedded",
+            "path": "/var/lib/snappymail",
+            "persistence": {
+              "type": "docker-volume",
+              "ref": "./data",
+              "mount": "/var/lib/snappymail"
+            },
+            "port": null,
+            "vm": "oci-E2-f_0",
+            "backup": {
+              "enabled": false,
+              "strategy": null
+            }
+          },
+          {
+            "id": "maddy/app#sqlite",
+            "service": "maddy",
+            "container": "app",
+            "engine": "sqlite",
+            "kind": "embedded",
+            "path": "/data/imapsql.db",
+            "persistence": {
+              "type": "docker-volume",
+              "ref": "maddy_data",
+              "mount": "/data"
+            },
+            "port": null,
+            "vm": "oci-E2-f_0",
+            "backup": {
+              "enabled": true,
+              "strategy": null
+            }
+          },
+          {
+            "id": "stalwart/app#rocksdb",
+            "service": "stalwart",
+            "container": "app",
+            "engine": "rocksdb",
+            "kind": "embedded",
+            "path": "/opt/stalwart-mail/data",
+            "persistence": {
+              "type": "docker-volume",
+              "ref": "stalwart_data",
+              "mount": "/opt/stalwart-mail/data"
+            },
+            "port": null,
+            "vm": "oci-E2-f_0",
+            "backup": {
+              "enabled": true,
+              "strategy": null
+            }
+          },
+          {
+            "id": "calendar-radicale/app#files",
+            "service": "calendar-radicale",
+            "container": "app",
+            "engine": "files",
+            "kind": "embedded",
+            "path": "/data/collections",
+            "persistence": {
+              "type": "docker-volume",
+              "ref": "./data",
+              "mount": "/data"
+            },
+            "port": null,
+            "vm": "oci-A1-f_0",
+            "backup": {
+              "enabled": false,
+              "strategy": null
+            }
+          },
+          {
+            "id": "contacts-radicale/app#files",
+            "service": "contacts-radicale",
+            "container": "app",
+            "engine": "files",
+            "kind": "embedded",
+            "path": "/data/collections",
+            "persistence": {
+              "type": "docker-volume",
+              "ref": "./data",
+              "mount": "/data"
+            },
+            "port": null,
+            "vm": "oci-A1-f_0",
+            "backup": {
+              "enabled": false,
+              "strategy": null
+            }
+          },
+          {
+            "id": "filebrowser/app#sqlite",
+            "service": "filebrowser",
+            "container": "app",
+            "engine": "sqlite",
+            "kind": "embedded",
+            "path": "/data/filebrowser.db",
+            "persistence": {
+              "type": "docker-volume",
+              "ref": "filebrowser_data",
+              "mount": "/srv"
+            },
+            "port": null,
+            "vm": "oci-A1-f_0",
+            "backup": {
+              "enabled": false,
+              "strategy": null
+            }
+          },
+          {
+            "id": "vaultwarden/app#sqlite",
+            "service": "vaultwarden",
+            "container": "app",
+            "engine": "sqlite",
+            "kind": "embedded",
+            "path": "/data/db.sqlite3",
+            "persistence": {
+              "type": "docker-volume",
+              "ref": "./data",
+              "mount": "/data"
+            },
+            "port": null,
+            "vm": "oci-A1-f_0",
+            "backup": {
+              "enabled": true,
+              "strategy": null
+            }
+          }
+        ],
+        "db-s3": [
+          {
+            "id": "cloud-backups-binaries-medias",
+            "service": null,
+            "container": null,
+            "engine": "s3",
+            "kind": "object-store",
+            "persistence": {
+              "type": "s3",
+              "ref": "cloud-backups-binaries-medias",
+              "mount": null
+            },
+            "provider": "oci",
+            "region": "eu-marseille-1",
+            "tier": "Standard",
+            "endpoint": "https://axpmn3qtq4ig.compat.objectstorage.eu-marseille-1.oraclecloud.com",
+            "dns": "s3-backups-binaries.app",
+            "vm": null,
+            "backup": {
+              "enabled": false,
+              "strategy": null
+            }
+          },
+          {
+            "id": "cloud-backups-db",
+            "service": null,
+            "container": null,
+            "engine": "s3",
+            "kind": "object-store",
+            "persistence": {
+              "type": "s3",
+              "ref": "cloud-backups-db",
+              "mount": null
+            },
+            "provider": "oci",
+            "region": "eu-marseille-1",
+            "tier": "Standard",
+            "endpoint": "https://axpmn3qtq4ig.compat.objectstorage.eu-marseille-1.oraclecloud.com",
+            "dns": "s3-backups-db.app",
+            "vm": null,
+            "backup": {
+              "enabled": false,
+              "strategy": null
+            }
+          },
+          {
+            "id": "cloud-backups-media",
+            "service": null,
+            "container": null,
+            "engine": "s3",
+            "kind": "object-store",
+            "persistence": {
+              "type": "s3",
+              "ref": "cloud-backups-media",
+              "mount": null
+            },
+            "provider": "oci",
+            "region": "eu-marseille-1",
+            "tier": "Archive",
+            "endpoint": "https://axpmn3qtq4ig.compat.objectstorage.eu-marseille-1.oraclecloud.com",
+            "dns": "s3-backups-media.app",
+            "vm": null,
+            "backup": {
+              "enabled": false,
+              "strategy": null
+            }
+          },
+          {
+            "id": "cloud-backups-non-binaries",
+            "service": null,
+            "container": null,
+            "engine": "s3",
+            "kind": "object-store",
+            "persistence": {
+              "type": "s3",
+              "ref": "cloud-backups-non-binaries",
+              "mount": null
+            },
+            "provider": "oci",
+            "region": "eu-marseille-1",
+            "tier": "Standard",
+            "endpoint": "https://axpmn3qtq4ig.compat.objectstorage.eu-marseille-1.oraclecloud.com",
+            "dns": "s3-backups-nonbin.app",
+            "vm": null,
+            "backup": {
+              "enabled": false,
+              "strategy": null
+            }
+          },
+          {
+            "id": "my-photos",
+            "service": null,
+            "container": null,
+            "engine": "s3",
+            "kind": "object-store",
+            "persistence": {
+              "type": "s3",
+              "ref": "my-photos",
+              "mount": null
+            },
+            "provider": "oci",
+            "region": "eu-marseille-1",
+            "tier": "Standard",
+            "endpoint": "https://axpmn3qtq4ig.compat.objectstorage.eu-marseille-1.oraclecloud.com",
+            "dns": "s3-photos.app",
+            "vm": null,
+            "backup": {
+              "enabled": false,
+              "strategy": null
+            }
+          }
+        ],
+        "db-hd": [
+          {
+            "id": "gitea/app#sqlite",
+            "service": "gitea",
+            "container": "app",
+            "engine": "sqlite",
+            "kind": "embedded",
+            "path": "/data/gitea/gitea.db",
+            "persistence": {
+              "type": "docker-volume",
+              "ref": "gitea_data",
+              "mount": "/data"
+            },
+            "port": null,
+            "vm": "oci-A1-f_0",
+            "backup": {
+              "enabled": true,
+              "strategy": null
+            }
+          },
+          {
+            "id": "dagu/app#sqlite",
+            "service": "dagu",
+            "container": "app",
+            "engine": "sqlite",
+            "kind": "embedded",
+            "path": "/var/lib/dagu/dagu.db",
+            "persistence": {
+              "type": "docker-volume",
+              "ref": "./data",
+              "mount": "/var/lib/dagu/data"
+            },
+            "port": null,
+            "vm": "oci-A1-f_0",
+            "backup": {
+              "enabled": false,
+              "strategy": null
+            }
+          },
+          {
+            "id": "matomo/app#mariadb",
+            "service": "matomo",
+            "container": "app",
+            "engine": "mariadb",
+            "kind": "embedded",
+            "path": "/var/lib/mysql",
+            "persistence": {
+              "type": "docker-volume",
+              "ref": "matomo_matomo_db",
+              "mount": "/var/lib/mysql"
+            },
+            "port": 3306,
+            "vm": "oci-A1-f_0",
+            "backup": {
+              "enabled": true,
+              "strategy": null
+            }
+          },
+          {
+            "id": "ntfy/app#sqlite",
+            "service": "ntfy",
+            "container": "app",
+            "engine": "sqlite",
+            "kind": "embedded",
+            "path": "/var/cache/ntfy/cache.db",
+            "persistence": {
+              "type": "docker-volume",
+              "ref": "./cache",
+              "mount": "/var/cache/ntfy"
+            },
+            "port": null,
+            "vm": "oci-A1-f_0",
+            "backup": {
+              "enabled": true,
+              "strategy": null
+            }
+          },
+          {
+            "id": "openobserve/app#parquet",
+            "service": "openobserve",
+            "container": "app",
+            "engine": "parquet",
+            "kind": "embedded",
+            "path": "/data",
+            "persistence": {
+              "type": "docker-volume",
+              "ref": "openobserve_data",
+              "mount": "/data"
+            },
+            "port": null,
+            "vm": "oci-A1-f_0",
+            "backup": {
+              "enabled": false,
+              "strategy": null
+            }
+          },
+          {
+            "id": "umami/db",
+            "service": "umami",
+            "container": "db",
+            "engine": "postgres",
+            "kind": "container",
+            "persistence": {
+              "type": "docker-volume",
+              "ref": "umami_db_data",
+              "mount": "/var/lib/postgresql/data"
+            },
+            "port": 5442,
+            "vm": "oci-E2-f_1",
+            "backup": {
+              "enabled": true,
+              "strategy": null
+            }
+          },
+          {
+            "id": "authelia/app#sqlite",
+            "service": "authelia",
+            "container": "app",
+            "engine": "sqlite",
+            "kind": "embedded",
+            "path": "/data/db.sqlite3",
+            "persistence": {
+              "type": "docker-volume",
+              "ref": "authelia_data",
+              "mount": "/data"
+            },
+            "port": null,
+            "vm": "gcp-E2-f_0",
+            "backup": {
+              "enabled": true,
+              "strategy": null
+            }
+          },
+          {
+            "id": "authelia/redis",
+            "service": "authelia",
+            "container": "redis",
+            "engine": "redis",
+            "kind": "container",
+            "persistence": {
+              "type": "docker-volume",
+              "ref": "authelia_redis_data",
+              "mount": "/data"
+            },
+            "port": 6380,
+            "vm": "gcp-E2-f_0",
+            "backup": {
+              "enabled": true,
+              "strategy": null
+            }
+          },
+          {
+            "id": "chat-mattermost/db",
+            "service": "chat-mattermost",
+            "container": "db",
+            "engine": "postgres",
+            "kind": "container",
+            "persistence": {
+              "type": "docker-volume",
+              "ref": "./data/postgres",
+              "mount": "/var/lib/postgresql/data"
+            },
+            "port": 5435,
+            "vm": "oci-A1-f_0",
+            "backup": {
+              "enabled": true,
+              "strategy": null
+            }
+          },
+          {
+            "id": "mail-puller/app#sqlite",
+            "service": "mail-puller",
+            "container": "app",
+            "engine": "sqlite",
+            "kind": "embedded",
+            "path": "/var/lib/mail-puller/state.db",
+            "persistence": {
+              "type": "docker-volume",
+              "ref": "mail_puller_state",
+              "mount": "/var/lib/mail-puller"
+            },
+            "port": null,
+            "vm": "oci-E2-f_0",
+            "backup": {
+              "enabled": true,
+              "strategy": null
+            }
+          },
+          {
+            "id": "snappymail/app#files",
+            "service": "snappymail",
+            "container": "app",
+            "engine": "files",
+            "kind": "embedded",
+            "path": "/var/lib/snappymail",
+            "persistence": {
+              "type": "docker-volume",
+              "ref": "./data",
+              "mount": "/var/lib/snappymail"
+            },
+            "port": null,
+            "vm": "oci-E2-f_0",
+            "backup": {
+              "enabled": false,
+              "strategy": null
+            }
+          },
+          {
+            "id": "maddy/app#sqlite",
+            "service": "maddy",
+            "container": "app",
+            "engine": "sqlite",
+            "kind": "embedded",
+            "path": "/data/imapsql.db",
+            "persistence": {
+              "type": "docker-volume",
+              "ref": "maddy_data",
+              "mount": "/data"
+            },
+            "port": null,
+            "vm": "oci-E2-f_0",
+            "backup": {
+              "enabled": true,
+              "strategy": null
+            }
+          },
+          {
+            "id": "stalwart/app#rocksdb",
+            "service": "stalwart",
+            "container": "app",
+            "engine": "rocksdb",
+            "kind": "embedded",
+            "path": "/opt/stalwart-mail/data",
+            "persistence": {
+              "type": "docker-volume",
+              "ref": "stalwart_data",
+              "mount": "/opt/stalwart-mail/data"
+            },
+            "port": null,
+            "vm": "oci-E2-f_0",
+            "backup": {
+              "enabled": true,
+              "strategy": null
+            }
+          },
+          {
+            "id": "photoprism/db",
+            "service": "photoprism",
+            "container": "db",
+            "engine": "mariadb",
+            "kind": "container",
+            "persistence": {
+              "type": "docker-volume",
+              "ref": "mariadb_data",
+              "mount": "/var/lib/mysql"
+            },
+            "port": null,
+            "vm": "oci-A1-f_0",
+            "backup": {
+              "enabled": true,
+              "strategy": null
+            }
+          },
+          {
+            "id": "calendar-radicale/app#files",
+            "service": "calendar-radicale",
+            "container": "app",
+            "engine": "files",
+            "kind": "embedded",
+            "path": "/data/collections",
+            "persistence": {
+              "type": "docker-volume",
+              "ref": "./data",
+              "mount": "/data"
+            },
+            "port": null,
+            "vm": "oci-A1-f_0",
+            "backup": {
+              "enabled": false,
+              "strategy": null
+            }
+          },
+          {
+            "id": "contacts-radicale/app#files",
+            "service": "contacts-radicale",
+            "container": "app",
+            "engine": "files",
+            "kind": "embedded",
+            "path": "/data/collections",
+            "persistence": {
+              "type": "docker-volume",
+              "ref": "./data",
+              "mount": "/data"
+            },
+            "port": null,
+            "vm": "oci-A1-f_0",
+            "backup": {
+              "enabled": false,
+              "strategy": null
+            }
+          },
+          {
+            "id": "etherpad/db",
+            "service": "etherpad",
+            "container": "db",
+            "engine": "postgres",
+            "kind": "container",
+            "persistence": {
+              "type": "docker-volume",
+              "ref": "postgres_data",
+              "mount": "/var/lib/postgresql/data"
+            },
+            "port": 5436,
+            "vm": "oci-A1-f_0",
+            "backup": {
+              "enabled": true,
+              "strategy": null
+            }
+          },
+          {
+            "id": "filebrowser/app#sqlite",
+            "service": "filebrowser",
+            "container": "app",
+            "engine": "sqlite",
+            "kind": "embedded",
+            "path": "/data/filebrowser.db",
+            "persistence": {
+              "type": "docker-volume",
+              "ref": "filebrowser_data",
+              "mount": "/srv"
+            },
+            "port": null,
+            "vm": "oci-A1-f_0",
+            "backup": {
+              "enabled": false,
+              "strategy": null
+            }
+          },
+          {
+            "id": "hedgedoc/db",
+            "service": "hedgedoc",
+            "container": "db",
+            "engine": "postgres",
+            "kind": "container",
+            "persistence": {
+              "type": "docker-volume",
+              "ref": "postgres_data",
+              "mount": "/var/lib/postgresql/data"
+            },
+            "port": 5439,
+            "vm": "oci-A1-f_0",
+            "backup": {
+              "enabled": true,
+              "strategy": null
+            }
+          },
+          {
+            "id": "paca/db",
+            "service": "paca",
+            "container": "db",
+            "engine": "postgres",
+            "kind": "container",
+            "persistence": {
+              "type": "docker-volume",
+              "ref": "paca_postgres",
+              "mount": "/var/lib/postgresql/data"
+            },
+            "port": 5432,
+            "vm": "oci-A1-f_0",
+            "backup": {
+              "enabled": true,
+              "strategy": null
+            }
+          },
+          {
+            "id": "vaultwarden/app#sqlite",
+            "service": "vaultwarden",
+            "container": "app",
+            "engine": "sqlite",
+            "kind": "embedded",
+            "path": "/data/db.sqlite3",
+            "persistence": {
+              "type": "docker-volume",
+              "ref": "./data",
+              "mount": "/data"
+            },
+            "port": null,
+            "vm": "oci-A1-f_0",
+            "backup": {
+              "enabled": true,
+              "strategy": null
+            }
+          },
+          {
+            "id": "redis/app",
+            "service": "redis",
+            "container": "app",
+            "engine": "redis",
+            "kind": "container",
+            "persistence": {
+              "type": "docker-bind",
+              "ref": "/data/redis",
+              "mount": "/data"
+            },
+            "port": 6379,
+            "vm": "gcp-E2-f_0",
+            "backup": {
+              "enabled": true,
+              "strategy": null
+            }
+          }
+        ],
+        "db-docker-volume": [
+          {
+            "id": "gitea/app#sqlite",
+            "service": "gitea",
+            "container": "app",
+            "engine": "sqlite",
+            "kind": "embedded",
+            "path": "/data/gitea/gitea.db",
+            "persistence": {
+              "type": "docker-volume",
+              "ref": "gitea_data",
+              "mount": "/data"
+            },
+            "port": null,
+            "vm": "oci-A1-f_0",
+            "backup": {
+              "enabled": true,
+              "strategy": null
+            }
+          },
+          {
+            "id": "dagu/app#sqlite",
+            "service": "dagu",
+            "container": "app",
+            "engine": "sqlite",
+            "kind": "embedded",
+            "path": "/var/lib/dagu/dagu.db",
+            "persistence": {
+              "type": "docker-volume",
+              "ref": "./data",
+              "mount": "/var/lib/dagu/data"
+            },
+            "port": null,
+            "vm": "oci-A1-f_0",
+            "backup": {
+              "enabled": false,
+              "strategy": null
+            }
+          },
+          {
+            "id": "matomo/app#mariadb",
+            "service": "matomo",
+            "container": "app",
+            "engine": "mariadb",
+            "kind": "embedded",
+            "path": "/var/lib/mysql",
+            "persistence": {
+              "type": "docker-volume",
+              "ref": "matomo_matomo_db",
+              "mount": "/var/lib/mysql"
+            },
+            "port": 3306,
+            "vm": "oci-A1-f_0",
+            "backup": {
+              "enabled": true,
+              "strategy": null
+            }
+          },
+          {
+            "id": "ntfy/app#sqlite",
+            "service": "ntfy",
+            "container": "app",
+            "engine": "sqlite",
+            "kind": "embedded",
+            "path": "/var/cache/ntfy/cache.db",
+            "persistence": {
+              "type": "docker-volume",
+              "ref": "./cache",
+              "mount": "/var/cache/ntfy"
+            },
+            "port": null,
+            "vm": "oci-A1-f_0",
+            "backup": {
+              "enabled": true,
+              "strategy": null
+            }
+          },
+          {
+            "id": "openobserve/app#parquet",
+            "service": "openobserve",
+            "container": "app",
+            "engine": "parquet",
+            "kind": "embedded",
+            "path": "/data",
+            "persistence": {
+              "type": "docker-volume",
+              "ref": "openobserve_data",
+              "mount": "/data"
+            },
+            "port": null,
+            "vm": "oci-A1-f_0",
+            "backup": {
+              "enabled": false,
+              "strategy": null
+            }
+          },
+          {
+            "id": "umami/db",
+            "service": "umami",
+            "container": "db",
+            "engine": "postgres",
+            "kind": "container",
+            "persistence": {
+              "type": "docker-volume",
+              "ref": "umami_db_data",
+              "mount": "/var/lib/postgresql/data"
+            },
+            "port": 5442,
+            "vm": "oci-E2-f_1",
+            "backup": {
+              "enabled": true,
+              "strategy": null
+            }
+          },
+          {
+            "id": "authelia/app#sqlite",
+            "service": "authelia",
+            "container": "app",
+            "engine": "sqlite",
+            "kind": "embedded",
+            "path": "/data/db.sqlite3",
+            "persistence": {
+              "type": "docker-volume",
+              "ref": "authelia_data",
+              "mount": "/data"
+            },
+            "port": null,
+            "vm": "gcp-E2-f_0",
+            "backup": {
+              "enabled": true,
+              "strategy": null
+            }
+          },
+          {
+            "id": "authelia/redis",
+            "service": "authelia",
+            "container": "redis",
+            "engine": "redis",
+            "kind": "container",
+            "persistence": {
+              "type": "docker-volume",
+              "ref": "authelia_redis_data",
+              "mount": "/data"
+            },
+            "port": 6380,
+            "vm": "gcp-E2-f_0",
+            "backup": {
+              "enabled": true,
+              "strategy": null
+            }
+          },
+          {
+            "id": "chat-mattermost/db",
+            "service": "chat-mattermost",
+            "container": "db",
+            "engine": "postgres",
+            "kind": "container",
+            "persistence": {
+              "type": "docker-volume",
+              "ref": "./data/postgres",
+              "mount": "/var/lib/postgresql/data"
+            },
+            "port": 5435,
+            "vm": "oci-A1-f_0",
+            "backup": {
+              "enabled": true,
+              "strategy": null
+            }
+          },
+          {
+            "id": "mail-puller/app#sqlite",
+            "service": "mail-puller",
+            "container": "app",
+            "engine": "sqlite",
+            "kind": "embedded",
+            "path": "/var/lib/mail-puller/state.db",
+            "persistence": {
+              "type": "docker-volume",
+              "ref": "mail_puller_state",
+              "mount": "/var/lib/mail-puller"
+            },
+            "port": null,
+            "vm": "oci-E2-f_0",
+            "backup": {
+              "enabled": true,
+              "strategy": null
+            }
+          },
+          {
+            "id": "snappymail/app#files",
+            "service": "snappymail",
+            "container": "app",
+            "engine": "files",
+            "kind": "embedded",
+            "path": "/var/lib/snappymail",
+            "persistence": {
+              "type": "docker-volume",
+              "ref": "./data",
+              "mount": "/var/lib/snappymail"
+            },
+            "port": null,
+            "vm": "oci-E2-f_0",
+            "backup": {
+              "enabled": false,
+              "strategy": null
+            }
+          },
+          {
+            "id": "maddy/app#sqlite",
+            "service": "maddy",
+            "container": "app",
+            "engine": "sqlite",
+            "kind": "embedded",
+            "path": "/data/imapsql.db",
+            "persistence": {
+              "type": "docker-volume",
+              "ref": "maddy_data",
+              "mount": "/data"
+            },
+            "port": null,
+            "vm": "oci-E2-f_0",
+            "backup": {
+              "enabled": true,
+              "strategy": null
+            }
+          },
+          {
+            "id": "stalwart/app#rocksdb",
+            "service": "stalwart",
+            "container": "app",
+            "engine": "rocksdb",
+            "kind": "embedded",
+            "path": "/opt/stalwart-mail/data",
+            "persistence": {
+              "type": "docker-volume",
+              "ref": "stalwart_data",
+              "mount": "/opt/stalwart-mail/data"
+            },
+            "port": null,
+            "vm": "oci-E2-f_0",
+            "backup": {
+              "enabled": true,
+              "strategy": null
+            }
+          },
+          {
+            "id": "photoprism/db",
+            "service": "photoprism",
+            "container": "db",
+            "engine": "mariadb",
+            "kind": "container",
+            "persistence": {
+              "type": "docker-volume",
+              "ref": "mariadb_data",
+              "mount": "/var/lib/mysql"
+            },
+            "port": null,
+            "vm": "oci-A1-f_0",
+            "backup": {
+              "enabled": true,
+              "strategy": null
+            }
+          },
+          {
+            "id": "calendar-radicale/app#files",
+            "service": "calendar-radicale",
+            "container": "app",
+            "engine": "files",
+            "kind": "embedded",
+            "path": "/data/collections",
+            "persistence": {
+              "type": "docker-volume",
+              "ref": "./data",
+              "mount": "/data"
+            },
+            "port": null,
+            "vm": "oci-A1-f_0",
+            "backup": {
+              "enabled": false,
+              "strategy": null
+            }
+          },
+          {
+            "id": "contacts-radicale/app#files",
+            "service": "contacts-radicale",
+            "container": "app",
+            "engine": "files",
+            "kind": "embedded",
+            "path": "/data/collections",
+            "persistence": {
+              "type": "docker-volume",
+              "ref": "./data",
+              "mount": "/data"
+            },
+            "port": null,
+            "vm": "oci-A1-f_0",
+            "backup": {
+              "enabled": false,
+              "strategy": null
+            }
+          },
+          {
+            "id": "etherpad/db",
+            "service": "etherpad",
+            "container": "db",
+            "engine": "postgres",
+            "kind": "container",
+            "persistence": {
+              "type": "docker-volume",
+              "ref": "postgres_data",
+              "mount": "/var/lib/postgresql/data"
+            },
+            "port": 5436,
+            "vm": "oci-A1-f_0",
+            "backup": {
+              "enabled": true,
+              "strategy": null
+            }
+          },
+          {
+            "id": "filebrowser/app#sqlite",
+            "service": "filebrowser",
+            "container": "app",
+            "engine": "sqlite",
+            "kind": "embedded",
+            "path": "/data/filebrowser.db",
+            "persistence": {
+              "type": "docker-volume",
+              "ref": "filebrowser_data",
+              "mount": "/srv"
+            },
+            "port": null,
+            "vm": "oci-A1-f_0",
+            "backup": {
+              "enabled": false,
+              "strategy": null
+            }
+          },
+          {
+            "id": "hedgedoc/db",
+            "service": "hedgedoc",
+            "container": "db",
+            "engine": "postgres",
+            "kind": "container",
+            "persistence": {
+              "type": "docker-volume",
+              "ref": "postgres_data",
+              "mount": "/var/lib/postgresql/data"
+            },
+            "port": 5439,
+            "vm": "oci-A1-f_0",
+            "backup": {
+              "enabled": true,
+              "strategy": null
+            }
+          },
+          {
+            "id": "paca/db",
+            "service": "paca",
+            "container": "db",
+            "engine": "postgres",
+            "kind": "container",
+            "persistence": {
+              "type": "docker-volume",
+              "ref": "paca_postgres",
+              "mount": "/var/lib/postgresql/data"
+            },
+            "port": 5432,
+            "vm": "oci-A1-f_0",
+            "backup": {
+              "enabled": true,
+              "strategy": null
+            }
+          },
+          {
+            "id": "vaultwarden/app#sqlite",
+            "service": "vaultwarden",
+            "container": "app",
+            "engine": "sqlite",
+            "kind": "embedded",
+            "path": "/data/db.sqlite3",
+            "persistence": {
+              "type": "docker-volume",
+              "ref": "./data",
+              "mount": "/data"
+            },
+            "port": null,
+            "vm": "oci-A1-f_0",
+            "backup": {
+              "enabled": true,
+              "strategy": null
+            }
+          }
+        ],
+        "db-docker-bind": [
+          {
+            "id": "redis/app",
+            "service": "redis",
+            "container": "app",
+            "engine": "redis",
+            "kind": "container",
+            "persistence": {
+              "type": "docker-bind",
+              "ref": "/data/redis",
+              "mount": "/data"
+            },
+            "port": 6379,
+            "vm": "gcp-E2-f_0",
+            "backup": {
+              "enabled": true,
+              "strategy": null
+            }
+          }
+        ],
+        "git#gh": [
+          {
+            "id": "git#gh/cloud-data",
+            "service": "cloud-cgc-pub-mcp",
+            "container": null,
+            "engine": "git",
+            "kind": "git-remote",
+            "host": "github",
+            "repo": "diegonmarcos/cloud-data",
+            "visibility": "private",
+            "fork": false,
+            "pushed_at": "2026-08-27T22:06:37Z",
+            "indexed": true,
+            "local_dir": "cloud-data",
+            "mirrored": true,
+            "persistence": {
+              "type": "git",
+              "ref": "https://github.com/diegonmarcos/cloud-data.git",
+              "mount": null
+            },
+            "vm": null,
+            "backup": {
+              "enabled": false,
+              "strategy": null
+            }
+          },
+          {
+            "id": "git#gh/cloud-infra-desktop",
+            "service": "cloud-cgc-pub-mcp",
+            "container": null,
+            "engine": "git",
+            "kind": "git-remote",
+            "host": "github",
+            "repo": "diegonmarcos/cloud-infra-desktop",
+            "visibility": "public",
+            "fork": false,
+            "pushed_at": "2026-08-27T22:05:27Z",
+            "indexed": true,
+            "local_dir": "cloud-infra-desktop",
+            "mirrored": true,
+            "persistence": {
+              "type": "git",
+              "ref": "https://github.com/diegonmarcos/cloud-infra-desktop.git",
+              "mount": null
+            },
+            "vm": null,
+            "backup": {
+              "enabled": false,
+              "strategy": null
+            }
+          },
+          {
+            "id": "git#gh/cloud-infra",
+            "service": "cloud-cgc-pub-mcp",
+            "container": null,
+            "engine": "git",
+            "kind": "git-remote",
+            "host": "github",
+            "repo": "diegonmarcos/cloud-infra",
+            "visibility": "public",
+            "fork": false,
+            "pushed_at": "2026-08-27T22:04:24Z",
+            "indexed": true,
+            "local_dir": "cloud-infra",
+            "mirrored": true,
+            "persistence": {
+              "type": "git",
+              "ref": "https://github.com/diegonmarcos/cloud-infra.git",
+              "mount": null
+            },
+            "vm": null,
+            "backup": {
+              "enabled": false,
+              "strategy": null
+            }
+          },
+          {
+            "id": "git#gh/cloud",
+            "service": "gitea",
+            "container": null,
+            "engine": "git",
+            "kind": "git-remote",
+            "host": "github",
+            "repo": "diegonmarcos/cloud",
+            "visibility": "public",
+            "fork": false,
+            "pushed_at": "2026-08-27T22:03:29Z",
+            "indexed": false,
+            "local_dir": null,
+            "mirrored": true,
+            "persistence": {
+              "type": "git",
+              "ref": "https://github.com/diegonmarcos/cloud.git",
+              "mount": null
+            },
+            "vm": null,
+            "backup": {
+              "enabled": false,
+              "strategy": null
+            }
+          },
+          {
+            "id": "git#gh/git-repos-master",
+            "service": "gitea",
+            "container": null,
+            "engine": "git",
+            "kind": "git-remote",
+            "host": "github",
+            "repo": "diegonmarcos/git-repos-master",
+            "visibility": "public",
+            "fork": false,
+            "pushed_at": "2026-08-27T22:03:27Z",
+            "indexed": false,
+            "local_dir": null,
+            "mirrored": true,
+            "persistence": {
+              "type": "git",
+              "ref": "https://github.com/diegonmarcos/git-repos-master.git",
+              "mount": null
+            },
+            "vm": null,
+            "backup": {
+              "enabled": false,
+              "strategy": null
+            }
+          },
+          {
+            "id": "git#gh/cloud-u-linux",
+            "service": "gitea",
+            "container": null,
+            "engine": "git",
+            "kind": "git-remote",
+            "host": "github",
+            "repo": "diegonmarcos/cloud-u-linux",
+            "visibility": "public",
+            "fork": false,
+            "pushed_at": "2026-08-27T21:54:30Z",
+            "indexed": false,
+            "local_dir": null,
+            "mirrored": true,
+            "persistence": {
+              "type": "git",
+              "ref": "https://github.com/diegonmarcos/cloud-u-linux.git",
+              "mount": null
+            },
+            "vm": null,
+            "backup": {
+              "enabled": false,
+              "strategy": null
+            }
+          },
+          {
+            "id": "git#gh/cloud-u-containers",
+            "service": "gitea",
+            "container": null,
+            "engine": "git",
+            "kind": "git-remote",
+            "host": "github",
+            "repo": "diegonmarcos/cloud-u-containers",
+            "visibility": "public",
+            "fork": false,
+            "pushed_at": "2026-08-27T21:46:04Z",
+            "indexed": false,
+            "local_dir": null,
+            "mirrored": true,
+            "persistence": {
+              "type": "git",
+              "ref": "https://github.com/diegonmarcos/cloud-u-containers.git",
+              "mount": null
+            },
+            "vm": null,
+            "backup": {
+              "enabled": false,
+              "strategy": null
+            }
+          },
+          {
+            "id": "git#gh/cloud-u-android",
+            "service": "cloud-cgc-pub-mcp",
+            "container": null,
+            "engine": "git",
+            "kind": "git-remote",
+            "host": "github",
+            "repo": "diegonmarcos/cloud-u-android",
+            "visibility": "public",
+            "fork": false,
+            "pushed_at": "2026-08-27T20:35:49Z",
+            "indexed": true,
+            "local_dir": "cloud-u-android",
+            "mirrored": true,
+            "persistence": {
+              "type": "git",
+              "ref": "https://github.com/diegonmarcos/cloud-u-android.git",
+              "mount": null
+            },
+            "vm": null,
+            "backup": {
+              "enabled": false,
+              "strategy": null
+            }
+          },
+          {
+            "id": "git#gh/diegonmarcos.github.io",
+            "service": "cloud-cgc-pub-mcp",
+            "container": null,
+            "engine": "git",
+            "kind": "git-remote",
+            "host": "github",
+            "repo": "diegonmarcos/diegonmarcos.github.io",
+            "visibility": "public",
+            "fork": false,
+            "pushed_at": "2026-08-27T20:24:08Z",
+            "indexed": true,
+            "local_dir": "front",
+            "mirrored": true,
+            "persistence": {
+              "type": "git",
+              "ref": "https://github.com/diegonmarcos/diegonmarcos.github.io.git",
+              "mount": null
+            },
+            "vm": null,
+            "backup": {
+              "enabled": false,
+              "strategy": null
+            }
+          },
+          {
+            "id": "git#gh/cloud-data-my-ai-memory",
+            "service": "cloud-cgc-pub-mcp",
+            "container": null,
+            "engine": "git",
+            "kind": "git-remote",
+            "host": "github",
+            "repo": "diegonmarcos/cloud-data-my-ai-memory",
+            "visibility": "private",
+            "fork": false,
+            "pushed_at": "2026-08-27T19:34:21Z",
+            "indexed": true,
+            "local_dir": "cloud-data-my-ai-memory",
+            "mirrored": true,
+            "persistence": {
+              "type": "git",
+              "ref": "https://github.com/diegonmarcos/cloud-data-my-ai-memory.git",
+              "mount": null
+            },
+            "vm": null,
+            "backup": {
+              "enabled": false,
+              "strategy": null
+            }
+          },
+          {
+            "id": "git#gh/diegonmarcos",
+            "service": "gitea",
+            "container": null,
+            "engine": "git",
+            "kind": "git-remote",
+            "host": "github",
+            "repo": "diegonmarcos/diegonmarcos",
+            "visibility": "public",
+            "fork": false,
+            "pushed_at": "2026-08-27T17:49:20Z",
+            "indexed": false,
+            "local_dir": null,
+            "mirrored": true,
+            "persistence": {
+              "type": "git",
+              "ref": "https://github.com/diegonmarcos/diegonmarcos.git",
+              "mount": null
+            },
+            "vm": null,
+            "backup": {
+              "enabled": false,
+              "strategy": null
+            }
+          },
+          {
+            "id": "git#gh/front-unity",
+            "service": "gitea",
+            "container": null,
+            "engine": "git",
+            "kind": "git-remote",
+            "host": "github",
+            "repo": "diegonmarcos/front-unity",
+            "visibility": "private",
+            "fork": false,
+            "pushed_at": "2026-08-27T09:56:42Z",
+            "indexed": false,
+            "local_dir": null,
+            "mirrored": true,
+            "persistence": {
+              "type": "git",
+              "ref": "https://github.com/diegonmarcos/front-unity.git",
+              "mount": null
+            },
+            "vm": null,
+            "backup": {
+              "enabled": false,
+              "strategy": null
+            }
+          },
+          {
+            "id": "git#gh/front-galaxy-gaia",
+            "service": "gitea",
+            "container": null,
+            "engine": "git",
+            "kind": "git-remote",
+            "host": "github",
+            "repo": "diegonmarcos/front-galaxy-gaia",
+            "visibility": "private",
+            "fork": false,
+            "pushed_at": "2026-08-27T09:56:39Z",
+            "indexed": false,
+            "local_dir": null,
+            "mirrored": true,
+            "persistence": {
+              "type": "git",
+              "ref": "https://github.com/diegonmarcos/front-galaxy-gaia.git",
+              "mount": null
+            },
+            "vm": null,
+            "backup": {
+              "enabled": false,
+              "strategy": null
+            }
+          },
+          {
+            "id": "git#gh/cloud-data-lfs",
+            "service": "gitea",
+            "container": null,
+            "engine": "git",
+            "kind": "git-remote",
+            "host": "github",
+            "repo": "diegonmarcos/cloud-data-lfs",
+            "visibility": "private",
+            "fork": false,
+            "pushed_at": "2026-08-27T09:56:37Z",
+            "indexed": false,
+            "local_dir": null,
+            "mirrored": true,
+            "persistence": {
+              "type": "git",
+              "ref": "https://github.com/diegonmarcos/cloud-data-lfs.git",
+              "mount": null
+            },
+            "vm": null,
+            "backup": {
+              "enabled": false,
+              "strategy": null
+            }
+          },
+          {
+            "id": "git#gh/front-data",
+            "service": "cloud-cgc-pub-mcp",
+            "container": null,
+            "engine": "git",
+            "kind": "git-remote",
+            "host": "github",
+            "repo": "diegonmarcos/front-data",
+            "visibility": "public",
+            "fork": false,
+            "pushed_at": "2026-08-25T15:20:03Z",
+            "indexed": true,
+            "local_dir": "front-data",
+            "mirrored": true,
+            "persistence": {
+              "type": "git",
+              "ref": "https://github.com/diegonmarcos/front-data.git",
+              "mount": null
+            },
+            "vm": null,
+            "backup": {
+              "enabled": false,
+              "strategy": null
+            }
+          },
+          {
+            "id": "git#gh/cloud-vault",
+            "service": null,
+            "container": null,
+            "engine": "git",
+            "kind": "git-remote",
+            "host": "github",
+            "repo": "diegonmarcos/cloud-vault",
+            "visibility": "private",
+            "fork": false,
+            "pushed_at": "2026-08-23T22:14:03Z",
+            "indexed": false,
+            "local_dir": null,
+            "mirrored": false,
+            "persistence": {
+              "type": "git",
+              "ref": "https://github.com/diegonmarcos/cloud-vault.git",
+              "mount": null
+            },
+            "vm": null,
+            "backup": {
+              "enabled": false,
+              "strategy": null
+            }
+          },
+          {
+            "id": "git#gh/ffront",
+            "service": "gitea",
+            "container": null,
+            "engine": "git",
+            "kind": "git-remote",
+            "host": "github",
+            "repo": "diegonmarcos/ffront",
+            "visibility": "public",
+            "fork": false,
+            "pushed_at": "2026-08-19T10:01:16Z",
+            "indexed": false,
+            "local_dir": null,
+            "mirrored": true,
+            "persistence": {
+              "type": "git",
+              "ref": "https://github.com/diegonmarcos/ffront.git",
+              "mount": null
+            },
+            "vm": null,
+            "backup": {
+              "enabled": false,
+              "strategy": null
+            }
+          },
+          {
+            "id": "git#gh/front-assets-cdn",
+            "service": "gitea",
+            "container": null,
+            "engine": "git",
+            "kind": "git-remote",
+            "host": "github",
+            "repo": "diegonmarcos/front-assets-cdn",
+            "visibility": "public",
+            "fork": false,
+            "pushed_at": "2026-08-18T13:17:52Z",
+            "indexed": false,
+            "local_dir": null,
+            "mirrored": true,
+            "persistence": {
+              "type": "git",
+              "ref": "https://github.com/diegonmarcos/front-assets-cdn.git",
+              "mount": null
+            },
+            "vm": null,
+            "backup": {
+              "enabled": false,
+              "strategy": null
+            }
+          },
+          {
+            "id": "git#gh/cloud-notes",
+            "service": "gitea",
+            "container": null,
+            "engine": "git",
+            "kind": "git-remote",
+            "host": "github",
+            "repo": "diegonmarcos/cloud-notes",
+            "visibility": "private",
+            "fork": false,
+            "pushed_at": "2026-08-18T11:45:46Z",
+            "indexed": false,
+            "local_dir": null,
+            "mirrored": true,
+            "persistence": {
+              "type": "git",
+              "ref": "https://github.com/diegonmarcos/cloud-notes.git",
+              "mount": null
+            },
+            "vm": null,
+            "backup": {
+              "enabled": false,
+              "strategy": null
+            }
+          },
+          {
+            "id": "git#gh/back-System",
+            "service": "gitea",
+            "container": null,
+            "engine": "git",
+            "kind": "git-remote",
+            "host": "github",
+            "repo": "diegonmarcos/back-System",
+            "visibility": "public",
+            "fork": false,
+            "pushed_at": "2025-12-31T14:23:38Z",
+            "indexed": false,
+            "local_dir": null,
+            "mirrored": true,
+            "persistence": {
+              "type": "git",
+              "ref": "https://github.com/diegonmarcos/back-System.git",
+              "mount": null
+            },
+            "vm": null,
+            "backup": {
+              "enabled": false,
+              "strategy": null
+            }
+          },
+          {
+            "id": "git#gh/ml-Agentic",
+            "service": "gitea",
+            "container": null,
+            "engine": "git",
+            "kind": "git-remote",
+            "host": "github",
+            "repo": "diegonmarcos/ml-Agentic",
+            "visibility": "public",
+            "fork": false,
+            "pushed_at": "2025-11-29T15:41:49Z",
+            "indexed": false,
+            "local_dir": null,
+            "mirrored": true,
+            "persistence": {
+              "type": "git",
+              "ref": "https://github.com/diegonmarcos/ml-Agentic.git",
+              "mount": null
+            },
+            "vm": null,
+            "backup": {
+              "enabled": false,
+              "strategy": null
+            }
+          },
+          {
+            "id": "git#gh/lecole42",
+            "service": "gitea",
+            "container": null,
+            "engine": "git",
+            "kind": "git-remote",
+            "host": "github",
+            "repo": "diegonmarcos/lecole42",
+            "visibility": "private",
+            "fork": false,
+            "pushed_at": "2025-11-23T17:02:00Z",
+            "indexed": false,
+            "local_dir": null,
+            "mirrored": true,
+            "persistence": {
+              "type": "git",
+              "ref": "https://github.com/diegonmarcos/lecole42.git",
+              "mount": null
+            },
+            "vm": null,
+            "backup": {
+              "enabled": false,
+              "strategy": null
+            }
+          },
+          {
+            "id": "git#gh/dev",
+            "service": "gitea",
+            "container": null,
+            "engine": "git",
+            "kind": "git-remote",
+            "host": "github",
+            "repo": "diegonmarcos/dev",
+            "visibility": "private",
+            "fork": false,
+            "pushed_at": "2025-11-23T17:01:55Z",
+            "indexed": false,
+            "local_dir": null,
+            "mirrored": true,
+            "persistence": {
+              "type": "git",
+              "ref": "https://github.com/diegonmarcos/dev.git",
+              "mount": null
+            },
+            "vm": null,
+            "backup": {
+              "enabled": false,
+              "strategy": null
+            }
+          },
+          {
+            "id": "git#gh/ops-Mylibs",
+            "service": "gitea",
+            "container": null,
+            "engine": "git",
+            "kind": "git-remote",
+            "host": "github",
+            "repo": "diegonmarcos/ops-Mylibs",
+            "visibility": "public",
+            "fork": false,
+            "pushed_at": "2025-11-23T15:54:13Z",
+            "indexed": false,
+            "local_dir": null,
+            "mirrored": true,
+            "persistence": {
+              "type": "git",
+              "ref": "https://github.com/diegonmarcos/ops-Mylibs.git",
+              "mount": null
+            },
+            "vm": null,
+            "backup": {
+              "enabled": false,
+              "strategy": null
+            }
+          },
+          {
+            "id": "git#gh/back-Graphic",
+            "service": "gitea",
+            "container": null,
+            "engine": "git",
+            "kind": "git-remote",
+            "host": "github",
+            "repo": "diegonmarcos/back-Graphic",
+            "visibility": "public",
+            "fork": false,
+            "pushed_at": "2025-11-23T15:53:46Z",
+            "indexed": false,
+            "local_dir": null,
+            "mirrored": true,
+            "persistence": {
+              "type": "git",
+              "ref": "https://github.com/diegonmarcos/back-Graphic.git",
+              "mount": null
+            },
+            "vm": null,
+            "backup": {
+              "enabled": false,
+              "strategy": null
+            }
+          },
+          {
+            "id": "git#gh/back-Algo",
+            "service": "gitea",
+            "container": null,
+            "engine": "git",
+            "kind": "git-remote",
+            "host": "github",
+            "repo": "diegonmarcos/back-Algo",
+            "visibility": "public",
+            "fork": false,
+            "pushed_at": "2025-11-23T15:53:42Z",
+            "indexed": false,
+            "local_dir": null,
+            "mirrored": true,
+            "persistence": {
+              "type": "git",
+              "ref": "https://github.com/diegonmarcos/back-Algo.git",
+              "mount": null
+            },
+            "vm": null,
+            "backup": {
+              "enabled": false,
+              "strategy": null
+            }
+          },
+          {
+            "id": "git#gh/ml-MachineLearning",
+            "service": "gitea",
+            "container": null,
+            "engine": "git",
+            "kind": "git-remote",
+            "host": "github",
+            "repo": "diegonmarcos/ml-MachineLearning",
+            "visibility": "public",
+            "fork": false,
+            "pushed_at": "2025-11-18T20:23:59Z",
+            "indexed": false,
+            "local_dir": null,
+            "mirrored": true,
+            "persistence": {
+              "type": "git",
+              "ref": "https://github.com/diegonmarcos/ml-MachineLearning.git",
+              "mount": null
+            },
+            "vm": null,
+            "backup": {
+              "enabled": false,
+              "strategy": null
+            }
+          },
+          {
+            "id": "git#gh/cyber-Cyberwarfare",
+            "service": "gitea",
+            "container": null,
+            "engine": "git",
+            "kind": "git-remote",
+            "host": "github",
+            "repo": "diegonmarcos/cyber-Cyberwarfare",
+            "visibility": "public",
+            "fork": false,
+            "pushed_at": "2025-11-13T12:38:16Z",
+            "indexed": false,
+            "local_dir": null,
+            "mirrored": true,
+            "persistence": {
+              "type": "git",
+              "ref": "https://github.com/diegonmarcos/cyber-Cyberwarfare.git",
+              "mount": null
+            },
+            "vm": null,
+            "backup": {
+              "enabled": false,
+              "strategy": null
+            }
+          },
+          {
+            "id": "git#gh/ml-DataScience",
+            "service": "gitea",
+            "container": null,
+            "engine": "git",
+            "kind": "git-remote",
+            "host": "github",
+            "repo": "diegonmarcos/ml-DataScience",
+            "visibility": "public",
+            "fork": false,
+            "pushed_at": "2025-11-12T11:02:32Z",
+            "indexed": false,
+            "local_dir": null,
+            "mirrored": true,
+            "persistence": {
+              "type": "git",
+              "ref": "https://github.com/diegonmarcos/ml-DataScience.git",
+              "mount": null
+            },
+            "vm": null,
+            "backup": {
+              "enabled": false,
+              "strategy": null
+            }
+          }
+        ],
+        "git#gitea": [
+          {
+            "id": "git#gitea/cloud-data",
+            "service": "gitea",
+            "container": null,
+            "engine": "git",
+            "kind": "git-remote",
+            "host": "gitea",
+            "repo": "cloud-data",
+            "upstream": "https://github.com/diegonmarcos/cloud-data.git",
+            "persistence": {
+              "type": "git",
+              "ref": "https://github.com/diegonmarcos/cloud-data.git",
+              "mount": null
+            },
+            "vm": "oci-A1-f_0",
+            "backup": {
+              "enabled": true,
+              "strategy": null
+            }
+          },
+          {
+            "id": "git#gitea/cloud-infra-desktop",
+            "service": "gitea",
+            "container": null,
+            "engine": "git",
+            "kind": "git-remote",
+            "host": "gitea",
+            "repo": "cloud-infra-desktop",
+            "upstream": "https://github.com/diegonmarcos/cloud-infra-desktop.git",
+            "persistence": {
+              "type": "git",
+              "ref": "https://github.com/diegonmarcos/cloud-infra-desktop.git",
+              "mount": null
+            },
+            "vm": "oci-A1-f_0",
+            "backup": {
+              "enabled": true,
+              "strategy": null
+            }
+          },
+          {
+            "id": "git#gitea/cloud-infra",
+            "service": "gitea",
+            "container": null,
+            "engine": "git",
+            "kind": "git-remote",
+            "host": "gitea",
+            "repo": "cloud-infra",
+            "upstream": "https://github.com/diegonmarcos/cloud-infra.git",
+            "persistence": {
+              "type": "git",
+              "ref": "https://github.com/diegonmarcos/cloud-infra.git",
+              "mount": null
+            },
+            "vm": "oci-A1-f_0",
+            "backup": {
+              "enabled": true,
+              "strategy": null
+            }
+          },
+          {
+            "id": "git#gitea/cloud",
+            "service": "gitea",
+            "container": null,
+            "engine": "git",
+            "kind": "git-remote",
+            "host": "gitea",
+            "repo": "cloud",
+            "upstream": "https://github.com/diegonmarcos/cloud.git",
+            "persistence": {
+              "type": "git",
+              "ref": "https://github.com/diegonmarcos/cloud.git",
+              "mount": null
+            },
+            "vm": "oci-A1-f_0",
+            "backup": {
+              "enabled": true,
+              "strategy": null
+            }
+          },
+          {
+            "id": "git#gitea/git-repos-master",
+            "service": "gitea",
+            "container": null,
+            "engine": "git",
+            "kind": "git-remote",
+            "host": "gitea",
+            "repo": "git-repos-master",
+            "upstream": "https://github.com/diegonmarcos/git-repos-master.git",
+            "persistence": {
+              "type": "git",
+              "ref": "https://github.com/diegonmarcos/git-repos-master.git",
+              "mount": null
+            },
+            "vm": "oci-A1-f_0",
+            "backup": {
+              "enabled": true,
+              "strategy": null
+            }
+          },
+          {
+            "id": "git#gitea/cloud-u-linux",
+            "service": "gitea",
+            "container": null,
+            "engine": "git",
+            "kind": "git-remote",
+            "host": "gitea",
+            "repo": "cloud-u-linux",
+            "upstream": "https://github.com/diegonmarcos/cloud-u-linux.git",
+            "persistence": {
+              "type": "git",
+              "ref": "https://github.com/diegonmarcos/cloud-u-linux.git",
+              "mount": null
+            },
+            "vm": "oci-A1-f_0",
+            "backup": {
+              "enabled": true,
+              "strategy": null
+            }
+          },
+          {
+            "id": "git#gitea/cloud-u-containers",
+            "service": "gitea",
+            "container": null,
+            "engine": "git",
+            "kind": "git-remote",
+            "host": "gitea",
+            "repo": "cloud-u-containers",
+            "upstream": "https://github.com/diegonmarcos/cloud-u-containers.git",
+            "persistence": {
+              "type": "git",
+              "ref": "https://github.com/diegonmarcos/cloud-u-containers.git",
+              "mount": null
+            },
+            "vm": "oci-A1-f_0",
+            "backup": {
+              "enabled": true,
+              "strategy": null
+            }
+          },
+          {
+            "id": "git#gitea/cloud-u-android",
+            "service": "gitea",
+            "container": null,
+            "engine": "git",
+            "kind": "git-remote",
+            "host": "gitea",
+            "repo": "cloud-u-android",
+            "upstream": "https://github.com/diegonmarcos/cloud-u-android.git",
+            "persistence": {
+              "type": "git",
+              "ref": "https://github.com/diegonmarcos/cloud-u-android.git",
+              "mount": null
+            },
+            "vm": "oci-A1-f_0",
+            "backup": {
+              "enabled": true,
+              "strategy": null
+            }
+          },
+          {
+            "id": "git#gitea/diegonmarcos.github.io",
+            "service": "gitea",
+            "container": null,
+            "engine": "git",
+            "kind": "git-remote",
+            "host": "gitea",
+            "repo": "diegonmarcos.github.io",
+            "upstream": "https://github.com/diegonmarcos/diegonmarcos.github.io.git",
+            "persistence": {
+              "type": "git",
+              "ref": "https://github.com/diegonmarcos/diegonmarcos.github.io.git",
+              "mount": null
+            },
+            "vm": "oci-A1-f_0",
+            "backup": {
+              "enabled": true,
+              "strategy": null
+            }
+          },
+          {
+            "id": "git#gitea/cloud-data-my-ai-memory",
+            "service": "gitea",
+            "container": null,
+            "engine": "git",
+            "kind": "git-remote",
+            "host": "gitea",
+            "repo": "cloud-data-my-ai-memory",
+            "upstream": "https://github.com/diegonmarcos/cloud-data-my-ai-memory.git",
+            "persistence": {
+              "type": "git",
+              "ref": "https://github.com/diegonmarcos/cloud-data-my-ai-memory.git",
+              "mount": null
+            },
+            "vm": "oci-A1-f_0",
+            "backup": {
+              "enabled": true,
+              "strategy": null
+            }
+          },
+          {
+            "id": "git#gitea/diegonmarcos",
+            "service": "gitea",
+            "container": null,
+            "engine": "git",
+            "kind": "git-remote",
+            "host": "gitea",
+            "repo": "diegonmarcos",
+            "upstream": "https://github.com/diegonmarcos/diegonmarcos.git",
+            "persistence": {
+              "type": "git",
+              "ref": "https://github.com/diegonmarcos/diegonmarcos.git",
+              "mount": null
+            },
+            "vm": "oci-A1-f_0",
+            "backup": {
+              "enabled": true,
+              "strategy": null
+            }
+          },
+          {
+            "id": "git#gitea/front-unity",
+            "service": "gitea",
+            "container": null,
+            "engine": "git",
+            "kind": "git-remote",
+            "host": "gitea",
+            "repo": "front-unity",
+            "upstream": "https://github.com/diegonmarcos/front-unity.git",
+            "persistence": {
+              "type": "git",
+              "ref": "https://github.com/diegonmarcos/front-unity.git",
+              "mount": null
+            },
+            "vm": "oci-A1-f_0",
+            "backup": {
+              "enabled": true,
+              "strategy": null
+            }
+          },
+          {
+            "id": "git#gitea/front-galaxy-gaia",
+            "service": "gitea",
+            "container": null,
+            "engine": "git",
+            "kind": "git-remote",
+            "host": "gitea",
+            "repo": "front-galaxy-gaia",
+            "upstream": "https://github.com/diegonmarcos/front-galaxy-gaia.git",
+            "persistence": {
+              "type": "git",
+              "ref": "https://github.com/diegonmarcos/front-galaxy-gaia.git",
+              "mount": null
+            },
+            "vm": "oci-A1-f_0",
+            "backup": {
+              "enabled": true,
+              "strategy": null
+            }
+          },
+          {
+            "id": "git#gitea/cloud-data-lfs",
+            "service": "gitea",
+            "container": null,
+            "engine": "git",
+            "kind": "git-remote",
+            "host": "gitea",
+            "repo": "cloud-data-lfs",
+            "upstream": "https://github.com/diegonmarcos/cloud-data-lfs.git",
+            "persistence": {
+              "type": "git",
+              "ref": "https://github.com/diegonmarcos/cloud-data-lfs.git",
+              "mount": null
+            },
+            "vm": "oci-A1-f_0",
+            "backup": {
+              "enabled": true,
+              "strategy": null
+            }
+          },
+          {
+            "id": "git#gitea/front-data",
+            "service": "gitea",
+            "container": null,
+            "engine": "git",
+            "kind": "git-remote",
+            "host": "gitea",
+            "repo": "front-data",
+            "upstream": "https://github.com/diegonmarcos/front-data.git",
+            "persistence": {
+              "type": "git",
+              "ref": "https://github.com/diegonmarcos/front-data.git",
+              "mount": null
+            },
+            "vm": "oci-A1-f_0",
+            "backup": {
+              "enabled": true,
+              "strategy": null
+            }
+          },
+          {
+            "id": "git#gitea/ffront",
+            "service": "gitea",
+            "container": null,
+            "engine": "git",
+            "kind": "git-remote",
+            "host": "gitea",
+            "repo": "ffront",
+            "upstream": "https://github.com/diegonmarcos/ffront.git",
+            "persistence": {
+              "type": "git",
+              "ref": "https://github.com/diegonmarcos/ffront.git",
+              "mount": null
+            },
+            "vm": "oci-A1-f_0",
+            "backup": {
+              "enabled": true,
+              "strategy": null
+            }
+          },
+          {
+            "id": "git#gitea/front-assets-cdn",
+            "service": "gitea",
+            "container": null,
+            "engine": "git",
+            "kind": "git-remote",
+            "host": "gitea",
+            "repo": "front-assets-cdn",
+            "upstream": "https://github.com/diegonmarcos/front-assets-cdn.git",
+            "persistence": {
+              "type": "git",
+              "ref": "https://github.com/diegonmarcos/front-assets-cdn.git",
+              "mount": null
+            },
+            "vm": "oci-A1-f_0",
+            "backup": {
+              "enabled": true,
+              "strategy": null
+            }
+          },
+          {
+            "id": "git#gitea/cloud-notes",
+            "service": "gitea",
+            "container": null,
+            "engine": "git",
+            "kind": "git-remote",
+            "host": "gitea",
+            "repo": "cloud-notes",
+            "upstream": "https://github.com/diegonmarcos/cloud-notes.git",
+            "persistence": {
+              "type": "git",
+              "ref": "https://github.com/diegonmarcos/cloud-notes.git",
+              "mount": null
+            },
+            "vm": "oci-A1-f_0",
+            "backup": {
+              "enabled": true,
+              "strategy": null
+            }
+          },
+          {
+            "id": "git#gitea/back-System",
+            "service": "gitea",
+            "container": null,
+            "engine": "git",
+            "kind": "git-remote",
+            "host": "gitea",
+            "repo": "back-System",
+            "upstream": "https://github.com/diegonmarcos/back-System.git",
+            "persistence": {
+              "type": "git",
+              "ref": "https://github.com/diegonmarcos/back-System.git",
+              "mount": null
+            },
+            "vm": "oci-A1-f_0",
+            "backup": {
+              "enabled": true,
+              "strategy": null
+            }
+          },
+          {
+            "id": "git#gitea/ml-Agentic",
+            "service": "gitea",
+            "container": null,
+            "engine": "git",
+            "kind": "git-remote",
+            "host": "gitea",
+            "repo": "ml-Agentic",
+            "upstream": "https://github.com/diegonmarcos/ml-Agentic.git",
+            "persistence": {
+              "type": "git",
+              "ref": "https://github.com/diegonmarcos/ml-Agentic.git",
+              "mount": null
+            },
+            "vm": "oci-A1-f_0",
+            "backup": {
+              "enabled": true,
+              "strategy": null
+            }
+          },
+          {
+            "id": "git#gitea/lecole42",
+            "service": "gitea",
+            "container": null,
+            "engine": "git",
+            "kind": "git-remote",
+            "host": "gitea",
+            "repo": "lecole42",
+            "upstream": "https://github.com/diegonmarcos/lecole42.git",
+            "persistence": {
+              "type": "git",
+              "ref": "https://github.com/diegonmarcos/lecole42.git",
+              "mount": null
+            },
+            "vm": "oci-A1-f_0",
+            "backup": {
+              "enabled": true,
+              "strategy": null
+            }
+          },
+          {
+            "id": "git#gitea/dev",
+            "service": "gitea",
+            "container": null,
+            "engine": "git",
+            "kind": "git-remote",
+            "host": "gitea",
+            "repo": "dev",
+            "upstream": "https://github.com/diegonmarcos/dev.git",
+            "persistence": {
+              "type": "git",
+              "ref": "https://github.com/diegonmarcos/dev.git",
+              "mount": null
+            },
+            "vm": "oci-A1-f_0",
+            "backup": {
+              "enabled": true,
+              "strategy": null
+            }
+          },
+          {
+            "id": "git#gitea/ops-Mylibs",
+            "service": "gitea",
+            "container": null,
+            "engine": "git",
+            "kind": "git-remote",
+            "host": "gitea",
+            "repo": "ops-Mylibs",
+            "upstream": "https://github.com/diegonmarcos/ops-Mylibs.git",
+            "persistence": {
+              "type": "git",
+              "ref": "https://github.com/diegonmarcos/ops-Mylibs.git",
+              "mount": null
+            },
+            "vm": "oci-A1-f_0",
+            "backup": {
+              "enabled": true,
+              "strategy": null
+            }
+          },
+          {
+            "id": "git#gitea/back-Graphic",
+            "service": "gitea",
+            "container": null,
+            "engine": "git",
+            "kind": "git-remote",
+            "host": "gitea",
+            "repo": "back-Graphic",
+            "upstream": "https://github.com/diegonmarcos/back-Graphic.git",
+            "persistence": {
+              "type": "git",
+              "ref": "https://github.com/diegonmarcos/back-Graphic.git",
+              "mount": null
+            },
+            "vm": "oci-A1-f_0",
+            "backup": {
+              "enabled": true,
+              "strategy": null
+            }
+          },
+          {
+            "id": "git#gitea/back-Algo",
+            "service": "gitea",
+            "container": null,
+            "engine": "git",
+            "kind": "git-remote",
+            "host": "gitea",
+            "repo": "back-Algo",
+            "upstream": "https://github.com/diegonmarcos/back-Algo.git",
+            "persistence": {
+              "type": "git",
+              "ref": "https://github.com/diegonmarcos/back-Algo.git",
+              "mount": null
+            },
+            "vm": "oci-A1-f_0",
+            "backup": {
+              "enabled": true,
+              "strategy": null
+            }
+          },
+          {
+            "id": "git#gitea/ml-MachineLearning",
+            "service": "gitea",
+            "container": null,
+            "engine": "git",
+            "kind": "git-remote",
+            "host": "gitea",
+            "repo": "ml-MachineLearning",
+            "upstream": "https://github.com/diegonmarcos/ml-MachineLearning.git",
+            "persistence": {
+              "type": "git",
+              "ref": "https://github.com/diegonmarcos/ml-MachineLearning.git",
+              "mount": null
+            },
+            "vm": "oci-A1-f_0",
+            "backup": {
+              "enabled": true,
+              "strategy": null
+            }
+          },
+          {
+            "id": "git#gitea/cyber-Cyberwarfare",
+            "service": "gitea",
+            "container": null,
+            "engine": "git",
+            "kind": "git-remote",
+            "host": "gitea",
+            "repo": "cyber-Cyberwarfare",
+            "upstream": "https://github.com/diegonmarcos/cyber-Cyberwarfare.git",
+            "persistence": {
+              "type": "git",
+              "ref": "https://github.com/diegonmarcos/cyber-Cyberwarfare.git",
+              "mount": null
+            },
+            "vm": "oci-A1-f_0",
+            "backup": {
+              "enabled": true,
+              "strategy": null
+            }
+          },
+          {
+            "id": "git#gitea/ml-DataScience",
+            "service": "gitea",
+            "container": null,
+            "engine": "git",
+            "kind": "git-remote",
+            "host": "gitea",
+            "repo": "ml-DataScience",
+            "upstream": "https://github.com/diegonmarcos/ml-DataScience.git",
+            "persistence": {
+              "type": "git",
+              "ref": "https://github.com/diegonmarcos/ml-DataScience.git",
+              "mount": null
+            },
+            "vm": "oci-A1-f_0",
+            "backup": {
+              "enabled": true,
+              "strategy": null
+            }
           }
         ]
       },
@@ -986,17 +3538,6 @@
     },
     "categories": {
       "runners": [
-        {
-          "id": "cloud-builder-x",
-          "name": "cloud-builder-x",
-          "vm": "oci-A1-f_0",
-          "category": "tools",
-          "subgroup": "Build",
-          "port": null,
-          "private_ip": "10.0.0.6",
-          "private_url": null,
-          "public_url": null
-        },
         {
           "id": "gha-runner",
           "name": "gha-runner",
@@ -1148,7 +3689,7 @@
           "vm": "oci-A1-f_0",
           "category": "tools",
           "subgroup": "Observability",
-          "port": 8084,
+          "port": 8080,
           "private_ip": "10.0.0.6",
           "private_url": "https://matomo.app",
           "public_url": "https://analytics.diegonmarcos.com/matomo"
@@ -1178,11 +3719,11 @@
         {
           "id": "umami",
           "name": "umami",
-          "vm": "oci-A1-f_0",
+          "vm": "oci-E2-f_1",
           "category": "tools",
           "subgroup": "Observability",
           "port": 3006,
-          "private_ip": "10.0.0.6",
+          "private_ip": "10.0.0.4",
           "private_url": "https://umami.app",
           "public_url": "https://analytics.diegonmarcos.com"
         },
@@ -1231,17 +3772,6 @@
           "public_url": "https://api.diegonmarcos.com"
         },
         {
-          "id": "matrix-continuwuity",
-          "name": "matrix-continuwuity",
-          "vm": "oci-A1-f_0",
-          "category": "app",
-          "subgroup": "Communications",
-          "port": 8008,
-          "private_ip": "10.0.0.6",
-          "private_url": "https://matrix-continuwuity.app",
-          "public_url": "https://matrix.diegonmarcos.com"
-        },
-        {
           "id": "http-to-smtp-proxy-api",
           "name": "http-to-smtp-proxy-api",
           "vm": "gcp-E2-f_0",
@@ -1273,6 +3803,17 @@
           "private_ip": "10.0.0.3",
           "private_url": null,
           "public_url": "https://mail-puller.diegonmarcos.com"
+        },
+        {
+          "id": "matrix-continuwuity",
+          "name": "matrix-continuwuity",
+          "vm": "oci-A1-f_0",
+          "category": "app",
+          "subgroup": "Communications",
+          "port": 8008,
+          "private_ip": "10.0.0.6",
+          "private_url": "https://matrix-continuwuity.app",
+          "public_url": "https://matrix.diegonmarcos.com"
         },
         {
           "id": "matrix-element",
@@ -1339,6 +3880,17 @@
           "private_ip": "10.0.0.6",
           "private_url": "https://photoprism.app",
           "public_url": "https://photos.diegonmarcos.com"
+        },
+        {
+          "id": "playlist-syncer",
+          "name": "playlist-syncer",
+          "vm": "oci-A1-f_0",
+          "category": "app",
+          "subgroup": "Productivity",
+          "port": 8090,
+          "private_ip": "10.0.0.6",
+          "private_url": "https://playlist-syncer.app",
+          "public_url": "https://playlist.diegonmarcos.com"
         },
         {
           "id": "calendar-radicale",
@@ -1453,38 +4005,74 @@
       ],
       "mcps": [
         {
-          "id": "c3-infra-mcp",
-          "name": "c3-infra-mcp",
+          "id": "cloud-infra-mcp",
+          "name": "cloud-infra-mcp",
           "vm": "oci-A1-f_0",
           "category": "sec",
           "subgroup": "APIs-MCPs",
           "port": 3100,
           "private_ip": "10.0.0.6",
-          "private_url": "https://c3-infra-mcp.app",
+          "private_url": "https://cloud-infra-mcp.app",
           "public_url": "https://mcp.diegonmarcos.com/c3-infra-mcp",
           "mcp": true
         },
         {
-          "id": "c3-services-mcp",
-          "name": "c3-services-mcp",
+          "id": "cloud-services-mcp",
+          "name": "cloud-services-mcp",
           "vm": "oci-A1-f_0",
           "category": "obs",
           "subgroup": "APIs-MCPs",
           "port": 3101,
           "private_ip": "10.0.0.6",
-          "private_url": "https://c3-services-mcp.app",
+          "private_url": "https://cloud-services-mcp.app",
           "public_url": null,
           "mcp": true
         },
         {
-          "id": "cloud-cgc-mcp",
-          "name": "cloud-cgc-mcp",
+          "id": "cloud-cgc-pub-mcp",
+          "name": "cloud-cgc-pub-mcp",
           "vm": "oci-A1-f_0",
           "category": "obs",
           "subgroup": "APIs-MCPs",
           "port": 3105,
           "private_ip": "10.0.0.6",
-          "private_url": "https://cloud-cgc-mcp.app",
+          "private_url": "https://cloud-cgc-pub-mcp.app",
+          "public_url": null,
+          "mcp": true
+        },
+        {
+          "id": "cloud-drive-mcp",
+          "name": "cloud-drive-mcp",
+          "vm": "oci-A1-f_0",
+          "category": "app",
+          "subgroup": "Productivity",
+          "port": 3109,
+          "private_ip": "10.0.0.6",
+          "private_url": "https://cloud-drive-mcp.app",
+          "public_url": "https://mcp.diegonmarcos.com",
+          "mcp": true
+        },
+        {
+          "id": "cloud-mail-mcp",
+          "name": "cloud-mail-mcp",
+          "vm": "oci-A1-f_0",
+          "category": "app",
+          "subgroup": "AI-Agents",
+          "port": 3103,
+          "private_ip": "10.0.0.6",
+          "private_url": "https://cloud-mail-mcp.app",
+          "public_url": "https://mcp.diegonmarcos.com",
+          "mcp": true
+        },
+        {
+          "id": "cloud-mattermost-mcp",
+          "name": "cloud-mattermost-mcp",
+          "vm": "oci-A1-f_0",
+          "category": "app",
+          "subgroup": "AI-Agents",
+          "port": 3102,
+          "private_ip": "10.0.0.6",
+          "private_url": "https://cloud-mattermost-mcp.app",
           "public_url": null,
           "mcp": true
         },
@@ -1511,30 +4099,6 @@
           "private_url": "https://google-workspace-mcp.app",
           "public_url": "https://mcp.diegonmarcos.com",
           "mcp": true
-        },
-        {
-          "id": "mail-mcp",
-          "name": "mail-mcp",
-          "vm": "oci-A1-f_0",
-          "category": "app",
-          "subgroup": "AI-Agents",
-          "port": 3103,
-          "private_ip": "10.0.0.6",
-          "private_url": "https://mail-mcp.app",
-          "public_url": "https://mcp.diegonmarcos.com",
-          "mcp": true
-        },
-        {
-          "id": "mattermost-mcp",
-          "name": "mattermost-mcp",
-          "vm": "oci-A1-f_0",
-          "category": "app",
-          "subgroup": "AI-Agents",
-          "port": 3102,
-          "private_ip": "10.0.0.6",
-          "private_url": "https://mattermost-mcp.app",
-          "public_url": null,
-          "mcp": true
         }
       ],
       "db-dockers": [
@@ -1542,141 +4106,2658 @@
           "id": "redis/app",
           "service": "redis",
           "container": "app",
-          "engine": "redis"
+          "engine": "redis",
+          "kind": "container",
+          "persistence": {
+            "type": "docker-bind",
+            "ref": "/data/redis",
+            "mount": "/data"
+          },
+          "port": 6379,
+          "vm": "gcp-E2-f_0",
+          "backup": {
+            "enabled": true,
+            "strategy": null
+          }
         },
         {
           "id": "umami/db",
           "service": "umami",
           "container": "db",
-          "engine": "postgres"
+          "engine": "postgres",
+          "kind": "container",
+          "persistence": {
+            "type": "docker-volume",
+            "ref": "umami_db_data",
+            "mount": "/var/lib/postgresql/data"
+          },
+          "port": 5442,
+          "vm": "oci-E2-f_1",
+          "backup": {
+            "enabled": true,
+            "strategy": null
+          }
         },
         {
           "id": "authelia/redis",
           "service": "authelia",
           "container": "redis",
-          "engine": "redis"
+          "engine": "redis",
+          "kind": "container",
+          "persistence": {
+            "type": "docker-volume",
+            "ref": "authelia_redis_data",
+            "mount": "/data"
+          },
+          "port": 6380,
+          "vm": "gcp-E2-f_0",
+          "backup": {
+            "enabled": true,
+            "strategy": null
+          }
         },
         {
           "id": "kg-store/app",
           "service": "kg-store",
           "container": "app",
-          "engine": "surrealdb"
+          "engine": "surrealdb",
+          "kind": "container",
+          "persistence": {
+            "type": "unknown",
+            "ref": null,
+            "mount": null
+          },
+          "port": 8001,
+          "vm": "oci-A1-f_0",
+          "backup": {
+            "enabled": true,
+            "strategy": null
+          }
         },
         {
           "id": "chat-mattermost/db",
           "service": "chat-mattermost",
           "container": "db",
-          "engine": "postgres"
+          "engine": "postgres",
+          "kind": "container",
+          "persistence": {
+            "type": "docker-volume",
+            "ref": "./data/postgres",
+            "mount": "/var/lib/postgresql/data"
+          },
+          "port": 5435,
+          "vm": "oci-A1-f_0",
+          "backup": {
+            "enabled": true,
+            "strategy": null
+          }
         },
         {
           "id": "photoprism/db",
           "service": "photoprism",
           "container": "db",
-          "engine": "mariadb"
+          "engine": "mariadb",
+          "kind": "container",
+          "persistence": {
+            "type": "docker-volume",
+            "ref": "mariadb_data",
+            "mount": "/var/lib/mysql"
+          },
+          "port": null,
+          "vm": "oci-A1-f_0",
+          "backup": {
+            "enabled": true,
+            "strategy": null
+          }
         },
         {
           "id": "etherpad/db",
           "service": "etherpad",
           "container": "db",
-          "engine": "postgres"
+          "engine": "postgres",
+          "kind": "container",
+          "persistence": {
+            "type": "docker-volume",
+            "ref": "postgres_data",
+            "mount": "/var/lib/postgresql/data"
+          },
+          "port": 5436,
+          "vm": "oci-A1-f_0",
+          "backup": {
+            "enabled": true,
+            "strategy": null
+          }
         },
         {
           "id": "hedgedoc/db",
           "service": "hedgedoc",
           "container": "db",
-          "engine": "postgres"
+          "engine": "postgres",
+          "kind": "container",
+          "persistence": {
+            "type": "docker-volume",
+            "ref": "postgres_data",
+            "mount": "/var/lib/postgresql/data"
+          },
+          "port": 5439,
+          "vm": "oci-A1-f_0",
+          "backup": {
+            "enabled": true,
+            "strategy": null
+          }
         },
         {
           "id": "paca/db",
           "service": "paca",
           "container": "db",
-          "engine": "postgres"
+          "engine": "postgres",
+          "kind": "container",
+          "persistence": {
+            "type": "docker-volume",
+            "ref": "paca_postgres",
+            "mount": "/var/lib/postgresql/data"
+          },
+          "port": 5432,
+          "vm": "oci-A1-f_0",
+          "backup": {
+            "enabled": true,
+            "strategy": null
+          }
+        }
+      ],
+      "db-embedded": [
+        {
+          "id": "gitea/app#sqlite",
+          "service": "gitea",
+          "container": "app",
+          "engine": "sqlite",
+          "kind": "embedded",
+          "path": "/data/gitea/gitea.db",
+          "persistence": {
+            "type": "docker-volume",
+            "ref": "gitea_data",
+            "mount": "/data"
+          },
+          "port": null,
+          "vm": "oci-A1-f_0",
+          "backup": {
+            "enabled": true,
+            "strategy": null
+          }
+        },
+        {
+          "id": "dagu/app#sqlite",
+          "service": "dagu",
+          "container": "app",
+          "engine": "sqlite",
+          "kind": "embedded",
+          "path": "/var/lib/dagu/dagu.db",
+          "persistence": {
+            "type": "docker-volume",
+            "ref": "./data",
+            "mount": "/var/lib/dagu/data"
+          },
+          "port": null,
+          "vm": "oci-A1-f_0",
+          "backup": {
+            "enabled": false,
+            "strategy": null
+          }
+        },
+        {
+          "id": "matomo/app#mariadb",
+          "service": "matomo",
+          "container": "app",
+          "engine": "mariadb",
+          "kind": "embedded",
+          "path": "/var/lib/mysql",
+          "persistence": {
+            "type": "docker-volume",
+            "ref": "matomo_matomo_db",
+            "mount": "/var/lib/mysql"
+          },
+          "port": 3306,
+          "vm": "oci-A1-f_0",
+          "backup": {
+            "enabled": true,
+            "strategy": null
+          }
+        },
+        {
+          "id": "ntfy/app#sqlite",
+          "service": "ntfy",
+          "container": "app",
+          "engine": "sqlite",
+          "kind": "embedded",
+          "path": "/var/cache/ntfy/cache.db",
+          "persistence": {
+            "type": "docker-volume",
+            "ref": "./cache",
+            "mount": "/var/cache/ntfy"
+          },
+          "port": null,
+          "vm": "oci-A1-f_0",
+          "backup": {
+            "enabled": true,
+            "strategy": null
+          }
+        },
+        {
+          "id": "openobserve/app#parquet",
+          "service": "openobserve",
+          "container": "app",
+          "engine": "parquet",
+          "kind": "embedded",
+          "path": "/data",
+          "persistence": {
+            "type": "docker-volume",
+            "ref": "openobserve_data",
+            "mount": "/data"
+          },
+          "port": null,
+          "vm": "oci-A1-f_0",
+          "backup": {
+            "enabled": false,
+            "strategy": null
+          }
+        },
+        {
+          "id": "authelia/app#sqlite",
+          "service": "authelia",
+          "container": "app",
+          "engine": "sqlite",
+          "kind": "embedded",
+          "path": "/data/db.sqlite3",
+          "persistence": {
+            "type": "docker-volume",
+            "ref": "authelia_data",
+            "mount": "/data"
+          },
+          "port": null,
+          "vm": "gcp-E2-f_0",
+          "backup": {
+            "enabled": true,
+            "strategy": null
+          }
+        },
+        {
+          "id": "mail-puller/app#sqlite",
+          "service": "mail-puller",
+          "container": "app",
+          "engine": "sqlite",
+          "kind": "embedded",
+          "path": "/var/lib/mail-puller/state.db",
+          "persistence": {
+            "type": "docker-volume",
+            "ref": "mail_puller_state",
+            "mount": "/var/lib/mail-puller"
+          },
+          "port": null,
+          "vm": "oci-E2-f_0",
+          "backup": {
+            "enabled": true,
+            "strategy": null
+          }
+        },
+        {
+          "id": "snappymail/app#files",
+          "service": "snappymail",
+          "container": "app",
+          "engine": "files",
+          "kind": "embedded",
+          "path": "/var/lib/snappymail",
+          "persistence": {
+            "type": "docker-volume",
+            "ref": "./data",
+            "mount": "/var/lib/snappymail"
+          },
+          "port": null,
+          "vm": "oci-E2-f_0",
+          "backup": {
+            "enabled": false,
+            "strategy": null
+          }
+        },
+        {
+          "id": "maddy/app#sqlite",
+          "service": "maddy",
+          "container": "app",
+          "engine": "sqlite",
+          "kind": "embedded",
+          "path": "/data/imapsql.db",
+          "persistence": {
+            "type": "docker-volume",
+            "ref": "maddy_data",
+            "mount": "/data"
+          },
+          "port": null,
+          "vm": "oci-E2-f_0",
+          "backup": {
+            "enabled": true,
+            "strategy": null
+          }
+        },
+        {
+          "id": "stalwart/app#rocksdb",
+          "service": "stalwart",
+          "container": "app",
+          "engine": "rocksdb",
+          "kind": "embedded",
+          "path": "/opt/stalwart-mail/data",
+          "persistence": {
+            "type": "docker-volume",
+            "ref": "stalwart_data",
+            "mount": "/opt/stalwart-mail/data"
+          },
+          "port": null,
+          "vm": "oci-E2-f_0",
+          "backup": {
+            "enabled": true,
+            "strategy": null
+          }
+        },
+        {
+          "id": "calendar-radicale/app#files",
+          "service": "calendar-radicale",
+          "container": "app",
+          "engine": "files",
+          "kind": "embedded",
+          "path": "/data/collections",
+          "persistence": {
+            "type": "docker-volume",
+            "ref": "./data",
+            "mount": "/data"
+          },
+          "port": null,
+          "vm": "oci-A1-f_0",
+          "backup": {
+            "enabled": false,
+            "strategy": null
+          }
+        },
+        {
+          "id": "contacts-radicale/app#files",
+          "service": "contacts-radicale",
+          "container": "app",
+          "engine": "files",
+          "kind": "embedded",
+          "path": "/data/collections",
+          "persistence": {
+            "type": "docker-volume",
+            "ref": "./data",
+            "mount": "/data"
+          },
+          "port": null,
+          "vm": "oci-A1-f_0",
+          "backup": {
+            "enabled": false,
+            "strategy": null
+          }
+        },
+        {
+          "id": "filebrowser/app#sqlite",
+          "service": "filebrowser",
+          "container": "app",
+          "engine": "sqlite",
+          "kind": "embedded",
+          "path": "/data/filebrowser.db",
+          "persistence": {
+            "type": "docker-volume",
+            "ref": "filebrowser_data",
+            "mount": "/srv"
+          },
+          "port": null,
+          "vm": "oci-A1-f_0",
+          "backup": {
+            "enabled": false,
+            "strategy": null
+          }
+        },
+        {
+          "id": "vaultwarden/app#sqlite",
+          "service": "vaultwarden",
+          "container": "app",
+          "engine": "sqlite",
+          "kind": "embedded",
+          "path": "/data/db.sqlite3",
+          "persistence": {
+            "type": "docker-volume",
+            "ref": "./data",
+            "mount": "/data"
+          },
+          "port": null,
+          "vm": "oci-A1-f_0",
+          "backup": {
+            "enabled": true,
+            "strategy": null
+          }
         }
       ],
       "db-s3": [
         {
           "id": "cloud-backups-binaries-medias",
-          "name": "cloud-backups-binaries-medias",
-          "dns": "s3-backups-binaries.app",
-          "region": "eu-marseille-1",
+          "service": null,
+          "container": null,
+          "engine": "s3",
+          "kind": "object-store",
+          "persistence": {
+            "type": "s3",
+            "ref": "cloud-backups-binaries-medias",
+            "mount": null
+          },
           "provider": "oci",
-          "endpoint": "https://axpmn3qtq4ig.compat.objectstorage.eu-marseille-1.oraclecloud.com"
+          "region": "eu-marseille-1",
+          "tier": "Standard",
+          "endpoint": "https://axpmn3qtq4ig.compat.objectstorage.eu-marseille-1.oraclecloud.com",
+          "dns": "s3-backups-binaries.app",
+          "vm": null,
+          "backup": {
+            "enabled": false,
+            "strategy": null
+          }
         },
         {
           "id": "cloud-backups-db",
-          "name": "cloud-backups-db",
-          "dns": "s3-backups-db.app",
-          "region": "eu-marseille-1",
+          "service": null,
+          "container": null,
+          "engine": "s3",
+          "kind": "object-store",
+          "persistence": {
+            "type": "s3",
+            "ref": "cloud-backups-db",
+            "mount": null
+          },
           "provider": "oci",
-          "endpoint": "https://axpmn3qtq4ig.compat.objectstorage.eu-marseille-1.oraclecloud.com"
+          "region": "eu-marseille-1",
+          "tier": "Standard",
+          "endpoint": "https://axpmn3qtq4ig.compat.objectstorage.eu-marseille-1.oraclecloud.com",
+          "dns": "s3-backups-db.app",
+          "vm": null,
+          "backup": {
+            "enabled": false,
+            "strategy": null
+          }
         },
         {
           "id": "cloud-backups-media",
-          "name": "cloud-backups-media",
-          "dns": "s3-backups-media.app",
-          "region": "eu-marseille-1",
+          "service": null,
+          "container": null,
+          "engine": "s3",
+          "kind": "object-store",
+          "persistence": {
+            "type": "s3",
+            "ref": "cloud-backups-media",
+            "mount": null
+          },
           "provider": "oci",
-          "endpoint": "https://axpmn3qtq4ig.compat.objectstorage.eu-marseille-1.oraclecloud.com"
+          "region": "eu-marseille-1",
+          "tier": "Archive",
+          "endpoint": "https://axpmn3qtq4ig.compat.objectstorage.eu-marseille-1.oraclecloud.com",
+          "dns": "s3-backups-media.app",
+          "vm": null,
+          "backup": {
+            "enabled": false,
+            "strategy": null
+          }
         },
         {
           "id": "cloud-backups-non-binaries",
-          "name": "cloud-backups-non-binaries",
-          "dns": "s3-backups-nonbin.app",
-          "region": "eu-marseille-1",
+          "service": null,
+          "container": null,
+          "engine": "s3",
+          "kind": "object-store",
+          "persistence": {
+            "type": "s3",
+            "ref": "cloud-backups-non-binaries",
+            "mount": null
+          },
           "provider": "oci",
-          "endpoint": "https://axpmn3qtq4ig.compat.objectstorage.eu-marseille-1.oraclecloud.com"
+          "region": "eu-marseille-1",
+          "tier": "Standard",
+          "endpoint": "https://axpmn3qtq4ig.compat.objectstorage.eu-marseille-1.oraclecloud.com",
+          "dns": "s3-backups-nonbin.app",
+          "vm": null,
+          "backup": {
+            "enabled": false,
+            "strategy": null
+          }
         },
         {
           "id": "my-photos",
-          "name": "my-photos",
-          "dns": "s3-photos.app",
-          "region": "eu-marseille-1",
+          "service": null,
+          "container": null,
+          "engine": "s3",
+          "kind": "object-store",
+          "persistence": {
+            "type": "s3",
+            "ref": "my-photos",
+            "mount": null
+          },
           "provider": "oci",
-          "endpoint": "https://axpmn3qtq4ig.compat.objectstorage.eu-marseille-1.oraclecloud.com"
+          "region": "eu-marseille-1",
+          "tier": "Standard",
+          "endpoint": "https://axpmn3qtq4ig.compat.objectstorage.eu-marseille-1.oraclecloud.com",
+          "dns": "s3-photos.app",
+          "vm": null,
+          "backup": {
+            "enabled": false,
+            "strategy": null
+          }
         }
       ],
       "db-hd": [
         {
+          "id": "gitea/app#sqlite",
+          "service": "gitea",
+          "container": "app",
+          "engine": "sqlite",
+          "kind": "embedded",
+          "path": "/data/gitea/gitea.db",
+          "persistence": {
+            "type": "docker-volume",
+            "ref": "gitea_data",
+            "mount": "/data"
+          },
+          "port": null,
+          "vm": "oci-A1-f_0",
+          "backup": {
+            "enabled": true,
+            "strategy": null
+          }
+        },
+        {
+          "id": "dagu/app#sqlite",
+          "service": "dagu",
+          "container": "app",
+          "engine": "sqlite",
+          "kind": "embedded",
+          "path": "/var/lib/dagu/dagu.db",
+          "persistence": {
+            "type": "docker-volume",
+            "ref": "./data",
+            "mount": "/var/lib/dagu/data"
+          },
+          "port": null,
+          "vm": "oci-A1-f_0",
+          "backup": {
+            "enabled": false,
+            "strategy": null
+          }
+        },
+        {
+          "id": "matomo/app#mariadb",
+          "service": "matomo",
+          "container": "app",
+          "engine": "mariadb",
+          "kind": "embedded",
+          "path": "/var/lib/mysql",
+          "persistence": {
+            "type": "docker-volume",
+            "ref": "matomo_matomo_db",
+            "mount": "/var/lib/mysql"
+          },
+          "port": 3306,
+          "vm": "oci-A1-f_0",
+          "backup": {
+            "enabled": true,
+            "strategy": null
+          }
+        },
+        {
+          "id": "ntfy/app#sqlite",
+          "service": "ntfy",
+          "container": "app",
+          "engine": "sqlite",
+          "kind": "embedded",
+          "path": "/var/cache/ntfy/cache.db",
+          "persistence": {
+            "type": "docker-volume",
+            "ref": "./cache",
+            "mount": "/var/cache/ntfy"
+          },
+          "port": null,
+          "vm": "oci-A1-f_0",
+          "backup": {
+            "enabled": true,
+            "strategy": null
+          }
+        },
+        {
+          "id": "openobserve/app#parquet",
+          "service": "openobserve",
+          "container": "app",
+          "engine": "parquet",
+          "kind": "embedded",
+          "path": "/data",
+          "persistence": {
+            "type": "docker-volume",
+            "ref": "openobserve_data",
+            "mount": "/data"
+          },
+          "port": null,
+          "vm": "oci-A1-f_0",
+          "backup": {
+            "enabled": false,
+            "strategy": null
+          }
+        },
+        {
           "id": "umami/db",
           "service": "umami",
           "container": "db",
-          "engine": "postgres"
+          "engine": "postgres",
+          "kind": "container",
+          "persistence": {
+            "type": "docker-volume",
+            "ref": "umami_db_data",
+            "mount": "/var/lib/postgresql/data"
+          },
+          "port": 5442,
+          "vm": "oci-E2-f_1",
+          "backup": {
+            "enabled": true,
+            "strategy": null
+          }
         },
         {
-          "id": "kg-store/app",
-          "service": "kg-store",
+          "id": "authelia/app#sqlite",
+          "service": "authelia",
           "container": "app",
-          "engine": "surrealdb"
+          "engine": "sqlite",
+          "kind": "embedded",
+          "path": "/data/db.sqlite3",
+          "persistence": {
+            "type": "docker-volume",
+            "ref": "authelia_data",
+            "mount": "/data"
+          },
+          "port": null,
+          "vm": "gcp-E2-f_0",
+          "backup": {
+            "enabled": true,
+            "strategy": null
+          }
+        },
+        {
+          "id": "authelia/redis",
+          "service": "authelia",
+          "container": "redis",
+          "engine": "redis",
+          "kind": "container",
+          "persistence": {
+            "type": "docker-volume",
+            "ref": "authelia_redis_data",
+            "mount": "/data"
+          },
+          "port": 6380,
+          "vm": "gcp-E2-f_0",
+          "backup": {
+            "enabled": true,
+            "strategy": null
+          }
         },
         {
           "id": "chat-mattermost/db",
           "service": "chat-mattermost",
           "container": "db",
-          "engine": "postgres"
+          "engine": "postgres",
+          "kind": "container",
+          "persistence": {
+            "type": "docker-volume",
+            "ref": "./data/postgres",
+            "mount": "/var/lib/postgresql/data"
+          },
+          "port": 5435,
+          "vm": "oci-A1-f_0",
+          "backup": {
+            "enabled": true,
+            "strategy": null
+          }
+        },
+        {
+          "id": "mail-puller/app#sqlite",
+          "service": "mail-puller",
+          "container": "app",
+          "engine": "sqlite",
+          "kind": "embedded",
+          "path": "/var/lib/mail-puller/state.db",
+          "persistence": {
+            "type": "docker-volume",
+            "ref": "mail_puller_state",
+            "mount": "/var/lib/mail-puller"
+          },
+          "port": null,
+          "vm": "oci-E2-f_0",
+          "backup": {
+            "enabled": true,
+            "strategy": null
+          }
+        },
+        {
+          "id": "snappymail/app#files",
+          "service": "snappymail",
+          "container": "app",
+          "engine": "files",
+          "kind": "embedded",
+          "path": "/var/lib/snappymail",
+          "persistence": {
+            "type": "docker-volume",
+            "ref": "./data",
+            "mount": "/var/lib/snappymail"
+          },
+          "port": null,
+          "vm": "oci-E2-f_0",
+          "backup": {
+            "enabled": false,
+            "strategy": null
+          }
+        },
+        {
+          "id": "maddy/app#sqlite",
+          "service": "maddy",
+          "container": "app",
+          "engine": "sqlite",
+          "kind": "embedded",
+          "path": "/data/imapsql.db",
+          "persistence": {
+            "type": "docker-volume",
+            "ref": "maddy_data",
+            "mount": "/data"
+          },
+          "port": null,
+          "vm": "oci-E2-f_0",
+          "backup": {
+            "enabled": true,
+            "strategy": null
+          }
+        },
+        {
+          "id": "stalwart/app#rocksdb",
+          "service": "stalwart",
+          "container": "app",
+          "engine": "rocksdb",
+          "kind": "embedded",
+          "path": "/opt/stalwart-mail/data",
+          "persistence": {
+            "type": "docker-volume",
+            "ref": "stalwart_data",
+            "mount": "/opt/stalwart-mail/data"
+          },
+          "port": null,
+          "vm": "oci-E2-f_0",
+          "backup": {
+            "enabled": true,
+            "strategy": null
+          }
         },
         {
           "id": "photoprism/db",
           "service": "photoprism",
           "container": "db",
-          "engine": "mariadb"
+          "engine": "mariadb",
+          "kind": "container",
+          "persistence": {
+            "type": "docker-volume",
+            "ref": "mariadb_data",
+            "mount": "/var/lib/mysql"
+          },
+          "port": null,
+          "vm": "oci-A1-f_0",
+          "backup": {
+            "enabled": true,
+            "strategy": null
+          }
+        },
+        {
+          "id": "calendar-radicale/app#files",
+          "service": "calendar-radicale",
+          "container": "app",
+          "engine": "files",
+          "kind": "embedded",
+          "path": "/data/collections",
+          "persistence": {
+            "type": "docker-volume",
+            "ref": "./data",
+            "mount": "/data"
+          },
+          "port": null,
+          "vm": "oci-A1-f_0",
+          "backup": {
+            "enabled": false,
+            "strategy": null
+          }
+        },
+        {
+          "id": "contacts-radicale/app#files",
+          "service": "contacts-radicale",
+          "container": "app",
+          "engine": "files",
+          "kind": "embedded",
+          "path": "/data/collections",
+          "persistence": {
+            "type": "docker-volume",
+            "ref": "./data",
+            "mount": "/data"
+          },
+          "port": null,
+          "vm": "oci-A1-f_0",
+          "backup": {
+            "enabled": false,
+            "strategy": null
+          }
         },
         {
           "id": "etherpad/db",
           "service": "etherpad",
           "container": "db",
-          "engine": "postgres"
+          "engine": "postgres",
+          "kind": "container",
+          "persistence": {
+            "type": "docker-volume",
+            "ref": "postgres_data",
+            "mount": "/var/lib/postgresql/data"
+          },
+          "port": 5436,
+          "vm": "oci-A1-f_0",
+          "backup": {
+            "enabled": true,
+            "strategy": null
+          }
+        },
+        {
+          "id": "filebrowser/app#sqlite",
+          "service": "filebrowser",
+          "container": "app",
+          "engine": "sqlite",
+          "kind": "embedded",
+          "path": "/data/filebrowser.db",
+          "persistence": {
+            "type": "docker-volume",
+            "ref": "filebrowser_data",
+            "mount": "/srv"
+          },
+          "port": null,
+          "vm": "oci-A1-f_0",
+          "backup": {
+            "enabled": false,
+            "strategy": null
+          }
         },
         {
           "id": "hedgedoc/db",
           "service": "hedgedoc",
           "container": "db",
-          "engine": "postgres"
+          "engine": "postgres",
+          "kind": "container",
+          "persistence": {
+            "type": "docker-volume",
+            "ref": "postgres_data",
+            "mount": "/var/lib/postgresql/data"
+          },
+          "port": 5439,
+          "vm": "oci-A1-f_0",
+          "backup": {
+            "enabled": true,
+            "strategy": null
+          }
         },
         {
           "id": "paca/db",
           "service": "paca",
           "container": "db",
-          "engine": "postgres"
+          "engine": "postgres",
+          "kind": "container",
+          "persistence": {
+            "type": "docker-volume",
+            "ref": "paca_postgres",
+            "mount": "/var/lib/postgresql/data"
+          },
+          "port": 5432,
+          "vm": "oci-A1-f_0",
+          "backup": {
+            "enabled": true,
+            "strategy": null
+          }
+        },
+        {
+          "id": "vaultwarden/app#sqlite",
+          "service": "vaultwarden",
+          "container": "app",
+          "engine": "sqlite",
+          "kind": "embedded",
+          "path": "/data/db.sqlite3",
+          "persistence": {
+            "type": "docker-volume",
+            "ref": "./data",
+            "mount": "/data"
+          },
+          "port": null,
+          "vm": "oci-A1-f_0",
+          "backup": {
+            "enabled": true,
+            "strategy": null
+          }
+        },
+        {
+          "id": "redis/app",
+          "service": "redis",
+          "container": "app",
+          "engine": "redis",
+          "kind": "container",
+          "persistence": {
+            "type": "docker-bind",
+            "ref": "/data/redis",
+            "mount": "/data"
+          },
+          "port": 6379,
+          "vm": "gcp-E2-f_0",
+          "backup": {
+            "enabled": true,
+            "strategy": null
+          }
+        }
+      ],
+      "db-docker-volume": [
+        {
+          "id": "gitea/app#sqlite",
+          "service": "gitea",
+          "container": "app",
+          "engine": "sqlite",
+          "kind": "embedded",
+          "path": "/data/gitea/gitea.db",
+          "persistence": {
+            "type": "docker-volume",
+            "ref": "gitea_data",
+            "mount": "/data"
+          },
+          "port": null,
+          "vm": "oci-A1-f_0",
+          "backup": {
+            "enabled": true,
+            "strategy": null
+          }
+        },
+        {
+          "id": "dagu/app#sqlite",
+          "service": "dagu",
+          "container": "app",
+          "engine": "sqlite",
+          "kind": "embedded",
+          "path": "/var/lib/dagu/dagu.db",
+          "persistence": {
+            "type": "docker-volume",
+            "ref": "./data",
+            "mount": "/var/lib/dagu/data"
+          },
+          "port": null,
+          "vm": "oci-A1-f_0",
+          "backup": {
+            "enabled": false,
+            "strategy": null
+          }
+        },
+        {
+          "id": "matomo/app#mariadb",
+          "service": "matomo",
+          "container": "app",
+          "engine": "mariadb",
+          "kind": "embedded",
+          "path": "/var/lib/mysql",
+          "persistence": {
+            "type": "docker-volume",
+            "ref": "matomo_matomo_db",
+            "mount": "/var/lib/mysql"
+          },
+          "port": 3306,
+          "vm": "oci-A1-f_0",
+          "backup": {
+            "enabled": true,
+            "strategy": null
+          }
+        },
+        {
+          "id": "ntfy/app#sqlite",
+          "service": "ntfy",
+          "container": "app",
+          "engine": "sqlite",
+          "kind": "embedded",
+          "path": "/var/cache/ntfy/cache.db",
+          "persistence": {
+            "type": "docker-volume",
+            "ref": "./cache",
+            "mount": "/var/cache/ntfy"
+          },
+          "port": null,
+          "vm": "oci-A1-f_0",
+          "backup": {
+            "enabled": true,
+            "strategy": null
+          }
+        },
+        {
+          "id": "openobserve/app#parquet",
+          "service": "openobserve",
+          "container": "app",
+          "engine": "parquet",
+          "kind": "embedded",
+          "path": "/data",
+          "persistence": {
+            "type": "docker-volume",
+            "ref": "openobserve_data",
+            "mount": "/data"
+          },
+          "port": null,
+          "vm": "oci-A1-f_0",
+          "backup": {
+            "enabled": false,
+            "strategy": null
+          }
+        },
+        {
+          "id": "umami/db",
+          "service": "umami",
+          "container": "db",
+          "engine": "postgres",
+          "kind": "container",
+          "persistence": {
+            "type": "docker-volume",
+            "ref": "umami_db_data",
+            "mount": "/var/lib/postgresql/data"
+          },
+          "port": 5442,
+          "vm": "oci-E2-f_1",
+          "backup": {
+            "enabled": true,
+            "strategy": null
+          }
+        },
+        {
+          "id": "authelia/app#sqlite",
+          "service": "authelia",
+          "container": "app",
+          "engine": "sqlite",
+          "kind": "embedded",
+          "path": "/data/db.sqlite3",
+          "persistence": {
+            "type": "docker-volume",
+            "ref": "authelia_data",
+            "mount": "/data"
+          },
+          "port": null,
+          "vm": "gcp-E2-f_0",
+          "backup": {
+            "enabled": true,
+            "strategy": null
+          }
+        },
+        {
+          "id": "authelia/redis",
+          "service": "authelia",
+          "container": "redis",
+          "engine": "redis",
+          "kind": "container",
+          "persistence": {
+            "type": "docker-volume",
+            "ref": "authelia_redis_data",
+            "mount": "/data"
+          },
+          "port": 6380,
+          "vm": "gcp-E2-f_0",
+          "backup": {
+            "enabled": true,
+            "strategy": null
+          }
+        },
+        {
+          "id": "chat-mattermost/db",
+          "service": "chat-mattermost",
+          "container": "db",
+          "engine": "postgres",
+          "kind": "container",
+          "persistence": {
+            "type": "docker-volume",
+            "ref": "./data/postgres",
+            "mount": "/var/lib/postgresql/data"
+          },
+          "port": 5435,
+          "vm": "oci-A1-f_0",
+          "backup": {
+            "enabled": true,
+            "strategy": null
+          }
+        },
+        {
+          "id": "mail-puller/app#sqlite",
+          "service": "mail-puller",
+          "container": "app",
+          "engine": "sqlite",
+          "kind": "embedded",
+          "path": "/var/lib/mail-puller/state.db",
+          "persistence": {
+            "type": "docker-volume",
+            "ref": "mail_puller_state",
+            "mount": "/var/lib/mail-puller"
+          },
+          "port": null,
+          "vm": "oci-E2-f_0",
+          "backup": {
+            "enabled": true,
+            "strategy": null
+          }
+        },
+        {
+          "id": "snappymail/app#files",
+          "service": "snappymail",
+          "container": "app",
+          "engine": "files",
+          "kind": "embedded",
+          "path": "/var/lib/snappymail",
+          "persistence": {
+            "type": "docker-volume",
+            "ref": "./data",
+            "mount": "/var/lib/snappymail"
+          },
+          "port": null,
+          "vm": "oci-E2-f_0",
+          "backup": {
+            "enabled": false,
+            "strategy": null
+          }
+        },
+        {
+          "id": "maddy/app#sqlite",
+          "service": "maddy",
+          "container": "app",
+          "engine": "sqlite",
+          "kind": "embedded",
+          "path": "/data/imapsql.db",
+          "persistence": {
+            "type": "docker-volume",
+            "ref": "maddy_data",
+            "mount": "/data"
+          },
+          "port": null,
+          "vm": "oci-E2-f_0",
+          "backup": {
+            "enabled": true,
+            "strategy": null
+          }
+        },
+        {
+          "id": "stalwart/app#rocksdb",
+          "service": "stalwart",
+          "container": "app",
+          "engine": "rocksdb",
+          "kind": "embedded",
+          "path": "/opt/stalwart-mail/data",
+          "persistence": {
+            "type": "docker-volume",
+            "ref": "stalwart_data",
+            "mount": "/opt/stalwart-mail/data"
+          },
+          "port": null,
+          "vm": "oci-E2-f_0",
+          "backup": {
+            "enabled": true,
+            "strategy": null
+          }
+        },
+        {
+          "id": "photoprism/db",
+          "service": "photoprism",
+          "container": "db",
+          "engine": "mariadb",
+          "kind": "container",
+          "persistence": {
+            "type": "docker-volume",
+            "ref": "mariadb_data",
+            "mount": "/var/lib/mysql"
+          },
+          "port": null,
+          "vm": "oci-A1-f_0",
+          "backup": {
+            "enabled": true,
+            "strategy": null
+          }
+        },
+        {
+          "id": "calendar-radicale/app#files",
+          "service": "calendar-radicale",
+          "container": "app",
+          "engine": "files",
+          "kind": "embedded",
+          "path": "/data/collections",
+          "persistence": {
+            "type": "docker-volume",
+            "ref": "./data",
+            "mount": "/data"
+          },
+          "port": null,
+          "vm": "oci-A1-f_0",
+          "backup": {
+            "enabled": false,
+            "strategy": null
+          }
+        },
+        {
+          "id": "contacts-radicale/app#files",
+          "service": "contacts-radicale",
+          "container": "app",
+          "engine": "files",
+          "kind": "embedded",
+          "path": "/data/collections",
+          "persistence": {
+            "type": "docker-volume",
+            "ref": "./data",
+            "mount": "/data"
+          },
+          "port": null,
+          "vm": "oci-A1-f_0",
+          "backup": {
+            "enabled": false,
+            "strategy": null
+          }
+        },
+        {
+          "id": "etherpad/db",
+          "service": "etherpad",
+          "container": "db",
+          "engine": "postgres",
+          "kind": "container",
+          "persistence": {
+            "type": "docker-volume",
+            "ref": "postgres_data",
+            "mount": "/var/lib/postgresql/data"
+          },
+          "port": 5436,
+          "vm": "oci-A1-f_0",
+          "backup": {
+            "enabled": true,
+            "strategy": null
+          }
+        },
+        {
+          "id": "filebrowser/app#sqlite",
+          "service": "filebrowser",
+          "container": "app",
+          "engine": "sqlite",
+          "kind": "embedded",
+          "path": "/data/filebrowser.db",
+          "persistence": {
+            "type": "docker-volume",
+            "ref": "filebrowser_data",
+            "mount": "/srv"
+          },
+          "port": null,
+          "vm": "oci-A1-f_0",
+          "backup": {
+            "enabled": false,
+            "strategy": null
+          }
+        },
+        {
+          "id": "hedgedoc/db",
+          "service": "hedgedoc",
+          "container": "db",
+          "engine": "postgres",
+          "kind": "container",
+          "persistence": {
+            "type": "docker-volume",
+            "ref": "postgres_data",
+            "mount": "/var/lib/postgresql/data"
+          },
+          "port": 5439,
+          "vm": "oci-A1-f_0",
+          "backup": {
+            "enabled": true,
+            "strategy": null
+          }
+        },
+        {
+          "id": "paca/db",
+          "service": "paca",
+          "container": "db",
+          "engine": "postgres",
+          "kind": "container",
+          "persistence": {
+            "type": "docker-volume",
+            "ref": "paca_postgres",
+            "mount": "/var/lib/postgresql/data"
+          },
+          "port": 5432,
+          "vm": "oci-A1-f_0",
+          "backup": {
+            "enabled": true,
+            "strategy": null
+          }
+        },
+        {
+          "id": "vaultwarden/app#sqlite",
+          "service": "vaultwarden",
+          "container": "app",
+          "engine": "sqlite",
+          "kind": "embedded",
+          "path": "/data/db.sqlite3",
+          "persistence": {
+            "type": "docker-volume",
+            "ref": "./data",
+            "mount": "/data"
+          },
+          "port": null,
+          "vm": "oci-A1-f_0",
+          "backup": {
+            "enabled": true,
+            "strategy": null
+          }
+        }
+      ],
+      "db-docker-bind": [
+        {
+          "id": "redis/app",
+          "service": "redis",
+          "container": "app",
+          "engine": "redis",
+          "kind": "container",
+          "persistence": {
+            "type": "docker-bind",
+            "ref": "/data/redis",
+            "mount": "/data"
+          },
+          "port": 6379,
+          "vm": "gcp-E2-f_0",
+          "backup": {
+            "enabled": true,
+            "strategy": null
+          }
+        }
+      ],
+      "git#gh": [
+        {
+          "id": "git#gh/cloud-data",
+          "service": "cloud-cgc-pub-mcp",
+          "container": null,
+          "engine": "git",
+          "kind": "git-remote",
+          "host": "github",
+          "repo": "diegonmarcos/cloud-data",
+          "visibility": "private",
+          "fork": false,
+          "pushed_at": "2026-08-27T22:06:37Z",
+          "indexed": true,
+          "local_dir": "cloud-data",
+          "mirrored": true,
+          "persistence": {
+            "type": "git",
+            "ref": "https://github.com/diegonmarcos/cloud-data.git",
+            "mount": null
+          },
+          "vm": null,
+          "backup": {
+            "enabled": false,
+            "strategy": null
+          }
+        },
+        {
+          "id": "git#gh/cloud-infra-desktop",
+          "service": "cloud-cgc-pub-mcp",
+          "container": null,
+          "engine": "git",
+          "kind": "git-remote",
+          "host": "github",
+          "repo": "diegonmarcos/cloud-infra-desktop",
+          "visibility": "public",
+          "fork": false,
+          "pushed_at": "2026-08-27T22:05:27Z",
+          "indexed": true,
+          "local_dir": "cloud-infra-desktop",
+          "mirrored": true,
+          "persistence": {
+            "type": "git",
+            "ref": "https://github.com/diegonmarcos/cloud-infra-desktop.git",
+            "mount": null
+          },
+          "vm": null,
+          "backup": {
+            "enabled": false,
+            "strategy": null
+          }
+        },
+        {
+          "id": "git#gh/cloud-infra",
+          "service": "cloud-cgc-pub-mcp",
+          "container": null,
+          "engine": "git",
+          "kind": "git-remote",
+          "host": "github",
+          "repo": "diegonmarcos/cloud-infra",
+          "visibility": "public",
+          "fork": false,
+          "pushed_at": "2026-08-27T22:04:24Z",
+          "indexed": true,
+          "local_dir": "cloud-infra",
+          "mirrored": true,
+          "persistence": {
+            "type": "git",
+            "ref": "https://github.com/diegonmarcos/cloud-infra.git",
+            "mount": null
+          },
+          "vm": null,
+          "backup": {
+            "enabled": false,
+            "strategy": null
+          }
+        },
+        {
+          "id": "git#gh/cloud",
+          "service": "gitea",
+          "container": null,
+          "engine": "git",
+          "kind": "git-remote",
+          "host": "github",
+          "repo": "diegonmarcos/cloud",
+          "visibility": "public",
+          "fork": false,
+          "pushed_at": "2026-08-27T22:03:29Z",
+          "indexed": false,
+          "local_dir": null,
+          "mirrored": true,
+          "persistence": {
+            "type": "git",
+            "ref": "https://github.com/diegonmarcos/cloud.git",
+            "mount": null
+          },
+          "vm": null,
+          "backup": {
+            "enabled": false,
+            "strategy": null
+          }
+        },
+        {
+          "id": "git#gh/git-repos-master",
+          "service": "gitea",
+          "container": null,
+          "engine": "git",
+          "kind": "git-remote",
+          "host": "github",
+          "repo": "diegonmarcos/git-repos-master",
+          "visibility": "public",
+          "fork": false,
+          "pushed_at": "2026-08-27T22:03:27Z",
+          "indexed": false,
+          "local_dir": null,
+          "mirrored": true,
+          "persistence": {
+            "type": "git",
+            "ref": "https://github.com/diegonmarcos/git-repos-master.git",
+            "mount": null
+          },
+          "vm": null,
+          "backup": {
+            "enabled": false,
+            "strategy": null
+          }
+        },
+        {
+          "id": "git#gh/cloud-u-linux",
+          "service": "gitea",
+          "container": null,
+          "engine": "git",
+          "kind": "git-remote",
+          "host": "github",
+          "repo": "diegonmarcos/cloud-u-linux",
+          "visibility": "public",
+          "fork": false,
+          "pushed_at": "2026-08-27T21:54:30Z",
+          "indexed": false,
+          "local_dir": null,
+          "mirrored": true,
+          "persistence": {
+            "type": "git",
+            "ref": "https://github.com/diegonmarcos/cloud-u-linux.git",
+            "mount": null
+          },
+          "vm": null,
+          "backup": {
+            "enabled": false,
+            "strategy": null
+          }
+        },
+        {
+          "id": "git#gh/cloud-u-containers",
+          "service": "gitea",
+          "container": null,
+          "engine": "git",
+          "kind": "git-remote",
+          "host": "github",
+          "repo": "diegonmarcos/cloud-u-containers",
+          "visibility": "public",
+          "fork": false,
+          "pushed_at": "2026-08-27T21:46:04Z",
+          "indexed": false,
+          "local_dir": null,
+          "mirrored": true,
+          "persistence": {
+            "type": "git",
+            "ref": "https://github.com/diegonmarcos/cloud-u-containers.git",
+            "mount": null
+          },
+          "vm": null,
+          "backup": {
+            "enabled": false,
+            "strategy": null
+          }
+        },
+        {
+          "id": "git#gh/cloud-u-android",
+          "service": "cloud-cgc-pub-mcp",
+          "container": null,
+          "engine": "git",
+          "kind": "git-remote",
+          "host": "github",
+          "repo": "diegonmarcos/cloud-u-android",
+          "visibility": "public",
+          "fork": false,
+          "pushed_at": "2026-08-27T20:35:49Z",
+          "indexed": true,
+          "local_dir": "cloud-u-android",
+          "mirrored": true,
+          "persistence": {
+            "type": "git",
+            "ref": "https://github.com/diegonmarcos/cloud-u-android.git",
+            "mount": null
+          },
+          "vm": null,
+          "backup": {
+            "enabled": false,
+            "strategy": null
+          }
+        },
+        {
+          "id": "git#gh/diegonmarcos.github.io",
+          "service": "cloud-cgc-pub-mcp",
+          "container": null,
+          "engine": "git",
+          "kind": "git-remote",
+          "host": "github",
+          "repo": "diegonmarcos/diegonmarcos.github.io",
+          "visibility": "public",
+          "fork": false,
+          "pushed_at": "2026-08-27T20:24:08Z",
+          "indexed": true,
+          "local_dir": "front",
+          "mirrored": true,
+          "persistence": {
+            "type": "git",
+            "ref": "https://github.com/diegonmarcos/diegonmarcos.github.io.git",
+            "mount": null
+          },
+          "vm": null,
+          "backup": {
+            "enabled": false,
+            "strategy": null
+          }
+        },
+        {
+          "id": "git#gh/cloud-data-my-ai-memory",
+          "service": "cloud-cgc-pub-mcp",
+          "container": null,
+          "engine": "git",
+          "kind": "git-remote",
+          "host": "github",
+          "repo": "diegonmarcos/cloud-data-my-ai-memory",
+          "visibility": "private",
+          "fork": false,
+          "pushed_at": "2026-08-27T19:34:21Z",
+          "indexed": true,
+          "local_dir": "cloud-data-my-ai-memory",
+          "mirrored": true,
+          "persistence": {
+            "type": "git",
+            "ref": "https://github.com/diegonmarcos/cloud-data-my-ai-memory.git",
+            "mount": null
+          },
+          "vm": null,
+          "backup": {
+            "enabled": false,
+            "strategy": null
+          }
+        },
+        {
+          "id": "git#gh/diegonmarcos",
+          "service": "gitea",
+          "container": null,
+          "engine": "git",
+          "kind": "git-remote",
+          "host": "github",
+          "repo": "diegonmarcos/diegonmarcos",
+          "visibility": "public",
+          "fork": false,
+          "pushed_at": "2026-08-27T17:49:20Z",
+          "indexed": false,
+          "local_dir": null,
+          "mirrored": true,
+          "persistence": {
+            "type": "git",
+            "ref": "https://github.com/diegonmarcos/diegonmarcos.git",
+            "mount": null
+          },
+          "vm": null,
+          "backup": {
+            "enabled": false,
+            "strategy": null
+          }
+        },
+        {
+          "id": "git#gh/front-unity",
+          "service": "gitea",
+          "container": null,
+          "engine": "git",
+          "kind": "git-remote",
+          "host": "github",
+          "repo": "diegonmarcos/front-unity",
+          "visibility": "private",
+          "fork": false,
+          "pushed_at": "2026-08-27T09:56:42Z",
+          "indexed": false,
+          "local_dir": null,
+          "mirrored": true,
+          "persistence": {
+            "type": "git",
+            "ref": "https://github.com/diegonmarcos/front-unity.git",
+            "mount": null
+          },
+          "vm": null,
+          "backup": {
+            "enabled": false,
+            "strategy": null
+          }
+        },
+        {
+          "id": "git#gh/front-galaxy-gaia",
+          "service": "gitea",
+          "container": null,
+          "engine": "git",
+          "kind": "git-remote",
+          "host": "github",
+          "repo": "diegonmarcos/front-galaxy-gaia",
+          "visibility": "private",
+          "fork": false,
+          "pushed_at": "2026-08-27T09:56:39Z",
+          "indexed": false,
+          "local_dir": null,
+          "mirrored": true,
+          "persistence": {
+            "type": "git",
+            "ref": "https://github.com/diegonmarcos/front-galaxy-gaia.git",
+            "mount": null
+          },
+          "vm": null,
+          "backup": {
+            "enabled": false,
+            "strategy": null
+          }
+        },
+        {
+          "id": "git#gh/cloud-data-lfs",
+          "service": "gitea",
+          "container": null,
+          "engine": "git",
+          "kind": "git-remote",
+          "host": "github",
+          "repo": "diegonmarcos/cloud-data-lfs",
+          "visibility": "private",
+          "fork": false,
+          "pushed_at": "2026-08-27T09:56:37Z",
+          "indexed": false,
+          "local_dir": null,
+          "mirrored": true,
+          "persistence": {
+            "type": "git",
+            "ref": "https://github.com/diegonmarcos/cloud-data-lfs.git",
+            "mount": null
+          },
+          "vm": null,
+          "backup": {
+            "enabled": false,
+            "strategy": null
+          }
+        },
+        {
+          "id": "git#gh/front-data",
+          "service": "cloud-cgc-pub-mcp",
+          "container": null,
+          "engine": "git",
+          "kind": "git-remote",
+          "host": "github",
+          "repo": "diegonmarcos/front-data",
+          "visibility": "public",
+          "fork": false,
+          "pushed_at": "2026-08-25T15:20:03Z",
+          "indexed": true,
+          "local_dir": "front-data",
+          "mirrored": true,
+          "persistence": {
+            "type": "git",
+            "ref": "https://github.com/diegonmarcos/front-data.git",
+            "mount": null
+          },
+          "vm": null,
+          "backup": {
+            "enabled": false,
+            "strategy": null
+          }
+        },
+        {
+          "id": "git#gh/cloud-vault",
+          "service": null,
+          "container": null,
+          "engine": "git",
+          "kind": "git-remote",
+          "host": "github",
+          "repo": "diegonmarcos/cloud-vault",
+          "visibility": "private",
+          "fork": false,
+          "pushed_at": "2026-08-23T22:14:03Z",
+          "indexed": false,
+          "local_dir": null,
+          "mirrored": false,
+          "persistence": {
+            "type": "git",
+            "ref": "https://github.com/diegonmarcos/cloud-vault.git",
+            "mount": null
+          },
+          "vm": null,
+          "backup": {
+            "enabled": false,
+            "strategy": null
+          }
+        },
+        {
+          "id": "git#gh/ffront",
+          "service": "gitea",
+          "container": null,
+          "engine": "git",
+          "kind": "git-remote",
+          "host": "github",
+          "repo": "diegonmarcos/ffront",
+          "visibility": "public",
+          "fork": false,
+          "pushed_at": "2026-08-19T10:01:16Z",
+          "indexed": false,
+          "local_dir": null,
+          "mirrored": true,
+          "persistence": {
+            "type": "git",
+            "ref": "https://github.com/diegonmarcos/ffront.git",
+            "mount": null
+          },
+          "vm": null,
+          "backup": {
+            "enabled": false,
+            "strategy": null
+          }
+        },
+        {
+          "id": "git#gh/front-assets-cdn",
+          "service": "gitea",
+          "container": null,
+          "engine": "git",
+          "kind": "git-remote",
+          "host": "github",
+          "repo": "diegonmarcos/front-assets-cdn",
+          "visibility": "public",
+          "fork": false,
+          "pushed_at": "2026-08-18T13:17:52Z",
+          "indexed": false,
+          "local_dir": null,
+          "mirrored": true,
+          "persistence": {
+            "type": "git",
+            "ref": "https://github.com/diegonmarcos/front-assets-cdn.git",
+            "mount": null
+          },
+          "vm": null,
+          "backup": {
+            "enabled": false,
+            "strategy": null
+          }
+        },
+        {
+          "id": "git#gh/cloud-notes",
+          "service": "gitea",
+          "container": null,
+          "engine": "git",
+          "kind": "git-remote",
+          "host": "github",
+          "repo": "diegonmarcos/cloud-notes",
+          "visibility": "private",
+          "fork": false,
+          "pushed_at": "2026-08-18T11:45:46Z",
+          "indexed": false,
+          "local_dir": null,
+          "mirrored": true,
+          "persistence": {
+            "type": "git",
+            "ref": "https://github.com/diegonmarcos/cloud-notes.git",
+            "mount": null
+          },
+          "vm": null,
+          "backup": {
+            "enabled": false,
+            "strategy": null
+          }
+        },
+        {
+          "id": "git#gh/back-System",
+          "service": "gitea",
+          "container": null,
+          "engine": "git",
+          "kind": "git-remote",
+          "host": "github",
+          "repo": "diegonmarcos/back-System",
+          "visibility": "public",
+          "fork": false,
+          "pushed_at": "2025-12-31T14:23:38Z",
+          "indexed": false,
+          "local_dir": null,
+          "mirrored": true,
+          "persistence": {
+            "type": "git",
+            "ref": "https://github.com/diegonmarcos/back-System.git",
+            "mount": null
+          },
+          "vm": null,
+          "backup": {
+            "enabled": false,
+            "strategy": null
+          }
+        },
+        {
+          "id": "git#gh/ml-Agentic",
+          "service": "gitea",
+          "container": null,
+          "engine": "git",
+          "kind": "git-remote",
+          "host": "github",
+          "repo": "diegonmarcos/ml-Agentic",
+          "visibility": "public",
+          "fork": false,
+          "pushed_at": "2025-11-29T15:41:49Z",
+          "indexed": false,
+          "local_dir": null,
+          "mirrored": true,
+          "persistence": {
+            "type": "git",
+            "ref": "https://github.com/diegonmarcos/ml-Agentic.git",
+            "mount": null
+          },
+          "vm": null,
+          "backup": {
+            "enabled": false,
+            "strategy": null
+          }
+        },
+        {
+          "id": "git#gh/lecole42",
+          "service": "gitea",
+          "container": null,
+          "engine": "git",
+          "kind": "git-remote",
+          "host": "github",
+          "repo": "diegonmarcos/lecole42",
+          "visibility": "private",
+          "fork": false,
+          "pushed_at": "2025-11-23T17:02:00Z",
+          "indexed": false,
+          "local_dir": null,
+          "mirrored": true,
+          "persistence": {
+            "type": "git",
+            "ref": "https://github.com/diegonmarcos/lecole42.git",
+            "mount": null
+          },
+          "vm": null,
+          "backup": {
+            "enabled": false,
+            "strategy": null
+          }
+        },
+        {
+          "id": "git#gh/dev",
+          "service": "gitea",
+          "container": null,
+          "engine": "git",
+          "kind": "git-remote",
+          "host": "github",
+          "repo": "diegonmarcos/dev",
+          "visibility": "private",
+          "fork": false,
+          "pushed_at": "2025-11-23T17:01:55Z",
+          "indexed": false,
+          "local_dir": null,
+          "mirrored": true,
+          "persistence": {
+            "type": "git",
+            "ref": "https://github.com/diegonmarcos/dev.git",
+            "mount": null
+          },
+          "vm": null,
+          "backup": {
+            "enabled": false,
+            "strategy": null
+          }
+        },
+        {
+          "id": "git#gh/ops-Mylibs",
+          "service": "gitea",
+          "container": null,
+          "engine": "git",
+          "kind": "git-remote",
+          "host": "github",
+          "repo": "diegonmarcos/ops-Mylibs",
+          "visibility": "public",
+          "fork": false,
+          "pushed_at": "2025-11-23T15:54:13Z",
+          "indexed": false,
+          "local_dir": null,
+          "mirrored": true,
+          "persistence": {
+            "type": "git",
+            "ref": "https://github.com/diegonmarcos/ops-Mylibs.git",
+            "mount": null
+          },
+          "vm": null,
+          "backup": {
+            "enabled": false,
+            "strategy": null
+          }
+        },
+        {
+          "id": "git#gh/back-Graphic",
+          "service": "gitea",
+          "container": null,
+          "engine": "git",
+          "kind": "git-remote",
+          "host": "github",
+          "repo": "diegonmarcos/back-Graphic",
+          "visibility": "public",
+          "fork": false,
+          "pushed_at": "2025-11-23T15:53:46Z",
+          "indexed": false,
+          "local_dir": null,
+          "mirrored": true,
+          "persistence": {
+            "type": "git",
+            "ref": "https://github.com/diegonmarcos/back-Graphic.git",
+            "mount": null
+          },
+          "vm": null,
+          "backup": {
+            "enabled": false,
+            "strategy": null
+          }
+        },
+        {
+          "id": "git#gh/back-Algo",
+          "service": "gitea",
+          "container": null,
+          "engine": "git",
+          "kind": "git-remote",
+          "host": "github",
+          "repo": "diegonmarcos/back-Algo",
+          "visibility": "public",
+          "fork": false,
+          "pushed_at": "2025-11-23T15:53:42Z",
+          "indexed": false,
+          "local_dir": null,
+          "mirrored": true,
+          "persistence": {
+            "type": "git",
+            "ref": "https://github.com/diegonmarcos/back-Algo.git",
+            "mount": null
+          },
+          "vm": null,
+          "backup": {
+            "enabled": false,
+            "strategy": null
+          }
+        },
+        {
+          "id": "git#gh/ml-MachineLearning",
+          "service": "gitea",
+          "container": null,
+          "engine": "git",
+          "kind": "git-remote",
+          "host": "github",
+          "repo": "diegonmarcos/ml-MachineLearning",
+          "visibility": "public",
+          "fork": false,
+          "pushed_at": "2025-11-18T20:23:59Z",
+          "indexed": false,
+          "local_dir": null,
+          "mirrored": true,
+          "persistence": {
+            "type": "git",
+            "ref": "https://github.com/diegonmarcos/ml-MachineLearning.git",
+            "mount": null
+          },
+          "vm": null,
+          "backup": {
+            "enabled": false,
+            "strategy": null
+          }
+        },
+        {
+          "id": "git#gh/cyber-Cyberwarfare",
+          "service": "gitea",
+          "container": null,
+          "engine": "git",
+          "kind": "git-remote",
+          "host": "github",
+          "repo": "diegonmarcos/cyber-Cyberwarfare",
+          "visibility": "public",
+          "fork": false,
+          "pushed_at": "2025-11-13T12:38:16Z",
+          "indexed": false,
+          "local_dir": null,
+          "mirrored": true,
+          "persistence": {
+            "type": "git",
+            "ref": "https://github.com/diegonmarcos/cyber-Cyberwarfare.git",
+            "mount": null
+          },
+          "vm": null,
+          "backup": {
+            "enabled": false,
+            "strategy": null
+          }
+        },
+        {
+          "id": "git#gh/ml-DataScience",
+          "service": "gitea",
+          "container": null,
+          "engine": "git",
+          "kind": "git-remote",
+          "host": "github",
+          "repo": "diegonmarcos/ml-DataScience",
+          "visibility": "public",
+          "fork": false,
+          "pushed_at": "2025-11-12T11:02:32Z",
+          "indexed": false,
+          "local_dir": null,
+          "mirrored": true,
+          "persistence": {
+            "type": "git",
+            "ref": "https://github.com/diegonmarcos/ml-DataScience.git",
+            "mount": null
+          },
+          "vm": null,
+          "backup": {
+            "enabled": false,
+            "strategy": null
+          }
+        }
+      ],
+      "git#gitea": [
+        {
+          "id": "git#gitea/cloud-data",
+          "service": "gitea",
+          "container": null,
+          "engine": "git",
+          "kind": "git-remote",
+          "host": "gitea",
+          "repo": "cloud-data",
+          "upstream": "https://github.com/diegonmarcos/cloud-data.git",
+          "persistence": {
+            "type": "git",
+            "ref": "https://github.com/diegonmarcos/cloud-data.git",
+            "mount": null
+          },
+          "vm": "oci-A1-f_0",
+          "backup": {
+            "enabled": true,
+            "strategy": null
+          }
+        },
+        {
+          "id": "git#gitea/cloud-infra-desktop",
+          "service": "gitea",
+          "container": null,
+          "engine": "git",
+          "kind": "git-remote",
+          "host": "gitea",
+          "repo": "cloud-infra-desktop",
+          "upstream": "https://github.com/diegonmarcos/cloud-infra-desktop.git",
+          "persistence": {
+            "type": "git",
+            "ref": "https://github.com/diegonmarcos/cloud-infra-desktop.git",
+            "mount": null
+          },
+          "vm": "oci-A1-f_0",
+          "backup": {
+            "enabled": true,
+            "strategy": null
+          }
+        },
+        {
+          "id": "git#gitea/cloud-infra",
+          "service": "gitea",
+          "container": null,
+          "engine": "git",
+          "kind": "git-remote",
+          "host": "gitea",
+          "repo": "cloud-infra",
+          "upstream": "https://github.com/diegonmarcos/cloud-infra.git",
+          "persistence": {
+            "type": "git",
+            "ref": "https://github.com/diegonmarcos/cloud-infra.git",
+            "mount": null
+          },
+          "vm": "oci-A1-f_0",
+          "backup": {
+            "enabled": true,
+            "strategy": null
+          }
+        },
+        {
+          "id": "git#gitea/cloud",
+          "service": "gitea",
+          "container": null,
+          "engine": "git",
+          "kind": "git-remote",
+          "host": "gitea",
+          "repo": "cloud",
+          "upstream": "https://github.com/diegonmarcos/cloud.git",
+          "persistence": {
+            "type": "git",
+            "ref": "https://github.com/diegonmarcos/cloud.git",
+            "mount": null
+          },
+          "vm": "oci-A1-f_0",
+          "backup": {
+            "enabled": true,
+            "strategy": null
+          }
+        },
+        {
+          "id": "git#gitea/git-repos-master",
+          "service": "gitea",
+          "container": null,
+          "engine": "git",
+          "kind": "git-remote",
+          "host": "gitea",
+          "repo": "git-repos-master",
+          "upstream": "https://github.com/diegonmarcos/git-repos-master.git",
+          "persistence": {
+            "type": "git",
+            "ref": "https://github.com/diegonmarcos/git-repos-master.git",
+            "mount": null
+          },
+          "vm": "oci-A1-f_0",
+          "backup": {
+            "enabled": true,
+            "strategy": null
+          }
+        },
+        {
+          "id": "git#gitea/cloud-u-linux",
+          "service": "gitea",
+          "container": null,
+          "engine": "git",
+          "kind": "git-remote",
+          "host": "gitea",
+          "repo": "cloud-u-linux",
+          "upstream": "https://github.com/diegonmarcos/cloud-u-linux.git",
+          "persistence": {
+            "type": "git",
+            "ref": "https://github.com/diegonmarcos/cloud-u-linux.git",
+            "mount": null
+          },
+          "vm": "oci-A1-f_0",
+          "backup": {
+            "enabled": true,
+            "strategy": null
+          }
+        },
+        {
+          "id": "git#gitea/cloud-u-containers",
+          "service": "gitea",
+          "container": null,
+          "engine": "git",
+          "kind": "git-remote",
+          "host": "gitea",
+          "repo": "cloud-u-containers",
+          "upstream": "https://github.com/diegonmarcos/cloud-u-containers.git",
+          "persistence": {
+            "type": "git",
+            "ref": "https://github.com/diegonmarcos/cloud-u-containers.git",
+            "mount": null
+          },
+          "vm": "oci-A1-f_0",
+          "backup": {
+            "enabled": true,
+            "strategy": null
+          }
+        },
+        {
+          "id": "git#gitea/cloud-u-android",
+          "service": "gitea",
+          "container": null,
+          "engine": "git",
+          "kind": "git-remote",
+          "host": "gitea",
+          "repo": "cloud-u-android",
+          "upstream": "https://github.com/diegonmarcos/cloud-u-android.git",
+          "persistence": {
+            "type": "git",
+            "ref": "https://github.com/diegonmarcos/cloud-u-android.git",
+            "mount": null
+          },
+          "vm": "oci-A1-f_0",
+          "backup": {
+            "enabled": true,
+            "strategy": null
+          }
+        },
+        {
+          "id": "git#gitea/diegonmarcos.github.io",
+          "service": "gitea",
+          "container": null,
+          "engine": "git",
+          "kind": "git-remote",
+          "host": "gitea",
+          "repo": "diegonmarcos.github.io",
+          "upstream": "https://github.com/diegonmarcos/diegonmarcos.github.io.git",
+          "persistence": {
+            "type": "git",
+            "ref": "https://github.com/diegonmarcos/diegonmarcos.github.io.git",
+            "mount": null
+          },
+          "vm": "oci-A1-f_0",
+          "backup": {
+            "enabled": true,
+            "strategy": null
+          }
+        },
+        {
+          "id": "git#gitea/cloud-data-my-ai-memory",
+          "service": "gitea",
+          "container": null,
+          "engine": "git",
+          "kind": "git-remote",
+          "host": "gitea",
+          "repo": "cloud-data-my-ai-memory",
+          "upstream": "https://github.com/diegonmarcos/cloud-data-my-ai-memory.git",
+          "persistence": {
+            "type": "git",
+            "ref": "https://github.com/diegonmarcos/cloud-data-my-ai-memory.git",
+            "mount": null
+          },
+          "vm": "oci-A1-f_0",
+          "backup": {
+            "enabled": true,
+            "strategy": null
+          }
+        },
+        {
+          "id": "git#gitea/diegonmarcos",
+          "service": "gitea",
+          "container": null,
+          "engine": "git",
+          "kind": "git-remote",
+          "host": "gitea",
+          "repo": "diegonmarcos",
+          "upstream": "https://github.com/diegonmarcos/diegonmarcos.git",
+          "persistence": {
+            "type": "git",
+            "ref": "https://github.com/diegonmarcos/diegonmarcos.git",
+            "mount": null
+          },
+          "vm": "oci-A1-f_0",
+          "backup": {
+            "enabled": true,
+            "strategy": null
+          }
+        },
+        {
+          "id": "git#gitea/front-unity",
+          "service": "gitea",
+          "container": null,
+          "engine": "git",
+          "kind": "git-remote",
+          "host": "gitea",
+          "repo": "front-unity",
+          "upstream": "https://github.com/diegonmarcos/front-unity.git",
+          "persistence": {
+            "type": "git",
+            "ref": "https://github.com/diegonmarcos/front-unity.git",
+            "mount": null
+          },
+          "vm": "oci-A1-f_0",
+          "backup": {
+            "enabled": true,
+            "strategy": null
+          }
+        },
+        {
+          "id": "git#gitea/front-galaxy-gaia",
+          "service": "gitea",
+          "container": null,
+          "engine": "git",
+          "kind": "git-remote",
+          "host": "gitea",
+          "repo": "front-galaxy-gaia",
+          "upstream": "https://github.com/diegonmarcos/front-galaxy-gaia.git",
+          "persistence": {
+            "type": "git",
+            "ref": "https://github.com/diegonmarcos/front-galaxy-gaia.git",
+            "mount": null
+          },
+          "vm": "oci-A1-f_0",
+          "backup": {
+            "enabled": true,
+            "strategy": null
+          }
+        },
+        {
+          "id": "git#gitea/cloud-data-lfs",
+          "service": "gitea",
+          "container": null,
+          "engine": "git",
+          "kind": "git-remote",
+          "host": "gitea",
+          "repo": "cloud-data-lfs",
+          "upstream": "https://github.com/diegonmarcos/cloud-data-lfs.git",
+          "persistence": {
+            "type": "git",
+            "ref": "https://github.com/diegonmarcos/cloud-data-lfs.git",
+            "mount": null
+          },
+          "vm": "oci-A1-f_0",
+          "backup": {
+            "enabled": true,
+            "strategy": null
+          }
+        },
+        {
+          "id": "git#gitea/front-data",
+          "service": "gitea",
+          "container": null,
+          "engine": "git",
+          "kind": "git-remote",
+          "host": "gitea",
+          "repo": "front-data",
+          "upstream": "https://github.com/diegonmarcos/front-data.git",
+          "persistence": {
+            "type": "git",
+            "ref": "https://github.com/diegonmarcos/front-data.git",
+            "mount": null
+          },
+          "vm": "oci-A1-f_0",
+          "backup": {
+            "enabled": true,
+            "strategy": null
+          }
+        },
+        {
+          "id": "git#gitea/ffront",
+          "service": "gitea",
+          "container": null,
+          "engine": "git",
+          "kind": "git-remote",
+          "host": "gitea",
+          "repo": "ffront",
+          "upstream": "https://github.com/diegonmarcos/ffront.git",
+          "persistence": {
+            "type": "git",
+            "ref": "https://github.com/diegonmarcos/ffront.git",
+            "mount": null
+          },
+          "vm": "oci-A1-f_0",
+          "backup": {
+            "enabled": true,
+            "strategy": null
+          }
+        },
+        {
+          "id": "git#gitea/front-assets-cdn",
+          "service": "gitea",
+          "container": null,
+          "engine": "git",
+          "kind": "git-remote",
+          "host": "gitea",
+          "repo": "front-assets-cdn",
+          "upstream": "https://github.com/diegonmarcos/front-assets-cdn.git",
+          "persistence": {
+            "type": "git",
+            "ref": "https://github.com/diegonmarcos/front-assets-cdn.git",
+            "mount": null
+          },
+          "vm": "oci-A1-f_0",
+          "backup": {
+            "enabled": true,
+            "strategy": null
+          }
+        },
+        {
+          "id": "git#gitea/cloud-notes",
+          "service": "gitea",
+          "container": null,
+          "engine": "git",
+          "kind": "git-remote",
+          "host": "gitea",
+          "repo": "cloud-notes",
+          "upstream": "https://github.com/diegonmarcos/cloud-notes.git",
+          "persistence": {
+            "type": "git",
+            "ref": "https://github.com/diegonmarcos/cloud-notes.git",
+            "mount": null
+          },
+          "vm": "oci-A1-f_0",
+          "backup": {
+            "enabled": true,
+            "strategy": null
+          }
+        },
+        {
+          "id": "git#gitea/back-System",
+          "service": "gitea",
+          "container": null,
+          "engine": "git",
+          "kind": "git-remote",
+          "host": "gitea",
+          "repo": "back-System",
+          "upstream": "https://github.com/diegonmarcos/back-System.git",
+          "persistence": {
+            "type": "git",
+            "ref": "https://github.com/diegonmarcos/back-System.git",
+            "mount": null
+          },
+          "vm": "oci-A1-f_0",
+          "backup": {
+            "enabled": true,
+            "strategy": null
+          }
+        },
+        {
+          "id": "git#gitea/ml-Agentic",
+          "service": "gitea",
+          "container": null,
+          "engine": "git",
+          "kind": "git-remote",
+          "host": "gitea",
+          "repo": "ml-Agentic",
+          "upstream": "https://github.com/diegonmarcos/ml-Agentic.git",
+          "persistence": {
+            "type": "git",
+            "ref": "https://github.com/diegonmarcos/ml-Agentic.git",
+            "mount": null
+          },
+          "vm": "oci-A1-f_0",
+          "backup": {
+            "enabled": true,
+            "strategy": null
+          }
+        },
+        {
+          "id": "git#gitea/lecole42",
+          "service": "gitea",
+          "container": null,
+          "engine": "git",
+          "kind": "git-remote",
+          "host": "gitea",
+          "repo": "lecole42",
+          "upstream": "https://github.com/diegonmarcos/lecole42.git",
+          "persistence": {
+            "type": "git",
+            "ref": "https://github.com/diegonmarcos/lecole42.git",
+            "mount": null
+          },
+          "vm": "oci-A1-f_0",
+          "backup": {
+            "enabled": true,
+            "strategy": null
+          }
+        },
+        {
+          "id": "git#gitea/dev",
+          "service": "gitea",
+          "container": null,
+          "engine": "git",
+          "kind": "git-remote",
+          "host": "gitea",
+          "repo": "dev",
+          "upstream": "https://github.com/diegonmarcos/dev.git",
+          "persistence": {
+            "type": "git",
+            "ref": "https://github.com/diegonmarcos/dev.git",
+            "mount": null
+          },
+          "vm": "oci-A1-f_0",
+          "backup": {
+            "enabled": true,
+            "strategy": null
+          }
+        },
+        {
+          "id": "git#gitea/ops-Mylibs",
+          "service": "gitea",
+          "container": null,
+          "engine": "git",
+          "kind": "git-remote",
+          "host": "gitea",
+          "repo": "ops-Mylibs",
+          "upstream": "https://github.com/diegonmarcos/ops-Mylibs.git",
+          "persistence": {
+            "type": "git",
+            "ref": "https://github.com/diegonmarcos/ops-Mylibs.git",
+            "mount": null
+          },
+          "vm": "oci-A1-f_0",
+          "backup": {
+            "enabled": true,
+            "strategy": null
+          }
+        },
+        {
+          "id": "git#gitea/back-Graphic",
+          "service": "gitea",
+          "container": null,
+          "engine": "git",
+          "kind": "git-remote",
+          "host": "gitea",
+          "repo": "back-Graphic",
+          "upstream": "https://github.com/diegonmarcos/back-Graphic.git",
+          "persistence": {
+            "type": "git",
+            "ref": "https://github.com/diegonmarcos/back-Graphic.git",
+            "mount": null
+          },
+          "vm": "oci-A1-f_0",
+          "backup": {
+            "enabled": true,
+            "strategy": null
+          }
+        },
+        {
+          "id": "git#gitea/back-Algo",
+          "service": "gitea",
+          "container": null,
+          "engine": "git",
+          "kind": "git-remote",
+          "host": "gitea",
+          "repo": "back-Algo",
+          "upstream": "https://github.com/diegonmarcos/back-Algo.git",
+          "persistence": {
+            "type": "git",
+            "ref": "https://github.com/diegonmarcos/back-Algo.git",
+            "mount": null
+          },
+          "vm": "oci-A1-f_0",
+          "backup": {
+            "enabled": true,
+            "strategy": null
+          }
+        },
+        {
+          "id": "git#gitea/ml-MachineLearning",
+          "service": "gitea",
+          "container": null,
+          "engine": "git",
+          "kind": "git-remote",
+          "host": "gitea",
+          "repo": "ml-MachineLearning",
+          "upstream": "https://github.com/diegonmarcos/ml-MachineLearning.git",
+          "persistence": {
+            "type": "git",
+            "ref": "https://github.com/diegonmarcos/ml-MachineLearning.git",
+            "mount": null
+          },
+          "vm": "oci-A1-f_0",
+          "backup": {
+            "enabled": true,
+            "strategy": null
+          }
+        },
+        {
+          "id": "git#gitea/cyber-Cyberwarfare",
+          "service": "gitea",
+          "container": null,
+          "engine": "git",
+          "kind": "git-remote",
+          "host": "gitea",
+          "repo": "cyber-Cyberwarfare",
+          "upstream": "https://github.com/diegonmarcos/cyber-Cyberwarfare.git",
+          "persistence": {
+            "type": "git",
+            "ref": "https://github.com/diegonmarcos/cyber-Cyberwarfare.git",
+            "mount": null
+          },
+          "vm": "oci-A1-f_0",
+          "backup": {
+            "enabled": true,
+            "strategy": null
+          }
+        },
+        {
+          "id": "git#gitea/ml-DataScience",
+          "service": "gitea",
+          "container": null,
+          "engine": "git",
+          "kind": "git-remote",
+          "host": "gitea",
+          "repo": "ml-DataScience",
+          "upstream": "https://github.com/diegonmarcos/ml-DataScience.git",
+          "persistence": {
+            "type": "git",
+            "ref": "https://github.com/diegonmarcos/ml-DataScience.git",
+            "mount": null
+          },
+          "vm": "oci-A1-f_0",
+          "backup": {
+            "enabled": true,
+            "strategy": null
+          }
         }
       ],
       "mesh-peers": [
@@ -1718,448 +6799,7 @@
       ]
     }
   },
-  "front_pages": [
-    {
-      "id": "a-Companies__leafy",
-      "project": "leafy",
-      "path": "a-Companies/leafy",
-      "category": "a-Companies",
-      "name": "Leafy",
-      "framework": "vanilla",
-      "deploy_name": "leafy",
-      "url": "https://diegonmarcos.github.io/leafy"
-    },
-    {
-      "id": "a-Companies__nexus",
-      "project": "nexus",
-      "path": "a-Companies/nexus",
-      "category": "a-Companies",
-      "name": "Nexus",
-      "framework": "vanilla",
-      "deploy_name": "nexus",
-      "url": "https://diegonmarcos.github.io/nexus"
-    },
-    {
-      "id": "a-Companies__stark",
-      "project": "stark",
-      "path": "a-Companies/stark",
-      "category": "a-Companies",
-      "name": "Stark",
-      "framework": "vanilla",
-      "deploy_name": "stark",
-      "url": "https://diegonmarcos.github.io/stark"
-    },
-    {
-      "id": "a-Individual__cv_pdf",
-      "project": "cv_pdf",
-      "path": "a-Individual/cv_pdf",
-      "category": "a-Individual",
-      "name": "CV PDF",
-      "framework": "vanilla",
-      "deploy_name": "cv_pdf",
-      "url": "https://diegonmarcos.github.io/cv_pdf"
-    },
-    {
-      "id": "a-Individual__cv_web",
-      "project": "cv_web",
-      "path": "a-Individual/cv_web",
-      "category": "a-Individual",
-      "name": "CV Web",
-      "framework": "vanilla",
-      "deploy_name": "cv_web",
-      "url": "https://diegonmarcos.github.io/cv_web"
-    },
-    {
-      "id": "a-Individual__landpage",
-      "project": "landpage",
-      "path": "a-Individual/landpage",
-      "category": "a-Individual",
-      "name": "Landpage",
-      "framework": "vanilla",
-      "deploy_name": "landpage",
-      "url": "https://diegonmarcos.github.io/landpage"
-    },
-    {
-      "id": "a-Portals__cloud",
-      "project": "cloud",
-      "path": "a-Portals/cloud",
-      "category": "a-Portals",
-      "name": "Cloud",
-      "framework": "vanilla",
-      "deploy_name": "cloud",
-      "url": "https://diegonmarcos.github.io/cloud"
-    },
-    {
-      "id": "a-Portals__linktree",
-      "project": "linktree",
-      "path": "a-Portals/linktree",
-      "category": "a-Portals",
-      "name": "Linktree",
-      "framework": "vanilla",
-      "deploy_name": "linktree",
-      "url": "https://diegonmarcos.github.io/linktree"
-    },
-    {
-      "id": "a-Portals__linktree_mindmap",
-      "project": "linktree_mindmap",
-      "path": "a-Portals/linktree_mindmap",
-      "category": "a-Portals",
-      "name": "Linktree Mindmap",
-      "framework": "vanilla",
-      "deploy_name": "linktree_mindmap",
-      "url": "https://diegonmarcos.github.io/linktree_mindmap"
-    },
-    {
-      "id": "a-Portals__linktree_pixel-world",
-      "project": "linktree_pixel-world",
-      "path": "a-Portals/linktree_pixel-world",
-      "category": "a-Portals",
-      "name": "Linktree Pixel World",
-      "framework": "vanilla",
-      "deploy_name": "linktree_pixel-world",
-      "url": "https://diegonmarcos.github.io/linktree_pixel-world"
-    },
-    {
-      "id": "a-Projects__Warehouse",
-      "project": "Warehouse",
-      "path": "a-Projects/Warehouse",
-      "category": "a-Projects",
-      "name": "SlabTwin 3D Warehouse",
-      "framework": "vanilla",
-      "deploy_name": "Warehouse",
-      "url": "https://diegonmarcos.github.io/Warehouse"
-    },
-    {
-      "id": "b-Data__myAstro",
-      "project": "myAstro",
-      "path": "b-Data/myAstro",
-      "category": "b-Data",
-      "name": "myAstro",
-      "framework": "vanilla",
-      "deploy_name": "myAstro",
-      "url": "https://diegonmarcos.github.io/myAstro"
-    },
-    {
-      "id": "b-Data__myfeed",
-      "project": "myfeed",
-      "path": "b-Data/myfeed",
-      "category": "b-Data",
-      "name": "MyFeed",
-      "framework": "vue",
-      "deploy_name": "myfeed",
-      "url": "https://diegonmarcos.github.io/myfeed"
-    },
-    {
-      "id": "b-Media__mySocials",
-      "project": "mySocials",
-      "path": "b-Media/mySocials",
-      "category": "b-Media",
-      "name": "mySocials",
-      "framework": "vanilla",
-      "deploy_name": "mySocials",
-      "url": "https://diegonmarcos.github.io/mySocials"
-    },
-    {
-      "id": "b-MyData__my-fin",
-      "project": "my-fin",
-      "path": "b-MyData/my-fin",
-      "category": "b-MyData",
-      "name": "My Financials",
-      "framework": "vanilla",
-      "deploy_name": "my-fin",
-      "url": "https://diegonmarcos.github.io/my-fin"
-    },
-    {
-      "id": "b-MyData__myTrackers",
-      "project": "myTrackers",
-      "path": "b-MyData/myTrackers",
-      "category": "b-MyData",
-      "name": "MyTrackers",
-      "framework": "vanilla",
-      "deploy_name": "myTrackers",
-      "url": "https://diegonmarcos.github.io/myTrackers"
-    },
-    {
-      "id": "b-MyData__myhealth",
-      "project": "myhealth",
-      "path": "b-MyData/myhealth",
-      "category": "b-MyData",
-      "name": "MyHealth",
-      "framework": "vanilla",
-      "deploy_name": "myhealth",
-      "url": "https://diegonmarcos.github.io/myhealth"
-    },
-    {
-      "id": "b-MyData__myhealth-profile",
-      "project": "myhealth-profile",
-      "path": "b-MyData/myhealth-profile",
-      "category": "b-MyData",
-      "name": "MyHealth Profile",
-      "framework": "vanilla",
-      "deploy_name": "myhealth-profile",
-      "url": "https://diegonmarcos.github.io/myhealth-profile"
-    },
-    {
-      "id": "b-MyData__myhealth-tracker",
-      "project": "myhealth-tracker",
-      "path": "b-MyData/myhealth-tracker",
-      "category": "b-MyData",
-      "name": "MyHealth Tracker",
-      "framework": "vanilla",
-      "deploy_name": "myhealth-tracker",
-      "url": "https://diegonmarcos.github.io/myhealth-tracker"
-    },
-    {
-      "id": "b-MyData__myid",
-      "project": "myid",
-      "path": "b-MyData/myid",
-      "category": "b-MyData",
-      "name": "myID",
-      "framework": "vanilla",
-      "deploy_name": "myid",
-      "url": "https://diegonmarcos.github.io/myid"
-    },
-    {
-      "id": "b-MyData__mymaps-mytrips",
-      "project": "mymaps-mytrips",
-      "path": "b-MyData/mymaps-mytrips",
-      "category": "b-MyData",
-      "name": "MyMaps MyTrips",
-      "framework": "vue",
-      "deploy_name": "mymaps-mytrips",
-      "url": "https://diegonmarcos.github.io/mymaps-mytrips"
-    },
-    {
-      "id": "b-MyData__myphotos",
-      "project": "myphotos",
-      "path": "b-MyData/myphotos",
-      "category": "b-MyData",
-      "name": "MyPhotos",
-      "framework": "vanilla",
-      "deploy_name": "myphotos",
-      "url": "https://diegonmarcos.github.io/myphotos"
-    },
-    {
-      "id": "b-Profiles__myprofile",
-      "project": "myprofile",
-      "path": "b-Profiles/myprofile",
-      "category": "b-Profiles",
-      "name": "MyProfile",
-      "framework": "sveltekit",
-      "deploy_name": "myprofile",
-      "url": "https://diegonmarcos.github.io/myprofile"
-    },
-    {
-      "id": "b-Projects__galaxy",
-      "project": "galaxy",
-      "path": "b-Projects/galaxy",
-      "category": "b-Projects",
-      "name": "Galaxy",
-      "framework": "sveltekit",
-      "deploy_name": "galaxy",
-      "url": "https://diegonmarcos.github.io/galaxy"
-    },
-    {
-      "id": "c-Circus__carto",
-      "project": "carto",
-      "path": "c-Circus/carto",
-      "category": "c-Circus",
-      "name": "Carto",
-      "framework": "vanilla",
-      "deploy_name": "carto",
-      "url": "https://diegonmarcos.github.io/carto"
-    },
-    {
-      "id": "c-Circus__games",
-      "project": "games",
-      "path": "c-Circus/games",
-      "category": "c-Circus",
-      "name": "Games",
-      "framework": "sveltekit",
-      "deploy_name": "games",
-      "url": "https://diegonmarcos.github.io/games"
-    },
-    {
-      "id": "c-Circus__movies",
-      "project": "movies",
-      "path": "c-Circus/movies",
-      "category": "c-Circus",
-      "name": "Movies",
-      "framework": "vue",
-      "deploy_name": "movies",
-      "url": "https://diegonmarcos.github.io/movies"
-    },
-    {
-      "id": "c-Circus__music",
-      "project": "music",
-      "path": "c-Circus/music",
-      "category": "c-Circus",
-      "name": "Music",
-      "framework": "vue",
-      "deploy_name": "music",
-      "url": "https://diegonmarcos.github.io/music"
-    },
-    {
-      "id": "c-LabTools__Music_DAW_LLMS",
-      "project": "Music_DAW_LLMS",
-      "path": "c-LabTools/Music_DAW_LLMS",
-      "category": "c-LabTools",
-      "name": "LMMS",
-      "framework": "vanilla",
-      "deploy_name": "Music_DAW_LLMS",
-      "url": "https://diegonmarcos.github.io/Music_DAW_LLMS"
-    },
-    {
-      "id": "c-LabTools__Music_DJ-Mixer_Mixxx",
-      "project": "Music_DJ-Mixer_Mixxx",
-      "path": "c-LabTools/Music_DJ-Mixer_Mixxx",
-      "category": "c-LabTools",
-      "name": "Mixxx",
-      "framework": "vanilla",
-      "deploy_name": "Music_DJ-Mixer_Mixxx",
-      "url": "https://diegonmarcos.github.io/Music_DJ-Mixer_Mixxx"
-    },
-    {
-      "id": "c-LabTools__central_bank",
-      "project": "central_bank",
-      "path": "c-LabTools/central_bank",
-      "category": "c-LabTools",
-      "name": "CentralBank",
-      "framework": "vanilla",
-      "deploy_name": "central_bank",
-      "url": "https://diegonmarcos.github.io/central_bank"
-    },
-    {
-      "id": "c-LabTools__fin-terminal",
-      "project": "fin-terminal",
-      "path": "c-LabTools/fin-terminal",
-      "category": "c-LabTools",
-      "name": "FinTerminal",
-      "framework": "vanilla",
-      "deploy_name": "fin-terminal",
-      "url": "https://diegonmarcos.github.io/fin-terminal"
-    },
-    {
-      "id": "c-LabTools__market_watch",
-      "project": "market_watch",
-      "path": "c-LabTools/market_watch",
-      "category": "c-LabTools",
-      "name": "MarketWatch",
-      "framework": "vanilla",
-      "deploy_name": "market_watch",
-      "url": "https://diegonmarcos.github.io/market_watch"
-    },
-    {
-      "id": "c-LabTools__news",
-      "project": "news",
-      "path": "c-LabTools/news",
-      "category": "c-LabTools",
-      "name": "GDELTNews",
-      "framework": "vanilla",
-      "deploy_name": "news",
-      "url": "https://diegonmarcos.github.io/news"
-    },
-    {
-      "id": "c-LabTools__sailytics",
-      "project": "sailytics",
-      "path": "c-LabTools/sailytics",
-      "category": "c-LabTools",
-      "name": "Sailyng",
-      "framework": "vanilla",
-      "deploy_name": "sailytics",
-      "url": "https://diegonmarcos.github.io/sailytics"
-    },
-    {
-      "id": "c-Suite__json-vision",
-      "project": "json-vision",
-      "path": "c-Suite/json-vision",
-      "category": "c-Suite",
-      "name": "JSON Vision",
-      "framework": "vue",
-      "deploy_name": "json-vision",
-      "url": "https://diegonmarcos.github.io/json-vision"
-    },
-    {
-      "id": "c-Suite__myhealth-feedyourself",
-      "project": "myhealth-feedyourself",
-      "path": "c-Suite/myhealth-feedyourself",
-      "category": "c-Suite",
-      "name": "MyHealth FeedYourself",
-      "framework": "vanilla",
-      "deploy_name": "myhealth-feedyourself",
-      "url": "https://diegonmarcos.github.io/myhealth-feedyourself"
-    },
-    {
-      "id": "c-Suite__mymail",
-      "project": "mymail",
-      "path": "c-Suite/mymail",
-      "category": "c-Suite",
-      "name": "MyMail",
-      "framework": "vanilla",
-      "deploy_name": "mymail",
-      "url": "https://diegonmarcos.github.io/mymail"
-    },
-    {
-      "id": "c-Suite__mymaps",
-      "project": "mymaps",
-      "path": "c-Suite/mymaps",
-      "category": "c-Suite",
-      "name": "MyMaps",
-      "framework": "vanilla",
-      "deploy_name": "mymaps",
-      "url": "https://diegonmarcos.github.io/mymaps"
-    },
-    {
-      "id": "c-Suite__mymaps-maps",
-      "project": "mymaps-maps",
-      "path": "c-Suite/mymaps-maps",
-      "category": "c-Suite",
-      "name": "MyMaps Maps",
-      "framework": "sveltekit",
-      "deploy_name": "mymaps-maps",
-      "url": "https://diegonmarcos.github.io/mymaps-maps"
-    },
-    {
-      "id": "c-Suite__mymaps-navigation",
-      "project": "mymaps-navigation",
-      "path": "c-Suite/mymaps-navigation",
-      "category": "c-Suite",
-      "name": "MyMaps Navigation",
-      "framework": "sveltekit",
-      "deploy_name": "mymaps-navigation",
-      "url": "https://diegonmarcos.github.io/mymaps-navigation"
-    },
-    {
-      "id": "c-Suite__suite",
-      "project": "suite",
-      "path": "c-Suite/suite",
-      "category": "c-Suite",
-      "name": "Suite",
-      "framework": "vanilla",
-      "deploy_name": "suite",
-      "url": "https://diegonmarcos.github.io/suite"
-    },
-    {
-      "id": "c-Suite__tldraw",
-      "project": "tldraw",
-      "path": "c-Suite/tldraw",
-      "category": "c-Suite",
-      "name": "tldraw",
-      "framework": "react",
-      "deploy_name": "tldraw",
-      "url": "https://diegonmarcos.github.io/tldraw"
-    },
-    {
-      "id": "e-Others__others",
-      "project": "others",
-      "path": "e-Others/others",
-      "category": "e-Others",
-      "name": "Others",
-      "framework": "vanilla",
-      "deploy_name": "others",
-      "url": "https://diegonmarcos.github.io/others"
-    }
-  ]
+  "front_pages": []
 }
 ;
 })();

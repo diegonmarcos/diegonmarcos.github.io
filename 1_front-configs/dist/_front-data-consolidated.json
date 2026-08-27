@@ -670,145 +670,6 @@
     },
     {
       "category": "a-Portals",
-      "project": "cloud-mobile",
-      "key": "a-Portals__cloud-mobile",
-      "path": "a-Portals/cloud-mobile",
-      "build": {
-        "name": "Cloud Mobile",
-        "framework": "vanilla",
-        "port": 8036,
-        "src": "src",
-        "dist": "dist",
-        "build": [
-          {
-            "_doc": "Wrap every *.json in src/data/ as a globalThis.PORTAL_DATA[<key>] companion (data-*.json.js). Engine: front-data-json-js-wrapper.sh.",
-            "mod": "data_wrap",
-            "dir": "src/data"
-          },
-          {
-            "mod": "copy",
-            "files": "data-*.json.js",
-            "from": "src/data"
-          },
-          {
-            "mod": "esbuild",
-            "input": "src/app/main.ts",
-            "output": "script.js",
-            "format": "iife",
-            "target": "es2020"
-          },
-          {
-            "mod": "sass",
-            "input": "src/scss/main.scss",
-            "output": "style.css"
-          },
-          {
-            "_doc": "Generates every real independent page from the data manifests under src/data/ (shell.json + sections-core.json + sections-content.json + mock-apps.json — split by domain, see generate-pages.mjs). Runs after sass/esbuild so generated pages can reference the real style.css/script.js paths; the shell template registers the service worker itself (see main.ts) rather than relying on the sw_register injector, since that mod only targets a fixed file list and this project has dozens of generated pages at varying depths. 'manifest' here just anchors the data directory — generate-pages.mjs reads all 4 files from dirname(manifest).",
-            "mod": "page_gen",
-            "manifest": "src/data/shell.json"
-          },
-          {
-            "mod": "copy",
-            "files": "manifest.webmanifest",
-            "from": "src"
-          },
-          {
-            "mod": "symlink",
-            "files": "src/public"
-          },
-          {
-            "_doc": "MUST run last — hashes the dist artifacts above to derive BUILD_HASH and inject it into the SW bundle.",
-            "mod": "esbuild_sw",
-            "input": "src/app/service-worker.ts",
-            "output": "script-service-worker.js",
-            "format": "iife",
-            "target": "es2020",
-            "hash_of": [
-              "index.html",
-              "script.js",
-              "style.css"
-            ],
-            "precache": [
-              "./",
-              "./index.html",
-              "./style.css",
-              "./script.js"
-            ]
-          }
-        ],
-        "serve": {
-          "mode": "auto",
-          "dir": "src",
-          "watch": [
-            {
-              "mod": "sass",
-              "input": "scss/main.scss",
-              "output": "style.css"
-            },
-            {
-              "mod": "esbuild",
-              "input": "app/main.ts",
-              "output": "script.js",
-              "format": "iife",
-              "target": "es2020"
-            }
-          ]
-        },
-        "deploy": {}
-      },
-      "has_package_json": true,
-      "has_manifest": true,
-      "has_dist": true,
-      "package": {
-        "name": "cloud-mobile",
-        "version": "1.0.0",
-        "description": "Web replica of the Cloud SuperApp Android launcher UI",
-        "main": "dist/index.html",
-        "scripts": {
-          "build": "bash build.sh build",
-          "dev": "bash build.sh dev",
-          "clean": "bash build.sh clean",
-          "lint": "eslint src/typescript/**/*.ts",
-          "format": "prettier --write \"src/**/*.{ts,scss}\""
-        },
-        "keywords": [
-          "cloud",
-          "mobile",
-          "launcher",
-          "typescript",
-          "sass"
-        ],
-        "author": "Diego Nepomuceno Marcos",
-        "license": "MIT",
-        "devDependencies": {
-          "@types/node": "^20.10.0",
-          "@typescript-eslint/eslint-plugin": "^6.13.0",
-          "@typescript-eslint/parser": "^6.13.0",
-          "esbuild": "^0.19.8",
-          "eslint": "^8.54.0",
-          "prettier": "^3.1.0",
-          "sass": "^1.69.5",
-          "typescript": "^5.3.2"
-        }
-      },
-      "manifest": {
-        "name": "Cloud SuperApp — Mobile UI",
-        "short_name": "Cloud Mobile",
-        "start_url": "./index.html",
-        "display": "standalone",
-        "background_color": "#000000",
-        "theme_color": "#000000",
-        "icons": [
-          {
-            "src": "public/favicon.svg",
-            "sizes": "any",
-            "type": "image/svg+xml"
-          }
-        ]
-      }
-    },
-    {
-      "category": "a-Portals",
       "project": "cloud",
       "key": "a-Portals__cloud",
       "path": "a-Portals/cloud",
@@ -978,6 +839,145 @@
           "sass": "^1.69.5",
           "typescript": "^5.3.2"
         }
+      }
+    },
+    {
+      "category": "a-Portals",
+      "project": "cloud-mobile",
+      "key": "a-Portals__cloud-mobile",
+      "path": "a-Portals/cloud-mobile",
+      "build": {
+        "name": "Cloud Mobile",
+        "framework": "vanilla",
+        "port": 8036,
+        "src": "src",
+        "dist": "dist",
+        "build": [
+          {
+            "_doc": "Wrap every *.json in src/data/ as a globalThis.PORTAL_DATA[<key>] companion (data-*.json.js). Engine: front-data-json-js-wrapper.sh.",
+            "mod": "data_wrap",
+            "dir": "src/data"
+          },
+          {
+            "mod": "copy",
+            "files": "data-*.json.js",
+            "from": "src/data"
+          },
+          {
+            "mod": "esbuild",
+            "input": "src/app/main.ts",
+            "output": "script.js",
+            "format": "iife",
+            "target": "es2020"
+          },
+          {
+            "mod": "sass",
+            "input": "src/scss/main.scss",
+            "output": "style.css"
+          },
+          {
+            "_doc": "Generates every real independent page from the data manifests under src/data/ (shell.json + sections-core.json + sections-content.json + mock-apps.json — split by domain, see generate-pages.mjs). Runs after sass/esbuild so generated pages can reference the real style.css/script.js paths; the shell template registers the service worker itself (see main.ts) rather than relying on the sw_register injector, since that mod only targets a fixed file list and this project has dozens of generated pages at varying depths. 'manifest' here just anchors the data directory — generate-pages.mjs reads all 4 files from dirname(manifest).",
+            "mod": "page_gen",
+            "manifest": "src/data/shell.json"
+          },
+          {
+            "mod": "copy",
+            "files": "manifest.webmanifest",
+            "from": "src"
+          },
+          {
+            "mod": "symlink",
+            "files": "src/public"
+          },
+          {
+            "_doc": "MUST run last — hashes the dist artifacts above to derive BUILD_HASH and inject it into the SW bundle.",
+            "mod": "esbuild_sw",
+            "input": "src/app/service-worker.ts",
+            "output": "script-service-worker.js",
+            "format": "iife",
+            "target": "es2020",
+            "hash_of": [
+              "index.html",
+              "script.js",
+              "style.css"
+            ],
+            "precache": [
+              "./",
+              "./index.html",
+              "./style.css",
+              "./script.js"
+            ]
+          }
+        ],
+        "serve": {
+          "mode": "auto",
+          "dir": "src",
+          "watch": [
+            {
+              "mod": "sass",
+              "input": "scss/main.scss",
+              "output": "style.css"
+            },
+            {
+              "mod": "esbuild",
+              "input": "app/main.ts",
+              "output": "script.js",
+              "format": "iife",
+              "target": "es2020"
+            }
+          ]
+        },
+        "deploy": {}
+      },
+      "has_package_json": true,
+      "has_manifest": true,
+      "has_dist": true,
+      "package": {
+        "name": "cloud-mobile",
+        "version": "1.0.0",
+        "description": "Web replica of the Cloud SuperApp Android launcher UI",
+        "main": "dist/index.html",
+        "scripts": {
+          "build": "bash build.sh build",
+          "dev": "bash build.sh dev",
+          "clean": "bash build.sh clean",
+          "lint": "eslint src/typescript/**/*.ts",
+          "format": "prettier --write \"src/**/*.{ts,scss}\""
+        },
+        "keywords": [
+          "cloud",
+          "mobile",
+          "launcher",
+          "typescript",
+          "sass"
+        ],
+        "author": "Diego Nepomuceno Marcos",
+        "license": "MIT",
+        "devDependencies": {
+          "@types/node": "^20.10.0",
+          "@typescript-eslint/eslint-plugin": "^6.13.0",
+          "@typescript-eslint/parser": "^6.13.0",
+          "esbuild": "^0.19.8",
+          "eslint": "^8.54.0",
+          "prettier": "^3.1.0",
+          "sass": "^1.69.5",
+          "typescript": "^5.3.2"
+        }
+      },
+      "manifest": {
+        "name": "Cloud SuperApp — Mobile UI",
+        "short_name": "Cloud Mobile",
+        "start_url": "./index.html",
+        "display": "standalone",
+        "background_color": "#000000",
+        "theme_color": "#000000",
+        "icons": [
+          {
+            "src": "public/favicon.svg",
+            "sizes": "any",
+            "type": "image/svg+xml"
+          }
+        ]
       }
     },
     {
@@ -2066,11 +2066,11 @@
     },
     {
       "category": "b-MyData",
-      "project": "myTrackers",
-      "key": "b-MyData__myTrackers",
-      "path": "b-MyData/myTrackers",
+      "project": "myhealth",
+      "key": "b-MyData__myhealth",
+      "path": "b-MyData/myhealth",
       "build": {
-        "name": "MyTrackers",
+        "name": "MyHealth",
         "framework": "vanilla",
         "port": 8026,
         "src": "src",
@@ -2269,100 +2269,6 @@
           {
             "mod": "symlink",
             "files": "public"
-          },
-          {
-            "_doc": "Inject navigator.serviceWorker.register(...) before </head>. MUST run BEFORE esbuild_sw so the modified HTML feeds into BUILD_HASH.",
-            "mod": "sw_register",
-            "files": "index.html"
-          },
-          {
-            "_doc": "Inject single-namespace observability SDK (Sentry/OpenObserve-style). Mirrors console.* + errors + SW lifecycle to OPFS console.log. window.consoleLogs.{captureException, captureMessage, addBreadcrumb, read, readJSON, tail, clear, download}.",
-            "mod": "console_log",
-            "files": "index.html"
-          },
-          {
-            "_doc": "MUST run last — hashes the dist artifacts above to derive BUILD_HASH and inject it into the SW bundle.",
-            "mod": "esbuild_sw",
-            "input": "src/typescript/script-service-worker.ts",
-            "output": "script-service-worker.js",
-            "format": "iife",
-            "target": "es2020",
-            "hash_of": [
-              "index.html",
-              "script.js",
-              "style.css"
-            ],
-            "precache": [
-              "./",
-              "./index.html",
-              "./script.js",
-              "./style.css"
-            ]
-          }
-        ],
-        "serve": {
-          "mode": "auto",
-          "dir": "src",
-          "watch": [
-            {
-              "mod": "sass",
-              "input": "scss/main.scss",
-              "output": "style.css"
-            },
-            {
-              "mod": "esbuild",
-              "input": "typescript/main.ts",
-              "output": "script.js",
-              "format": "iife",
-              "target": "es2020"
-            }
-          ]
-        },
-        "deploy": {}
-      },
-      "has_package_json": false,
-      "has_manifest": false,
-      "has_dist": true
-    },
-    {
-      "category": "b-MyData",
-      "project": "myhealth",
-      "key": "b-MyData__myhealth",
-      "path": "b-MyData/myhealth",
-      "build": {
-        "name": "MyHealth",
-        "framework": "vanilla",
-        "port": 8026,
-        "src": "src",
-        "dist": "dist",
-        "build": [
-          {
-            "_doc": "Wrap every *.json in src/data/ as a globalThis.PORTAL_DATA[<key>] companion (data-*.json.js). Engine: front-data-json-js-wrapper.sh.",
-            "mod": "data_wrap",
-            "dir": "src/data"
-          },
-          {
-            "_doc": "Ship the wrapped data-*.json.js companions to dist/ root, so HTML can load them with <script src=\"data-<KEY>.json.js\"></script> — no fetch, no CORS.",
-            "mod": "copy",
-            "files": "data-*.json.js",
-            "from": "src/data"
-          },
-          {
-            "mod": "sass",
-            "input": "src/scss/main.scss",
-            "output": "style.css"
-          },
-          {
-            "mod": "esbuild",
-            "input": "src/typescript/main.ts",
-            "output": "script.js",
-            "format": "iife",
-            "target": "es2020"
-          },
-          {
-            "mod": "copy",
-            "files": "index.html",
-            "from": "src"
           },
           {
             "_doc": "Inject navigator.serviceWorker.register(...) before </head>. MUST run BEFORE esbuild_sw so the modified HTML feeds into BUILD_HASH.",
@@ -2652,6 +2558,100 @@
       "has_dist": true
     },
     {
+      "category": "b-MyData",
+      "project": "myTrackers",
+      "key": "b-MyData__myTrackers",
+      "path": "b-MyData/myTrackers",
+      "build": {
+        "name": "MyTrackers",
+        "framework": "vanilla",
+        "port": 8026,
+        "src": "src",
+        "dist": "dist",
+        "build": [
+          {
+            "_doc": "Wrap every *.json in src/data/ as a globalThis.PORTAL_DATA[<key>] companion (data-*.json.js). Engine: front-data-json-js-wrapper.sh.",
+            "mod": "data_wrap",
+            "dir": "src/data"
+          },
+          {
+            "_doc": "Ship the wrapped data-*.json.js companions to dist/ root, so HTML can load them with <script src=\"data-<KEY>.json.js\"></script> — no fetch, no CORS.",
+            "mod": "copy",
+            "files": "data-*.json.js",
+            "from": "src/data"
+          },
+          {
+            "mod": "sass",
+            "input": "src/scss/main.scss",
+            "output": "style.css"
+          },
+          {
+            "mod": "esbuild",
+            "input": "src/typescript/main.ts",
+            "output": "script.js",
+            "format": "iife",
+            "target": "es2020"
+          },
+          {
+            "mod": "copy",
+            "files": "index.html",
+            "from": "src"
+          },
+          {
+            "_doc": "Inject navigator.serviceWorker.register(...) before </head>. MUST run BEFORE esbuild_sw so the modified HTML feeds into BUILD_HASH.",
+            "mod": "sw_register",
+            "files": "index.html"
+          },
+          {
+            "_doc": "Inject single-namespace observability SDK (Sentry/OpenObserve-style). Mirrors console.* + errors + SW lifecycle to OPFS console.log. window.consoleLogs.{captureException, captureMessage, addBreadcrumb, read, readJSON, tail, clear, download}.",
+            "mod": "console_log",
+            "files": "index.html"
+          },
+          {
+            "_doc": "MUST run last — hashes the dist artifacts above to derive BUILD_HASH and inject it into the SW bundle.",
+            "mod": "esbuild_sw",
+            "input": "src/typescript/script-service-worker.ts",
+            "output": "script-service-worker.js",
+            "format": "iife",
+            "target": "es2020",
+            "hash_of": [
+              "index.html",
+              "script.js",
+              "style.css"
+            ],
+            "precache": [
+              "./",
+              "./index.html",
+              "./script.js",
+              "./style.css"
+            ]
+          }
+        ],
+        "serve": {
+          "mode": "auto",
+          "dir": "src",
+          "watch": [
+            {
+              "mod": "sass",
+              "input": "scss/main.scss",
+              "output": "style.css"
+            },
+            {
+              "mod": "esbuild",
+              "input": "typescript/main.ts",
+              "output": "script.js",
+              "format": "iife",
+              "target": "es2020"
+            }
+          ]
+        },
+        "deploy": {}
+      },
+      "has_package_json": false,
+      "has_manifest": false,
+      "has_dist": true
+    },
+    {
       "category": "b-Profiles",
       "project": "myprofile",
       "key": "b-Profiles__myprofile",
@@ -2695,6 +2695,54 @@
           "svelte-check": "^4.0.0",
           "typescript": "^5.0.0",
           "vite": "^6.0.0"
+        }
+      }
+    },
+    {
+      "category": "b-Projects",
+      "project": "galaxy",
+      "key": "b-Projects__galaxy",
+      "path": "b-Projects/galaxy",
+      "build": {
+        "name": "Galaxy",
+        "framework": "sveltekit",
+        "port": 8024,
+        "src": "src",
+        "dist": "dist",
+        "build": [
+          {
+            "mod": "sveltekit"
+          }
+        ],
+        "serve": {
+          "mode": "sveltekit"
+        },
+        "deploy": {}
+      },
+      "has_package_json": true,
+      "has_manifest": false,
+      "has_dist": true,
+      "package": {
+        "name": "galaxy",
+        "description": "Constellation Hub — landing page linking to each planet",
+        "private": true,
+        "type": "module",
+        "scripts": {
+          "dev": "vite dev --port 8024",
+          "build": "vite build",
+          "preview": "vite preview",
+          "prepare": "svelte-kit sync || echo ''",
+          "check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
+          "test": "node test/hub.test.mjs"
+        },
+        "devDependencies": {
+          "@sveltejs/adapter-static": "^3.0.10",
+          "@sveltejs/kit": "^2.47.1",
+          "@sveltejs/vite-plugin-svelte": "^6.2.1",
+          "svelte": "^5.41.0",
+          "svelte-check": "^4.3.3",
+          "typescript": "^5.9.3",
+          "vite": "^7.1.10"
         }
       }
     },
@@ -2799,54 +2847,6 @@
           "@sveltejs/kit": "^2.47.1",
           "@sveltejs/vite-plugin-svelte": "^6.2.1",
           "@types/three": "^0.169.0",
-          "svelte": "^5.41.0",
-          "svelte-check": "^4.3.3",
-          "typescript": "^5.9.3",
-          "vite": "^7.1.10"
-        }
-      }
-    },
-    {
-      "category": "b-Projects",
-      "project": "galaxy",
-      "key": "b-Projects__galaxy",
-      "path": "b-Projects/galaxy",
-      "build": {
-        "name": "Galaxy",
-        "framework": "sveltekit",
-        "port": 8024,
-        "src": "src",
-        "dist": "dist",
-        "build": [
-          {
-            "mod": "sveltekit"
-          }
-        ],
-        "serve": {
-          "mode": "sveltekit"
-        },
-        "deploy": {}
-      },
-      "has_package_json": true,
-      "has_manifest": false,
-      "has_dist": true,
-      "package": {
-        "name": "galaxy",
-        "description": "Constellation Hub — landing page linking to each planet",
-        "private": true,
-        "type": "module",
-        "scripts": {
-          "dev": "vite dev --port 8024",
-          "build": "vite build",
-          "preview": "vite preview",
-          "prepare": "svelte-kit sync || echo ''",
-          "check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
-          "test": "node test/hub.test.mjs"
-        },
-        "devDependencies": {
-          "@sveltejs/adapter-static": "^3.0.10",
-          "@sveltejs/kit": "^2.47.1",
-          "@sveltejs/vite-plugin-svelte": "^6.2.1",
           "svelte": "^5.41.0",
           "svelte-check": "^4.3.3",
           "typescript": "^5.9.3",
@@ -3109,132 +3109,6 @@
           "vue-tsc": "^2.0.0"
         }
       }
-    },
-    {
-      "category": "c-LabTools",
-      "project": "Music_DAW_LLMS",
-      "key": "c-LabTools__Music_DAW_LLMS",
-      "path": "c-LabTools/Music_DAW_LLMS",
-      "build": {
-        "name": "LMMS",
-        "framework": "vanilla",
-        "port": 8035,
-        "src": "src",
-        "dist": "dist",
-        "build": [
-          {
-            "mod": "data_wrap",
-            "dir": "src/data"
-          },
-          {
-            "mod": "copy",
-            "files": "data-*.json.js",
-            "from": "src/data"
-          },
-          {
-            "mod": "sass",
-            "input": "src/scss/main.scss",
-            "output": "style.css"
-          },
-          {
-            "mod": "esbuild",
-            "input": "src/typescript/main.ts",
-            "output": "script.js",
-            "format": "iife",
-            "target": "es2020"
-          },
-          {
-            "mod": "copy",
-            "files": "index.html",
-            "from": "src"
-          }
-        ],
-        "serve": {
-          "mode": "auto",
-          "dir": "src",
-          "watch": [
-            {
-              "mod": "sass",
-              "input": "scss/main.scss",
-              "output": "style.css"
-            },
-            {
-              "mod": "esbuild",
-              "input": "typescript/main.ts",
-              "output": "script.js",
-              "format": "iife",
-              "target": "es2020"
-            }
-          ]
-        },
-        "deploy": {}
-      },
-      "has_package_json": false,
-      "has_manifest": false,
-      "has_dist": true
-    },
-    {
-      "category": "c-LabTools",
-      "project": "Music_DJ-Mixer_Mixxx",
-      "key": "c-LabTools__Music_DJ-Mixer_Mixxx",
-      "path": "c-LabTools/Music_DJ-Mixer_Mixxx",
-      "build": {
-        "name": "Mixxx",
-        "framework": "vanilla",
-        "port": 8034,
-        "src": "src",
-        "dist": "dist",
-        "build": [
-          {
-            "mod": "data_wrap",
-            "dir": "src/data"
-          },
-          {
-            "mod": "copy",
-            "files": "data-*.json.js",
-            "from": "src/data"
-          },
-          {
-            "mod": "sass",
-            "input": "src/scss/main.scss",
-            "output": "style.css"
-          },
-          {
-            "mod": "esbuild",
-            "input": "src/typescript/main.ts",
-            "output": "script.js",
-            "format": "iife",
-            "target": "es2020"
-          },
-          {
-            "mod": "copy",
-            "files": "index.html",
-            "from": "src"
-          }
-        ],
-        "serve": {
-          "mode": "auto",
-          "dir": "src",
-          "watch": [
-            {
-              "mod": "sass",
-              "input": "scss/main.scss",
-              "output": "style.css"
-            },
-            {
-              "mod": "esbuild",
-              "input": "typescript/main.ts",
-              "output": "script.js",
-              "format": "iife",
-              "target": "es2020"
-            }
-          ]
-        },
-        "deploy": {}
-      },
-      "has_package_json": false,
-      "has_manifest": false,
-      "has_dist": true
     },
     {
       "category": "c-LabTools",
@@ -3557,6 +3431,132 @@
           "typescript": "^5.3.2"
         }
       }
+    },
+    {
+      "category": "c-LabTools",
+      "project": "Music_DAW_LLMS",
+      "key": "c-LabTools__Music_DAW_LLMS",
+      "path": "c-LabTools/Music_DAW_LLMS",
+      "build": {
+        "name": "LMMS",
+        "framework": "vanilla",
+        "port": 8035,
+        "src": "src",
+        "dist": "dist",
+        "build": [
+          {
+            "mod": "data_wrap",
+            "dir": "src/data"
+          },
+          {
+            "mod": "copy",
+            "files": "data-*.json.js",
+            "from": "src/data"
+          },
+          {
+            "mod": "sass",
+            "input": "src/scss/main.scss",
+            "output": "style.css"
+          },
+          {
+            "mod": "esbuild",
+            "input": "src/typescript/main.ts",
+            "output": "script.js",
+            "format": "iife",
+            "target": "es2020"
+          },
+          {
+            "mod": "copy",
+            "files": "index.html",
+            "from": "src"
+          }
+        ],
+        "serve": {
+          "mode": "auto",
+          "dir": "src",
+          "watch": [
+            {
+              "mod": "sass",
+              "input": "scss/main.scss",
+              "output": "style.css"
+            },
+            {
+              "mod": "esbuild",
+              "input": "typescript/main.ts",
+              "output": "script.js",
+              "format": "iife",
+              "target": "es2020"
+            }
+          ]
+        },
+        "deploy": {}
+      },
+      "has_package_json": false,
+      "has_manifest": false,
+      "has_dist": true
+    },
+    {
+      "category": "c-LabTools",
+      "project": "Music_DJ-Mixer_Mixxx",
+      "key": "c-LabTools__Music_DJ-Mixer_Mixxx",
+      "path": "c-LabTools/Music_DJ-Mixer_Mixxx",
+      "build": {
+        "name": "Mixxx",
+        "framework": "vanilla",
+        "port": 8034,
+        "src": "src",
+        "dist": "dist",
+        "build": [
+          {
+            "mod": "data_wrap",
+            "dir": "src/data"
+          },
+          {
+            "mod": "copy",
+            "files": "data-*.json.js",
+            "from": "src/data"
+          },
+          {
+            "mod": "sass",
+            "input": "src/scss/main.scss",
+            "output": "style.css"
+          },
+          {
+            "mod": "esbuild",
+            "input": "src/typescript/main.ts",
+            "output": "script.js",
+            "format": "iife",
+            "target": "es2020"
+          },
+          {
+            "mod": "copy",
+            "files": "index.html",
+            "from": "src"
+          }
+        ],
+        "serve": {
+          "mode": "auto",
+          "dir": "src",
+          "watch": [
+            {
+              "mod": "sass",
+              "input": "scss/main.scss",
+              "output": "style.css"
+            },
+            {
+              "mod": "esbuild",
+              "input": "typescript/main.ts",
+              "output": "script.js",
+              "format": "iife",
+              "target": "es2020"
+            }
+          ]
+        },
+        "deploy": {}
+      },
+      "has_package_json": false,
+      "has_manifest": false,
+      "has_dist": true
     },
     {
       "category": "c-LabTools",
@@ -4104,6 +4104,100 @@
     },
     {
       "category": "c-Suite",
+      "project": "mymaps",
+      "key": "c-Suite__mymaps",
+      "path": "c-Suite/mymaps",
+      "build": {
+        "name": "MyMaps",
+        "framework": "vanilla",
+        "port": 8027,
+        "src": "src",
+        "dist": "dist",
+        "build": [
+          {
+            "_doc": "Wrap every *.json in src/data/ as a globalThis.PORTAL_DATA[<key>] companion (data-*.json.js). Engine: front-data-json-js-wrapper.sh.",
+            "mod": "data_wrap",
+            "dir": "src/data"
+          },
+          {
+            "_doc": "Ship the wrapped data-*.json.js companions to dist/ root, so HTML can load them with <script src=\"data-<KEY>.json.js\"></script> — no fetch, no CORS.",
+            "mod": "copy",
+            "files": "data-*.json.js",
+            "from": "src/data"
+          },
+          {
+            "mod": "sass",
+            "input": "src/scss/main.scss",
+            "output": "style.css"
+          },
+          {
+            "mod": "esbuild",
+            "input": "src/typescript/main.ts",
+            "output": "script.js",
+            "format": "iife",
+            "target": "es2020"
+          },
+          {
+            "mod": "copy",
+            "files": "index.html",
+            "from": "src"
+          },
+          {
+            "_doc": "Inject navigator.serviceWorker.register(...) before </head>. MUST run BEFORE esbuild_sw so the modified HTML feeds into BUILD_HASH.",
+            "mod": "sw_register",
+            "files": "index.html"
+          },
+          {
+            "_doc": "Inject single-namespace observability SDK (Sentry/OpenObserve-style). Mirrors console.* + errors + SW lifecycle to OPFS console.log. window.consoleLogs.{captureException, captureMessage, addBreadcrumb, read, readJSON, tail, clear, download}.",
+            "mod": "console_log",
+            "files": "index.html"
+          },
+          {
+            "_doc": "MUST run last — hashes the dist artifacts above to derive BUILD_HASH and inject it into the SW bundle.",
+            "mod": "esbuild_sw",
+            "input": "src/typescript/script-service-worker.ts",
+            "output": "script-service-worker.js",
+            "format": "iife",
+            "target": "es2020",
+            "hash_of": [
+              "index.html",
+              "script.js",
+              "style.css"
+            ],
+            "precache": [
+              "./",
+              "./index.html",
+              "./script.js",
+              "./style.css"
+            ]
+          }
+        ],
+        "serve": {
+          "mode": "auto",
+          "dir": "src",
+          "watch": [
+            {
+              "mod": "sass",
+              "input": "scss/main.scss",
+              "output": "style.css"
+            },
+            {
+              "mod": "esbuild",
+              "input": "typescript/main.ts",
+              "output": "script.js",
+              "format": "iife",
+              "target": "es2020"
+            }
+          ]
+        },
+        "deploy": {}
+      },
+      "has_package_json": false,
+      "has_manifest": false,
+      "has_dist": true
+    },
+    {
+      "category": "c-Suite",
       "project": "mymaps-maps",
       "key": "c-Suite__mymaps-maps",
       "path": "c-Suite/mymaps-maps",
@@ -4221,100 +4315,6 @@
           "maplibre-gl": "^5.17.0"
         }
       }
-    },
-    {
-      "category": "c-Suite",
-      "project": "mymaps",
-      "key": "c-Suite__mymaps",
-      "path": "c-Suite/mymaps",
-      "build": {
-        "name": "MyMaps",
-        "framework": "vanilla",
-        "port": 8027,
-        "src": "src",
-        "dist": "dist",
-        "build": [
-          {
-            "_doc": "Wrap every *.json in src/data/ as a globalThis.PORTAL_DATA[<key>] companion (data-*.json.js). Engine: front-data-json-js-wrapper.sh.",
-            "mod": "data_wrap",
-            "dir": "src/data"
-          },
-          {
-            "_doc": "Ship the wrapped data-*.json.js companions to dist/ root, so HTML can load them with <script src=\"data-<KEY>.json.js\"></script> — no fetch, no CORS.",
-            "mod": "copy",
-            "files": "data-*.json.js",
-            "from": "src/data"
-          },
-          {
-            "mod": "sass",
-            "input": "src/scss/main.scss",
-            "output": "style.css"
-          },
-          {
-            "mod": "esbuild",
-            "input": "src/typescript/main.ts",
-            "output": "script.js",
-            "format": "iife",
-            "target": "es2020"
-          },
-          {
-            "mod": "copy",
-            "files": "index.html",
-            "from": "src"
-          },
-          {
-            "_doc": "Inject navigator.serviceWorker.register(...) before </head>. MUST run BEFORE esbuild_sw so the modified HTML feeds into BUILD_HASH.",
-            "mod": "sw_register",
-            "files": "index.html"
-          },
-          {
-            "_doc": "Inject single-namespace observability SDK (Sentry/OpenObserve-style). Mirrors console.* + errors + SW lifecycle to OPFS console.log. window.consoleLogs.{captureException, captureMessage, addBreadcrumb, read, readJSON, tail, clear, download}.",
-            "mod": "console_log",
-            "files": "index.html"
-          },
-          {
-            "_doc": "MUST run last — hashes the dist artifacts above to derive BUILD_HASH and inject it into the SW bundle.",
-            "mod": "esbuild_sw",
-            "input": "src/typescript/script-service-worker.ts",
-            "output": "script-service-worker.js",
-            "format": "iife",
-            "target": "es2020",
-            "hash_of": [
-              "index.html",
-              "script.js",
-              "style.css"
-            ],
-            "precache": [
-              "./",
-              "./index.html",
-              "./script.js",
-              "./style.css"
-            ]
-          }
-        ],
-        "serve": {
-          "mode": "auto",
-          "dir": "src",
-          "watch": [
-            {
-              "mod": "sass",
-              "input": "scss/main.scss",
-              "output": "style.css"
-            },
-            {
-              "mod": "esbuild",
-              "input": "typescript/main.ts",
-              "output": "script.js",
-              "format": "iife",
-              "target": "es2020"
-            }
-          ]
-        },
-        "deploy": {}
-      },
-      "has_package_json": false,
-      "has_manifest": false,
-      "has_dist": true
     },
     {
       "category": "c-Suite",
@@ -5218,7 +5218,7 @@
         "slide": "projects",
         "column": "AI & IDE",
         "label": "my-ai",
-        "url": "https://github.com/diegonmarcos/cloud-unix/tree/main/da_my-ai",
+        "url": "https://github.com/diegonmarcos/cloud-u-linux/tree/main/da_my-ai",
         "icon": "brain.svg"
       },
       {
@@ -5226,7 +5226,7 @@
         "slide": "projects",
         "column": "AI & IDE",
         "label": "my-konsole",
-        "url": "https://github.com/diegonmarcos/cloud-unix/tree/main/da_my-konsole",
+        "url": "https://github.com/diegonmarcos/cloud-u-linux/tree/main/da_my-konsole",
         "icon": "device-desktop.svg"
       },
       {
@@ -5626,7 +5626,7 @@
         "slide": "projects",
         "column": "BOOT MANAGER",
         "label": "ReFind",
-        "url": "https://github.com/diegonmarcos/cloud-unix/tree/main/aa_bootloader",
+        "url": "https://github.com/diegonmarcos/cloud-infra-desktop/tree/main/aa_bootloader",
         "icon": "bolt.svg"
       },
       {
@@ -5634,7 +5634,7 @@
         "slide": "projects",
         "column": "BOOT MANAGER",
         "label": "NixOS",
-        "url": "https://github.com/diegonmarcos/cloud-unix/tree/main/aa_desk-usr_x86_surface-linux_nixos",
+        "url": "https://github.com/diegonmarcos/cloud-infra-desktop/tree/main/aa_desk-usr_x86_surface-linux_nixos",
         "icon": "world.svg"
       },
       {
@@ -5642,7 +5642,7 @@
         "slide": "projects",
         "column": "BOOT MANAGER",
         "label": "KDE Plasma",
-        "url": "https://github.com/diegonmarcos/cloud-android/tree/main/aa_cloud-superapp/libs/kde-connect",
+        "url": "https://github.com/diegonmarcos/cloud-u-android/tree/main/aa_cloud-superapp/libs/kde-connect",
         "icon": "settings.svg"
       },
       {
@@ -5650,7 +5650,7 @@
         "slide": "projects",
         "column": "BOOT MANAGER",
         "label": "Kali Linux",
-        "url": "https://github.com/diegonmarcos/cloud-unix/tree/main/ab_desk-security_x86_kali-linux_kali",
+        "url": "https://github.com/diegonmarcos/cloud-infra-desktop/tree/main/ab_desk-security_x86_kali-linux_kali",
         "icon": "bolt.svg"
       },
       {
@@ -5658,7 +5658,7 @@
         "slide": "projects",
         "column": "BOOT MANAGER",
         "label": "NixSlim",
-        "url": "https://github.com/diegonmarcos/cloud-unix/tree/main/ca_ventoy_fallback_usb/debian-slim-surface_fallback_usb",
+        "url": "https://github.com/diegonmarcos/cloud-infra-desktop/tree/main/ca_ventoy_fallback_usb/debian-slim-surface_fallback_usb",
         "icon": "settings.svg"
       },
       {
@@ -5666,7 +5666,7 @@
         "slide": "projects",
         "column": "OS FLAKES",
         "label": "OS Flakes",
-        "url": "https://github.com/diegonmarcos/cloud-unix/tree/main/ba_flakes_desktop",
+        "url": "https://github.com/diegonmarcos/cloud-infra-desktop/tree/main/ba_flakes_desktop",
         "icon": "world.svg"
       },
       {
@@ -5674,7 +5674,7 @@
         "slide": "projects",
         "column": "OS FLAKES",
         "label": "System Protection",
-        "url": "https://github.com/diegonmarcos/cloud-unix/tree/main/ba_flakes_desktop",
+        "url": "https://github.com/diegonmarcos/cloud-infra-desktop/tree/main/ba_flakes_desktop",
         "icon": "lock.svg"
       },
       {
@@ -5682,7 +5682,7 @@
         "slide": "projects",
         "column": "OS FLAKES",
         "label": "Watchdog",
-        "url": "https://github.com/diegonmarcos/cloud-unix/tree/main/_aba_cloud-servers-x/B1_vm-pilot-watchdog",
+        "url": "https://github.com/diegonmarcos/cloud-infra-desktop/tree/main/_aba_cloud-servers-x/B1_vm-pilot-watchdog",
         "icon": "bolt.svg"
       },
       {
@@ -5690,7 +5690,7 @@
         "slide": "projects",
         "column": "HM FLAKES",
         "label": "HM Flakes",
-        "url": "https://github.com/diegonmarcos/cloud-unix/tree/main/bb_flakes_termux",
+        "url": "https://github.com/diegonmarcos/cloud-infra-desktop/tree/main/bb_flakes_termux",
         "icon": "settings.svg"
       },
       {
@@ -5698,7 +5698,7 @@
         "slide": "projects",
         "column": "HM FLAKES",
         "label": "CI/CD",
-        "url": "https://github.com/diegonmarcos/cloud-unix/tree/main/1_cicd/src/cicd",
+        "url": "https://github.com/diegonmarcos/cloud-infra-desktop/tree/main/1_cicd/src/cicd",
         "icon": "git-branch.svg"
       },
       {
@@ -5706,7 +5706,7 @@
         "slide": "projects",
         "column": "HM FLAKES",
         "label": "VM Pilot",
-        "url": "https://github.com/diegonmarcos/cloud-unix/tree/main/_aba_cloud-servers-x",
+        "url": "https://github.com/diegonmarcos/cloud-infra-desktop/tree/main/_aba_cloud-servers-x",
         "icon": "device-desktop.svg"
       },
       {
@@ -5714,7 +5714,7 @@
         "slide": "projects",
         "column": "UNIX BIN",
         "label": "Unix Bin",
-        "url": "https://github.com/diegonmarcos/cloud-unix/tree/main/ca_containers_user",
+        "url": "https://github.com/diegonmarcos/cloud-infra-desktop/tree/main/ca_containers_user",
         "icon": "git-branch.svg"
       },
       {
@@ -5722,7 +5722,7 @@
         "slide": "projects",
         "column": "UNIX BIN",
         "label": "myAI",
-        "url": "https://github.com/diegonmarcos/cloud-unix/tree/main/da_my-ai",
+        "url": "https://github.com/diegonmarcos/cloud-u-linux/tree/main/da_my-ai",
         "icon": "brain.svg"
       },
       {
@@ -5730,7 +5730,7 @@
         "slide": "projects",
         "column": "UNIX BIN",
         "label": "myBrowser",
-        "url": "https://github.com/diegonmarcos/cloud-unix/tree/main/da_my-browser-qute",
+        "url": "https://github.com/diegonmarcos/cloud-u-linux/tree/main/da_my-browser-qute",
         "icon": "world.svg"
       },
       {
@@ -5738,7 +5738,7 @@
         "slide": "projects",
         "column": "UNIX BIN",
         "label": "myKonsole",
-        "url": "https://github.com/diegonmarcos/cloud-unix/tree/main/da_my-konsole",
+        "url": "https://github.com/diegonmarcos/cloud-u-linux/tree/main/da_my-konsole",
         "icon": "device-desktop.svg"
       },
       {
@@ -5746,7 +5746,7 @@
         "slide": "projects",
         "column": "ANDROID APK",
         "label": "Browser",
-        "url": "https://github.com/diegonmarcos/cloud-android/tree/main/aa_cloud-browser",
+        "url": "https://github.com/diegonmarcos/cloud-u-android/tree/main/aa_cloud-browser",
         "icon": "world.svg"
       },
       {
@@ -5754,7 +5754,7 @@
         "slide": "projects",
         "column": "ANDROID APK",
         "label": "Chat",
-        "url": "https://github.com/diegonmarcos/cloud-android/tree/main/aa_cloud-chat",
+        "url": "https://github.com/diegonmarcos/cloud-u-android/tree/main/aa_cloud-chat",
         "icon": "brand-whatsapp.svg"
       },
       {
@@ -5762,7 +5762,7 @@
         "slide": "projects",
         "column": "ANDROID APK",
         "label": "Dialer",
-        "url": "https://github.com/diegonmarcos/cloud-android/tree/main/aa_cloud-dialer",
+        "url": "https://github.com/diegonmarcos/cloud-u-android/tree/main/aa_cloud-dialer",
         "icon": "link.svg"
       },
       {
@@ -5770,7 +5770,7 @@
         "slide": "projects",
         "column": "ANDROID APK",
         "label": "IDE",
-        "url": "https://github.com/diegonmarcos/cloud-android/tree/main/aa_cloud-ide",
+        "url": "https://github.com/diegonmarcos/cloud-u-android/tree/main/aa_cloud-ide",
         "icon": "code.svg"
       },
       {
@@ -5778,7 +5778,7 @@
         "slide": "projects",
         "column": "ANDROID APK",
         "label": "Keyboard",
-        "url": "https://github.com/diegonmarcos/cloud-android/tree/main/aa_cloud-keyboard",
+        "url": "https://github.com/diegonmarcos/cloud-u-android/tree/main/aa_cloud-keyboard",
         "icon": "file-type-html.svg"
       },
       {
@@ -5786,7 +5786,7 @@
         "slide": "projects",
         "column": "ANDROID APK",
         "label": "Keyboard Libs",
-        "url": "https://github.com/diegonmarcos/cloud-android/tree/main/aa_cloud-keyboard-libs",
+        "url": "https://github.com/diegonmarcos/cloud-u-android/tree/main/aa_cloud-keyboard-libs",
         "icon": "file-type-html.svg"
       },
       {
@@ -5794,7 +5794,7 @@
         "slide": "projects",
         "column": "ANDROID APK",
         "label": "Mail",
-        "url": "https://github.com/diegonmarcos/cloud-android/tree/main/aa_cloud-mail",
+        "url": "https://github.com/diegonmarcos/cloud-u-android/tree/main/aa_cloud-mail",
         "icon": "mail.svg"
       },
       {
@@ -5802,7 +5802,7 @@
         "slide": "projects",
         "column": "ANDROID APK",
         "label": "Matrix",
-        "url": "https://github.com/diegonmarcos/cloud-android/tree/main/aa_cloud-matrix",
+        "url": "https://github.com/diegonmarcos/cloud-u-android/tree/main/aa_cloud-matrix",
         "icon": "brand-whatsapp.svg"
       },
       {
@@ -5810,7 +5810,7 @@
         "slide": "projects",
         "column": "ANDROID APK",
         "label": "Media Center",
-        "url": "https://github.com/diegonmarcos/cloud-android/tree/main/aa_cloud-media-center",
+        "url": "https://github.com/diegonmarcos/cloud-u-android/tree/main/aa_cloud-media-center",
         "icon": "headphones.svg"
       },
       {
@@ -5818,7 +5818,7 @@
         "slide": "projects",
         "column": "ANDROID APK",
         "label": "Nav",
-        "url": "https://github.com/diegonmarcos/cloud-android/tree/main/aa_cloud-nav",
+        "url": "https://github.com/diegonmarcos/cloud-u-android/tree/main/aa_cloud-nav",
         "icon": "world-longitude.svg"
       },
       {
@@ -5826,7 +5826,7 @@
         "slide": "projects",
         "column": "ANDROID APK",
         "label": "SuperApp",
-        "url": "https://github.com/diegonmarcos/cloud-android/tree/main/aa_cloud-superapp",
+        "url": "https://github.com/diegonmarcos/cloud-u-android/tree/main/aa_cloud-superapp",
         "icon": "device-gamepad.svg"
       },
       {
@@ -5834,7 +5834,7 @@
         "slide": "projects",
         "column": "ANDROID APK",
         "label": "Vault",
-        "url": "https://github.com/diegonmarcos/cloud-android/tree/main/aa_cloud-vault",
+        "url": "https://github.com/diegonmarcos/cloud-u-android/tree/main/aa_cloud-vault",
         "icon": "lock.svg"
       },
       {
@@ -5842,7 +5842,7 @@
         "slide": "projects",
         "column": "ANDROID APK",
         "label": "Wallet",
-        "url": "https://github.com/diegonmarcos/cloud-android/tree/main/aa_cloud-wallet",
+        "url": "https://github.com/diegonmarcos/cloud-u-android/tree/main/aa_cloud-wallet",
         "icon": "ledger.svg"
       },
       {
@@ -6610,7 +6610,7 @@
         "slide": "projects",
         "column": "UNIX",
         "label": "Boot Manager",
-        "url": "https://github.com/diegonmarcos/cloud-unix/tree/main/aa_bootloader",
+        "url": "https://github.com/diegonmarcos/cloud-infra-desktop/tree/main/aa_bootloader",
         "icon": "bolt.svg"
       },
       {
@@ -6618,7 +6618,7 @@
         "slide": "projects",
         "column": "UNIX",
         "label": "OS Flakes",
-        "url": "https://github.com/diegonmarcos/cloud-unix/tree/main/ba_flakes_desktop",
+        "url": "https://github.com/diegonmarcos/cloud-infra-desktop/tree/main/ba_flakes_desktop",
         "icon": "world.svg"
       },
       {
@@ -6626,7 +6626,7 @@
         "slide": "projects",
         "column": "UNIX",
         "label": "Home-Manager Flakes",
-        "url": "https://github.com/diegonmarcos/cloud-unix/tree/main/bb_flakes_termux",
+        "url": "https://github.com/diegonmarcos/cloud-infra-desktop/tree/main/bb_flakes_termux",
         "icon": "settings.svg"
       },
       {
@@ -6634,7 +6634,7 @@
         "slide": "projects",
         "column": "UNIX",
         "label": "Unix Binaries",
-        "url": "https://github.com/diegonmarcos/cloud-unix/tree/main/ca_containers_user",
+        "url": "https://github.com/diegonmarcos/cloud-infra-desktop/tree/main/ca_containers_user",
         "icon": "git-branch.svg"
       },
       {
@@ -6642,7 +6642,7 @@
         "slide": "projects",
         "column": "UNIX",
         "label": "Android Apks",
-        "url": "https://github.com/diegonmarcos/cloud-android/tree/main/aa_cloud-superapp",
+        "url": "https://github.com/diegonmarcos/cloud-u-android/tree/main/aa_cloud-superapp",
         "icon": "device-gamepad.svg"
       },
       {

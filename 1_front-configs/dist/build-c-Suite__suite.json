@@ -94,7 +94,7 @@
     "analytics": {
       "matomo": {
         "container_id": "container_odwLIyPV",
-        "url": "https://analytics.diegonmarcos.com/js/container_odwLIyPV.js"
+        "url": "https://analytics.diegonmarcos.com/matomo/js/container_odwLIyPV.js"
       },
       "umami": {
         "site_id": "937cbde7-5ec2-450c-9d6a-8117423ac12f",

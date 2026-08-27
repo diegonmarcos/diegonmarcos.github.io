@@ -85,7 +85,7 @@
 
     const script = document.createElement('script');
     script.async = true;
-    script.src = 'https://analytics.diegonmarcos.com/js/container_odwLIyPV.js';
+    script.src = 'https://analytics.diegonmarcos.com/matomo/js/container_odwLIyPV.js';
     document.head.appendChild(script);
 
     // Cleanup interval on unmount

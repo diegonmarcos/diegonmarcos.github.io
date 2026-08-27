@@ -898,7 +898,7 @@ const options = {
   service_worker_options: void 0,
   templates: {
     app: ({ head, body, assets, nonce, env }) => '<!DOCTYPE html>\n<html lang="en">\n	<head>\n		<meta charset="utf-8" />\n		<link rel="icon" href="' + assets + '/favicon.png" />\n		<meta name="viewport" content="width=device-width, initial-scale=1" />\n		<meta name="description" content="Geographic Data Visualization with d3-geo" />\n		<title>Maps - Geographic Visualization</title>\n		' + head + `
-<!-- Matomo Tag Manager --><script>var _mtm = window._mtm = window._mtm || [];_mtm.push({'mtm.startTime': (new Date().getTime()), 'event': 'mtm.Start'});(function() {  var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0];  g.async=true; g.src='https://analytics.diegonmarcos.com/js/container_odwLIyPV.js';  s.parentNode.insertBefore(g,s);})();<\/script><!-- End Matomo Tag Manager -->
+<!-- Matomo Tag Manager --><script>var _mtm = window._mtm = window._mtm || [];_mtm.push({'mtm.startTime': (new Date().getTime()), 'event': 'mtm.Start'});(function() {  var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0];  g.async=true; g.src='https://analytics.diegonmarcos.com/matomo/js/container_odwLIyPV.js';  s.parentNode.insertBefore(g,s);})();<\/script><!-- End Matomo Tag Manager -->
 <!-- Umami Analytics -->
 <script async src="https://analytics.diegonmarcos.com/umami/script.js" data-website-id="937cbde7-5ec2-450c-9d6a-8117423ac12f"><\/script>
 <!-- End Umami Analytics -->

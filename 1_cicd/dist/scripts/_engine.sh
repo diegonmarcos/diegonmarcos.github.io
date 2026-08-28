@@ -1,17 +1,4 @@
 #!/bin/sh
-
-# ╔══════════════════════════════════════════════════════════════════╗
-# ║                                                                  ║
-# ║   GENERATED FILE — DO NOT EDIT                                   ║
-# ║                                                                  ║
-# ║   Source : 1_cicd/src/scripts/_engine.sh
-# ║   Engine : 1_cicd/src/scripts/front-ship-repo-workflow-engine.sh
-# ║   Rebuild: ./9_others/build.sh
-# ║                                                                  ║
-# ║   Manual edits will be overwritten on next build.                ║
-# ║                                                                  ║
-# ╚══════════════════════════════════════════════════════════════════╝
-
 #═══════════════════════════════════════════════════════════════
 # Universal Build Engine v1.0
 # Configured by build.json — identical in every project
@@ -1618,7 +1605,13 @@ cmd_analytics() {
     # alternates — a project may use src/ as a stub and src_static/ as the real one
     # (e.g. central_bank), so collect all existing dirs rather than stopping at first.
     local _src_dirs=""
-    for _candidate in "$CFG_SRC" src src_static; do
+    # src_vue/public/static are NOT optional extras: they are where whole
+    # projects keep their real pages (cloud -> src_vue+public, cv_pdf/leafy ->
+    # public, games -> static). Scanning only src/ meant inject never saw them
+    # AND `analytics check` never saw them either - checker and fixer share this
+    # list, so the gap reported itself as 100% covered. Any new layout must be
+    # added here, or it silently drops out of both.
+    for _candidate in "$CFG_SRC" src src_static src_vue public static; do
         local _d="$PROJECT_DIR/$_candidate"
         [ -d "$_d" ] || continue
         # de-dupe (in case $CFG_SRC == src)

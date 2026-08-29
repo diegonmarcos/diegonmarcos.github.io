@@ -90,6 +90,12 @@ const undeclared = [...byFolder.keys()].filter((k) => !folderNames[k]).sort();
 const order = [...declared, ...undeclared];
 
 const rows = [
+  { group: "Apply" },
+  // The sorter re-applies every rule to every message on each poll, so this is
+  // "do it now" rather than a separate backfill path. action: targets are
+  // Android-only -- the web build renders this as an inert row, which is
+  // correct: there is nothing for a static page to call.
+  ["Re-apply rules to all mail", "commit, push, deploy — then tap", { "target": "action:reapply_mail_rules" }],
   { group: "How routing works" },
   ["Order", "lowest priority number wins"],
   ["First match", "stops — later rules never see the message"],
@@ -146,14 +152,42 @@ function blockRange(id) {
   return null;
 }
 
-const oldRules = blockRange("rules");
-if (oldRules) lines.splice(oldRules[0], oldRules[1] - oldRules[0] + 1);
+// The page is wanted in two places: Mail (next to Accounts, where you read the
+// mail) and Configs (/config/rules, where you change the rules). Same block,
+// same generated content -- one source, so they cannot drift apart.
+function splice_into(sectionKey, anchorId, after) {
+  const secStart = lines.findIndex((l) => l.startsWith(`    "${sectionKey}": {`));
+  if (secStart === -1) throw new Error(`no ${sectionKey} section`);
+  const secEnd = lines.findIndex((l, i) => i > secStart && /^    "[a-z0-9_-]+": \{/.test(l));
+  const end = secEnd === -1 ? lines.length : secEnd;
 
-const acct = blockRange("accounts");
-if (!acct) throw new Error("mail section has no accounts block to anchor to");
-lines.splice(acct[1] + 1, 0, block);
+  const find = (id) => {
+    const start = lines.findIndex(
+      (l, i) => i > secStart && i < end && l.startsWith(`        { "id": "${id}"`),
+    );
+    if (start === -1) return null;
+    for (let i = start; i < end; i++) {
+      if (/^        \]\s*\},?$/.test(lines[i]) || /^        \} \},?$/.test(lines[i])) return [start, i];
+      if (i > start && lines[i].startsWith(`        { "id": "`)) break;
+    }
+    return null;
+  };
+
+  const existing = find("rules");
+  if (existing) lines.splice(existing[0], existing[1] - existing[0] + 1);
+
+  const anchor = find(anchorId);
+  if (!anchor) throw new Error(`${sectionKey} has no ${anchorId} block to anchor to`);
+  lines.splice(after ? anchor[1] + 1 : anchor[0], 0, block);
+}
+
+splice_into("mail", "accounts", true);
+// Configs has no Accounts page (profile, wg, kde, ai, launcher, ...), so
+// "before accounts" resolves to first -- ahead of Profile, which is the
+// identity page and the closest thing Configs has to one.
+splice_into("config", "profile", false);
 
 writeFileSync(TARGET, lines.join("\n"));
 console.log(
-  `rules page: ${rows.length} rows, ${byFolder.size} tags, placed after accounts`,
+  `rules page: ${rows.length} rows, ${byFolder.size} tags -> mail (after accounts) + config (first)`,
 );

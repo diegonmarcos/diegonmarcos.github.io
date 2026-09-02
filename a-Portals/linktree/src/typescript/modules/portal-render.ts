@@ -17,7 +17,12 @@ import professionalProfiles from '../../data/professional-profiles.json';
 interface Link        { label: string; url: string; icon: string; preview?: string; download?: string; }
 interface IconItem    { url: string; title?: string; label?: string; icon: string; preview?: string; }
 interface Column      { header: string; header_url?: string | null; links: Link[]; row?: number; }
-interface ToolsExtras { primary_link?: Link; profile_icons?: IconItem[]; }
+// `primary_link` is the single large button a tools card has always had.
+// `primary_links` adds any number BELOW it, same styling — the Cloud card
+// needs two (the Cloud portal and Cloud Mobile). Kept as a separate optional
+// key rather than widening primary_link to an array so every existing card
+// keeps working untouched.
+interface ToolsExtras { primary_link?: Link; primary_links?: Link[]; profile_icons?: IconItem[]; }
 
 interface RowHeader   { title?: string; }
 interface SlideTools {
@@ -224,8 +229,13 @@ function renderToolsSlide(slide: SlideTools): HTMLElement {
     for (const col of slide.columns) dashboard.appendChild(renderColumn(col));
     linksContainer.appendChild(dashboard);
   }
-  if (slide.extras?.primary_link) {
-    const lk = slide.extras.primary_link;
+  // Singular first, then the list — so a card can stack several large
+  // buttons in declared order without the data having to repeat itself.
+  const primaryLinks: Link[] = [
+    ...(slide.extras?.primary_link ? [slide.extras.primary_link] : []),
+    ...(slide.extras?.primary_links ?? []),
+  ];
+  for (const lk of primaryLinks) {
     const a = el('a', { class: 'link', href: lk.url, target: '_blank' });
     a.appendChild(iconImg(lk.icon));
     a.appendChild(document.createTextNode(lk.label));

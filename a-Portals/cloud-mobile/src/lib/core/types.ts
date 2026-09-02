@@ -30,7 +30,27 @@ export interface ConstellationData {
   apps: ConstellationApp[];
 }
 
-export type PageEntry = string | { id: string; label: string; target?: string; rows?: [string, string][]; items?: ItemRef[]; constellation?: ConstellationData };
+export type PageEntry = string | {
+  id: string;
+  label: string;
+  icon?: string;
+  target?: string;
+  // Hidden pages are filtered out of every child list (section grid, tab
+  // strip, drawer, radial menus) but stay declared, generated and routable —
+  // mirrors Sections.kt's pages/allPages split.
+  hidden?: boolean;
+  // Aggregator + content page bodies, all optional and freely combined.
+  tiles?: Tile[];
+  groups?: TileGroup[];
+  stack?: StackCard[];
+  rows?: [string, string][];
+  items?: ItemRef[];
+  // Bodies that come from somewhere other than this page's own data:
+  // 'linktree' (linktree.json), 'mirror' (+ mirror: sectionId), 'phone-apps'.
+  render?: 'linktree' | 'mirror' | 'phone-apps';
+  mirror?: string;
+  constellation?: ConstellationData;
+};
 
 export interface TileGroup {
   title: string;
@@ -83,25 +103,12 @@ export interface StackCard {
   rows?: [string, string][];
 }
 
-export interface SectionMode {
-  type: 'tiles' | 'stack';
-  tiles?: Tile[];
-  cards?: StackCard[];
-}
-
 export interface Section {
   label: string;
   icon: string;
   color: string;
   tiles?: Tile[];
   pages?: PageEntry[];
-  // Communication / Infos / Tools (TabbedSectionFragment):
-  apps?: SectionMode;
-  admin?: SectionMode;
-  // Suite only:
-  tabs?: string[];
-  cloud?: { footer?: Tile; tileGroups: TileGroup[] };
-  phone?: { footer?: Tile; appGroups: AppGroup[] };
 }
 
 export interface PortalUser {
@@ -199,7 +206,7 @@ export interface MockAppsData {
   phoneFolders: PhoneFolder[];
 }
 
-// Suite > Browser > Linktree page data — see src/data/linktree.json.
+// Browser > Linktree page data — see src/data/linktree.json.
 export interface LinktreeTile {
   label: string;
   icon: string;

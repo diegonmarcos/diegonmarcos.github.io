@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-    <title>Infos · Cloud SuperApp</title>
+    <title>Projects · Cloud SuperApp</title>
     <link rel="icon" type="image/svg+xml" href="../public/favicon.svg">
     <link rel="manifest" href="../manifest.webmanifest">
     <meta name="theme-color" content="#000000">
@@ -62,27 +62,23 @@
         <main class="content" id="content">
             <div class="page-tabs-bar">
                 <div class="page-tabs" role="tablist">
-                <a class="page-tabs__item is-active" href="/cloud-mobile/infos/">Apps</a>
-                <a class="page-tabs__item" href="/cloud-mobile/infos/admin/">Admin</a>
+                <a class="page-tabs__item is-active" href="/cloud-mobile/infos/my-pm/">My-PM</a>
+                <a class="page-tabs__item" href="/cloud-mobile/infos/work-pm/">Work-PM</a>
+                <a class="page-tabs__item" href="/cloud-mobile/infos/cloud/">Cloud</a>
                 </div>
             </div>
             <div class="tile-grid tile-grid--dense" role="list">
-                <a class="tile tile--purple" href="/cloud-mobile/calendar/" role="listitem" aria-label="Calendar"><span class="tile__icon" aria-hidden="true"><svg width="32" height="32" fill="none" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <a class="tile tile--purple" href="/cloud-mobile/cal/" role="listitem" aria-label="Calendar"><span class="tile__icon" aria-hidden="true"><svg width="32" height="32" fill="none" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
   <path d="M4 8a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v12a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2v-12z" />
   <path d="M8 3v4" />
   <path d="M16 3v4" />
   <path d="M4 11h16" />
 </svg></span><span class="tile__label">Calendar</span></a>
-                <a class="tile tile--purple" href="/cloud-mobile/rss/" role="listitem" aria-label="RSS feeds"><span class="tile__icon" aria-hidden="true"><svg width="32" height="32" fill="none" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-  <path d="M4 4a16 16 0 0 1 16 16" />
-  <path d="M4 11a9 9 0 0 1 9 9" />
-  <circle cx="5" cy="19" r="1" />
-</svg></span><span class="tile__label">RSS feeds</span></a>
             </div>
             <h2 class="stack-divider">Details</h2>
             <div class="stack-list">
                 <div class="stack-card">
-                <button class="stack-card__header" type="button" aria-expanded="true"><a class="stack-card__title" href="/cloud-mobile/calendar/">Calendar</a><span class="stack-card__chevron" aria-hidden="true">⌄</span></button>
+                <button class="stack-card__header" type="button" aria-expanded="true"><a class="stack-card__title" href="/cloud-mobile/cal/">Calendar</a><span class="stack-card__chevron" aria-hidden="true">⌄</span></button>
                 <div class="stack-card__content"><p class="stack-card__subtitle">Month view · CalDAV sync pending</p><div class="calendar-card" data-calendar-card></div></div>
             </div>
                 <div class="stack-card">
@@ -90,20 +86,16 @@
                 <div class="stack-card__content"><p class="stack-card__subtitle">Agenda · Day · ToDo</p><div class="stack-card__body"><div class="page-body__skeleton-row"></div></div></div>
             </div>
                 <div class="stack-card">
-                <button class="stack-card__header" type="button" aria-expanded="true"><a class="stack-card__title" href="/cloud-mobile/rss/">News & RSS</a><span class="stack-card__chevron" aria-hidden="true">⌄</span></button>
-                <div class="stack-card__content"><p class="stack-card__subtitle">Curated open channels (not ntfy)</p><div class="stack-card__body"><div class="page-body__skeleton-row"></div></div></div>
+                <button class="stack-card__header" type="button" aria-expanded="true"><a class="stack-card__title" href="/cloud-mobile/myfin/dashboard/">Myfin</a><span class="stack-card__chevron" aria-hidden="true">⌄</span></button>
+                <div class="stack-card__content"><p class="stack-card__subtitle">Personal finance</p><div class="stack-card__stats"><div class="stack-card__stat"><span>Net worth</span><b>€42,310</b></div><div class="stack-card__stat"><span>This month</span><b>+€1,240</b></div><div class="stack-card__stat"><span>Spending</span><b>€2,180</b></div><div class="stack-card__stat"><span>Holdings</span><b>12</b></div></div></div>
             </div>
                 <div class="stack-card">
-                <button class="stack-card__header" type="button" aria-expanded="true"><span class="stack-card__title">Myfin</span><span class="stack-card__chevron" aria-hidden="true">⌄</span></button>
-                <div class="stack-card__content"><p class="stack-card__subtitle">Personal finance</p><div class="stack-card__stats"><div class="stack-card__stat"><span>Net worth</span><b>—</b></div><div class="stack-card__stat"><span>This month</span><b>—</b></div><div class="stack-card__stat"><span>Spending</span><b>—</b></div><div class="stack-card__stat"><span>Holdings</span><b>—</b></div></div></div>
-            </div>
-                <div class="stack-card">
-                <button class="stack-card__header" type="button" aria-expanded="true"><span class="stack-card__title">Myhealth</span><span class="stack-card__chevron" aria-hidden="true">⌄</span></button>
-                <div class="stack-card__content"><p class="stack-card__subtitle">Health & fitness</p><div class="stack-card__stats"><div class="stack-card__stat"><span>Steps today</span><b>—</b></div><div class="stack-card__stat"><span>Sleep</span><b>—</b></div><div class="stack-card__stat"><span>Resting HR</span><b>—</b></div><div class="stack-card__stat"><span>Workouts (wk)</span><b>—</b></div></div></div>
+                <button class="stack-card__header" type="button" aria-expanded="true"><a class="stack-card__title" href="/cloud-mobile/health/summary/">Myhealth</a><span class="stack-card__chevron" aria-hidden="true">⌄</span></button>
+                <div class="stack-card__content"><p class="stack-card__subtitle">Health & fitness</p><div class="stack-card__stats"><div class="stack-card__stat"><span>Steps today</span><b>8,432</b></div><div class="stack-card__stat"><span>Sleep</span><b>7h 12m</b></div><div class="stack-card__stat"><span>Resting HR</span><b>58 bpm</b></div><div class="stack-card__stat"><span>Workouts (wk)</span><b>3</b></div></div></div>
             </div>
                 <div class="stack-card">
                 <button class="stack-card__header" type="button" aria-expanded="true"><span class="stack-card__title">Nav Maps Tracker</span><span class="stack-card__chevron" aria-hidden="true">⌄</span></button>
-                <div class="stack-card__content"><p class="stack-card__subtitle">Cloud-Nav location tracker</p><div class="stack-card__stats"><div class="stack-card__stat"><span>Last location</span><b>—</b></div><div class="stack-card__stat"><span>Trips this week</span><b>—</b></div><div class="stack-card__stat"><span>Distance (wk)</span><b>—</b></div><div class="stack-card__stat"><span>Places logged</span><b>—</b></div></div></div>
+                <div class="stack-card__content"><p class="stack-card__subtitle">Cloud-Nav location tracker</p><div class="stack-card__stats"><div class="stack-card__stat"><span>Last location</span><b>Madrid, ES</b></div><div class="stack-card__stat"><span>Trips this week</span><b>5</b></div><div class="stack-card__stat"><span>Distance (wk)</span><b>142 km</b></div><div class="stack-card__stat"><span>Places logged</span><b>31</b></div></div></div>
             </div>
             </div>
             <footer class="site-footer">
@@ -173,10 +165,10 @@
 
         <nav class="bottom-nav" id="bottom-nav" aria-label="Primary">
             <a class="bottom-nav__item" href="../communication/" data-longpress="communication"><img class="" src="../public/icons/chat.svg" alt=""><span>Inboxes</span></a>
-            <a class="bottom-nav__item is-active" href="../infos/" data-longpress="infos"><img class="" src="../public/icons/logs.svg" alt=""><span>Infos</span></a>
+            <a class="bottom-nav__item is-active" href="../infos/" data-longpress="infos"><img class="" src="../public/icons/logs.svg" alt=""><span>Projects</span></a>
             <a class="bottom-nav__item" href="../" data-longpress="home"><img class="" src="../public/icons/home.svg" alt=""><span>Home</span></a>
-            <a class="bottom-nav__item" href="../suite/" data-longpress="suite"><img class="" src="../public/icons/suite.svg" alt=""><span>Suite</span></a>
-            <a class="bottom-nav__item" href="../tools/" data-longpress="tools"><img class="" src="../public/icons/tools.svg" alt=""><span>Labs</span></a>
+            <a class="bottom-nav__item" href="../cloud/" data-longpress="cloud"><img class="" src="../public/icons/suite.svg" alt=""><span>Cloud</span></a>
+            <a class="bottom-nav__item" href="../phone/" data-longpress="phone"><img class="" src="../public/icons/phone.svg" alt=""><span>Phone</span></a>
         </nav>
 
         <div class="drawer-scrim" id="drawer-scrim"></div>

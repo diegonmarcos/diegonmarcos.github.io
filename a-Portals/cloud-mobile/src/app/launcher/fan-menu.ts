@@ -2,8 +2,11 @@
 //
 // Replicates the real Android app's PopupWindow that appears when you hold
 // a bottom-nav icon: press-and-hold for 380ms opens a small fan of
-// shortcuts (data.longPress[id], keyed by that item's data-longpress
-// attribute) anchored above the icon. A quick tap must keep navigating
+// shortcuts anchored above the icon, keyed by that item's data-longpress
+// attribute. The fan is that section's own VISIBLE pages (sections-core.json
+// / sections-content.json) — the single place those children are declared —
+// falling back to an explicit shell.json longPress list for ids like `home`
+// that are not a section at all. A quick tap must keep navigating
 // exactly as it did before this module existed — this only ADDS the
 // long-press branch on top of the existing <a href>, it never owns or
 // replaces that navigation: pointerdown never calls preventDefault, and
@@ -121,9 +124,27 @@ export function initFanMenu(data: PortalData): void {
     }
   }
 
+  // A bottom-nav id's fan: its section's visible pages, or the explicit
+  // shell.json list when the id is not a section (only `home` today).
+  function fanItems(id: string): LongPressItem[] {
+    const pages = data.sections[id]?.pages;
+    if (pages) {
+      return pages.flatMap((page) => {
+        if (typeof page === 'string' || page.hidden) return [];
+        return [{
+          id: page.id,
+          label: page.label,
+          icon: page.icon ?? data.sections[id].icon,
+          target: page.target ?? `page:${id}/${page.id}`,
+        }];
+      });
+    }
+    return data.longPress[id] ?? [];
+  }
+
   function openFanMenu(itemEl: HTMLElement, id: string): void {
-    const items: LongPressItem[] | undefined = data.longPress[id];
-    if (!items || items.length === 0) return;
+    const items = fanItems(id);
+    if (items.length === 0) return;
 
     closeFanMenu();
     currentItems = items;
@@ -180,7 +201,7 @@ export function initFanMenu(data: PortalData): void {
     const itemEl = target.closest<HTMLElement>('.bottom-nav__item');
     if (!itemEl) return;
     const id = itemEl.dataset.longpress;
-    if (!id || !data.longPress[id]) return;
+    if (!id || fanItems(id).length === 0) return;
 
     // Never preventDefault here — a plain quick tap must still navigate via
     // the real <a href> exactly as before.

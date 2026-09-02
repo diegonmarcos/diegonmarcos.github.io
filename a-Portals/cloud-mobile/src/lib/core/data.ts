@@ -38,7 +38,7 @@ export function getMockApps(): MockAppsData {
   return mock;
 }
 
-// Suite > Browser > Linktree page data — same PORTAL_DATA companion pattern
+// Browser > Linktree page data — same PORTAL_DATA companion pattern
 // as getMockApps() above, wired by front-data-json-js-wrapper.sh from
 // src/data/linktree.json -> data-linktree.json.js -> PORTAL_DATA['linktree'].
 export function getLinktree(): LinktreeData {

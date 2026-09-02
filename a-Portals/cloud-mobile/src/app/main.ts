@@ -80,7 +80,7 @@ document.addEventListener('DOMContentLoaded', () => {
   // Register the Service Worker after first paint — never blocks startup.
   // Skipped on file:// (no SW support). The registration path is resolved
   // against THIS script's own URL (not the page's), because pages live at
-  // arbitrary nesting depth (e.g. /suite/cloud/quickmarks/) while
+  // arbitrary nesting depth (e.g. /cloud/lnktree/) while
   // script.js and script-service-worker.js both always sit at the site
   // root — a plain relative './script-service-worker.js' would resolve
   // against the *page* URL and 404 on any nested route.

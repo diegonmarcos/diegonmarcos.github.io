@@ -4,7 +4,7 @@
 // /home-apps/ route) was a static decorative pill with no live index behind
 // it. This wires that same .search-pill up to a liquid-glass bottom sheet
 // that filters live across 3 scopes, each with its own group header:
-//   - Cloud apps  — suite.cloud.tileGroups (data.ts's getData())
+//   - Cloud apps  — the cloud section's `apps` page groups (getData())
 //   - Phone apps  — the mock installed-app list (data.ts's getMockApps()) —
 //                   inert rows, same "no real device API" treatment every
 //                   other Phone-tab tile gets elsewhere in this build.
@@ -34,7 +34,10 @@ function iconSrc(icon: string): string {
 }
 
 function collectCloudApps(data: PortalData): ResultRow[] {
-  const tileGroups = data.sections.suite?.cloud?.tileGroups ?? [];
+  const appsPage = data.sections.cloud?.pages?.find(
+    (page) => typeof page !== 'string' && page.id === 'apps',
+  );
+  const tileGroups = (typeof appsPage === 'object' && appsPage.groups) || [];
   return tileGroups.flatMap((group) => group.tiles.map((tile) => ({
     label: tile.label,
     icon: tile.icon,

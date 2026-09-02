@@ -3,7 +3,7 @@
 // The real Android app's drawer (HomeDrawerFragment) is a single
 // NavigationView list, never tabs, and never horizontal strips: a prepend
 // row ("Home Apps"), then build.json's ui.home_groups rendered as titled
-// submenus, one continuous dense vertical list — Home, Suite, Labs,
+// submenus, one continuous dense vertical list — Home, Cloud, Labs,
 // Configs, and each Linktree group in turn. When a group's tile is
 // `section:X` and that section declares .pages, each page renders as an
 // indented child row directly beneath it (real: "      └─── {label}").
@@ -90,7 +90,7 @@ function fillBanner(data: PortalData): void {
   setText('drawer-user-email', data.app.user.email);
 }
 
-// A plain row descriptor shared by every group below (Suite/Labs/Configs/
+// A plain row descriptor shared by every group below (Cloud/Labs/Configs/
 // Linktree tiles all reduce to this same {label, icon?, href} shape before
 // becoming a row).
 interface RowItem {
@@ -99,19 +99,32 @@ interface RowItem {
   href: string | null;
 }
 
-// Suite's own home-group tiles all just point back at section:suite (see
-// suite.tiles in sections-content.json) — the real per-app shortcuts live
-// one level down, in the Cloud tab's tileGroups, which is what the real
-// app's Suite group actually lists.
-function suiteRowItems(data: PortalData): RowItem[] {
-  const groups = data.sections['suite']?.cloud?.tileGroups ?? [];
+// Returns a named page of a section, or undefined — every drawer group below
+// that reads a specific page (Cloud's Apps quickmarks, Labs' Lnktree tiles)
+// goes through this rather than indexing the pages array by position.
+function sectionPage(data: PortalData, sectionId: string, pageId: string): PageEntry | undefined {
+  return data.sections[sectionId]?.pages?.find(
+    (page) => typeof page !== 'string' && page.id === pageId,
+  );
+}
+
+// Cloud's own section tiles all just point back at section:cloud (see
+// cloud.tiles in sections-core.json) — the real per-app shortcuts live one
+// level down, in the Apps page's tile groups, which is what the real app's
+// Cloud group actually lists.
+function cloudRowItems(data: PortalData): RowItem[] {
+  const page = sectionPage(data, 'cloud', 'apps');
+  const groups = (typeof page === 'object' && page.groups) || [];
   return groups
     .flatMap((group) => group.tiles)
     .map((tile) => ({ label: tile.label, icon: tile.icon, href: resolveTarget(tile.target).href }));
 }
 
+// Labs is no longer a section of its own — the APK folded it into Cloud's
+// Lnktree page, whose tiles are exactly the old Labs list.
 function labsRowItems(data: PortalData): RowItem[] {
-  const tiles = data.sections['tools']?.tiles ?? [];
+  const page = sectionPage(data, 'cloud', 'lnktree');
+  const tiles = (typeof page === 'object' && page.tiles) || [];
   return tiles.map((tile) => ({ label: tile.label, icon: tile.icon, href: resolveTarget(tile.target).href }));
 }
 
@@ -150,7 +163,7 @@ function appendGroup(container: HTMLElement, title: string, items: RowItem[]): v
 
 // Real app: HomeDrawerFragment prepends build.json's ui.home_drawer_prepend
 // (one entry: "Home Apps") above the first titled group, then renders every
-// ui.home_groups entry — Home, Suite, Labs, Configs, and each Linktree
+// ui.home_groups entry — Home, Cloud, Labs, Configs, and each Linktree
 // group — as one continuous dense vertical list, never tabs or horizontal
 // strips. "Home" itself is deliberately excluded from the Home group's own
 // rows (self-referential on a page reached from Home).
@@ -172,8 +185,10 @@ function fillDrawerList(container: HTMLElement, data: PortalData): void {
 
     // Real app: when a "Home" group tile is `section:X` and that section
     // declares .pages, each page renders as an indented child row directly
-    // beneath it ("      └─── {label}") — currently only Configs has one.
+    // beneath it ("      └─── {label}"). Hidden pages are skipped: they stay
+    // routable, they just are not advertised as children.
     section.pages?.forEach((page: PageEntry) => {
+      if (typeof page === 'object' && page.hidden) return;
       const label = typeof page === 'string' ? page : page.label;
       const pageId = typeof page === 'string' ? slugify(page) : page.id;
       const href = typeof page === 'object' && page.target
@@ -183,7 +198,7 @@ function fillDrawerList(container: HTMLElement, data: PortalData): void {
     });
   });
 
-  appendGroup(container, 'Suite', suiteRowItems(data));
+  appendGroup(container, 'Cloud', cloudRowItems(data));
   appendGroup(container, 'Labs', labsRowItems(data));
   appendGroup(container, 'Configs', configRowItems(data));
   linktreeRowGroups().forEach(([title, items]) => appendGroup(container, title, items));

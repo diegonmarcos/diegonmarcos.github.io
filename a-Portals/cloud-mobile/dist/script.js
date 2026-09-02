@@ -1,1 +1,2246 @@
-"use strict";(()=>{var ze=Object.defineProperty;var Qe=(e,t)=>()=>(e&&(t=e(e=0)),t);var Ze=(e,t)=>{for(var n in t)ze(e,n,{get:t[n],enumerable:!0})};var $e={};Ze($e,{initOverlays:()=>ge,openUpdateOverlay:()=>he});function He(e){e.hidden=!1,e.classList.add("is-open")}function Re(e){e.classList.remove("is-open"),e.hidden=!0}function Be(){let e=document.createElement("div");return e.className="overlay-sheet__scrim",e}function Xe(e){let t=document.createElement("div");t.className="overlay-sheet__header";let n=document.createElement("p");return n.className="overlay-sheet__title",n.textContent=e,t.appendChild(n),t}function Ft(e){let t=document.createElement("div");t.className="overlay-sheet__group";let n=document.createElement("p");n.className="overlay-sheet__group-title",n.textContent=e.title,t.appendChild(n);for(let o of e.items){let r=document.createElement("div");r.className="overlay-sheet__row";let i=document.createElement("span");if(i.className="overlay-sheet__row-title",i.textContent=o.title,r.appendChild(i),o.subtitle){let a=document.createElement("span");a.className="overlay-sheet__row-subtitle",a.textContent=o.subtitle,r.appendChild(a)}t.appendChild(r)}return t}function Yt(e){let t=document.getElementById("notification-center"),n=document.getElementById("dynamic-island");if(!t||!n)return;let o=Be(),r=document.createElement("div");r.className="overlay-sheet__panel";let i=Xe("Notifications");r.appendChild(i);function a(){let c=document.createElement("div");c.className="overlay-sheet__empty";let f=document.createElement("p"),p=document.createElement("strong");p.textContent=e.notificationCenter.emptyTitle,f.appendChild(p);let w=document.createElement("p");return w.textContent=e.notificationCenter.emptyBody,c.appendChild(f),c.appendChild(w),c}let s=e.notificationCenter.groups;if(s&&s.length>0){for(let f of s)r.appendChild(Ft(f));let c=document.createElement("button");c.type="button",c.className="overlay-sheet__action",c.style.color="#B794F4",c.textContent="Clear",c.addEventListener("click",()=>{for(let f of r.querySelectorAll(".overlay-sheet__group"))f.remove();c.remove(),r.appendChild(a())}),i.appendChild(c)}else r.appendChild(a());t.appendChild(o),t.appendChild(r);let l=()=>He(t),m=()=>Re(t);n.addEventListener("click",l),o.addEventListener("click",m),document.addEventListener("keydown",c=>{t.classList.contains("is-open")&&c.key==="Escape"&&m()}),document.addEventListener("click",c=>{if(!t.classList.contains("is-open"))return;let f=c.target;f instanceof Node&&(r.contains(f)||n.contains(f)||m())})}function Kt(e){let t=document.getElementById("update-overlay");if(!t)return null;let n=Be(),o=document.createElement("div");o.className="overlay-sheet__panel",o.appendChild(Xe(e.updateOverlay.title));let r=document.createElement("div");r.className="overlay-sheet__progress";let i=document.createElement("div");i.className="overlay-sheet__progress-bar",r.appendChild(i),o.appendChild(r);let a=document.createElement("p");a.className="overlay-sheet__status",o.appendChild(a);let s=document.createElement("button");s.type="button",s.className="overlay-sheet__action",s.textContent="Dismiss",o.appendChild(s),t.appendChild(n),t.appendChild(o);let l=[],m=()=>{for(let p of l)window.clearTimeout(p),window.clearInterval(p);l=[]},c=p=>{i.classList.toggle("overlay-sheet__progress-bar--indeterminate",p)},f=()=>{m(),Re(t)};return s.addEventListener("click",f),()=>{m(),s.textContent="Dismiss",He(t),a.textContent=e.updateOverlay.states.checking,c(!0);let p=window.setTimeout(()=>{a.textContent=e.updateOverlay.states.available;let w=window.setTimeout(()=>{c(!1),i.style.width="0%";let _=0,v=window.setInterval(()=>{_+=1;let A=48*_/25,H=_/25*100;if(i.style.width=`${H}%`,a.textContent=`${A.toFixed(1)} MiB / ${48 .toFixed(1)} MiB`,_>=25){window.clearInterval(v),c(!0),a.textContent=e.updateOverlay.states.installing;let b=window.setTimeout(()=>{c(!1),i.style.width="100%",a.textContent=e.updateOverlay.states.done,s.textContent="Close"},800);l.push(b)}},100);l.push(v)},500);l.push(w)},700);l.push(p)}}function he(){fe&&fe()}function ge(e){Yt(e),fe=Kt(e)}var fe,Ee=Qe(()=>{"use strict";fe=null});var ee=null;function te(){if(ee)return ee;let e=globalThis.PORTAL_DATA,t=e?.shell,n=e?.["sections-core"],o=e?.["sections-content"];if(!t||!n||!o)throw new Error("cloud-mobile portal data not loaded");return ee={...t,sections:{...n.sections,...o.sections,home:{label:"Home",icon:"home",color:"blue"}}},ee}function ve(){let t=globalThis.PORTAL_DATA?.["mock-apps"];if(!t)throw new Error("mock-apps portal data not loaded");return t}function be(){let t=globalThis.PORTAL_DATA?.linktree;if(!t)throw new Error("linktree portal data not loaded");return t}function W(e){return e?e.startsWith("https://")||e.startsWith("http://")?{href:e,external:!0}:e.startsWith("section:")?{href:U([e.slice(8)]),external:!1}:e.startsWith("page:")?{href:U(e.slice(5).split("/")),external:!1}:{href:null,external:!1}:{href:null,external:!1}}function U(e){return"/"+["cloud-mobile",...e.filter(Boolean)].join("/")+"/"}function we(){let t=document.querySelector(".shell")??document.body,n=document.createElement("div");n.className="long-press-menu",n.hidden=!0,n.setAttribute("aria-hidden","true");let o=document.createElement("div");o.className="long-press-menu-scrim",o.hidden=!0,t.appendChild(o),t.appendChild(n);let r=!1,i=null,a=!1,s=null,l=null,m=0,c=0;function f(){i!==null&&(window.clearTimeout(i),i=null)}function p(){r=!1,n.classList.remove("is-open"),n.setAttribute("aria-hidden","true"),n.hidden=!0,n.innerHTML="",o.classList.remove("is-open"),o.hidden=!0}function w(g){let y=document.createElement("div");return y.className="long-press-menu__header",y.textContent=g,y}function _(){let g=document.createElement("div");return g.className="long-press-menu__divider",g}function v(g){let y=document.createElement("button");return y.type="button",y.className="long-press-menu__row",y.textContent=g,y.setAttribute("aria-disabled","true"),y.addEventListener("click",$=>{$.preventDefault()}),y}function A(g){p();let y=g.querySelector(".tile__label")?.textContent?.trim()??"";n.appendChild(w(y)),n.appendChild(_()),n.appendChild(v("App info")),n.appendChild(v("Uninstall"));let $=g.getBoundingClientRect(),T=t.getBoundingClientRect();n.style.left=`${$.left-T.left}px`,n.style.top=`${$.bottom-T.top+6}px`,n.hidden=!1,o.hidden=!1,n.classList.add("is-open"),o.classList.add("is-open"),n.setAttribute("aria-hidden","false"),r=!0}function H(g){let y=g.target;if(!(y instanceof Element))return;let $=y.closest(".tile--app");$&&(f(),s=$,l=g.pointerId,m=g.clientX,c=g.clientY,a=!1,i=window.setTimeout(()=>{i=null,a=!0,s&&A(s)},380))}function b(g){if(i===null||g.pointerId!==l)return;let y=g.clientX-m,$=g.clientY-c;Math.hypot(y,$)>10&&f()}function L(g){g.pointerId===l&&(f(),l=null)}function x(g){if(!a)return;let y=g.target;y instanceof Element&&y.closest(".tile--app")===s&&(a=!1,g.preventDefault(),g.stopPropagation())}function N(g){r&&g.key==="Escape"&&p()}document.addEventListener("pointerdown",H),document.addEventListener("pointermove",b),document.addEventListener("pointerup",L),document.addEventListener("pointercancel",L),document.addEventListener("click",x,!0),o.addEventListener("click",p),document.addEventListener("keydown",N)}function Je(e){return`/cloud-mobile/public/icons/${e}.svg`}function ye(e){return e.toLowerCase().replace(/[^a-z0-9]+/g,"-").replace(/(^-|-$)/g,"")}function oe(e,t,n,o=!1){let r;if(e){let a=document.createElement("a");a.href=e,r=a}else r=document.createElement("span");if(r.classList.add("drawer__nav-item"),o&&r.classList.add("drawer__nav-item--child"),e||(r.classList.add("drawer__nav-item--inert"),r.setAttribute("aria-disabled","true")),n){let a=document.createElement("img");a.src=Je(n),a.alt="",r.appendChild(a)}let i=document.createElement("span");return i.textContent=t,r.appendChild(i),r}function Le(e){let t=document.createElement("p");return t.className="drawer__group-title",t.textContent=e,t}function et(e){let t=(n,o)=>{let r=document.getElementById(n);r&&(r.textContent=o)};t("drawer-app-name",e.app.name),t("drawer-app-build",e.app.build),t("drawer-user-avatar",e.app.user.initials),t("drawer-user-name",e.app.user.name),t("drawer-user-email",e.app.user.email)}function tt(e){return(e.sections.suite?.cloud?.tileGroups??[]).flatMap(n=>n.tiles).map(n=>({label:n.label,icon:n.icon,href:W(n.target).href}))}function nt(e){return(e.sections.tools?.tiles??[]).map(n=>({label:n.label,icon:n.icon,href:W(n.target).href}))}function ot(e){let t=e.sections.config;return t?.pages?t.pages.map(n=>{let o=typeof n=="string"?n:n.label,r=typeof n=="string"?ye(n):n.id,i=typeof n=="object"&&n.target?W(n.target).href:U(["config",r]);return{label:o,icon:t.icon,href:i}}):[]}function rt(){return be().groups.map(e=>[e.label,e.tiles.map(t=>({label:t.label,icon:t.icon,href:t.href??null}))])}function ne(e,t,n){n.length!==0&&(e.appendChild(Le(t)),n.forEach(o=>e.appendChild(oe(o.href,o.label,o.icon))))}function it(e,t){e.innerHTML="";let n=t.longPress.home?.find(r=>r.id==="home-apps");if(n){let{href:r}=W(n.target);e.appendChild(oe(r,n.label,n.icon))}e.appendChild(Le("Home")),[...t.bottomNav.filter(r=>r!=="home"),"config"].forEach(r=>{let i=t.sections[r];i&&(e.appendChild(oe(U([r]),i.label,i.icon)),i.pages?.forEach(a=>{let s=typeof a=="string"?a:a.label,l=typeof a=="string"?ye(a):a.id,m=typeof a=="object"&&a.target?W(a.target).href:U([r,l]);e.appendChild(oe(m,s,void 0,!0))}))}),ne(e,"Suite",tt(t)),ne(e,"Labs",nt(t)),ne(e,"Configs",ot(t)),rt().forEach(([r,i])=>ne(e,r,i))}function at(){let e=document.getElementById("hamburger-btn"),t=document.getElementById("drawer"),n=document.getElementById("drawer-scrim");if(!e||!t||!n)return;let o=()=>{t.classList.add("is-open"),n.classList.add("is-open"),t.setAttribute("aria-hidden","false"),e.setAttribute("aria-expanded","true")},r=()=>{t.classList.remove("is-open"),n.classList.remove("is-open"),t.setAttribute("aria-hidden","true"),e.setAttribute("aria-expanded","false")};e.addEventListener("click",o),n.addEventListener("click",r),document.addEventListener("keydown",i=>{i.key==="Escape"&&r()})}function Ce(e){let t=document.getElementById("drawer-nav");et(e),t&&it(t,e),at(),we()}var Se=null;function De(e){Se=e}var st={Mail:"mail",Brave:"browser",Mattermost:"chat",Obsidian:"brain",Calendar:"calendar",Vault:"lock",Claude:"sparkles",Settings:"settings"},lt=130,ct=120,dt=200,Me=28,ut=6,pt=450,mt=16,ft=700,ht=220,gt=Math.PI*2,re=10,ie=Math.PI/7,ue="http://www.w3.org/2000/svg";function Et(e,t){try{e.setPointerCapture(t)}catch{}}function Te(e,t){try{e.hasPointerCapture(t)&&e.releasePointerCapture(t)}catch{}}function _t(e,t){return{tx:Math.cos(e)*t,ty:Math.sin(e)*t}}function vt(e,t){if(e<=0)return[];if(t==="sirius"){let o=-Math.PI/2;return Array.from({length:e},(r,i)=>o+i*gt/e)}if(e===1)return[Math.PI+Math.PI/2];let n=Math.PI/(e-1);return Array.from({length:e},(o,r)=>Math.PI+r*n)}function bt(e,t){return Math.abs(Math.atan2(Math.sin(e-t),Math.cos(e-t)))}function wt(e,t){let n=0,o=1/0;for(let r=0;r<t.length;r++){let i=bt(e,t[r]);i<o&&(o=i,n=r)}return n}function yt(e){return e.map(t=>{if(t.children&&t.children.length>0)return{id:t.id,label:t.label,href:null,inert:!1,node:t};let n=W(t.target).href;return{id:t.id,label:t.label,href:n,inert:n===null,node:t}})}function Lt(e,t){if(typeof e=="string")return{id:e,label:e,href:U([t,e]),inert:!1};let n=e.target?W(e.target).href:U([t,e.id]);return{id:e.id,label:e.label,href:n,inert:n===null}}function Ct(){let e=te(),t=e.stars.canopus.fixedSection;return(e.sections[t]?.pages??[]).map(o=>Lt(o,t))}function Mt(e){return e.map((t,n)=>({id:`recent-${n}`,label:t,href:null,inert:!0,icon:st[t]}))}function Tt(e){return`/cloud-mobile/public/icons/${e}.svg`}function Ie(e){if(!document.querySelector(".home-cube"))return;let t=document.getElementById("radial-menu");if(!t)return;let n=t,o=n.closest(".shell"),r=[],i=document.getElementById("star-sirius"),a=document.getElementById("star-canopus"),s=document.getElementById("star-centauri");if(i&&r.push({el:i,kind:"sirius"}),a&&r.push({el:a,kind:"canopus"}),s&&r.push({el:s,kind:"centauri"}),r.length===0)return;let l=!1,m=!1,c=0,f=0,p=0,w=[],_=[],v=[],A=-1,H=[],b=null,L=null;function x(u){if(u===A)return;let d=v[A];d&&d.classList.remove("is-highlighted"),A=u;let h=v[A];h&&h.classList.add("is-highlighted")}function N(u,d,h){let M=`radial-menu__node radial-menu__node--${d}`;return h&&(M+=" is-highlighted"),u.inert&&(M+=" radial-menu__node--inert"),M}function g(u,d){return d==="sirius"?lt+ct*u:dt}function y(u,d,h){w=u,_=vt(u.length,h),v=[],b=null,L=null,n.innerHTML="";let M=h==="sirius"?"circle":"arc",B=g(d,h),F=document.createElement("div");F.className=`radial-menu__scrim radial-menu__scrim--${M}`,n.appendChild(F);let G=document.createElement("div");G.className="radial-menu__center";let D=o?.getBoundingClientRect();if(G.style.left=`${f-(D?.left??0)}px`,G.style.top=`${p-(D?.top??0)}px`,d>0){let I=document.createElement("button");I.type="button",I.className="radial-menu__back",I.textContent="\u2039 Back",G.appendChild(I)}if(u.forEach((I,X)=>{let{tx:Q,ty:de}=_t(_[X]??0,B),j=document.createElement("div");if(j.className=N(I,M,X===A),j.dataset.id=I.id,j.dataset.index=String(X),j.style.setProperty("--tx",`${Q}px`),j.style.setProperty("--ty",`${de}px`),I.icon){let J=document.createElement("img");J.className="radial-menu__node-icon",J.src=Tt(I.icon),J.alt="",j.appendChild(J)}let Z=document.createElement("span");Z.className="radial-menu__node-label",Z.textContent=I.label,j.appendChild(Z),G.appendChild(j),v.push(j)}),n.appendChild(G),h==="sirius"){let I=document.createElementNS(ue,"svg");I.setAttribute("class","radial-menu__arrow");let X=document.createElementNS(ue,"line");X.setAttribute("class","radial-menu__arrow-line");let Q=document.createElementNS(ue,"polygon");Q.setAttribute("class","radial-menu__arrow-head"),I.appendChild(X),I.appendChild(Q),n.appendChild(I),b=X,L=Q}n.hidden=!1,n.classList.add("is-open"),n.setAttribute("aria-hidden","false"),l=!0}function $(u,d){if(!b||!L)return;let h=o?.getBoundingClientRect(),M=h?.left??0,B=h?.top??0,F=f-M,G=p-B,D=u-M,I=d-B;b.setAttribute("x1",String(F)),b.setAttribute("y1",String(G)),b.setAttribute("x2",String(D)),b.setAttribute("y2",String(I));let X=Math.atan2(I-G,D-F),Q=D-re*Math.cos(X-ie),de=I-re*Math.sin(X-ie),j=D-re*Math.cos(X+ie),Z=I-re*Math.sin(X+ie);L.setAttribute("points",`${D},${I} ${Q},${de} ${j},${Z}`)}function T(){let u=H[H.length-1]??[];y(yt(u),H.length-1,"sirius")}function R(){m=!0,c=Date.now()+ft}function P(){l=!1,m=!1,c=0,H=[],w=[],_=[],v=[],A=-1,b=null,L=null,n.classList.remove("is-open"),n.setAttribute("aria-hidden","true"),n.hidden=!0,n.innerHTML=""}function E(){window.setTimeout(()=>P(),ht)}function C(u){H.push(u),A=0,T()}function O(){if(H.length<=1){P();return}H.pop(),A=0,T()}function S(u){if(!l)return;let d=w[u];if(!d){P();return}if(d.node?.children&&d.node.children.length>0){C(d.node.children);return}if(d.node?.target==="action:check_updates"){P(),Se?.();return}if(d.href){let M=d.href;P(),location.href=M;return}E()}function Y(u,d){P();let h=d.getBoundingClientRect();f=h.left+h.width/2,p=h.top+h.height/2,A=0,u==="sirius"?(H=[e.stars.sirius.nodes],T()):u==="canopus"?y(Ct(),0,"canopus"):y(Mt(e.stars.centauri.recentApps),0,"centauri")}function K(u,d){let h=u-f,M=d-p;Math.hypot(h,M)<Me||x(wt(Math.atan2(M,h),_))}function V(u,d){let h=null,M=!1,B=0,F=0,G=0;u.addEventListener("pointerdown",D=>{D.preventDefault(),h=D.pointerId,M=!1,B=Date.now(),F=D.clientX,G=D.clientY,Y(d,u),Et(u,D.pointerId)}),u.addEventListener("pointermove",D=>{h===null||D.pointerId!==h||!l||(Math.hypot(D.clientX-f,D.clientY-p)>ut&&(M=!0),K(D.clientX,D.clientY),$(D.clientX,D.clientY))}),u.addEventListener("pointerup",D=>{if(h===null||D.pointerId!==h||(Te(u,h),h=null,!l))return;let I=Date.now()-B,X=Math.hypot(D.clientX-F,D.clientY-G);if(!M||I<=pt&&X<=mt){R();return}if(Math.hypot(D.clientX-f,D.clientY-p)<Me){O();return}S(A)}),u.addEventListener("pointercancel",D=>{h===null||D.pointerId!==h||(Te(u,h),h=null,l&&R())})}r.forEach(({el:u,kind:d})=>V(u,d)),n.addEventListener("pointermove",u=>{if(!l||!m)return;let d=u.target;if(!(d instanceof HTMLElement))return;let h=d.closest(".radial-menu__node");if(!h)return;let M=Number(h.dataset.index);Number.isNaN(M)||x(M)}),n.addEventListener("click",u=>{if(!l)return;if(Date.now()<c){c=0;return}let d=u.target;if(!(d instanceof HTMLElement))return;if(d.closest(".radial-menu__scrim")){P();return}if(d.closest(".radial-menu__back")){O();return}let h=d.closest(".radial-menu__node");if(!h)return;let M=Number(h.dataset.index);Number.isNaN(M)||S(M)}),document.addEventListener("keydown",u=>{l&&u.key==="Escape"&&P()})}function Ae(e){return e.onehand??null}var ce=["top","top_middle","center","down_middle","down"],St=24,Dt=130,ae=45,xe=20,It=450,At=16,xt=700,Nt=220,se=10,le=Math.PI/7,pe="http://www.w3.org/2000/svg";function me(e,t){return{key:e,label:t.label,action:t.action}}function Ne(e,t){let n=e[t];if(!n)return[];let o=ce.indexOf(t),r=ce[o-1],i=ce[o+1],a=r?e[r]:void 0,s=i?e[i]:void 0,l=[];return a&&r&&l.push(me(r,a)),l.push(me(t,n)),s&&i&&l.push(me(i,s)),l}function Pt(e){return e===3?[-ae,0,ae]:e===2?[-ae,ae]:[0]}function Ot(e,t){try{e.setPointerCapture(t)}catch{}}function Pe(e,t){try{e.hasPointerCapture(t)&&e.releasePointerCapture(t)}catch{}}function kt(e,t){return{tx:Math.cos(e)*t,ty:Math.sin(e)*t}}function Ht(e,t){return Math.abs(Math.atan2(Math.sin(e-t),Math.cos(e-t)))}function Rt(e,t){let n=0,o=1/0;for(let r=0;r<t.length;r++){let i=Ht(e,t[r]);i<o&&(o=i,n=r)}return n}function Oe(e){let t=Ae(e);if(!t)return;let n=document.querySelector(".shell");if(!n)return;let o=n,r=document.createElement("div");r.className="edge-menu-handles",o.appendChild(r);let i=document.createElement("div");i.className="edge-menu",i.hidden=!0,i.setAttribute("aria-hidden","true"),o.appendChild(i);let a=!1,s=!1,l=0,m=0,c=0,f=[],p=[],w=[],_=-1,v=null,A=null;function H(){let E=o.getBoundingClientRect();return{x:E.left,y:E.top}}function b(E){if(E===_)return;let C=w[_];C&&C.classList.remove("is-highlighted"),_=E;let O=w[_];O&&O.classList.add("is-highlighted")}function L(){s=!0,l=Date.now()+xt}function x(){a=!1,s=!1,l=0,f=[],p=[],w=[],_=-1,v=null,A=null,i.classList.remove("is-open"),i.setAttribute("aria-hidden","true"),i.hidden=!0,i.innerHTML=""}function N(){window.setTimeout(()=>x(),Nt)}function g(E,C,O){f=C,p=Pt(C.length).map(B=>O+B*Math.PI/180),w=[],v=null,A=null,i.innerHTML="";let Y=E.getBoundingClientRect();m=Y.left+Y.width/2,c=Y.top+Y.height/2,_=0;let K=document.createElement("div");K.className="edge-menu__scrim",i.appendChild(K);let V=H(),u=document.createElement("div");u.className="edge-menu__center",u.style.left=`${m-V.x}px`,u.style.top=`${c-V.y}px`,C.forEach((B,F)=>{let{tx:G,ty:D}=kt(p[F]??0,Dt),I=document.createElement("div");I.className=`edge-menu__node${F===_?" is-highlighted":""}`,I.dataset.index=String(F),I.style.setProperty("--tx",`${G}px`),I.style.setProperty("--ty",`${D}px`);let X=document.createElement("span");X.className="edge-menu__node-label",X.textContent=B.label,I.appendChild(X),u.appendChild(I),w.push(I)}),i.appendChild(u);let d=document.createElementNS(pe,"svg");d.setAttribute("class","edge-menu__arrow");let h=document.createElementNS(pe,"line");h.setAttribute("class","edge-menu__arrow-line");let M=document.createElementNS(pe,"polygon");M.setAttribute("class","edge-menu__arrow-head"),d.appendChild(h),d.appendChild(M),i.appendChild(d),v=h,A=M,i.hidden=!1,i.classList.add("is-open"),i.setAttribute("aria-hidden","false"),a=!0}function y(E,C){if(!v||!A)return;let O=H(),S=m-O.x,Y=c-O.y,K=E-O.x,V=C-O.y;v.setAttribute("x1",String(S)),v.setAttribute("y1",String(Y)),v.setAttribute("x2",String(K)),v.setAttribute("y2",String(V));let u=Math.atan2(V-Y,K-S),d=K-se*Math.cos(u-le),h=V-se*Math.sin(u-le),M=K-se*Math.cos(u+le),B=V-se*Math.sin(u+le);A.setAttribute("points",`${K},${V} ${d},${h} ${M},${B}`)}function $(E,C){let O=E-m,S=C-c;Math.hypot(O,S)<xe||b(Rt(Math.atan2(S,O),p))}function T(E){if(!a)return;let C=f[E];if(!C){x();return}if(C.action==="back"){x(),history.back();return}N()}function R(E,C,O){let S=null,Y=0,K=0,V=0,u=!1;E.addEventListener("pointerdown",d=>{d.preventDefault(),x(),S=d.pointerId,Y=d.clientX,K=d.clientY,V=Date.now(),u=!1,Ot(E,d.pointerId)}),E.addEventListener("pointermove",d=>{if(!(S===null||d.pointerId!==S)){if(!u){let h=d.clientX-Y;if((C.edge==="left"?h:-h)<St)return;let B=Ne(C.sectors,O);if(B.length===0)return;u=!0;let F=Math.atan2(d.clientY-K,d.clientX-Y);g(E,B,F),y(d.clientX,d.clientY);return}a&&($(d.clientX,d.clientY),y(d.clientX,d.clientY))}}),E.addEventListener("pointerup",d=>{if(!(S===null||d.pointerId!==S)){if(Pe(E,S),S=null,!u){let h=Date.now()-V,M=Math.hypot(d.clientX-Y,d.clientY-K);if(h>It||M>At)return;let B=Ne(C.sectors,O);if(B.length===0)return;let F=C.edge==="left"?0:Math.PI;g(E,B,F),L();return}if(a){if(Math.hypot(d.clientX-m,d.clientY-c)<xe){x();return}T(_)}}}),E.addEventListener("pointercancel",d=>{S===null||d.pointerId!==S||(Pe(E,S),S=null,u&&a&&L())})}function P(E){let C=document.createElement("div");C.className=`edge-menu__handle edge-menu__handle--${E.edge}`,r.appendChild(C),ce.forEach(O=>{let S=document.createElement("div");S.className="edge-menu__sector",S.dataset.sector=O,C.appendChild(S),E.sectors[O]&&R(S,E,O)})}t.handles.forEach(E=>P(E)),i.addEventListener("pointermove",E=>{if(!a||!s)return;let C=E.target;if(!(C instanceof HTMLElement))return;let O=C.closest(".edge-menu__node");if(!O)return;let S=Number(O.dataset.index);Number.isNaN(S)||b(S)}),i.addEventListener("click",E=>{if(!a)return;if(Date.now()<l){l=0;return}let C=E.target;if(!(C instanceof HTMLElement))return;if(C.closest(".edge-menu__scrim")){x();return}let O=C.closest(".edge-menu__node");if(!O)return;let S=Number(O.dataset.index);Number.isNaN(S)||T(S)}),document.addEventListener("keydown",E=>{a&&E.key==="Escape"&&x()})}var Bt=60,Xt='a, button, input, textarea, select, [role="button"], .tile, .star, .edge-menu__handle';function $t(e){return e instanceof Element&&!!e.closest(Xt)}function ke(){if(!document.querySelector(".home-cube"))return;let e=null,t=0,n=0,o=!1;function r(s){$t(s.target)||(e=s.pointerId,t=s.clientX,n=s.clientY,o=!0)}function i(s){if(!o||e===null||s.pointerId!==e)return;o=!1,e=null;let l=s.clientX-t,m=s.clientY-n,c=Math.abs(l),f=Math.abs(m);Math.max(c,f)<Bt||(c>f?l>0?history.forward():history.back():m<0?location.href=U(["suite","phone","all"]):location.href=U(["suite"]))}function a(s){e===null||s.pointerId!==e||(o=!1,e=null)}document.addEventListener("pointerdown",r),document.addEventListener("pointerup",i),document.addEventListener("pointercancel",a)}Ee();var Gt=380,Ut=10,Wt=70;function Vt(e){return`/cloud-mobile/public/icons/${e}.svg`}function _e(e,t){let n=document.createElement("button");n.type="button",n.className="fan-menu__item",n.dataset.index=String(t);let o=document.createElement("span");o.className="fan-menu__item-icon";let r=document.createElement("img");r.src=Vt(e.icon),r.alt="",o.appendChild(r);let i=document.createElement("span");return i.className="fan-menu__item-label",i.textContent=e.label,n.appendChild(o),n.appendChild(i),n}function qt(e,t){if(t.length<=3){let r=document.createElement("div");r.className="fan-menu__row fan-menu__row--bottom",t.forEach((i,a)=>r.appendChild(_e(i,a))),e.appendChild(r);return}let n=document.createElement("div");n.className="fan-menu__row fan-menu__row--top",n.appendChild(_e(t[0],0));let o=document.createElement("div");o.className="fan-menu__row fan-menu__row--bottom",t.slice(1).forEach((r,i)=>o.appendChild(_e(r,i+1))),e.appendChild(n),e.appendChild(o)}function Fe(e){let t=document.getElementById("bottom-nav"),n=document.getElementById("fan-menu");if(!t||!n)return;let o=n,r=o.closest(".shell"),i=document.getElementById("fan-menu-scrim"),a=!1,s=[],l=null,m=!1,c=null,f=null,p=null,w=0,_=0;function v(){l!==null&&(window.clearTimeout(l),l=null)}function A(){a=!1,s=[],o.classList.remove("is-open"),o.setAttribute("aria-hidden","true"),o.hidden=!0,o.innerHTML="",o.style.transform="",i&&(i.classList.remove("is-open"),i.hidden=!0)}function H(T,R){let P=e.longPress[R];if(!P||P.length===0)return;A(),s=P,o.innerHTML="",qt(o,P);let E=T.getBoundingClientRect(),C=r?.getBoundingClientRect();o.style.left=`${E.left+E.width/2-(C?.left??0)}px`,o.style.top=`${E.top-Wt-(C?.top??0)}px`,o.style.transform="translateX(-50%)",o.hidden=!1,o.classList.add("is-open"),o.setAttribute("aria-hidden","false"),i&&(i.hidden=!1,i.classList.add("is-open")),a=!0}function b(T){let R=Number(T.dataset.index),P=s[R];if(A(),!P)return;if(P.target==="action:check_updates"){Promise.resolve().then(()=>(Ee(),$e)).then(C=>C.openUpdateOverlay());return}let{href:E}=W(P.target);E&&(location.href=E)}function L(T){let R=T.target;if(!(R instanceof Element))return;let P=R.closest(".bottom-nav__item");if(!P)return;let E=P.dataset.longpress;!E||!e.longPress[E]||(v(),c=P,f=E,p=T.pointerId,w=T.clientX,_=T.clientY,m=!1,l=window.setTimeout(()=>{l=null,m=!0,c&&f&&H(c,f)},Gt))}function x(T){if(l===null||T.pointerId!==p)return;let R=T.clientX-w,P=T.clientY-_;Math.hypot(R,P)>Ut&&v()}function N(T){T.pointerId===p&&(v(),p=null)}function g(T){let R=T.target;!(R instanceof Element)||!R.closest(".bottom-nav__item")||m&&(m=!1,T.preventDefault(),T.stopPropagation())}function y(T){if(!a)return;let R=T.target;if(!(R instanceof Element))return;let P=R.closest(".fan-menu__item");if(P){b(P);return}A()}function $(T){a&&T.key==="Escape"&&A()}t.addEventListener("pointerdown",L),document.addEventListener("pointermove",x),document.addEventListener("pointerup",N),document.addEventListener("pointercancel",N),t.addEventListener("click",g),document.addEventListener("click",y),document.addEventListener("keydown",$)}function Ye(){document.addEventListener("click",e=>{if(!(e.target instanceof Element))return;let t=e.target.closest(".stack-card__header");if(!t)return;let n=t.getAttribute("aria-expanded")==="true";t.setAttribute("aria-expanded",String(!n))})}function jt(e){e.hidden=!1,e.classList.add("is-open")}function zt(e){e.classList.remove("is-open"),e.hidden=!0}function k(e,t,n){let o=document.createElement(e);return t&&(o.className=t),n!==void 0&&(o.textContent=n),o}var Qt={weekday:"short",day:"numeric",month:"short"},Zt={month:"long",year:"numeric"};function Jt(){let e=k("div","calendar-popup__agenda-scroll"),t=k("div","calendar-popup__agenda-body"),n=new Date;for(let o=0;o<7;o++){let r=k("div",`calendar-popup__agenda-row${o===0?" is-today":""}`),i=new Intl.DateTimeFormat(void 0,Qt).format(n);r.appendChild(k("p","calendar-popup__agenda-date",o===0?`Today \xB7 ${i}`:i)),r.appendChild(k("p","calendar-popup__agenda-empty","no events")),t.appendChild(r),n.setDate(n.getDate()+1)}return t.appendChild(k("p","calendar-popup__footnote","Same placeholder shape as the real app \u2014 no CalDAV backend wired up on either side yet.")),e.appendChild(t),e}function en(){let e=k("div","calendar-popup__month"),t=new Date,n=t.getFullYear(),o=t.getMonth(),r=t.getDate();e.appendChild(k("p","calendar-popup__month-title",new Intl.DateTimeFormat(void 0,Zt).format(t)));let i=k("div","calendar-popup__week calendar-popup__week--header"),a=new Date(2023,0,1);for(let w=0;w<7;w++){let _=new Date(a);_.setDate(a.getDate()+w);let v=new Intl.DateTimeFormat(void 0,{weekday:"narrow"}).format(_);i.appendChild(k("span","calendar-popup__day-cell calendar-popup__day-cell--header",v))}e.appendChild(i);let l=new Date(n,o,1).getDay(),m=new Date(n,o+1,0).getDate(),c=l+m,f=Math.ceil(c/7),p=1;for(let w=0;w<f;w++){let _=k("div","calendar-popup__week");for(let v=0;v<7;v++)if(w*7+v<l||p>m)_.appendChild(k("span","calendar-popup__day-cell"));else{let H=p===r;_.appendChild(k("span",`calendar-popup__day-cell${H?" is-today":""}`,String(p))),p++}e.appendChild(_)}return e.appendChild(k("p","calendar-popup__footnote","Event dots land with a real backend \u2014 the grid is the structure for now.")),e}function tn(e){let t=Math.floor(e/1e3),n=Math.floor(t/60),o=t%60,r=Math.floor(e%1e3/100);return`${n}:${String(o).padStart(2,"0")}.${r}`}function nn(){let e=k("div","calendar-popup__stopwatch"),t=k("span","calendar-popup__stopwatch-time","0:00.0"),n=k("button","calendar-popup__stopwatch-btn","\u25B6");n.type="button",n.setAttribute("aria-label","Start stopwatch");let o=!1,r=0,i=0,a=null,s=()=>o?i+(Date.now()-r):i,l=()=>{t.textContent=tn(s())},m=()=>{l(),a=window.setTimeout(m,100)};n.addEventListener("click",()=>{o?(i+=Date.now()-r,o=!1,n.textContent="\u25B6",n.classList.remove("is-running"),a!==null&&(window.clearTimeout(a),a=null),l()):(r=Date.now(),o=!0,n.textContent="\u25A0",n.classList.add("is-running"),m())});let c=null,f=()=>{o=!1,i=0,r=0,a!==null&&(window.clearTimeout(a),a=null),n.textContent="\u25B6",n.classList.remove("is-running"),l()};return t.addEventListener("pointerdown",()=>{c=window.setTimeout(f,380)}),["pointerup","pointerleave","pointercancel"].forEach(p=>{t.addEventListener(p,()=>{c!==null&&(window.clearTimeout(c),c=null)})}),e.appendChild(t),e.appendChild(n),e}function Ke(){let e=document.getElementById("calendar-popup"),t=document.getElementById("status-clock");if(!e||!t)return;let n=k("div","overlay-sheet__scrim"),o=k("div","overlay-sheet__panel calendar-popup__panel"),r=k("div","calendar-popup__header"),i=k("div","calendar-popup__header-left");i.appendChild(k("p","calendar-popup__label","Calendar"));let a={weekday:"long",day:"numeric",month:"short",year:"numeric"};i.appendChild(k("p","calendar-popup__today",new Intl.DateTimeFormat(void 0,a).format(new Date))),r.appendChild(i),r.appendChild(nn()),o.appendChild(r);let s=Jt(),l=en();l.hidden=!0;let m=k("button","calendar-popup__tab is-active","Agenda"),c=k("button","calendar-popup__tab","Calendar");m.type="button",c.type="button";let f=v=>{m.classList.toggle("is-active",v),c.classList.toggle("is-active",!v),s.hidden=!v,l.hidden=v};m.addEventListener("click",()=>f(!0)),c.addEventListener("click",()=>f(!1));let p=k("div","calendar-popup__tabs");p.appendChild(m),p.appendChild(c),o.appendChild(p),o.appendChild(s),o.appendChild(l),e.appendChild(n),e.appendChild(o);let w=()=>jt(e),_=()=>zt(e);t.addEventListener("click",w),n.addEventListener("click",_),document.addEventListener("keydown",v=>{e.classList.contains("is-open")&&v.key==="Escape"&&_()})}function z(e,t,n){let o=document.createElement(e);return t&&(o.className=t),n!==void 0&&(o.textContent=n),o}var on={month:"long",year:"numeric"};function rn(e,t,n){e.innerHTML="";let o=new Date,r=t.getFullYear()===o.getFullYear()&&t.getMonth()===o.getMonth(),i=z("div","calendar-card__header"),a=z("button","calendar-card__nav","\u2039");a.type="button",a.setAttribute("aria-label","Previous month");let s=z("p","calendar-card__title",new Intl.DateTimeFormat(void 0,on).format(t)),l=z("button","calendar-card__nav","\u203A");l.type="button",l.setAttribute("aria-label","Next month"),a.addEventListener("click",()=>n(-1)),l.addEventListener("click",()=>n(1)),i.appendChild(a),i.appendChild(s),i.appendChild(l),e.appendChild(i);let m=z("div","calendar-card__week calendar-card__week--header"),c=new Date(2023,0,1);for(let L=0;L<7;L++){let x=new Date(c);x.setDate(c.getDate()+L),m.appendChild(z("span","calendar-card__day-cell calendar-card__day-cell--header",new Intl.DateTimeFormat(void 0,{weekday:"narrow"}).format(x)))}e.appendChild(m);let f=t.getFullYear(),p=t.getMonth(),_=new Date(f,p,1).getDay(),v=new Date(f,p+1,0).getDate(),A=_+v,H=Math.ceil(A/7),b=1;for(let L=0;L<H;L++){let x=z("div","calendar-card__week");for(let N=0;N<7;N++)if(L*7+N<_||b>v)x.appendChild(z("span","calendar-card__day-cell"));else{let y=r&&b===o.getDate();x.appendChild(z("span",`calendar-card__day-cell${y?" is-today":""}`,String(b))),b++}e.appendChild(x)}}function Ge(){document.querySelectorAll("[data-calendar-card]").forEach(t=>{let n=new Date,o=()=>{rn(t,n,r=>{n=new Date(n.getFullYear(),n.getMonth()+r,1),o()})};o()})}function an(e){return`/cloud-mobile/public/icons/${e}.svg`}function sn(e){return(e.sections.suite?.cloud?.tileGroups??[]).flatMap(n=>n.tiles.map(o=>({label:o.label,icon:o.icon,href:W(o.target).href})))}function ln(){return ve().apps.map(e=>({label:e.name,icon:e.icon,href:null}))}function cn(e){return(e.sections.config?.pages??[]).flatMap(n=>{if(typeof n=="string")return[];let o=n.target?W(n.target).href:U(["config",n.id]);return[{label:n.label,icon:"settings",href:o}]})}function Ue(e,t){return e.label.toLowerCase().includes(t)}function dn(e){let t=e.href?document.createElement("a"):document.createElement("div");t.className="search-sheet__row",e.href&&t instanceof HTMLAnchorElement?t.href=e.href:(t.classList.add("search-sheet__row--inert"),t.setAttribute("aria-disabled","true"));let n=document.createElement("img");n.className="search-sheet__row-icon",n.src=an(e.icon),n.alt="",t.appendChild(n);let o=document.createElement("span");return o.className="search-sheet__row-label",o.textContent=e.label,t.appendChild(o),t}function We(e){let t=document.querySelector(".search-pill");if(!t)return;let n=[{title:"Cloud apps",rows:sn(e)},{title:"Phone apps",rows:ln()},{title:"Configs",rows:cn(e)}],o=new Set(n.map(b=>b.title)),r=document.createElement("div");r.className="search-sheet",r.id="search-sheet",r.hidden=!0;let i=document.createElement("div");i.className="search-sheet__scrim",r.appendChild(i);let a=document.createElement("div");a.className="search-sheet__panel",r.appendChild(a);let s=document.createElement("input");s.type="text",s.className="search-sheet__input",s.placeholder="Search apps & content",s.autocomplete="off",a.appendChild(s);let l=document.createElement("div");l.className="search-sheet__chips";let m=n.map(b=>{let L=document.createElement("button");return L.type="button",L.className="search-sheet__chip",L.textContent=b.title,L.addEventListener("click",()=>f(b.title)),l.appendChild(L),{title:b.title,el:L}});a.appendChild(l);function c(){for(let b of m)b.el.classList.toggle("is-active",o.has(b.title))}function f(b){if(o.has(b)){if(o.size===1)return;o.delete(b)}else o.add(b);c(),v(s.value)}c();let p=document.createElement("div");p.className="search-sheet__results",a.appendChild(p),(t.closest(".shell")??document.body).appendChild(r);function _(b){for(let L of b)for(let x of L.rows)if(x.href)return x.href;return null}function v(b){p.innerHTML="";let L=b.trim().toLowerCase();if(!L)return;let x=n.filter(N=>o.has(N.title)).map(N=>({title:N.title,rows:N.rows.filter(g=>Ue(g,L))})).filter(N=>N.rows.length>0);if(x.length===0){let N=document.createElement("p");N.className="search-sheet__empty",N.textContent="No results",p.appendChild(N);return}for(let N of x){let g=document.createElement("div");g.className="search-sheet__group";let y=document.createElement("p");y.className="search-sheet__group-title",y.textContent=N.title,g.appendChild(y);for(let $ of N.rows)g.appendChild(dn($));p.appendChild(g)}}function A(){r.hidden=!1,r.classList.add("is-open"),s.value="",v(""),requestAnimationFrame(()=>s.focus())}function H(){r.classList.remove("is-open"),r.hidden=!0}t.addEventListener("click",A),i.addEventListener("click",H),s.addEventListener("input",()=>v(s.value)),s.addEventListener("keydown",b=>{if(b.key==="Escape"){H();return}if(b.key!=="Enter")return;let L=s.value.trim().toLowerCase();if(!L)return;let x=n.filter(g=>o.has(g.title)).map(g=>({title:g.title,rows:g.rows.filter(y=>Ue(y,L))})).filter(g=>g.rows.length>0),N=_(x);N&&(location.href=N)}),document.addEventListener("keydown",b=>{r.classList.contains("is-open")&&b.key==="Escape"&&H()})}function un(){let e=[];for(let t=0;t<220;t++)e.push({x:Math.random(),y:Math.random(),radius:.6+Math.random()*1.4,phase:Math.random()*Math.PI*2,speed:1+Math.random()*2});return e}function pn(){let e=[];for(let t=0;t<3;t++)e.push({phase:t/3,y0:Math.random(),length:.35+Math.random()*.25});return e}function Ve(e,t,n,o,r,i){e.clearRect(0,0,t,n);for(let a of o){let s=.35+.65*(.5+.5*Math.sin(i*Math.PI*2*a.speed+a.phase));e.beginPath(),e.arc(a.x*t,a.y*n,a.radius,0,Math.PI*2),e.fillStyle=`rgba(255, 255, 255, ${s.toFixed(3)})`,e.fill()}for(let a of r){let s=(i-a.phase+1)%1,l=s*(t+n)-n,m=a.y0*n+s*n*.6;for(let c=0;c<12;c++){let f=c/12,p=l-f*a.length*t,w=m-f*a.length*n*.6;if(p<-20||p>t+20||w<-20||w>n+20)continue;let _=(1-f)*.8;e.beginPath(),e.arc(p,w,1.6*(1-f*.6),0,Math.PI*2),e.fillStyle=`rgba(233, 216, 253, ${_.toFixed(3)})`,e.fill()}}}function qe(){let e=document.querySelector(".galaxy-backdrop");if(!e)return;let t=window.matchMedia("(prefers-reduced-motion: reduce)").matches,n=document.createElement("canvas");n.className="galaxy-backdrop__canvas",e.insertBefore(n,e.firstChild);let o=n.getContext("2d");if(!o)return;let r=un(),i=pn(),a=0,s=0;function l(){let w=window.devicePixelRatio||1,_=e.getBoundingClientRect();a=_.width,s=_.height,n.width=Math.max(1,Math.round(a*w)),n.height=Math.max(1,Math.round(s*w)),o.setTransform(w,0,0,w,0,0)}if(l(),window.addEventListener("resize",l),t){Ve(o,a,s,r,i,0);return}let m=0;function c(w){let _=w%18e3/18e3;Ve(o,a,s,r,i,_),m=window.requestAnimationFrame(c)}function f(){m||(m=window.requestAnimationFrame(c))}function p(){m&&(window.cancelAnimationFrame(m),m=0)}document.addEventListener("visibilitychange",()=>{document.hidden?p():f()}),f()}var je=document.currentScript?.src??"";function mn(){let e=document.getElementById("status-clock");if(!e)return;let t=o=>String(o).padStart(2,"0"),n=()=>{let o=new Date,r=o.toLocaleDateString("en-US",{weekday:"short"});e.textContent=`${t(o.getDate())}-${t(o.getMonth()+1)}-${o.getFullYear()} ${t(o.getHours())}:${t(o.getMinutes())} ${r}`};n(),window.setInterval(n,15e3)}function q(e,t){try{t()}catch(n){console.error(`[cloud-mobile] init failed: ${e}`,n)}}function fn(){let e=te();q("drawer",()=>Ce(e)),De(he),q("stars",()=>Ie(e)),q("edge-menu",()=>Oe(e)),q("home-swipes",()=>ke()),q("overlays",()=>ge(e)),q("fan-menu",()=>Fe(e)),q("stack-cards",()=>Ye()),q("status-clock",()=>mn()),q("calendar-popup",()=>Ke()),q("calendar-month-cards",()=>Ge()),q("search-sheet",()=>We(e)),q("galaxy-backdrop",()=>qe())}document.addEventListener("DOMContentLoaded",()=>{fn(),"serviceWorker"in navigator&&location.protocol.startsWith("http")&&requestAnimationFrame(()=>{let e=je?new URL("script-service-worker.js",je).href:"./script-service-worker.js";navigator.serviceWorker.register(e).catch(()=>{})})});})();
+"use strict";
+(() => {
+  var __defProp = Object.defineProperty;
+  var __getOwnPropNames = Object.getOwnPropertyNames;
+  var __esm = (fn, res) => function __init() {
+    return fn && (res = (0, fn[__getOwnPropNames(fn)[0]])(fn = 0)), res;
+  };
+  var __export = (target, all) => {
+    for (var name in all)
+      __defProp(target, name, { get: all[name], enumerable: true });
+  };
+
+  // src/app/overlays/overlays.ts
+  var overlays_exports = {};
+  __export(overlays_exports, {
+    initOverlays: () => initOverlays,
+    openUpdateOverlay: () => openUpdateOverlay
+  });
+  function show(el3) {
+    el3.hidden = false;
+    el3.classList.add("is-open");
+  }
+  function hide(el3) {
+    el3.classList.remove("is-open");
+    el3.hidden = true;
+  }
+  function buildScrim() {
+    const scrim = document.createElement("div");
+    scrim.className = "overlay-sheet__scrim";
+    return scrim;
+  }
+  function buildHeader(title) {
+    const header = document.createElement("div");
+    header.className = "overlay-sheet__header";
+    const titleEl = document.createElement("p");
+    titleEl.className = "overlay-sheet__title";
+    titleEl.textContent = title;
+    header.appendChild(titleEl);
+    return header;
+  }
+  function buildGroup(group) {
+    const groupEl = document.createElement("div");
+    groupEl.className = "overlay-sheet__group";
+    const titleEl = document.createElement("p");
+    titleEl.className = "overlay-sheet__group-title";
+    titleEl.textContent = group.title;
+    groupEl.appendChild(titleEl);
+    for (const item of group.items) {
+      const row = document.createElement("div");
+      row.className = "overlay-sheet__row";
+      const rowTitle = document.createElement("span");
+      rowTitle.className = "overlay-sheet__row-title";
+      rowTitle.textContent = item.title;
+      row.appendChild(rowTitle);
+      if (item.subtitle) {
+        const rowSubtitle = document.createElement("span");
+        rowSubtitle.className = "overlay-sheet__row-subtitle";
+        rowSubtitle.textContent = item.subtitle;
+        row.appendChild(rowSubtitle);
+      }
+      groupEl.appendChild(row);
+    }
+    return groupEl;
+  }
+  function buildNotificationCenter(data) {
+    const root = document.getElementById("notification-center");
+    const triggerBtn = document.getElementById("dynamic-island");
+    if (!root || !triggerBtn)
+      return;
+    const scrim = buildScrim();
+    const panel = document.createElement("div");
+    panel.className = "overlay-sheet__panel";
+    const header = buildHeader("Notifications");
+    panel.appendChild(header);
+    function buildEmptyState() {
+      const empty = document.createElement("div");
+      empty.className = "overlay-sheet__empty";
+      const titleLine = document.createElement("p");
+      const titleStrong = document.createElement("strong");
+      titleStrong.textContent = data.notificationCenter.emptyTitle;
+      titleLine.appendChild(titleStrong);
+      const bodyLine = document.createElement("p");
+      bodyLine.textContent = data.notificationCenter.emptyBody;
+      empty.appendChild(titleLine);
+      empty.appendChild(bodyLine);
+      return empty;
+    }
+    const groups = data.notificationCenter.groups;
+    if (groups && groups.length > 0) {
+      for (const group of groups)
+        panel.appendChild(buildGroup(group));
+      const clearBtn = document.createElement("button");
+      clearBtn.type = "button";
+      clearBtn.className = "overlay-sheet__action";
+      clearBtn.style.color = "#B794F4";
+      clearBtn.textContent = "Clear";
+      clearBtn.addEventListener("click", () => {
+        for (const groupEl of panel.querySelectorAll(".overlay-sheet__group"))
+          groupEl.remove();
+        clearBtn.remove();
+        panel.appendChild(buildEmptyState());
+      });
+      header.appendChild(clearBtn);
+    } else {
+      panel.appendChild(buildEmptyState());
+    }
+    root.appendChild(scrim);
+    root.appendChild(panel);
+    const open = () => show(root);
+    const close = () => hide(root);
+    triggerBtn.addEventListener("click", open);
+    scrim.addEventListener("click", close);
+    document.addEventListener("keydown", (event) => {
+      if (root.classList.contains("is-open") && event.key === "Escape")
+        close();
+    });
+    document.addEventListener("click", (event) => {
+      if (!root.classList.contains("is-open"))
+        return;
+      const target = event.target;
+      if (!(target instanceof Node))
+        return;
+      if (panel.contains(target) || triggerBtn.contains(target))
+        return;
+      close();
+    });
+  }
+  function buildUpdateOverlay(data) {
+    const root = document.getElementById("update-overlay");
+    if (!root)
+      return null;
+    const scrim = buildScrim();
+    const panel = document.createElement("div");
+    panel.className = "overlay-sheet__panel";
+    panel.appendChild(buildHeader(data.updateOverlay.title));
+    const progress = document.createElement("div");
+    progress.className = "overlay-sheet__progress";
+    const progressBar = document.createElement("div");
+    progressBar.className = "overlay-sheet__progress-bar";
+    progress.appendChild(progressBar);
+    panel.appendChild(progress);
+    const status = document.createElement("p");
+    status.className = "overlay-sheet__status";
+    panel.appendChild(status);
+    const dismissBtn = document.createElement("button");
+    dismissBtn.type = "button";
+    dismissBtn.className = "overlay-sheet__action";
+    dismissBtn.textContent = "Dismiss";
+    panel.appendChild(dismissBtn);
+    root.appendChild(scrim);
+    root.appendChild(panel);
+    let pendingTimers = [];
+    const clearPendingTimers = () => {
+      for (const id of pendingTimers) {
+        window.clearTimeout(id);
+        window.clearInterval(id);
+      }
+      pendingTimers = [];
+    };
+    const setIndeterminate = (on) => {
+      progressBar.classList.toggle("overlay-sheet__progress-bar--indeterminate", on);
+    };
+    const close = () => {
+      clearPendingTimers();
+      hide(root);
+    };
+    dismissBtn.addEventListener("click", close);
+    return () => {
+      clearPendingTimers();
+      dismissBtn.textContent = "Dismiss";
+      show(root);
+      status.textContent = data.updateOverlay.states.checking;
+      setIndeterminate(true);
+      const availableTimer = window.setTimeout(() => {
+        status.textContent = data.updateOverlay.states.available;
+        const downloadStartTimer = window.setTimeout(() => {
+          setIndeterminate(false);
+          progressBar.style.width = "0%";
+          let tick = 0;
+          const downloadInterval = window.setInterval(() => {
+            tick += 1;
+            const downloadedMib = DOWNLOAD_TOTAL_MIB * tick / DOWNLOAD_TICK_COUNT;
+            const pct = tick / DOWNLOAD_TICK_COUNT * 100;
+            progressBar.style.width = `${pct}%`;
+            status.textContent = `${downloadedMib.toFixed(1)} MiB / ${DOWNLOAD_TOTAL_MIB.toFixed(1)} MiB`;
+            if (tick >= DOWNLOAD_TICK_COUNT) {
+              window.clearInterval(downloadInterval);
+              setIndeterminate(true);
+              status.textContent = data.updateOverlay.states.installing;
+              const doneTimer = window.setTimeout(() => {
+                setIndeterminate(false);
+                progressBar.style.width = "100%";
+                status.textContent = data.updateOverlay.states.done;
+                dismissBtn.textContent = "Close";
+              }, INSTALLING_DELAY_MS);
+              pendingTimers.push(doneTimer);
+            }
+          }, DOWNLOAD_TICK_MS);
+          pendingTimers.push(downloadInterval);
+        }, AVAILABLE_DELAY_MS);
+        pendingTimers.push(downloadStartTimer);
+      }, CHECKING_DELAY_MS);
+      pendingTimers.push(availableTimer);
+    };
+  }
+  function openUpdateOverlay() {
+    if (updateOpener)
+      updateOpener();
+  }
+  function initOverlays(data) {
+    buildNotificationCenter(data);
+    updateOpener = buildUpdateOverlay(data);
+  }
+  var CHECKING_DELAY_MS, AVAILABLE_DELAY_MS, DOWNLOAD_DURATION_MS, INSTALLING_DELAY_MS, DOWNLOAD_TOTAL_MIB, DOWNLOAD_TICK_MS, DOWNLOAD_TICK_COUNT, updateOpener;
+  var init_overlays = __esm({
+    "src/app/overlays/overlays.ts"() {
+      "use strict";
+      CHECKING_DELAY_MS = 700;
+      AVAILABLE_DELAY_MS = 500;
+      DOWNLOAD_DURATION_MS = 2500;
+      INSTALLING_DELAY_MS = 800;
+      DOWNLOAD_TOTAL_MIB = 48;
+      DOWNLOAD_TICK_MS = 100;
+      DOWNLOAD_TICK_COUNT = DOWNLOAD_DURATION_MS / DOWNLOAD_TICK_MS;
+      updateOpener = null;
+    }
+  });
+
+  // src/lib/core/data.ts
+  var cached = null;
+  function getData() {
+    if (cached)
+      return cached;
+    const bag = globalThis.PORTAL_DATA;
+    const shell = bag?.["shell"];
+    const core = bag?.["sections-core"];
+    const contentFile = bag?.["sections-content"];
+    if (!shell || !core || !contentFile)
+      throw new Error("cloud-mobile portal data not loaded");
+    cached = {
+      ...shell,
+      sections: {
+        ...core.sections,
+        ...contentFile.sections,
+        home: { label: "Home", icon: "home", color: "blue" }
+      }
+    };
+    return cached;
+  }
+  function getMockApps() {
+    const bag = globalThis.PORTAL_DATA;
+    const mock = bag?.["mock-apps"];
+    if (!mock)
+      throw new Error("mock-apps portal data not loaded");
+    return mock;
+  }
+  function getLinktree() {
+    const bag = globalThis.PORTAL_DATA;
+    const linktree = bag?.["linktree"];
+    if (!linktree)
+      throw new Error("linktree portal data not loaded");
+    return linktree;
+  }
+
+  // src/lib/core/nav.ts
+  function resolveTarget(target) {
+    if (!target)
+      return { href: null, external: false };
+    if (target.startsWith("https://") || target.startsWith("http://")) {
+      return { href: target, external: true };
+    }
+    if (target.startsWith("section:")) {
+      return { href: routeHref([target.slice("section:".length)]), external: false };
+    }
+    if (target.startsWith("page:")) {
+      return { href: routeHref(target.slice("page:".length).split("/")), external: false };
+    }
+    return { href: null, external: false };
+  }
+  function routeHref(segments) {
+    return "/" + ["cloud-mobile", ...segments.filter(Boolean)].join("/") + "/";
+  }
+
+  // src/app/launcher/long-press-menu.ts
+  var LONG_PRESS_MS = 380;
+  var MOVE_THRESHOLD_PX = 10;
+  function initLongPressMenu() {
+    const shellEl = document.querySelector(".shell");
+    const hostEl = shellEl ?? document.body;
+    const menuEl = document.createElement("div");
+    menuEl.className = "long-press-menu";
+    menuEl.hidden = true;
+    menuEl.setAttribute("aria-hidden", "true");
+    const scrimEl = document.createElement("div");
+    scrimEl.className = "long-press-menu-scrim";
+    scrimEl.hidden = true;
+    hostEl.appendChild(scrimEl);
+    hostEl.appendChild(menuEl);
+    let menuOpen = false;
+    let pressTimer = null;
+    let longPressFired = false;
+    let pressTileEl = null;
+    let activePointerId = null;
+    let startX = 0;
+    let startY = 0;
+    function clearPressTimer() {
+      if (pressTimer === null)
+        return;
+      window.clearTimeout(pressTimer);
+      pressTimer = null;
+    }
+    function closeMenu() {
+      menuOpen = false;
+      menuEl.classList.remove("is-open");
+      menuEl.setAttribute("aria-hidden", "true");
+      menuEl.hidden = true;
+      menuEl.innerHTML = "";
+      scrimEl.classList.remove("is-open");
+      scrimEl.hidden = true;
+    }
+    function buildHeaderRow(label) {
+      const row = document.createElement("div");
+      row.className = "long-press-menu__header";
+      row.textContent = label;
+      return row;
+    }
+    function buildDivider() {
+      const divider = document.createElement("div");
+      divider.className = "long-press-menu__divider";
+      return divider;
+    }
+    function buildInertRow(label) {
+      const row = document.createElement("button");
+      row.type = "button";
+      row.className = "long-press-menu__row";
+      row.textContent = label;
+      row.setAttribute("aria-disabled", "true");
+      row.addEventListener("click", (event) => {
+        event.preventDefault();
+      });
+      return row;
+    }
+    function openMenu(tileEl) {
+      closeMenu();
+      const label = tileEl.querySelector(".tile__label")?.textContent?.trim() ?? "";
+      menuEl.appendChild(buildHeaderRow(label));
+      menuEl.appendChild(buildDivider());
+      menuEl.appendChild(buildInertRow("App info"));
+      menuEl.appendChild(buildInertRow("Uninstall"));
+      const rect = tileEl.getBoundingClientRect();
+      const hostRect = hostEl.getBoundingClientRect();
+      menuEl.style.left = `${rect.left - hostRect.left}px`;
+      menuEl.style.top = `${rect.bottom - hostRect.top + 6}px`;
+      menuEl.hidden = false;
+      scrimEl.hidden = false;
+      menuEl.classList.add("is-open");
+      scrimEl.classList.add("is-open");
+      menuEl.setAttribute("aria-hidden", "false");
+      menuOpen = true;
+    }
+    function onPointerDown(event) {
+      const target = event.target;
+      if (!(target instanceof Element))
+        return;
+      const tileEl = target.closest(".tile--app");
+      if (!tileEl)
+        return;
+      clearPressTimer();
+      pressTileEl = tileEl;
+      activePointerId = event.pointerId;
+      startX = event.clientX;
+      startY = event.clientY;
+      longPressFired = false;
+      pressTimer = window.setTimeout(() => {
+        pressTimer = null;
+        longPressFired = true;
+        if (pressTileEl)
+          openMenu(pressTileEl);
+      }, LONG_PRESS_MS);
+    }
+    function onPointerMove(event) {
+      if (pressTimer === null || event.pointerId !== activePointerId)
+        return;
+      const dx = event.clientX - startX;
+      const dy = event.clientY - startY;
+      if (Math.hypot(dx, dy) > MOVE_THRESHOLD_PX)
+        clearPressTimer();
+    }
+    function onPointerEnd(event) {
+      if (event.pointerId !== activePointerId)
+        return;
+      clearPressTimer();
+      activePointerId = null;
+    }
+    function onDocumentClickCapture(event) {
+      if (!longPressFired)
+        return;
+      const target = event.target;
+      if (!(target instanceof Element))
+        return;
+      if (target.closest(".tile--app") !== pressTileEl)
+        return;
+      longPressFired = false;
+      event.preventDefault();
+      event.stopPropagation();
+    }
+    function onDocumentKeydown(event) {
+      if (menuOpen && event.key === "Escape")
+        closeMenu();
+    }
+    document.addEventListener("pointerdown", onPointerDown);
+    document.addEventListener("pointermove", onPointerMove);
+    document.addEventListener("pointerup", onPointerEnd);
+    document.addEventListener("pointercancel", onPointerEnd);
+    document.addEventListener("click", onDocumentClickCapture, true);
+    scrimEl.addEventListener("click", closeMenu);
+    document.addEventListener("keydown", onDocumentKeydown);
+  }
+
+  // src/app/launcher/drawer.ts
+  function iconSrc(icon) {
+    return `/cloud-mobile/public/icons/${icon}.svg`;
+  }
+  function slugify(value) {
+    return value.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "");
+  }
+  function buildNavRow(href, label, icon, child = false) {
+    let row;
+    if (href) {
+      const anchor = document.createElement("a");
+      anchor.href = href;
+      row = anchor;
+    } else {
+      row = document.createElement("span");
+    }
+    row.classList.add("drawer__nav-item");
+    if (child)
+      row.classList.add("drawer__nav-item--child");
+    if (!href) {
+      row.classList.add("drawer__nav-item--inert");
+      row.setAttribute("aria-disabled", "true");
+    }
+    if (icon) {
+      const iconEl = document.createElement("img");
+      iconEl.src = iconSrc(icon);
+      iconEl.alt = "";
+      row.appendChild(iconEl);
+    }
+    const labelEl = document.createElement("span");
+    labelEl.textContent = label;
+    row.appendChild(labelEl);
+    return row;
+  }
+  function buildGroupTitle(title) {
+    const el3 = document.createElement("p");
+    el3.className = "drawer__group-title";
+    el3.textContent = title;
+    return el3;
+  }
+  function fillBanner(data) {
+    const setText = (id, text) => {
+      const el3 = document.getElementById(id);
+      if (!el3)
+        return;
+      el3.textContent = text;
+    };
+    setText("drawer-app-name", data.app.name);
+    setText("drawer-app-build", data.app.build);
+    setText("drawer-user-avatar", data.app.user.initials);
+    setText("drawer-user-name", data.app.user.name);
+    setText("drawer-user-email", data.app.user.email);
+  }
+  function sectionPage(data, sectionId, pageId) {
+    return data.sections[sectionId]?.pages?.find(
+      (page) => typeof page !== "string" && page.id === pageId
+    );
+  }
+  function cloudRowItems(data) {
+    const page = sectionPage(data, "cloud", "apps");
+    const groups = typeof page === "object" && page.groups || [];
+    return groups.flatMap((group) => group.tiles).map((tile) => ({ label: tile.label, icon: tile.icon, href: resolveTarget(tile.target).href }));
+  }
+  function labsRowItems(data) {
+    const page = sectionPage(data, "cloud", "lnktree");
+    const tiles = typeof page === "object" && page.tiles || [];
+    return tiles.map((tile) => ({ label: tile.label, icon: tile.icon, href: resolveTarget(tile.target).href }));
+  }
+  function configRowItems(data) {
+    const section = data.sections["config"];
+    if (!section?.pages)
+      return [];
+    return section.pages.map((page) => {
+      const label = typeof page === "string" ? page : page.label;
+      const pageId = typeof page === "string" ? slugify(page) : page.id;
+      const href = typeof page === "object" && page.target ? resolveTarget(page.target).href : routeHref(["config", pageId]);
+      return { label, icon: section.icon, href };
+    });
+  }
+  function linktreeRowGroups() {
+    return getLinktree().groups.map((group) => [
+      group.label,
+      group.tiles.map((tile) => ({ label: tile.label, icon: tile.icon, href: tile.href ?? null }))
+    ]);
+  }
+  function appendGroup(container, title, items) {
+    if (items.length === 0)
+      return;
+    container.appendChild(buildGroupTitle(title));
+    items.forEach((item) => container.appendChild(buildNavRow(item.href, item.label, item.icon)));
+  }
+  function fillDrawerList(container, data) {
+    container.innerHTML = "";
+    const homeApps = data.longPress["home"]?.find((item) => item.id === "home-apps");
+    if (homeApps) {
+      const { href } = resolveTarget(homeApps.target);
+      container.appendChild(buildNavRow(href, homeApps.label, homeApps.icon));
+    }
+    container.appendChild(buildGroupTitle("Home"));
+    const groupIds = [...data.bottomNav.filter((id) => id !== "home"), "config"];
+    groupIds.forEach((id) => {
+      const section = data.sections[id];
+      if (!section)
+        return;
+      container.appendChild(buildNavRow(routeHref([id]), section.label, section.icon));
+      section.pages?.forEach((page) => {
+        if (typeof page === "object" && page.hidden)
+          return;
+        const label = typeof page === "string" ? page : page.label;
+        const pageId = typeof page === "string" ? slugify(page) : page.id;
+        const href = typeof page === "object" && page.target ? resolveTarget(page.target).href : routeHref([id, pageId]);
+        container.appendChild(buildNavRow(href, label, void 0, true));
+      });
+    });
+    appendGroup(container, "Cloud", cloudRowItems(data));
+    appendGroup(container, "Labs", labsRowItems(data));
+    appendGroup(container, "Configs", configRowItems(data));
+    linktreeRowGroups().forEach(([title, items]) => appendGroup(container, title, items));
+  }
+  function wireOpenClose() {
+    const hamburgerBtn = document.getElementById("hamburger-btn");
+    const drawerEl = document.getElementById("drawer");
+    const scrimEl = document.getElementById("drawer-scrim");
+    if (!hamburgerBtn || !drawerEl || !scrimEl)
+      return;
+    const open = () => {
+      drawerEl.classList.add("is-open");
+      scrimEl.classList.add("is-open");
+      drawerEl.setAttribute("aria-hidden", "false");
+      hamburgerBtn.setAttribute("aria-expanded", "true");
+    };
+    const close = () => {
+      drawerEl.classList.remove("is-open");
+      scrimEl.classList.remove("is-open");
+      drawerEl.setAttribute("aria-hidden", "true");
+      hamburgerBtn.setAttribute("aria-expanded", "false");
+    };
+    hamburgerBtn.addEventListener("click", open);
+    scrimEl.addEventListener("click", close);
+    document.addEventListener("keydown", (event) => {
+      if (event.key === "Escape")
+        close();
+    });
+  }
+  function initDrawer(data) {
+    const navEl = document.getElementById("drawer-nav");
+    fillBanner(data);
+    if (navEl)
+      fillDrawerList(navEl, data);
+    wireOpenClose();
+    initLongPressMenu();
+  }
+
+  // src/lib/onehand/stars.ts
+  var onCheckUpdatesHandler = null;
+  function setOnCheckUpdates(handler) {
+    onCheckUpdatesHandler = handler;
+  }
+  var RECENT_APP_ICONS = {
+    Mail: "mail",
+    Brave: "browser",
+    Mattermost: "chat",
+    Obsidian: "brain",
+    Calendar: "calendar",
+    Vault: "lock",
+    Claude: "sparkles",
+    Settings: "settings"
+  };
+  var SIRIUS_RADIUS_PX = 130;
+  var SIRIUS_SUBLEVEL_STEP_PX = 120;
+  var ARC_RADIUS_PX = 200;
+  var DEAD_ZONE_PX = 28;
+  var MOVE_THRESHOLD_PX2 = 6;
+  var TAP_MAX_MS = 450;
+  var TAP_MAX_MOVE_PX = 16;
+  var GHOST_CLICK_MS = 700;
+  var FLASH_MS = 220;
+  var TWO_PI = Math.PI * 2;
+  var ARROW_HEAD_LENGTH_PX = 10;
+  var ARROW_HEAD_ANGLE_RAD = Math.PI / 7;
+  var SVG_NS = "http://www.w3.org/2000/svg";
+  function capturePointer(el3, pointerId) {
+    try {
+      el3.setPointerCapture(pointerId);
+    } catch {
+    }
+  }
+  function releasePointer(el3, pointerId) {
+    try {
+      if (el3.hasPointerCapture(pointerId))
+        el3.releasePointerCapture(pointerId);
+    } catch {
+    }
+  }
+  function polar(angle, radius) {
+    return { tx: Math.cos(angle) * radius, ty: Math.sin(angle) * radius };
+  }
+  function computeAngles(count, kind) {
+    if (count <= 0)
+      return [];
+    if (kind === "sirius") {
+      const start = -Math.PI / 2;
+      return Array.from({ length: count }, (_, i) => start + i * TWO_PI / count);
+    }
+    if (count === 1)
+      return [Math.PI + Math.PI / 2];
+    const step = Math.PI / (count - 1);
+    return Array.from({ length: count }, (_, i) => Math.PI + i * step);
+  }
+  function angularDistance(a, b) {
+    return Math.abs(Math.atan2(Math.sin(a - b), Math.cos(a - b)));
+  }
+  function nearestIndexByAngle(angle, angles) {
+    let bestIndex = 0;
+    let bestDelta = Infinity;
+    for (let i = 0; i < angles.length; i++) {
+      const delta = angularDistance(angle, angles[i]);
+      if (delta < bestDelta) {
+        bestDelta = delta;
+        bestIndex = i;
+      }
+    }
+    return bestIndex;
+  }
+  function siriusItems(nodes) {
+    return nodes.map((n) => {
+      if (n.children && n.children.length > 0) {
+        return { id: n.id, label: n.label, href: null, inert: false, node: n };
+      }
+      const href = resolveTarget(n.target).href;
+      return { id: n.id, label: n.label, href, inert: href === null, node: n };
+    });
+  }
+  function pageEntryItem(entry, sectionId) {
+    if (typeof entry === "string") {
+      return { id: entry, label: entry, href: routeHref([sectionId, entry]), inert: false };
+    }
+    const href = entry.target ? resolveTarget(entry.target).href : routeHref([sectionId, entry.id]);
+    return { id: entry.id, label: entry.label, href, inert: href === null };
+  }
+  function canopusItems() {
+    const live = getData();
+    const sectionId = live.stars.canopus.fixedSection;
+    const pages = live.sections[sectionId]?.pages ?? [];
+    return pages.map((entry) => pageEntryItem(entry, sectionId));
+  }
+  function centauriItems(recentApps) {
+    return recentApps.map((label, i) => ({ id: `recent-${i}`, label, href: null, inert: true, icon: RECENT_APP_ICONS[label] }));
+  }
+  function iconSrc2(icon) {
+    return `/cloud-mobile/public/icons/${icon}.svg`;
+  }
+  function initStars(data) {
+    if (!document.querySelector(".home-cube"))
+      return;
+    const menuRoot = document.getElementById("radial-menu");
+    if (!menuRoot)
+      return;
+    const menuEl = menuRoot;
+    const shellEl = menuEl.closest(".shell");
+    const starEls = [];
+    const siriusEl = document.getElementById("star-sirius");
+    const canopusEl = document.getElementById("star-canopus");
+    const centauriEl = document.getElementById("star-centauri");
+    if (siriusEl)
+      starEls.push({ el: siriusEl, kind: "sirius" });
+    if (canopusEl)
+      starEls.push({ el: canopusEl, kind: "canopus" });
+    if (centauriEl)
+      starEls.push({ el: centauriEl, kind: "centauri" });
+    if (starEls.length === 0)
+      return;
+    let isOpen = false;
+    let persistent = false;
+    let suppressClickUntil = 0;
+    let originX = 0;
+    let originY = 0;
+    let currentItems = [];
+    let currentAngles = [];
+    let nodeEls = [];
+    let highlightIndex = -1;
+    let siriusStack = [];
+    let arrowLineEl = null;
+    let arrowHeadEl = null;
+    function setHighlight(index) {
+      if (index === highlightIndex)
+        return;
+      const prev = nodeEls[highlightIndex];
+      if (prev)
+        prev.classList.remove("is-highlighted");
+      highlightIndex = index;
+      const next = nodeEls[highlightIndex];
+      if (next)
+        next.classList.add("is-highlighted");
+    }
+    function buildNodeClass(item, kindClass, highlighted) {
+      let cls = `radial-menu__node radial-menu__node--${kindClass}`;
+      if (highlighted)
+        cls += " is-highlighted";
+      if (item.inert)
+        cls += " radial-menu__node--inert";
+      return cls;
+    }
+    function ringRadius(depth, kind) {
+      if (kind === "sirius")
+        return SIRIUS_RADIUS_PX + SIRIUS_SUBLEVEL_STEP_PX * depth;
+      return ARC_RADIUS_PX;
+    }
+    function renderItems(items, depth, kind) {
+      currentItems = items;
+      currentAngles = computeAngles(items.length, kind);
+      nodeEls = [];
+      arrowLineEl = null;
+      arrowHeadEl = null;
+      menuEl.innerHTML = "";
+      const kindClass = kind === "sirius" ? "circle" : "arc";
+      const radius = ringRadius(depth, kind);
+      const scrim = document.createElement("div");
+      scrim.className = `radial-menu__scrim radial-menu__scrim--${kindClass}`;
+      menuEl.appendChild(scrim);
+      const center = document.createElement("div");
+      center.className = "radial-menu__center";
+      const shellRect = shellEl?.getBoundingClientRect();
+      center.style.left = `${originX - (shellRect?.left ?? 0)}px`;
+      center.style.top = `${originY - (shellRect?.top ?? 0)}px`;
+      if (depth > 0) {
+        const back = document.createElement("button");
+        back.type = "button";
+        back.className = "radial-menu__back";
+        back.textContent = "\u2039 Back";
+        center.appendChild(back);
+      }
+      items.forEach((item, i) => {
+        const { tx, ty } = polar(currentAngles[i] ?? 0, radius);
+        const nodeEl = document.createElement("div");
+        nodeEl.className = buildNodeClass(item, kindClass, i === highlightIndex);
+        nodeEl.dataset.id = item.id;
+        nodeEl.dataset.index = String(i);
+        nodeEl.style.setProperty("--tx", `${tx}px`);
+        nodeEl.style.setProperty("--ty", `${ty}px`);
+        if (item.icon) {
+          const iconEl = document.createElement("img");
+          iconEl.className = "radial-menu__node-icon";
+          iconEl.src = iconSrc2(item.icon);
+          iconEl.alt = "";
+          nodeEl.appendChild(iconEl);
+        }
+        const labelEl = document.createElement("span");
+        labelEl.className = "radial-menu__node-label";
+        labelEl.textContent = item.label;
+        nodeEl.appendChild(labelEl);
+        center.appendChild(nodeEl);
+        nodeEls.push(nodeEl);
+      });
+      menuEl.appendChild(center);
+      if (kind === "sirius") {
+        const arrowSvg = document.createElementNS(SVG_NS, "svg");
+        arrowSvg.setAttribute("class", "radial-menu__arrow");
+        const line = document.createElementNS(SVG_NS, "line");
+        line.setAttribute("class", "radial-menu__arrow-line");
+        const head = document.createElementNS(SVG_NS, "polygon");
+        head.setAttribute("class", "radial-menu__arrow-head");
+        arrowSvg.appendChild(line);
+        arrowSvg.appendChild(head);
+        menuEl.appendChild(arrowSvg);
+        arrowLineEl = line;
+        arrowHeadEl = head;
+      }
+      menuEl.hidden = false;
+      menuEl.classList.add("is-open");
+      menuEl.setAttribute("aria-hidden", "false");
+      isOpen = true;
+    }
+    function updateArrow(clientX, clientY) {
+      if (!arrowLineEl || !arrowHeadEl)
+        return;
+      const shellRect = shellEl?.getBoundingClientRect();
+      const offsetX = shellRect?.left ?? 0;
+      const offsetY = shellRect?.top ?? 0;
+      const x1 = originX - offsetX;
+      const y1 = originY - offsetY;
+      const x2 = clientX - offsetX;
+      const y2 = clientY - offsetY;
+      arrowLineEl.setAttribute("x1", String(x1));
+      arrowLineEl.setAttribute("y1", String(y1));
+      arrowLineEl.setAttribute("x2", String(x2));
+      arrowLineEl.setAttribute("y2", String(y2));
+      const angle = Math.atan2(y2 - y1, x2 - x1);
+      const hx1 = x2 - ARROW_HEAD_LENGTH_PX * Math.cos(angle - ARROW_HEAD_ANGLE_RAD);
+      const hy1 = y2 - ARROW_HEAD_LENGTH_PX * Math.sin(angle - ARROW_HEAD_ANGLE_RAD);
+      const hx2 = x2 - ARROW_HEAD_LENGTH_PX * Math.cos(angle + ARROW_HEAD_ANGLE_RAD);
+      const hy2 = y2 - ARROW_HEAD_LENGTH_PX * Math.sin(angle + ARROW_HEAD_ANGLE_RAD);
+      arrowHeadEl.setAttribute("points", `${x2},${y2} ${hx1},${hy1} ${hx2},${hy2}`);
+    }
+    function renderSiriusLevel() {
+      const level = siriusStack[siriusStack.length - 1] ?? [];
+      renderItems(siriusItems(level), siriusStack.length - 1, "sirius");
+    }
+    function enterPersistentMode() {
+      persistent = true;
+      suppressClickUntil = Date.now() + GHOST_CLICK_MS;
+    }
+    function closeMenu() {
+      isOpen = false;
+      persistent = false;
+      suppressClickUntil = 0;
+      siriusStack = [];
+      currentItems = [];
+      currentAngles = [];
+      nodeEls = [];
+      highlightIndex = -1;
+      arrowLineEl = null;
+      arrowHeadEl = null;
+      menuEl.classList.remove("is-open");
+      menuEl.setAttribute("aria-hidden", "true");
+      menuEl.hidden = true;
+      menuEl.innerHTML = "";
+    }
+    function flashThenClose() {
+      window.setTimeout(() => closeMenu(), FLASH_MS);
+    }
+    function drillInto(children) {
+      siriusStack.push(children);
+      highlightIndex = 0;
+      renderSiriusLevel();
+    }
+    function goBack() {
+      if (siriusStack.length <= 1) {
+        closeMenu();
+        return;
+      }
+      siriusStack.pop();
+      highlightIndex = 0;
+      renderSiriusLevel();
+    }
+    function commitIndex(index) {
+      if (!isOpen)
+        return;
+      const item = currentItems[index];
+      if (!item) {
+        closeMenu();
+        return;
+      }
+      if (item.node?.children && item.node.children.length > 0) {
+        drillInto(item.node.children);
+        return;
+      }
+      const actionTarget = item.node?.target;
+      if (actionTarget === "action:check_updates") {
+        closeMenu();
+        onCheckUpdatesHandler?.();
+        return;
+      }
+      if (item.href) {
+        const href = item.href;
+        closeMenu();
+        location.href = href;
+        return;
+      }
+      flashThenClose();
+    }
+    function openFor(kind, starEl) {
+      closeMenu();
+      const rect = starEl.getBoundingClientRect();
+      originX = rect.left + rect.width / 2;
+      originY = rect.top + rect.height / 2;
+      highlightIndex = 0;
+      if (kind === "sirius") {
+        siriusStack = [data.stars.sirius.nodes];
+        renderSiriusLevel();
+      } else if (kind === "canopus") {
+        renderItems(canopusItems(), 0, "canopus");
+      } else {
+        renderItems(centauriItems(data.stars.centauri.recentApps), 0, "centauri");
+      }
+    }
+    function updateHighlightFromPointer(clientX, clientY) {
+      const dx = clientX - originX;
+      const dy = clientY - originY;
+      if (Math.hypot(dx, dy) < DEAD_ZONE_PX)
+        return;
+      setHighlight(nearestIndexByAngle(Math.atan2(dy, dx), currentAngles));
+    }
+    function attachStar(starEl, kind) {
+      let pointerId = null;
+      let moved = false;
+      let downTime = 0;
+      let downX = 0;
+      let downY = 0;
+      starEl.addEventListener("pointerdown", (e) => {
+        e.preventDefault();
+        pointerId = e.pointerId;
+        moved = false;
+        downTime = Date.now();
+        downX = e.clientX;
+        downY = e.clientY;
+        openFor(kind, starEl);
+        capturePointer(starEl, e.pointerId);
+      });
+      starEl.addEventListener("pointermove", (e) => {
+        if (pointerId === null || e.pointerId !== pointerId || !isOpen)
+          return;
+        if (Math.hypot(e.clientX - originX, e.clientY - originY) > MOVE_THRESHOLD_PX2)
+          moved = true;
+        updateHighlightFromPointer(e.clientX, e.clientY);
+        updateArrow(e.clientX, e.clientY);
+      });
+      starEl.addEventListener("pointerup", (e) => {
+        if (pointerId === null || e.pointerId !== pointerId)
+          return;
+        releasePointer(starEl, pointerId);
+        pointerId = null;
+        if (!isOpen)
+          return;
+        const elapsedMs = Date.now() - downTime;
+        const totalMovePx = Math.hypot(e.clientX - downX, e.clientY - downY);
+        const wasQuickTapOrNoDrag = !moved || elapsedMs <= TAP_MAX_MS && totalMovePx <= TAP_MAX_MOVE_PX;
+        if (wasQuickTapOrNoDrag) {
+          enterPersistentMode();
+          return;
+        }
+        if (Math.hypot(e.clientX - originX, e.clientY - originY) < DEAD_ZONE_PX) {
+          goBack();
+          return;
+        }
+        commitIndex(highlightIndex);
+      });
+      starEl.addEventListener("pointercancel", (e) => {
+        if (pointerId === null || e.pointerId !== pointerId)
+          return;
+        releasePointer(starEl, pointerId);
+        pointerId = null;
+        if (!isOpen)
+          return;
+        enterPersistentMode();
+      });
+    }
+    starEls.forEach(({ el: el3, kind }) => attachStar(el3, kind));
+    menuEl.addEventListener("pointermove", (e) => {
+      if (!isOpen || !persistent)
+        return;
+      const target = e.target;
+      if (!(target instanceof HTMLElement))
+        return;
+      const nodeEl = target.closest(".radial-menu__node");
+      if (!nodeEl)
+        return;
+      const index = Number(nodeEl.dataset.index);
+      if (!Number.isNaN(index))
+        setHighlight(index);
+    });
+    menuEl.addEventListener("click", (e) => {
+      if (!isOpen)
+        return;
+      if (Date.now() < suppressClickUntil) {
+        suppressClickUntil = 0;
+        return;
+      }
+      const target = e.target;
+      if (!(target instanceof HTMLElement))
+        return;
+      if (target.closest(".radial-menu__scrim")) {
+        closeMenu();
+        return;
+      }
+      if (target.closest(".radial-menu__back")) {
+        goBack();
+        return;
+      }
+      const nodeEl = target.closest(".radial-menu__node");
+      if (!nodeEl)
+        return;
+      const index = Number(nodeEl.dataset.index);
+      if (!Number.isNaN(index))
+        commitIndex(index);
+    });
+    document.addEventListener("keydown", (e) => {
+      if (isOpen && e.key === "Escape")
+        closeMenu();
+    });
+  }
+
+  // src/lib/onehand/config.ts
+  function getOnehandConfig(data) {
+    const withOnehand = data;
+    return withOnehand.onehand ?? null;
+  }
+
+  // src/lib/onehand/edge-menu.ts
+  var SECTOR_KEYS = ["top", "top_middle", "center", "down_middle", "down"];
+  var SWIPE_THRESHOLD_PX = 24;
+  var ARC_RADIUS_PX2 = 130;
+  var ARC_SPREAD_DEG = 45;
+  var DEAD_ZONE_PX2 = 20;
+  var TAP_MAX_MS2 = 450;
+  var TAP_MAX_MOVE_PX2 = 16;
+  var GHOST_CLICK_MS2 = 700;
+  var FLASH_MS2 = 220;
+  var ARROW_HEAD_LENGTH_PX2 = 10;
+  var ARROW_HEAD_ANGLE_RAD2 = Math.PI / 7;
+  var SVG_NS2 = "http://www.w3.org/2000/svg";
+  function toArcItem(key, sector) {
+    return { key, label: sector.label, action: sector.action };
+  }
+  function arcItemsFor(sectors, key) {
+    const self = sectors[key];
+    if (!self)
+      return [];
+    const idx = SECTOR_KEYS.indexOf(key);
+    const prevKey = SECTOR_KEYS[idx - 1];
+    const nextKey = SECTOR_KEYS[idx + 1];
+    const prev = prevKey ? sectors[prevKey] : void 0;
+    const next = nextKey ? sectors[nextKey] : void 0;
+    const items = [];
+    if (prev && prevKey)
+      items.push(toArcItem(prevKey, prev));
+    items.push(toArcItem(key, self));
+    if (next && nextKey)
+      items.push(toArcItem(nextKey, next));
+    return items;
+  }
+  function offsetsFor(count) {
+    if (count === 3)
+      return [-ARC_SPREAD_DEG, 0, ARC_SPREAD_DEG];
+    if (count === 2)
+      return [-ARC_SPREAD_DEG, ARC_SPREAD_DEG];
+    return [0];
+  }
+  function capturePointer2(el3, pointerId) {
+    try {
+      el3.setPointerCapture(pointerId);
+    } catch {
+    }
+  }
+  function releasePointer2(el3, pointerId) {
+    try {
+      if (el3.hasPointerCapture(pointerId))
+        el3.releasePointerCapture(pointerId);
+    } catch {
+    }
+  }
+  function polar2(angle, radius) {
+    return { tx: Math.cos(angle) * radius, ty: Math.sin(angle) * radius };
+  }
+  function angularDistance2(a, b) {
+    return Math.abs(Math.atan2(Math.sin(a - b), Math.cos(a - b)));
+  }
+  function nearestIndexByAngle2(angle, angles) {
+    let bestIndex = 0;
+    let bestDelta = Infinity;
+    for (let i = 0; i < angles.length; i++) {
+      const delta = angularDistance2(angle, angles[i]);
+      if (delta < bestDelta) {
+        bestDelta = delta;
+        bestIndex = i;
+      }
+    }
+    return bestIndex;
+  }
+  function initEdgeMenu(data) {
+    const config = getOnehandConfig(data);
+    if (!config)
+      return;
+    const shellRoot = document.querySelector(".shell");
+    if (!shellRoot)
+      return;
+    const shellEl = shellRoot;
+    const handlesRoot = document.createElement("div");
+    handlesRoot.className = "edge-menu-handles";
+    shellEl.appendChild(handlesRoot);
+    const menuEl = document.createElement("div");
+    menuEl.className = "edge-menu";
+    menuEl.hidden = true;
+    menuEl.setAttribute("aria-hidden", "true");
+    shellEl.appendChild(menuEl);
+    let isOpen = false;
+    let persistent = false;
+    let suppressClickUntil = 0;
+    let originX = 0;
+    let originY = 0;
+    let currentItems = [];
+    let currentAngles = [];
+    let nodeEls = [];
+    let highlightIndex = -1;
+    let arrowLineEl = null;
+    let arrowHeadEl = null;
+    function shellOffset() {
+      const rect = shellEl.getBoundingClientRect();
+      return { x: rect.left, y: rect.top };
+    }
+    function setHighlight(index) {
+      if (index === highlightIndex)
+        return;
+      const prev = nodeEls[highlightIndex];
+      if (prev)
+        prev.classList.remove("is-highlighted");
+      highlightIndex = index;
+      const next = nodeEls[highlightIndex];
+      if (next)
+        next.classList.add("is-highlighted");
+    }
+    function enterPersistentMode() {
+      persistent = true;
+      suppressClickUntil = Date.now() + GHOST_CLICK_MS2;
+    }
+    function closeMenu() {
+      isOpen = false;
+      persistent = false;
+      suppressClickUntil = 0;
+      currentItems = [];
+      currentAngles = [];
+      nodeEls = [];
+      highlightIndex = -1;
+      arrowLineEl = null;
+      arrowHeadEl = null;
+      menuEl.classList.remove("is-open");
+      menuEl.setAttribute("aria-hidden", "true");
+      menuEl.hidden = true;
+      menuEl.innerHTML = "";
+    }
+    function flashThenClose() {
+      window.setTimeout(() => closeMenu(), FLASH_MS2);
+    }
+    function openArc(originEl, items, swipeAngle) {
+      currentItems = items;
+      const offsets = offsetsFor(items.length);
+      currentAngles = offsets.map((deg) => swipeAngle + deg * Math.PI / 180);
+      nodeEls = [];
+      arrowLineEl = null;
+      arrowHeadEl = null;
+      menuEl.innerHTML = "";
+      const rect = originEl.getBoundingClientRect();
+      originX = rect.left + rect.width / 2;
+      originY = rect.top + rect.height / 2;
+      highlightIndex = 0;
+      const scrim = document.createElement("div");
+      scrim.className = "edge-menu__scrim";
+      menuEl.appendChild(scrim);
+      const offset = shellOffset();
+      const center = document.createElement("div");
+      center.className = "edge-menu__center";
+      center.style.left = `${originX - offset.x}px`;
+      center.style.top = `${originY - offset.y}px`;
+      items.forEach((item, i) => {
+        const { tx, ty } = polar2(currentAngles[i] ?? 0, ARC_RADIUS_PX2);
+        const nodeEl = document.createElement("div");
+        nodeEl.className = `edge-menu__node${i === highlightIndex ? " is-highlighted" : ""}`;
+        nodeEl.dataset.index = String(i);
+        nodeEl.style.setProperty("--tx", `${tx}px`);
+        nodeEl.style.setProperty("--ty", `${ty}px`);
+        const labelEl = document.createElement("span");
+        labelEl.className = "edge-menu__node-label";
+        labelEl.textContent = item.label;
+        nodeEl.appendChild(labelEl);
+        center.appendChild(nodeEl);
+        nodeEls.push(nodeEl);
+      });
+      menuEl.appendChild(center);
+      const arrowSvg = document.createElementNS(SVG_NS2, "svg");
+      arrowSvg.setAttribute("class", "edge-menu__arrow");
+      const line = document.createElementNS(SVG_NS2, "line");
+      line.setAttribute("class", "edge-menu__arrow-line");
+      const head = document.createElementNS(SVG_NS2, "polygon");
+      head.setAttribute("class", "edge-menu__arrow-head");
+      arrowSvg.appendChild(line);
+      arrowSvg.appendChild(head);
+      menuEl.appendChild(arrowSvg);
+      arrowLineEl = line;
+      arrowHeadEl = head;
+      menuEl.hidden = false;
+      menuEl.classList.add("is-open");
+      menuEl.setAttribute("aria-hidden", "false");
+      isOpen = true;
+    }
+    function updateArrow(clientX, clientY) {
+      if (!arrowLineEl || !arrowHeadEl)
+        return;
+      const offset = shellOffset();
+      const x1 = originX - offset.x;
+      const y1 = originY - offset.y;
+      const x2 = clientX - offset.x;
+      const y2 = clientY - offset.y;
+      arrowLineEl.setAttribute("x1", String(x1));
+      arrowLineEl.setAttribute("y1", String(y1));
+      arrowLineEl.setAttribute("x2", String(x2));
+      arrowLineEl.setAttribute("y2", String(y2));
+      const angle = Math.atan2(y2 - y1, x2 - x1);
+      const hx1 = x2 - ARROW_HEAD_LENGTH_PX2 * Math.cos(angle - ARROW_HEAD_ANGLE_RAD2);
+      const hy1 = y2 - ARROW_HEAD_LENGTH_PX2 * Math.sin(angle - ARROW_HEAD_ANGLE_RAD2);
+      const hx2 = x2 - ARROW_HEAD_LENGTH_PX2 * Math.cos(angle + ARROW_HEAD_ANGLE_RAD2);
+      const hy2 = y2 - ARROW_HEAD_LENGTH_PX2 * Math.sin(angle + ARROW_HEAD_ANGLE_RAD2);
+      arrowHeadEl.setAttribute("points", `${x2},${y2} ${hx1},${hy1} ${hx2},${hy2}`);
+    }
+    function updateHighlightFromPointer(clientX, clientY) {
+      const dx = clientX - originX;
+      const dy = clientY - originY;
+      if (Math.hypot(dx, dy) < DEAD_ZONE_PX2)
+        return;
+      setHighlight(nearestIndexByAngle2(Math.atan2(dy, dx), currentAngles));
+    }
+    function commitIndex(index) {
+      if (!isOpen)
+        return;
+      const item = currentItems[index];
+      if (!item) {
+        closeMenu();
+        return;
+      }
+      if (item.action === "back") {
+        closeMenu();
+        history.back();
+        return;
+      }
+      flashThenClose();
+    }
+    function attachSector(sectorEl, handle, key) {
+      let pointerId = null;
+      let startX = 0;
+      let startY = 0;
+      let startTime = 0;
+      let opened = false;
+      sectorEl.addEventListener("pointerdown", (e) => {
+        e.preventDefault();
+        closeMenu();
+        pointerId = e.pointerId;
+        startX = e.clientX;
+        startY = e.clientY;
+        startTime = Date.now();
+        opened = false;
+        capturePointer2(sectorEl, e.pointerId);
+      });
+      sectorEl.addEventListener("pointermove", (e) => {
+        if (pointerId === null || e.pointerId !== pointerId)
+          return;
+        if (!opened) {
+          const dx = e.clientX - startX;
+          const inward = handle.edge === "left" ? dx : -dx;
+          if (inward < SWIPE_THRESHOLD_PX)
+            return;
+          const items = arcItemsFor(handle.sectors, key);
+          if (items.length === 0)
+            return;
+          opened = true;
+          const swipeAngle = Math.atan2(e.clientY - startY, e.clientX - startX);
+          openArc(sectorEl, items, swipeAngle);
+          updateArrow(e.clientX, e.clientY);
+          return;
+        }
+        if (!isOpen)
+          return;
+        updateHighlightFromPointer(e.clientX, e.clientY);
+        updateArrow(e.clientX, e.clientY);
+      });
+      sectorEl.addEventListener("pointerup", (e) => {
+        if (pointerId === null || e.pointerId !== pointerId)
+          return;
+        releasePointer2(sectorEl, pointerId);
+        pointerId = null;
+        if (!opened) {
+          const elapsedMs = Date.now() - startTime;
+          const totalMovePx = Math.hypot(e.clientX - startX, e.clientY - startY);
+          if (elapsedMs > TAP_MAX_MS2 || totalMovePx > TAP_MAX_MOVE_PX2)
+            return;
+          const items = arcItemsFor(handle.sectors, key);
+          if (items.length === 0)
+            return;
+          const inwardAngle = handle.edge === "left" ? 0 : Math.PI;
+          openArc(sectorEl, items, inwardAngle);
+          enterPersistentMode();
+          return;
+        }
+        if (!isOpen)
+          return;
+        if (Math.hypot(e.clientX - originX, e.clientY - originY) < DEAD_ZONE_PX2) {
+          closeMenu();
+          return;
+        }
+        commitIndex(highlightIndex);
+      });
+      sectorEl.addEventListener("pointercancel", (e) => {
+        if (pointerId === null || e.pointerId !== pointerId)
+          return;
+        releasePointer2(sectorEl, pointerId);
+        pointerId = null;
+        if (opened && isOpen)
+          enterPersistentMode();
+      });
+    }
+    function buildHandle(handle) {
+      const handleEl = document.createElement("div");
+      handleEl.className = `edge-menu__handle edge-menu__handle--${handle.edge}`;
+      handlesRoot.appendChild(handleEl);
+      SECTOR_KEYS.forEach((key) => {
+        const sectorEl = document.createElement("div");
+        sectorEl.className = "edge-menu__sector";
+        sectorEl.dataset.sector = key;
+        handleEl.appendChild(sectorEl);
+        if (handle.sectors[key])
+          attachSector(sectorEl, handle, key);
+      });
+    }
+    config.handles.forEach((handle) => buildHandle(handle));
+    menuEl.addEventListener("pointermove", (e) => {
+      if (!isOpen || !persistent)
+        return;
+      const target = e.target;
+      if (!(target instanceof HTMLElement))
+        return;
+      const nodeEl = target.closest(".edge-menu__node");
+      if (!nodeEl)
+        return;
+      const index = Number(nodeEl.dataset.index);
+      if (!Number.isNaN(index))
+        setHighlight(index);
+    });
+    menuEl.addEventListener("click", (e) => {
+      if (!isOpen)
+        return;
+      if (Date.now() < suppressClickUntil) {
+        suppressClickUntil = 0;
+        return;
+      }
+      const target = e.target;
+      if (!(target instanceof HTMLElement))
+        return;
+      if (target.closest(".edge-menu__scrim")) {
+        closeMenu();
+        return;
+      }
+      const nodeEl = target.closest(".edge-menu__node");
+      if (!nodeEl)
+        return;
+      const index = Number(nodeEl.dataset.index);
+      if (!Number.isNaN(index))
+        commitIndex(index);
+    });
+    document.addEventListener("keydown", (e) => {
+      if (isOpen && e.key === "Escape")
+        closeMenu();
+    });
+  }
+
+  // src/lib/onehand/home-swipes.ts
+  var SWIPE_THRESHOLD_PX2 = 60;
+  var INTERACTIVE_SELECTOR = 'a, button, input, textarea, select, [role="button"], .tile, .star, .edge-menu__handle';
+  function isInteractiveTarget(target) {
+    return target instanceof Element && !!target.closest(INTERACTIVE_SELECTOR);
+  }
+  function initHomeSwipes() {
+    if (!document.querySelector(".home-cube"))
+      return;
+    let pointerId = null;
+    let startX = 0;
+    let startY = 0;
+    let active = false;
+    function onPointerDown(e) {
+      if (isInteractiveTarget(e.target))
+        return;
+      pointerId = e.pointerId;
+      startX = e.clientX;
+      startY = e.clientY;
+      active = true;
+    }
+    function onPointerUp(e) {
+      if (!active || pointerId === null || e.pointerId !== pointerId)
+        return;
+      active = false;
+      pointerId = null;
+      const dx = e.clientX - startX;
+      const dy = e.clientY - startY;
+      const absX = Math.abs(dx);
+      const absY = Math.abs(dy);
+      if (Math.max(absX, absY) < SWIPE_THRESHOLD_PX2)
+        return;
+      if (absX > absY) {
+        if (dx > 0)
+          history.forward();
+        else
+          history.back();
+      } else if (dy < 0) {
+        location.href = routeHref(["suite", "phone", "all"]);
+      } else {
+        location.href = routeHref(["suite"]);
+      }
+    }
+    function onPointerCancel(e) {
+      if (pointerId === null || e.pointerId !== pointerId)
+        return;
+      active = false;
+      pointerId = null;
+    }
+    document.addEventListener("pointerdown", onPointerDown);
+    document.addEventListener("pointerup", onPointerUp);
+    document.addEventListener("pointercancel", onPointerCancel);
+  }
+
+  // src/app/main.ts
+  init_overlays();
+
+  // src/app/launcher/fan-menu.ts
+  var LONG_PRESS_MS2 = 380;
+  var MOVE_THRESHOLD_PX3 = 10;
+  var MENU_OFFSET_PX = 70;
+  function iconSrc3(icon) {
+    return `/cloud-mobile/public/icons/${icon}.svg`;
+  }
+  function buildItemButton(item, index) {
+    const button = document.createElement("button");
+    button.type = "button";
+    button.className = "fan-menu__item";
+    button.dataset.index = String(index);
+    const iconWrap = document.createElement("span");
+    iconWrap.className = "fan-menu__item-icon";
+    const iconEl = document.createElement("img");
+    iconEl.src = iconSrc3(item.icon);
+    iconEl.alt = "";
+    iconWrap.appendChild(iconEl);
+    const labelEl = document.createElement("span");
+    labelEl.className = "fan-menu__item-label";
+    labelEl.textContent = item.label;
+    button.appendChild(iconWrap);
+    button.appendChild(labelEl);
+    return button;
+  }
+  function appendFanMenuLayout(rootEl, items) {
+    if (items.length <= 3) {
+      const rowEl = document.createElement("div");
+      rowEl.className = "fan-menu__row fan-menu__row--bottom";
+      items.forEach((item, index) => rowEl.appendChild(buildItemButton(item, index)));
+      rootEl.appendChild(rowEl);
+      return;
+    }
+    const topRowEl = document.createElement("div");
+    topRowEl.className = "fan-menu__row fan-menu__row--top";
+    topRowEl.appendChild(buildItemButton(items[0], 0));
+    const bottomRowEl = document.createElement("div");
+    bottomRowEl.className = "fan-menu__row fan-menu__row--bottom";
+    items.slice(1).forEach((item, index) => bottomRowEl.appendChild(buildItemButton(item, index + 1)));
+    rootEl.appendChild(topRowEl);
+    rootEl.appendChild(bottomRowEl);
+  }
+  function initFanMenu(data) {
+    const bottomNavEl = document.getElementById("bottom-nav");
+    const fanMenuRoot = document.getElementById("fan-menu");
+    if (!bottomNavEl || !fanMenuRoot)
+      return;
+    const fanMenuEl = fanMenuRoot;
+    const shellEl = fanMenuEl.closest(".shell");
+    const scrimEl = document.getElementById("fan-menu-scrim");
+    let menuOpen = false;
+    let currentItems = [];
+    let pressTimer = null;
+    let longPressFired = false;
+    let activeItem = null;
+    let activeId = null;
+    let activePointerId = null;
+    let startX = 0;
+    let startY = 0;
+    function clearPressTimer() {
+      if (pressTimer === null)
+        return;
+      window.clearTimeout(pressTimer);
+      pressTimer = null;
+    }
+    function closeFanMenu() {
+      menuOpen = false;
+      currentItems = [];
+      fanMenuEl.classList.remove("is-open");
+      fanMenuEl.setAttribute("aria-hidden", "true");
+      fanMenuEl.hidden = true;
+      fanMenuEl.innerHTML = "";
+      fanMenuEl.style.transform = "";
+      if (scrimEl) {
+        scrimEl.classList.remove("is-open");
+        scrimEl.hidden = true;
+      }
+    }
+    function fanItems(id) {
+      const pages = data.sections[id]?.pages;
+      if (pages) {
+        return pages.flatMap((page) => {
+          if (typeof page === "string" || page.hidden)
+            return [];
+          return [{
+            id: page.id,
+            label: page.label,
+            icon: page.icon ?? data.sections[id].icon,
+            target: page.target ?? `page:${id}/${page.id}`
+          }];
+        });
+      }
+      return data.longPress[id] ?? [];
+    }
+    function openFanMenu(itemEl, id) {
+      const items = fanItems(id);
+      if (items.length === 0)
+        return;
+      closeFanMenu();
+      currentItems = items;
+      fanMenuEl.innerHTML = "";
+      appendFanMenuLayout(fanMenuEl, items);
+      const rect = itemEl.getBoundingClientRect();
+      const shellRect = shellEl?.getBoundingClientRect();
+      fanMenuEl.style.left = `${rect.left + rect.width / 2 - (shellRect?.left ?? 0)}px`;
+      fanMenuEl.style.top = `${rect.top - MENU_OFFSET_PX - (shellRect?.top ?? 0)}px`;
+      fanMenuEl.style.transform = "translateX(-50%)";
+      fanMenuEl.hidden = false;
+      fanMenuEl.classList.add("is-open");
+      fanMenuEl.setAttribute("aria-hidden", "false");
+      if (scrimEl) {
+        scrimEl.hidden = false;
+        scrimEl.classList.add("is-open");
+      }
+      menuOpen = true;
+    }
+    function handleSelect(button) {
+      const index = Number(button.dataset.index);
+      const item = currentItems[index];
+      closeFanMenu();
+      if (!item)
+        return;
+      if (item.target === "action:check_updates") {
+        Promise.resolve().then(() => (init_overlays(), overlays_exports)).then((mod) => mod.openUpdateOverlay());
+        return;
+      }
+      const { href } = resolveTarget(item.target);
+      if (href)
+        location.href = href;
+    }
+    function onPointerDown(event) {
+      const target = event.target;
+      if (!(target instanceof Element))
+        return;
+      const itemEl = target.closest(".bottom-nav__item");
+      if (!itemEl)
+        return;
+      const id = itemEl.dataset.longpress;
+      if (!id || fanItems(id).length === 0)
+        return;
+      clearPressTimer();
+      activeItem = itemEl;
+      activeId = id;
+      activePointerId = event.pointerId;
+      startX = event.clientX;
+      startY = event.clientY;
+      longPressFired = false;
+      pressTimer = window.setTimeout(() => {
+        pressTimer = null;
+        longPressFired = true;
+        if (activeItem && activeId)
+          openFanMenu(activeItem, activeId);
+      }, LONG_PRESS_MS2);
+    }
+    function onPointerMove(event) {
+      if (pressTimer === null || event.pointerId !== activePointerId)
+        return;
+      const dx = event.clientX - startX;
+      const dy = event.clientY - startY;
+      if (Math.hypot(dx, dy) > MOVE_THRESHOLD_PX3)
+        clearPressTimer();
+    }
+    function onPointerEnd(event) {
+      if (event.pointerId !== activePointerId)
+        return;
+      clearPressTimer();
+      activePointerId = null;
+    }
+    function onBottomNavClick(event) {
+      const target = event.target;
+      if (!(target instanceof Element) || !target.closest(".bottom-nav__item"))
+        return;
+      if (!longPressFired)
+        return;
+      longPressFired = false;
+      event.preventDefault();
+      event.stopPropagation();
+    }
+    function onDocumentClick(event) {
+      if (!menuOpen)
+        return;
+      const target = event.target;
+      if (!(target instanceof Element))
+        return;
+      const itemBtn = target.closest(".fan-menu__item");
+      if (itemBtn) {
+        handleSelect(itemBtn);
+        return;
+      }
+      closeFanMenu();
+    }
+    function onDocumentKeydown(event) {
+      if (menuOpen && event.key === "Escape")
+        closeFanMenu();
+    }
+    bottomNavEl.addEventListener("pointerdown", onPointerDown);
+    document.addEventListener("pointermove", onPointerMove);
+    document.addEventListener("pointerup", onPointerEnd);
+    document.addEventListener("pointercancel", onPointerEnd);
+    bottomNavEl.addEventListener("click", onBottomNavClick);
+    document.addEventListener("click", onDocumentClick);
+    document.addEventListener("keydown", onDocumentKeydown);
+  }
+
+  // src/app/launcher/stack-cards.ts
+  function initStackCards() {
+    document.addEventListener("click", (event) => {
+      if (!(event.target instanceof Element))
+        return;
+      const header = event.target.closest(".stack-card__header");
+      if (!header)
+        return;
+      const expanded = header.getAttribute("aria-expanded") === "true";
+      header.setAttribute("aria-expanded", String(!expanded));
+    });
+  }
+
+  // src/app/cloud/calendar-popup.ts
+  function show2(el3) {
+    el3.hidden = false;
+    el3.classList.add("is-open");
+  }
+  function hide2(el3) {
+    el3.classList.remove("is-open");
+    el3.hidden = true;
+  }
+  function el(tag, className, text) {
+    const node = document.createElement(tag);
+    if (className)
+      node.className = className;
+    if (text !== void 0)
+      node.textContent = text;
+    return node;
+  }
+  var DAY_HEADER_FMT = { weekday: "short", day: "numeric", month: "short" };
+  var MONTH_TITLE_FMT = { month: "long", year: "numeric" };
+  function buildAgendaView() {
+    const scroll = el("div", "calendar-popup__agenda-scroll");
+    const body = el("div", "calendar-popup__agenda-body");
+    const day = /* @__PURE__ */ new Date();
+    for (let i = 0; i < 7; i++) {
+      const row = el("div", `calendar-popup__agenda-row${i === 0 ? " is-today" : ""}`);
+      const headerText = new Intl.DateTimeFormat(void 0, DAY_HEADER_FMT).format(day);
+      row.appendChild(el("p", "calendar-popup__agenda-date", i === 0 ? `Today \xB7 ${headerText}` : headerText));
+      row.appendChild(el("p", "calendar-popup__agenda-empty", "no events"));
+      body.appendChild(row);
+      day.setDate(day.getDate() + 1);
+    }
+    body.appendChild(el("p", "calendar-popup__footnote", "Same placeholder shape as the real app \u2014 no CalDAV backend wired up on either side yet."));
+    scroll.appendChild(body);
+    return scroll;
+  }
+  function buildCalendarView() {
+    const col = el("div", "calendar-popup__month");
+    const now = /* @__PURE__ */ new Date();
+    const year = now.getFullYear();
+    const month = now.getMonth();
+    const today = now.getDate();
+    col.appendChild(el("p", "calendar-popup__month-title", new Intl.DateTimeFormat(void 0, MONTH_TITLE_FMT).format(now)));
+    const weekHeader = el("div", "calendar-popup__week calendar-popup__week--header");
+    const sample = new Date(2023, 0, 1);
+    for (let i = 0; i < 7; i++) {
+      const d = new Date(sample);
+      d.setDate(sample.getDate() + i);
+      const initial = new Intl.DateTimeFormat(void 0, { weekday: "narrow" }).format(d);
+      weekHeader.appendChild(el("span", "calendar-popup__day-cell calendar-popup__day-cell--header", initial));
+    }
+    col.appendChild(weekHeader);
+    const firstOfMonth = new Date(year, month, 1);
+    const leadingBlanks = firstOfMonth.getDay();
+    const daysInMonth = new Date(year, month + 1, 0).getDate();
+    const totalCells = leadingBlanks + daysInMonth;
+    const rows = Math.ceil(totalCells / 7);
+    let dayNum = 1;
+    for (let r = 0; r < rows; r++) {
+      const week = el("div", "calendar-popup__week");
+      for (let c = 0; c < 7; c++) {
+        const cellIndex = r * 7 + c;
+        if (cellIndex < leadingBlanks || dayNum > daysInMonth) {
+          week.appendChild(el("span", "calendar-popup__day-cell"));
+        } else {
+          const isToday = dayNum === today;
+          week.appendChild(el("span", `calendar-popup__day-cell${isToday ? " is-today" : ""}`, String(dayNum)));
+          dayNum++;
+        }
+      }
+      col.appendChild(week);
+    }
+    col.appendChild(el("p", "calendar-popup__footnote", "Event dots land with a real backend \u2014 the grid is the structure for now."));
+    return col;
+  }
+  function formatStopwatch(ms) {
+    const totalSec = Math.floor(ms / 1e3);
+    const m = Math.floor(totalSec / 60);
+    const s = totalSec % 60;
+    const tenths = Math.floor(ms % 1e3 / 100);
+    return `${m}:${String(s).padStart(2, "0")}.${tenths}`;
+  }
+  function buildStopwatch() {
+    const row = el("div", "calendar-popup__stopwatch");
+    const timeEl = el("span", "calendar-popup__stopwatch-time", "0:00.0");
+    const btn = el("button", "calendar-popup__stopwatch-btn", "\u25B6");
+    btn.type = "button";
+    btn.setAttribute("aria-label", "Start stopwatch");
+    let running = false;
+    let startedAt = 0;
+    let accumulatedMs = 0;
+    let tickId = null;
+    const currentMs = () => running ? accumulatedMs + (Date.now() - startedAt) : accumulatedMs;
+    const render = () => {
+      timeEl.textContent = formatStopwatch(currentMs());
+    };
+    const tick = () => {
+      render();
+      tickId = window.setTimeout(tick, 100);
+    };
+    btn.addEventListener("click", () => {
+      if (running) {
+        accumulatedMs += Date.now() - startedAt;
+        running = false;
+        btn.textContent = "\u25B6";
+        btn.classList.remove("is-running");
+        if (tickId !== null) {
+          window.clearTimeout(tickId);
+          tickId = null;
+        }
+        render();
+      } else {
+        startedAt = Date.now();
+        running = true;
+        btn.textContent = "\u25A0";
+        btn.classList.add("is-running");
+        tick();
+      }
+    });
+    let holdTimer = null;
+    const reset = () => {
+      running = false;
+      accumulatedMs = 0;
+      startedAt = 0;
+      if (tickId !== null) {
+        window.clearTimeout(tickId);
+        tickId = null;
+      }
+      btn.textContent = "\u25B6";
+      btn.classList.remove("is-running");
+      render();
+    };
+    timeEl.addEventListener("pointerdown", () => {
+      holdTimer = window.setTimeout(reset, 380);
+    });
+    ["pointerup", "pointerleave", "pointercancel"].forEach((type) => {
+      timeEl.addEventListener(type, () => {
+        if (holdTimer !== null) {
+          window.clearTimeout(holdTimer);
+          holdTimer = null;
+        }
+      });
+    });
+    row.appendChild(timeEl);
+    row.appendChild(btn);
+    return row;
+  }
+  function initCalendarPopup() {
+    const root = document.getElementById("calendar-popup");
+    const triggerBtn = document.getElementById("status-clock");
+    if (!root || !triggerBtn)
+      return;
+    const scrim = el("div", "overlay-sheet__scrim");
+    const panel = el("div", "overlay-sheet__panel calendar-popup__panel");
+    const headerRow = el("div", "calendar-popup__header");
+    const headerLeft = el("div", "calendar-popup__header-left");
+    headerLeft.appendChild(el("p", "calendar-popup__label", "Calendar"));
+    const todayFmt = { weekday: "long", day: "numeric", month: "short", year: "numeric" };
+    headerLeft.appendChild(el("p", "calendar-popup__today", new Intl.DateTimeFormat(void 0, todayFmt).format(/* @__PURE__ */ new Date())));
+    headerRow.appendChild(headerLeft);
+    headerRow.appendChild(buildStopwatch());
+    panel.appendChild(headerRow);
+    const agendaView = buildAgendaView();
+    const calendarView = buildCalendarView();
+    calendarView.hidden = true;
+    const tabAgenda = el("button", "calendar-popup__tab is-active", "Agenda");
+    const tabCalendar = el("button", "calendar-popup__tab", "Calendar");
+    tabAgenda.type = "button";
+    tabCalendar.type = "button";
+    const selectTab = (agenda) => {
+      tabAgenda.classList.toggle("is-active", agenda);
+      tabCalendar.classList.toggle("is-active", !agenda);
+      agendaView.hidden = !agenda;
+      calendarView.hidden = agenda;
+    };
+    tabAgenda.addEventListener("click", () => selectTab(true));
+    tabCalendar.addEventListener("click", () => selectTab(false));
+    const tabRow = el("div", "calendar-popup__tabs");
+    tabRow.appendChild(tabAgenda);
+    tabRow.appendChild(tabCalendar);
+    panel.appendChild(tabRow);
+    panel.appendChild(agendaView);
+    panel.appendChild(calendarView);
+    root.appendChild(scrim);
+    root.appendChild(panel);
+    const open = () => show2(root);
+    const close = () => hide2(root);
+    triggerBtn.addEventListener("click", open);
+    scrim.addEventListener("click", close);
+    document.addEventListener("keydown", (event) => {
+      if (root.classList.contains("is-open") && event.key === "Escape")
+        close();
+    });
+  }
+
+  // src/app/cloud/calendar-month-card.ts
+  function el2(tag, className, text) {
+    const node = document.createElement(tag);
+    if (className)
+      node.className = className;
+    if (text !== void 0)
+      node.textContent = text;
+    return node;
+  }
+  var MONTH_TITLE_FMT2 = { month: "long", year: "numeric" };
+  function renderMonth(container, cursor, onShift) {
+    container.innerHTML = "";
+    const today = /* @__PURE__ */ new Date();
+    const isCurrentMonth = cursor.getFullYear() === today.getFullYear() && cursor.getMonth() === today.getMonth();
+    const header = el2("div", "calendar-card__header");
+    const prevBtn = el2("button", "calendar-card__nav", "\u2039");
+    prevBtn.type = "button";
+    prevBtn.setAttribute("aria-label", "Previous month");
+    const title = el2("p", "calendar-card__title", new Intl.DateTimeFormat(void 0, MONTH_TITLE_FMT2).format(cursor));
+    const nextBtn = el2("button", "calendar-card__nav", "\u203A");
+    nextBtn.type = "button";
+    nextBtn.setAttribute("aria-label", "Next month");
+    prevBtn.addEventListener("click", () => onShift(-1));
+    nextBtn.addEventListener("click", () => onShift(1));
+    header.appendChild(prevBtn);
+    header.appendChild(title);
+    header.appendChild(nextBtn);
+    container.appendChild(header);
+    const weekHeader = el2("div", "calendar-card__week calendar-card__week--header");
+    const sample = new Date(2023, 0, 1);
+    for (let i = 0; i < 7; i++) {
+      const d = new Date(sample);
+      d.setDate(sample.getDate() + i);
+      weekHeader.appendChild(el2("span", "calendar-card__day-cell calendar-card__day-cell--header", new Intl.DateTimeFormat(void 0, { weekday: "narrow" }).format(d)));
+    }
+    container.appendChild(weekHeader);
+    const year = cursor.getFullYear();
+    const month = cursor.getMonth();
+    const firstOfMonth = new Date(year, month, 1);
+    const leadingBlanks = firstOfMonth.getDay();
+    const daysInMonth = new Date(year, month + 1, 0).getDate();
+    const totalCells = leadingBlanks + daysInMonth;
+    const rows = Math.ceil(totalCells / 7);
+    let dayNum = 1;
+    for (let r = 0; r < rows; r++) {
+      const week = el2("div", "calendar-card__week");
+      for (let c = 0; c < 7; c++) {
+        const cellIndex = r * 7 + c;
+        if (cellIndex < leadingBlanks || dayNum > daysInMonth) {
+          week.appendChild(el2("span", "calendar-card__day-cell"));
+        } else {
+          const isToday = isCurrentMonth && dayNum === today.getDate();
+          week.appendChild(el2("span", `calendar-card__day-cell${isToday ? " is-today" : ""}`, String(dayNum)));
+          dayNum++;
+        }
+      }
+      container.appendChild(week);
+    }
+  }
+  function initCalendarMonthCards() {
+    const containers = document.querySelectorAll("[data-calendar-card]");
+    containers.forEach((container) => {
+      let cursor = /* @__PURE__ */ new Date();
+      const draw = () => {
+        renderMonth(container, cursor, (delta) => {
+          cursor = new Date(cursor.getFullYear(), cursor.getMonth() + delta, 1);
+          draw();
+        });
+      };
+      draw();
+    });
+  }
+
+  // src/app/search/search-sheet.ts
+  function iconSrc4(icon) {
+    return `/cloud-mobile/public/icons/${icon}.svg`;
+  }
+  function collectCloudApps(data) {
+    const appsPage = data.sections.cloud?.pages?.find(
+      (page) => typeof page !== "string" && page.id === "apps"
+    );
+    const tileGroups = typeof appsPage === "object" && appsPage.groups || [];
+    return tileGroups.flatMap((group) => group.tiles.map((tile) => ({
+      label: tile.label,
+      icon: tile.icon,
+      href: resolveTarget(tile.target).href
+    })));
+  }
+  function collectPhoneApps() {
+    return getMockApps().apps.map((app) => ({
+      label: app.name,
+      icon: app.icon,
+      href: null
+      // Phone-app rows are always inert — no real device API to open them.
+    }));
+  }
+  function collectConfigs(data) {
+    const pages = data.sections.config?.pages ?? [];
+    return pages.flatMap((page) => {
+      if (typeof page === "string")
+        return [];
+      const href = page.target ? resolveTarget(page.target).href : routeHref(["config", page.id]);
+      return [{ label: page.label, icon: "settings", href }];
+    });
+  }
+  function matches(row, query) {
+    return row.label.toLowerCase().includes(query);
+  }
+  function buildRow(row) {
+    const el3 = row.href ? document.createElement("a") : document.createElement("div");
+    el3.className = "search-sheet__row";
+    if (row.href && el3 instanceof HTMLAnchorElement) {
+      el3.href = row.href;
+    } else {
+      el3.classList.add("search-sheet__row--inert");
+      el3.setAttribute("aria-disabled", "true");
+    }
+    const icon = document.createElement("img");
+    icon.className = "search-sheet__row-icon";
+    icon.src = iconSrc4(row.icon);
+    icon.alt = "";
+    el3.appendChild(icon);
+    const label = document.createElement("span");
+    label.className = "search-sheet__row-label";
+    label.textContent = row.label;
+    el3.appendChild(label);
+    return el3;
+  }
+  function initSearchSheet(data) {
+    const trigger = document.querySelector(".search-pill");
+    if (!trigger)
+      return;
+    const groupSources = [
+      { title: "Cloud apps", rows: collectCloudApps(data) },
+      { title: "Phone apps", rows: collectPhoneApps() },
+      { title: "Configs", rows: collectConfigs(data) }
+    ];
+    const activeScopes = new Set(groupSources.map((source) => source.title));
+    const root = document.createElement("div");
+    root.className = "search-sheet";
+    root.id = "search-sheet";
+    root.hidden = true;
+    const scrim = document.createElement("div");
+    scrim.className = "search-sheet__scrim";
+    root.appendChild(scrim);
+    const panel = document.createElement("div");
+    panel.className = "search-sheet__panel";
+    root.appendChild(panel);
+    const input = document.createElement("input");
+    input.type = "text";
+    input.className = "search-sheet__input";
+    input.placeholder = "Search apps & content";
+    input.autocomplete = "off";
+    panel.appendChild(input);
+    const chips = document.createElement("div");
+    chips.className = "search-sheet__chips";
+    const chipEls = groupSources.map((source) => {
+      const chip = document.createElement("button");
+      chip.type = "button";
+      chip.className = "search-sheet__chip";
+      chip.textContent = source.title;
+      chip.addEventListener("click", () => toggleScope(source.title));
+      chips.appendChild(chip);
+      return { title: source.title, el: chip };
+    });
+    panel.appendChild(chips);
+    function renderChips() {
+      for (const chip of chipEls) {
+        chip.el.classList.toggle("is-active", activeScopes.has(chip.title));
+      }
+    }
+    function toggleScope(title) {
+      if (activeScopes.has(title)) {
+        if (activeScopes.size === 1)
+          return;
+        activeScopes.delete(title);
+      } else {
+        activeScopes.add(title);
+      }
+      renderChips();
+      render(input.value);
+    }
+    renderChips();
+    const results = document.createElement("div");
+    results.className = "search-sheet__results";
+    panel.appendChild(results);
+    const shellEl = trigger.closest(".shell");
+    (shellEl ?? document.body).appendChild(root);
+    function firstResultHref(groups) {
+      for (const group of groups) {
+        for (const row of group.rows) {
+          if (row.href)
+            return row.href;
+        }
+      }
+      return null;
+    }
+    function render(query) {
+      results.innerHTML = "";
+      const q = query.trim().toLowerCase();
+      if (!q)
+        return;
+      const groups = groupSources.filter((source) => activeScopes.has(source.title)).map((source) => ({ title: source.title, rows: source.rows.filter((row) => matches(row, q)) })).filter((group) => group.rows.length > 0);
+      if (groups.length === 0) {
+        const empty = document.createElement("p");
+        empty.className = "search-sheet__empty";
+        empty.textContent = "No results";
+        results.appendChild(empty);
+        return;
+      }
+      for (const group of groups) {
+        const groupEl = document.createElement("div");
+        groupEl.className = "search-sheet__group";
+        const titleEl = document.createElement("p");
+        titleEl.className = "search-sheet__group-title";
+        titleEl.textContent = group.title;
+        groupEl.appendChild(titleEl);
+        for (const row of group.rows)
+          groupEl.appendChild(buildRow(row));
+        results.appendChild(groupEl);
+      }
+    }
+    function open() {
+      root.hidden = false;
+      root.classList.add("is-open");
+      input.value = "";
+      render("");
+      requestAnimationFrame(() => input.focus());
+    }
+    function close() {
+      root.classList.remove("is-open");
+      root.hidden = true;
+    }
+    trigger.addEventListener("click", open);
+    scrim.addEventListener("click", close);
+    input.addEventListener("input", () => render(input.value));
+    input.addEventListener("keydown", (event) => {
+      if (event.key === "Escape") {
+        close();
+        return;
+      }
+      if (event.key !== "Enter")
+        return;
+      const q = input.value.trim().toLowerCase();
+      if (!q)
+        return;
+      const groups = groupSources.filter((source) => activeScopes.has(source.title)).map((source) => ({ title: source.title, rows: source.rows.filter((row) => matches(row, q)) })).filter((group) => group.rows.length > 0);
+      const href = firstResultHref(groups);
+      if (href)
+        location.href = href;
+    });
+    document.addEventListener("keydown", (event) => {
+      if (root.classList.contains("is-open") && event.key === "Escape")
+        close();
+    });
+  }
+
+  // src/app/ui/galaxy-backdrop.ts
+  var STAR_COUNT = 220;
+  var COMET_COUNT = 3;
+  var CYCLE_MS = 18e3;
+  var TAIL_SEGMENTS = 12;
+  function makeStars() {
+    const stars = [];
+    for (let i = 0; i < STAR_COUNT; i++) {
+      stars.push({
+        x: Math.random(),
+        y: Math.random(),
+        radius: 0.6 + Math.random() * 1.4,
+        phase: Math.random() * Math.PI * 2,
+        speed: 1 + Math.random() * 2
+      });
+    }
+    return stars;
+  }
+  function makeComets() {
+    const comets = [];
+    for (let i = 0; i < COMET_COUNT; i++) {
+      comets.push({
+        phase: i / COMET_COUNT,
+        y0: Math.random(),
+        length: 0.35 + Math.random() * 0.25
+      });
+    }
+    return comets;
+  }
+  function drawFrame(ctx, width, height, stars, comets, t) {
+    ctx.clearRect(0, 0, width, height);
+    for (const star of stars) {
+      const alpha = 0.35 + 0.65 * (0.5 + 0.5 * Math.sin(t * Math.PI * 2 * star.speed + star.phase));
+      ctx.beginPath();
+      ctx.arc(star.x * width, star.y * height, star.radius, 0, Math.PI * 2);
+      ctx.fillStyle = `rgba(255, 255, 255, ${alpha.toFixed(3)})`;
+      ctx.fill();
+    }
+    for (const comet of comets) {
+      const local = (t - comet.phase + 1) % 1;
+      const headX = local * (width + height) - height;
+      const headY = comet.y0 * height + local * height * 0.6;
+      for (let seg = 0; seg < TAIL_SEGMENTS; seg++) {
+        const segT = seg / TAIL_SEGMENTS;
+        const segX = headX - segT * comet.length * width;
+        const segY = headY - segT * comet.length * height * 0.6;
+        if (segX < -20 || segX > width + 20 || segY < -20 || segY > height + 20)
+          continue;
+        const alpha = (1 - segT) * 0.8;
+        ctx.beginPath();
+        ctx.arc(segX, segY, 1.6 * (1 - segT * 0.6), 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(233, 216, 253, ${alpha.toFixed(3)})`;
+        ctx.fill();
+      }
+    }
+  }
+  function initGalaxyBackdrop() {
+    const host = document.querySelector(".galaxy-backdrop");
+    if (!host)
+      return;
+    const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const canvas = document.createElement("canvas");
+    canvas.className = "galaxy-backdrop__canvas";
+    host.insertBefore(canvas, host.firstChild);
+    const ctx = canvas.getContext("2d");
+    if (!ctx)
+      return;
+    const stars = makeStars();
+    const comets = makeComets();
+    let width = 0;
+    let height = 0;
+    function resize() {
+      const dpr = window.devicePixelRatio || 1;
+      const rect = host.getBoundingClientRect();
+      width = rect.width;
+      height = rect.height;
+      canvas.width = Math.max(1, Math.round(width * dpr));
+      canvas.height = Math.max(1, Math.round(height * dpr));
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    }
+    resize();
+    window.addEventListener("resize", resize);
+    if (reduceMotion) {
+      drawFrame(ctx, width, height, stars, comets, 0);
+      return;
+    }
+    let rafId = 0;
+    function frame(now) {
+      const t = now % CYCLE_MS / CYCLE_MS;
+      drawFrame(ctx, width, height, stars, comets, t);
+      rafId = window.requestAnimationFrame(frame);
+    }
+    function start() {
+      if (rafId)
+        return;
+      rafId = window.requestAnimationFrame(frame);
+    }
+    function stop() {
+      if (!rafId)
+        return;
+      window.cancelAnimationFrame(rafId);
+      rafId = 0;
+    }
+    document.addEventListener("visibilitychange", () => {
+      if (document.hidden)
+        stop();
+      else
+        start();
+    });
+    start();
+  }
+
+  // src/app/main.ts
+  var SELF_SCRIPT_URL = document.currentScript?.src ?? "";
+  function initStatusClock() {
+    const el3 = document.getElementById("status-clock");
+    if (!el3)
+      return;
+    const pad = (n) => String(n).padStart(2, "0");
+    const tick = () => {
+      const now = /* @__PURE__ */ new Date();
+      const weekday = now.toLocaleDateString("en-US", { weekday: "short" });
+      el3.textContent = `${pad(now.getDate())}-${pad(now.getMonth() + 1)}-${now.getFullYear()} ${pad(now.getHours())}:${pad(now.getMinutes())} ${weekday}`;
+    };
+    tick();
+    window.setInterval(tick, 15e3);
+  }
+  function runInit(name, init) {
+    try {
+      init();
+    } catch (error) {
+      console.error(`[cloud-mobile] init failed: ${name}`, error);
+    }
+  }
+  function initApp() {
+    const data = getData();
+    runInit("drawer", () => initDrawer(data));
+    setOnCheckUpdates(openUpdateOverlay);
+    runInit("stars", () => initStars(data));
+    runInit("edge-menu", () => initEdgeMenu(data));
+    runInit("home-swipes", () => initHomeSwipes());
+    runInit("overlays", () => initOverlays(data));
+    runInit("fan-menu", () => initFanMenu(data));
+    runInit("stack-cards", () => initStackCards());
+    runInit("status-clock", () => initStatusClock());
+    runInit("calendar-popup", () => initCalendarPopup());
+    runInit("calendar-month-cards", () => initCalendarMonthCards());
+    runInit("search-sheet", () => initSearchSheet(data));
+    runInit("galaxy-backdrop", () => initGalaxyBackdrop());
+  }
+  document.addEventListener("DOMContentLoaded", () => {
+    initApp();
+    if ("serviceWorker" in navigator && location.protocol.startsWith("http")) {
+      requestAnimationFrame(() => {
+        const swUrl = SELF_SCRIPT_URL ? new URL("script-service-worker.js", SELF_SCRIPT_URL).href : "./script-service-worker.js";
+        navigator.serviceWorker.register(swUrl).catch(() => void 0);
+      });
+    }
+  });
+})();

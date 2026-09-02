@@ -22,10 +22,23 @@ const linktreeData = readJson('linktree.json');
 
 const { app, bottomNav, cube, stars, longPress, notificationCenter, updateOverlay, statusBar, footer } = shell;
 const sections = { ...core.sections, ...content.sections, home: { label: 'Home', icon: 'home', color: 'blue' } };
+// The 4 bottom-nav aggregators (sections-core.json) land straight on their
+// first visible page instead of on a page index — build.json marks them
+// is_aggregator/tabs and MainActivity opens the first facet, never a menu.
+const AGGREGATOR_IDS = Object.keys(core.sections);
 
-// suite/phone/quickmarks is DERIVED from mock-apps (filtered by category +
-// pinned flag), not hand-duplicated per view. suite/phone/all no longer
-// groups by category — see computeSmartFolders/topicalFoldersBody below,
+// build.json's Sections.kt contract: `pages` is the section's children AS
+// SHOWN (grids, tab strips, drawer, radial menus all list these), while every
+// declared page — hidden ones included — still resolves as page:<section>/<id>
+// and still gets generated. Hiding a page from a child list must never make
+// its target dead.
+function visiblePages(pages) {
+  return (pages ?? []).filter((p) => typeof p === 'string' || !p.hidden);
+}
+
+// phone/apps's Quickmarks strip is DERIVED from mock-apps (filtered by
+// category + pinned flag), not hand-duplicated per view. The All-Apps part no
+// longer groups by category — see computeSmartFolders/topicalFoldersBody below,
 // which group by the richer Smart Folder rules + phoneFolders instead.
 function phoneGroupsFromMockData(pinnedOnly) {
   const categories = [...new Set(mockData.apps.map((a) => a.category))];
@@ -37,7 +50,7 @@ function phoneGroupsFromMockData(pinnedOnly) {
   });
 }
 
-// ── Smart Folders (suite/phone/all) — RULE-DRIVEN from each app's simulated
+// ── Smart Folders (phone/apps) — RULE-DRIVEN from each app's simulated
 // Android metadata (package/installSource/first-install/last-used/usage),
 // never hand-listed membership. Mirrors a real launcher's auto-generated
 // "Recently installed" / "Recently used" / usage-ranked smart groups.
@@ -128,7 +141,7 @@ function smartFoldersBody(smartFolders, rel) {
             </section>`;
 }
 
-// ── topical folders (suite/phone/all) — every app carries a folderId, this
+// ── topical folders (phone/apps) — every app carries a folderId, this
 // groups by it in phoneFolders' declared order, then buckets the folders into
 // the top-level sections by the label's launcher-naming prefix and gives each
 // section a subhead + its own folder grid (PhoneAppsFragment.kt:207-229,
@@ -162,9 +175,6 @@ function topicalFoldersBody(apps, phoneFolders, rel) {
 // ── the single Phone page — one scroll, three parts in order: Quickmarks
 // (pinned apps under one titled section per group), All-Apps (the topical
 // folder-card sections), Smart-Folders (the rule-driven groups).
-// Served verbatim at suite/phone/quickmarks AND suite/phone/all, so every
-// existing deep link lands on the same merged page.
-//
 // Quickmarks are GROUPED, not one flat grid: SuitePhoneAppsFragment.kt:119
 // emits one subhead() per group title above that group's own tile grid, and
 // :117 skips groups whose packages all resolve to nothing so the layout
@@ -398,30 +408,6 @@ function stackBody(cards, rel) {
             </div>`;
 }
 
-// ── Apps|Admin tab strip + body, for Communication/Infos/Tools ──────────
-function modeTabsHtml(sectionId, active) {
-  return `<div class="page-tabs-bar">
-                <div class="page-tabs" role="tablist">
-                <a class="page-tabs__item${active === 'apps' ? ' is-active' : ''}" href="${routeHref([sectionId])}">Apps</a>
-                <a class="page-tabs__item${active === 'admin' ? ' is-active' : ''}" href="${routeHref([sectionId, 'admin'])}">Admin</a>
-                </div>
-            </div>`;
-}
-// Icons first: the real app opens every Apps/Admin tab on the mode's own
-// tiles_apps/tiles_admin icon grid (tile_columns-wide, i.e. the dense grid
-// here), and only then the AggregatorStack cards below a divider — so a tab
-// that also declares stack cards renders BOTH, grid on top.
-function tabbedSectionBody(section, sectionId, mode, rel) {
-  const modeData = section[mode];
-  const parts = [];
-  if (modeData.tiles) parts.push(tileGridBody(modeData.tiles, rel, () => section.color, true));
-  if (modeData.cards) {
-    parts.push(`<h2 class="stack-divider">Details</h2>`);
-    parts.push(stackBody(modeData.cards, rel));
-  }
-  return `${modeTabsHtml(sectionId, mode)}\n            ${parts.join('\n            ')}`;
-}
-
 // ── page-type content renderers ─────────────────────────────────────────
 function tileGridBody(tiles, rel, colorFn, dense = false) {
   const items = tiles.map((t) => tileHtml(t, colorFn(t), rel)).join('\n                ');
@@ -453,7 +439,7 @@ function groupListBody(groups, rel, footer, footerHref, strip = false) {
 // hash of the page id (not one flat section-wide color).
 function sectionPagesTileGridBody(pages, sectionId, rel) {
   const sectionIcon = sections[sectionId].icon;
-  const tiles = pages.map((p) => {
+  const tiles = visiblePages(pages).map((p) => {
     const label = typeof p === 'string' ? p : p.label;
     const id = typeof p === 'string' ? slug(p) : p.id;
     const icon = (typeof p === 'object' && p.icon) || sectionIcon;
@@ -467,7 +453,7 @@ function sectionPagesTileGridBody(pages, sectionId, rel) {
 }
 
 function pageTabsHtml(pages, sectionId, activeId, rel) {
-  const items = pages.map((p) => {
+  const items = visiblePages(pages).map((p) => {
     const label = typeof p === 'string' ? p : p.label;
     const id = typeof p === 'string' ? slug(p) : p.id;
     const override = typeof p === 'object' && p.target ? resolveTarget(p.target) : null;
@@ -935,100 +921,83 @@ write([], 'Home', 'home', '', null);
   write(['recentapps', 'grid'], 'Recent Apps', 'recentapps', body, routeHref([]));
 }
 
-// Communication / Infos / Tools — TabbedSectionFragment: real Apps|Admin
-// tabs, each mode rendering either a tile grid or an AggregatorStack card
-// list depending on section[mode].type (verbatim from build.json).
-for (const id of ['communication', 'infos', 'tools']) {
-  const s = sections[id];
-  const rel1 = relPrefix(1);
-  const rel2 = relPrefix(2);
-  write([id], s.label, id, tabbedSectionBody(s, id, 'apps', rel1), routeHref([]));
-  write([id, 'admin'], `${s.label} · Admin`, id, tabbedSectionBody(s, id, 'admin', rel2), routeHref([id]));
+// ── every section, one loop ──────────────────────────────────────────────
+// The 4 bottom-nav aggregators (sections-core.json) and the content-only
+// sections (sections-content.json) now share one page shape — {id, label,
+// icon, tiles?/groups?/stack?/items?/rows?/render?} — so they share one
+// walker too, and the generator no longer carries a hardcoded list of
+// section ids anywhere: the data files are the registry.
+//
+// Page bodies stay ICONS-FIRST, matching the real app: the page's own tile
+// grid (or group strips) on top, then AggregatorStackFragment's collapsible
+// cards below a divider.
+function pageBody(section, sectionId, page, rel) {
+  if (typeof page === 'string') return skeletonBody();
+  if (page.constellation) return constellationBody(page.constellation);
+
+  const parts = [];
+  if (page.tiles) parts.push(tileGridBody(page.tiles, rel, () => section.color, true));
+  if (page.groups) parts.push(groupListBody(page.groups, rel, null, null, true));
+
+  switch (page.render) {
+    case 'linktree':
+      // The APK hosts linktree.diegonmarcos.com in a WebView; here the same
+      // list is rendered natively from linktree.json so the page is crawlable.
+      parts.push(groupListBody(linktreeData.groups.map((g) => ({
+        title: g.label,
+        tiles: g.tiles.map((t) => ({ label: t.label, icon: t.icon, target: t.href })),
+      })), rel, null, null));
+      break;
+    case 'mirror':
+      // build.json's mirror_section — render THAT section's own page grid
+      // rather than a second copy of the same list.
+      parts.push(sectionPagesTileGridBody(sections[page.mirror].pages, page.mirror, rel));
+      break;
+    case 'phone-apps':
+      // One scroll, three parts: Quickmarks, All-Apps folder sections, and
+      // the rule-driven Smart Folders — all derived from mock-apps.json.
+      parts.push(phoneMergedBody(rel));
+      break;
+    default:
+      break;
+  }
+
+  if (page.stack) {
+    if (parts.length) parts.push(`<h2 class="stack-divider">Details</h2>`);
+    parts.push(stackBody(page.stack, rel));
+  }
+  if (page.rows) parts.push(settingsListBody(page.rows));
+  if (page.items) parts.push(itemListBody(page.items, page.id, sectionId));
+
+  return parts.length ? parts.join('\n            ') : skeletonBody();
 }
 
-// Suite — bottom-nav destination goes straight to the Cloud|Phone tabbed
-// view (matching Communication/Infos/Tools's "tabs visible immediately"
-// pattern — no intermediate shortcut-tiles page), plus the same view is
-// also reachable at its own cloud/phone x quickmarks/all URLs for deep
-// links (Sirius star, long-press menu, the "More" footer).
-{
-  const s = sections.suite;
+for (const [id, s] of Object.entries(sections)) {
+  if (id === 'home' || !s.pages) continue;
   const rel1 = relPrefix(1);
-  const rel3 = relPrefix(3);
-  const cloudPhoneTabs = (mode, active, rel) => `<div class="page-tabs-bar">
-                <div class="page-tabs" role="tablist">
-                <a class="page-tabs__item${active === 'cloud' ? ' is-active' : ''}" href="${routeHref(['suite', 'cloud', mode])}">Cloud</a>
-                <a class="page-tabs__item${active === 'phone' ? ' is-active' : ''}" href="${routeHref(['suite', 'phone', mode])}">Phone</a>
-                </div>
-            </div>`;
-
-  write(['suite'], s.label, 'suite',
-    cloudPhoneTabs('quickmarks', 'cloud', rel1) + '\n            ' +
-    groupListBody(s.cloud.tileGroups, rel1, s.cloud.footer, routeHref(['suite', 'cloud', 'all']), true), routeHref([]));
-
-  write(['suite', 'cloud', 'quickmarks'], 'Suite · Cloud', 'suite',
-    cloudPhoneTabs('quickmarks', 'cloud', rel3) + '\n            ' +
-    groupListBody(s.cloud.tileGroups, rel3, s.cloud.footer, routeHref(['suite', 'cloud', 'all']), true), routeHref([]));
-  // Cloud's "all" (real app: action:open_suite_cloud_all, full-screen push of
-  // the same tile_groups with no tab chrome) has no larger real-data universe
-  // to reveal than quickmarks — unlike Phone, there's no bigger "installed
-  // cloud services" list to pad out, so this reuses the same tileGroups.
-  write(['suite', 'cloud', 'all'], 'Suite · Cloud · All', 'suite',
-    groupListBody(s.cloud.tileGroups, rel3, null, null, true), routeHref(['suite']));
-
-  // Both Phone URLs serve the one merged page (Quickmarks + All-Apps +
-  // Smart-Folders), tabs Cloud | Phone with Phone active on each.
-  const phoneBody = cloudPhoneTabs('quickmarks', 'phone', rel3) + '\n            ' + phoneMergedBody(rel3);
-  write(['suite', 'phone', 'quickmarks'], 'Suite · Phone', 'suite', phoneBody, routeHref([]));
-  write(['suite', 'phone', 'all'], 'Suite · Phone', 'suite', phoneBody, routeHref([]));
-}
-
-// Content-only sections. Config carries real settings rows; everything else
-// still gets skeleton placeholders (no real backend to reflect either way).
-for (const id of ['mail', 'rss', 'calendar', 'drive', 'vault', 'chat', 'wg', 'solutions', 'apptabs', 'myfin', 'health', 'wallet', 'config', 'c3', 'browser']) {
-  const s = sections[id];
-  const rel1 = relPrefix(1);
-  write([id], s.label, id, sectionPagesTileGridBody(s.pages, id, rel1), routeHref([]));
-
   const rel2 = relPrefix(2);
+  const shown = visiblePages(s.pages);
+
+  // An aggregator's bottom-nav destination opens its FIRST VISIBLE page
+  // (build.json: is_aggregator + tabs, no default_children anywhere), so the
+  // section root serves that page rather than an index of pages.
+  if (AGGREGATOR_IDS.includes(id) && shown.length) {
+    const first = shown[0];
+    write([id], s.label, id,
+      `${pageTabsHtml(s.pages, id, first.id, rel1)}\n            ${pageBody(s, id, first, rel1)}`,
+      routeHref([]));
+  } else {
+    write([id], s.label, id, sectionPagesTileGridBody(s.pages, id, rel1), routeHref([]));
+  }
+
+  // Every DECLARED page gets HTML, hidden ones included — hiding a page from
+  // the child lists must never make page:<section>/<id> dead.
   for (const p of s.pages) {
     const label = typeof p === 'string' ? p : p.label;
     const pid = typeof p === 'string' ? slug(p) : p.id;
     if (typeof p === 'object' && p.target) continue; // routes elsewhere or inert — no own page
-    const tabs = s.pages.length > 1 ? `${pageTabsHtml(s.pages, id, pid, rel2)}\n            ` : '';
-    let inner;
-    if (typeof p === 'object' && p.constellation) inner = constellationBody(p.constellation);
-    else if (id === 'browser' && pid === 'linktree') {
-      // Suite > Browser > Linktree — renders linktree.json's groups through
-      // the same groupListBody used for suite's own tileGroups (a list of
-      // titled tile groups), just fed from a separate data file.
-      inner = groupListBody(linktreeData.groups.map((g) => ({
-        title: g.label,
-        tiles: g.tiles.map((t) => ({ label: t.label, icon: t.icon, target: t.href })),
-      })), rel2, null, null);
-    } else if (typeof p === 'object' && (p.tiles || p.stack)) {
-      const parts = [];
-      if (p.tiles) parts.push(tileGridBody(p.tiles, rel2, () => s.color));
-      if (p.stack) parts.push(stackBody(p.stack, rel2));
-      if (p.items) parts.push(itemListBody(p.items, pid, id));
-      inner = parts.join('\n            ');
-    }
-    else if (typeof p === 'object' && p.rows) inner = settingsListBody(p.rows);
-    else if (typeof p === 'object' && p.items) inner = itemListBody(p.items, pid, id);
-    else inner = skeletonBody();
-    write([id, pid], `${s.label} · ${label}`, id, tabs + inner, routeHref([id]));
-  }
-}
-
-// Labs (tools) sub-pages — the stub tiles removed from sections-core.json's
-// tools.tiles now point at real item-list pages here. tools itself stays a
-// TabbedSectionFragment (Apps|Admin, see the aggregator loop above), so its
-// extra "pages" array (additive, ignored by tabbedSectionBody) is walked
-// separately rather than folded into the generic content-only loop above.
-{
-  const toolsSection = sections.tools;
-  for (const p of toolsSection.pages ?? []) {
-    write(['tools', p.id], `${toolsSection.label} · ${p.label}`, 'tools', itemListBody(p.items, p.id, 'tools'), routeHref(['tools']));
+    const tabs = shown.length > 1 ? `${pageTabsHtml(s.pages, id, pid, rel2)}\n            ` : '';
+    write([id, pid], `${s.label} · ${label}`, id, tabs + pageBody(s, id, p, rel2), routeHref([id]));
   }
 }
 

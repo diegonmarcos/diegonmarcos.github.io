@@ -60,32 +60,23 @@
         <a class="toolbar-action" href="/cloud-mobile/wallet/" aria-label="Back"><img class="" src="../../public/icons/back.svg" alt=""></a>
 
         <main class="content" id="content">
-            <div class="item-list">
-                <div class="item-list__row">
-                    <span class="item-list__accent" style="background:#2E7D32" aria-hidden="true"></span>
-                    <div class="item-list__text">
-                        <span class="item-list__title">Visa Debit</span>
-                        <span class="item-list__subtitle">•••• 4821 · Personal</span>
-                    </div>
-                    <span class="item-list__meta">Default</span>
+            <div class="wallet-deck">
+                <div class="wallet-card" style="background:linear-gradient(135deg, #00695C, #0e0220)">
+                    <span class="wallet-card__brand">Visa Debit</span>
+                    <span class="wallet-card__number">•••• 4821 · Personal</span>
+                    <span class="wallet-card__tag">Default</span>
                 </div>
-                <div class="item-list__row">
-                    <span class="item-list__accent" style="background:#6A1B9A" aria-hidden="true"></span>
-                    <div class="item-list__text">
-                        <span class="item-list__title">Mastercard Credit</span>
-                        <span class="item-list__subtitle">•••• 2290 · Ops</span>
-                    </div>
-                    <span class="item-list__meta">Active</span>
+                <div class="wallet-card" style="background:linear-gradient(135deg, #283593, #0e0220)">
+                    <span class="wallet-card__brand">Mastercard Credit</span>
+                    <span class="wallet-card__number">•••• 2290 · Ops</span>
+                    <span class="wallet-card__tag">Active</span>
                 </div>
-                <div class="item-list__row">
-                    <span class="item-list__accent" style="background:#C2185B" aria-hidden="true"></span>
-                    <div class="item-list__text">
-                        <span class="item-list__title">+ Add card</span>
-                        <span class="item-list__subtitle">Scan or enter card details</span>
-                    </div>
-                    
+                <div class="wallet-card wallet-card--add">
+                    <span class="wallet-card__add-glyph" aria-hidden="true">+</span>
+                    <span class="wallet-card__add-label">Add card</span>
+                    <span class="wallet-card__add-sub">Scan or enter card details</span>
                 </div>
-            </div>
+            </div><p class="android-only-note">Adding, scanning and paying with a card are device actions — available in the Cloud Wallet app.</p>
             <footer class="site-footer">
                 <a class="footer-badge" href="https://github.com/diegonmarcos/cloud-u-android/releases/latest/download/Cloud-SuperApp.apk" download>
                     <img class="footer-badge__icon" src="../../public/icons/play-badge.svg" alt="">

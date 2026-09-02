@@ -9,6 +9,8 @@
 // only runs at build time.
 import { readFileSync, writeFileSync, mkdirSync } from 'node:fs';
 import { join, dirname } from 'node:path';
+import { renderView } from './render/views.mjs';
+import { emptyStateHtml } from './render/atoms.mjs';
 
 const [, , PROJECT_DIR, DIST_DIR, MANIFEST] = process.argv;
 const DATA_DIR = join(PROJECT_DIR, dirname(MANIFEST));
@@ -394,7 +396,12 @@ function cardHtml(card, rel) {
     // the static HTML, which would break dist/ reproducibility.
     body = `<div class="calendar-card" data-calendar-card></div>`;
   } else {
-    body = `<div class="stack-card__body"><div class="page-body__skeleton-row"></div></div>`;
+    // Cards whose content is live device or infrastructure state (notification
+    // streams, C3 health probes, WireGuard counters, GitHub API pulls) have no
+    // browser-reachable source. A shimmer row would imply data is loading, so
+    // they say plainly what they show on the phone instead.
+    body = emptyStateHtml(card.emptyTitle ?? 'Live on device',
+      card.caption ?? 'This panel reads live device or infrastructure state, which a browser cannot reach.');
   }
 
   return `<div class="stack-card">
@@ -470,12 +477,10 @@ function pageTabsHtml(pages, sectionId, activeId, rel) {
             </div>`;
 }
 
+// A page that declares no body data at all. Never a shimmer: nothing is
+// loading, the section simply has no content to show yet.
 function skeletonBody() {
-  return `<div class="page-body">
-                <div class="page-body__skeleton-row"></div>
-                <div class="page-body__skeleton-row"></div>
-                <div class="page-body__skeleton-row"></div>
-            </div>`;
+  return emptyStateHtml('Nothing to show yet.', 'This page has no content declared in src/data/ yet.');
 }
 
 // Real config pages carry actual rows (settings values) instead of generic
@@ -558,51 +563,14 @@ function settingsListBody(rows) {
             </div>`;
 }
 
-// Mail inboxes, calendar events, vault entries, etc. — generic 3-field mock
-// content (title/subtitle/meta) so every leaf page has believable real-shaped
-// content instead of a shimmer placeholder, without needing a bespoke
-// renderer per content type.
-// item_page_row's 4dp x 36dp colored accent bar, leading every row — color
-// deterministically hashed from (pageId + row index), reusing the same
-// hash() helper appIconHtml uses for its squircle backgrounds, just over
-// its own 8-color palette instead of TILE_COLORS.
-const ITEM_ACCENT_COLORS = ['#1565C0', '#2E7D32', '#6A1B9A', '#C2185B', '#EF6C00', '#00695C', '#B28704', '#283593'];
-function itemListBody(items, pageId, sectionId) {
-  // c3/health carries structured fleet-status fields (dot/domainPublic/
-  // domainPrivate/vm) instead of the generic meta string — render its own
-  // status-dot + domain-column row shape. Every other page (c3's other
-  // pages included) keeps the generic accent-bar row.
-  if (sectionId === 'c3' && pageId === 'health') {
-    const rows = items.map((it) => `
-                <div class="item-list__row item-list__row--c3">
-                    <span class="item-list__dot item-list__dot--${it.dot}" aria-hidden="true"></span>
-                    <div class="item-list__text">
-                        <span class="item-list__title">${it.title}</span>
-                        <span class="item-list__subtitle">${it.subtitle}</span>
-                    </div>
-                    <div class="item-list__domain">
-                        <span>${it.domainPublic}</span>
-                        <span class="item-list__domain-private">${it.domainPrivate}</span>
-                    </div>
-                    <span class="item-list__meta">${it.vm}</span>
-                </div>`).join('');
-    return `<div class="item-list">${rows}
-            </div>`;
-  }
-  const rows = items.map((it, i) => {
-    const color = ITEM_ACCENT_COLORS[hash(`${pageId}:${i}`) % ITEM_ACCENT_COLORS.length];
-    return `
-                <div class="item-list__row">
-                    <span class="item-list__accent" style="background:${color}" aria-hidden="true"></span>
-                    <div class="item-list__text">
-                        <span class="item-list__title">${it.title}</span>
-                        ${it.subtitle ? `<span class="item-list__subtitle">${it.subtitle}</span>` : ''}
-                    </div>
-                    ${it.meta ? `<span class="item-list__meta">${it.meta}</span>` : ''}
-                </div>`;
-  }).join('');
-  return `<div class="item-list">${rows}
-            </div>`;
+// A page's own body, rendered through the shared page-view kit
+// (scripts/render/): five layouts, one row component, everything declared in
+// src/data/sections-content.json's per-page `view` block. Pages that predate
+// the kit and declare no `view` fall back to the plain list, so adding a view
+// is always additive.
+function itemListBody(items, page) {
+  const view = (typeof page === 'object' && page.view) || 'list';
+  return renderView(items ?? [], view, { resolveTarget, inlineIcon });
 }
 
 // Configs > Constellation — port of ConstellationFragment.kt. Every action
@@ -967,7 +935,7 @@ function pageBody(section, sectionId, page, rel) {
     parts.push(stackBody(page.stack, rel));
   }
   if (page.rows) parts.push(settingsListBody(page.rows));
-  if (page.items) parts.push(itemListBody(page.items, page.id, sectionId));
+  if (page.items) parts.push(itemListBody(page.items, page));
 
   return parts.length ? parts.join('\n            ') : skeletonBody();
 }

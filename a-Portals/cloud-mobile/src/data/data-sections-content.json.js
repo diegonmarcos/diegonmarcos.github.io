@@ -14,6 +14,13 @@
         {
           "id": "folders",
           "label": "Folders",
+          "view": {
+            "type": "list",
+            "lead": "monogram",
+            "trail": "badge",
+            "emptyTitle": "No folders.",
+            "emptyBody": "Folders appear once a JMAP or IMAP account is connected."
+          },
           "items": [
             {
               "title": "Inbox",
@@ -496,6 +503,13 @@
         {
           "id": "all",
           "label": "All feeds",
+          "view": {
+            "type": "list",
+            "lead": "monogram",
+            "trail": "badge",
+            "emptyTitle": "No feeds yet.",
+            "emptyBody": "Add a subscription to start collecting items."
+          },
           "items": [
             {
               "title": "Hacker News",
@@ -592,6 +606,9 @@
         {
           "id": "day",
           "label": "Day",
+          "view": {
+            "type": "agenda"
+          },
           "items": [
             {
               "title": "Standup",
@@ -701,21 +718,32 @@
         {
           "id": "files",
           "label": "My files",
+          "view": {
+            "type": "list",
+            "lead": "icon",
+            "trail": "meta"
+          },
           "items": [
             {
               "title": "Projects",
               "subtitle": "Folder",
-              "meta": "24 items"
+              "meta": "24 items",
+              "icon": "database",
+              "group": "Folders"
             },
             {
               "title": "Backups",
               "subtitle": "Folder",
-              "meta": "6 items"
+              "meta": "6 items",
+              "icon": "database",
+              "group": "Folders"
             },
             {
               "title": "resume.pdf",
               "subtitle": "412 KB",
-              "meta": "2d ago"
+              "meta": "2d ago",
+              "icon": "logs",
+              "group": "Files"
             }
           ]
         },
@@ -832,18 +860,27 @@
         {
           "id": "passwords",
           "label": "Passwords",
+          "view": {
+            "type": "list",
+            "lead": "monogram",
+            "trail": "meta",
+            "note": "Revealing, copying and autofilling a credential are device actions — available in the Cloud Vault app."
+          },
           "items": [
             {
               "title": "github.com",
-              "subtitle": "diegonmarcos"
+              "subtitle": "diegonmarcos",
+              "meta": "•••• ••••"
             },
             {
               "title": "grafana.diegonmarcos.com",
-              "subtitle": "admin"
+              "subtitle": "admin",
+              "meta": "•••• ••••"
             },
             {
               "title": "vault.diegonmarcos.com",
-              "subtitle": "dcm"
+              "subtitle": "dcm",
+              "meta": "•••• ••••"
             }
           ]
         },
@@ -921,6 +958,11 @@
         {
           "id": "mattermost",
           "label": "Mattermost",
+          "view": {
+            "type": "list",
+            "lead": "monogram",
+            "trail": "meta"
+          },
           "items": [
             {
               "title": "#ops",
@@ -1018,26 +1060,35 @@
         {
           "id": "reports",
           "label": "Reports",
+          "view": {
+            "type": "list",
+            "lead": "dot",
+            "trail": "pill"
+          },
           "items": [
             {
               "title": "Nightly CRITICAL-only gate",
               "subtitle": "Dagu · report DAGs",
-              "meta": "green"
+              "meta": "green",
+              "tone": "ok"
             },
             {
               "title": "Weekly fleet summary",
               "subtitle": "6 VMs · 2 architectures",
-              "meta": "sent"
+              "meta": "sent",
+              "tone": "ok"
             },
             {
               "title": "Cert expiry scan",
               "subtitle": "Caddy + WG certs",
-              "meta": "0 expiring"
+              "meta": "0 expiring",
+              "tone": "ok"
             },
             {
               "title": "Backup verification",
               "subtitle": "oci-mail nightly snapshot",
-              "meta": "OK"
+              "meta": "OK",
+              "tone": "ok"
             }
           ]
         },
@@ -1083,53 +1134,48 @@
           "items": [
             {
               "title": "gcp-proxy",
-              "subtitle": "WireGuard hub · private",
-              "dot": "ok",
-              "domainPublic": "—",
-              "domainPrivate": "10.0.0.1",
-              "vm": "2 vCPU · 4 GB · x86_64"
+              "subtitle": "WireGuard hub · private · 2 vCPU · 4 GB · x86_64",
+              "tone": "ok",
+              "meta": "10.0.0.1"
             },
             {
               "title": "gcp-t4",
-              "subtitle": "GPU worker · x86_64",
-              "dot": "ok",
-              "domainPublic": "—",
-              "domainPrivate": "10.0.0.2",
-              "vm": "4 vCPU · 16 GB · x86_64"
+              "subtitle": "GPU worker · x86_64 · 4 vCPU · 16 GB · x86_64",
+              "tone": "ok",
+              "meta": "10.0.0.2"
             },
             {
               "title": "oci-mail",
-              "subtitle": "maddy + stalwart",
-              "dot": "ok",
-              "domainPublic": "mail.diegonmarcos.com",
-              "domainPrivate": "10.0.0.3",
-              "vm": "2 vCPU · 8 GB · x86_64"
+              "subtitle": "maddy + stalwart · 2 vCPU · 8 GB · x86_64",
+              "tone": "ok",
+              "meta": "10.0.0.3",
+              "target": "https://mail.diegonmarcos.com"
             },
             {
               "title": "oci-analytics",
-              "subtitle": "public edge · x86_64",
-              "dot": "ok",
-              "domainPublic": "grafana.diegonmarcos.com",
-              "domainPrivate": "10.0.0.4",
-              "vm": "4 vCPU · 24 GB · x86_64"
+              "subtitle": "public edge · x86_64 · 4 vCPU · 24 GB · x86_64",
+              "tone": "ok",
+              "meta": "10.0.0.4",
+              "target": "https://grafana.diegonmarcos.com"
             },
             {
               "title": "oci-apps",
-              "subtitle": "docker host · aarch64",
-              "dot": "warn",
-              "domainPublic": "—",
-              "domainPrivate": "10.0.0.5",
-              "vm": "4 vCPU · 24 GB · aarch64"
+              "subtitle": "docker host · aarch64 · 4 vCPU · 24 GB · aarch64",
+              "tone": "warn",
+              "meta": "10.0.0.5"
             },
             {
               "title": "oci-apps-2",
-              "subtitle": "docker host · aarch64",
-              "dot": "ok",
-              "domainPublic": "—",
-              "domainPrivate": "10.0.0.6",
-              "vm": "4 vCPU · 24 GB · aarch64"
+              "subtitle": "docker host · aarch64 · 4 vCPU · 24 GB · aarch64",
+              "tone": "ok",
+              "meta": "10.0.0.6"
             }
-          ]
+          ],
+          "view": {
+            "type": "list",
+            "lead": "dot",
+            "trail": "meta"
+          }
         },
         {
           "id": "workflows",
@@ -1228,13 +1274,72 @@
           "id": "dagu",
           "label": "Dagu",
           "icon": "robot",
-          "hidden": true
+          "hidden": true,
+          "view": {
+            "type": "list",
+            "lead": "dot",
+            "trail": "pill"
+          },
+          "items": [
+            {
+              "title": "report-nightly",
+              "subtitle": "Fleet health digest · 03:00 UTC",
+              "meta": "success",
+              "tone": "ok"
+            },
+            {
+              "title": "report-weekly",
+              "subtitle": "Cost + capacity summary · Mon 06:00",
+              "meta": "success",
+              "tone": "ok"
+            },
+            {
+              "title": "backup-verify",
+              "subtitle": "Restore-test the latest snapshot",
+              "meta": "success",
+              "tone": "ok"
+            },
+            {
+              "title": "cert-scan",
+              "subtitle": "Caddy + WireGuard certificate expiry",
+              "meta": "success",
+              "tone": "ok"
+            }
+          ]
         },
         {
           "id": "gha",
           "label": "GHA",
           "icon": "code",
-          "hidden": true
+          "hidden": true,
+          "view": {
+            "type": "list",
+            "lead": "dot",
+            "trail": "pill"
+          },
+          "items": [
+            {
+              "title": "cloud-u-android",
+              "subtitle": "Android constellation build",
+              "meta": "success",
+              "tone": "ok",
+              "target": "https://github.com/diegonmarcos/cloud-u-android/actions"
+            },
+            {
+              "title": "cloud-infra",
+              "subtitle": "Fleet deploy · 6 VMs",
+              "meta": "success",
+              "tone": "ok",
+              "target": "https://github.com/diegonmarcos/cloud-infra/actions"
+            },
+            {
+              "title": "diegonmarcos.github.io",
+              "subtitle": "front · portal build + publish",
+              "meta": "success",
+              "tone": "ok",
+              "target": "https://github.com/diegonmarcos/diegonmarcos.github.io/actions"
+            }
+          ]
         }
       ]
     },
@@ -1246,27 +1351,35 @@
         {
           "id": "all",
           "label": "Open Tabs",
+          "view": {
+            "type": "grid"
+          },
           "items": [
             {
               "title": "diegonmarcos.com",
               "subtitle": "Portfolio",
-              "meta": "pinned"
+              "meta": "pinned",
+              "target": "https://diegonmarcos.com"
             },
             {
               "title": "grafana.diegonmarcos.com",
-              "subtitle": "Dashboards"
+              "subtitle": "Dashboards",
+              "target": "https://grafana.diegonmarcos.com"
             },
             {
               "title": "github.com/diegonmarcos",
-              "subtitle": "Repos"
+              "subtitle": "Repos",
+              "target": "https://github.com/diegonmarcos"
             },
             {
               "title": "auth.diegonmarcos.com",
-              "subtitle": "SSO login"
+              "subtitle": "SSO login",
+              "target": "https://auth.diegonmarcos.com"
             },
             {
               "title": "mail.diegonmarcos.com",
-              "subtitle": "Webmail"
+              "subtitle": "Webmail",
+              "target": "https://mail.diegonmarcos.com"
             }
           ]
         },
@@ -1286,21 +1399,30 @@
         {
           "id": "config",
           "label": "WireGuard",
+          "view": {
+            "type": "list",
+            "lead": "dot",
+            "trail": "pill",
+            "note": "Peer state shown is the profile as declared; a browser cannot read the device tunnel."
+          },
           "items": [
             {
               "title": "phone-mesh",
               "subtitle": "10.0.0.4",
-              "meta": "Connected"
+              "meta": "Connected",
+              "tone": "ok"
             },
             {
               "title": "laptop-mesh",
               "subtitle": "10.0.0.7",
-              "meta": "Connected"
+              "meta": "Connected",
+              "tone": "ok"
             },
             {
               "title": "gcp-proxy",
               "subtitle": "10.0.0.1",
-              "meta": "Connected"
+              "meta": "Connected",
+              "tone": "ok"
             }
           ]
         },
@@ -1308,7 +1430,51 @@
           "id": "status",
           "label": "Mesh",
           "icon": "mesh",
-          "hidden": true
+          "hidden": true,
+          "view": {
+            "type": "list",
+            "lead": "dot",
+            "trail": "meta",
+            "note": "Handshake ages and transfer counters are device state; a browser cannot read the tunnel, so only the declared mesh is shown."
+          },
+          "items": [
+            {
+              "title": "gcp-proxy",
+              "subtitle": "Hub · WireGuard mesh + public",
+              "meta": "10.0.0.1",
+              "tone": "ok"
+            },
+            {
+              "title": "gcp-t4",
+              "subtitle": "GPU worker",
+              "meta": "10.0.0.2",
+              "tone": "ok"
+            },
+            {
+              "title": "oci-mail",
+              "subtitle": "Mail store",
+              "meta": "10.0.0.3",
+              "tone": "ok"
+            },
+            {
+              "title": "oci-analytics",
+              "subtitle": "Public edge",
+              "meta": "10.0.0.5",
+              "tone": "ok"
+            },
+            {
+              "title": "oci-apps",
+              "subtitle": "Container host · aarch64",
+              "meta": "10.0.0.6",
+              "tone": "ok"
+            },
+            {
+              "title": "this-phone",
+              "subtitle": "Galaxy S21 · mesh peer",
+              "meta": "10.0.0.4",
+              "tone": "ok"
+            }
+          ]
         }
       ]
     },
@@ -1320,6 +1486,11 @@
         {
           "id": "professional",
           "label": "Professional",
+          "view": {
+            "type": "list",
+            "lead": "accent",
+            "trail": "meta"
+          },
           "items": [
             {
               "title": "Product & Software Engineer"
@@ -1335,6 +1506,11 @@
         {
           "id": "personal",
           "label": "Personal",
+          "view": {
+            "type": "list",
+            "lead": "accent",
+            "trail": "meta"
+          },
           "items": [
             {
               "title": "Berlin, Germany"
@@ -1347,6 +1523,11 @@
         {
           "id": "tools",
           "label": "Tools",
+          "view": {
+            "type": "list",
+            "lead": "accent",
+            "trail": "meta"
+          },
           "items": [
             {
               "title": "Kotlin / Android",
@@ -1369,6 +1550,11 @@
         {
           "id": "cloud",
           "label": "Cloud",
+          "view": {
+            "type": "list",
+            "lead": "accent",
+            "trail": "meta"
+          },
           "items": [
             {
               "title": "GCP",
@@ -1391,6 +1577,11 @@
         {
           "id": "other",
           "label": "Other",
+          "view": {
+            "type": "list",
+            "lead": "accent",
+            "trail": "meta"
+          },
           "items": [
             {
               "title": "Civil Engineering B.Sc.",
@@ -1506,44 +1697,75 @@
             {
               "title": "Checking",
               "subtitle": "Personal account",
-              "meta": "€6,120"
+              "meta": "€6,120",
+              "group": "Accounts"
             },
             {
               "title": "Savings",
               "subtitle": "Emergency fund",
-              "meta": "€10,190"
+              "meta": "€10,190",
+              "group": "Accounts"
             },
             {
               "title": "Brokerage",
               "subtitle": "Paper portfolio",
-              "meta": "€31,900"
+              "meta": "€31,900",
+              "group": "Accounts"
             },
             {
               "title": "Rent",
               "subtitle": "Monthly",
-              "meta": "-€980"
+              "meta": "-€980",
+              "group": "Recent activity"
             },
             {
               "title": "Groceries",
               "subtitle": "This week",
-              "meta": "-€64"
+              "meta": "-€64",
+              "group": "Recent activity"
             },
             {
               "title": "Salary",
               "subtitle": "Monthly deposit",
-              "meta": "+€3,400"
+              "meta": "+€3,400",
+              "group": "Recent activity"
             },
             {
               "title": "GitHub Sponsors",
               "subtitle": "Open source",
-              "meta": "+€18"
+              "meta": "+€18",
+              "group": "Recent activity"
             },
             {
               "title": "Utilities",
               "subtitle": "This month",
-              "meta": "-€112"
+              "meta": "-€112",
+              "group": "Recent activity"
             }
-          ]
+          ],
+          "view": {
+            "type": "list",
+            "lead": "accent",
+            "trail": "amount",
+            "stats": [
+              {
+                "label": "Net worth",
+                "value": "€48,210"
+              },
+              {
+                "label": "This month",
+                "value": "+€1,240"
+              },
+              {
+                "label": "Spending",
+                "value": "€2,180"
+              },
+              {
+                "label": "Holdings",
+                "value": "12"
+              }
+            ]
+          }
         }
       ]
     },
@@ -1643,6 +1865,9 @@
         {
           "id": "cards",
           "label": "Cards",
+          "view": {
+            "type": "cards"
+          },
           "items": [
             {
               "title": "Visa Debit",
@@ -1655,8 +1880,9 @@
               "meta": "Active"
             },
             {
-              "title": "+ Add card",
-              "subtitle": "Scan or enter card details"
+              "title": "Add card",
+              "subtitle": "Scan or enter card details",
+              "action": true
             }
           ]
         }

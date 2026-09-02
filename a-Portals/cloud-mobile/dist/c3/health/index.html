@@ -70,79 +70,37 @@
                 <a class="page-tabs__item" href="/cloud-mobile/c3/logs/">Logs</a>
                 </div>
             </div>
-            <div class="item-list">
-                <div class="item-list__row item-list__row--c3">
-                    <span class="item-list__dot item-list__dot--ok" aria-hidden="true"></span>
-                    <div class="item-list__text">
-                        <span class="item-list__title">gcp-proxy</span>
-                        <span class="item-list__subtitle">WireGuard hub · private</span>
-                    </div>
-                    <div class="item-list__domain">
-                        <span>—</span>
-                        <span class="item-list__domain-private">10.0.0.1</span>
-                    </div>
-                    <span class="item-list__meta">2 vCPU · 4 GB · x86_64</span>
-                </div>
-                <div class="item-list__row item-list__row--c3">
-                    <span class="item-list__dot item-list__dot--ok" aria-hidden="true"></span>
-                    <div class="item-list__text">
-                        <span class="item-list__title">gcp-t4</span>
-                        <span class="item-list__subtitle">GPU worker · x86_64</span>
-                    </div>
-                    <div class="item-list__domain">
-                        <span>—</span>
-                        <span class="item-list__domain-private">10.0.0.2</span>
-                    </div>
-                    <span class="item-list__meta">4 vCPU · 16 GB · x86_64</span>
-                </div>
-                <div class="item-list__row item-list__row--c3">
-                    <span class="item-list__dot item-list__dot--ok" aria-hidden="true"></span>
-                    <div class="item-list__text">
-                        <span class="item-list__title">oci-mail</span>
-                        <span class="item-list__subtitle">maddy + stalwart</span>
-                    </div>
-                    <div class="item-list__domain">
-                        <span>mail.diegonmarcos.com</span>
-                        <span class="item-list__domain-private">10.0.0.3</span>
-                    </div>
-                    <span class="item-list__meta">2 vCPU · 8 GB · x86_64</span>
-                </div>
-                <div class="item-list__row item-list__row--c3">
-                    <span class="item-list__dot item-list__dot--ok" aria-hidden="true"></span>
-                    <div class="item-list__text">
-                        <span class="item-list__title">oci-analytics</span>
-                        <span class="item-list__subtitle">public edge · x86_64</span>
-                    </div>
-                    <div class="item-list__domain">
-                        <span>grafana.diegonmarcos.com</span>
-                        <span class="item-list__domain-private">10.0.0.4</span>
-                    </div>
-                    <span class="item-list__meta">4 vCPU · 24 GB · x86_64</span>
-                </div>
-                <div class="item-list__row item-list__row--c3">
-                    <span class="item-list__dot item-list__dot--warn" aria-hidden="true"></span>
-                    <div class="item-list__text">
-                        <span class="item-list__title">oci-apps</span>
-                        <span class="item-list__subtitle">docker host · aarch64</span>
-                    </div>
-                    <div class="item-list__domain">
-                        <span>—</span>
-                        <span class="item-list__domain-private">10.0.0.5</span>
-                    </div>
-                    <span class="item-list__meta">4 vCPU · 24 GB · aarch64</span>
-                </div>
-                <div class="item-list__row item-list__row--c3">
-                    <span class="item-list__dot item-list__dot--ok" aria-hidden="true"></span>
-                    <div class="item-list__text">
-                        <span class="item-list__title">oci-apps-2</span>
-                        <span class="item-list__subtitle">docker host · aarch64</span>
-                    </div>
-                    <div class="item-list__domain">
-                        <span>—</span>
-                        <span class="item-list__domain-private">10.0.0.6</span>
-                    </div>
-                    <span class="item-list__meta">4 vCPU · 24 GB · aarch64</span>
-                </div>
+            <div class="row-list">
+                <div class="row"><span class="row__lead row__lead--dot row__lead--ok" aria-hidden="true"></span>
+                    <span class="row__text">
+                        <span class="row__title">gcp-proxy</span><span class="row__subtitle">WireGuard hub · private · 2 vCPU · 4 GB · x86_64</span>
+                    </span>
+                    <span class="row__trail row__meta">10.0.0.1</span></div>
+                <div class="row"><span class="row__lead row__lead--dot row__lead--ok" aria-hidden="true"></span>
+                    <span class="row__text">
+                        <span class="row__title">gcp-t4</span><span class="row__subtitle">GPU worker · x86_64 · 4 vCPU · 16 GB · x86_64</span>
+                    </span>
+                    <span class="row__trail row__meta">10.0.0.2</span></div>
+                <a class="row" href="https://mail.diegonmarcos.com" target="_blank" rel="noopener"><span class="row__lead row__lead--dot row__lead--ok" aria-hidden="true"></span>
+                    <span class="row__text">
+                        <span class="row__title">oci-mail</span><span class="row__subtitle">maddy + stalwart · 2 vCPU · 8 GB · x86_64</span>
+                    </span>
+                    <span class="row__trail row__meta">10.0.0.3</span></a>
+                <a class="row" href="https://grafana.diegonmarcos.com" target="_blank" rel="noopener"><span class="row__lead row__lead--dot row__lead--ok" aria-hidden="true"></span>
+                    <span class="row__text">
+                        <span class="row__title">oci-analytics</span><span class="row__subtitle">public edge · x86_64 · 4 vCPU · 24 GB · x86_64</span>
+                    </span>
+                    <span class="row__trail row__meta">10.0.0.4</span></a>
+                <div class="row"><span class="row__lead row__lead--dot row__lead--warn" aria-hidden="true"></span>
+                    <span class="row__text">
+                        <span class="row__title">oci-apps</span><span class="row__subtitle">docker host · aarch64 · 4 vCPU · 24 GB · aarch64</span>
+                    </span>
+                    <span class="row__trail row__meta">10.0.0.5</span></div>
+                <div class="row"><span class="row__lead row__lead--dot row__lead--ok" aria-hidden="true"></span>
+                    <span class="row__text">
+                        <span class="row__title">oci-apps-2</span><span class="row__subtitle">docker host · aarch64 · 4 vCPU · 24 GB · aarch64</span>
+                    </span>
+                    <span class="row__trail row__meta">10.0.0.6</span></div>
             </div>
             <footer class="site-footer">
                 <a class="footer-badge" href="https://github.com/diegonmarcos/cloud-u-android/releases/latest/download/Cloud-SuperApp.apk" download>

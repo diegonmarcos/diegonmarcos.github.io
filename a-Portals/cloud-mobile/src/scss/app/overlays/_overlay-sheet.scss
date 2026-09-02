@@ -142,7 +142,7 @@
 
 // Update overlay's "checking"/"installing" phases have no real percentage
 // to show — a pulsing bar instead of a static/frozen one, same intent as
-// the page-list skeleton row's shimmer (_content.scss).
+// the row-list's own liquid-glass surface (_page-views.scss).
 .overlay-sheet__progress-bar--indeterminate {
     animation: overlay-progress-pulse 1.2s ease-in-out infinite;
 }

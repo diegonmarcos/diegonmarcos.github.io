@@ -60,11 +60,39 @@
         <a class="toolbar-action" href="/cloud-mobile/wg/" aria-label="Back"><img class="" src="../../public/icons/back.svg" alt=""></a>
 
         <main class="content" id="content">
-            <div class="page-body">
-                <div class="page-body__skeleton-row"></div>
-                <div class="page-body__skeleton-row"></div>
-                <div class="page-body__skeleton-row"></div>
+            <div class="row-list">
+                <div class="row"><span class="row__lead row__lead--dot row__lead--ok" aria-hidden="true"></span>
+                    <span class="row__text">
+                        <span class="row__title">gcp-proxy</span><span class="row__subtitle">Hub · WireGuard mesh + public</span>
+                    </span>
+                    <span class="row__trail row__meta">10.0.0.1</span></div>
+                <div class="row"><span class="row__lead row__lead--dot row__lead--ok" aria-hidden="true"></span>
+                    <span class="row__text">
+                        <span class="row__title">gcp-t4</span><span class="row__subtitle">GPU worker</span>
+                    </span>
+                    <span class="row__trail row__meta">10.0.0.2</span></div>
+                <div class="row"><span class="row__lead row__lead--dot row__lead--ok" aria-hidden="true"></span>
+                    <span class="row__text">
+                        <span class="row__title">oci-mail</span><span class="row__subtitle">Mail store</span>
+                    </span>
+                    <span class="row__trail row__meta">10.0.0.3</span></div>
+                <div class="row"><span class="row__lead row__lead--dot row__lead--ok" aria-hidden="true"></span>
+                    <span class="row__text">
+                        <span class="row__title">oci-analytics</span><span class="row__subtitle">Public edge</span>
+                    </span>
+                    <span class="row__trail row__meta">10.0.0.5</span></div>
+                <div class="row"><span class="row__lead row__lead--dot row__lead--ok" aria-hidden="true"></span>
+                    <span class="row__text">
+                        <span class="row__title">oci-apps</span><span class="row__subtitle">Container host · aarch64</span>
+                    </span>
+                    <span class="row__trail row__meta">10.0.0.6</span></div>
+                <div class="row"><span class="row__lead row__lead--dot row__lead--ok" aria-hidden="true"></span>
+                    <span class="row__text">
+                        <span class="row__title">this-phone</span><span class="row__subtitle">Galaxy S21 · mesh peer</span>
+                    </span>
+                    <span class="row__trail row__meta">10.0.0.4</span></div>
             </div>
+            <p class="android-only-note">Handshake ages and transfer counters are device state; a browser cannot read the tunnel, so only the declared mesh is shown.</p>
             <footer class="site-footer">
                 <a class="footer-badge" href="https://github.com/diegonmarcos/cloud-u-android/releases/latest/download/Cloud-SuperApp.apk" download>
                     <img class="footer-badge__icon" src="../../public/icons/play-badge.svg" alt="">

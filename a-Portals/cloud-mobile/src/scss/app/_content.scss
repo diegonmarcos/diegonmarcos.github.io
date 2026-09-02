@@ -144,27 +144,3 @@
     opacity: .5;
 }
 
-.page-body {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-}
-
-.page-body__skeleton-row {
-    height: 56px;
-    border-radius: 14px;
-    border: 1px solid var(--glass-border);
-    background: linear-gradient(100deg, var(--glass-bg) 30%, rgba(255, 255, 255, 0.06) 50%, var(--glass-bg) 70%);
-    background-size: 200% 100%;
-    animation: shimmer 1.8s ease-in-out infinite;
-}
-
-@keyframes shimmer {
-    from {
-        background-position: 200% 0;
-    }
-
-    to {
-        background-position: -200% 0;
-    }
-}

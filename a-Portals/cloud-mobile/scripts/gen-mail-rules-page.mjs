@@ -121,73 +121,38 @@ for (const key of order) {
   }
 }
 
-const jstr = (v) => JSON.stringify(v);
-const body = rows
-  .map((r) =>
-    Array.isArray(r)
-      ? `          [${r.map(jstr).join(", ")}],`
-      : `          { "group": ${jstr(r.group)} },`,
-  )
-  .join("\n")
-  .replace(/,$/, "");
-const block = `        { "id": "rules", "label": "Rules", "rows": [\n${body}\n        ]},`;
+// ── splice it in as parsed JSON ────────────────────────────────────────
+// This used to be a TEXT splice, justified by the target being hand-formatted
+// (re-serialising it would have exploded every one-line row into six). That is
+// no longer true: sections-content.json is now uniformly machine-serialised at
+// a 2-space indent, so parse -> stringify is both stable and far more robust
+// than matching an 8-space indent by prefix.
+const page = { id: "rules", label: "Rules", rows };
 
-// ── splice it in as TEXT, directly after the Accounts block ────────────
-// ponytail: a text splice, not JSON.parse -> stringify. Re-serialising this
-// file explodes every hand-formatted one-line row into six lines and buries a
-// 20-line change in a 2843-line diff. The page blocks are uniform enough
-// (8-space indent, closing `]},`) that locating them by text is honest here.
-const src = readFileSync(TARGET, "utf8");
-const lines = src.split("\n");
-
-function blockRange(id) {
-  const start = lines.findIndex((l) => l.startsWith(`        { "id": "${id}"`));
-  if (start === -1) return null;
-  for (let i = start; i < lines.length; i++) {
-    if (/^        \]\s*\},?$/.test(lines[i]) || /^        \} \},?$/.test(lines[i])) {
-      return [start, i];
-    }
-    if (i > start && lines[i].startsWith(`        { "id": "`)) break;
-  }
-  return null;
+// Insert `rules` at a named position in a section's page list, replacing any
+// existing rules page first so re-runs are idempotent.
+function spliceInto(sectionKey, anchorId, after) {
+  const pages = doc.sections[sectionKey]?.pages;
+  if (!pages) throw new Error(`no ${sectionKey} section`);
+  const existing = pages.findIndex((p) => typeof p === "object" && p.id === "rules");
+  if (existing !== -1) pages.splice(existing, 1);
+  const anchor = pages.findIndex((p) => typeof p === "object" && p.id === anchorId);
+  if (anchor === -1) throw new Error(`${sectionKey} has no ${anchorId} page to anchor to`);
+  pages.splice(after ? anchor + 1 : anchor, 0, page);
 }
 
-// The page is wanted in two places: Mail (next to Accounts, where you read the
-// mail) and Configs (/config/rules, where you change the rules). Same block,
-// same generated content -- one source, so they cannot drift apart.
-function splice_into(sectionKey, anchorId, after) {
-  const secStart = lines.findIndex((l) => l.startsWith(`    "${sectionKey}": {`));
-  if (secStart === -1) throw new Error(`no ${sectionKey} section`);
-  const secEnd = lines.findIndex((l, i) => i > secStart && /^    "[a-z0-9_-]+": \{/.test(l));
-  const end = secEnd === -1 ? lines.length : secEnd;
+// The page is wanted in two places: Mail (where you read the mail) and Configs
+// (/config/rules, where you change the rules). Same object, same generated
+// content -- one source, so they cannot drift apart.
+//
+// Mail's page order is the APK's (folders, inbox, accounts, identities, rules,
+// ...), so the anchor is Identities, not Accounts.
+spliceInto("mail", "identities", true);
+// Configs has no Accounts page (profile, wg, kde, ai, launcher, ...), so this
+// goes ahead of Profile, the identity page and the closest thing Configs has.
+spliceInto("config", "profile", false);
 
-  const find = (id) => {
-    const start = lines.findIndex(
-      (l, i) => i > secStart && i < end && l.startsWith(`        { "id": "${id}"`),
-    );
-    if (start === -1) return null;
-    for (let i = start; i < end; i++) {
-      if (/^        \]\s*\},?$/.test(lines[i]) || /^        \} \},?$/.test(lines[i])) return [start, i];
-      if (i > start && lines[i].startsWith(`        { "id": "`)) break;
-    }
-    return null;
-  };
-
-  const existing = find("rules");
-  if (existing) lines.splice(existing[0], existing[1] - existing[0] + 1);
-
-  const anchor = find(anchorId);
-  if (!anchor) throw new Error(`${sectionKey} has no ${anchorId} block to anchor to`);
-  lines.splice(after ? anchor[1] + 1 : anchor[0], 0, block);
-}
-
-splice_into("mail", "accounts", true);
-// Configs has no Accounts page (profile, wg, kde, ai, launcher, ...), so
-// "before accounts" resolves to first -- ahead of Profile, which is the
-// identity page and the closest thing Configs has to one.
-splice_into("config", "profile", false);
-
-writeFileSync(TARGET, lines.join("\n"));
+writeFileSync(TARGET, `${JSON.stringify(doc, null, 2)}\n`);
 console.log(
-  `rules page: ${rows.length} rows, ${byFolder.size} tags -> mail (after accounts) + config (first)`,
+  `rules page: ${rows.length} rows, ${byFolder.size} tags -> mail (after identities) + config (first)`,
 );

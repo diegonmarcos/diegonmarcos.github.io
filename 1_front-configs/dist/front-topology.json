@@ -2,7 +2,7 @@
   "_meta": {
     "generated_by": "1_front-configs/build.sh derive",
     "schema": "front-topology/v1",
-    "project_count": 49
+    "project_count": 50
   },
   "projects": [
     {
@@ -209,6 +209,26 @@
       "dep_count": 12,
       "has_dist": true,
       "deploy_name": "linktree"
+    },
+    {
+      "name": "Linktree Icon View",
+      "slug": "linktree_icon-view",
+      "path": "a-Portals/linktree_icon-view",
+      "category": "a-Portals",
+      "framework": "vanilla",
+      "port": 8020,
+      "build_steps": [
+        "esbuild",
+        "sass",
+        "copy",
+        "symlink",
+        "sw_register",
+        "console_log",
+        "esbuild_sw"
+      ],
+      "dep_count": 3,
+      "has_dist": false,
+      "deploy_name": "linktree_icon-view"
     },
     {
       "name": "Linktree Mindmap",

@@ -108,6 +108,18 @@
     "has_pkg": true
   },
   {
+    "path": "a-Portals/linktree_icon-view",
+    "category": "a-Portals",
+    "project": "linktree_icon-view",
+    "key": "a-Portals__linktree_icon-view",
+    "name": "Linktree Icon View",
+    "framework": "vanilla",
+    "port": 8020,
+    "deploy_name": "linktree_icon-view",
+    "has_pwa": false,
+    "has_pkg": true
+  },
+  {
     "path": "a-Portals/linktree_mindmap",
     "category": "a-Portals",
     "project": "linktree_mindmap",

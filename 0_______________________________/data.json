@@ -1,7 +1,7 @@
 {
   "meta": {
     "generated_from": "front-topology.json",
-    "project_count": 49
+    "project_count": 50
   },
   "categories": [
     {
@@ -111,6 +111,15 @@
           "framework": "vanilla",
           "port": 8001,
           "has_dist": true
+        },
+        {
+          "name": "Linktree Icon View",
+          "slug": "linktree_icon-view",
+          "path": "a-Portals/linktree_icon-view",
+          "category": "a-Portals",
+          "framework": "vanilla",
+          "port": 8020,
+          "has_dist": false
         },
         {
           "name": "Linktree Mindmap",

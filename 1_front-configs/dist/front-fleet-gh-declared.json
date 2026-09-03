@@ -90,6 +90,16 @@
     "url": "https://diegonmarcos.github.io/linktree"
   },
   {
+    "id": "a-Portals__linktree_icon-view",
+    "project": "linktree_icon-view",
+    "path": "a-Portals/linktree_icon-view",
+    "category": "a-Portals",
+    "name": "Linktree Icon View",
+    "framework": "vanilla",
+    "deploy_name": "linktree_icon-view",
+    "url": "https://diegonmarcos.github.io/linktree_icon-view"
+  },
+  {
     "id": "a-Portals__linktree_mindmap",
     "project": "linktree_mindmap",
     "path": "a-Portals/linktree_mindmap",

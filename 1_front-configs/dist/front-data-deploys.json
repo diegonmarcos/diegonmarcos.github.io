@@ -24,6 +24,10 @@
     "deploy_name": "linktree_pixel-world"
   },
   {
+    "path": "a-Portals/linktree_icon-view",
+    "deploy_name": "linktree_icon-view"
+  },
+  {
     "path": "a-Individual/cv_pdf",
     "deploy_name": "cv_pdf"
   },

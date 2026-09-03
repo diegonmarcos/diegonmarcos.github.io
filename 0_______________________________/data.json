@@ -119,7 +119,7 @@
           "category": "a-Portals",
           "framework": "vanilla",
           "port": 8020,
-          "has_dist": false
+          "has_dist": true
         },
         {
           "name": "Linktree Mindmap",

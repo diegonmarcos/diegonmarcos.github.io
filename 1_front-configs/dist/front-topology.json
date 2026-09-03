@@ -220,6 +220,7 @@
       "build_steps": [
         "esbuild",
         "sass",
+        "sass",
         "copy",
         "symlink",
         "sw_register",
@@ -227,7 +228,7 @@
         "esbuild_sw"
       ],
       "dep_count": 3,
-      "has_dist": false,
+      "has_dist": true,
       "deploy_name": "linktree_icon-view"
     },
     {

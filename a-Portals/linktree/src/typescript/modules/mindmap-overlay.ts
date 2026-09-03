@@ -14,9 +14,18 @@ export function initMindmapOverlay(): void {
   const iframe = getElementById<HTMLIFrameElement>('mindmap-iframe');
   const backgroundVideo = getElementById<HTMLVideoElement>('background-video');
 
-  if (!mindmapBtn || !overlay || !closeBtn || !iframe) return;
+  // mindmapBtn is OPTIONAL. It used to be required, and that is why this
+  // overlay never opened: there is no element with id="mindmap-btn" anywhere in
+  // the page — only a `.mindmap-btn` CSS class — so this guard returned early on
+  // every load and clicking Mindmap in the menu did nothing. The real menu
+  // button is #btn-mindmap (menuRender sets el.id = item.id from menuData), and
+  // it is handled below.
+  if (!overlay || !closeBtn || !iframe) return;
 
-  const mindmapUrl = mindmapBtn.href;
+  // Was mindmapBtn.href — i.e. read off the element that does not exist. A
+  // constant cannot go missing. Absolute because in dev each portal is served
+  // on its own port, so a relative path would not resolve.
+  const mindmapUrl = 'https://diegonmarcos.github.io/linktree_mindmap/';
   let hoverTimeout: number | null = null;
   let iframeLoaded = false;
 
@@ -35,14 +44,13 @@ export function initMindmapOverlay(): void {
     }
 
     addClass(overlay, 'active');
-    // Hide mindmap button when overlay is open
-    addClass(mindmapBtn, 'hidden');
+    // Hide the launcher button while the overlay is up — only if it exists.
+    if (mindmapBtn) addClass(mindmapBtn, 'hidden');
   };
 
   const closeOverlay = () => {
     removeClass(overlay, 'active');
-    // Show mindmap button when overlay is closed
-    removeClass(mindmapBtn, 'hidden');
+    if (mindmapBtn) removeClass(mindmapBtn, 'hidden');
 
     // Resume background video when overlay closes
     if (backgroundVideo) {
@@ -52,26 +60,29 @@ export function initMindmapOverlay(): void {
     }
   };
 
-  // Hover to open (with delay to prevent accidental triggers)
-  mindmapBtn.addEventListener('mouseenter', () => {
-    hoverTimeout = window.setTimeout(() => {
+  // Hover-to-open only applies to the legacy anchor, which is absent today.
+  // Guarded rather than deleted: the behaviour returns for free if that element
+  // is ever reintroduced.
+  if (mindmapBtn) {
+    mindmapBtn.addEventListener('mouseenter', () => {
+      hoverTimeout = window.setTimeout(() => {
+        openOverlay();
+      }, 500); // 500ms delay
+    });
+
+    // Cancel open if mouse leaves before delay
+    mindmapBtn.addEventListener('mouseleave', () => {
+      if (hoverTimeout) {
+        clearTimeout(hoverTimeout);
+        hoverTimeout = null;
+      }
+    });
+
+    mindmapBtn.addEventListener('click', (e) => {
+      e.preventDefault();
       openOverlay();
-    }, 500); // 500ms delay
-  });
-
-  // Cancel open if mouse leaves before delay
-  mindmapBtn.addEventListener('mouseleave', () => {
-    if (hoverTimeout) {
-      clearTimeout(hoverTimeout);
-      hoverTimeout = null;
-    }
-  });
-
-  // Prevent default link behavior
-  mindmapBtn.addEventListener('click', (e) => {
-    e.preventDefault();
-    openOverlay();
-  });
+    });
+  }
 
   // Control button opens mindmap
   if (mindmapControlBtn) {

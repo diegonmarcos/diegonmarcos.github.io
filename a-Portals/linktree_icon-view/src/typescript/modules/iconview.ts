@@ -70,67 +70,69 @@ function navigateToLevel(i: number): void {
 // ---------------------------------------------------------------------------
 // Rendering
 // ---------------------------------------------------------------------------
+// Every class below is cloud-mobile's, not this portal's. style.css IS
+// cloud-mobile's stylesheet — src/scss is a symlink to it — so the markup has
+// to match its selectors exactly or nothing paints. Reimplementing a lookalike
+// was the first attempt here and it was wrong: it reproduced the palette and
+// the tile grid, and none of the shell.
 
-function renderBreadcrumb(): HTMLElement {
-  const bc = document.createElement('nav');
-  bc.className = 'island';
+function renderTabs(): HTMLElement {
+  // page-tabs-bar. In the app these are a section's sibling pages (Apps /
+  // Lnktree / C3 / Configs); here they are the path into the tree. Same
+  // affordance — a flat row of chips with the current one is-active — so it
+  // reuses that markup instead of inventing a breadcrumb of its own.
+  const bar = document.createElement('div');
+  bar.className = 'page-tabs-bar';
+  const tabs = document.createElement('div');
+  tabs.className = 'page-tabs';
+  tabs.setAttribute('role', 'tablist');
+  bar.appendChild(tabs);
 
-  const root = document.createElement('button');
-  root.className = 'crumb';
-  root.type = 'button';
-  root.textContent = 'All';
-  root.addEventListener('click', () => navigateToLevel(0));
-  bc.appendChild(root);
-
-  navPath.forEach((folder, i) => {
-    const sep = document.createElement('span');
-    sep.className = 'crumb-sep';
-    sep.textContent = '›';
-    bc.appendChild(sep);
-
-    const item = document.createElement('button');
-    item.className = 'crumb';
-    item.type = 'button';
-    item.textContent = folder.title;
-    if (i < navPath.length - 1) {
-      item.addEventListener('click', () => navigateToLevel(i + 1));
-    } else {
-      item.classList.add('crumb--active');
-      item.disabled = true;
+  const crumb = (label: string, active: boolean, go?: () => void): void => {
+    const a = document.createElement('a');
+    a.className = active ? 'page-tabs__item is-active' : 'page-tabs__item';
+    a.textContent = label;
+    if (go) {
+      a.href = '#';
+      a.addEventListener('click', (e) => { e.preventDefault(); go(); });
     }
-    bc.appendChild(item);
+    tabs.appendChild(a);
+  };
+
+  crumb('All', navPath.length === 0,
+    navPath.length === 0 ? undefined : () => navigateToLevel(0));
+  navPath.forEach((folder, i) => {
+    const last = i === navPath.length - 1;
+    crumb(folder.title, last, last ? undefined : () => navigateToLevel(i + 1));
   });
 
-  return bc;
+  return bar;
+}
+
+/** span.tile__icon carrying an inlined, currentColor-tinted glyph. */
+function tileIcon(name: string): HTMLElement {
+  const icon = document.createElement('span');
+  icon.className = 'tile__icon';
+  icon.setAttribute('aria-hidden', 'true');
+  paintIcon(icon, name);
+  return icon;
+}
+
+function tileLabel(text: string): HTMLElement {
+  const label = document.createElement('span');
+  label.className = 'tile__label';
+  label.textContent = text;
+  return label;
 }
 
 function renderFolder(folder: TreeNode): HTMLElement {
   const tile = document.createElement('button');
   tile.className = 'tile';
   tile.type = 'button';
+  tile.setAttribute('role', 'listitem');
   tile.setAttribute('aria-label', `${folder.title} — ${folder.children.length} items`);
-
-  // 2x2 mosaic of the first four children, like the APK's folder tiles.
-  const mosaic = document.createElement('div');
-  mosaic.className = 'tile__mosaic';
-  for (let i = 0; i < 4; i++) {
-    const child = folder.children[i];
-    const cell = document.createElement('span');
-    if (child) paintIcon(cell, child.type === 'folder' ? FOLDER_ICON : child.icon ?? FALLBACK_ICON);
-    mosaic.appendChild(cell);
-  }
-  tile.appendChild(mosaic);
-
-  const label = document.createElement('span');
-  label.className = 'tile__label';
-  label.textContent = folder.title;
-  tile.appendChild(label);
-
-  const count = document.createElement('span');
-  count.className = 'tile__count';
-  count.textContent = String(folder.children.length);
-  tile.appendChild(count);
-
+  tile.appendChild(tileIcon(FOLDER_ICON));
+  tile.appendChild(tileLabel(folder.title));
   tile.addEventListener('click', () => navigateInto(folder));
   return tile;
 }
@@ -138,54 +140,60 @@ function renderFolder(folder: TreeNode): HTMLElement {
 function renderLink(link: TreeNode): HTMLElement {
   const tile = document.createElement('a');
   tile.className = 'tile';
+  tile.setAttribute('role', 'listitem');
   tile.href = link.url ?? '#';
   tile.title = link.title;
-  // The portal is embedded in linktree as an iframe, so every link must break
-  // out of it — without this a target site loads inside the tile grid, and any
-  // site sending X-Frame-Options just renders blank.
+  // Embedded in linktree as an iframe, so links must break out of it —
+  // otherwise the target loads inside the tile grid, and any site sending
+  // X-Frame-Options renders blank.
   tile.target = '_top';
   tile.rel = 'noopener';
   if (link.download) tile.setAttribute('download', link.download);
-
-  const icon = document.createElement('span');
-  icon.className = 'tile__icon';
-  paintIcon(icon, link.icon ?? FALLBACK_ICON);
-  tile.appendChild(icon);
-
-  const label = document.createElement('span');
-  label.className = 'tile__label';
-  label.textContent = link.title;
-  tile.appendChild(label);
-
+  tile.appendChild(tileIcon(link.icon ?? FALLBACK_ICON));
+  tile.appendChild(tileLabel(link.title));
   return tile;
 }
 
 function render(): void {
-  const shell = document.getElementById('shell');
-  if (!shell) return;
-  shell.innerHTML = '';
-  shell.appendChild(renderBreadcrumb());
+  const content = document.getElementById('content');
+  if (!content) return;
+  content.innerHTML = '';
+  content.appendChild(renderTabs());
 
-  const items = currentChildren();
-  if (items.length === 0) {
-    const empty = document.createElement('p');
-    empty.className = 'empty';
-    empty.textContent = 'Nothing here.';
-    shell.appendChild(empty);
-    return;
-  }
+  const group = document.createElement('section');
+  group.className = 'tile-group';
+
+  const title = document.createElement('h2');
+  title.className = 'tile-group__title';
+  title.textContent = navPath.length === 0 ? 'All' : navPath[navPath.length - 1].title;
+  group.appendChild(title);
 
   const grid = document.createElement('div');
   grid.className = 'tile-grid';
-  for (const item of items) {
+  grid.setAttribute('role', 'list');
+  for (const item of currentChildren()) {
     grid.appendChild(item.type === 'folder' ? renderFolder(item) : renderLink(item));
   }
-  shell.appendChild(grid);
+  group.appendChild(grid);
+  content.appendChild(group);
+}
+
+/** The one genuinely live bit of the status strip, as in cloud-mobile. */
+function startClock(): void {
+  const el = document.getElementById('status-clock');
+  if (!el) return;
+  const tick = (): void => {
+    const d = new Date();
+    el.textContent = `${String(d.getHours()).padStart(2, '0')}:${String(d.getMinutes()).padStart(2, '0')}`;
+  };
+  tick();
+  window.setInterval(tick, 30_000);
 }
 
 export function initIconView(data: TreeNode[]): void {
   tree = data;
   navPath = [];
+  startClock();
   render();
 
   // Depth 0 is the root level; without it the first Back would leave the page
@@ -193,9 +201,8 @@ export function initIconView(data: TreeNode[]): void {
   history.replaceState({ depth: 0 }, '');
 
   // Escape and the browser/system Back gesture both mean "up one level".
-  // Escape unwinds navPath directly; Back unwinds history, and popstate then
-  // trims navPath to whatever depth we landed on — never past it, so a
-  // forward-navigation entry cannot re-enter a folder that is gone.
+  // Both go THROUGH history so they cannot disagree about depth; popstate does
+  // the actual unwinding.
   window.addEventListener('popstate', (e) => {
     const st = e.state as { depth?: number } | null;
     const depth = typeof st?.depth === 'number' ? st.depth : 0;
@@ -206,10 +213,6 @@ export function initIconView(data: TreeNode[]): void {
   });
 
   document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape' && navPath.length > 0) {
-      // history.back() so the two paths cannot disagree about depth; popstate
-      // does the actual unwinding.
-      history.back();
-    }
+    if (e.key === 'Escape' && navPath.length > 0) history.back();
   });
 }

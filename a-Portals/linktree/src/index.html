@@ -164,7 +164,19 @@
     <div class="iconview-overlay" id="iconview-overlay">
         <div class="iconview-overlay-content">
             <button class="iconview-overlay-close" id="iconview-overlay-close">&times;</button>
-            <div class="iconview-content" id="iconview-content"></div>
+            <!-- The grid used to be rendered into this element in-page, by
+                 iconViewToggle.ts scraping the DOM portal-render.ts had
+                 painted. It is now the linktree_icon-view portal, embedded the
+                 way Mindmap is, so the view exists in exactly one place. -->
+            <iframe
+                id="iconview-iframe"
+                src=""
+                frameborder="0"
+                loading="lazy"
+                title="Icon View"
+                allow="fullscreen"
+                style="transform: translateZ(0); will-change: contents;">
+            </iframe>
         </div>
     </div>
 

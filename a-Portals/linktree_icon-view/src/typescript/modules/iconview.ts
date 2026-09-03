@@ -1,11 +1,12 @@
-// Folder navigation + rendering. Ported from linktree's iconViewToggle.ts,
-// minus the overlay: this portal IS the view, so there is no open/close,
-// no backdrop and no body-scroll locking to unwind.
+// Renders the linktree as the Cloud SuperApp's Cloud page: section tabs, then
+// titled groups of icons. There is no folder navigation — see the note above
+// the state block for why the levels are rendered rather than navigated.
 
 import type { TreeNode } from '../types';
 
+// Folders are no longer a thing to click into, so there is no folder glyph:
+// a card is a title now, not a tile.
 const FALLBACK_ICON = 'link';
-const FOLDER_ICON = 'file-stack';
 
 // ---------------------------------------------------------------------------
 // Icons
@@ -40,47 +41,33 @@ function paintIcon(host: HTMLElement, name: string): void {
 }
 
 // ---------------------------------------------------------------------------
-// Navigation state
+// State — one active section, no drill-down
 // ---------------------------------------------------------------------------
+// This replaced click-through folders. The launcher does not make you open a
+// folder to reach Mail: the Cloud page shows every group at once, titled, and
+// the tabs switch SECTIONS. So the four levels are rendered, not navigated:
+//
+//   Professional | Projects | Personal   -> page-tabs        (tabs)
+//   Suite                                -> tile-group__title (title 0)
+//   Comms                                -> settings-list__group (title 2)
+//   Mail                                 -> tile              (icon)
+//
+// Both title styles are cloud-mobile's own. tile-group__title is the bold
+// 16sp mixed-case lavender heading the APK uses for a Suite group;
+// settings-list__group is the uppercase tracked-out divider it uses between
+// subsections — the very style tile-group__title's comment contrasts itself
+// against.
 
 let tree: TreeNode[] = [];
-let navPath: TreeNode[] = []; // root -> current folder
-
-function currentChildren(): TreeNode[] {
-  return navPath.length === 0 ? tree : navPath[navPath.length - 1].children;
-}
-
-function navigateInto(folder: TreeNode): void {
-  navPath.push(folder);
-  // One history entry per level, so Back means "up one folder" — the same
-  // thing it means in the launcher this layout mimics. Only the DEPTH is
-  // stored: the path is still in navPath, and restoring by depth cannot go
-  // stale the way a serialised path could.
-  history.pushState({ depth: navPath.length }, '');
-  render();
-}
-// Both ways UP go through history, so depth has exactly one source of truth
-// and the Back gesture can never disagree with the breadcrumb. popstate does
-// the actual unwinding; there is deliberately no direct navPath.pop() here.
-function navigateToLevel(i: number): void {
-  const steps = i - navPath.length;
-  if (steps < 0) history.go(steps);
-}
+let active = 0;
 
 // ---------------------------------------------------------------------------
 // Rendering
 // ---------------------------------------------------------------------------
-// Every class below is cloud-mobile's, not this portal's. style.css IS
-// cloud-mobile's stylesheet — src/scss is a symlink to it — so the markup has
-// to match its selectors exactly or nothing paints. Reimplementing a lookalike
-// was the first attempt here and it was wrong: it reproduced the palette and
-// the tile grid, and none of the shell.
+// Every class here is cloud-mobile's. style.css IS its stylesheet (src/scss is
+// a symlink), so invented class names paint nothing.
 
 function renderTabs(): HTMLElement {
-  // page-tabs-bar. In the app these are a section's sibling pages (Apps /
-  // Lnktree / C3 / Configs); here they are the path into the tree. Same
-  // affordance — a flat row of chips with the current one is-active — so it
-  // reuses that markup instead of inventing a breadcrumb of its own.
   const bar = document.createElement('div');
   bar.className = 'page-tabs-bar';
   const tabs = document.createElement('div');
@@ -88,22 +75,20 @@ function renderTabs(): HTMLElement {
   tabs.setAttribute('role', 'tablist');
   bar.appendChild(tabs);
 
-  const crumb = (label: string, active: boolean, go?: () => void): void => {
+  tree.forEach((section, i) => {
     const a = document.createElement('a');
-    a.className = active ? 'page-tabs__item is-active' : 'page-tabs__item';
-    a.textContent = label;
-    if (go) {
-      a.href = '#';
-      a.addEventListener('click', (e) => { e.preventDefault(); go(); });
-    }
+    a.className = i === active ? 'page-tabs__item is-active' : 'page-tabs__item';
+    a.textContent = section.title;
+    a.href = '#';
+    a.setAttribute('role', 'tab');
+    a.setAttribute('aria-selected', String(i === active));
+    a.addEventListener('click', (e) => {
+      e.preventDefault();
+      if (i === active) return;
+      active = i;
+      render();
+    });
     tabs.appendChild(a);
-  };
-
-  crumb('All', navPath.length === 0,
-    navPath.length === 0 ? undefined : () => navigateToLevel(0));
-  navPath.forEach((folder, i) => {
-    const last = i === navPath.length - 1;
-    crumb(folder.title, last, last ? undefined : () => navigateToLevel(i + 1));
   });
 
   return bar;
@@ -118,26 +103,8 @@ function tileIcon(name: string): HTMLElement {
   return icon;
 }
 
-function tileLabel(text: string): HTMLElement {
-  const label = document.createElement('span');
-  label.className = 'tile__label';
-  label.textContent = text;
-  return label;
-}
-
-function renderFolder(folder: TreeNode): HTMLElement {
-  const tile = document.createElement('button');
-  tile.className = 'tile';
-  tile.type = 'button';
-  tile.setAttribute('role', 'listitem');
-  tile.setAttribute('aria-label', `${folder.title} — ${folder.children.length} items`);
-  tile.appendChild(tileIcon(FOLDER_ICON));
-  tile.appendChild(tileLabel(folder.title));
-  tile.addEventListener('click', () => navigateInto(folder));
-  return tile;
-}
-
-function renderLink(link: TreeNode): HTMLElement {
+/** One leaf link, as a tile. */
+function renderTile(link: TreeNode): HTMLElement {
   const tile = document.createElement('a');
   tile.className = 'tile';
   tile.setAttribute('role', 'listitem');
@@ -150,8 +117,56 @@ function renderLink(link: TreeNode): HTMLElement {
   tile.rel = 'noopener';
   if (link.download) tile.setAttribute('download', link.download);
   tile.appendChild(tileIcon(link.icon ?? FALLBACK_ICON));
-  tile.appendChild(tileLabel(link.title));
+
+  const label = document.createElement('span');
+  label.className = 'tile__label';
+  label.textContent = link.title;
+  tile.appendChild(label);
   return tile;
+}
+
+/** tile-grid--strip: the single-row, non-wrapping variant the APK's
+ *  GroupedTilesFragment uses for Suite groups on the Cloud page. */
+function renderGrid(links: TreeNode[]): HTMLElement {
+  const grid = document.createElement('div');
+  grid.className = 'tile-grid tile-grid--strip';
+  grid.setAttribute('role', 'list');
+  for (const l of links) grid.appendChild(renderTile(l));
+  return grid;
+}
+
+/** Title 2 — the subsection divider above a subgroup's icons. */
+function renderSubTitle(text: string): HTMLElement {
+  const h = document.createElement('div');
+  h.className = 'settings-list__group';
+  h.textContent = text;
+  return h;
+}
+
+/** One card (linktree slide) — Title 0, then its subgroups. */
+function renderCard(card: TreeNode): HTMLElement {
+  const group = document.createElement('section');
+  group.className = 'tile-group';
+
+  const title = document.createElement('h2');
+  title.className = 'tile-group__title';
+  title.textContent = card.title;
+  group.appendChild(title);
+
+  // A card's children are subgroup folders, but a slide can also carry links
+  // with no subgroup of their own. Those go straight under the card title
+  // rather than inventing a heading for them.
+  const loose = card.children.filter((c) => c.type === 'link');
+  if (loose.length) group.appendChild(renderGrid(loose));
+
+  for (const sub of card.children.filter((c) => c.type === 'folder')) {
+    const links = sub.children.filter((c) => c.type === 'link');
+    if (links.length === 0) continue;
+    group.appendChild(renderSubTitle(sub.title));
+    group.appendChild(renderGrid(links));
+  }
+
+  return group;
 }
 
 function render(): void {
@@ -160,22 +175,11 @@ function render(): void {
   content.innerHTML = '';
   content.appendChild(renderTabs());
 
-  const group = document.createElement('section');
-  group.className = 'tile-group';
-
-  const title = document.createElement('h2');
-  title.className = 'tile-group__title';
-  title.textContent = navPath.length === 0 ? 'All' : navPath[navPath.length - 1].title;
-  group.appendChild(title);
-
-  const grid = document.createElement('div');
-  grid.className = 'tile-grid';
-  grid.setAttribute('role', 'list');
-  for (const item of currentChildren()) {
-    grid.appendChild(item.type === 'folder' ? renderFolder(item) : renderLink(item));
+  const section = tree[active];
+  if (!section) return;
+  for (const card of section.children) {
+    if (card.type === 'folder') content.appendChild(renderCard(card));
   }
-  group.appendChild(grid);
-  content.appendChild(group);
 }
 
 /** The one genuinely live bit of the status strip, as in cloud-mobile. */
@@ -192,27 +196,7 @@ function startClock(): void {
 
 export function initIconView(data: TreeNode[]): void {
   tree = data;
-  navPath = [];
+  active = 0;
   startClock();
   render();
-
-  // Depth 0 is the root level; without it the first Back would leave the page
-  // instead of doing nothing at the root.
-  history.replaceState({ depth: 0 }, '');
-
-  // Escape and the browser/system Back gesture both mean "up one level".
-  // Both go THROUGH history so they cannot disagree about depth; popstate does
-  // the actual unwinding.
-  window.addEventListener('popstate', (e) => {
-    const st = e.state as { depth?: number } | null;
-    const depth = typeof st?.depth === 'number' ? st.depth : 0;
-    if (depth < navPath.length) {
-      navPath = navPath.slice(0, depth);
-      render();
-    }
-  });
-
-  document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape' && navPath.length > 0) history.back();
-  });
 }

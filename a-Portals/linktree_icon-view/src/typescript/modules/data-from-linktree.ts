@@ -112,11 +112,13 @@ export function buildTree(): TreeNode[] {
       const subgroups = slideSubgroups(slide, slideId);
       if (subgroups.length === 0) continue;
 
-      // A card holding exactly one subgroup would make the user open a folder
-      // to find a folder holding everything. Collapse that level away.
-      const children = subgroups.length === 1 ? subgroups[0].children : subgroups;
+      // No collapsing. That mattered while this was click-through folders — a
+      // card holding one subgroup meant opening a folder to find a folder. It
+      // is wrong now that levels are RENDERED rather than navigated: the card
+      // is a title and the subgroup is a sub-title, so collapsing would delete
+      // the sub-title (Suite > Comms > Mail would lose "Comms").
       sectionNode.children.push({
-        type: 'folder', id: slideId, title: slide.title, children,
+        type: 'folder', id: slideId, title: slide.title, children: subgroups,
       });
     }
 

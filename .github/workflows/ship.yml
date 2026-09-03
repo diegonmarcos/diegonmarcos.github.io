@@ -1,15 +1,3 @@
-# ╔══════════════════════════════════════════════════════════════════╗
-# ║                                                                  ║
-# ║   GENERATED FILE — DO NOT EDIT                                   ║
-# ║                                                                  ║
-# ║   Source : 1_cicd/src/cicd/ship.yml
-# ║   Engine : 1_cicd/src/scripts/front-ship-repo-workflow-engine.sh
-# ║   Rebuild: ./9_others/build.sh
-# ║                                                                  ║
-# ║   Manual edits will be overwritten on next build.                ║
-# ║                                                                  ║
-# ╚══════════════════════════════════════════════════════════════════╝
-
 name: GitHub Pages Deployment (CI)
 on:
   push:
@@ -108,6 +96,17 @@ jobs:
           bash build.sh build
           cd ../..
           echo "✅ Linktree Pixel World build complete"
+      - name: 🔨 Build Linktree Icon View
+        id: build-linktree-icon-view
+        if:
+          contains(steps.changed-files.outputs.all_changed_files, 'a-Portals/linktree_icon-view/src/')
+
+        run: |
+          echo "🔨 Building Linktree Icon View..."
+          cd a-Portals/linktree_icon-view
+          bash build.sh build
+          cd ../..
+          echo "✅ Linktree Icon View build complete"
       - name: 🔨 Build CV Web
         id: build-cv-web
         if:
@@ -583,6 +582,7 @@ jobs:
             "a-Portals/linktree:linktree"
             "a-Portals/linktree_mindmap:linktree_mindmap"
             "a-Portals/linktree_pixel-world:linktree_pixel-world"
+            "a-Portals/linktree_icon-view:linktree_icon-view"
             "a-Individual/cv_pdf:cv_pdf"
             "a-Individual/cv_web:cv_web"
             "a-Individual/landpage:landpage"

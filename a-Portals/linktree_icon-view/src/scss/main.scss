@@ -1,0 +1,190 @@
+// ==========================================================================
+// Linktree Icon View — cloud-superapp launcher layout on the linktree data.
+//
+// _variables.scss and _mixins.scss are SYMLINKS into ../cloud-mobile, not
+// copies. cloud-mobile transcribed those tokens 1:1 from the Android app's
+// colors.xml / themes.xml / glass drawables, and the brief here is to mimic
+// that layout exactly — a copy would drift the first time either side is
+// touched, and the drift would be invisible until the two looked different.
+// ==========================================================================
+@use 'variables';
+@use 'mixins' as *;
+
+* { box-sizing: border-box; }
+
+html, body {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+}
+
+body {
+    // bg_gradient_black_purple.xml — symmetric purple → black → purple
+    background: linear-gradient(180deg,
+        var(--gradient-top) 0%,
+        var(--gradient-mid) 50%,
+        var(--gradient-bottom) 100%) fixed;
+    color: var(--text-primary);
+    font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+    -webkit-font-smoothing: antialiased;
+}
+
+.shell {
+    max-width: var(--phone-max-width);
+    margin: 0 auto;
+    padding: var(--island-margin);
+    display: flex;
+    flex-direction: column;
+    gap: var(--island-margin);
+    min-height: 100%;
+}
+
+// ── Top island — the breadcrumb lives here ────────────────────────────────
+// bg_dynamic_island.xml: an opaque black pill with a lavender hairline.
+.island {
+    background: var(--glass-pill-bg);
+    border: var(--glass-pill-border);
+    border-radius: var(--glass-pill-radius);
+    padding: 10px 16px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    overflow-x: auto;
+    scrollbar-width: none;
+    &::-webkit-scrollbar { display: none; }
+}
+
+.crumb {
+    background: none;
+    border: 0;
+    padding: 0;
+    font: inherit;
+    font-size: 13px;
+    white-space: nowrap;
+    color: var(--text-secondary);
+    cursor: pointer;
+
+    &--active {
+        color: var(--island-accent);
+        cursor: default;
+    }
+}
+
+.crumb-sep {
+    color: var(--text-secondary);
+    font-size: 13px;
+}
+
+// ── Tile grid — TileGridFragment: 6 fixed columns, 6px gutter ─────────────
+// Not an auto-fill grid: the APK's tile_columns is fixed at 6 and does not
+// reflow with width, so neither does this.
+.tile-grid {
+    display: grid;
+    grid-template-columns: repeat(6, minmax(0, 1fr));
+    gap: 6px;
+    padding: 2px;
+}
+
+.tile {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 6px;
+    height: 128px;
+    // grid cells are minmax(0, 1fr); without this a long label's min-content
+    // width grows its column and pushes the row past the viewport.
+    min-width: 0;
+    border-radius: var(--glass-tile-radius);
+    padding: 10px 6px;
+    background-color: transparent;
+    background-image: var(--glass-tile-gradient);
+    border: var(--glass-tile-border);
+    overflow: hidden;
+    text-decoration: none;
+    color: inherit;
+    cursor: pointer;
+    font: inherit;
+    // Release leg of tile_press.xml — wins once :active stops matching.
+    transition: transform var(--duration-press-up) ease-out;
+
+    &:active {
+        transform: scale(var(--scale-press));
+        transition: transform var(--duration-press-down) ease-out;
+    }
+}
+
+// Lavender glyph on dark glass. The SVG is INLINED (see iconview.ts), never
+// an <img> and never a CSS mask: currentColor is what tints it, an <img>
+// cannot inherit it, and Android WebView renders mask-image as a solid
+// square. Same convention as cloud-mobile's .tile__icon.
+.tile__icon {
+    width: 32px;
+    height: 32px;
+    flex-shrink: 0;
+    color: #e9d8fd;
+
+    > svg {
+        display: block;
+        width: 100%;
+        height: 100%;
+    }
+}
+
+.tile__label {
+    font-size: 10px;
+    line-height: 12px;
+    text-align: center;
+    color: var(--text-primary);
+    // Two lines then ellipsis — the APK's label is a 2-line TextView.
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    word-break: break-word;
+}
+
+// Folder count badge, top-right.
+.tile__count {
+    position: absolute;
+    top: 6px;
+    right: 8px;
+    font-size: 9px;
+    line-height: 1;
+    padding: 2px 5px;
+    border-radius: 999px;
+    color: var(--island-accent);
+    background: rgba(0, 0, 0, 0.5);
+    border: 1px solid var(--glass-border);
+}
+
+// A folder shows a 2x2 mosaic of what is inside it, like the APK's folders.
+.tile__mosaic {
+    width: 32px;
+    height: 32px;
+    flex-shrink: 0;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr 1fr;
+    gap: 2px;
+    color: #e9d8fd;
+
+    > * {
+        min-width: 0;
+        min-height: 0;
+    }
+
+    svg {
+        display: block;
+        width: 100%;
+        height: 100%;
+    }
+}
+
+.empty {
+    padding: 24px;
+    text-align: center;
+    color: var(--text-secondary);
+    font-size: 13px;
+}

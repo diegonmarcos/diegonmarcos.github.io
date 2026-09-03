@@ -26,6 +26,14 @@ export const MENU_GROUPS: MenuGroup[] = [
       { id: 'btn-mindmap', icon: 'git-branch.svg', label: 'Mindmap' },
       { id: 'iconview-btn', icon: 'cards.svg', label: 'Icon View' },
       { id: 'cardview-btn', icon: 'cards.svg', label: 'Card View' },
+    ],
+  },
+  {
+    // Zoom is not a view — it is a control OVER the current view. It does not
+    // switch to anything, it tears down / rebuilds the card carousels in place
+    // (see zoomToggle.ts), so it sat oddly beside Pixel World and Mindmap.
+    label: 'Controls',
+    items: [
       { id: 'zoom-out-btn', icon: 'zoom-out.svg', label: 'Zoom Out' },
       { id: 'zoom-in-btn', icon: 'zoom-in.svg', label: 'Zoom In' },
     ],

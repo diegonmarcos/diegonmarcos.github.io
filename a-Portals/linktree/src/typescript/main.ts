@@ -120,24 +120,38 @@ function initApp(): void {
     });
   }
 
-  // Card View button — close all overlay views, return to default swiper
+  // Card View button — close every overlay view and return to the default
+  // swiper. Card View is not a view of its own: it IS the page, so "select it"
+  // means "dismiss whatever is covering it".
+  //
+  // Each overlay owns a DIFFERENT open/close contract, and the previous version
+  // of this handler got all three wrong:
+  //
+  //   Icon View  #iconview-overlay + .is-open  — it probed #iconview-content's
+  //     style.display and offsetParent instead. The overlay is hidden with
+  //     OPACITY and is always display:flex (see _icons.scss), so that test was
+  //     permanently true and the handler always clicked #iconview-btn — a
+  //     TOGGLE — which opened Icon View. That is why Card View led to Icon View.
+  //   Mindmap    #mindmap-overlay + .active    — it set style.display='none',
+  //     an inline style that addClass('active') can never undo, so Mindmap was
+  //     dead until a reload.
+  //   Gallery    body + .gallery-mode          — it probed a .gallery-overlay
+  //     element rather than the class the module actually toggles.
+  //
+  // Each is now closed through its own contract, guarded by the same class the
+  // owning module toggles, and via its CLOSE button rather than its toggle: a
+  // close is idempotent and can never open something.
   const cardviewBtn = document.getElementById('cardview-btn');
   if (cardviewBtn) {
     cardviewBtn.addEventListener('click', () => {
-      // Close icon view if open
-      const iconviewOverlay = document.getElementById('iconview-content') as HTMLElement | null;
-      if (iconviewOverlay && iconviewOverlay.style.display !== 'none' && iconviewOverlay.offsetParent !== null) {
-        (document.getElementById('iconview-btn') as HTMLElement | null)?.click();
+      if (document.getElementById('iconview-overlay')?.classList.contains('is-open')) {
+        (document.getElementById('iconview-overlay-close') as HTMLElement | null)?.click();
       }
-      // Close gallery if active
-      const galleryOverlay = document.querySelector('.gallery-overlay') as HTMLElement | null;
-      if (galleryOverlay && galleryOverlay.offsetParent !== null) {
+      if (document.getElementById('mindmap-overlay')?.classList.contains('active')) {
+        (document.getElementById('mindmap-overlay-close') as HTMLElement | null)?.click();
+      }
+      if (document.body.classList.contains('gallery-mode')) {
         (document.getElementById('gallery-toggle') as HTMLElement | null)?.click();
-      }
-      // Close mindmap overlay if open
-      const mindmapOverlay = document.getElementById('mindmap-overlay') as HTMLElement | null;
-      if (mindmapOverlay && mindmapOverlay.style.display !== 'none') {
-        mindmapOverlay.style.display = 'none';
       }
     });
   }

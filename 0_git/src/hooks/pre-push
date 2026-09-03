@@ -23,19 +23,45 @@ if [ -t 2 ]; then
   printf   '└───────────────────────────────────────────────────────────────┘\033[0m\n' >&2
 fi
 
-# ── Pull/rebase before pushing ──────────────────────────────────────────────
-# Ensures the push never fails due to diverged remote — mirrors `git sync`.
-if ! git pull --rebase --no-recurse-submodules 2>&1; then
-  echo "[pre-push] pull --rebase failed — resolve conflicts then try again." >&2
-  exit 1
-fi
-
-# Skip during interactive rebase / merge / bisect — don't compound state.
+# ── Skip when another git operation owns the worktree ───────────────────────
+# This guard USED TO SIT BELOW the pull, where it could never do its job: the
+# pull ran first and failed, and the hook exited 1 before ever reaching the
+# check meant to prevent exactly that. Order is the whole fix.
+#
+# It also catches a STALE rebase directory — one holding only an `autostash`
+# file, left behind when a rebase dies before it starts. git then refuses every
+# later `pull --rebase` with "there is already a rebase-merge directory", which
+# is unrecoverable by retrying and reads like a push problem.
 if [ -d "$(git rev-parse --git-path rebase-merge 2>/dev/null)" ] \
    || [ -d "$(git rev-parse --git-path rebase-apply 2>/dev/null)" ] \
    || [ -f "$(git rev-parse --git-path MERGE_HEAD   2>/dev/null)" ] \
    || [ -f "$(git rev-parse --git-path BISECT_LOG   2>/dev/null)" ]; then
+  echo "[pre-push] rebase/merge/bisect in progress — skipping pull + submodule sync." >&2
+  echo "[pre-push] if no operation is actually running, the state is stale:" >&2
+  echo "[pre-push]   git rebase --abort   (or remove .git/rebase-merge)" >&2
   exit 0
+fi
+
+# ── Unmerged index ──────────────────────────────────────────────────────────
+# `git pull --rebase` cannot run at all with unmerged paths, and those paths
+# are frequently nothing to do with what is being pushed. Say so plainly
+# instead of failing inside git with a message about conflicts.
+if [ -n "$(git ls-files --unmerged 2>/dev/null)" ]; then
+  echo "[pre-push] index has unmerged paths — skipping pull --rebase:" >&2
+  git diff --name-only --diff-filter=U 2>/dev/null | sed 's/^/[pre-push]   /' >&2
+  echo "[pre-push] pushing anyway; git rejects a diverged push on its own." >&2
+  exit 0
+fi
+
+# ── Pull/rebase before pushing ──────────────────────────────────────────────
+# A convenience, NOT a correctness gate: git already rejects a non-fast-forward
+# push by itself. This used to `exit 1` on any failure, which turned unrelated
+# local mess — a half-applied stash, a stale rebase dir, a dirty index — into a
+# hard block on a push that was perfectly valid. Warn and carry on; if the
+# branch really has diverged, the push fails on its own with the right error.
+if ! git pull --rebase --no-recurse-submodules 2>&1; then
+  echo "[pre-push] pull --rebase failed — continuing; if the branch has truly" >&2
+  echo "[pre-push] diverged, the push below will say so." >&2
 fi
 
 # Skip if no submodules declared

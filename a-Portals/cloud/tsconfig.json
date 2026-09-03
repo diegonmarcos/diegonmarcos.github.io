@@ -16,12 +16,10 @@
     "noFallthroughCasesInSwitch": true
   },
   "include": [
-    "src_vanilla/typescript/**/*"
+    "src/typescript/**/*"
   ],
   "exclude": [
     "node_modules",
-    "dist_vanilla",
-    "dist_nextjs",
-    "src_nextjs"
+            "dist"
   ]
 }

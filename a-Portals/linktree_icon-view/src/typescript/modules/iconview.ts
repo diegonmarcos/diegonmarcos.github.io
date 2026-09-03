@@ -50,9 +50,22 @@ function currentChildren(): TreeNode[] {
   return navPath.length === 0 ? tree : navPath[navPath.length - 1].children;
 }
 
-function navigateInto(folder: TreeNode): void { navPath.push(folder); render(); }
-function navigateBack(): void { if (navPath.length > 0) { navPath.pop(); render(); } }
-function navigateToLevel(i: number): void { navPath = navPath.slice(0, i); render(); }
+function navigateInto(folder: TreeNode): void {
+  navPath.push(folder);
+  // One history entry per level, so Back means "up one folder" — the same
+  // thing it means in the launcher this layout mimics. Only the DEPTH is
+  // stored: the path is still in navPath, and restoring by depth cannot go
+  // stale the way a serialised path could.
+  history.pushState({ depth: navPath.length }, '');
+  render();
+}
+// Both ways UP go through history, so depth has exactly one source of truth
+// and the Back gesture can never disagree with the breadcrumb. popstate does
+// the actual unwinding; there is deliberately no direct navPath.pop() here.
+function navigateToLevel(i: number): void {
+  const steps = i - navPath.length;
+  if (steps < 0) history.go(steps);
+}
 
 // ---------------------------------------------------------------------------
 // Rendering
@@ -175,9 +188,28 @@ export function initIconView(data: TreeNode[]): void {
   navPath = [];
   render();
 
-  // Escape and the browser Back gesture both mean "up one level" while we are
-  // nested. Back is history-free here, so it is bound directly.
+  // Depth 0 is the root level; without it the first Back would leave the page
+  // instead of doing nothing at the root.
+  history.replaceState({ depth: 0 }, '');
+
+  // Escape and the browser/system Back gesture both mean "up one level".
+  // Escape unwinds navPath directly; Back unwinds history, and popstate then
+  // trims navPath to whatever depth we landed on — never past it, so a
+  // forward-navigation entry cannot re-enter a folder that is gone.
+  window.addEventListener('popstate', (e) => {
+    const st = e.state as { depth?: number } | null;
+    const depth = typeof st?.depth === 'number' ? st.depth : 0;
+    if (depth < navPath.length) {
+      navPath = navPath.slice(0, depth);
+      render();
+    }
+  });
+
   document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape' && navPath.length > 0) navigateBack();
+    if (e.key === 'Escape' && navPath.length > 0) {
+      // history.back() so the two paths cannot disagree about depth; popstate
+      // does the actual unwinding.
+      history.back();
+    }
   });
 }

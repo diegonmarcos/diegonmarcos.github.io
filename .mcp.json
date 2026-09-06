@@ -38,13 +38,6 @@
       "type": "http",
       "url": "https://mcp.diegonmarcos.com/c3-services-mcp/mcp"
     },
-<<<<<<< Updated upstream
-    "cloud-superapp-mcp": {
-      "type": "http",
-      "url": "https://mcp.diegonmarcos.com/cloud-superapp-mcp/mcp"
-    },
-||||||| Stash base
-=======
     "cloud-superapp-mcp": {
       "type": "http",
       "url": "https://mcp.diegonmarcos.com/cloud-superapp-mcp/mcp"
@@ -53,7 +46,6 @@
       "type": "http",
       "url": "http://10.0.0.6:3111/mcp"
     },
->>>>>>> Stashed changes
     "google-personal-mcp": {
       "type": "http",
       "url": "https://mcp.diegonmarcos.com/g-personal/mcp"

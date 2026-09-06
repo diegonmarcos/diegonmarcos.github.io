@@ -8,14 +8,6 @@
  * curated `url`, when present, always wins. Entries with neither a resolvable
  * service link nor a curated url render an Internal/VPN badge instead of a
  * dead link (never silently dropped).
- *
- * 2026-09-06: dist/script.js had drifted from this file since 2026-08-02
- * (commit 5fdac4f6c) — that commit's compiled bundle never picked up
- * initProductsCards(), so #c3-solutions-suite / #c3-solutions-misc /
- * #c3-admin-sections / #c3-apps-cards on products.html rendered empty (no
- * icons, no links) in production for over a month, with no src-level bug.
- * Editing this file re-triggers ship.yml's path-gated Cloud Dashboard build
- * so dist/script.js gets rebuilt from current src and persisted correctly.
  */
 
 import { c3, onModeChange } from './c3-api';
@@ -137,7 +129,12 @@ async function renderAll(): Promise<void> {
     try {
         const [overridesData, servicesData] = await Promise.all([c3('card-overrides'), c3('services')]);
         const overrides = overridesData || {};
-        const services: ServiceEntry[] = (servicesData && Array.isArray(servicesData.services)) ? servicesData.services : [];
+        // c3('services') / PORTAL_DATA['c3-services'] resolves to the bare array
+        // (see data-c3-services.json.js), never a `{ services: [...] }` wrapper —
+        // reading .services here silently discarded every entry.
+        const services: ServiceEntry[] = Array.isArray(servicesData)
+            ? servicesData
+            : (servicesData && Array.isArray(servicesData.services)) ? servicesData.services : [];
 
         if (productsRoot && overrides.solutions?.Suite) {
             productsRoot.innerHTML = Object.entries(overrides.solutions.Suite).map(([cat, cards]) => `

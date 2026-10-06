@@ -1,7 +1,7 @@
 {
   "meta": {
     "generated_from": "front-topology.json",
-    "project_count": 50
+    "project_count": 51
   },
   "categories": [
     {
@@ -101,6 +101,15 @@
           "category": "a-Portals",
           "framework": "vanilla",
           "port": 8036,
+          "has_dist": true
+        },
+        {
+          "name": "Cloud Web",
+          "slug": "cloud-web",
+          "path": "a-Portals/cloud-web",
+          "category": "a-Portals",
+          "framework": "vanilla",
+          "port": 8037,
           "has_dist": true
         },
         {

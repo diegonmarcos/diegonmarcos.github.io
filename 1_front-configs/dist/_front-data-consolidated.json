@@ -809,6 +809,106 @@
     },
     {
       "category": "a-Portals",
+      "project": "cloud-web",
+      "key": "a-Portals__cloud-web",
+      "path": "a-Portals/cloud-web",
+      "build": {
+        "name": "Cloud Web",
+        "framework": "vanilla",
+        "port": 8037,
+        "src": "src",
+        "dist": "dist",
+        "build": [
+          {
+            "_doc": "Wrap every *.json in src/data/ as a globalThis.PORTAL_DATA[<key>] companion (data-*.json.js). The one data file is constellation-fleet.json, the fleet manifest of cloud-u-android; scripts/fetch-wasm.sh refreshes it before the build. Engine: front-data-json-js-wrapper.sh.",
+            "mod": "data_wrap",
+            "dir": "src/data"
+          },
+          {
+            "mod": "copy",
+            "files": "data-*.json.js",
+            "from": "src/data"
+          },
+          {
+            "mod": "esbuild",
+            "input": "src/app/main.ts",
+            "output": "script.js",
+            "format": "iife",
+            "target": "es2020"
+          },
+          {
+            "mod": "sass",
+            "input": "src/scss/main.scss",
+            "output": "style.css"
+          },
+          {
+            "mod": "copy",
+            "files": "index.html",
+            "from": "src"
+          },
+          {
+            "mod": "symlink",
+            "files": "src/public"
+          }
+        ],
+        "serve": {
+          "mode": "auto",
+          "dir": "src",
+          "watch": [
+            {
+              "mod": "sass",
+              "input": "scss/main.scss",
+              "output": "style.css"
+            },
+            {
+              "mod": "esbuild",
+              "input": "app/main.ts",
+              "output": "script.js",
+              "format": "iife",
+              "target": "es2020"
+            }
+          ]
+        },
+        "deploy": {},
+        "wasm": {
+          "_doc": "#876 where the pages come from: every constellation-fleet.json row with assets.wasm (a Cloud-<App>.wasm.zip on the rolling release of `repo`) is unzipped by scripts/fetch-wasm.sh into dist/apps/<row label>/, and its tile opens apps/<label>/index.html in an iframe. Refreshed when cloud-u-android's ship-<app>-wasm workflow sends repository_dispatch cloud-web-refresh (ship.yml).",
+          "repo": "diegonmarcos/cloud-u-android",
+          "release_tag": "latest",
+          "fleet_manifest": "aa_cloud-superapp/data/constellation-fleet.json"
+        }
+      },
+      "has_package_json": true,
+      "has_manifest": false,
+      "has_dist": true,
+      "package": {
+        "name": "cloud-web",
+        "version": "1.0.0",
+        "description": "Web edition of the Cloud fleet: a grid of the apps that ship a Kotlin/Wasm page, each opened in an iframe",
+        "main": "dist/index.html",
+        "scripts": {
+          "build": "bash build.sh build",
+          "dev": "bash build.sh dev",
+          "clean": "bash build.sh clean",
+          "fetch-wasm": "bash scripts/fetch-wasm.sh"
+        },
+        "keywords": [
+          "cloud",
+          "web",
+          "wasm",
+          "typescript",
+          "sass"
+        ],
+        "author": "Diego Nepomuceno Marcos",
+        "license": "MIT",
+        "devDependencies": {
+          "esbuild": "^0.19.8",
+          "sass": "^1.69.5",
+          "typescript": "^5.3.2"
+        }
+      }
+    },
+    {
+      "category": "a-Portals",
       "project": "cloud",
       "key": "a-Portals__cloud",
       "path": "a-Portals/cloud",
@@ -4732,6 +4832,10 @@
       "deploy_name": "cloud-mobile"
     },
     {
+      "path": "a-Portals/cloud-web",
+      "deploy_name": "cloud-web"
+    },
+    {
       "path": "a-Portals/linktree",
       "deploy_name": "linktree"
     },
@@ -4922,6 +5026,142 @@
     {
       "path": "c-Suite/mymaps",
       "deploy_name": "mymaps"
+    },
+    {
+      "path": "${PROJECTS[@]}",
+      "deploy_name": ""
+    },
+    {
+      "path": "${entry%%",
+      "deploy_name": "*}"
+    },
+    {
+      "path": "${entry##*",
+      "deploy_name": "}"
+    },
+    {
+      "path": "$SRC/dist",
+      "deploy_name": ""
+    },
+    {
+      "path": "$SRC",
+      "deploy_name": ""
+    },
+    {
+      "path": "c-Cloud/api",
+      "deploy_name": ""
+    },
+    {
+      "path": "$SRC/src",
+      "deploy_name": ""
+    },
+    {
+      "path": "$DIST",
+      "deploy_name": ""
+    },
+    {
+      "path": "⏭️  $NAME (no dist/)",
+      "deploy_name": ""
+    },
+    {
+      "path": "$(ls -A ",
+      "deploy_name": ""
+    },
+    {
+      "path": " 2>/dev/null)",
+      "deploy_name": ""
+    },
+    {
+      "path": "⚠️  $NAME (dist/ empty)",
+      "deploy_name": ""
+    },
+    {
+      "path": "$NAME",
+      "deploy_name": ""
+    },
+    {
+      "path": ".",
+      "deploy_name": ""
+    },
+    {
+      "path": "$DIST",
+      "deploy_name": ""
+    },
+    {
+      "path": "_site/$NAME",
+      "deploy_name": ""
+    },
+    {
+      "path": "$DIST",
+      "deploy_name": ""
+    },
+    {
+      "path": "_site/$NAME/",
+      "deploy_name": ""
+    },
+    {
+      "path": "_site",
+      "deploy_name": ""
+    },
+    {
+      "path": "$NAME",
+      "deploy_name": ""
+    },
+    {
+      "path": ".",
+      "deploy_name": ""
+    },
+    {
+      "path": "_site/$NAME",
+      "deploy_name": ""
+    },
+    {
+      "path": "$TARGET",
+      "deploy_name": ""
+    },
+    {
+      "path": "$COUNT",
+      "deploy_name": ""
+    },
+    {
+      "path": "✅ $NAME ($COUNT files)",
+      "deploy_name": ""
+    },
+    {
+      "path": "❌ $NAME (0 files after copy)",
+      "deploy_name": ""
+    },
+    {
+      "path": "$FAILED $NAME",
+      "deploy_name": ""
+    },
+    {
+      "path": "=========================================",
+      "deploy_name": ""
+    },
+    {
+      "path": "📊 DEPLOY",
+      "deploy_name": " $COPIED copied, $SKIPPED skipped"
+    },
+    {
+      "path": "$FAILED",
+      "deploy_name": ""
+    },
+    {
+      "path": "⚠️ FAILED",
+      "deploy_name": "$FAILED"
+    },
+    {
+      "path": "",
+      "deploy_name": ""
+    },
+    {
+      "path": "=========================================",
+      "deploy_name": ""
+    },
+    {
+      "path": "📊 Site structure",
+      "deploy_name": ""
     }
   ],
   "links": {

@@ -2,7 +2,7 @@
   "_meta": {
     "generated_by": "1_front-configs/build.sh derive",
     "schema": "front-topology/v1",
-    "project_count": 50
+    "project_count": 51
   },
   "projects": [
     {
@@ -181,6 +181,25 @@
       "dep_count": 8,
       "has_dist": true,
       "deploy_name": "cloud-mobile"
+    },
+    {
+      "name": "Cloud Web",
+      "slug": "cloud-web",
+      "path": "a-Portals/cloud-web",
+      "category": "a-Portals",
+      "framework": "vanilla",
+      "port": 8037,
+      "build_steps": [
+        "data_wrap",
+        "copy",
+        "esbuild",
+        "sass",
+        "copy",
+        "symlink"
+      ],
+      "dep_count": 3,
+      "has_dist": true,
+      "deploy_name": "cloud-web"
     },
     {
       "name": "Linktree",

@@ -2,6 +2,10 @@ name: GitHub Pages Deployment (CI)
 on:
   push:
     branches: ["main"]
+  # #876: cloud-u-android's ship-<app>-wasm workflow sends this when it has put a new
+  # Cloud-<App>.wasm.zip on its rolling release; the portal refetches the pages.
+  repository_dispatch:
+    types: [cloud-web-refresh]
 permissions:
   contents: write
   pages: write
@@ -173,6 +177,27 @@ jobs:
           bash build.sh build
           cd ../..
           echo "✅ Cloud Mobile build complete"
+      # Cloud Web = the fleet's Kotlin/Wasm pages. Rebuilt when its own source moves OR when a
+      # page was re-released (repository_dispatch cloud-web-refresh). fetch-wasm.sh data refreshes
+      # the fleet manifest BEFORE the build (data_wrap bakes it in); fetch-wasm.sh apps unzips
+      # every Cloud-<App>.wasm.zip into dist/apps/<slug>/ AFTER it (dist/apps is not committed,
+      # it is deployed from this workspace).
+      - name: 🔨 Build Cloud Web
+        id: build-cloud-web
+        if: >-
+          github.event_name == 'repository_dispatch' ||
+          contains(steps.changed-files.outputs.all_changed_files, 'a-Portals/cloud-web/src/') ||
+          contains(steps.changed-files.outputs.all_changed_files, 'a-Portals/cloud-web/scripts/')
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          echo "🔨 Building Cloud Web..."
+          cd a-Portals/cloud-web
+          bash scripts/fetch-wasm.sh data
+          bash build.sh build
+          bash scripts/fetch-wasm.sh apps
+          cd ../..
+          echo "✅ Cloud Web build complete"
       - name: 🔨 Build MyHealth FeedYourself
         id: build-myhealth-feedyourself
         if:
@@ -579,6 +604,7 @@ jobs:
             "e-Root:."
             "a-Portals/cloud:cloud"
             "a-Portals/cloud-mobile:cloud-mobile"
+            "a-Portals/cloud-web:cloud-web"
             "a-Portals/linktree:linktree"
             "a-Portals/linktree_mindmap:linktree_mindmap"
             "a-Portals/linktree_pixel-world:linktree_pixel-world"

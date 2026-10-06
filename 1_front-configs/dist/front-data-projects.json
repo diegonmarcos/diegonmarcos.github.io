@@ -84,6 +84,18 @@
     "has_pkg": true
   },
   {
+    "path": "a-Portals/cloud-web",
+    "category": "a-Portals",
+    "project": "cloud-web",
+    "key": "a-Portals__cloud-web",
+    "name": "Cloud Web",
+    "framework": "vanilla",
+    "port": 8037,
+    "deploy_name": "cloud-web",
+    "has_pwa": false,
+    "has_pkg": true
+  },
+  {
     "path": "a-Portals/cloud",
     "category": "a-Portals",
     "project": "cloud",

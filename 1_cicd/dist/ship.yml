@@ -191,9 +191,7 @@ jobs:
           echo "✅ Cloud Mobile build complete"
       # Cloud Web = the fleet's Kotlin/Wasm pages. Rebuilt when its own source moves OR when a
       # page was re-released (repository_dispatch cloud-web-refresh). fetch-wasm.sh data refreshes
-      # the fleet manifest BEFORE the build (data_wrap bakes it in); fetch-wasm.sh apps unzips
-      # every Cloud-<App>.wasm.zip into dist/apps/<slug>/ AFTER it (dist/apps is not committed,
-      # it is deployed from this workspace).
+      # the fleet manifest BEFORE the build (data_wrap bakes it in).
       - name: 🔨 Build Cloud Web
         id: build-cloud-web
         if: >-
@@ -207,9 +205,23 @@ jobs:
           cd a-Portals/cloud-web
           bash scripts/fetch-wasm.sh data
           bash build.sh build
-          bash scripts/fetch-wasm.sh apps
           cd ../..
           echo "✅ Cloud Web build complete"
+      # The wasm pages themselves (dist/apps/<slug>/ + apps/available.json) are NOT committed, so
+      # they exist only in this workspace: every Pages deploy replaces the whole site, and a run
+      # that skipped them published cloud-web WITHOUT them (#876: after the 2026-10-06 refresh, the
+      # next unrelated push 404'd apps/cloud-store/ and the grid fell back to tiles with no page).
+      # So this step runs on EVERY deploy, whatever changed: it unzips each Cloud-<App>.wasm.zip
+      # from the rolling release (a missing asset is a warning and is left off the grid).
+      - name: 🌐 Fetch Cloud Web pages
+        id: fetch-cloud-web-pages
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          cd a-Portals/cloud-web
+          bash scripts/fetch-wasm.sh apps
+          test -f dist/apps/available.json
+          echo "✅ Cloud Web pages: $(jq -c . dist/apps/available.json)"
       - name: 🔨 Build MyHealth FeedYourself
         id: build-myhealth-feedyourself
         if:

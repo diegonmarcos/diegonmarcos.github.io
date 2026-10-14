@@ -462,7 +462,7 @@ jobs:
         run: |
           echo "🔨 Building Galaxy..."
           cd b_Projects/galaxy
-          node test/scene.test.mjs
+          node test/hub.test.mjs
           bash build.sh build
           cd ../..
           echo "✅ Galaxy build complete"
@@ -524,28 +524,6 @@ jobs:
           bash build.sh build
           cd ../..
           echo "✅ Astro build complete"
-      - name: 🔨 Build Skills & MCP Docs
-        id: build-skills-mcp
-        if:
-          contains(steps.changed-files.outputs.all_changed_files, 'c-Cloud/skills_mcp/src/')
-
-        run: |
-          echo "🔨 Building Skills & MCP Docs..."
-          cd c-Cloud/skills_mcp
-          bash build.sh build
-          cd ../..
-          echo "✅ Skills & MCP Docs build complete"
-      - name: 🔨 Build MCP API Swagger
-        id: build-mcp-api-swagger
-        if:
-          contains(steps.changed-files.outputs.all_changed_files, 'c-Cloud/mcp-api-swagger/src/')
-
-        run: |
-          echo "🔨 Building MCP API Swagger..."
-          cd c-Cloud/mcp-api-swagger
-          bash build.sh build
-          cd ../..
-          echo "✅ MCP API Swagger build complete"
       - name: 🔨 Build Warehouse
         id: build-warehouse
         if:
@@ -661,9 +639,6 @@ jobs:
             "c_Circus/movies:movies"
             "c_Circus/music:music"
             "b_MyData/mymaps-mytrips:mymaps-mytrips"
-            "c-Cloud/api:api"
-            "c-Cloud/mcp-api-swagger:mcp-api-swagger"
-            "c-Cloud/skills_mcp:skills_mcp"
             "a_Projects/Warehouse:Warehouse"
             "c__Cloud:c__Cloud"
             "c__Cloud/c_agi:c__Cloud/c_agi"
@@ -730,7 +705,6 @@ jobs:
             NAME="${entry##*:}"
             DIST="$SRC/dist"
             # Special cases
-            [ "$SRC" = "c-Cloud/api" ] && DIST="$SRC/src"
             if [ ! -d "$DIST" ]; then
               echo "⏭️  $NAME (no dist/)"
               SKIPPED=$((SKIPPED + 1))

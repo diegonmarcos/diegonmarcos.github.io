@@ -87,10 +87,10 @@
   },
   "deploy": {},
   "_resolved": {
-    "path": "a-Portals/linktree_mindmap",
-    "category": "a-Portals",
+    "path": "a_Portals/linktree_mindmap",
+    "category": "a_Portals",
     "project": "linktree_mindmap",
-    "key": "a-Portals__linktree_mindmap",
+    "key": "a_Portals__linktree_mindmap",
     "port": 8018,
     "framework": "vanilla",
     "src": "src",

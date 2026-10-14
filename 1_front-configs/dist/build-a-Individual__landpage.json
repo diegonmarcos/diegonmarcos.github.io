@@ -82,10 +82,10 @@
   },
   "deploy": {},
   "_resolved": {
-    "path": "a-Individual/landpage",
-    "category": "a-Individual",
+    "path": "a_Individual/landpage",
+    "category": "a_Individual",
     "project": "landpage",
-    "key": "a-Individual__landpage",
+    "key": "a_Individual__landpage",
     "port": 8000,
     "framework": "vanilla",
     "src": "src",

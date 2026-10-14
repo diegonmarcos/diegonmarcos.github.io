@@ -11,7 +11,7 @@
   "inputs": {
     "_doc": "Symlinks populated by build.sh populate-src.",
     "builds":         { "from_glob": "**/build.json",                    "into": "src/builds/<cat>__<proj>.build.json" },
-    "data_links":     { "from": "a-Portals/linktree/src/data/*.json",     "into": "src/data-links/<file>" },
+    "data_links":     { "from": "a_Portals/linktree/src/data/*.json",     "into": "src/data-links/<file>" },
     "ship_yml":       { "from": "1_cicd/src/cicd/ship.yml",          "into": "src/inputs/ship.yml" },
     "root_config":    { "from": "config.json",                            "into": "src/inputs/config.json" },
     "package_jsons":  { "from_glob": "**/package.json",                   "into": "src/inputs/package-jsons/<cat>__<proj>.json" },

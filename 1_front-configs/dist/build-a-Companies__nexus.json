@@ -89,10 +89,10 @@
   },
   "deploy": {},
   "_resolved": {
-    "path": "a-Companies/nexus",
-    "category": "a-Companies",
+    "path": "a_Companies/nexus",
+    "category": "a_Companies",
     "project": "nexus",
-    "key": "a-Companies__nexus",
+    "key": "a_Companies__nexus",
     "port": 8005,
     "framework": "vanilla",
     "src": "src",

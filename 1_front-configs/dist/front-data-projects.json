@@ -1,9 +1,9 @@
 [
   {
-    "path": "a-Companies/leafy",
-    "category": "a-Companies",
+    "path": "a_Companies/leafy",
+    "category": "a_Companies",
     "project": "leafy",
-    "key": "a-Companies__leafy",
+    "key": "a_Companies__leafy",
     "name": "Leafy",
     "framework": "vanilla",
     "port": 8021,
@@ -12,10 +12,10 @@
     "has_pkg": true
   },
   {
-    "path": "a-Companies/nexus",
-    "category": "a-Companies",
+    "path": "a_Companies/nexus",
+    "category": "a_Companies",
     "project": "nexus",
-    "key": "a-Companies__nexus",
+    "key": "a_Companies__nexus",
     "name": "Nexus",
     "framework": "vanilla",
     "port": 8005,
@@ -24,10 +24,10 @@
     "has_pkg": true
   },
   {
-    "path": "a-Companies/stark",
-    "category": "a-Companies",
+    "path": "a_Companies/stark",
+    "category": "a_Companies",
     "project": "stark",
-    "key": "a-Companies__stark",
+    "key": "a_Companies__stark",
     "name": "Stark",
     "framework": "vanilla",
     "port": 8022,
@@ -36,10 +36,10 @@
     "has_pkg": false
   },
   {
-    "path": "a-Individual/cv_pdf",
-    "category": "a-Individual",
+    "path": "a_Individual/cv_pdf",
+    "category": "a_Individual",
     "project": "cv_pdf",
-    "key": "a-Individual__cv_pdf",
+    "key": "a_Individual__cv_pdf",
     "name": "CV PDF",
     "framework": "vanilla",
     "port": 8012,
@@ -48,10 +48,10 @@
     "has_pkg": false
   },
   {
-    "path": "a-Individual/cv_web",
-    "category": "a-Individual",
+    "path": "a_Individual/cv_web",
+    "category": "a_Individual",
     "project": "cv_web",
-    "key": "a-Individual__cv_web",
+    "key": "a_Individual__cv_web",
     "name": "CV Web",
     "framework": "vanilla",
     "port": 8002,
@@ -60,10 +60,10 @@
     "has_pkg": true
   },
   {
-    "path": "a-Individual/landpage",
-    "category": "a-Individual",
+    "path": "a_Individual/landpage",
+    "category": "a_Individual",
     "project": "landpage",
-    "key": "a-Individual__landpage",
+    "key": "a_Individual__landpage",
     "name": "Landpage",
     "framework": "vanilla",
     "port": 8000,
@@ -72,10 +72,10 @@
     "has_pkg": false
   },
   {
-    "path": "a-Portals/cloud-mobile",
-    "category": "a-Portals",
+    "path": "a_Portals/cloud-mobile",
+    "category": "a_Portals",
     "project": "cloud-mobile",
-    "key": "a-Portals__cloud-mobile",
+    "key": "a_Portals__cloud-mobile",
     "name": "Cloud Mobile",
     "framework": "vanilla",
     "port": 8036,
@@ -84,10 +84,10 @@
     "has_pkg": true
   },
   {
-    "path": "a-Portals/cloud-web",
-    "category": "a-Portals",
+    "path": "a_Portals/cloud-web",
+    "category": "a_Portals",
     "project": "cloud-web",
-    "key": "a-Portals__cloud-web",
+    "key": "a_Portals__cloud-web",
     "name": "Cloud Web",
     "framework": "vanilla",
     "port": 8037,
@@ -96,10 +96,10 @@
     "has_pkg": true
   },
   {
-    "path": "a-Portals/cloud",
-    "category": "a-Portals",
+    "path": "a_Portals/cloud",
+    "category": "a_Portals",
     "project": "cloud",
-    "key": "a-Portals__cloud",
+    "key": "a_Portals__cloud",
     "name": "Cloud",
     "framework": "vanilla",
     "port": 8006,
@@ -108,10 +108,10 @@
     "has_pkg": true
   },
   {
-    "path": "a-Portals/linktree",
-    "category": "a-Portals",
+    "path": "a_Portals/linktree",
+    "category": "a_Portals",
     "project": "linktree",
-    "key": "a-Portals__linktree",
+    "key": "a_Portals__linktree",
     "name": "Linktree",
     "framework": "vanilla",
     "port": 8001,
@@ -120,10 +120,10 @@
     "has_pkg": true
   },
   {
-    "path": "a-Portals/linktree_icon-view",
-    "category": "a-Portals",
+    "path": "a_Portals/linktree_icon-view",
+    "category": "a_Portals",
     "project": "linktree_icon-view",
-    "key": "a-Portals__linktree_icon-view",
+    "key": "a_Portals__linktree_icon-view",
     "name": "Linktree Icon View",
     "framework": "vanilla",
     "port": 8020,
@@ -132,10 +132,10 @@
     "has_pkg": true
   },
   {
-    "path": "a-Portals/linktree_mindmap",
-    "category": "a-Portals",
+    "path": "a_Portals/linktree_mindmap",
+    "category": "a_Portals",
     "project": "linktree_mindmap",
-    "key": "a-Portals__linktree_mindmap",
+    "key": "a_Portals__linktree_mindmap",
     "name": "Linktree Mindmap",
     "framework": "vanilla",
     "port": 8018,
@@ -144,10 +144,10 @@
     "has_pkg": true
   },
   {
-    "path": "a-Portals/linktree_pixel-world",
-    "category": "a-Portals",
+    "path": "a_Portals/linktree_pixel-world",
+    "category": "a_Portals",
     "project": "linktree_pixel-world",
-    "key": "a-Portals__linktree_pixel-world",
+    "key": "a_Portals__linktree_pixel-world",
     "name": "Linktree Pixel World",
     "framework": "vanilla",
     "port": 8019,
@@ -156,10 +156,10 @@
     "has_pkg": true
   },
   {
-    "path": "a-Projects/Warehouse",
-    "category": "a-Projects",
+    "path": "a_Projects/Warehouse",
+    "category": "a_Projects",
     "project": "Warehouse",
-    "key": "a-Projects__Warehouse",
+    "key": "a_Projects__Warehouse",
     "name": "SlabTwin 3D Warehouse",
     "framework": "vanilla",
     "port": 8020,
@@ -168,10 +168,10 @@
     "has_pkg": true
   },
   {
-    "path": "b-Data/myAstro",
-    "category": "b-Data",
+    "path": "b_Data/myAstro",
+    "category": "b_Data",
     "project": "myAstro",
-    "key": "b-Data__myAstro",
+    "key": "b_Data__myAstro",
     "name": "myAstro",
     "framework": "vanilla",
     "port": 8019,
@@ -180,10 +180,10 @@
     "has_pkg": true
   },
   {
-    "path": "b-Data/myfeed",
-    "category": "b-Data",
+    "path": "b_Data/myfeed",
+    "category": "b_Data",
     "project": "myfeed",
-    "key": "b-Data__myfeed",
+    "key": "b_Data__myfeed",
     "name": "MyFeed",
     "framework": "vue",
     "port": 8003,
@@ -192,10 +192,10 @@
     "has_pkg": true
   },
   {
-    "path": "b-Media/mySocials",
-    "category": "b-Media",
+    "path": "b_Media/mySocials",
+    "category": "b_Media",
     "project": "mySocials",
-    "key": "b-Media__mySocials",
+    "key": "b_Media__mySocials",
     "name": "mySocials",
     "framework": "vanilla",
     "port": 8028,
@@ -204,10 +204,10 @@
     "has_pkg": false
   },
   {
-    "path": "b-MyData/my-fin",
-    "category": "b-MyData",
+    "path": "b_MyData/my-fin",
+    "category": "b_MyData",
     "project": "my-fin",
-    "key": "b-MyData__my-fin",
+    "key": "b_MyData__my-fin",
     "name": "My Financials",
     "framework": "vanilla",
     "port": 8030,
@@ -216,10 +216,10 @@
     "has_pkg": false
   },
   {
-    "path": "b-MyData/myTrackers",
-    "category": "b-MyData",
+    "path": "b_MyData/myTrackers",
+    "category": "b_MyData",
     "project": "myTrackers",
-    "key": "b-MyData__myTrackers",
+    "key": "b_MyData__myTrackers",
     "name": "MyTrackers",
     "framework": "vanilla",
     "port": 8026,
@@ -228,10 +228,10 @@
     "has_pkg": false
   },
   {
-    "path": "b-MyData/myhealth-profile",
-    "category": "b-MyData",
+    "path": "b_MyData/myhealth-profile",
+    "category": "b_MyData",
     "project": "myhealth-profile",
-    "key": "b-MyData__myhealth-profile",
+    "key": "b_MyData__myhealth-profile",
     "name": "MyHealth Profile",
     "framework": "vanilla",
     "port": 8009,
@@ -240,10 +240,10 @@
     "has_pkg": false
   },
   {
-    "path": "b-MyData/myhealth-tracker",
-    "category": "b-MyData",
+    "path": "b_MyData/myhealth-tracker",
+    "category": "b_MyData",
     "project": "myhealth-tracker",
-    "key": "b-MyData__myhealth-tracker",
+    "key": "b_MyData__myhealth-tracker",
     "name": "MyHealth Tracker",
     "framework": "vanilla",
     "port": 8025,
@@ -252,10 +252,10 @@
     "has_pkg": false
   },
   {
-    "path": "b-MyData/myhealth",
-    "category": "b-MyData",
+    "path": "b_MyData/myhealth",
+    "category": "b_MyData",
     "project": "myhealth",
-    "key": "b-MyData__myhealth",
+    "key": "b_MyData__myhealth",
     "name": "MyHealth",
     "framework": "vanilla",
     "port": 8026,
@@ -264,10 +264,10 @@
     "has_pkg": false
   },
   {
-    "path": "b-MyData/myid",
-    "category": "b-MyData",
+    "path": "b_MyData/myid",
+    "category": "b_MyData",
     "project": "myid",
-    "key": "b-MyData__myid",
+    "key": "b_MyData__myid",
     "name": "myID",
     "framework": "vanilla",
     "port": 8031,
@@ -276,10 +276,10 @@
     "has_pkg": false
   },
   {
-    "path": "b-MyData/mymaps-mytrips",
-    "category": "b-MyData",
+    "path": "b_MyData/mymaps-mytrips",
+    "category": "b_MyData",
     "project": "mymaps-mytrips",
-    "key": "b-MyData__mymaps-mytrips",
+    "key": "b_MyData__mymaps-mytrips",
     "name": "MyMaps MyTrips",
     "framework": "vue",
     "port": 8022,
@@ -288,10 +288,10 @@
     "has_pkg": true
   },
   {
-    "path": "b-MyData/myphotos",
-    "category": "b-MyData",
+    "path": "b_MyData/myphotos",
+    "category": "b_MyData",
     "project": "myphotos",
-    "key": "b-MyData__myphotos",
+    "key": "b_MyData__myphotos",
     "name": "MyPhotos",
     "framework": "vanilla",
     "port": 8019,
@@ -300,10 +300,10 @@
     "has_pkg": false
   },
   {
-    "path": "b-Profiles/myprofile",
-    "category": "b-Profiles",
+    "path": "b_Profiles/myprofile",
+    "category": "b_Profiles",
     "project": "myprofile",
-    "key": "b-Profiles__myprofile",
+    "key": "b_Profiles__myprofile",
     "name": "MyProfile",
     "framework": "sveltekit",
     "port": 8013,
@@ -312,10 +312,10 @@
     "has_pkg": true
   },
   {
-    "path": "b-Projects/galaxy-earth",
-    "category": "b-Projects",
+    "path": "b_Projects/galaxy-earth",
+    "category": "b_Projects",
     "project": "galaxy-earth",
-    "key": "b-Projects__galaxy-earth",
+    "key": "b_Projects__galaxy-earth",
     "name": "Galaxy-Earth",
     "framework": "sveltekit",
     "port": 8025,
@@ -324,10 +324,10 @@
     "has_pkg": true
   },
   {
-    "path": "b-Projects/galaxy-x1",
-    "category": "b-Projects",
+    "path": "b_Projects/galaxy-x1",
+    "category": "b_Projects",
     "project": "galaxy-x1",
-    "key": "b-Projects__galaxy-x1",
+    "key": "b_Projects__galaxy-x1",
     "name": "Galaxy-X1",
     "framework": "sveltekit",
     "port": 8023,
@@ -336,10 +336,10 @@
     "has_pkg": true
   },
   {
-    "path": "b-Projects/galaxy",
-    "category": "b-Projects",
+    "path": "b_Projects/galaxy",
+    "category": "b_Projects",
     "project": "galaxy",
-    "key": "b-Projects__galaxy",
+    "key": "b_Projects__galaxy",
     "name": "Galaxy",
     "framework": "sveltekit",
     "port": 8024,
@@ -348,10 +348,10 @@
     "has_pkg": true
   },
   {
-    "path": "c-Circus/carto",
-    "category": "c-Circus",
+    "path": "c_Circus/carto",
+    "category": "c_Circus",
     "project": "carto",
-    "key": "c-Circus__carto",
+    "key": "c_Circus__carto",
     "name": "Carto",
     "framework": "vanilla",
     "port": 8020,
@@ -360,10 +360,10 @@
     "has_pkg": false
   },
   {
-    "path": "c-Circus/games",
-    "category": "c-Circus",
+    "path": "c_Circus/games",
+    "category": "c_Circus",
     "project": "games",
-    "key": "c-Circus__games",
+    "key": "c_Circus__games",
     "name": "Games",
     "framework": "sveltekit",
     "port": 8004,
@@ -372,10 +372,10 @@
     "has_pkg": true
   },
   {
-    "path": "c-Circus/movies",
-    "category": "c-Circus",
+    "path": "c_Circus/movies",
+    "category": "c_Circus",
     "project": "movies",
-    "key": "c-Circus__movies",
+    "key": "c_Circus__movies",
     "name": "Movies",
     "framework": "vue",
     "port": 8015,
@@ -384,10 +384,10 @@
     "has_pkg": true
   },
   {
-    "path": "c-Circus/music",
-    "category": "c-Circus",
+    "path": "c_Circus/music",
+    "category": "c_Circus",
     "project": "music",
-    "key": "c-Circus__music",
+    "key": "c_Circus__music",
     "name": "Music",
     "framework": "vue",
     "port": 8016,
@@ -396,10 +396,10 @@
     "has_pkg": true
   },
   {
-    "path": "c-LabTools/Music_DAW_LLMS",
-    "category": "c-LabTools",
+    "path": "c_LabTools/Music_DAW_LLMS",
+    "category": "c_LabTools",
     "project": "Music_DAW_LLMS",
-    "key": "c-LabTools__Music_DAW_LLMS",
+    "key": "c_LabTools__Music_DAW_LLMS",
     "name": "LMMS",
     "framework": "vanilla",
     "port": 8035,
@@ -408,10 +408,10 @@
     "has_pkg": false
   },
   {
-    "path": "c-LabTools/Music_DJ-Mixer_Mixxx",
-    "category": "c-LabTools",
+    "path": "c_LabTools/Music_DJ-Mixer_Mixxx",
+    "category": "c_LabTools",
     "project": "Music_DJ-Mixer_Mixxx",
-    "key": "c-LabTools__Music_DJ-Mixer_Mixxx",
+    "key": "c_LabTools__Music_DJ-Mixer_Mixxx",
     "name": "Mixxx",
     "framework": "vanilla",
     "port": 8034,
@@ -420,10 +420,10 @@
     "has_pkg": false
   },
   {
-    "path": "c-LabTools/central_bank",
-    "category": "c-LabTools",
+    "path": "c_LabTools/central_bank",
+    "category": "c_LabTools",
     "project": "central_bank",
-    "key": "c-LabTools__central_bank",
+    "key": "c_LabTools__central_bank",
     "name": "CentralBank",
     "framework": "vanilla",
     "port": 8011,
@@ -432,10 +432,10 @@
     "has_pkg": true
   },
   {
-    "path": "c-LabTools/fin-terminal",
-    "category": "c-LabTools",
+    "path": "c_LabTools/fin-terminal",
+    "category": "c_LabTools",
     "project": "fin-terminal",
-    "key": "c-LabTools__fin-terminal",
+    "key": "c_LabTools__fin-terminal",
     "name": "FinTerminal",
     "framework": "vanilla",
     "port": 8024,
@@ -444,10 +444,10 @@
     "has_pkg": true
   },
   {
-    "path": "c-LabTools/market_watch",
-    "category": "c-LabTools",
+    "path": "c_LabTools/market_watch",
+    "category": "c_LabTools",
     "project": "market_watch",
-    "key": "c-LabTools__market_watch",
+    "key": "c_LabTools__market_watch",
     "name": "MarketWatch",
     "framework": "vanilla",
     "port": 8010,
@@ -456,10 +456,10 @@
     "has_pkg": true
   },
   {
-    "path": "c-LabTools/news",
-    "category": "c-LabTools",
+    "path": "c_LabTools/news",
+    "category": "c_LabTools",
     "project": "news",
-    "key": "c-LabTools__news",
+    "key": "c_LabTools__news",
     "name": "GDELTNews",
     "framework": "vanilla",
     "port": 8029,
@@ -468,10 +468,10 @@
     "has_pkg": true
   },
   {
-    "path": "c-LabTools/sailytics",
-    "category": "c-LabTools",
+    "path": "c_LabTools/sailytics",
+    "category": "c_LabTools",
     "project": "sailytics",
-    "key": "c-LabTools__sailytics",
+    "key": "c_LabTools__sailytics",
     "name": "Sailyng",
     "framework": "vanilla",
     "port": 8023,
@@ -480,10 +480,10 @@
     "has_pkg": true
   },
   {
-    "path": "c-Suite/grist",
-    "category": "c-Suite",
+    "path": "c_Suite/grist",
+    "category": "c_Suite",
     "project": "grist",
-    "key": "c-Suite__grist",
+    "key": "c_Suite__grist",
     "name": "Sheets (Grist)",
     "framework": "vanilla",
     "port": 8033,
@@ -492,10 +492,10 @@
     "has_pkg": false
   },
   {
-    "path": "c-Suite/json-vision",
-    "category": "c-Suite",
+    "path": "c_Suite/json-vision",
+    "category": "c_Suite",
     "project": "json-vision",
-    "key": "c-Suite__json-vision",
+    "key": "c_Suite__json-vision",
     "name": "JSON Vision",
     "framework": "vue",
     "port": 8017,
@@ -504,10 +504,10 @@
     "has_pkg": true
   },
   {
-    "path": "c-Suite/myhealth-feedyourself",
-    "category": "c-Suite",
+    "path": "c_Suite/myhealth-feedyourself",
+    "category": "c_Suite",
     "project": "myhealth-feedyourself",
-    "key": "c-Suite__myhealth-feedyourself",
+    "key": "c_Suite__myhealth-feedyourself",
     "name": "MyHealth FeedYourself",
     "framework": "vanilla",
     "port": 8007,
@@ -516,10 +516,10 @@
     "has_pkg": true
   },
   {
-    "path": "c-Suite/mymail",
-    "category": "c-Suite",
+    "path": "c_Suite/mymail",
+    "category": "c_Suite",
     "project": "mymail",
-    "key": "c-Suite__mymail",
+    "key": "c_Suite__mymail",
     "name": "MyMail",
     "framework": "vanilla",
     "port": 8018,
@@ -528,10 +528,10 @@
     "has_pkg": false
   },
   {
-    "path": "c-Suite/mymaps-maps",
-    "category": "c-Suite",
+    "path": "c_Suite/mymaps-maps",
+    "category": "c_Suite",
     "project": "mymaps-maps",
-    "key": "c-Suite__mymaps-maps",
+    "key": "c_Suite__mymaps-maps",
     "name": "MyMaps Maps",
     "framework": "sveltekit",
     "port": 8014,
@@ -540,10 +540,10 @@
     "has_pkg": true
   },
   {
-    "path": "c-Suite/mymaps-navigation",
-    "category": "c-Suite",
+    "path": "c_Suite/mymaps-navigation",
+    "category": "c_Suite",
     "project": "mymaps-navigation",
-    "key": "c-Suite__mymaps-navigation",
+    "key": "c_Suite__mymaps-navigation",
     "name": "MyMaps Navigation",
     "framework": "sveltekit",
     "port": 8018,
@@ -552,10 +552,10 @@
     "has_pkg": true
   },
   {
-    "path": "c-Suite/mymaps",
-    "category": "c-Suite",
+    "path": "c_Suite/mymaps",
+    "category": "c_Suite",
     "project": "mymaps",
-    "key": "c-Suite__mymaps",
+    "key": "c_Suite__mymaps",
     "name": "MyMaps",
     "framework": "vanilla",
     "port": 8027,
@@ -564,10 +564,10 @@
     "has_pkg": false
   },
   {
-    "path": "c-Suite/suite",
-    "category": "c-Suite",
+    "path": "c_Suite/suite",
+    "category": "c_Suite",
     "project": "suite",
-    "key": "c-Suite__suite",
+    "key": "c_Suite__suite",
     "name": "Suite",
     "framework": "vanilla",
     "port": 8021,
@@ -576,10 +576,10 @@
     "has_pkg": false
   },
   {
-    "path": "c-Suite/tldraw",
-    "category": "c-Suite",
+    "path": "c_Suite/tldraw",
+    "category": "c_Suite",
     "project": "tldraw",
-    "key": "c-Suite__tldraw",
+    "key": "c_Suite__tldraw",
     "name": "tldraw",
     "framework": "react",
     "port": 8032,

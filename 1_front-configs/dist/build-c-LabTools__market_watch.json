@@ -87,10 +87,10 @@
   },
   "deploy": {},
   "_resolved": {
-    "path": "c-LabTools/market_watch",
-    "category": "c-LabTools",
+    "path": "c_LabTools/market_watch",
+    "category": "c_LabTools",
     "project": "market_watch",
-    "key": "c-LabTools__market_watch",
+    "key": "c_LabTools__market_watch",
     "port": 8010,
     "framework": "vanilla",
     "src": "src",

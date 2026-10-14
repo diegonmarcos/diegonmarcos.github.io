@@ -25,10 +25,10 @@
   },
   "deploy": {},
   "_resolved": {
-    "path": "c-LabTools/central_bank",
-    "category": "c-LabTools",
+    "path": "c_LabTools/central_bank",
+    "category": "c_LabTools",
     "project": "central_bank",
-    "key": "c-LabTools__central_bank",
+    "key": "c_LabTools__central_bank",
     "port": 8011,
     "framework": "vanilla",
     "src": "src",

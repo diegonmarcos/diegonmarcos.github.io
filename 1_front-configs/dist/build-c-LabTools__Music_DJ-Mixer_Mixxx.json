@@ -52,10 +52,10 @@
   },
   "deploy": {},
   "_resolved": {
-    "path": "c-LabTools/Music_DJ-Mixer_Mixxx",
-    "category": "c-LabTools",
+    "path": "c_LabTools/Music_DJ-Mixer_Mixxx",
+    "category": "c_LabTools",
     "project": "Music_DJ-Mixer_Mixxx",
-    "key": "c-LabTools__Music_DJ-Mixer_Mixxx",
+    "key": "c_LabTools__Music_DJ-Mixer_Mixxx",
     "port": 8034,
     "framework": "vanilla",
     "src": "src",

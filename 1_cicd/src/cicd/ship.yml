@@ -59,121 +59,121 @@ jobs:
       - name: 🔨 Build Landpage
         id: build-landpage
         if:
-          contains(steps.changed-files.outputs.all_changed_files, 'a-Individual/landpage/src/')
+          contains(steps.changed-files.outputs.all_changed_files, 'a_Individual/landpage/src/')
 
         run: |
           echo "🔨 Building Landpage..."
-          cd a-Individual/landpage
+          cd a_Individual/landpage
           bash build.sh build
           cd ../..
           echo "✅ Landpage build complete"
       - name: 🔨 Build Linktree
         id: build-linktree
         if:
-          contains(steps.changed-files.outputs.all_changed_files, 'a-Portals/linktree/src/')
+          contains(steps.changed-files.outputs.all_changed_files, 'a_Portals/linktree/src/')
 
         run: |
           echo "🔨 Building Linktree..."
-          cd a-Portals/linktree
+          cd a_Portals/linktree
           bash build.sh build
           cd ../..
           echo "✅ Linktree build complete"
       - name: 🔨 Build Linktree Mindmap
         id: build-linktree-mindmap
         if:
-          contains(steps.changed-files.outputs.all_changed_files, 'a-Portals/linktree_mindmap/src/')
+          contains(steps.changed-files.outputs.all_changed_files, 'a_Portals/linktree_mindmap/src/')
 
         run: |
           echo "🔨 Building Linktree Mindmap..."
-          cd a-Portals/linktree_mindmap
+          cd a_Portals/linktree_mindmap
           bash build.sh build
           cd ../..
           echo "✅ Linktree Mindmap build complete"
       - name: 🔨 Build Linktree Pixel World
         id: build-linktree-pixel-world
         if:
-          contains(steps.changed-files.outputs.all_changed_files, 'a-Portals/linktree_pixel-world/src/')
+          contains(steps.changed-files.outputs.all_changed_files, 'a_Portals/linktree_pixel-world/src/')
 
         run: |
           echo "🔨 Building Linktree Pixel World..."
-          cd a-Portals/linktree_pixel-world
+          cd a_Portals/linktree_pixel-world
           bash build.sh build
           cd ../..
           echo "✅ Linktree Pixel World build complete"
       - name: 🔨 Build Linktree Icon View
         id: build-linktree-icon-view
         if:
-          contains(steps.changed-files.outputs.all_changed_files, 'a-Portals/linktree_icon-view/src/')
+          contains(steps.changed-files.outputs.all_changed_files, 'a_Portals/linktree_icon-view/src/')
 
         run: |
           echo "🔨 Building Linktree Icon View..."
-          cd a-Portals/linktree_icon-view
+          cd a_Portals/linktree_icon-view
           bash build.sh build
           cd ../..
           echo "✅ Linktree Icon View build complete"
       - name: 🔨 Build CV Web
         id: build-cv-web
         if:
-          contains(steps.changed-files.outputs.all_changed_files, 'a-Individual/cv_web/src/')
+          contains(steps.changed-files.outputs.all_changed_files, 'a_Individual/cv_web/src/')
 
         run: |
           echo "🔨 Building CV Web..."
-          cd a-Individual/cv_web
+          cd a_Individual/cv_web
           bash build.sh build
           cd ../..
           echo "✅ CV Web build complete"
       - name: 🔨 Build MyFeed
         id: build-myfeed
         if:
-          contains(steps.changed-files.outputs.all_changed_files, 'b-Data/myfeed/src/')
+          contains(steps.changed-files.outputs.all_changed_files, 'b_Data/myfeed/src/')
 
         run: |
           echo "🔨 Building MyFeed..."
-          cd b-Data/myfeed
+          cd b_Data/myfeed
           bash build.sh build
           cd ../..
           echo "✅ MyFeed build complete"
       - name: 🔨 Build MyGames
         id: build-mygames
         if:
-          contains(steps.changed-files.outputs.all_changed_files, 'c-Circus/games/src/')
+          contains(steps.changed-files.outputs.all_changed_files, 'c_Circus/games/src/')
 
         run: |
           echo "🔨 Building MyGames..."
-          cd c-Circus/games
+          cd c_Circus/games
           bash build.sh build
           cd ../..
           echo "✅ MyGames build complete"
       - name: 🔨 Build Nexus
         id: build-nexus
         if:
-          contains(steps.changed-files.outputs.all_changed_files, 'a-Companies/nexus/src/')
+          contains(steps.changed-files.outputs.all_changed_files, 'a_Companies/nexus/src/')
 
         run: |
           echo "🔨 Building Nexus..."
-          cd a-Companies/nexus
+          cd a_Companies/nexus
           bash build.sh build
           cd ../..
           echo "✅ Nexus build complete"
       - name: 🔨 Build Cloud Dashboard
         id: build-cloud
         if:
-          contains(steps.changed-files.outputs.all_changed_files, 'a-Portals/cloud/src/')
+          contains(steps.changed-files.outputs.all_changed_files, 'a_Portals/cloud/src/')
 
         run: |
           echo "🔨 Building Cloud Dashboard..."
-          cd a-Portals/cloud
+          cd a_Portals/cloud
           bash build.sh build
           cd ../..
           echo "✅ Cloud Dashboard build complete"
       - name: 🔨 Build Cloud Mobile
         id: build-cloud-mobile
         if:
-          contains(steps.changed-files.outputs.all_changed_files, 'a-Portals/cloud-mobile/src/')
+          contains(steps.changed-files.outputs.all_changed_files, 'a_Portals/cloud-mobile/src/')
 
         run: |
           echo "🔨 Building Cloud Mobile..."
-          cd a-Portals/cloud-mobile
+          cd a_Portals/cloud-mobile
           bash build.sh build
           cd ../..
           echo "✅ Cloud Mobile build complete"
@@ -184,13 +184,13 @@ jobs:
         id: build-cloud-web
         if: >-
           github.event_name == 'repository_dispatch' ||
-          contains(steps.changed-files.outputs.all_changed_files, 'a-Portals/cloud-web/src/') ||
-          contains(steps.changed-files.outputs.all_changed_files, 'a-Portals/cloud-web/scripts/')
+          contains(steps.changed-files.outputs.all_changed_files, 'a_Portals/cloud-web/src/') ||
+          contains(steps.changed-files.outputs.all_changed_files, 'a_Portals/cloud-web/scripts/')
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           echo "🔨 Building Cloud Web..."
-          cd a-Portals/cloud-web
+          cd a_Portals/cloud-web
           bash scripts/fetch-wasm.sh data
           bash build.sh build
           cd ../..
@@ -206,18 +206,18 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          cd a-Portals/cloud-web
+          cd a_Portals/cloud-web
           bash scripts/fetch-wasm.sh apps
           test -f dist/apps/available.json
           echo "✅ Cloud Web pages: $(jq -c . dist/apps/available.json)"
       - name: 🔨 Build MyHealth FeedYourself
         id: build-myhealth-feedyourself
         if:
-          contains(steps.changed-files.outputs.all_changed_files, 'c-Suite/myhealth-feedyourself/src/')
+          contains(steps.changed-files.outputs.all_changed_files, 'c_Suite/myhealth-feedyourself/src/')
 
         run: |
           echo "🔨 Building MyHealth FeedYourself..."
-          cd c-Suite/myhealth-feedyourself
+          cd c_Suite/myhealth-feedyourself
           bash build.sh build
           cd ../..
           echo "✅ MyHealth FeedYourself build complete"
@@ -235,209 +235,209 @@ jobs:
       - name: 🔨 Build Sailytics
         id: build-sailytics
         if:
-          contains(steps.changed-files.outputs.all_changed_files, 'c-LabTools/sailytics/src/')
+          contains(steps.changed-files.outputs.all_changed_files, 'c_LabTools/sailytics/src/')
 
         run: |
           echo "🔨 Building Sailytics..."
-          cd c-LabTools/sailytics
+          cd c_LabTools/sailytics
           bash build.sh build
           cd ../..
           echo "✅ Sailytics build complete"
       - name: 🔨 Build MyMail
         id: build-mymail
         if:
-          contains(steps.changed-files.outputs.all_changed_files, 'c-Suite/mymail/src/')
+          contains(steps.changed-files.outputs.all_changed_files, 'c_Suite/mymail/src/')
 
         run: |
           echo "🔨 Building MyMail..."
-          cd c-Suite/mymail
+          cd c_Suite/mymail
           bash build.sh build
           cd ../..
           echo "✅ MyMail build complete"
       - name: 🔨 Build MyPhotos
         id: build-myphotos
         if:
-          contains(steps.changed-files.outputs.all_changed_files, 'b-MyData/myphotos/src/')
+          contains(steps.changed-files.outputs.all_changed_files, 'b_MyData/myphotos/src/')
 
         run: |
           echo "🔨 Building MyPhotos..."
-          cd b-MyData/myphotos
+          cd b_MyData/myphotos
           bash build.sh build
           cd ../..
           echo "✅ MyPhotos build complete"
       - name: 🔨 Build MyTrackers
         id: build-mytrackers
         if:
-          contains(steps.changed-files.outputs.all_changed_files, 'b-MyData/myTrackers/src/')
+          contains(steps.changed-files.outputs.all_changed_files, 'b_MyData/myTrackers/src/')
 
         run: |
           echo "🔨 Building MyTrackers..."
-          cd b-MyData/myTrackers
+          cd b_MyData/myTrackers
           bash build.sh build
           cd ../..
           echo "✅ MyTrackers build complete"
       - name: 🔨 Build Suite
         id: build-suite
         if:
-          contains(steps.changed-files.outputs.all_changed_files, 'c-Suite/suite/src/')
+          contains(steps.changed-files.outputs.all_changed_files, 'c_Suite/suite/src/')
 
         run: |
           echo "🔨 Building Suite..."
-          cd c-Suite/suite
+          cd c_Suite/suite
           bash build.sh build
           cd ../..
           echo "✅ Suite build complete"
       - name: 🔨 Build tldraw
         id: build-tldraw
         if:
-          contains(steps.changed-files.outputs.all_changed_files, 'c-Suite/tldraw/src/')
+          contains(steps.changed-files.outputs.all_changed_files, 'c_Suite/tldraw/src/')
 
         run: |
           echo "🔨 Building tldraw..."
-          cd c-Suite/tldraw
+          cd c_Suite/tldraw
           bash build.sh build
           cd ../..
           echo "✅ tldraw build complete"
       - name: 🔨 Build MyHealth Profile
         id: build-myhealth-profile
         if:
-          contains(steps.changed-files.outputs.all_changed_files, 'b-MyData/myhealth-profile/src/')
+          contains(steps.changed-files.outputs.all_changed_files, 'b_MyData/myhealth-profile/src/')
 
         run: |
           echo "🔨 Building MyHealth Profile..."
-          cd b-MyData/myhealth-profile
+          cd b_MyData/myhealth-profile
           bash build.sh build
           cd ../..
           echo "✅ MyHealth Profile build complete"
       - name: 🔨 Build Market Watch
         id: build-market-watch
         if:
-          contains(steps.changed-files.outputs.all_changed_files, 'c-LabTools/market_watch/src/')
+          contains(steps.changed-files.outputs.all_changed_files, 'c_LabTools/market_watch/src/')
 
         run: |
           echo "🔨 Building Market Watch..."
-          cd c-LabTools/market_watch
+          cd c_LabTools/market_watch
           bash build.sh build
           cd ../..
           echo "✅ Market Watch build complete"
       - name: 🔨 Build Central Bank
         id: build-central-bank
         if:
-          contains(steps.changed-files.outputs.all_changed_files, 'c-LabTools/central_bank/src/')
+          contains(steps.changed-files.outputs.all_changed_files, 'c_LabTools/central_bank/src/')
 
         run: |
           echo "🔨 Building Central Bank..."
-          cd c-LabTools/central_bank
+          cd c_LabTools/central_bank
           bash build.sh build
           cd ../..
           echo "✅ Central Bank build complete"
       - name: 🔨 Build Fin Terminal
         id: build-fin-terminal
         if:
-          contains(steps.changed-files.outputs.all_changed_files, 'c-LabTools/fin-terminal/src/')
+          contains(steps.changed-files.outputs.all_changed_files, 'c_LabTools/fin-terminal/src/')
 
         run: |
           echo "🔨 Building Fin Terminal..."
-          cd c-LabTools/fin-terminal
+          cd c_LabTools/fin-terminal
           bash build.sh build
           cd ../..
           echo "✅ Fin Terminal build complete"
       - name: 🔨 Build MyProfile
         id: build-myprofile
         if:
-          contains(steps.changed-files.outputs.all_changed_files, 'b-Profiles/myprofile/src/')
+          contains(steps.changed-files.outputs.all_changed_files, 'b_Profiles/myprofile/src/')
 
         run: |
           echo "🔨 Building MyProfile..."
-          cd b-Profiles/myprofile
+          cd b_Profiles/myprofile
           bash build.sh build
           cd ../..
           echo "✅ MyProfile build complete"
       - name: 🔨 Build MyMovies (Vue 3)
         id: build-mymovies
         if:
-          contains(steps.changed-files.outputs.all_changed_files, 'c-Circus/movies/src/')
+          contains(steps.changed-files.outputs.all_changed_files, 'c_Circus/movies/src/')
 
         run: |
           echo "🔨 Building MyMovies..."
-          cd c-Circus/movies
+          cd c_Circus/movies
           bash build.sh build
           cd ../..
           echo "✅ MyMovies build complete"
       - name: 🔨 Build MyMusic (Vue 3)
         id: build-mymusic
         if:
-          contains(steps.changed-files.outputs.all_changed_files, 'c-Circus/music/src/')
+          contains(steps.changed-files.outputs.all_changed_files, 'c_Circus/music/src/')
 
         run: |
           echo "🔨 Building MyMusic..."
-          cd c-Circus/music
+          cd c_Circus/music
           bash build.sh build
           cd ../..
           echo "✅ MyMusic build complete"
       - name: 🔨 Build My Financials
         id: build-my-fin
         if:
-          contains(steps.changed-files.outputs.all_changed_files, 'b-MyData/my-fin/src/')
+          contains(steps.changed-files.outputs.all_changed_files, 'b_MyData/my-fin/src/')
 
         run: |
           echo "🔨 Building My Financials..."
-          cd b-MyData/my-fin
+          cd b_MyData/my-fin
           bash build.sh build
           cd ../..
           echo "✅ My Financials build complete"
       - name: 🔨 Build JSON Vision (Vue 3)
         id: build-json-vision
         if:
-          contains(steps.changed-files.outputs.all_changed_files, 'c-Suite/json-vision/src/')
+          contains(steps.changed-files.outputs.all_changed_files, 'c_Suite/json-vision/src/')
 
         run: |
           echo "🔨 Building JSON Vision..."
-          cd c-Suite/json-vision
+          cd c_Suite/json-vision
           bash build.sh build
           cd ../..
           echo "✅ JSON Vision build complete"
       - name: 🔨 Build Carto (TypeScript + Sass)
         id: build-carto
         if:
-          contains(steps.changed-files.outputs.all_changed_files, 'c-Circus/carto/src/')
+          contains(steps.changed-files.outputs.all_changed_files, 'c_Circus/carto/src/')
 
         run: |
           echo "🔨 Building Carto..."
-          cd c-Circus/carto
+          cd c_Circus/carto
           bash build.sh build
           cd ../..
           echo "✅ Carto build complete"
       - name: 🔨 Build GDELT News
         id: build-news
         if:
-          contains(steps.changed-files.outputs.all_changed_files, 'c-LabTools/news/src/')
+          contains(steps.changed-files.outputs.all_changed_files, 'c_LabTools/news/src/')
 
         run: |
           echo "🔨 Building GDELT News..."
-          cd c-LabTools/news
+          cd c_LabTools/news
           bash build.sh build
           cd ../..
           echo "✅ GDELT News build complete"
       - name: 🔨 Build MyMaps MyTrips (Vue 3 + TypeScript + SCSS)
         id: build-mymaps-mytrips
         if:
-          contains(steps.changed-files.outputs.all_changed_files, 'b-MyData/mymaps-mytrips/src/')
+          contains(steps.changed-files.outputs.all_changed_files, 'b_MyData/mymaps-mytrips/src/')
 
         run: |
           echo "🔨 Building MyMaps MyTrips..."
-          cd b-MyData/mymaps-mytrips
+          cd b_MyData/mymaps-mytrips
           bash build.sh build
           cd ../..
           echo "✅ MyMaps MyTrips build complete"
       - name: 🔨 Build Leafy (TypeScript + SCSS + Shaders)
         id: build-leafy
         if:
-          contains(steps.changed-files.outputs.all_changed_files, 'a-Companies/leafy/src/')
+          contains(steps.changed-files.outputs.all_changed_files, 'a_Companies/leafy/src/')
 
         run: |
           echo "🔨 Building Leafy..."
-          cd a-Companies/leafy
+          cd a_Companies/leafy
           bash build.sh build
           cd ../..
           echo "✅ Leafy build complete"
@@ -445,11 +445,11 @@ jobs:
       - name: 🔨 Build Galaxy (SvelteKit + Threlte)
         id: build-galaxy
         if:
-          contains(steps.changed-files.outputs.all_changed_files, 'b-Projects/galaxy/')
+          contains(steps.changed-files.outputs.all_changed_files, 'b_Projects/galaxy/')
 
         run: |
           echo "🔨 Building Galaxy..."
-          cd b-Projects/galaxy
+          cd b_Projects/galaxy
           node test/scene.test.mjs
           bash build.sh build
           cd ../..
@@ -457,33 +457,33 @@ jobs:
       - name: 🔨 Build Stark (TypeScript + SCSS + Shaders)
         id: build-stark
         if:
-          contains(steps.changed-files.outputs.all_changed_files, 'a-Companies/stark/src/')
+          contains(steps.changed-files.outputs.all_changed_files, 'a_Companies/stark/src/')
 
         run: |
           echo "🔨 Building Stark..."
-          cd a-Companies/stark
+          cd a_Companies/stark
           bash build.sh build
           cd ../..
           echo "✅ Stark build complete"
       - name: 🔨 Build MyMaps Navigation (SvelteKit + MapLibre)
         id: build-mymaps-navigation
         if:
-          contains(steps.changed-files.outputs.all_changed_files, 'c-Suite/mymaps-navigation/src/')
+          contains(steps.changed-files.outputs.all_changed_files, 'c_Suite/mymaps-navigation/src/')
 
         run: |
           echo "🔨 Building MyMaps Navigation..."
-          cd c-Suite/mymaps-navigation
+          cd c_Suite/mymaps-navigation
           bash build.sh build
           cd ../..
           echo "✅ MyMaps Navigation build complete"
       - name: 🔨 Build MyMaps Maps (SvelteKit)
         id: build-mymaps-maps
         if:
-          contains(steps.changed-files.outputs.all_changed_files, 'c-Suite/mymaps-maps/src/')
+          contains(steps.changed-files.outputs.all_changed_files, 'c_Suite/mymaps-maps/src/')
 
         run: |
           echo "🔨 Building MyMaps Maps..."
-          cd c-Suite/mymaps-maps
+          cd c_Suite/mymaps-maps
           bash build.sh build
           cd ../..
           echo "✅ MyMaps Maps build complete"
@@ -493,22 +493,22 @@ jobs:
       - name: 🔨 Build CV PDF
         id: build-cv-pdf
         if:
-          contains(steps.changed-files.outputs.all_changed_files, 'a-Individual/cv_pdf/src/')
+          contains(steps.changed-files.outputs.all_changed_files, 'a_Individual/cv_pdf/src/')
 
         run: |
           echo "🔨 Building CV PDF..."
-          cd a-Individual/cv_pdf
+          cd a_Individual/cv_pdf
           bash build.sh build
           cd ../..
           echo "✅ CV PDF build complete"
       - name: 🔨 Build Astro
         id: build-astro
         if:
-          contains(steps.changed-files.outputs.all_changed_files, 'b-Data/myAstro/src/')
+          contains(steps.changed-files.outputs.all_changed_files, 'b_Data/myAstro/src/')
 
         run: |
           echo "🔨 Building Astro..."
-          cd b-Data/myAstro
+          cd b_Data/myAstro
           bash build.sh build
           cd ../..
           echo "✅ Astro build complete"
@@ -537,44 +537,44 @@ jobs:
       - name: 🔨 Build Warehouse
         id: build-warehouse
         if:
-          contains(steps.changed-files.outputs.all_changed_files, 'a-Projects/Warehouse/src/')
+          contains(steps.changed-files.outputs.all_changed_files, 'a_Projects/Warehouse/src/')
 
         run: |
           echo "🔨 Building Warehouse..."
-          cd a-Projects/Warehouse
+          cd a_Projects/Warehouse
           bash build.sh build
           cd ../..
           echo "✅ Warehouse build complete"
       - name: 🔨 Build MySocials
         id: build-mysocials
         if:
-          contains(steps.changed-files.outputs.all_changed_files, 'b-Media/mySocials/src/')
+          contains(steps.changed-files.outputs.all_changed_files, 'b_Media/mySocials/src/')
 
         run: |
           echo "🔨 Building MySocials..."
-          cd b-Media/mySocials
+          cd b_Media/mySocials
           bash build.sh build
           cd ../..
           echo "✅ MySocials build complete"
       - name: 🔨 Build Mixxx (DJ Mixer)
         id: build-mixxx
         if:
-          contains(steps.changed-files.outputs.all_changed_files, 'c-LabTools/Music_DJ-Mixer_Mixxx/src/')
+          contains(steps.changed-files.outputs.all_changed_files, 'c_LabTools/Music_DJ-Mixer_Mixxx/src/')
 
         run: |
           echo "🔨 Building Mixxx..."
-          cd c-LabTools/Music_DJ-Mixer_Mixxx
+          cd c_LabTools/Music_DJ-Mixer_Mixxx
           bash build.sh build
           cd ../..
           echo "✅ Mixxx build complete"
       - name: 🔨 Build LMMS (Beat Sequencer)
         id: build-lmms
         if:
-          contains(steps.changed-files.outputs.all_changed_files, 'c-LabTools/Music_DAW_LLMS/src/')
+          contains(steps.changed-files.outputs.all_changed_files, 'c_LabTools/Music_DAW_LLMS/src/')
 
         run: |
           echo "🔨 Building LMMS..."
-          cd c-LabTools/Music_DAW_LLMS
+          cd c_LabTools/Music_DAW_LLMS
           bash build.sh build
           cd ../..
           echo "✅ LMMS build complete"
@@ -614,57 +614,104 @@ jobs:
           # Project registry: path:deploy_name
           PROJECTS=(
             "e-Root:."
-            "a-Portals/cloud:cloud"
-            "a-Portals/cloud-mobile:cloud-mobile"
-            "a-Portals/cloud-web:cloud-web"
-            "a-Portals/linktree:linktree"
-            "a-Portals/linktree_mindmap:linktree_mindmap"
-            "a-Portals/linktree_pixel-world:linktree_pixel-world"
-            "a-Portals/linktree_icon-view:linktree_icon-view"
-            "a-Individual/cv_pdf:cv_pdf"
-            "a-Individual/cv_web:cv_web"
-            "a-Individual/landpage:landpage"
-            "a-Companies/leafy:leafy"
-            "b-Projects/galaxy:galaxy"
-            "b-Projects/galaxy-gaia:galaxy-gaia"
-            "b-Profiles/myprofile:myprofile"
-            "a-Companies/nexus:nexus"
-            "a-Companies/stark:stark"
-            "c-Suite/json-vision:json-vision"
-            "c-Suite/mymail:mymail"
-            "b-MyData/myphotos:myphotos"
-            "b-MyData/myTrackers:myTrackers"
-            "c-Suite/suite:suite"
-            "c-Suite/tldraw:tldraw"
-            "b-Data/myAstro:myAstro"
-            "c-Circus/carto:carto"
-            "c-LabTools/central_bank:central_bank"
-            "c-Suite/myhealth-feedyourself:myhealth-feedyourself"
-            "b-MyData/myhealth-profile:myhealth-profile"
-            "c-Suite/mymaps-maps:mymaps-maps"
-            "c-LabTools/market_watch:market_watch"
-            "b-Data/myfeed:myfeed"
-            "c-Circus/games:games"
-            "c-Suite/mymaps-navigation:mymaps-navigation"
-            "c-Circus/movies:movies"
-            "c-Circus/music:music"
-            "b-MyData/mymaps-mytrips:mymaps-mytrips"
+            "a_Portals/cloud:cloud"
+            "a_Portals/cloud-mobile:cloud-mobile"
+            "a_Portals/cloud-web:cloud-web"
+            "a_Portals/linktree:linktree"
+            "a_Portals/linktree_mindmap:linktree_mindmap"
+            "a_Portals/linktree_pixel-world:linktree_pixel-world"
+            "a_Portals/linktree_icon-view:linktree_icon-view"
+            "a_Individual/cv_pdf:cv_pdf"
+            "a_Individual/cv_web:cv_web"
+            "a_Individual/landpage:landpage"
+            "a_Companies/leafy:leafy"
+            "b_Projects/galaxy:galaxy"
+            "b_Projects/galaxy-gaia:galaxy-gaia"
+            "b_Profiles/myprofile:myprofile"
+            "a_Companies/nexus:nexus"
+            "a_Companies/stark:stark"
+            "c_Suite/json-vision:json-vision"
+            "c_Suite/mymail:mymail"
+            "b_MyData/myphotos:myphotos"
+            "b_MyData/myTrackers:myTrackers"
+            "c_Suite/suite:suite"
+            "c_Suite/tldraw:tldraw"
+            "b_Data/myAstro:myAstro"
+            "c_Circus/carto:carto"
+            "c_LabTools/central_bank:central_bank"
+            "c_Suite/myhealth-feedyourself:myhealth-feedyourself"
+            "b_MyData/myhealth-profile:myhealth-profile"
+            "c_Suite/mymaps-maps:mymaps-maps"
+            "c_LabTools/market_watch:market_watch"
+            "b_Data/myfeed:myfeed"
+            "c_Circus/games:games"
+            "c_Suite/mymaps-navigation:mymaps-navigation"
+            "c_Circus/movies:movies"
+            "c_Circus/music:music"
+            "b_MyData/mymaps-mytrips:mymaps-mytrips"
             "c-Cloud/api:api"
             "c-Cloud/mcp-api-swagger:mcp-api-swagger"
             "c-Cloud/skills_mcp:skills_mcp"
-            "a-Projects/Warehouse:Warehouse"
+            "a_Projects/Warehouse:Warehouse"
+            "c__Cloud:c__Cloud"
+            "c__Cloud/c_agi:c__Cloud/c_agi"
+            "c__Cloud/c_agi/ai-chat:c__Cloud/c_agi/ai-chat"
+            "c__Cloud/c_agi/cloud-code:c__Cloud/c_agi/cloud-code"
+            "c__Cloud/c_agi/cloud-myterminal:c__Cloud/c_agi/cloud-myterminal"
+            "c__Cloud/c_agi/cloud-search:c__Cloud/c_agi/cloud-search"
+            "c__Cloud/c_agi/cloud-terminal:c__Cloud/c_agi/cloud-terminal"
+            "c__Cloud/c_agi/cloud-tools-small-llms:c__Cloud/c_agi/cloud-tools-small-llms"
+            "c__Cloud/c_agi/dist:c__Cloud/c_agi/dist"
+            "c__Cloud/c_agi/src:c__Cloud/c_agi/src"
+            "c__Cloud/c_configs:c__Cloud/c_configs"
+            "c__Cloud/c_configs/cloud-c3:c__Cloud/c_configs/cloud-c3"
+            "c__Cloud/c_configs/cloud-store:c__Cloud/c_configs/cloud-store"
+            "c__Cloud/c_configs/cloud-superapp:c__Cloud/c_configs/cloud-superapp"
+            "c__Cloud/c_configs/dist:c__Cloud/c_configs/dist"
+            "c__Cloud/c_configs/src:c__Cloud/c_configs/src"
+            "c__Cloud/c_data-apps:c__Cloud/c_data-apps"
+            "c__Cloud/c_data-apps/cloud-contacts:c__Cloud/c_data-apps/cloud-contacts"
+            "c__Cloud/c_data-apps/cloud-drive:c__Cloud/c_data-apps/cloud-drive"
+            "c__Cloud/c_data-apps/cloud-gallery:c__Cloud/c_data-apps/cloud-gallery"
+            "c__Cloud/c_data-apps/cloud-media:c__Cloud/c_data-apps/cloud-media"
+            "c__Cloud/c_data-apps/cloud-notes:c__Cloud/c_data-apps/cloud-notes"
+            "c__Cloud/c_data-apps/cloud-office:c__Cloud/c_data-apps/cloud-office"
+            "c__Cloud/c_data-apps/cloud-tasks:c__Cloud/c_data-apps/cloud-tasks"
+            "c__Cloud/c_data-apps/cloud-vault:c__Cloud/c_data-apps/cloud-vault"
+            "c__Cloud/c_data-apps/dist:c__Cloud/c_data-apps/dist"
+            "c__Cloud/c_data-apps/src:c__Cloud/c_data-apps/src"
+            "c__Cloud/c_inboxes:c__Cloud/c_inboxes"
+            "c__Cloud/c_inboxes/c3-bot:c__Cloud/c_inboxes/c3-bot"
+            "c__Cloud/c_inboxes/cloud-chat:c__Cloud/c_inboxes/cloud-chat"
+            "c__Cloud/c_inboxes/cloud-dialer:c__Cloud/c_inboxes/cloud-dialer"
+            "c__Cloud/c_inboxes/cloud-mail:c__Cloud/c_inboxes/cloud-mail"
+            "c__Cloud/c_inboxes/cloud-matrix:c__Cloud/c_inboxes/cloud-matrix"
+            "c__Cloud/c_inboxes/cloud-news:c__Cloud/c_inboxes/cloud-news"
+            "c__Cloud/c_inboxes/dist:c__Cloud/c_inboxes/dist"
+            "c__Cloud/c_inboxes/src:c__Cloud/c_inboxes/src"
+            "c__Cloud/c_tools:c__Cloud/c_tools"
+            "c__Cloud/c_tools/cloud-browser:c__Cloud/c_tools/cloud-browser"
+            "c__Cloud/c_tools/cloud-calc:c__Cloud/c_tools/cloud-calc"
+            "c__Cloud/c_tools/cloud-camera:c__Cloud/c_tools/cloud-camera"
+            "c__Cloud/c_tools/cloud-keyboard:c__Cloud/c_tools/cloud-keyboard"
+            "c__Cloud/c_tools/cloud-me:c__Cloud/c_tools/cloud-me"
+            "c__Cloud/c_tools/cloud-nav:c__Cloud/c_tools/cloud-nav"
+            "c__Cloud/c_tools/cloud-wallet:c__Cloud/c_tools/cloud-wallet"
+            "c__Cloud/c_tools/cloud-writer:c__Cloud/c_tools/cloud-writer"
+            "c__Cloud/c_tools/dist:c__Cloud/c_tools/dist"
+            "c__Cloud/c_tools/src:c__Cloud/c_tools/src"
             "e-Others/others:others"
-            "c-LabTools/sailytics:sailytics"
-            "c-LabTools/news:news"
-            "c-LabTools/fin-terminal:fin-terminal"
-            "c-LabTools/Music_DJ-Mixer_Mixxx:Music_DJ-Mixer_Mixxx"
-            "c-LabTools/Music_DAW_LLMS:Music_DAW_LLMS"
-            "b-MyData/my-fin:my-fin"
-            "b-Media/mySocials:mySocials"
-            "b-MyData/myhealth:myhealth"
-            "b-MyData/myhealth-tracker:myhealth-tracker"
-            "b-MyData/myid:myid"
-            "c-Suite/mymaps:mymaps"
+            "c_LabTools/sailytics:sailytics"
+            "c_LabTools/news:news"
+            "c_LabTools/fin-terminal:fin-terminal"
+            "c_LabTools/Music_DJ-Mixer_Mixxx:Music_DJ-Mixer_Mixxx"
+            "c_LabTools/Music_DAW_LLMS:Music_DAW_LLMS"
+            "b_MyData/my-fin:my-fin"
+            "b_Media/mySocials:mySocials"
+            "b_MyData/myhealth:myhealth"
+            "b_MyData/myhealth-tracker:myhealth-tracker"
+            "b_MyData/myid:myid"
+            "c_Suite/mymaps:mymaps"
           )
           for entry in "${PROJECTS[@]}"; do
             SRC="${entry%%:*}"

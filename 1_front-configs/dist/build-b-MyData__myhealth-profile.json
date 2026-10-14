@@ -57,10 +57,10 @@
   },
   "deploy": {},
   "_resolved": {
-    "path": "b-MyData/myhealth-profile",
-    "category": "b-MyData",
+    "path": "b_MyData/myhealth-profile",
+    "category": "b_MyData",
     "project": "myhealth-profile",
-    "key": "b-MyData__myhealth-profile",
+    "key": "b_MyData__myhealth-profile",
     "port": 8009,
     "framework": "vanilla",
     "src": "src",

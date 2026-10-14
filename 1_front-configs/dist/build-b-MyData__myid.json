@@ -88,10 +88,10 @@
   },
   "deploy": {},
   "_resolved": {
-    "path": "b-MyData/myid",
-    "category": "b-MyData",
+    "path": "b_MyData/myid",
+    "category": "b_MyData",
     "project": "myid",
-    "key": "b-MyData__myid",
+    "key": "b_MyData__myid",
     "port": 8031,
     "framework": "vanilla",
     "src": "src",

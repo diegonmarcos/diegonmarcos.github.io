@@ -14,10 +14,10 @@
   },
   "deploy": {},
   "_resolved": {
-    "path": "c-Suite/tldraw",
-    "category": "c-Suite",
+    "path": "c_Suite/tldraw",
+    "category": "c_Suite",
     "project": "tldraw",
-    "key": "c-Suite__tldraw",
+    "key": "c_Suite__tldraw",
     "port": 8032,
     "framework": "react",
     "src": "src",

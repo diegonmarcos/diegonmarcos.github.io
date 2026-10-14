@@ -83,10 +83,10 @@
   },
   "deploy": {},
   "_resolved": {
-    "path": "c-Suite/suite",
-    "category": "c-Suite",
+    "path": "c_Suite/suite",
+    "category": "c_Suite",
     "project": "suite",
-    "key": "c-Suite__suite",
+    "key": "c_Suite__suite",
     "port": 8021,
     "framework": "vanilla",
     "src": "src",

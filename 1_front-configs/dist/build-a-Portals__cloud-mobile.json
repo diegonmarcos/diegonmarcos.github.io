@@ -81,10 +81,10 @@
   },
   "deploy": {},
   "_resolved": {
-    "path": "a-Portals/cloud-mobile",
-    "category": "a-Portals",
+    "path": "a_Portals/cloud-mobile",
+    "category": "a_Portals",
     "project": "cloud-mobile",
-    "key": "a-Portals__cloud-mobile",
+    "key": "a_Portals__cloud-mobile",
     "port": 8036,
     "framework": "vanilla",
     "src": "src",

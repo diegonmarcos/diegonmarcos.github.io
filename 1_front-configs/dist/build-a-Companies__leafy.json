@@ -80,10 +80,10 @@
   },
   "deploy": {},
   "_resolved": {
-    "path": "a-Companies/leafy",
-    "category": "a-Companies",
+    "path": "a_Companies/leafy",
+    "category": "a_Companies",
     "project": "leafy",
-    "key": "a-Companies__leafy",
+    "key": "a_Companies__leafy",
     "port": 8021,
     "framework": "vanilla",
     "src": "src",

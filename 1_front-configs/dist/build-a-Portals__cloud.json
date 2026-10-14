@@ -127,10 +127,10 @@
   },
   "deploy": {},
   "_resolved": {
-    "path": "a-Portals/cloud",
-    "category": "a-Portals",
+    "path": "a_Portals/cloud",
+    "category": "a_Portals",
     "project": "cloud",
-    "key": "a-Portals__cloud",
+    "key": "a_Portals__cloud",
     "port": 8006,
     "framework": "vanilla",
     "src": "src",

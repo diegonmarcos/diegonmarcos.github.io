@@ -87,10 +87,10 @@
   },
   "deploy": {},
   "_resolved": {
-    "path": "a-Individual/cv_web",
-    "category": "a-Individual",
+    "path": "a_Individual/cv_web",
+    "category": "a_Individual",
     "project": "cv_web",
-    "key": "a-Individual__cv_web",
+    "key": "a_Individual__cv_web",
     "port": 8002,
     "framework": "vanilla",
     "src": "src",

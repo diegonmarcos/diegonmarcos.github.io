@@ -87,10 +87,10 @@
   },
   "deploy": {},
   "_resolved": {
-    "path": "a-Portals/linktree_pixel-world",
-    "category": "a-Portals",
+    "path": "a_Portals/linktree_pixel-world",
+    "category": "a_Portals",
     "project": "linktree_pixel-world",
-    "key": "a-Portals__linktree_pixel-world",
+    "key": "a_Portals__linktree_pixel-world",
     "port": 8019,
     "framework": "vanilla",
     "src": "src",

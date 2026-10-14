@@ -1,0 +1,46 @@
+{
+  "cdnBase": "https://cdn.jsdelivr.net/gh/diegonmarcos/front-assets-cdn@main/b_Projects/galaxy/static/",
+  "_meta": {
+    "schema": "galaxy-assets/v1",
+    "note": "Marketplace-style catalog. One entry per reusable 3D asset. 'mesh' is the blank geometry; 'textures' is the swappable material set — kept separate so a mesh can be re-skinned and each part caches/downloads independently. Optimize with scripts/optimize-assets.mjs (Draco geometry + KTX2 textures + separated resources).",
+    "licenseValues": "CC0 | CC-BY | MIT | unknown (verify before commercial reuse)"
+  },
+  "models": [
+    { "id": "rabbit",   "name": "Rabbit",    "category": "fauna", "animated": false, "mesh": "assets/models/rabbit.glb",   "license": "CC0",    "author": "Quaternius",     "source": "poly.pizza", "tags": ["animal", "ground", "lowpoly"] },
+    { "id": "fox",      "name": "Fox",       "category": "fauna", "animated": true,  "mesh": "assets/models/critter.glb",  "license": "CC0",    "author": "PixelMannen",    "source": "Khronos glTF-Sample-Assets", "tags": ["animal", "ground", "quadruped"] },
+    { "id": "horse",    "name": "Horse",     "category": "fauna", "animated": true,  "mesh": "assets/models/horse.glb",    "license": "MIT",    "author": "mirada / three.js", "source": "three.js examples", "tags": ["animal", "ground", "quadruped"] },
+    { "id": "hound",    "name": "Hound",     "category": "fauna", "animated": false, "mesh": "assets/models/hound.glb",    "license": "CC0",    "author": "Quaternius",     "source": "poly.pizza", "tags": ["animal", "ground", "dog"] },
+    { "id": "mouse",    "name": "Mouse",     "category": "fauna", "animated": false, "mesh": "assets/models/mouse.glb",    "license": "CC0",    "author": "Quaternius",     "source": "poly.pizza", "tags": ["animal", "ground", "small"] },
+    { "id": "frog",     "name": "Frog",      "category": "fauna", "animated": false, "mesh": "assets/models/frog.glb",     "license": "CC0",    "author": "Quaternius",     "source": "poly.pizza", "tags": ["animal", "ground", "amphibian"] },
+    { "id": "turtle",   "name": "Turtle",    "category": "fauna", "animated": false, "mesh": "assets/models/turtle.glb",   "license": "CC0",    "author": "Quaternius",     "source": "poly.pizza", "tags": ["animal", "ground", "reptile"] },
+    { "id": "bear",     "name": "Bear",      "category": "fauna", "animated": false, "mesh": "assets/models/bear.glb",     "license": "CC0",    "author": "Quaternius",     "source": "poly.pizza", "tags": ["animal", "ground", "large"] },
+    { "id": "pug",      "name": "Pug",       "category": "fauna", "animated": false, "mesh": "assets/models/pug.glb",      "license": "CC0",    "author": "Quaternius",     "source": "poly.pizza", "tags": ["animal", "ground", "dog"] },
+    { "id": "flamingo", "name": "Flamingo",  "category": "fauna", "animated": true,  "mesh": "assets/models/flamingo.glb", "license": "MIT",    "author": "mirada / three.js", "source": "three.js examples", "tags": ["animal", "air", "bird"] },
+    { "id": "parrot",   "name": "Parrot",    "category": "fauna", "animated": true,  "mesh": "assets/models/parrot.glb",   "license": "MIT",    "author": "mirada / three.js", "source": "three.js examples", "tags": ["animal", "air", "bird"] },
+    { "id": "stork",    "name": "Stork",     "category": "fauna", "animated": true,  "mesh": "assets/models/stork.glb",    "license": "MIT",    "author": "mirada / three.js", "source": "three.js examples", "tags": ["animal", "air", "bird"] },
+    { "id": "tribird",  "name": "Tri Bird",  "category": "fauna", "animated": false, "mesh": "assets/models/tribird.glb",  "license": "CC0",    "author": "Quaternius",     "source": "poly.pizza", "tags": ["animal", "air", "bird"] },
+    { "id": "owl",      "name": "Owl",       "category": "fauna", "animated": false, "mesh": "assets/models/owl.glb",      "license": "CC0",    "author": "Quaternius",     "source": "poly.pizza", "tags": ["animal", "air", "bird"] },
+    { "id": "owltron",  "name": "Owltron",   "category": "fauna", "animated": false, "mesh": "assets/models/owltron.glb",  "license": "CC0",    "author": "Quaternius",     "source": "poly.pizza", "tags": ["animal", "air", "bird"] },
+    { "id": "man",      "name": "Rider",     "category": "character", "animated": true, "mesh": "assets/models/man.glb", "license": "CC-BY 4.0", "author": "three.js / mixamo", "source": "three.js examples", "tags": ["human", "rider"] },
+
+    { "id": "nat-pine",       "name": "Pine Trees",       "category": "flora", "animated": false, "mesh": "assets/models/nature/pine-trees.glb",   "license": "CC0", "author": "Quaternius", "source": "quaternius.com", "tags": ["tree", "conifer", "pine", "multi-variant"] },
+    { "id": "nat-birch",      "name": "Birch Trees",      "category": "flora", "animated": false, "mesh": "assets/models/nature/birch-trees.glb",  "license": "CC0", "author": "Quaternius", "source": "quaternius.com", "tags": ["tree", "birch", "multi-variant"] },
+    { "id": "nat-maple",      "name": "Maple Trees",      "category": "flora", "animated": false, "mesh": "assets/models/nature/maple-trees.glb",  "license": "CC0", "author": "Quaternius", "source": "quaternius.com", "tags": ["tree", "maple", "broadleaf", "multi-variant"] },
+    { "id": "nat-palm",       "name": "Palm Trees",       "category": "flora", "animated": false, "mesh": "assets/models/nature/palm-trees.glb",   "license": "CC0", "author": "Quaternius", "source": "quaternius.com", "tags": ["tree", "palm", "tropical", "multi-variant"] },
+    { "id": "nat-dead",       "name": "Dead Trees",       "category": "flora", "animated": false, "mesh": "assets/models/nature/dead-trees.glb",   "license": "CC0", "author": "Quaternius", "source": "quaternius.com", "tags": ["tree", "dead", "bare", "multi-variant"] },
+    { "id": "nat-trees",      "name": "Trees",            "category": "flora", "animated": false, "mesh": "assets/models/nature/trees.glb",        "license": "CC0", "author": "Quaternius", "source": "quaternius.com", "tags": ["tree", "broadleaf", "multi-variant"] },
+    { "id": "nat-bush",       "name": "Bushes",           "category": "flora", "animated": false, "mesh": "assets/models/nature/bushes.glb",       "license": "CC0", "author": "Quaternius", "source": "quaternius.com", "tags": ["bush", "shrub", "multi-variant"] },
+    { "id": "nat-flowerbush", "name": "Flower Bushes",    "category": "flora", "animated": false, "mesh": "assets/models/nature/flower-bushes.glb","license": "CC0", "author": "Quaternius", "source": "quaternius.com", "tags": ["bush", "flower", "shrub", "multi-variant"] },
+    { "id": "nat-flowers",    "name": "Flowers",          "category": "flora", "animated": false, "mesh": "assets/models/nature/flowers.glb",      "license": "CC0", "author": "Quaternius", "source": "quaternius.com", "tags": ["flower", "ground", "multi-variant"] },
+    { "id": "nat-grass",      "name": "Grass Tufts",      "category": "flora", "animated": false, "mesh": "assets/models/nature/grass.glb",        "license": "CC0", "author": "Quaternius", "source": "quaternius.com", "tags": ["grass", "ground", "multi-variant"] },
+    { "id": "nat-rocks",      "name": "Rocks",            "category": "flora", "animated": false, "mesh": "assets/models/nature/rocks.glb",        "license": "CC0", "author": "Quaternius", "source": "quaternius.com", "tags": ["rock", "stone", "prop", "multi-variant"] },
+    { "id": "nat-bigtree",    "name": "Big Tree",         "category": "flora", "animated": false, "mesh": "assets/models/nature/big-tree.glb",     "license": "CC0", "author": "Quaternius", "source": "quaternius.com", "tags": ["tree", "hero", "single"] }
+  ],
+  "textureSets": [
+    { "id": "ground-grass-rock", "name": "Aerial Grass Rock", "category": "terrain", "license": "CC0", "author": "Poly Haven", "source": "polyhaven.com", "tags": ["ground", "pbr"],
+      "textures": { "albedo": "assets/textures/ground_diff_1k.jpg", "normal": "assets/textures/ground_nor_1k.jpg", "roughness": "assets/textures/ground_rough_1k.jpg" },
+      "missing": ["ao", "height"] },
+    { "id": "water-normals", "name": "Water Normals", "category": "material", "license": "MIT", "author": "three.js", "source": "three.js examples", "tags": ["water"],
+      "textures": { "normal": "assets/textures/waternormals.jpg" } }
+  ]
+}

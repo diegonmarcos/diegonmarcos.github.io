@@ -87,10 +87,10 @@
   },
   "deploy": {},
   "_resolved": {
-    "path": "c-LabTools/sailytics",
-    "category": "c-LabTools",
+    "path": "c_LabTools/sailytics",
+    "category": "c_LabTools",
     "project": "sailytics",
-    "key": "c-LabTools__sailytics",
+    "key": "c_LabTools__sailytics",
     "port": 8023,
     "framework": "vanilla",
     "src": "src",

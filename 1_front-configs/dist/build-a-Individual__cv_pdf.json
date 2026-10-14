@@ -61,10 +61,10 @@
   },
   "deploy": {},
   "_resolved": {
-    "path": "a-Individual/cv_pdf",
-    "category": "a-Individual",
+    "path": "a_Individual/cv_pdf",
+    "category": "a_Individual",
     "project": "cv_pdf",
-    "key": "a-Individual__cv_pdf",
+    "key": "a_Individual__cv_pdf",
     "port": 8012,
     "framework": "vanilla",
     "src": "src",

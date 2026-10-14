@@ -59,10 +59,10 @@
   },
   "deploy": {},
   "_resolved": {
-    "path": "c-Suite/mymail",
-    "category": "c-Suite",
+    "path": "c_Suite/mymail",
+    "category": "c_Suite",
     "project": "mymail",
-    "key": "c-Suite__mymail",
+    "key": "c_Suite__mymail",
     "port": 8018,
     "framework": "vanilla",
     "src": "src",

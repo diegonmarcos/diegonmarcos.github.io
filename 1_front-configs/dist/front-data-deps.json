@@ -4,24 +4,24 @@
   },
   "per_project": [
     {
-      "key": "a-Companies__leafy",
-      "path": "a-Companies/leafy",
+      "key": "a_Companies__leafy",
+      "path": "a_Companies/leafy",
       "deps": {
         "sass": "^1.69.0",
         "typescript": "^5.3.0"
       }
     },
     {
-      "key": "a-Companies__nexus",
-      "path": "a-Companies/nexus",
+      "key": "a_Companies__nexus",
+      "path": "a_Companies/nexus",
       "deps": {
         "sass": "^1.77.0",
         "typescript": "^5.9.3"
       }
     },
     {
-      "key": "a-Individual__cv_web",
-      "path": "a-Individual/cv_web",
+      "key": "a_Individual__cv_web",
+      "path": "a_Individual/cv_web",
       "deps": {
         "sass": "^1.77.4",
         "esbuild": "^0.20.2",
@@ -29,8 +29,8 @@
       }
     },
     {
-      "key": "a-Portals__cloud-mobile",
-      "path": "a-Portals/cloud-mobile",
+      "key": "a_Portals__cloud-mobile",
+      "path": "a_Portals/cloud-mobile",
       "deps": {
         "@types/node": "^20.10.0",
         "@typescript-eslint/eslint-plugin": "^6.13.0",
@@ -43,8 +43,8 @@
       }
     },
     {
-      "key": "a-Portals__cloud-web",
-      "path": "a-Portals/cloud-web",
+      "key": "a_Portals__cloud-web",
+      "path": "a_Portals/cloud-web",
       "deps": {
         "esbuild": "^0.19.8",
         "sass": "^1.69.5",
@@ -52,8 +52,8 @@
       }
     },
     {
-      "key": "a-Portals__cloud",
-      "path": "a-Portals/cloud",
+      "key": "a_Portals__cloud",
+      "path": "a_Portals/cloud",
       "deps": {
         "@types/node": "^20.10.0",
         "@typescript-eslint/eslint-plugin": "^6.13.0",
@@ -66,8 +66,8 @@
       }
     },
     {
-      "key": "a-Portals__linktree",
-      "path": "a-Portals/linktree",
+      "key": "a_Portals__linktree",
+      "path": "a_Portals/linktree",
       "deps": {
         "swiper": "^11.0.0",
         "@types/jsdom": "^21.1.7",
@@ -84,8 +84,8 @@
       }
     },
     {
-      "key": "a-Portals__linktree_icon-view",
-      "path": "a-Portals/linktree_icon-view",
+      "key": "a_Portals__linktree_icon-view",
+      "path": "a_Portals/linktree_icon-view",
       "deps": {
         "esbuild": "^0.20.2",
         "sass": "^1.77.0",
@@ -93,8 +93,8 @@
       }
     },
     {
-      "key": "a-Portals__linktree_mindmap",
-      "path": "a-Portals/linktree_mindmap",
+      "key": "a_Portals__linktree_mindmap",
+      "path": "a_Portals/linktree_mindmap",
       "deps": {
         "esbuild": "^0.20.2",
         "sass": "^1.77.0",
@@ -102,8 +102,8 @@
       }
     },
     {
-      "key": "a-Portals__linktree_pixel-world",
-      "path": "a-Portals/linktree_pixel-world",
+      "key": "a_Portals__linktree_pixel-world",
+      "path": "a_Portals/linktree_pixel-world",
       "deps": {
         "pixi.js": "^8.6.0",
         "esbuild": "^0.20.2",
@@ -112,13 +112,13 @@
       }
     },
     {
-      "key": "a-Projects__Warehouse",
-      "path": "a-Projects/Warehouse",
+      "key": "a_Projects__Warehouse",
+      "path": "a_Projects/Warehouse",
       "deps": {}
     },
     {
-      "key": "b-Data__myAstro",
-      "path": "b-Data/myAstro",
+      "key": "b_Data__myAstro",
+      "path": "b_Data/myAstro",
       "deps": {
         "esbuild": "^0.20.2",
         "sass": "^1.77.0",
@@ -128,8 +128,8 @@
       }
     },
     {
-      "key": "b-Data__myfeed",
-      "path": "b-Data/myfeed",
+      "key": "b_Data__myfeed",
+      "path": "b_Data/myfeed",
       "deps": {
         "@floating-ui/vue": "^1.0.0",
         "@formkit/auto-animate": "^0.8.0",
@@ -181,8 +181,8 @@
       }
     },
     {
-      "key": "b-MyData__mymaps-mytrips",
-      "path": "b-MyData/mymaps-mytrips",
+      "key": "b_MyData__mymaps-mytrips",
+      "path": "b_MyData/mymaps-mytrips",
       "deps": {
         "@types/d3": "^7.4.3",
         "@types/topojson-client": "^3.1.5",
@@ -207,8 +207,8 @@
       }
     },
     {
-      "key": "b-Profiles__myprofile",
-      "path": "b-Profiles/myprofile",
+      "key": "b_Profiles__myprofile",
+      "path": "b_Profiles/myprofile",
       "deps": {
         "@sveltejs/adapter-static": "^3.0.0",
         "@sveltejs/kit": "^2.0.0",
@@ -221,8 +221,8 @@
       }
     },
     {
-      "key": "b-Projects__galaxy-earth",
-      "path": "b-Projects/galaxy-earth",
+      "key": "b_Projects__galaxy-earth",
+      "path": "b_Projects/galaxy-earth",
       "deps": {
         "eruda": "^3",
         "maplibre-gl": "^5",
@@ -238,8 +238,8 @@
       }
     },
     {
-      "key": "b-Projects__galaxy-x1",
-      "path": "b-Projects/galaxy-x1",
+      "key": "b_Projects__galaxy-x1",
+      "path": "b_Projects/galaxy-x1",
       "deps": {
         "@threlte/core": "^8.0.0",
         "@threlte/extras": "^9.0.0",
@@ -255,8 +255,8 @@
       }
     },
     {
-      "key": "b-Projects__galaxy",
-      "path": "b-Projects/galaxy",
+      "key": "b_Projects__galaxy",
+      "path": "b_Projects/galaxy",
       "deps": {
         "@sveltejs/adapter-static": "^3.0.10",
         "@sveltejs/kit": "^2.47.1",
@@ -268,8 +268,8 @@
       }
     },
     {
-      "key": "c-Circus__games",
-      "path": "c-Circus/games",
+      "key": "c_Circus__games",
+      "path": "c_Circus/games",
       "deps": {
         "@sveltejs/adapter-auto": "^7.0.0",
         "@sveltejs/adapter-static": "^3.0.10",
@@ -287,8 +287,8 @@
       }
     },
     {
-      "key": "c-Circus__movies",
-      "path": "c-Circus/movies",
+      "key": "c_Circus__movies",
+      "path": "c_Circus/movies",
       "deps": {
         "axios": "^1.6.0",
         "lodash-es": "^4.17.21",
@@ -303,8 +303,8 @@
       }
     },
     {
-      "key": "c-Circus__music",
-      "path": "c-Circus/music",
+      "key": "c_Circus__music",
+      "path": "c_Circus/music",
       "deps": {
         "axios": "^1.6.0",
         "lodash-es": "^4.17.21",
@@ -319,8 +319,8 @@
       }
     },
     {
-      "key": "c-LabTools__central_bank",
-      "path": "c-LabTools/central_bank",
+      "key": "c_LabTools__central_bank",
+      "path": "c_LabTools/central_bank",
       "deps": {
         "chart.js": "^4.4.0",
         "lucide": "^0.460.0",
@@ -333,8 +333,8 @@
       }
     },
     {
-      "key": "c-LabTools__fin-terminal",
-      "path": "c-LabTools/fin-terminal",
+      "key": "c_LabTools__fin-terminal",
+      "path": "c_LabTools/fin-terminal",
       "deps": {
         "lightweight-charts": "^5.0.0",
         "@types/node": "^22.0.0",
@@ -346,8 +346,8 @@
       }
     },
     {
-      "key": "c-LabTools__market_watch",
-      "path": "c-LabTools/market_watch",
+      "key": "c_LabTools__market_watch",
+      "path": "c_LabTools/market_watch",
       "deps": {
         "@types/node": "^20.10.0",
         "@typescript-eslint/eslint-plugin": "^6.13.0",
@@ -360,8 +360,8 @@
       }
     },
     {
-      "key": "c-LabTools__news",
-      "path": "c-LabTools/news",
+      "key": "c_LabTools__news",
+      "path": "c_LabTools/news",
       "deps": {
         "esbuild": "^0.24.0",
         "sass": "^1.83.0",
@@ -369,16 +369,16 @@
       }
     },
     {
-      "key": "c-LabTools__sailytics",
-      "path": "c-LabTools/sailytics",
+      "key": "c_LabTools__sailytics",
+      "path": "c_LabTools/sailytics",
       "deps": {
         "three": "^0.170.0",
         "@types/three": "^0.170.0"
       }
     },
     {
-      "key": "c-Suite__json-vision",
-      "path": "c-Suite/json-vision",
+      "key": "c_Suite__json-vision",
+      "path": "c_Suite/json-vision",
       "deps": {
         "lodash-es": "^4.17.21",
         "vue": "^3.4.0",
@@ -392,8 +392,8 @@
       }
     },
     {
-      "key": "c-Suite__myhealth-feedyourself",
-      "path": "c-Suite/myhealth-feedyourself",
+      "key": "c_Suite__myhealth-feedyourself",
+      "path": "c_Suite/myhealth-feedyourself",
       "deps": {
         "esbuild": "^0.20.0",
         "jszip": "^3.10.1",
@@ -404,8 +404,8 @@
       }
     },
     {
-      "key": "c-Suite__mymaps-maps",
-      "path": "c-Suite/mymaps-maps",
+      "key": "c_Suite__mymaps-maps",
+      "path": "c_Suite/mymaps-maps",
       "deps": {
         "d3-geo": "^3.1.1",
         "d3-interpolate": "^3.0.1",
@@ -425,8 +425,8 @@
       }
     },
     {
-      "key": "c-Suite__mymaps-navigation",
-      "path": "c-Suite/mymaps-navigation",
+      "key": "c_Suite__mymaps-navigation",
+      "path": "c_Suite/mymaps-navigation",
       "deps": {
         "@mapbox/togeojson": "^0.16.2",
         "cesium": "^1.143.0",
@@ -448,8 +448,8 @@
       }
     },
     {
-      "key": "c-Suite__tldraw",
-      "path": "c-Suite/tldraw",
+      "key": "c_Suite__tldraw",
+      "path": "c_Suite/tldraw",
       "deps": {
         "react": "^18.3.1",
         "react-dom": "^18.3.1",

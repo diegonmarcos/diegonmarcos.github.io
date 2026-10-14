@@ -41,7 +41,7 @@
 #
 # Usage:
 #   front-sw-rollout.sh                         # all categories
-#   front-sw-rollout.sh a-Portals b-Profiles    # specific categories
+#   front-sw-rollout.sh a_Portals b_Profiles    # specific categories
 #   front-sw-rollout.sh --dry-run               # report eligibility, no changes
 #
 # Exit codes:
@@ -64,7 +64,7 @@ fi
 # Default category list — every top-level dir that holds projects today.
 # `9_others` and `_*` are tooling / hidden, not projects.
 if [ "$#" -eq 0 ]; then
-    set -- a-Companies a-Individual a-Portals b-Data b-Media b-MyData b-Profiles b-Projects c-Circus c-Cloud c-LabTools c-Suite e-Others e-Root z_Archive
+    set -- a_Companies a_Individual a_Portals b_Data b_Media b_MyData b_Profiles b_Projects c_Circus c-Cloud c_LabTools c_Suite e-Others e-Root z_Archive
 fi
 
 ok_count=0

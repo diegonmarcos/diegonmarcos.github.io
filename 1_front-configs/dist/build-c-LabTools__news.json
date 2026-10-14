@@ -87,10 +87,10 @@
   },
   "deploy": {},
   "_resolved": {
-    "path": "c-LabTools/news",
-    "category": "c-LabTools",
+    "path": "c_LabTools/news",
+    "category": "c_LabTools",
     "project": "news",
-    "key": "c-LabTools__news",
+    "key": "c_LabTools__news",
     "port": 8029,
     "framework": "vanilla",
     "src": "src",

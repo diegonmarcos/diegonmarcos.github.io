@@ -97,10 +97,10 @@
   },
   "deploy": {},
   "_resolved": {
-    "path": "c-LabTools/fin-terminal",
-    "category": "c-LabTools",
+    "path": "c_LabTools/fin-terminal",
+    "category": "c_LabTools",
     "project": "fin-terminal",
-    "key": "c-LabTools__fin-terminal",
+    "key": "c_LabTools__fin-terminal",
     "port": 8024,
     "framework": "vanilla",
     "src": "src",

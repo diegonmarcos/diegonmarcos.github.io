@@ -14,10 +14,10 @@
   },
   "deploy": {},
   "_resolved": {
-    "path": "b-Profiles/myprofile",
-    "category": "b-Profiles",
+    "path": "b_Profiles/myprofile",
+    "category": "b_Profiles",
     "project": "myprofile",
-    "key": "b-Profiles__myprofile",
+    "key": "b_Profiles__myprofile",
     "port": 8013,
     "framework": "sveltekit",
     "src": "src",

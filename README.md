@@ -52,10 +52,10 @@ Built with a universal `build.sh` engine — one engine, per-project `build.json
 ./build.sh deps
 
 # Build a single project
-cd a-Portals/linktree && bash build.sh build
+cd a_Portals/linktree && bash build.sh build
 
 # Dev server with hot reload
-cd c-Circus/movies && bash build.sh dev
+cd c_Circus/movies && bash build.sh dev
 
 # Build everything
 ./build.sh build
@@ -68,13 +68,13 @@ cd c-Circus/movies && bash build.sh dev
 
 ```
 front/
-├── a-Portals/            Portal & entry-point sites
+├── a_Portals/            Portal & entry-point sites
 │   ├── cloud             Cloud dashboard (Sass+esbuild)
 │   ├── linktree          Digital card (Sass+esbuild)
 │   ├── linktree_mindmap  Digital card variant
 │   └── linktree_pixel-world  Pixel art card
 │
-├── b-Profiles/           Work profiles & company sites
+├── b_Profiles/           Work profiles & company sites
 │   ├── cv_pdf            PDF resume (static copy)
 │   ├── cv_web            Web resume (Sass+esbuild)
 │   ├── landpage          Landing page (Sass+tsc)
@@ -82,7 +82,7 @@ front/
 │   ├── myprofile         Portfolio platform (SvelteKit)
 │   └── nexus             Company site (Sass+esbuild)
 │
-├── c-Suite/              Tools suite
+├── c_Suite/              Tools suite
 │   ├── json-vision       JSON editor (Vue 3 + Vite)
 │   ├── mymail            Mail client (static copy)
 │   └── suite             Browser tools (Sass+esbuild)
@@ -104,7 +104,7 @@ front/
 │   ├── myphotos              Photo viewer (static copy)
 │   └── myphotos-myorkut      Social network homage (dark Orkut)
 │
-├── c-LabTools/           Lab experiments & data tools
+├── c_LabTools/           Lab experiments & data tools
 │   ├── carto                 Cartography games (Sass+tsc)
 │   ├── central_bank          Banking tool (Vite)
 │   ├── market_watch          Market tracker (Sass+esbuild)
@@ -125,11 +125,11 @@ front/
 
 | Category | Folder | Count | Description |
 |----------|--------|-------|-------------|
-| Portals | `a-Portals/` | 4 | Entry points, dashboards, digital cards |
-| Profiles | `b-Profiles/` | 6 | CV, portfolio, landing pages, company sites |
-| Suite | `c-Suite/` | 5 | Integrated tools (JSON editor, analytics, mail, photos) |
+| Portals | `a_Portals/` | 4 | Entry points, dashboards, digital cards |
+| Profiles | `b_Profiles/` | 6 | CV, portfolio, landing pages, company sites |
+| Suite | `c_Suite/` | 5 | Integrated tools (JSON editor, analytics, mail, photos) |
 | MyTools | `c-MyTools/` | 15 | Personal apps (health, maps, movies, music, games, photos) |
-| LabTools | `c-LabTools/` | 4 | Lab experiments & data tools (carto, finance, sailing) |
+| LabTools | `c_LabTools/` | 4 | Lab experiments & data tools (carto, finance, sailing) |
 | Cloud | `c-Cloud/` | 3 | API docs, MCP docs, Swagger UI |
 | Others | `e-Others/` | 1 | Python scripts, misc |
 | Root | `e-Root/` | 1 | Main 3D cube index page |

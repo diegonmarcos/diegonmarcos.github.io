@@ -83,10 +83,10 @@
   },
   "deploy": {},
   "_resolved": {
-    "path": "b-MyData/my-fin",
-    "category": "b-MyData",
+    "path": "b_MyData/my-fin",
+    "category": "b_MyData",
     "project": "my-fin",
-    "key": "b-MyData__my-fin",
+    "key": "b_MyData__my-fin",
     "port": 8030,
     "framework": "vanilla",
     "src": "src",

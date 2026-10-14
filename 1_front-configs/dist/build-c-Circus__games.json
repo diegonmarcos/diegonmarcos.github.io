@@ -14,10 +14,10 @@
   },
   "deploy": {},
   "_resolved": {
-    "path": "c-Circus/games",
-    "category": "c-Circus",
+    "path": "c_Circus/games",
+    "category": "c_Circus",
     "project": "games",
-    "key": "c-Circus__games",
+    "key": "c_Circus__games",
     "port": 8004,
     "framework": "sveltekit",
     "src": "src",

@@ -4,143 +4,143 @@
     "deploy_name": "."
   },
   {
-    "path": "a-Portals/cloud",
+    "path": "a_Portals/cloud",
     "deploy_name": "cloud"
   },
   {
-    "path": "a-Portals/cloud-mobile",
+    "path": "a_Portals/cloud-mobile",
     "deploy_name": "cloud-mobile"
   },
   {
-    "path": "a-Portals/cloud-web",
+    "path": "a_Portals/cloud-web",
     "deploy_name": "cloud-web"
   },
   {
-    "path": "a-Portals/linktree",
+    "path": "a_Portals/linktree",
     "deploy_name": "linktree"
   },
   {
-    "path": "a-Portals/linktree_mindmap",
+    "path": "a_Portals/linktree_mindmap",
     "deploy_name": "linktree_mindmap"
   },
   {
-    "path": "a-Portals/linktree_pixel-world",
+    "path": "a_Portals/linktree_pixel-world",
     "deploy_name": "linktree_pixel-world"
   },
   {
-    "path": "a-Portals/linktree_icon-view",
+    "path": "a_Portals/linktree_icon-view",
     "deploy_name": "linktree_icon-view"
   },
   {
-    "path": "a-Individual/cv_pdf",
+    "path": "a_Individual/cv_pdf",
     "deploy_name": "cv_pdf"
   },
   {
-    "path": "a-Individual/cv_web",
+    "path": "a_Individual/cv_web",
     "deploy_name": "cv_web"
   },
   {
-    "path": "a-Individual/landpage",
+    "path": "a_Individual/landpage",
     "deploy_name": "landpage"
   },
   {
-    "path": "a-Companies/leafy",
+    "path": "a_Companies/leafy",
     "deploy_name": "leafy"
   },
   {
-    "path": "b-Projects/galaxy",
+    "path": "b_Projects/galaxy",
     "deploy_name": "galaxy"
   },
   {
-    "path": "b-Projects/galaxy-gaia",
+    "path": "b_Projects/galaxy-gaia",
     "deploy_name": "galaxy-gaia"
   },
   {
-    "path": "b-Profiles/myprofile",
+    "path": "b_Profiles/myprofile",
     "deploy_name": "myprofile"
   },
   {
-    "path": "a-Companies/nexus",
+    "path": "a_Companies/nexus",
     "deploy_name": "nexus"
   },
   {
-    "path": "a-Companies/stark",
+    "path": "a_Companies/stark",
     "deploy_name": "stark"
   },
   {
-    "path": "c-Suite/json-vision",
+    "path": "c_Suite/json-vision",
     "deploy_name": "json-vision"
   },
   {
-    "path": "c-Suite/mymail",
+    "path": "c_Suite/mymail",
     "deploy_name": "mymail"
   },
   {
-    "path": "b-MyData/myphotos",
+    "path": "b_MyData/myphotos",
     "deploy_name": "myphotos"
   },
   {
-    "path": "b-MyData/myTrackers",
+    "path": "b_MyData/myTrackers",
     "deploy_name": "myTrackers"
   },
   {
-    "path": "c-Suite/suite",
+    "path": "c_Suite/suite",
     "deploy_name": "suite"
   },
   {
-    "path": "c-Suite/tldraw",
+    "path": "c_Suite/tldraw",
     "deploy_name": "tldraw"
   },
   {
-    "path": "b-Data/myAstro",
+    "path": "b_Data/myAstro",
     "deploy_name": "myAstro"
   },
   {
-    "path": "c-Circus/carto",
+    "path": "c_Circus/carto",
     "deploy_name": "carto"
   },
   {
-    "path": "c-LabTools/central_bank",
+    "path": "c_LabTools/central_bank",
     "deploy_name": "central_bank"
   },
   {
-    "path": "c-Suite/myhealth-feedyourself",
+    "path": "c_Suite/myhealth-feedyourself",
     "deploy_name": "myhealth-feedyourself"
   },
   {
-    "path": "b-MyData/myhealth-profile",
+    "path": "b_MyData/myhealth-profile",
     "deploy_name": "myhealth-profile"
   },
   {
-    "path": "c-Suite/mymaps-maps",
+    "path": "c_Suite/mymaps-maps",
     "deploy_name": "mymaps-maps"
   },
   {
-    "path": "c-LabTools/market_watch",
+    "path": "c_LabTools/market_watch",
     "deploy_name": "market_watch"
   },
   {
-    "path": "b-Data/myfeed",
+    "path": "b_Data/myfeed",
     "deploy_name": "myfeed"
   },
   {
-    "path": "c-Circus/games",
+    "path": "c_Circus/games",
     "deploy_name": "games"
   },
   {
-    "path": "c-Suite/mymaps-navigation",
+    "path": "c_Suite/mymaps-navigation",
     "deploy_name": "mymaps-navigation"
   },
   {
-    "path": "c-Circus/movies",
+    "path": "c_Circus/movies",
     "deploy_name": "movies"
   },
   {
-    "path": "c-Circus/music",
+    "path": "c_Circus/music",
     "deploy_name": "music"
   },
   {
-    "path": "b-MyData/mymaps-mytrips",
+    "path": "b_MyData/mymaps-mytrips",
     "deploy_name": "mymaps-mytrips"
   },
   {
@@ -156,7 +156,7 @@
     "deploy_name": "skills_mcp"
   },
   {
-    "path": "a-Projects/Warehouse",
+    "path": "a_Projects/Warehouse",
     "deploy_name": "Warehouse"
   },
   {
@@ -164,47 +164,47 @@
     "deploy_name": "others"
   },
   {
-    "path": "c-LabTools/sailytics",
+    "path": "c_LabTools/sailytics",
     "deploy_name": "sailytics"
   },
   {
-    "path": "c-LabTools/news",
+    "path": "c_LabTools/news",
     "deploy_name": "news"
   },
   {
-    "path": "c-LabTools/fin-terminal",
+    "path": "c_LabTools/fin-terminal",
     "deploy_name": "fin-terminal"
   },
   {
-    "path": "c-LabTools/Music_DJ-Mixer_Mixxx",
+    "path": "c_LabTools/Music_DJ-Mixer_Mixxx",
     "deploy_name": "Music_DJ-Mixer_Mixxx"
   },
   {
-    "path": "c-LabTools/Music_DAW_LLMS",
+    "path": "c_LabTools/Music_DAW_LLMS",
     "deploy_name": "Music_DAW_LLMS"
   },
   {
-    "path": "b-MyData/my-fin",
+    "path": "b_MyData/my-fin",
     "deploy_name": "my-fin"
   },
   {
-    "path": "b-Media/mySocials",
+    "path": "b_Media/mySocials",
     "deploy_name": "mySocials"
   },
   {
-    "path": "b-MyData/myhealth",
+    "path": "b_MyData/myhealth",
     "deploy_name": "myhealth"
   },
   {
-    "path": "b-MyData/myhealth-tracker",
+    "path": "b_MyData/myhealth-tracker",
     "deploy_name": "myhealth-tracker"
   },
   {
-    "path": "b-MyData/myid",
+    "path": "b_MyData/myid",
     "deploy_name": "myid"
   },
   {
-    "path": "c-Suite/mymaps",
+    "path": "c_Suite/mymaps",
     "deploy_name": "mymaps"
   }
 ]

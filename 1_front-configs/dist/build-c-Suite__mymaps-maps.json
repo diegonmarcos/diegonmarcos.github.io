@@ -14,10 +14,10 @@
   },
   "deploy": {},
   "_resolved": {
-    "path": "c-Suite/mymaps-maps",
-    "category": "c-Suite",
+    "path": "c_Suite/mymaps-maps",
+    "category": "c_Suite",
     "project": "mymaps-maps",
-    "key": "c-Suite__mymaps-maps",
+    "key": "c_Suite__mymaps-maps",
     "port": 8014,
     "framework": "sveltekit",
     "src": "src",

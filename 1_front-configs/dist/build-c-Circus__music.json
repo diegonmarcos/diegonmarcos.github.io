@@ -14,10 +14,10 @@
   },
   "deploy": {},
   "_resolved": {
-    "path": "c-Circus/music",
-    "category": "c-Circus",
+    "path": "c_Circus/music",
+    "category": "c_Circus",
     "project": "music",
-    "key": "c-Circus__music",
+    "key": "c_Circus__music",
     "port": 8016,
     "framework": "vue",
     "src": "src",

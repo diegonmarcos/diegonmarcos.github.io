@@ -52,10 +52,10 @@
   },
   "deploy": {},
   "_resolved": {
-    "path": "c-LabTools/Music_DAW_LLMS",
-    "category": "c-LabTools",
+    "path": "c_LabTools/Music_DAW_LLMS",
+    "category": "c_LabTools",
     "project": "Music_DAW_LLMS",
-    "key": "c-LabTools__Music_DAW_LLMS",
+    "key": "c_LabTools__Music_DAW_LLMS",
     "port": 8035,
     "framework": "vanilla",
     "src": "src",

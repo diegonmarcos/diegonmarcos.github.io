@@ -83,10 +83,10 @@
   },
   "deploy": {},
   "_resolved": {
-    "path": "b-MyData/myhealth",
-    "category": "b-MyData",
+    "path": "b_MyData/myhealth",
+    "category": "b_MyData",
     "project": "myhealth",
-    "key": "b-MyData__myhealth",
+    "key": "b_MyData__myhealth",
     "port": 8026,
     "framework": "vanilla",
     "src": "src",

@@ -80,9 +80,9 @@
       ]
     },
     "deploy": {},
-    "_path": "a-Companies/leafy",
-    "_key": "a-Companies__leafy",
-    "_category": "a-Companies",
+    "_path": "a_Companies/leafy",
+    "_key": "a_Companies__leafy",
+    "_category": "a_Companies",
     "_project": "leafy"
   },
   {
@@ -175,9 +175,9 @@
       ]
     },
     "deploy": {},
-    "_path": "a-Companies/nexus",
-    "_key": "a-Companies__nexus",
-    "_category": "a-Companies",
+    "_path": "a_Companies/nexus",
+    "_key": "a_Companies__nexus",
+    "_category": "a_Companies",
     "_project": "nexus"
   },
   {
@@ -261,9 +261,9 @@
       ]
     },
     "deploy": {},
-    "_path": "a-Companies/stark",
-    "_key": "a-Companies__stark",
-    "_category": "a-Companies",
+    "_path": "a_Companies/stark",
+    "_key": "a_Companies__stark",
+    "_category": "a_Companies",
     "_project": "stark"
   },
   {
@@ -328,9 +328,9 @@
       "dir": "src"
     },
     "deploy": {},
-    "_path": "a-Individual/cv_pdf",
-    "_key": "a-Individual__cv_pdf",
-    "_category": "a-Individual",
+    "_path": "a_Individual/cv_pdf",
+    "_key": "a_Individual__cv_pdf",
+    "_category": "a_Individual",
     "_project": "cv_pdf"
   },
   {
@@ -421,9 +421,9 @@
       ]
     },
     "deploy": {},
-    "_path": "a-Individual/cv_web",
-    "_key": "a-Individual__cv_web",
-    "_category": "a-Individual",
+    "_path": "a_Individual/cv_web",
+    "_key": "a_Individual__cv_web",
+    "_category": "a_Individual",
     "_project": "cv_web"
   },
   {
@@ -509,9 +509,9 @@
       ]
     },
     "deploy": {},
-    "_path": "a-Individual/landpage",
-    "_key": "a-Individual__landpage",
-    "_category": "a-Individual",
+    "_path": "a_Individual/landpage",
+    "_key": "a_Individual__landpage",
+    "_category": "a_Individual",
     "_project": "landpage"
   },
   {
@@ -596,9 +596,9 @@
       ]
     },
     "deploy": {},
-    "_path": "a-Portals/cloud-mobile",
-    "_key": "a-Portals__cloud-mobile",
-    "_category": "a-Portals",
+    "_path": "a_Portals/cloud-mobile",
+    "_key": "a_Portals__cloud-mobile",
+    "_category": "a_Portals",
     "_project": "cloud-mobile"
   },
   {
@@ -665,9 +665,9 @@
       "release_tag": "latest",
       "fleet_manifest": "aa_cloud-superapp/data/constellation-fleet.json"
     },
-    "_path": "a-Portals/cloud-web",
-    "_key": "a-Portals__cloud-web",
-    "_category": "a-Portals",
+    "_path": "a_Portals/cloud-web",
+    "_key": "a_Portals__cloud-web",
+    "_category": "a_Portals",
     "_project": "cloud-web"
   },
   {
@@ -798,9 +798,9 @@
       ]
     },
     "deploy": {},
-    "_path": "a-Portals/cloud",
-    "_key": "a-Portals__cloud",
-    "_category": "a-Portals",
+    "_path": "a_Portals/cloud",
+    "_key": "a_Portals__cloud",
+    "_category": "a_Portals",
     "_project": "cloud"
   },
   {
@@ -814,7 +814,7 @@
         "_doc": "Bake this page's commit history into src/data-generated/commits.json so the Commits panel renders from the bundle instead of calling api.github.com from the visitor's browser, where the unauthenticated 60/hour-per-IP limit meant it almost always showed 'rate limit reached'. MUST run before esbuild, which inlines the JSON. Kept OUT of src/data/ on purpose: that directory is for hand-authored content, every *.json in it gets a PORTAL_DATA wrapper shipped to dist (dead weight here, the JSON is imported directly) and gets consolidated by 1_front-configs. Never fails the build: on a fetch error the previous file is kept.",
         "mod": "gh_commits",
         "repo": "diegonmarcos/diegonmarcos.github.io",
-        "dir": "a-Portals/linktree",
+        "dir": "a_Portals/linktree",
         "output": "src/data-generated/commits.json",
         "limit": 100
       },
@@ -930,9 +930,9 @@
       ]
     },
     "deploy": {},
-    "_path": "a-Portals/linktree",
-    "_key": "a-Portals__linktree",
-    "_category": "a-Portals",
+    "_path": "a_Portals/linktree",
+    "_key": "a_Portals__linktree",
+    "_category": "a_Portals",
     "_project": "linktree"
   },
   {
@@ -1021,9 +1021,9 @@
       ]
     },
     "deploy": {},
-    "_path": "a-Portals/linktree_icon-view",
-    "_key": "a-Portals__linktree_icon-view",
-    "_category": "a-Portals",
+    "_path": "a_Portals/linktree_icon-view",
+    "_key": "a_Portals__linktree_icon-view",
+    "_category": "a_Portals",
     "_project": "linktree_icon-view"
   },
   {
@@ -1114,9 +1114,9 @@
       ]
     },
     "deploy": {},
-    "_path": "a-Portals/linktree_mindmap",
-    "_key": "a-Portals__linktree_mindmap",
-    "_category": "a-Portals",
+    "_path": "a_Portals/linktree_mindmap",
+    "_key": "a_Portals__linktree_mindmap",
+    "_category": "a_Portals",
     "_project": "linktree_mindmap"
   },
   {
@@ -1207,9 +1207,9 @@
       ]
     },
     "deploy": {},
-    "_path": "a-Portals/linktree_pixel-world",
-    "_key": "a-Portals__linktree_pixel-world",
-    "_category": "a-Portals",
+    "_path": "a_Portals/linktree_pixel-world",
+    "_key": "a_Portals__linktree_pixel-world",
+    "_category": "a_Portals",
     "_project": "linktree_pixel-world"
   },
   {
@@ -1241,9 +1241,9 @@
       "dir": "src"
     },
     "deploy": {},
-    "_path": "a-Projects/Warehouse",
-    "_key": "a-Projects__Warehouse",
-    "_category": "a-Projects",
+    "_path": "a_Projects/Warehouse",
+    "_key": "a_Projects__Warehouse",
+    "_category": "a_Projects",
     "_project": "Warehouse"
   },
   {
@@ -1330,9 +1330,9 @@
       ]
     },
     "deploy": {},
-    "_path": "b-Data/myAstro",
-    "_key": "b-Data__myAstro",
-    "_category": "b-Data",
+    "_path": "b_Data/myAstro",
+    "_key": "b_Data__myAstro",
+    "_category": "b_Data",
     "_project": "myAstro"
   },
   {
@@ -1350,9 +1350,9 @@
       "mode": "vite"
     },
     "deploy": {},
-    "_path": "b-Data/myfeed",
-    "_key": "b-Data__myfeed",
-    "_category": "b-Data",
+    "_path": "b_Data/myfeed",
+    "_key": "b_Data__myfeed",
+    "_category": "b_Data",
     "_project": "myfeed"
   },
   {
@@ -1605,9 +1605,9 @@
       ]
     },
     "deploy": {},
-    "_path": "b-Media/mySocials",
-    "_key": "b-Media__mySocials",
-    "_category": "b-Media",
+    "_path": "b_Media/mySocials",
+    "_key": "b_Media__mySocials",
+    "_category": "b_Media",
     "_project": "mySocials"
   },
   {
@@ -1694,9 +1694,9 @@
       ]
     },
     "deploy": {},
-    "_path": "b-MyData/my-fin",
-    "_key": "b-MyData__my-fin",
-    "_category": "b-MyData",
+    "_path": "b_MyData/my-fin",
+    "_key": "b_MyData__my-fin",
+    "_category": "b_MyData",
     "_project": "my-fin"
   },
   {
@@ -1783,9 +1783,9 @@
       ]
     },
     "deploy": {},
-    "_path": "b-MyData/myTrackers",
-    "_key": "b-MyData__myTrackers",
-    "_category": "b-MyData",
+    "_path": "b_MyData/myTrackers",
+    "_key": "b_MyData__myTrackers",
+    "_category": "b_MyData",
     "_project": "myTrackers"
   },
   {
@@ -1846,9 +1846,9 @@
       "dir": "src"
     },
     "deploy": {},
-    "_path": "b-MyData/myhealth-profile",
-    "_key": "b-MyData__myhealth-profile",
-    "_category": "b-MyData",
+    "_path": "b_MyData/myhealth-profile",
+    "_key": "b_MyData__myhealth-profile",
+    "_category": "b_MyData",
     "_project": "myhealth-profile"
   },
   {
@@ -1939,9 +1939,9 @@
       ]
     },
     "deploy": {},
-    "_path": "b-MyData/myhealth-tracker",
-    "_key": "b-MyData__myhealth-tracker",
-    "_category": "b-MyData",
+    "_path": "b_MyData/myhealth-tracker",
+    "_key": "b_MyData__myhealth-tracker",
+    "_category": "b_MyData",
     "_project": "myhealth-tracker"
   },
   {
@@ -2028,9 +2028,9 @@
       ]
     },
     "deploy": {},
-    "_path": "b-MyData/myhealth",
-    "_key": "b-MyData__myhealth",
-    "_category": "b-MyData",
+    "_path": "b_MyData/myhealth",
+    "_key": "b_MyData__myhealth",
+    "_category": "b_MyData",
     "_project": "myhealth"
   },
   {
@@ -2122,9 +2122,9 @@
       ]
     },
     "deploy": {},
-    "_path": "b-MyData/myid",
-    "_key": "b-MyData__myid",
-    "_category": "b-MyData",
+    "_path": "b_MyData/myid",
+    "_key": "b_MyData__myid",
+    "_category": "b_MyData",
     "_project": "myid"
   },
   {
@@ -2142,9 +2142,9 @@
       "mode": "vite"
     },
     "deploy": {},
-    "_path": "b-MyData/mymaps-mytrips",
-    "_key": "b-MyData__mymaps-mytrips",
-    "_category": "b-MyData",
+    "_path": "b_MyData/mymaps-mytrips",
+    "_key": "b_MyData__mymaps-mytrips",
+    "_category": "b_MyData",
     "_project": "mymaps-mytrips"
   },
   {
@@ -2203,9 +2203,9 @@
       "dir": "src"
     },
     "deploy": {},
-    "_path": "b-MyData/myphotos",
-    "_key": "b-MyData__myphotos",
-    "_category": "b-MyData",
+    "_path": "b_MyData/myphotos",
+    "_key": "b_MyData__myphotos",
+    "_category": "b_MyData",
     "_project": "myphotos"
   },
   {
@@ -2223,9 +2223,9 @@
       "mode": "sveltekit"
     },
     "deploy": {},
-    "_path": "b-Profiles/myprofile",
-    "_key": "b-Profiles__myprofile",
-    "_category": "b-Profiles",
+    "_path": "b_Profiles/myprofile",
+    "_key": "b_Profiles__myprofile",
+    "_category": "b_Profiles",
     "_project": "myprofile"
   },
   {
@@ -2243,9 +2243,9 @@
       "mode": "sveltekit"
     },
     "deploy": {},
-    "_path": "b-Projects/galaxy-earth",
-    "_key": "b-Projects__galaxy-earth",
-    "_category": "b-Projects",
+    "_path": "b_Projects/galaxy-earth",
+    "_key": "b_Projects__galaxy-earth",
+    "_category": "b_Projects",
     "_project": "galaxy-earth"
   },
   {
@@ -2263,9 +2263,9 @@
       "mode": "sveltekit"
     },
     "deploy": {},
-    "_path": "b-Projects/galaxy-x1",
-    "_key": "b-Projects__galaxy-x1",
-    "_category": "b-Projects",
+    "_path": "b_Projects/galaxy-x1",
+    "_key": "b_Projects__galaxy-x1",
+    "_category": "b_Projects",
     "_project": "galaxy-x1"
   },
   {
@@ -2283,9 +2283,9 @@
       "mode": "sveltekit"
     },
     "deploy": {},
-    "_path": "b-Projects/galaxy",
-    "_key": "b-Projects__galaxy",
-    "_category": "b-Projects",
+    "_path": "b_Projects/galaxy",
+    "_key": "b_Projects__galaxy",
+    "_category": "b_Projects",
     "_project": "galaxy"
   },
   {
@@ -2371,9 +2371,9 @@
       ]
     },
     "deploy": {},
-    "_path": "c-Circus/carto",
-    "_key": "c-Circus__carto",
-    "_category": "c-Circus",
+    "_path": "c_Circus/carto",
+    "_key": "c_Circus__carto",
+    "_category": "c_Circus",
     "_project": "carto"
   },
   {
@@ -2391,9 +2391,9 @@
       "mode": "sveltekit"
     },
     "deploy": {},
-    "_path": "c-Circus/games",
-    "_key": "c-Circus__games",
-    "_category": "c-Circus",
+    "_path": "c_Circus/games",
+    "_key": "c_Circus__games",
+    "_category": "c_Circus",
     "_project": "games"
   },
   {
@@ -2416,9 +2416,9 @@
       "mode": "vite"
     },
     "deploy": {},
-    "_path": "c-Circus/movies",
-    "_key": "c-Circus__movies",
-    "_category": "c-Circus",
+    "_path": "c_Circus/movies",
+    "_key": "c_Circus__movies",
+    "_category": "c_Circus",
     "_project": "movies"
   },
   {
@@ -2436,9 +2436,9 @@
       "mode": "vite"
     },
     "deploy": {},
-    "_path": "c-Circus/music",
-    "_key": "c-Circus__music",
-    "_category": "c-Circus",
+    "_path": "c_Circus/music",
+    "_key": "c_Circus__music",
+    "_category": "c_Circus",
     "_project": "music"
   },
   {
@@ -2494,9 +2494,9 @@
       ]
     },
     "deploy": {},
-    "_path": "c-LabTools/Music_DAW_LLMS",
-    "_key": "c-LabTools__Music_DAW_LLMS",
-    "_category": "c-LabTools",
+    "_path": "c_LabTools/Music_DAW_LLMS",
+    "_key": "c_LabTools__Music_DAW_LLMS",
+    "_category": "c_LabTools",
     "_project": "Music_DAW_LLMS"
   },
   {
@@ -2552,9 +2552,9 @@
       ]
     },
     "deploy": {},
-    "_path": "c-LabTools/Music_DJ-Mixer_Mixxx",
-    "_key": "c-LabTools__Music_DJ-Mixer_Mixxx",
-    "_category": "c-LabTools",
+    "_path": "c_LabTools/Music_DJ-Mixer_Mixxx",
+    "_key": "c_LabTools__Music_DJ-Mixer_Mixxx",
+    "_category": "c_LabTools",
     "_project": "Music_DJ-Mixer_Mixxx"
   },
   {
@@ -2583,9 +2583,9 @@
       "mode": "vite"
     },
     "deploy": {},
-    "_path": "c-LabTools/central_bank",
-    "_key": "c-LabTools__central_bank",
-    "_category": "c-LabTools",
+    "_path": "c_LabTools/central_bank",
+    "_key": "c_LabTools__central_bank",
+    "_category": "c_LabTools",
     "_project": "central_bank"
   },
   {
@@ -2686,9 +2686,9 @@
       ]
     },
     "deploy": {},
-    "_path": "c-LabTools/fin-terminal",
-    "_key": "c-LabTools__fin-terminal",
-    "_category": "c-LabTools",
+    "_path": "c_LabTools/fin-terminal",
+    "_key": "c_LabTools__fin-terminal",
+    "_category": "c_LabTools",
     "_project": "fin-terminal"
   },
   {
@@ -2779,9 +2779,9 @@
       ]
     },
     "deploy": {},
-    "_path": "c-LabTools/market_watch",
-    "_key": "c-LabTools__market_watch",
-    "_category": "c-LabTools",
+    "_path": "c_LabTools/market_watch",
+    "_key": "c_LabTools__market_watch",
+    "_category": "c_LabTools",
     "_project": "market_watch"
   },
   {
@@ -2872,9 +2872,9 @@
       ]
     },
     "deploy": {},
-    "_path": "c-LabTools/news",
-    "_key": "c-LabTools__news",
-    "_category": "c-LabTools",
+    "_path": "c_LabTools/news",
+    "_key": "c_LabTools__news",
+    "_category": "c_LabTools",
     "_project": "news"
   },
   {
@@ -2965,9 +2965,9 @@
       ]
     },
     "deploy": {},
-    "_path": "c-LabTools/sailytics",
-    "_key": "c-LabTools__sailytics",
-    "_category": "c-LabTools",
+    "_path": "c_LabTools/sailytics",
+    "_key": "c_LabTools__sailytics",
+    "_category": "c_LabTools",
     "_project": "sailytics"
   },
   {
@@ -2989,9 +2989,9 @@
       "dir": "src"
     },
     "deploy": {},
-    "_path": "c-Suite/grist",
-    "_key": "c-Suite__grist",
-    "_category": "c-Suite",
+    "_path": "c_Suite/grist",
+    "_key": "c_Suite__grist",
+    "_category": "c_Suite",
     "_project": "grist"
   },
   {
@@ -3009,9 +3009,9 @@
       "mode": "vite"
     },
     "deploy": {},
-    "_path": "c-Suite/json-vision",
-    "_key": "c-Suite__json-vision",
-    "_category": "c-Suite",
+    "_path": "c_Suite/json-vision",
+    "_key": "c_Suite__json-vision",
+    "_category": "c_Suite",
     "_project": "json-vision"
   },
   {
@@ -3148,9 +3148,9 @@
       "dir": "dist"
     },
     "deploy": {},
-    "_path": "c-Suite/myhealth-feedyourself",
-    "_key": "c-Suite__myhealth-feedyourself",
-    "_category": "c-Suite",
+    "_path": "c_Suite/myhealth-feedyourself",
+    "_key": "c_Suite__myhealth-feedyourself",
+    "_category": "c_Suite",
     "_project": "myhealth-feedyourself"
   },
   {
@@ -3213,9 +3213,9 @@
       "dir": "src"
     },
     "deploy": {},
-    "_path": "c-Suite/mymail",
-    "_key": "c-Suite__mymail",
-    "_category": "c-Suite",
+    "_path": "c_Suite/mymail",
+    "_key": "c_Suite__mymail",
+    "_category": "c_Suite",
     "_project": "mymail"
   },
   {
@@ -3233,9 +3233,9 @@
       "mode": "sveltekit"
     },
     "deploy": {},
-    "_path": "c-Suite/mymaps-maps",
-    "_key": "c-Suite__mymaps-maps",
-    "_category": "c-Suite",
+    "_path": "c_Suite/mymaps-maps",
+    "_key": "c_Suite__mymaps-maps",
+    "_category": "c_Suite",
     "_project": "mymaps-maps"
   },
   {
@@ -3253,9 +3253,9 @@
       "mode": "sveltekit"
     },
     "deploy": {},
-    "_path": "c-Suite/mymaps-navigation",
-    "_key": "c-Suite__mymaps-navigation",
-    "_category": "c-Suite",
+    "_path": "c_Suite/mymaps-navigation",
+    "_key": "c_Suite__mymaps-navigation",
+    "_category": "c_Suite",
     "_project": "mymaps-navigation"
   },
   {
@@ -3342,9 +3342,9 @@
       ]
     },
     "deploy": {},
-    "_path": "c-Suite/mymaps",
-    "_key": "c-Suite__mymaps",
-    "_category": "c-Suite",
+    "_path": "c_Suite/mymaps",
+    "_key": "c_Suite__mymaps",
+    "_category": "c_Suite",
     "_project": "mymaps"
   },
   {
@@ -3431,9 +3431,9 @@
       ]
     },
     "deploy": {},
-    "_path": "c-Suite/suite",
-    "_key": "c-Suite__suite",
-    "_category": "c-Suite",
+    "_path": "c_Suite/suite",
+    "_key": "c_Suite__suite",
+    "_category": "c_Suite",
     "_project": "suite"
   },
   {
@@ -3451,9 +3451,9 @@
       "mode": "vite"
     },
     "deploy": {},
-    "_path": "c-Suite/tldraw",
-    "_key": "c-Suite__tldraw",
-    "_category": "c-Suite",
+    "_path": "c_Suite/tldraw",
+    "_key": "c_Suite__tldraw",
+    "_category": "c_Suite",
     "_project": "tldraw"
   },
   {

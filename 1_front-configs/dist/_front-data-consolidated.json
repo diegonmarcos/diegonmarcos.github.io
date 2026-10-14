@@ -57,10 +57,10 @@
   },
   "projects": [
     {
-      "category": "a-Companies",
+      "category": "a_Companies",
       "project": "leafy",
-      "key": "a-Companies__leafy",
-      "path": "a-Companies/leafy",
+      "key": "a_Companies__leafy",
+      "path": "a_Companies/leafy",
       "build": {
         "name": "Leafy",
         "framework": "vanilla",
@@ -171,10 +171,10 @@
       }
     },
     {
-      "category": "a-Companies",
+      "category": "a_Companies",
       "project": "nexus",
-      "key": "a-Companies__nexus",
-      "path": "a-Companies/nexus",
+      "key": "a_Companies__nexus",
+      "path": "a_Companies/nexus",
       "build": {
         "name": "Nexus",
         "framework": "vanilla",
@@ -286,10 +286,10 @@
       }
     },
     {
-      "category": "a-Companies",
+      "category": "a_Companies",
       "project": "stark",
-      "key": "a-Companies__stark",
-      "path": "a-Companies/stark",
+      "key": "a_Companies__stark",
+      "path": "a_Companies/stark",
       "build": {
         "name": "Stark",
         "framework": "vanilla",
@@ -377,10 +377,10 @@
       "has_dist": true
     },
     {
-      "category": "a-Individual",
+      "category": "a_Individual",
       "project": "cv_pdf",
-      "key": "a-Individual__cv_pdf",
-      "path": "a-Individual/cv_pdf",
+      "key": "a_Individual__cv_pdf",
+      "path": "a_Individual/cv_pdf",
       "build": {
         "name": "CV PDF",
         "framework": "vanilla",
@@ -449,10 +449,10 @@
       "has_dist": true
     },
     {
-      "category": "a-Individual",
+      "category": "a_Individual",
       "project": "cv_web",
-      "key": "a-Individual__cv_web",
-      "path": "a-Individual/cv_web",
+      "key": "a_Individual__cv_web",
+      "path": "a_Individual/cv_web",
       "build": {
         "name": "CV Web",
         "framework": "vanilla",
@@ -576,10 +576,10 @@
       }
     },
     {
-      "category": "a-Individual",
+      "category": "a_Individual",
       "project": "landpage",
-      "key": "a-Individual__landpage",
-      "path": "a-Individual/landpage",
+      "key": "a_Individual__landpage",
+      "path": "a_Individual/landpage",
       "build": {
         "name": "Landpage",
         "framework": "vanilla",
@@ -669,10 +669,10 @@
       "has_dist": true
     },
     {
-      "category": "a-Portals",
+      "category": "a_Portals",
       "project": "cloud-mobile",
-      "key": "a-Portals__cloud-mobile",
-      "path": "a-Portals/cloud-mobile",
+      "key": "a_Portals__cloud-mobile",
+      "path": "a_Portals/cloud-mobile",
       "build": {
         "name": "Cloud Mobile",
         "framework": "vanilla",
@@ -808,10 +808,10 @@
       }
     },
     {
-      "category": "a-Portals",
+      "category": "a_Portals",
       "project": "cloud-web",
-      "key": "a-Portals__cloud-web",
-      "path": "a-Portals/cloud-web",
+      "key": "a_Portals__cloud-web",
+      "path": "a_Portals/cloud-web",
       "build": {
         "name": "Cloud Web",
         "framework": "vanilla",
@@ -908,10 +908,10 @@
       }
     },
     {
-      "category": "a-Portals",
+      "category": "a_Portals",
       "project": "cloud",
-      "key": "a-Portals__cloud",
-      "path": "a-Portals/cloud",
+      "key": "a_Portals__cloud",
+      "path": "a_Portals/cloud",
       "build": {
         "name": "Cloud",
         "framework": "vanilla",
@@ -1081,10 +1081,10 @@
       }
     },
     {
-      "category": "a-Portals",
+      "category": "a_Portals",
       "project": "linktree",
-      "key": "a-Portals__linktree",
-      "path": "a-Portals/linktree",
+      "key": "a_Portals__linktree",
+      "path": "a_Portals/linktree",
       "build": {
         "name": "Linktree",
         "framework": "vanilla",
@@ -1096,7 +1096,7 @@
             "_doc": "Bake this page's commit history into src/data-generated/commits.json so the Commits panel renders from the bundle instead of calling api.github.com from the visitor's browser, where the unauthenticated 60/hour-per-IP limit meant it almost always showed 'rate limit reached'. MUST run before esbuild, which inlines the JSON. Kept OUT of src/data/ on purpose: that directory is for hand-authored content, every *.json in it gets a PORTAL_DATA wrapper shipped to dist (dead weight here, the JSON is imported directly) and gets consolidated by 1_front-configs. Never fails the build: on a fetch error the previous file is kept.",
             "mod": "gh_commits",
             "repo": "diegonmarcos/diegonmarcos.github.io",
-            "dir": "a-Portals/linktree",
+            "dir": "a_Portals/linktree",
             "output": "src/data-generated/commits.json",
             "limit": 100
           },
@@ -1299,10 +1299,10 @@
       }
     },
     {
-      "category": "a-Portals",
+      "category": "a_Portals",
       "project": "linktree_icon-view",
-      "key": "a-Portals__linktree_icon-view",
-      "path": "a-Portals/linktree_icon-view",
+      "key": "a_Portals__linktree_icon-view",
+      "path": "a_Portals/linktree_icon-view",
       "build": {
         "name": "Linktree Icon View",
         "framework": "vanilla",
@@ -1416,10 +1416,10 @@
       }
     },
     {
-      "category": "a-Portals",
+      "category": "a_Portals",
       "project": "linktree_mindmap",
-      "key": "a-Portals__linktree_mindmap",
-      "path": "a-Portals/linktree_mindmap",
+      "key": "a_Portals__linktree_mindmap",
+      "path": "a_Portals/linktree_mindmap",
       "build": {
         "name": "Linktree Mindmap",
         "framework": "vanilla",
@@ -1537,10 +1537,10 @@
       }
     },
     {
-      "category": "a-Portals",
+      "category": "a_Portals",
       "project": "linktree_pixel-world",
-      "key": "a-Portals__linktree_pixel-world",
-      "path": "a-Portals/linktree_pixel-world",
+      "key": "a_Portals__linktree_pixel-world",
+      "path": "a_Portals/linktree_pixel-world",
       "build": {
         "name": "Linktree Pixel World",
         "framework": "vanilla",
@@ -1661,10 +1661,10 @@
       }
     },
     {
-      "category": "a-Projects",
+      "category": "a_Projects",
       "project": "Warehouse",
-      "key": "a-Projects__Warehouse",
-      "path": "a-Projects/Warehouse",
+      "key": "a_Projects__Warehouse",
+      "path": "a_Projects/Warehouse",
       "build": {
         "name": "SlabTwin 3D Warehouse",
         "framework": "vanilla",
@@ -1720,10 +1720,10 @@
       }
     },
     {
-      "category": "b-Data",
+      "category": "b_Data",
       "project": "myAstro",
-      "key": "b-Data__myAstro",
-      "path": "b-Data/myAstro",
+      "key": "b_Data__myAstro",
+      "path": "b_Data/myAstro",
       "build": {
         "name": "myAstro",
         "framework": "vanilla",
@@ -1836,10 +1836,10 @@
       }
     },
     {
-      "category": "b-Data",
+      "category": "b_Data",
       "project": "myfeed",
-      "key": "b-Data__myfeed",
-      "path": "b-Data/myfeed",
+      "key": "b_Data__myfeed",
+      "path": "b_Data/myfeed",
       "build": {
         "name": "MyFeed",
         "framework": "vue",
@@ -1928,10 +1928,10 @@
       }
     },
     {
-      "category": "b-Media",
+      "category": "b_Media",
       "project": "mySocials",
-      "key": "b-Media__mySocials",
-      "path": "b-Media/mySocials",
+      "key": "b_Media__mySocials",
+      "path": "b_Media/mySocials",
       "build": {
         "name": "mySocials",
         "framework": "vanilla",
@@ -2188,10 +2188,10 @@
       "has_dist": true
     },
     {
-      "category": "b-MyData",
+      "category": "b_MyData",
       "project": "my-fin",
-      "key": "b-MyData__my-fin",
-      "path": "b-MyData/my-fin",
+      "key": "b_MyData__my-fin",
+      "path": "b_MyData/my-fin",
       "build": {
         "name": "My Financials",
         "framework": "vanilla",
@@ -2282,10 +2282,10 @@
       "has_dist": true
     },
     {
-      "category": "b-MyData",
+      "category": "b_MyData",
       "project": "myTrackers",
-      "key": "b-MyData__myTrackers",
-      "path": "b-MyData/myTrackers",
+      "key": "b_MyData__myTrackers",
+      "path": "b_MyData/myTrackers",
       "build": {
         "name": "MyTrackers",
         "framework": "vanilla",
@@ -2376,10 +2376,10 @@
       "has_dist": true
     },
     {
-      "category": "b-MyData",
+      "category": "b_MyData",
       "project": "myhealth-profile",
-      "key": "b-MyData__myhealth-profile",
-      "path": "b-MyData/myhealth-profile",
+      "key": "b_MyData__myhealth-profile",
+      "path": "b_MyData/myhealth-profile",
       "build": {
         "name": "MyHealth Profile",
         "framework": "vanilla",
@@ -2444,10 +2444,10 @@
       "has_dist": true
     },
     {
-      "category": "b-MyData",
+      "category": "b_MyData",
       "project": "myhealth-tracker",
-      "key": "b-MyData__myhealth-tracker",
-      "path": "b-MyData/myhealth-tracker",
+      "key": "b_MyData__myhealth-tracker",
+      "path": "b_MyData/myhealth-tracker",
       "build": {
         "name": "MyHealth Tracker",
         "framework": "vanilla",
@@ -2542,10 +2542,10 @@
       "has_dist": true
     },
     {
-      "category": "b-MyData",
+      "category": "b_MyData",
       "project": "myhealth",
-      "key": "b-MyData__myhealth",
-      "path": "b-MyData/myhealth",
+      "key": "b_MyData__myhealth",
+      "path": "b_MyData/myhealth",
       "build": {
         "name": "MyHealth",
         "framework": "vanilla",
@@ -2636,10 +2636,10 @@
       "has_dist": true
     },
     {
-      "category": "b-MyData",
+      "category": "b_MyData",
       "project": "myid",
-      "key": "b-MyData__myid",
-      "path": "b-MyData/myid",
+      "key": "b_MyData__myid",
+      "path": "b_MyData/myid",
       "build": {
         "name": "myID",
         "framework": "vanilla",
@@ -2735,10 +2735,10 @@
       "has_dist": true
     },
     {
-      "category": "b-MyData",
+      "category": "b_MyData",
       "project": "mymaps-mytrips",
-      "key": "b-MyData__mymaps-mytrips",
-      "path": "b-MyData/mymaps-mytrips",
+      "key": "b_MyData__mymaps-mytrips",
+      "path": "b_MyData/mymaps-mytrips",
       "build": {
         "name": "MyMaps MyTrips",
         "framework": "vue",
@@ -2803,10 +2803,10 @@
       }
     },
     {
-      "category": "b-MyData",
+      "category": "b_MyData",
       "project": "myphotos",
-      "key": "b-MyData__myphotos",
-      "path": "b-MyData/myphotos",
+      "key": "b_MyData__myphotos",
+      "path": "b_MyData/myphotos",
       "build": {
         "name": "MyPhotos",
         "framework": "vanilla",
@@ -2869,10 +2869,10 @@
       "has_dist": true
     },
     {
-      "category": "b-Profiles",
+      "category": "b_Profiles",
       "project": "myprofile",
-      "key": "b-Profiles__myprofile",
-      "path": "b-Profiles/myprofile",
+      "key": "b_Profiles__myprofile",
+      "path": "b_Profiles/myprofile",
       "build": {
         "name": "MyProfile",
         "framework": "sveltekit",
@@ -2916,10 +2916,10 @@
       }
     },
     {
-      "category": "b-Projects",
+      "category": "b_Projects",
       "project": "galaxy-earth",
-      "key": "b-Projects__galaxy-earth",
-      "path": "b-Projects/galaxy-earth",
+      "key": "b_Projects__galaxy-earth",
+      "path": "b_Projects/galaxy-earth",
       "build": {
         "name": "Galaxy-Earth",
         "framework": "sveltekit",
@@ -2970,10 +2970,10 @@
       }
     },
     {
-      "category": "b-Projects",
+      "category": "b_Projects",
       "project": "galaxy-x1",
-      "key": "b-Projects__galaxy-x1",
-      "path": "b-Projects/galaxy-x1",
+      "key": "b_Projects__galaxy-x1",
+      "path": "b_Projects/galaxy-x1",
       "build": {
         "name": "Galaxy-X1",
         "framework": "sveltekit",
@@ -3024,10 +3024,10 @@
       }
     },
     {
-      "category": "b-Projects",
+      "category": "b_Projects",
       "project": "galaxy",
-      "key": "b-Projects__galaxy",
-      "path": "b-Projects/galaxy",
+      "key": "b_Projects__galaxy",
+      "path": "b_Projects/galaxy",
       "build": {
         "name": "Galaxy",
         "framework": "sveltekit",
@@ -3072,10 +3072,10 @@
       }
     },
     {
-      "category": "c-Circus",
+      "category": "c_Circus",
       "project": "carto",
-      "key": "c-Circus__carto",
-      "path": "c-Circus/carto",
+      "key": "c_Circus__carto",
+      "path": "c_Circus/carto",
       "build": {
         "name": "Carto",
         "framework": "vanilla",
@@ -3165,10 +3165,10 @@
       "has_dist": true
     },
     {
-      "category": "c-Circus",
+      "category": "c_Circus",
       "project": "games",
-      "key": "c-Circus__games",
-      "path": "c-Circus/games",
+      "key": "c_Circus__games",
+      "path": "c_Circus/games",
       "build": {
         "name": "Games",
         "framework": "sveltekit",
@@ -3221,10 +3221,10 @@
       }
     },
     {
-      "category": "c-Circus",
+      "category": "c_Circus",
       "project": "movies",
-      "key": "c-Circus__movies",
-      "path": "c-Circus/movies",
+      "key": "c_Circus__movies",
+      "path": "c_Circus/movies",
       "build": {
         "name": "Movies",
         "framework": "vue",
@@ -3277,10 +3277,10 @@
       }
     },
     {
-      "category": "c-Circus",
+      "category": "c_Circus",
       "project": "music",
-      "key": "c-Circus__music",
-      "path": "c-Circus/music",
+      "key": "c_Circus__music",
+      "path": "c_Circus/music",
       "build": {
         "name": "Music",
         "framework": "vue",
@@ -3328,10 +3328,10 @@
       }
     },
     {
-      "category": "c-LabTools",
+      "category": "c_LabTools",
       "project": "Music_DAW_LLMS",
-      "key": "c-LabTools__Music_DAW_LLMS",
-      "path": "c-LabTools/Music_DAW_LLMS",
+      "key": "c_LabTools__Music_DAW_LLMS",
+      "path": "c_LabTools/Music_DAW_LLMS",
       "build": {
         "name": "LMMS",
         "framework": "vanilla",
@@ -3391,10 +3391,10 @@
       "has_dist": true
     },
     {
-      "category": "c-LabTools",
+      "category": "c_LabTools",
       "project": "Music_DJ-Mixer_Mixxx",
-      "key": "c-LabTools__Music_DJ-Mixer_Mixxx",
-      "path": "c-LabTools/Music_DJ-Mixer_Mixxx",
+      "key": "c_LabTools__Music_DJ-Mixer_Mixxx",
+      "path": "c_LabTools/Music_DJ-Mixer_Mixxx",
       "build": {
         "name": "Mixxx",
         "framework": "vanilla",
@@ -3454,10 +3454,10 @@
       "has_dist": true
     },
     {
-      "category": "c-LabTools",
+      "category": "c_LabTools",
       "project": "central_bank",
-      "key": "c-LabTools__central_bank",
-      "path": "c-LabTools/central_bank",
+      "key": "c_LabTools__central_bank",
+      "path": "c_LabTools/central_bank",
       "build": {
         "name": "CentralBank",
         "framework": "vanilla",
@@ -3512,10 +3512,10 @@
       }
     },
     {
-      "category": "c-LabTools",
+      "category": "c_LabTools",
       "project": "fin-terminal",
-      "key": "c-LabTools__fin-terminal",
-      "path": "c-LabTools/fin-terminal",
+      "key": "c_LabTools__fin-terminal",
+      "path": "c_LabTools/fin-terminal",
       "build": {
         "name": "FinTerminal",
         "framework": "vanilla",
@@ -3642,10 +3642,10 @@
       }
     },
     {
-      "category": "c-LabTools",
+      "category": "c_LabTools",
       "project": "market_watch",
-      "key": "c-LabTools__market_watch",
-      "path": "c-LabTools/market_watch",
+      "key": "c_LabTools__market_watch",
+      "path": "c_LabTools/market_watch",
       "build": {
         "name": "MarketWatch",
         "framework": "vanilla",
@@ -3776,10 +3776,10 @@
       }
     },
     {
-      "category": "c-LabTools",
+      "category": "c_LabTools",
       "project": "news",
-      "key": "c-LabTools__news",
-      "path": "c-LabTools/news",
+      "key": "c_LabTools__news",
+      "path": "c_LabTools/news",
       "build": {
         "name": "GDELTNews",
         "framework": "vanilla",
@@ -3894,10 +3894,10 @@
       }
     },
     {
-      "category": "c-LabTools",
+      "category": "c_LabTools",
       "project": "sailytics",
-      "key": "c-LabTools__sailytics",
-      "path": "c-LabTools/sailytics",
+      "key": "c_LabTools__sailytics",
+      "path": "c_LabTools/sailytics",
       "build": {
         "name": "Sailyng",
         "framework": "vanilla",
@@ -4003,10 +4003,10 @@
       }
     },
     {
-      "category": "c-Suite",
+      "category": "c_Suite",
       "project": "grist",
-      "key": "c-Suite__grist",
-      "path": "c-Suite/grist",
+      "key": "c_Suite__grist",
+      "path": "c_Suite/grist",
       "build": {
         "name": "Sheets (Grist)",
         "framework": "vanilla",
@@ -4032,10 +4032,10 @@
       "has_dist": true
     },
     {
-      "category": "c-Suite",
+      "category": "c_Suite",
       "project": "json-vision",
-      "key": "c-Suite__json-vision",
-      "path": "c-Suite/json-vision",
+      "key": "c_Suite__json-vision",
+      "path": "c_Suite/json-vision",
       "build": {
         "name": "JSON Vision",
         "framework": "vue",
@@ -4083,10 +4083,10 @@
       }
     },
     {
-      "category": "c-Suite",
+      "category": "c_Suite",
       "project": "myhealth-feedyourself",
-      "key": "c-Suite__myhealth-feedyourself",
-      "path": "c-Suite/myhealth-feedyourself",
+      "key": "c_Suite__myhealth-feedyourself",
+      "path": "c_Suite/myhealth-feedyourself",
       "build": {
         "name": "MyHealth FeedYourself",
         "framework": "vanilla",
@@ -4250,10 +4250,10 @@
       }
     },
     {
-      "category": "c-Suite",
+      "category": "c_Suite",
       "project": "mymail",
-      "key": "c-Suite__mymail",
-      "path": "c-Suite/mymail",
+      "key": "c_Suite__mymail",
+      "path": "c_Suite/mymail",
       "build": {
         "name": "MyMail",
         "framework": "vanilla",
@@ -4320,10 +4320,10 @@
       "has_dist": true
     },
     {
-      "category": "c-Suite",
+      "category": "c_Suite",
       "project": "mymaps-maps",
-      "key": "c-Suite__mymaps-maps",
-      "path": "c-Suite/mymaps-maps",
+      "key": "c_Suite__mymaps-maps",
+      "path": "c_Suite/mymaps-maps",
       "build": {
         "name": "MyMaps Maps",
         "framework": "sveltekit",
@@ -4378,10 +4378,10 @@
       }
     },
     {
-      "category": "c-Suite",
+      "category": "c_Suite",
       "project": "mymaps-navigation",
-      "key": "c-Suite__mymaps-navigation",
-      "path": "c-Suite/mymaps-navigation",
+      "key": "c_Suite__mymaps-navigation",
+      "path": "c_Suite/mymaps-navigation",
       "build": {
         "name": "MyMaps Navigation",
         "framework": "sveltekit",
@@ -4440,10 +4440,10 @@
       }
     },
     {
-      "category": "c-Suite",
+      "category": "c_Suite",
       "project": "mymaps",
-      "key": "c-Suite__mymaps",
-      "path": "c-Suite/mymaps",
+      "key": "c_Suite__mymaps",
+      "path": "c_Suite/mymaps",
       "build": {
         "name": "MyMaps",
         "framework": "vanilla",
@@ -4534,10 +4534,10 @@
       "has_dist": true
     },
     {
-      "category": "c-Suite",
+      "category": "c_Suite",
       "project": "suite",
-      "key": "c-Suite__suite",
-      "path": "c-Suite/suite",
+      "key": "c_Suite__suite",
+      "path": "c_Suite/suite",
       "build": {
         "name": "Suite",
         "framework": "vanilla",
@@ -4628,10 +4628,10 @@
       "has_dist": true
     },
     {
-      "category": "c-Suite",
+      "category": "c_Suite",
       "project": "tldraw",
-      "key": "c-Suite__tldraw",
-      "path": "c-Suite/tldraw",
+      "key": "c_Suite__tldraw",
+      "path": "c_Suite/tldraw",
       "build": {
         "name": "tldraw",
         "framework": "react",
@@ -4824,143 +4824,143 @@
       "deploy_name": "."
     },
     {
-      "path": "a-Portals/cloud",
+      "path": "a_Portals/cloud",
       "deploy_name": "cloud"
     },
     {
-      "path": "a-Portals/cloud-mobile",
+      "path": "a_Portals/cloud-mobile",
       "deploy_name": "cloud-mobile"
     },
     {
-      "path": "a-Portals/cloud-web",
+      "path": "a_Portals/cloud-web",
       "deploy_name": "cloud-web"
     },
     {
-      "path": "a-Portals/linktree",
+      "path": "a_Portals/linktree",
       "deploy_name": "linktree"
     },
     {
-      "path": "a-Portals/linktree_mindmap",
+      "path": "a_Portals/linktree_mindmap",
       "deploy_name": "linktree_mindmap"
     },
     {
-      "path": "a-Portals/linktree_pixel-world",
+      "path": "a_Portals/linktree_pixel-world",
       "deploy_name": "linktree_pixel-world"
     },
     {
-      "path": "a-Portals/linktree_icon-view",
+      "path": "a_Portals/linktree_icon-view",
       "deploy_name": "linktree_icon-view"
     },
     {
-      "path": "a-Individual/cv_pdf",
+      "path": "a_Individual/cv_pdf",
       "deploy_name": "cv_pdf"
     },
     {
-      "path": "a-Individual/cv_web",
+      "path": "a_Individual/cv_web",
       "deploy_name": "cv_web"
     },
     {
-      "path": "a-Individual/landpage",
+      "path": "a_Individual/landpage",
       "deploy_name": "landpage"
     },
     {
-      "path": "a-Companies/leafy",
+      "path": "a_Companies/leafy",
       "deploy_name": "leafy"
     },
     {
-      "path": "b-Projects/galaxy",
+      "path": "b_Projects/galaxy",
       "deploy_name": "galaxy"
     },
     {
-      "path": "b-Projects/galaxy-gaia",
+      "path": "b_Projects/galaxy-gaia",
       "deploy_name": "galaxy-gaia"
     },
     {
-      "path": "b-Profiles/myprofile",
+      "path": "b_Profiles/myprofile",
       "deploy_name": "myprofile"
     },
     {
-      "path": "a-Companies/nexus",
+      "path": "a_Companies/nexus",
       "deploy_name": "nexus"
     },
     {
-      "path": "a-Companies/stark",
+      "path": "a_Companies/stark",
       "deploy_name": "stark"
     },
     {
-      "path": "c-Suite/json-vision",
+      "path": "c_Suite/json-vision",
       "deploy_name": "json-vision"
     },
     {
-      "path": "c-Suite/mymail",
+      "path": "c_Suite/mymail",
       "deploy_name": "mymail"
     },
     {
-      "path": "b-MyData/myphotos",
+      "path": "b_MyData/myphotos",
       "deploy_name": "myphotos"
     },
     {
-      "path": "b-MyData/myTrackers",
+      "path": "b_MyData/myTrackers",
       "deploy_name": "myTrackers"
     },
     {
-      "path": "c-Suite/suite",
+      "path": "c_Suite/suite",
       "deploy_name": "suite"
     },
     {
-      "path": "c-Suite/tldraw",
+      "path": "c_Suite/tldraw",
       "deploy_name": "tldraw"
     },
     {
-      "path": "b-Data/myAstro",
+      "path": "b_Data/myAstro",
       "deploy_name": "myAstro"
     },
     {
-      "path": "c-Circus/carto",
+      "path": "c_Circus/carto",
       "deploy_name": "carto"
     },
     {
-      "path": "c-LabTools/central_bank",
+      "path": "c_LabTools/central_bank",
       "deploy_name": "central_bank"
     },
     {
-      "path": "c-Suite/myhealth-feedyourself",
+      "path": "c_Suite/myhealth-feedyourself",
       "deploy_name": "myhealth-feedyourself"
     },
     {
-      "path": "b-MyData/myhealth-profile",
+      "path": "b_MyData/myhealth-profile",
       "deploy_name": "myhealth-profile"
     },
     {
-      "path": "c-Suite/mymaps-maps",
+      "path": "c_Suite/mymaps-maps",
       "deploy_name": "mymaps-maps"
     },
     {
-      "path": "c-LabTools/market_watch",
+      "path": "c_LabTools/market_watch",
       "deploy_name": "market_watch"
     },
     {
-      "path": "b-Data/myfeed",
+      "path": "b_Data/myfeed",
       "deploy_name": "myfeed"
     },
     {
-      "path": "c-Circus/games",
+      "path": "c_Circus/games",
       "deploy_name": "games"
     },
     {
-      "path": "c-Suite/mymaps-navigation",
+      "path": "c_Suite/mymaps-navigation",
       "deploy_name": "mymaps-navigation"
     },
     {
-      "path": "c-Circus/movies",
+      "path": "c_Circus/movies",
       "deploy_name": "movies"
     },
     {
-      "path": "c-Circus/music",
+      "path": "c_Circus/music",
       "deploy_name": "music"
     },
     {
-      "path": "b-MyData/mymaps-mytrips",
+      "path": "b_MyData/mymaps-mytrips",
       "deploy_name": "mymaps-mytrips"
     },
     {
@@ -4976,7 +4976,7 @@
       "deploy_name": "skills_mcp"
     },
     {
-      "path": "a-Projects/Warehouse",
+      "path": "a_Projects/Warehouse",
       "deploy_name": "Warehouse"
     },
     {
@@ -4984,47 +4984,47 @@
       "deploy_name": "others"
     },
     {
-      "path": "c-LabTools/sailytics",
+      "path": "c_LabTools/sailytics",
       "deploy_name": "sailytics"
     },
     {
-      "path": "c-LabTools/news",
+      "path": "c_LabTools/news",
       "deploy_name": "news"
     },
     {
-      "path": "c-LabTools/fin-terminal",
+      "path": "c_LabTools/fin-terminal",
       "deploy_name": "fin-terminal"
     },
     {
-      "path": "c-LabTools/Music_DJ-Mixer_Mixxx",
+      "path": "c_LabTools/Music_DJ-Mixer_Mixxx",
       "deploy_name": "Music_DJ-Mixer_Mixxx"
     },
     {
-      "path": "c-LabTools/Music_DAW_LLMS",
+      "path": "c_LabTools/Music_DAW_LLMS",
       "deploy_name": "Music_DAW_LLMS"
     },
     {
-      "path": "b-MyData/my-fin",
+      "path": "b_MyData/my-fin",
       "deploy_name": "my-fin"
     },
     {
-      "path": "b-Media/mySocials",
+      "path": "b_Media/mySocials",
       "deploy_name": "mySocials"
     },
     {
-      "path": "b-MyData/myhealth",
+      "path": "b_MyData/myhealth",
       "deploy_name": "myhealth"
     },
     {
-      "path": "b-MyData/myhealth-tracker",
+      "path": "b_MyData/myhealth-tracker",
       "deploy_name": "myhealth-tracker"
     },
     {
-      "path": "b-MyData/myid",
+      "path": "b_MyData/myid",
       "deploy_name": "myid"
     },
     {
-      "path": "c-Suite/mymaps",
+      "path": "c_Suite/mymaps",
       "deploy_name": "mymaps"
     }
   ],
@@ -6947,7 +6947,7 @@
         "slide": "projects",
         "column": "CG & GAMES",
         "label": "Games 2D",
-        "url": "https://github.com/diegonmarcos/diegonmarcos.github.io/tree/main/c-Circus/games",
+        "url": "https://github.com/diegonmarcos/diegonmarcos.github.io/tree/main/c_Circus/games",
         "icon": "device-gamepad.svg"
       },
       {
@@ -6955,7 +6955,7 @@
         "slide": "projects",
         "column": "CG & GAMES",
         "label": "Scenes 3D",
-        "url": "https://github.com/diegonmarcos/diegonmarcos.github.io/tree/main/b-Projects/galaxy-gaia",
+        "url": "https://github.com/diegonmarcos/diegonmarcos.github.io/tree/main/b_Projects/galaxy-gaia",
         "icon": "world.svg"
       },
       {
@@ -6963,7 +6963,7 @@
         "slide": "projects",
         "column": "CG & GAMES",
         "label": "Games 3D",
-        "url": "https://github.com/diegonmarcos/diegonmarcos.github.io/tree/main/b-Projects/galaxy-earth",
+        "url": "https://github.com/diegonmarcos/diegonmarcos.github.io/tree/main/b_Projects/galaxy-earth",
         "icon": "device-gamepad.svg"
       },
       {
@@ -7059,7 +7059,7 @@
         "slide": "projects",
         "column": "MACRO&QUANT",
         "label": "Central Bank",
-        "url": "https://github.com/diegonmarcos/diegonmarcos.github.io/tree/main/c-LabTools/central_bank",
+        "url": "https://github.com/diegonmarcos/diegonmarcos.github.io/tree/main/c_LabTools/central_bank",
         "icon": "database.svg"
       },
       {
@@ -7067,7 +7067,7 @@
         "slide": "projects",
         "column": "MACRO&QUANT",
         "label": "Quant Terminal",
-        "url": "https://github.com/diegonmarcos/diegonmarcos.github.io/tree/main/c-LabTools/fin-terminal",
+        "url": "https://github.com/diegonmarcos/diegonmarcos.github.io/tree/main/c_LabTools/fin-terminal",
         "icon": "rocket.svg"
       },
       {

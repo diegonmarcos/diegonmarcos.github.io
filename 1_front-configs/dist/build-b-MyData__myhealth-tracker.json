@@ -87,10 +87,10 @@
   },
   "deploy": {},
   "_resolved": {
-    "path": "b-MyData/myhealth-tracker",
-    "category": "b-MyData",
+    "path": "b_MyData/myhealth-tracker",
+    "category": "b_MyData",
     "project": "myhealth-tracker",
-    "key": "b-MyData__myhealth-tracker",
+    "key": "b_MyData__myhealth-tracker",
     "port": 8025,
     "framework": "vanilla",
     "src": "src",

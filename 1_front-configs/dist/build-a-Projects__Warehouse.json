@@ -28,10 +28,10 @@
   },
   "deploy": {},
   "_resolved": {
-    "path": "a-Projects/Warehouse",
-    "category": "a-Projects",
+    "path": "a_Projects/Warehouse",
+    "category": "a_Projects",
     "project": "Warehouse",
-    "key": "a-Projects__Warehouse",
+    "key": "a_Projects__Warehouse",
     "port": 8020,
     "framework": "vanilla",
     "src": "src",

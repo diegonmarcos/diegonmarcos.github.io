@@ -14,10 +14,10 @@
   },
   "deploy": {},
   "_resolved": {
-    "path": "c-Suite/json-vision",
-    "category": "c-Suite",
+    "path": "c_Suite/json-vision",
+    "category": "c_Suite",
     "project": "json-vision",
-    "key": "c-Suite__json-vision",
+    "key": "c_Suite__json-vision",
     "port": 8017,
     "framework": "vue",
     "src": "src",

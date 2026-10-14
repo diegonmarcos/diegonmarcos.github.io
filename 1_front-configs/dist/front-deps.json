@@ -124,8 +124,8 @@
     "per_service": [
       {
         "service": "Leafy",
-        "folder": "a-Companies/leafy",
-        "category": "a-Companies",
+        "folder": "a_Companies/leafy",
+        "category": "a_Companies",
         "dependencies": {},
         "devDependencies": {
           "sass": "^1.69.0",
@@ -134,8 +134,8 @@
       },
       {
         "service": "Nexus",
-        "folder": "a-Companies/nexus",
-        "category": "a-Companies",
+        "folder": "a_Companies/nexus",
+        "category": "a_Companies",
         "dependencies": {},
         "devDependencies": {
           "sass": "^1.77.0",
@@ -144,8 +144,8 @@
       },
       {
         "service": "CV Web",
-        "folder": "a-Individual/cv_web",
-        "category": "a-Individual",
+        "folder": "a_Individual/cv_web",
+        "category": "a_Individual",
         "dependencies": {
           "sass": "^1.77.4"
         },
@@ -156,8 +156,8 @@
       },
       {
         "service": "Cloud",
-        "folder": "a-Portals/cloud",
-        "category": "a-Portals",
+        "folder": "a_Portals/cloud",
+        "category": "a_Portals",
         "dependencies": {},
         "devDependencies": {
           "@types/node": "^20.10.0",
@@ -172,8 +172,8 @@
       },
       {
         "service": "Cloud Mobile",
-        "folder": "a-Portals/cloud-mobile",
-        "category": "a-Portals",
+        "folder": "a_Portals/cloud-mobile",
+        "category": "a_Portals",
         "dependencies": {},
         "devDependencies": {
           "@types/node": "^20.10.0",
@@ -188,8 +188,8 @@
       },
       {
         "service": "Cloud Web",
-        "folder": "a-Portals/cloud-web",
-        "category": "a-Portals",
+        "folder": "a_Portals/cloud-web",
+        "category": "a_Portals",
         "dependencies": {},
         "devDependencies": {
           "esbuild": "^0.19.8",
@@ -199,8 +199,8 @@
       },
       {
         "service": "Linktree",
-        "folder": "a-Portals/linktree",
-        "category": "a-Portals",
+        "folder": "a_Portals/linktree",
+        "category": "a_Portals",
         "dependencies": {
           "swiper": "^11.0.0"
         },
@@ -220,8 +220,8 @@
       },
       {
         "service": "Linktree Icon View",
-        "folder": "a-Portals/linktree_icon-view",
-        "category": "a-Portals",
+        "folder": "a_Portals/linktree_icon-view",
+        "category": "a_Portals",
         "dependencies": {},
         "devDependencies": {
           "esbuild": "^0.20.2",
@@ -231,8 +231,8 @@
       },
       {
         "service": "Linktree Mindmap",
-        "folder": "a-Portals/linktree_mindmap",
-        "category": "a-Portals",
+        "folder": "a_Portals/linktree_mindmap",
+        "category": "a_Portals",
         "dependencies": {},
         "devDependencies": {
           "esbuild": "^0.20.2",
@@ -242,8 +242,8 @@
       },
       {
         "service": "Linktree Pixel World",
-        "folder": "a-Portals/linktree_pixel-world",
-        "category": "a-Portals",
+        "folder": "a_Portals/linktree_pixel-world",
+        "category": "a_Portals",
         "dependencies": {
           "pixi.js": "^8.6.0"
         },
@@ -255,15 +255,15 @@
       },
       {
         "service": "SlabTwin 3D Warehouse",
-        "folder": "a-Projects/Warehouse",
-        "category": "a-Projects",
+        "folder": "a_Projects/Warehouse",
+        "category": "a_Projects",
         "dependencies": {},
         "devDependencies": {}
       },
       {
         "service": "myAstro",
-        "folder": "b-Data/myAstro",
-        "category": "b-Data",
+        "folder": "b_Data/myAstro",
+        "category": "b_Data",
         "dependencies": {},
         "devDependencies": {
           "esbuild": "^0.20.2",
@@ -275,8 +275,8 @@
       },
       {
         "service": "MyFeed",
-        "folder": "b-Data/myfeed",
-        "category": "b-Data",
+        "folder": "b_Data/myfeed",
+        "category": "b_Data",
         "dependencies": {
           "@floating-ui/vue": "^1.0.0",
           "@formkit/auto-animate": "^0.8.0",
@@ -331,8 +331,8 @@
       },
       {
         "service": "MyMaps MyTrips",
-        "folder": "b-MyData/mymaps-mytrips",
-        "category": "b-MyData",
+        "folder": "b_MyData/mymaps-mytrips",
+        "category": "b_MyData",
         "dependencies": {
           "@types/d3": "^7.4.3",
           "@types/topojson-client": "^3.1.5",
@@ -360,8 +360,8 @@
       },
       {
         "service": "MyProfile",
-        "folder": "b-Profiles/myprofile",
-        "category": "b-Profiles",
+        "folder": "b_Profiles/myprofile",
+        "category": "b_Profiles",
         "dependencies": {},
         "devDependencies": {
           "@sveltejs/adapter-static": "^3.0.0",
@@ -376,8 +376,8 @@
       },
       {
         "service": "Galaxy",
-        "folder": "b-Projects/galaxy",
-        "category": "b-Projects",
+        "folder": "b_Projects/galaxy",
+        "category": "b_Projects",
         "dependencies": {},
         "devDependencies": {
           "@sveltejs/adapter-static": "^3.0.10",
@@ -391,8 +391,8 @@
       },
       {
         "service": "Galaxy-Earth",
-        "folder": "b-Projects/galaxy-earth",
-        "category": "b-Projects",
+        "folder": "b_Projects/galaxy-earth",
+        "category": "b_Projects",
         "dependencies": {
           "eruda": "^3",
           "maplibre-gl": "^5",
@@ -411,8 +411,8 @@
       },
       {
         "service": "Galaxy-X1",
-        "folder": "b-Projects/galaxy-x1",
-        "category": "b-Projects",
+        "folder": "b_Projects/galaxy-x1",
+        "category": "b_Projects",
         "dependencies": {
           "@threlte/core": "^8.0.0",
           "@threlte/extras": "^9.0.0",
@@ -431,8 +431,8 @@
       },
       {
         "service": "Games",
-        "folder": "c-Circus/games",
-        "category": "c-Circus",
+        "folder": "c_Circus/games",
+        "category": "c_Circus",
         "dependencies": {},
         "devDependencies": {
           "@sveltejs/adapter-auto": "^7.0.0",
@@ -452,8 +452,8 @@
       },
       {
         "service": "Movies",
-        "folder": "c-Circus/movies",
-        "category": "c-Circus",
+        "folder": "c_Circus/movies",
+        "category": "c_Circus",
         "dependencies": {
           "axios": "^1.6.0",
           "lodash-es": "^4.17.21",
@@ -471,8 +471,8 @@
       },
       {
         "service": "Music",
-        "folder": "c-Circus/music",
-        "category": "c-Circus",
+        "folder": "c_Circus/music",
+        "category": "c_Circus",
         "dependencies": {
           "axios": "^1.6.0",
           "lodash-es": "^4.17.21",
@@ -490,8 +490,8 @@
       },
       {
         "service": "CentralBank",
-        "folder": "c-LabTools/central_bank",
-        "category": "c-LabTools",
+        "folder": "c_LabTools/central_bank",
+        "category": "c_LabTools",
         "dependencies": {
           "chart.js": "^4.4.0",
           "lucide": "^0.460.0"
@@ -507,8 +507,8 @@
       },
       {
         "service": "FinTerminal",
-        "folder": "c-LabTools/fin-terminal",
-        "category": "c-LabTools",
+        "folder": "c_LabTools/fin-terminal",
+        "category": "c_LabTools",
         "dependencies": {
           "lightweight-charts": "^5.0.0"
         },
@@ -523,8 +523,8 @@
       },
       {
         "service": "MarketWatch",
-        "folder": "c-LabTools/market_watch",
-        "category": "c-LabTools",
+        "folder": "c_LabTools/market_watch",
+        "category": "c_LabTools",
         "dependencies": {},
         "devDependencies": {
           "@types/node": "^20.10.0",
@@ -539,8 +539,8 @@
       },
       {
         "service": "GDELTNews",
-        "folder": "c-LabTools/news",
-        "category": "c-LabTools",
+        "folder": "c_LabTools/news",
+        "category": "c_LabTools",
         "dependencies": {},
         "devDependencies": {
           "esbuild": "^0.24.0",
@@ -550,8 +550,8 @@
       },
       {
         "service": "Sailyng",
-        "folder": "c-LabTools/sailytics",
-        "category": "c-LabTools",
+        "folder": "c_LabTools/sailytics",
+        "category": "c_LabTools",
         "dependencies": {
           "three": "^0.170.0"
         },
@@ -561,8 +561,8 @@
       },
       {
         "service": "JSON Vision",
-        "folder": "c-Suite/json-vision",
-        "category": "c-Suite",
+        "folder": "c_Suite/json-vision",
+        "category": "c_Suite",
         "dependencies": {
           "lodash-es": "^4.17.21",
           "vue": "^3.4.0"
@@ -579,8 +579,8 @@
       },
       {
         "service": "MyHealth FeedYourself",
-        "folder": "c-Suite/myhealth-feedyourself",
-        "category": "c-Suite",
+        "folder": "c_Suite/myhealth-feedyourself",
+        "category": "c_Suite",
         "dependencies": {},
         "devDependencies": {
           "esbuild": "^0.20.0",
@@ -593,8 +593,8 @@
       },
       {
         "service": "MyMaps Maps",
-        "folder": "c-Suite/mymaps-maps",
-        "category": "c-Suite",
+        "folder": "c_Suite/mymaps-maps",
+        "category": "c_Suite",
         "dependencies": {
           "d3-geo": "^3.1.1",
           "d3-interpolate": "^3.0.1",
@@ -617,8 +617,8 @@
       },
       {
         "service": "MyMaps Navigation",
-        "folder": "c-Suite/mymaps-navigation",
-        "category": "c-Suite",
+        "folder": "c_Suite/mymaps-navigation",
+        "category": "c_Suite",
         "dependencies": {
           "@mapbox/togeojson": "^0.16.2",
           "cesium": "^1.143.0",
@@ -643,8 +643,8 @@
       },
       {
         "service": "tldraw",
-        "folder": "c-Suite/tldraw",
-        "category": "c-Suite",
+        "folder": "c_Suite/tldraw",
+        "category": "c_Suite",
         "dependencies": {
           "react": "^18.3.1",
           "react-dom": "^18.3.1",

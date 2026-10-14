@@ -19,10 +19,10 @@
   },
   "deploy": {},
   "_resolved": {
-    "path": "c-Circus/movies",
-    "category": "c-Circus",
+    "path": "c_Circus/movies",
+    "category": "c_Circus",
     "project": "movies",
-    "key": "c-Circus__movies",
+    "key": "c_Circus__movies",
     "port": 8015,
     "framework": "vue",
     "src": "src",

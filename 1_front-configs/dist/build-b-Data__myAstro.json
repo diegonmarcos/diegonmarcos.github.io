@@ -83,10 +83,10 @@
   },
   "deploy": {},
   "_resolved": {
-    "path": "b-Data/myAstro",
-    "category": "b-Data",
+    "path": "b_Data/myAstro",
+    "category": "b_Data",
     "project": "myAstro",
-    "key": "b-Data__myAstro",
+    "key": "b_Data__myAstro",
     "port": 8019,
     "framework": "vanilla",
     "src": "src",

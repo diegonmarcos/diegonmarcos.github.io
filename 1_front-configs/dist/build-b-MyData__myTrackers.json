@@ -83,10 +83,10 @@
   },
   "deploy": {},
   "_resolved": {
-    "path": "b-MyData/myTrackers",
-    "category": "b-MyData",
+    "path": "b_MyData/myTrackers",
+    "category": "b_MyData",
     "project": "myTrackers",
-    "key": "b-MyData__myTrackers",
+    "key": "b_MyData__myTrackers",
     "port": 8026,
     "framework": "vanilla",
     "src": "src",

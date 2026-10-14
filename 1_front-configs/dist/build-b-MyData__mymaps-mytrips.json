@@ -14,10 +14,10 @@
   },
   "deploy": {},
   "_resolved": {
-    "path": "b-MyData/mymaps-mytrips",
-    "category": "b-MyData",
+    "path": "b_MyData/mymaps-mytrips",
+    "category": "b_MyData",
     "project": "mymaps-mytrips",
-    "key": "b-MyData__mymaps-mytrips",
+    "key": "b_MyData__mymaps-mytrips",
     "port": 8022,
     "framework": "vue",
     "src": "src",

@@ -80,10 +80,10 @@
   },
   "deploy": {},
   "_resolved": {
-    "path": "a-Companies/stark",
-    "category": "a-Companies",
+    "path": "a_Companies/stark",
+    "category": "a_Companies",
     "project": "stark",
-    "key": "a-Companies__stark",
+    "key": "a_Companies__stark",
     "port": 8022,
     "framework": "vanilla",
     "src": "src",

@@ -83,10 +83,10 @@
   },
   "deploy": {},
   "_resolved": {
-    "path": "c-Suite/mymaps",
-    "category": "c-Suite",
+    "path": "c_Suite/mymaps",
+    "category": "c_Suite",
     "project": "mymaps",
-    "key": "c-Suite__mymaps",
+    "key": "c_Suite__mymaps",
     "port": 8027,
     "framework": "vanilla",
     "src": "src",

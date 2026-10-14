@@ -1,7 +1,7 @@
 [
   {
-    "key": "a-Portals__cloud-mobile",
-    "path": "a-Portals/cloud-mobile",
+    "key": "a_Portals__cloud-mobile",
+    "path": "a_Portals/cloud-mobile",
     "manifest": {
       "name": "Cloud SuperApp — Mobile UI",
       "short_name": "Cloud Mobile",
@@ -19,8 +19,8 @@
     }
   },
   {
-    "key": "a-Portals__linktree",
-    "path": "a-Portals/linktree",
+    "key": "a_Portals__linktree",
+    "path": "a_Portals/linktree",
     "manifest": {
       "name": "Diego Nepomuceno Marcos | Linktree",
       "short_name": "DNM",

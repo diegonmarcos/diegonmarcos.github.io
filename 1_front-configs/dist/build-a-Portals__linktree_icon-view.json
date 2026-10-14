@@ -85,10 +85,10 @@
   },
   "deploy": {},
   "_resolved": {
-    "path": "a-Portals/linktree_icon-view",
-    "category": "a-Portals",
+    "path": "a_Portals/linktree_icon-view",
+    "category": "a_Portals",
     "project": "linktree_icon-view",
-    "key": "a-Portals__linktree_icon-view",
+    "key": "a_Portals__linktree_icon-view",
     "port": 8020,
     "framework": "vanilla",
     "src": "src",

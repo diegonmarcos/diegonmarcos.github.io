@@ -82,10 +82,10 @@
   },
   "deploy": {},
   "_resolved": {
-    "path": "c-Circus/carto",
-    "category": "c-Circus",
+    "path": "c_Circus/carto",
+    "category": "c_Circus",
     "project": "carto",
-    "key": "c-Circus__carto",
+    "key": "c_Circus__carto",
     "port": 8020,
     "framework": "vanilla",
     "src": "src",

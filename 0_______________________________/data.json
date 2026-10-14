@@ -19,13 +19,13 @@
       ]
     },
     {
-      "category": "a-Companies",
+      "category": "a_Companies",
       "projects": [
         {
           "name": "Leafy",
           "slug": "leafy",
-          "path": "a-Companies/leafy",
-          "category": "a-Companies",
+          "path": "a_Companies/leafy",
+          "category": "a_Companies",
           "framework": "vanilla",
           "port": 8021,
           "has_dist": true
@@ -33,8 +33,8 @@
         {
           "name": "Nexus",
           "slug": "nexus",
-          "path": "a-Companies/nexus",
-          "category": "a-Companies",
+          "path": "a_Companies/nexus",
+          "category": "a_Companies",
           "framework": "vanilla",
           "port": 8005,
           "has_dist": true
@@ -42,8 +42,8 @@
         {
           "name": "Stark",
           "slug": "stark",
-          "path": "a-Companies/stark",
-          "category": "a-Companies",
+          "path": "a_Companies/stark",
+          "category": "a_Companies",
           "framework": "vanilla",
           "port": 8022,
           "has_dist": true
@@ -51,13 +51,13 @@
       ]
     },
     {
-      "category": "a-Individual",
+      "category": "a_Individual",
       "projects": [
         {
           "name": "CV PDF",
           "slug": "cv_pdf",
-          "path": "a-Individual/cv_pdf",
-          "category": "a-Individual",
+          "path": "a_Individual/cv_pdf",
+          "category": "a_Individual",
           "framework": "vanilla",
           "port": 8012,
           "has_dist": true
@@ -65,8 +65,8 @@
         {
           "name": "CV Web",
           "slug": "cv_web",
-          "path": "a-Individual/cv_web",
-          "category": "a-Individual",
+          "path": "a_Individual/cv_web",
+          "category": "a_Individual",
           "framework": "vanilla",
           "port": 8002,
           "has_dist": true
@@ -74,8 +74,8 @@
         {
           "name": "Landpage",
           "slug": "landpage",
-          "path": "a-Individual/landpage",
-          "category": "a-Individual",
+          "path": "a_Individual/landpage",
+          "category": "a_Individual",
           "framework": "vanilla",
           "port": 8000,
           "has_dist": true
@@ -83,13 +83,13 @@
       ]
     },
     {
-      "category": "a-Portals",
+      "category": "a_Portals",
       "projects": [
         {
           "name": "Cloud",
           "slug": "cloud",
-          "path": "a-Portals/cloud",
-          "category": "a-Portals",
+          "path": "a_Portals/cloud",
+          "category": "a_Portals",
           "framework": "vanilla",
           "port": 8006,
           "has_dist": true
@@ -97,8 +97,8 @@
         {
           "name": "Cloud Mobile",
           "slug": "cloud-mobile",
-          "path": "a-Portals/cloud-mobile",
-          "category": "a-Portals",
+          "path": "a_Portals/cloud-mobile",
+          "category": "a_Portals",
           "framework": "vanilla",
           "port": 8036,
           "has_dist": true
@@ -106,8 +106,8 @@
         {
           "name": "Cloud Web",
           "slug": "cloud-web",
-          "path": "a-Portals/cloud-web",
-          "category": "a-Portals",
+          "path": "a_Portals/cloud-web",
+          "category": "a_Portals",
           "framework": "vanilla",
           "port": 8037,
           "has_dist": true
@@ -115,8 +115,8 @@
         {
           "name": "Linktree",
           "slug": "linktree",
-          "path": "a-Portals/linktree",
-          "category": "a-Portals",
+          "path": "a_Portals/linktree",
+          "category": "a_Portals",
           "framework": "vanilla",
           "port": 8001,
           "has_dist": true
@@ -124,8 +124,8 @@
         {
           "name": "Linktree Icon View",
           "slug": "linktree_icon-view",
-          "path": "a-Portals/linktree_icon-view",
-          "category": "a-Portals",
+          "path": "a_Portals/linktree_icon-view",
+          "category": "a_Portals",
           "framework": "vanilla",
           "port": 8020,
           "has_dist": true
@@ -133,8 +133,8 @@
         {
           "name": "Linktree Mindmap",
           "slug": "linktree_mindmap",
-          "path": "a-Portals/linktree_mindmap",
-          "category": "a-Portals",
+          "path": "a_Portals/linktree_mindmap",
+          "category": "a_Portals",
           "framework": "vanilla",
           "port": 8018,
           "has_dist": true
@@ -142,8 +142,8 @@
         {
           "name": "Linktree Pixel World",
           "slug": "linktree_pixel-world",
-          "path": "a-Portals/linktree_pixel-world",
-          "category": "a-Portals",
+          "path": "a_Portals/linktree_pixel-world",
+          "category": "a_Portals",
           "framework": "vanilla",
           "port": 8019,
           "has_dist": true
@@ -151,13 +151,13 @@
       ]
     },
     {
-      "category": "a-Projects",
+      "category": "a_Projects",
       "projects": [
         {
           "name": "SlabTwin 3D Warehouse",
           "slug": "Warehouse",
-          "path": "a-Projects/Warehouse",
-          "category": "a-Projects",
+          "path": "a_Projects/Warehouse",
+          "category": "a_Projects",
           "framework": "vanilla",
           "port": 8020,
           "has_dist": true
@@ -165,13 +165,13 @@
       ]
     },
     {
-      "category": "b-Data",
+      "category": "b_Data",
       "projects": [
         {
           "name": "MyFeed",
           "slug": "myfeed",
-          "path": "b-Data/myfeed",
-          "category": "b-Data",
+          "path": "b_Data/myfeed",
+          "category": "b_Data",
           "framework": "vue",
           "port": 8003,
           "has_dist": true
@@ -179,8 +179,8 @@
         {
           "name": "myAstro",
           "slug": "myAstro",
-          "path": "b-Data/myAstro",
-          "category": "b-Data",
+          "path": "b_Data/myAstro",
+          "category": "b_Data",
           "framework": "vanilla",
           "port": 8019,
           "has_dist": true
@@ -188,13 +188,13 @@
       ]
     },
     {
-      "category": "b-Media",
+      "category": "b_Media",
       "projects": [
         {
           "name": "mySocials",
           "slug": "mySocials",
-          "path": "b-Media/mySocials",
-          "category": "b-Media",
+          "path": "b_Media/mySocials",
+          "category": "b_Media",
           "framework": "vanilla",
           "port": 8028,
           "has_dist": true
@@ -202,13 +202,13 @@
       ]
     },
     {
-      "category": "b-MyData",
+      "category": "b_MyData",
       "projects": [
         {
           "name": "My Financials",
           "slug": "my-fin",
-          "path": "b-MyData/my-fin",
-          "category": "b-MyData",
+          "path": "b_MyData/my-fin",
+          "category": "b_MyData",
           "framework": "vanilla",
           "port": 8030,
           "has_dist": true
@@ -216,8 +216,8 @@
         {
           "name": "MyHealth",
           "slug": "myhealth",
-          "path": "b-MyData/myhealth",
-          "category": "b-MyData",
+          "path": "b_MyData/myhealth",
+          "category": "b_MyData",
           "framework": "vanilla",
           "port": 8026,
           "has_dist": true
@@ -225,8 +225,8 @@
         {
           "name": "MyHealth Profile",
           "slug": "myhealth-profile",
-          "path": "b-MyData/myhealth-profile",
-          "category": "b-MyData",
+          "path": "b_MyData/myhealth-profile",
+          "category": "b_MyData",
           "framework": "vanilla",
           "port": 8009,
           "has_dist": true
@@ -234,8 +234,8 @@
         {
           "name": "MyHealth Tracker",
           "slug": "myhealth-tracker",
-          "path": "b-MyData/myhealth-tracker",
-          "category": "b-MyData",
+          "path": "b_MyData/myhealth-tracker",
+          "category": "b_MyData",
           "framework": "vanilla",
           "port": 8025,
           "has_dist": true
@@ -243,8 +243,8 @@
         {
           "name": "MyMaps MyTrips",
           "slug": "mymaps-mytrips",
-          "path": "b-MyData/mymaps-mytrips",
-          "category": "b-MyData",
+          "path": "b_MyData/mymaps-mytrips",
+          "category": "b_MyData",
           "framework": "vue",
           "port": 8022,
           "has_dist": true
@@ -252,8 +252,8 @@
         {
           "name": "MyPhotos",
           "slug": "myphotos",
-          "path": "b-MyData/myphotos",
-          "category": "b-MyData",
+          "path": "b_MyData/myphotos",
+          "category": "b_MyData",
           "framework": "vanilla",
           "port": 8019,
           "has_dist": true
@@ -261,8 +261,8 @@
         {
           "name": "MyTrackers",
           "slug": "myTrackers",
-          "path": "b-MyData/myTrackers",
-          "category": "b-MyData",
+          "path": "b_MyData/myTrackers",
+          "category": "b_MyData",
           "framework": "vanilla",
           "port": 8026,
           "has_dist": true
@@ -270,8 +270,8 @@
         {
           "name": "myID",
           "slug": "myid",
-          "path": "b-MyData/myid",
-          "category": "b-MyData",
+          "path": "b_MyData/myid",
+          "category": "b_MyData",
           "framework": "vanilla",
           "port": 8031,
           "has_dist": true
@@ -279,13 +279,13 @@
       ]
     },
     {
-      "category": "b-Profiles",
+      "category": "b_Profiles",
       "projects": [
         {
           "name": "MyProfile",
           "slug": "myprofile",
-          "path": "b-Profiles/myprofile",
-          "category": "b-Profiles",
+          "path": "b_Profiles/myprofile",
+          "category": "b_Profiles",
           "framework": "sveltekit",
           "port": 8013,
           "has_dist": true
@@ -293,13 +293,13 @@
       ]
     },
     {
-      "category": "b-Projects",
+      "category": "b_Projects",
       "projects": [
         {
           "name": "Galaxy",
           "slug": "galaxy",
-          "path": "b-Projects/galaxy",
-          "category": "b-Projects",
+          "path": "b_Projects/galaxy",
+          "category": "b_Projects",
           "framework": "sveltekit",
           "port": 8024,
           "has_dist": true
@@ -307,8 +307,8 @@
         {
           "name": "Galaxy-Earth",
           "slug": "galaxy-earth",
-          "path": "b-Projects/galaxy-earth",
-          "category": "b-Projects",
+          "path": "b_Projects/galaxy-earth",
+          "category": "b_Projects",
           "framework": "sveltekit",
           "port": 8025,
           "has_dist": true
@@ -316,8 +316,8 @@
         {
           "name": "Galaxy-X1",
           "slug": "galaxy-x1",
-          "path": "b-Projects/galaxy-x1",
-          "category": "b-Projects",
+          "path": "b_Projects/galaxy-x1",
+          "category": "b_Projects",
           "framework": "sveltekit",
           "port": 8023,
           "has_dist": true
@@ -325,13 +325,13 @@
       ]
     },
     {
-      "category": "c-Circus",
+      "category": "c_Circus",
       "projects": [
         {
           "name": "Carto",
           "slug": "carto",
-          "path": "c-Circus/carto",
-          "category": "c-Circus",
+          "path": "c_Circus/carto",
+          "category": "c_Circus",
           "framework": "vanilla",
           "port": 8020,
           "has_dist": true
@@ -339,8 +339,8 @@
         {
           "name": "Games",
           "slug": "games",
-          "path": "c-Circus/games",
-          "category": "c-Circus",
+          "path": "c_Circus/games",
+          "category": "c_Circus",
           "framework": "sveltekit",
           "port": 8004,
           "has_dist": true
@@ -348,8 +348,8 @@
         {
           "name": "Movies",
           "slug": "movies",
-          "path": "c-Circus/movies",
-          "category": "c-Circus",
+          "path": "c_Circus/movies",
+          "category": "c_Circus",
           "framework": "vue",
           "port": 8015,
           "has_dist": true
@@ -357,8 +357,8 @@
         {
           "name": "Music",
           "slug": "music",
-          "path": "c-Circus/music",
-          "category": "c-Circus",
+          "path": "c_Circus/music",
+          "category": "c_Circus",
           "framework": "vue",
           "port": 8016,
           "has_dist": true
@@ -366,13 +366,13 @@
       ]
     },
     {
-      "category": "c-LabTools",
+      "category": "c_LabTools",
       "projects": [
         {
           "name": "CentralBank",
           "slug": "central_bank",
-          "path": "c-LabTools/central_bank",
-          "category": "c-LabTools",
+          "path": "c_LabTools/central_bank",
+          "category": "c_LabTools",
           "framework": "vanilla",
           "port": 8011,
           "has_dist": true
@@ -380,8 +380,8 @@
         {
           "name": "FinTerminal",
           "slug": "fin-terminal",
-          "path": "c-LabTools/fin-terminal",
-          "category": "c-LabTools",
+          "path": "c_LabTools/fin-terminal",
+          "category": "c_LabTools",
           "framework": "vanilla",
           "port": 8024,
           "has_dist": true
@@ -389,8 +389,8 @@
         {
           "name": "GDELTNews",
           "slug": "news",
-          "path": "c-LabTools/news",
-          "category": "c-LabTools",
+          "path": "c_LabTools/news",
+          "category": "c_LabTools",
           "framework": "vanilla",
           "port": 8029,
           "has_dist": true
@@ -398,8 +398,8 @@
         {
           "name": "LMMS",
           "slug": "Music_DAW_LLMS",
-          "path": "c-LabTools/Music_DAW_LLMS",
-          "category": "c-LabTools",
+          "path": "c_LabTools/Music_DAW_LLMS",
+          "category": "c_LabTools",
           "framework": "vanilla",
           "port": 8035,
           "has_dist": true
@@ -407,8 +407,8 @@
         {
           "name": "MarketWatch",
           "slug": "market_watch",
-          "path": "c-LabTools/market_watch",
-          "category": "c-LabTools",
+          "path": "c_LabTools/market_watch",
+          "category": "c_LabTools",
           "framework": "vanilla",
           "port": 8010,
           "has_dist": true
@@ -416,8 +416,8 @@
         {
           "name": "Mixxx",
           "slug": "Music_DJ-Mixer_Mixxx",
-          "path": "c-LabTools/Music_DJ-Mixer_Mixxx",
-          "category": "c-LabTools",
+          "path": "c_LabTools/Music_DJ-Mixer_Mixxx",
+          "category": "c_LabTools",
           "framework": "vanilla",
           "port": 8034,
           "has_dist": true
@@ -425,8 +425,8 @@
         {
           "name": "Sailyng",
           "slug": "sailytics",
-          "path": "c-LabTools/sailytics",
-          "category": "c-LabTools",
+          "path": "c_LabTools/sailytics",
+          "category": "c_LabTools",
           "framework": "vanilla",
           "port": 8023,
           "has_dist": true
@@ -434,13 +434,13 @@
       ]
     },
     {
-      "category": "c-Suite",
+      "category": "c_Suite",
       "projects": [
         {
           "name": "JSON Vision",
           "slug": "json-vision",
-          "path": "c-Suite/json-vision",
-          "category": "c-Suite",
+          "path": "c_Suite/json-vision",
+          "category": "c_Suite",
           "framework": "vue",
           "port": 8017,
           "has_dist": true
@@ -448,8 +448,8 @@
         {
           "name": "MyHealth FeedYourself",
           "slug": "myhealth-feedyourself",
-          "path": "c-Suite/myhealth-feedyourself",
-          "category": "c-Suite",
+          "path": "c_Suite/myhealth-feedyourself",
+          "category": "c_Suite",
           "framework": "vanilla",
           "port": 8007,
           "has_dist": true
@@ -457,8 +457,8 @@
         {
           "name": "MyMail",
           "slug": "mymail",
-          "path": "c-Suite/mymail",
-          "category": "c-Suite",
+          "path": "c_Suite/mymail",
+          "category": "c_Suite",
           "framework": "vanilla",
           "port": 8018,
           "has_dist": true
@@ -466,8 +466,8 @@
         {
           "name": "MyMaps",
           "slug": "mymaps",
-          "path": "c-Suite/mymaps",
-          "category": "c-Suite",
+          "path": "c_Suite/mymaps",
+          "category": "c_Suite",
           "framework": "vanilla",
           "port": 8027,
           "has_dist": true
@@ -475,8 +475,8 @@
         {
           "name": "MyMaps Maps",
           "slug": "mymaps-maps",
-          "path": "c-Suite/mymaps-maps",
-          "category": "c-Suite",
+          "path": "c_Suite/mymaps-maps",
+          "category": "c_Suite",
           "framework": "sveltekit",
           "port": 8014,
           "has_dist": true
@@ -484,8 +484,8 @@
         {
           "name": "MyMaps Navigation",
           "slug": "mymaps-navigation",
-          "path": "c-Suite/mymaps-navigation",
-          "category": "c-Suite",
+          "path": "c_Suite/mymaps-navigation",
+          "category": "c_Suite",
           "framework": "sveltekit",
           "port": 8018,
           "has_dist": true
@@ -493,8 +493,8 @@
         {
           "name": "Sheets (Grist)",
           "slug": "grist",
-          "path": "c-Suite/grist",
-          "category": "c-Suite",
+          "path": "c_Suite/grist",
+          "category": "c_Suite",
           "framework": "vanilla",
           "port": 8033,
           "has_dist": true
@@ -502,8 +502,8 @@
         {
           "name": "Suite",
           "slug": "suite",
-          "path": "c-Suite/suite",
-          "category": "c-Suite",
+          "path": "c_Suite/suite",
+          "category": "c_Suite",
           "framework": "vanilla",
           "port": 8021,
           "has_dist": true
@@ -511,8 +511,8 @@
         {
           "name": "tldraw",
           "slug": "tldraw",
-          "path": "c-Suite/tldraw",
-          "category": "c-Suite",
+          "path": "c_Suite/tldraw",
+          "category": "c_Suite",
           "framework": "react",
           "port": 8032,
           "has_dist": true

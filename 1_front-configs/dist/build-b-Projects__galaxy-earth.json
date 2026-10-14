@@ -14,10 +14,10 @@
   },
   "deploy": {},
   "_resolved": {
-    "path": "b-Projects/galaxy-earth",
-    "category": "b-Projects",
+    "path": "b_Projects/galaxy-earth",
+    "category": "b_Projects",
     "project": "galaxy-earth",
-    "key": "b-Projects__galaxy-earth",
+    "key": "b_Projects__galaxy-earth",
     "port": 8025,
     "framework": "sveltekit",
     "src": "src",

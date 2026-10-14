@@ -133,10 +133,10 @@
   },
   "deploy": {},
   "_resolved": {
-    "path": "c-Suite/myhealth-feedyourself",
-    "category": "c-Suite",
+    "path": "c_Suite/myhealth-feedyourself",
+    "category": "c_Suite",
     "project": "myhealth-feedyourself",
-    "key": "c-Suite__myhealth-feedyourself",
+    "key": "c_Suite__myhealth-feedyourself",
     "port": 8007,
     "framework": "vanilla",
     "src": "src/src-index",

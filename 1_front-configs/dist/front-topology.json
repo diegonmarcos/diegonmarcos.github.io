@@ -8,8 +8,8 @@
     {
       "name": "Leafy",
       "slug": "leafy",
-      "path": "a-Companies/leafy",
-      "category": "a-Companies",
+      "path": "a_Companies/leafy",
+      "category": "a_Companies",
       "framework": "vanilla",
       "port": 8021,
       "build_steps": [
@@ -30,8 +30,8 @@
     {
       "name": "Nexus",
       "slug": "nexus",
-      "path": "a-Companies/nexus",
-      "category": "a-Companies",
+      "path": "a_Companies/nexus",
+      "category": "a_Companies",
       "framework": "vanilla",
       "port": 8005,
       "build_steps": [
@@ -53,8 +53,8 @@
     {
       "name": "Stark",
       "slug": "stark",
-      "path": "a-Companies/stark",
-      "category": "a-Companies",
+      "path": "a_Companies/stark",
+      "category": "a_Companies",
       "framework": "vanilla",
       "port": 8022,
       "build_steps": [
@@ -75,8 +75,8 @@
     {
       "name": "CV PDF",
       "slug": "cv_pdf",
-      "path": "a-Individual/cv_pdf",
-      "category": "a-Individual",
+      "path": "a_Individual/cv_pdf",
+      "category": "a_Individual",
       "framework": "vanilla",
       "port": 8012,
       "build_steps": [
@@ -96,8 +96,8 @@
     {
       "name": "CV Web",
       "slug": "cv_web",
-      "path": "a-Individual/cv_web",
-      "category": "a-Individual",
+      "path": "a_Individual/cv_web",
+      "category": "a_Individual",
       "framework": "vanilla",
       "port": 8002,
       "build_steps": [
@@ -118,8 +118,8 @@
     {
       "name": "Landpage",
       "slug": "landpage",
-      "path": "a-Individual/landpage",
-      "category": "a-Individual",
+      "path": "a_Individual/landpage",
+      "category": "a_Individual",
       "framework": "vanilla",
       "port": 8000,
       "build_steps": [
@@ -140,8 +140,8 @@
     {
       "name": "Cloud",
       "slug": "cloud",
-      "path": "a-Portals/cloud",
-      "category": "a-Portals",
+      "path": "a_Portals/cloud",
+      "category": "a_Portals",
       "framework": "vanilla",
       "port": 8006,
       "build_steps": [
@@ -164,8 +164,8 @@
     {
       "name": "Cloud Mobile",
       "slug": "cloud-mobile",
-      "path": "a-Portals/cloud-mobile",
-      "category": "a-Portals",
+      "path": "a_Portals/cloud-mobile",
+      "category": "a_Portals",
       "framework": "vanilla",
       "port": 8036,
       "build_steps": [
@@ -185,8 +185,8 @@
     {
       "name": "Cloud Web",
       "slug": "cloud-web",
-      "path": "a-Portals/cloud-web",
-      "category": "a-Portals",
+      "path": "a_Portals/cloud-web",
+      "category": "a_Portals",
       "framework": "vanilla",
       "port": 8037,
       "build_steps": [
@@ -204,8 +204,8 @@
     {
       "name": "Linktree",
       "slug": "linktree",
-      "path": "a-Portals/linktree",
-      "category": "a-Portals",
+      "path": "a_Portals/linktree",
+      "category": "a_Portals",
       "framework": "vanilla",
       "port": 8001,
       "build_steps": [
@@ -232,8 +232,8 @@
     {
       "name": "Linktree Icon View",
       "slug": "linktree_icon-view",
-      "path": "a-Portals/linktree_icon-view",
-      "category": "a-Portals",
+      "path": "a_Portals/linktree_icon-view",
+      "category": "a_Portals",
       "framework": "vanilla",
       "port": 8020,
       "build_steps": [
@@ -253,8 +253,8 @@
     {
       "name": "Linktree Mindmap",
       "slug": "linktree_mindmap",
-      "path": "a-Portals/linktree_mindmap",
-      "category": "a-Portals",
+      "path": "a_Portals/linktree_mindmap",
+      "category": "a_Portals",
       "framework": "vanilla",
       "port": 8018,
       "build_steps": [
@@ -275,8 +275,8 @@
     {
       "name": "Linktree Pixel World",
       "slug": "linktree_pixel-world",
-      "path": "a-Portals/linktree_pixel-world",
-      "category": "a-Portals",
+      "path": "a_Portals/linktree_pixel-world",
+      "category": "a_Portals",
       "framework": "vanilla",
       "port": 8019,
       "build_steps": [
@@ -297,8 +297,8 @@
     {
       "name": "SlabTwin 3D Warehouse",
       "slug": "Warehouse",
-      "path": "a-Projects/Warehouse",
-      "category": "a-Projects",
+      "path": "a_Projects/Warehouse",
+      "category": "a_Projects",
       "framework": "vanilla",
       "port": 8020,
       "build_steps": [
@@ -313,8 +313,8 @@
     {
       "name": "myAstro",
       "slug": "myAstro",
-      "path": "b-Data/myAstro",
-      "category": "b-Data",
+      "path": "b_Data/myAstro",
+      "category": "b_Data",
       "framework": "vanilla",
       "port": 8019,
       "build_steps": [
@@ -334,8 +334,8 @@
     {
       "name": "MyFeed",
       "slug": "myfeed",
-      "path": "b-Data/myfeed",
-      "category": "b-Data",
+      "path": "b_Data/myfeed",
+      "category": "b_Data",
       "framework": "vue",
       "port": 8003,
       "build_steps": [
@@ -348,8 +348,8 @@
     {
       "name": "mySocials",
       "slug": "mySocials",
-      "path": "b-Media/mySocials",
-      "category": "b-Media",
+      "path": "b_Media/mySocials",
+      "category": "b_Media",
       "framework": "vanilla",
       "port": 8028,
       "build_steps": [
@@ -384,8 +384,8 @@
     {
       "name": "My Financials",
       "slug": "my-fin",
-      "path": "b-MyData/my-fin",
-      "category": "b-MyData",
+      "path": "b_MyData/my-fin",
+      "category": "b_MyData",
       "framework": "vanilla",
       "port": 8030,
       "build_steps": [
@@ -405,8 +405,8 @@
     {
       "name": "MyTrackers",
       "slug": "myTrackers",
-      "path": "b-MyData/myTrackers",
-      "category": "b-MyData",
+      "path": "b_MyData/myTrackers",
+      "category": "b_MyData",
       "framework": "vanilla",
       "port": 8026,
       "build_steps": [
@@ -426,8 +426,8 @@
     {
       "name": "MyHealth",
       "slug": "myhealth",
-      "path": "b-MyData/myhealth",
-      "category": "b-MyData",
+      "path": "b_MyData/myhealth",
+      "category": "b_MyData",
       "framework": "vanilla",
       "port": 8026,
       "build_steps": [
@@ -447,8 +447,8 @@
     {
       "name": "MyHealth Profile",
       "slug": "myhealth-profile",
-      "path": "b-MyData/myhealth-profile",
-      "category": "b-MyData",
+      "path": "b_MyData/myhealth-profile",
+      "category": "b_MyData",
       "framework": "vanilla",
       "port": 8009,
       "build_steps": [
@@ -467,8 +467,8 @@
     {
       "name": "MyHealth Tracker",
       "slug": "myhealth-tracker",
-      "path": "b-MyData/myhealth-tracker",
-      "category": "b-MyData",
+      "path": "b_MyData/myhealth-tracker",
+      "category": "b_MyData",
       "framework": "vanilla",
       "port": 8025,
       "build_steps": [
@@ -489,8 +489,8 @@
     {
       "name": "myID",
       "slug": "myid",
-      "path": "b-MyData/myid",
-      "category": "b-MyData",
+      "path": "b_MyData/myid",
+      "category": "b_MyData",
       "framework": "vanilla",
       "port": 8031,
       "build_steps": [
@@ -511,8 +511,8 @@
     {
       "name": "MyMaps MyTrips",
       "slug": "mymaps-mytrips",
-      "path": "b-MyData/mymaps-mytrips",
-      "category": "b-MyData",
+      "path": "b_MyData/mymaps-mytrips",
+      "category": "b_MyData",
       "framework": "vue",
       "port": 8022,
       "build_steps": [
@@ -525,8 +525,8 @@
     {
       "name": "MyPhotos",
       "slug": "myphotos",
-      "path": "b-MyData/myphotos",
-      "category": "b-MyData",
+      "path": "b_MyData/myphotos",
+      "category": "b_MyData",
       "framework": "vanilla",
       "port": 8019,
       "build_steps": [
@@ -544,8 +544,8 @@
     {
       "name": "MyProfile",
       "slug": "myprofile",
-      "path": "b-Profiles/myprofile",
-      "category": "b-Profiles",
+      "path": "b_Profiles/myprofile",
+      "category": "b_Profiles",
       "framework": "sveltekit",
       "port": 8013,
       "build_steps": [
@@ -558,8 +558,8 @@
     {
       "name": "Galaxy",
       "slug": "galaxy",
-      "path": "b-Projects/galaxy",
-      "category": "b-Projects",
+      "path": "b_Projects/galaxy",
+      "category": "b_Projects",
       "framework": "sveltekit",
       "port": 8024,
       "build_steps": [
@@ -572,8 +572,8 @@
     {
       "name": "Galaxy-Earth",
       "slug": "galaxy-earth",
-      "path": "b-Projects/galaxy-earth",
-      "category": "b-Projects",
+      "path": "b_Projects/galaxy-earth",
+      "category": "b_Projects",
       "framework": "sveltekit",
       "port": 8025,
       "build_steps": [
@@ -586,8 +586,8 @@
     {
       "name": "Galaxy-X1",
       "slug": "galaxy-x1",
-      "path": "b-Projects/galaxy-x1",
-      "category": "b-Projects",
+      "path": "b_Projects/galaxy-x1",
+      "category": "b_Projects",
       "framework": "sveltekit",
       "port": 8023,
       "build_steps": [
@@ -600,8 +600,8 @@
     {
       "name": "Carto",
       "slug": "carto",
-      "path": "c-Circus/carto",
-      "category": "c-Circus",
+      "path": "c_Circus/carto",
+      "category": "c_Circus",
       "framework": "vanilla",
       "port": 8020,
       "build_steps": [
@@ -622,8 +622,8 @@
     {
       "name": "Games",
       "slug": "games",
-      "path": "c-Circus/games",
-      "category": "c-Circus",
+      "path": "c_Circus/games",
+      "category": "c_Circus",
       "framework": "sveltekit",
       "port": 8004,
       "build_steps": [
@@ -636,8 +636,8 @@
     {
       "name": "Movies",
       "slug": "movies",
-      "path": "c-Circus/movies",
-      "category": "c-Circus",
+      "path": "c_Circus/movies",
+      "category": "c_Circus",
       "framework": "vue",
       "port": 8015,
       "build_steps": [
@@ -651,8 +651,8 @@
     {
       "name": "Music",
       "slug": "music",
-      "path": "c-Circus/music",
-      "category": "c-Circus",
+      "path": "c_Circus/music",
+      "category": "c_Circus",
       "framework": "vue",
       "port": 8016,
       "build_steps": [
@@ -665,8 +665,8 @@
     {
       "name": "LMMS",
       "slug": "Music_DAW_LLMS",
-      "path": "c-LabTools/Music_DAW_LLMS",
-      "category": "c-LabTools",
+      "path": "c_LabTools/Music_DAW_LLMS",
+      "category": "c_LabTools",
       "framework": "vanilla",
       "port": 8035,
       "build_steps": [
@@ -683,8 +683,8 @@
     {
       "name": "Mixxx",
       "slug": "Music_DJ-Mixer_Mixxx",
-      "path": "c-LabTools/Music_DJ-Mixer_Mixxx",
-      "category": "c-LabTools",
+      "path": "c_LabTools/Music_DJ-Mixer_Mixxx",
+      "category": "c_LabTools",
       "framework": "vanilla",
       "port": 8034,
       "build_steps": [
@@ -701,8 +701,8 @@
     {
       "name": "CentralBank",
       "slug": "central_bank",
-      "path": "c-LabTools/central_bank",
-      "category": "c-LabTools",
+      "path": "c_LabTools/central_bank",
+      "category": "c_LabTools",
       "framework": "vanilla",
       "port": 8011,
       "build_steps": [
@@ -717,8 +717,8 @@
     {
       "name": "FinTerminal",
       "slug": "fin-terminal",
-      "path": "c-LabTools/fin-terminal",
-      "category": "c-LabTools",
+      "path": "c_LabTools/fin-terminal",
+      "category": "c_LabTools",
       "framework": "vanilla",
       "port": 8024,
       "build_steps": [
@@ -739,8 +739,8 @@
     {
       "name": "MarketWatch",
       "slug": "market_watch",
-      "path": "c-LabTools/market_watch",
-      "category": "c-LabTools",
+      "path": "c_LabTools/market_watch",
+      "category": "c_LabTools",
       "framework": "vanilla",
       "port": 8010,
       "build_steps": [
@@ -761,8 +761,8 @@
     {
       "name": "GDELTNews",
       "slug": "news",
-      "path": "c-LabTools/news",
-      "category": "c-LabTools",
+      "path": "c_LabTools/news",
+      "category": "c_LabTools",
       "framework": "vanilla",
       "port": 8029,
       "build_steps": [
@@ -783,8 +783,8 @@
     {
       "name": "Sailyng",
       "slug": "sailytics",
-      "path": "c-LabTools/sailytics",
-      "category": "c-LabTools",
+      "path": "c_LabTools/sailytics",
+      "category": "c_LabTools",
       "framework": "vanilla",
       "port": 8023,
       "build_steps": [
@@ -805,8 +805,8 @@
     {
       "name": "Sheets (Grist)",
       "slug": "grist",
-      "path": "c-Suite/grist",
-      "category": "c-Suite",
+      "path": "c_Suite/grist",
+      "category": "c_Suite",
       "framework": "vanilla",
       "port": 8033,
       "build_steps": [
@@ -819,8 +819,8 @@
     {
       "name": "JSON Vision",
       "slug": "json-vision",
-      "path": "c-Suite/json-vision",
-      "category": "c-Suite",
+      "path": "c_Suite/json-vision",
+      "category": "c_Suite",
       "framework": "vue",
       "port": 8017,
       "build_steps": [
@@ -833,8 +833,8 @@
     {
       "name": "MyHealth FeedYourself",
       "slug": "myhealth-feedyourself",
-      "path": "c-Suite/myhealth-feedyourself",
-      "category": "c-Suite",
+      "path": "c_Suite/myhealth-feedyourself",
+      "category": "c_Suite",
       "framework": "vanilla",
       "port": 8007,
       "build_steps": [
@@ -863,8 +863,8 @@
     {
       "name": "MyMail",
       "slug": "mymail",
-      "path": "c-Suite/mymail",
-      "category": "c-Suite",
+      "path": "c_Suite/mymail",
+      "category": "c_Suite",
       "framework": "vanilla",
       "port": 8018,
       "build_steps": [
@@ -882,8 +882,8 @@
     {
       "name": "MyMaps",
       "slug": "mymaps",
-      "path": "c-Suite/mymaps",
-      "category": "c-Suite",
+      "path": "c_Suite/mymaps",
+      "category": "c_Suite",
       "framework": "vanilla",
       "port": 8027,
       "build_steps": [
@@ -903,8 +903,8 @@
     {
       "name": "MyMaps Maps",
       "slug": "mymaps-maps",
-      "path": "c-Suite/mymaps-maps",
-      "category": "c-Suite",
+      "path": "c_Suite/mymaps-maps",
+      "category": "c_Suite",
       "framework": "sveltekit",
       "port": 8014,
       "build_steps": [
@@ -917,8 +917,8 @@
     {
       "name": "MyMaps Navigation",
       "slug": "mymaps-navigation",
-      "path": "c-Suite/mymaps-navigation",
-      "category": "c-Suite",
+      "path": "c_Suite/mymaps-navigation",
+      "category": "c_Suite",
       "framework": "sveltekit",
       "port": 8018,
       "build_steps": [
@@ -931,8 +931,8 @@
     {
       "name": "Suite",
       "slug": "suite",
-      "path": "c-Suite/suite",
-      "category": "c-Suite",
+      "path": "c_Suite/suite",
+      "category": "c_Suite",
       "framework": "vanilla",
       "port": 8021,
       "build_steps": [
@@ -952,8 +952,8 @@
     {
       "name": "tldraw",
       "slug": "tldraw",
-      "path": "c-Suite/tldraw",
-      "category": "c-Suite",
+      "path": "c_Suite/tldraw",
+      "category": "c_Suite",
       "framework": "react",
       "port": 8032,
       "build_steps": [

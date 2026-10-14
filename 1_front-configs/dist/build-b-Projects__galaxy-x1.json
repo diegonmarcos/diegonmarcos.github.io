@@ -14,10 +14,10 @@
   },
   "deploy": {},
   "_resolved": {
-    "path": "b-Projects/galaxy-x1",
-    "category": "b-Projects",
+    "path": "b_Projects/galaxy-x1",
+    "category": "b_Projects",
     "project": "galaxy-x1",
-    "key": "b-Projects__galaxy-x1",
+    "key": "b_Projects__galaxy-x1",
     "port": 8023,
     "framework": "sveltekit",
     "src": "src",

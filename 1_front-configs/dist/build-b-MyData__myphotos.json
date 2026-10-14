@@ -55,10 +55,10 @@
   },
   "deploy": {},
   "_resolved": {
-    "path": "b-MyData/myphotos",
-    "category": "b-MyData",
+    "path": "b_MyData/myphotos",
+    "category": "b_MyData",
     "project": "myphotos",
-    "key": "b-MyData__myphotos",
+    "key": "b_MyData__myphotos",
     "port": 8019,
     "framework": "vanilla",
     "src": "src",

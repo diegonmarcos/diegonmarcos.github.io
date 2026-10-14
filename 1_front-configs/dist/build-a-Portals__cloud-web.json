@@ -63,10 +63,10 @@
     "fleet_manifest": "aa_cloud-superapp/data/constellation-fleet.json"
   },
   "_resolved": {
-    "path": "a-Portals/cloud-web",
-    "category": "a-Portals",
+    "path": "a_Portals/cloud-web",
+    "category": "a_Portals",
     "project": "cloud-web",
-    "key": "a-Portals__cloud-web",
+    "key": "a_Portals__cloud-web",
     "port": 8037,
     "framework": "vanilla",
     "src": "src",

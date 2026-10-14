@@ -18,10 +18,10 @@
   },
   "deploy": {},
   "_resolved": {
-    "path": "c-Suite/grist",
-    "category": "c-Suite",
+    "path": "c_Suite/grist",
+    "category": "c_Suite",
     "project": "grist",
-    "key": "c-Suite__grist",
+    "key": "c_Suite__grist",
     "port": 8033,
     "framework": "vanilla",
     "src": "src",

@@ -249,10 +249,10 @@
   },
   "deploy": {},
   "_resolved": {
-    "path": "b-Media/mySocials",
-    "category": "b-Media",
+    "path": "b_Media/mySocials",
+    "category": "b_Media",
     "project": "mySocials",
-    "key": "b-Media__mySocials",
+    "key": "b_Media__mySocials",
     "port": 8028,
     "framework": "vanilla",
     "src": "src",

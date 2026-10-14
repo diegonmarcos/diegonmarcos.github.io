@@ -14,10 +14,10 @@
   },
   "deploy": {},
   "_resolved": {
-    "path": "b-Data/myfeed",
-    "category": "b-Data",
+    "path": "b_Data/myfeed",
+    "category": "b_Data",
     "project": "myfeed",
-    "key": "b-Data__myfeed",
+    "key": "b_Data__myfeed",
     "port": 8003,
     "framework": "vue",
     "src": "src",

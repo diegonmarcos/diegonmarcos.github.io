@@ -182,6 +182,7 @@
         "backup-borg",
         "backup-bup",
         "gitea",
+        "cloudflared",
         "wireguard-mesh",
         "cloud-spec",
         "dagu",
@@ -199,6 +200,7 @@
         "kg-store-pub",
         "my-ai-api",
         "my-ai_claude-api",
+        "openclaw",
         "session-memory",
         "chat-mattermost",
         "cloud-webmail",
@@ -211,6 +213,8 @@
         "playlist-syncer",
         "news-gdelt",
         "calendar-radicale",
+        "cloud-notes-sync",
+        "cloud-notes-web",
         "code-server",
         "contacts-radicale",
         "etherpad",
@@ -221,7 +225,7 @@
         "send",
         "vaultwarden"
       ],
-      "container_count": 65
+      "container_count": 67
     },
     "gcp-E2-f_0": {
       "ip": "35.226.147.64",
@@ -1812,6 +1816,22 @@
         "gha-policy": {
           "cmd": "node --experimental-strip-types test-gha-policy.mjs",
           "cwd": "src/code"
+        },
+        "shell-quote": {
+          "cmd": "node --experimental-strip-types test-shell-quote.mjs",
+          "cwd": "src/code"
+        },
+        "inspect-redact": {
+          "cmd": "node --experimental-strip-types test-inspect-redact.mjs",
+          "cwd": "src/code"
+        },
+        "caddy-cert-repair": {
+          "cmd": "node --experimental-strip-types test-caddy-cert-repair.mjs",
+          "cwd": "src/code"
+        },
+        "cf-bridge": {
+          "cmd": "node --experimental-strip-types test-cf-bridge.mjs",
+          "cwd": "src/code"
         }
       },
       "api": {
@@ -1828,7 +1848,7 @@
         "mcp_url": "https://mcp.diegonmarcos.com/c3-infra-mcp/mcp",
         "transport": "streamable-http",
         "endpoint_path": "/mcp",
-        "tools_count": 109,
+        "tools_count": 117,
         "resources_count": 0,
         "prompts_count": 0,
         "display_name": "C3 Infra MCP",
@@ -2225,7 +2245,7 @@
       "category": "app",
       "vm": "oci-A1-f_0",
       "folder": "infra-api_cloud-superapp-mcp",
-      "description": "MCP + HTTP faces over the Android constellation's on-device debug API (libs:devtools AppDebugServer), reached over ssh. lib-api/lib-mcp shared, one module per app under mcps-apps/, one server process.",
+      "description": "MCP + HTTP faces over the Android constellation's on-device debug API (libs:devtools AppDebugServer, behind the SuperApp mesh gateway), reached over ssh. lib-api/lib-mcp shared, one module per app under mcps-apps/, one server process.",
       "enabled": true,
       "domain": "mcp.diegonmarcos.com",
       "flake": "infra-api_cloud-superapp-mcp",
@@ -2307,7 +2327,7 @@
         "resources_count": 0,
         "prompts_count": 0,
         "display_name": "Cloud SuperApp MCP",
-        "description": "Discovers every constellation app serving AppDebugServer on the phone (127.0.0.1:38080,38090-38139) and proxies its routes: logcat, crashes, docs, fleet wake, and any app-registered route via superapp_call. App aliases come from mcps-apps/<id>/, so cloud-mail resolves without asking the device.",
+        "description": "Discovers every constellation app behind the phone's SuperApp mesh gateway (127.0.0.1:38080 /api/fleet/apps, each app at /app/<pkg>/api/<op> over Android IPC; a pre-gateway phone's apps on 38090-38389) and proxies its routes: logcat, crashes, docs, fleet wake, and any app-registered route via superapp_call. App aliases come from mcps-apps/<id>/, so cloud-mail resolves without asking the device.",
         "auth": "none",
         "sdk": "@modelcontextprotocol/sdk@^1.12.0",
         "_doc_stdio": "How .mcp.json should launch this. Through mcp-local-launch.sh, not `npm start`: the entry is cloud-superapp-mcp/src/index.ts but it imports ../../lib-mcp/src/, and Node walks up from the IMPORTING file — so a node_modules beside the entry alone leaves lib-mcp and every mcps-apps module unresolved (ERR_MODULE_NOT_FOUND on the SDK). The launcher links the solution root, which the walk reaches from all of them, and self-heals if it is missing or dangling. Run through `sh -c` so ${VAR:-default} is expanded by a shell we know does it — the same trick headersHelper already uses in that file. MCP_LOCAL_LAUNCH and CLOUD_INFRA_DIR override the two paths.",
@@ -2373,7 +2393,9 @@
           "type": "path",
           "parent_domain": "mcp.diegonmarcos.com",
           "base_path": "/cloud-vault-mcp",
-          "wg_only": true
+          "wg_only": true,
+          "mesh_only": true,
+          "_doc_mesh_only": "mesh_only:true keeps this endpoint WG-only with NO bearer door: gen-mcp-manifest.sh lists it with auth mesh, so the caddy derive does not set bearer_auth. Every other MCP stays token-public."
         },
         "app_hub": false
       },
@@ -3021,7 +3043,7 @@
       "category": "cloud",
       "vm": "local",
       "folder": "infra-cloud_cloudflare-worker",
-      "description": "Cloudflare Email Worker — inbound mail forwarder. Triple-delivers to Maddy (via http-to-smtp-proxy-api), Google Workspace (Gmail API), and live.com (disaster backup).",
+      "description": "Cloudflare Email Worker — inbound mail forwarder. Parallel legs (Promise.allSettled): Google Workspace (Gmail API) and Maddy (via c3-public-api http-to-smtp; Maddy's durable stalwart_queue feeds Stalwart). Accept if either lands, reject only if both fail; each leg has its own retries and lost-leg log. live.com disaster backup when mail health is unhealthy.",
       "enabled": true,
       "flake": "infra-cloud_cloudflare-worker",
       "containers": {
@@ -3040,6 +3062,12 @@
         "containers": [],
         "ports": [],
         "networks": []
+      },
+      "tests": {
+        "email-forwarder": {
+          "cmd": "node test-email-forwarder.mjs",
+          "cwd": "src"
+        }
       },
       "api": {
         "has_api": false,
@@ -3165,6 +3193,12 @@
         "app": 2223
       },
       "upstream_image": "alpine:3.20",
+      "tests": {
+        "init-writable-authkeys": {
+          "cmd": "sh test-init-writable-authkeys.sh",
+          "cwd": "src"
+        }
+      },
       "api": {
         "has_api": false,
         "has_web_ui": false,
@@ -3305,12 +3339,11 @@
           "_doc": "Gitea honours its reverse-proxy user header from ANY peer: REVERSE_PROXY_TRUSTED_PROXIES only feeds the X-Forwarded-For rewrite (gitea v28.0.0 routers/common/middleware.go:33); services/auth/reverseproxy.go never checks the source. With 0.0.0.0:3002 reachable from every wg0/wg-public peer and ~40 host-network containers on oci-apps, enabling reverse-proxy auth on that listener would let any of them become `diego` with one header. So gitea listens only on a unix socket in a tmpfs volume that no other container mounts, and this caddy owns :3002: it forwards `identity.header` (and X-Real-IP) only when the peer is in trusted_proxies AND the Host is this service's domain — the .app catalog routes the hub also serves from 10.0.0.1 carry Host gitea.app, so they cannot mint an identity either. Everything else reaches gitea exactly as before, anonymous."
         },
         "mirrors": {
+          "cloud-u-containers": {
+            "upstream": "https://github.com/diegonmarcos/cloud-u-containers.git"
+          },
           "cloud-infra": {
             "upstream": "https://github.com/diegonmarcos/cloud-infra.git"
-          },
-          "cloud-data-my-ai-memory": {
-            "upstream": "https://github.com/diegonmarcos/cloud-data-my-ai-memory.git",
-            "private": true
           },
           "cloud-u-android": {
             "upstream": "https://github.com/diegonmarcos/cloud-u-android.git"
@@ -3319,30 +3352,8 @@
             "upstream": "https://github.com/diegonmarcos/cloud-data.git",
             "private": true
           },
-          "cloud-me_configs": {
-            "upstream": "https://github.com/diegonmarcos/cloud-me_configs.git",
-            "private": true
-          },
-          "cloud-u-containers": {
-            "upstream": "https://github.com/diegonmarcos/cloud-u-containers.git"
-          },
-          "cloud-u-linux": {
-            "upstream": "https://github.com/diegonmarcos/cloud-u-linux.git"
-          },
-          "diegonmarcos.github.io": {
-            "upstream": "https://github.com/diegonmarcos/diegonmarcos.github.io.git"
-          },
-          "diegonmarcos": {
-            "upstream": "https://github.com/diegonmarcos/diegonmarcos.git"
-          },
-          "front-data": {
-            "upstream": "https://github.com/diegonmarcos/front-data.git"
-          },
           "ops-Mylibs": {
             "upstream": "https://github.com/diegonmarcos/ops-Mylibs.git"
-          },
-          "cyber-Cyberwarfare": {
-            "upstream": "https://github.com/diegonmarcos/cyber-Cyberwarfare.git"
           },
           "ml-MachineLearning": {
             "upstream": "https://github.com/diegonmarcos/ml-MachineLearning.git"
@@ -3353,26 +3364,54 @@
           "ml-Agentic": {
             "upstream": "https://github.com/diegonmarcos/ml-Agentic.git"
           },
+          "dev": {
+            "upstream": "https://github.com/diegonmarcos/dev.git",
+            "private": true
+          },
+          "cyber-Cyberwarfare": {
+            "upstream": "https://github.com/diegonmarcos/cyber-Cyberwarfare.git"
+          },
+          "back-System": {
+            "upstream": "https://github.com/diegonmarcos/back-System.git"
+          },
           "back-Graphic": {
             "upstream": "https://github.com/diegonmarcos/back-Graphic.git"
           },
           "back-Algo": {
             "upstream": "https://github.com/diegonmarcos/back-Algo.git"
           },
-          "back-System": {
-            "upstream": "https://github.com/diegonmarcos/back-System.git"
-          },
           "lecole42": {
             "upstream": "https://github.com/diegonmarcos/lecole42.git",
             "private": true
           },
-          "dev": {
-            "upstream": "https://github.com/diegonmarcos/dev.git",
+          "cloud-me_configs": {
+            "upstream": "https://github.com/diegonmarcos/cloud-me_configs.git",
             "private": true
           },
-          "cloud-data-lfs": {
-            "upstream": "https://github.com/diegonmarcos/cloud-data-lfs.git",
+          "diegonmarcos.github.io": {
+            "upstream": "https://github.com/diegonmarcos/diegonmarcos.github.io.git"
+          },
+          "diegonmarcos": {
+            "upstream": "https://github.com/diegonmarcos/diegonmarcos.git"
+          },
+          "front-data": {
+            "upstream": "https://github.com/diegonmarcos/front-data.git"
+          },
+          "front-assets-cdn": {
+            "upstream": "https://github.com/diegonmarcos/front-assets-cdn.git"
+          },
+          "cloud-me_cgc": {
+            "upstream": "https://github.com/diegonmarcos/cloud-me_cgc.git",
             "private": true
+          },
+          "cloud-u-containers_cgc": {
+            "upstream": "https://github.com/diegonmarcos/cloud-u-containers_cgc.git"
+          },
+          "cloud": {
+            "upstream": "https://github.com/diegonmarcos/cloud.git"
+          },
+          "cloud-u-linux": {
+            "upstream": "https://github.com/diegonmarcos/cloud-u-linux.git"
           },
           "front-unity": {
             "upstream": "https://github.com/diegonmarcos/front-unity.git",
@@ -3382,6 +3421,31 @@
             "upstream": "https://github.com/diegonmarcos/front-galaxy-gaia.git",
             "private": true
           },
+          "front": {
+            "upstream": "https://github.com/diegonmarcos/front.git"
+          },
+          "cloud-notes": {
+            "upstream": "https://github.com/diegonmarcos/cloud-notes.git",
+            "private": true
+          },
+          "cloud-data-my-ai-memory": {
+            "upstream": "https://github.com/diegonmarcos/cloud-data-my-ai-memory.git",
+            "private": true
+          },
+          "cloud-data-lfs": {
+            "upstream": "https://github.com/diegonmarcos/cloud-data-lfs.git",
+            "private": true
+          },
+          "cloud-infra-desktop": {
+            "upstream": "https://github.com/diegonmarcos/cloud-infra-desktop.git"
+          },
+          "git-repos-master": {
+            "upstream": "https://github.com/diegonmarcos/git-repos-master.git"
+          },
+          "cloud-me": {
+            "upstream": "https://github.com/diegonmarcos/cloud-me.git",
+            "private": true
+          },
           "cloud-me_data-pub": {
             "upstream": "https://github.com/diegonmarcos/cloud-me_data-pub.git"
           },
@@ -3389,32 +3453,9 @@
             "upstream": "https://github.com/diegonmarcos/cloud-me_data-private.git",
             "private": true
           },
-          "cloud-me": {
-            "upstream": "https://github.com/diegonmarcos/cloud-me.git",
-            "private": true
-          },
-          "cloud-notes": {
-            "upstream": "https://github.com/diegonmarcos/cloud-notes.git",
-            "private": true
-          },
-          "git-repos-master": {
-            "upstream": "https://github.com/diegonmarcos/git-repos-master.git"
-          },
-          "cloud": {
-            "upstream": "https://github.com/diegonmarcos/cloud.git"
-          },
-          "front-assets-cdn": {
-            "upstream": "https://github.com/diegonmarcos/front-assets-cdn.git"
-          },
           "My-ai-memory": {
             "upstream": "https://github.com/diegonmarcos/My-ai-memory.git",
             "private": true
-          },
-          "cloud-infra-desktop": {
-            "upstream": "https://github.com/diegonmarcos/cloud-infra-desktop.git"
-          },
-          "front": {
-            "upstream": "https://github.com/diegonmarcos/front.git"
           }
         }
       },
@@ -3597,6 +3638,68 @@
         "REDIS_PASSWORD"
       ]
     },
+    "cloudflared": {
+      "category": "infra-net",
+      "vm": "oci-A1-f_0",
+      "folder": "infra-net_cloudflared",
+      "description": "Cloudflare Tunnel connector (remotely-managed tunnel 'fleet-edge') — the network half of the Cloudflare One (Zero Trust) edge. Outbound-only: no inbound port is opened anywhere. Hostnames, Access apps and ingress rules are declared in cloud-infra c_vps/ba-clo_cloudflare (terraform.json .zero_trust + zero-trust.tf); this container only carries the connector. Origins are reached over the WireGuard mesh (10.0.0.0/24), so one tunnel can front any VM. Design: cloud-infra a0_docs/eng-specs/cloudflare-zero-trust.md. Caddy + Authelia on gcp-proxy stay the fallback path and do not depend on this.",
+      "enabled": true,
+      "flake": "infra-net_cloudflared",
+      "containers": {
+        "app": {
+          "container_name": "cloudflared",
+          "image": "cloudflare/cloudflared:2026.9.3",
+          "_doc_image": "Pinned (released 2026-09-24), multi-arch (arm64 for oci-apps). The image ENTRYPOINT is `cloudflared --no-autoupdate`; bumps are deliberate, never a silent :latest pull.",
+          "command": [
+            "tunnel",
+            "--metrics",
+            "127.0.0.1:20241",
+            "run"
+          ],
+          "_doc_command": "Remotely-managed tunnel: `run` with no name reads TUNNEL_TOKEN from the env (sops secret). Ingress lives in Cloudflare (terraform), not in a local config.yml. Metrics + /ready on 127.0.0.1:20241 only (host network, loopback bind).",
+          "public": false,
+          "network_mode": "host",
+          "_doc_network_mode": "host: origins are WG-mesh addresses (10.0.0.x) and the connector must reach them exactly as the host does. Nothing listens publicly — the only socket is the loopback metrics bind.",
+          "read_only": true,
+          "env_file": true,
+          "protocol": "none",
+          "depends_on": [],
+          "resources": {
+            "mem_limit": "256m",
+            "mem_reservation": "32m"
+          },
+          "healthcheck": null,
+          "monitoring": null
+        }
+      },
+      "container_names": [
+        "cloudflared"
+      ],
+      "all_ports": [],
+      "all_dns": [],
+      "compose": {
+        "containers": [],
+        "ports": [],
+        "networks": []
+      },
+      "monitoring": {
+        "tls_check": false,
+        "dns_check": false,
+        "endpoint_check": false,
+        "_doc": "No vhost of its own. Health = the tunnel's connector status in Cloudflare (cf-zero-trust workflow [zt:probe]) and http://127.0.0.1:20241/ready on oci-apps."
+      },
+      "subcategory": "net",
+      "api": {
+        "has_api": false,
+        "has_web_ui": false,
+        "api_path": null,
+        "api_url": null,
+        "healthcheck_paths": []
+      },
+      "secret_env_vars": [
+        "TUNNEL_TOKEN"
+      ]
+    },
     "hickory-dns": {
       "category": "cloud",
       "vm": "gcp-E2-f_0",
@@ -3721,13 +3824,13 @@
       "enabled": true,
       "domain": "mesh.diegonmarcos.com",
       "flake": "infra-net_wireguard-mesh",
-      "port": 8080,
+      "port": 8084,
       "dns": "wireguard-mesh.app",
-      "upstream": "10.0.0.6:8080",
+      "upstream": "10.0.0.6:8084",
       "containers": {
         "app": {
           "container_name": "wireguard-mesh",
-          "port": 8080,
+          "port": 8084,
           "port_format": "colon",
           "protocol": "http",
           "public": true,
@@ -3759,7 +3862,7 @@
         "wireguard-mesh"
       ],
       "all_ports": [
-        "8080"
+        "8084"
       ],
       "all_dns": [],
       "compose": {
@@ -3775,7 +3878,7 @@
         }
       },
       "declared_ports": {
-        "app": 8080
+        "app": 8084
       },
       "health": {
         "path": "/"
@@ -3817,9 +3920,13 @@
       "containers": {
         "app": {
           "container_name": "wireguard-mesh-ws-tunnel",
-          "image": "ghcr.io/erebe/wstunnel:latest",
+          "image": "ghcr.io/erebe/wstunnel:v11.0.0",
+          "_doc_image": "Pinned, not :latest: the SuperApp's WireGuard engine speaks this server's wire itself (libs:net-wg WsTunnel: the /<prefix>/events upgrade, the UDP ticket in Sec-WebSocket-Protocol, unmasked frames), measured against 11.0.0. A new wstunnel is a deliberate bump, re-run against MeshRelayTest and a phone, never a silent pull.",
+          "_doc_command": "--log-lvl WARN: at INFO the server logs 'Tunnel accepted due to matched restriction: Allow path prefix <the secret>' on every tunnel, so the scanner-defence prefix sat in the container log readable by every log tool. WARN keeps refusals (bad path, disallowed destination) and drops that line.",
           "command": [
             "/home/app/wstunnel",
+            "--log-lvl",
+            "WARN",
             "server",
             "ws://0.0.0.0:8080",
             "--restrict-to",
@@ -4189,6 +4296,14 @@
           "google_compute_engine.pub"
         ]
       },
+      "tests": {
+        "health_mail-reconcile": {
+          "cmd": "python3 src/dags/test_health_mail-reconcile.py"
+        },
+        "dag-keys": {
+          "cmd": "python3 src/dags/test_dag-keys.py"
+        }
+      },
       "api": {
         "has_api": true,
         "has_web_ui": true,
@@ -4427,6 +4542,12 @@
         ]
       },
       "upstream_image": "matomo:fpm-alpine",
+      "tests": {
+        "host-ports": {
+          "cmd": "bash test-matomo-ports.sh",
+          "cwd": "src"
+        }
+      },
       "api": {
         "has_api": true,
         "has_web_ui": true,
@@ -5333,6 +5454,7 @@
         "app_hub": false,
         "primary": {
           "domain": "auth.diegonmarcos.com",
+          "wg_only": false,
           "auth": "bypass",
           "oidc_public_paths": [
             "/.well-known/openid-configuration",
@@ -5495,6 +5617,27 @@
             "upstream": "10.0.0.3:2443",
             "tls_skip_verify": true,
             "comment": "JMAP session/api/download/upload/eventsource follow-through on jmap vhost"
+          },
+          {
+            "path": "/.well-known/jmap",
+            "target_domain": "mails.diegonmarcos.com",
+            "upstream": "10.0.0.3:2443",
+            "tls_skip_verify": true,
+            "rewrite_to": "/jmap/session",
+            "comment": "JMAP discovery on the mails vhost"
+          },
+          {
+            "path": "/jmap/*",
+            "target_domain": "mails.diegonmarcos.com",
+            "upstream": "10.0.0.3:2443",
+            "tls_skip_verify": true,
+            "comment": "JMAP session/api follow-through on the mails vhost"
+          },
+          {
+            "path": "/",
+            "target_domain": "mails.diegonmarcos.com",
+            "redirect_to": "/.well-known/jmap",
+            "comment": "Bare mails host -> JMAP discovery URL (308)"
           }
         ],
         "proxy_dashboard": {
@@ -5543,6 +5686,30 @@
         }
       },
       "caddy_config": {
+        "public_landing": {
+          "_doc": "Public scheme {app}.diegonmarcos.com (cloud-infra a0_docs/eng-specs/url-scheme.md). A request to an Authelia-gated vhost with NO credential (no Authorization header, no session cookie) is redirected to base_url + the service's proxy.primary.landing (or default_path) instead of the Authelia wall. Bearer / Basic / cookie requests are untouched. Interactive sign-in: <vhost><login_path> redirects to auth_portal with rd back to the vhost.",
+          "base_url": "https://diegonmarcos.github.io/c__Cloud/",
+          "default_path": "",
+          "login_path": "/login",
+          "session_cookie": "authelia_session",
+          "auth_portal": "https://auth.diegonmarcos.com/",
+          "_landings_doc": "vhost -> c_<category>/<app> folder of diegonmarcos.github.io/c__Cloud (the Android app that fronts it). A service may override with its own proxy.primary.landing. Unlisted gated vhosts land on the c__Cloud hub (default_path).",
+          "landings": {
+            "cal.diegonmarcos.com": "c_data-apps/cloud-tasks",
+            "chat.diegonmarcos.com": "c_inboxes/cloud-chat",
+            "contacts.diegonmarcos.com": "c_data-apps/cloud-contacts",
+            "crowdsec.diegonmarcos.com": "c_configs/cloud-c3",
+            "db.diegonmarcos.com": "c_configs/cloud-c3",
+            "ide.diegonmarcos.com": "c_agi/cloud-myterminal",
+            "mail.diegonmarcos.com": "c_inboxes/cloud-mail",
+            "mesh.diegonmarcos.com": "c_configs/cloud-c3",
+            "messenger.diegonmarcos.com": "c_inboxes/cloud-matrix",
+            "photos.diegonmarcos.com": "c_data-apps/cloud-gallery",
+            "playlist.diegonmarcos.com": "c_data-apps/cloud-media",
+            "webmail.diegonmarcos.com": "c_inboxes/cloud-mail",
+            "workflows.diegonmarcos.com": "c_configs/cloud-c3"
+          }
+        },
         "global": {
           "debug": true,
           "admin_bind": "localhost:2019",
@@ -5634,6 +5801,129 @@
             "zone": "jmap"
           }
         },
+        "edge_auth": {
+          "_doc": "THE edge auth policy, one list, three tiers. Every public URL is exactly one of: (a) private -- mesh/WireGuard only (route wg_only:true, or a *.app/.db/s3 name), answered 403 to any non-mesh source and never served by the public edge (caddy-public); (b) public-protected -- the DEFAULT for anything public: the shared (edge_auth) snippet requires `Authorization: Bearer <fleet token>` (introspect-proxy) OR a valid Authelia session cookie, else 401 (API / non-browser) or 302 to auth. (browser); (c) public-open -- anonymous allowed, ONLY what is listed in public_open / technical below, each with a reason. Adding a host to public_open is the only way to make something anonymous; add more entries here. The CI guard (cloud-infra 9_others/test/edge-auth-gate.test.sh) fails on a public site that is in no tier, in two tiers, or open without an entry here. Rendered by _shared/edge-auth.nix into BOTH Caddyfiles (hub infra-sec_caddy, edge infra-sec_caddy-public); the derive copies this block into build-caddy.json and build-caddy-edge.json.",
+          "public_open": [
+            {
+              "host": "auth.diegonmarcos.com",
+              "scope": "host",
+              "reason": "The IdP itself: login portal and OIDC endpoints (authorize / token / JWKS / discovery) cannot require the token or session they exist to issue."
+            },
+            {
+              "host": "linktree.diegonmarcos.com",
+              "scope": "host",
+              "reason": "Owner decision 2026-10-16: the public link page is deliberately anonymous."
+            },
+            {
+              "host": "mcp.diegonmarcos.com",
+              "scope": "paths",
+              "paths": [
+                "/.well-known/oauth-protected-resource*",
+                "/.well-known/oauth-authorization-server*",
+                "/.well-known/openid-configuration*",
+                "/register",
+                "/authorize",
+                "/token",
+                "/callback",
+                "/oauth/*",
+                "/*/.well-known/oauth-protected-resource*",
+                "/*/.well-known/oauth-authorization-server*",
+                "/*/register",
+                "/*/authorize",
+                "/*/token",
+                "/*/callback"
+              ],
+              "reason": "Owner decision 2026-10-16 + item 5 (MCP auth discovery): a claude.ai MCP connector completes the OAuth sign-in BEFORE it holds a token -- discovery metadata (RFC 9728 / RFC 8414, incl. per-resource variants), Dynamic Client Registration (/register), /authorize, /token and the callback. The tool endpoints (/<route>/mcp) stay Bearer-protected; a request to any of these paths is answered by the MCP side itself."
+            },
+            {
+              "host": "analytics.diegonmarcos.com",
+              "scope": "paths",
+              "paths": [
+                "/umami/script.js",
+                "/umami/api/send",
+                "/matomo/matomo.js",
+                "/matomo/piwik.js",
+                "/matomo/matomo.php",
+                "/matomo/piwik.php",
+                "/matomo/js/*"
+              ],
+              "reason": "Owner decision 2026-10-16: the tracker script and its event-collection endpoint are loaded by anonymous visitors of the public websites (umami script.js + /api/send; Matomo's tracker equivalents). Dashboards, the reporting APIs (matomo api.php, umami /api/*) and OpenObserve stay protected."
+            },
+            {
+              "host": "matrix.diegonmarcos.com",
+              "scope": "paths",
+              "paths": [
+                "/_matrix/federation/*",
+                "/_matrix/key/*",
+                "/.well-known/matrix/*",
+                "/_matrix/client/*"
+              ],
+              "reason": "Owner decision 2026-10-16: other homeservers federate and discover this one without credentials. Owner decision 22: the Matrix client API (/_matrix/client/*) is open for Element web and token-less clients -- the homeserver does its own auth. Media and everything else stays protected."
+            },
+            {
+              "host": "chat.diegonmarcos.com",
+              "scope": "paths",
+              "paths": [
+                "/api/v4/*"
+              ],
+              "reason": "Owner decision 22: Mattermost mobile login and API -- Mattermost does its own authentication on /api/v4/*. The web UI stays gated."
+            },
+            {
+              "host": "git.diegonmarcos.com",
+              "scope": "paths",
+              "paths": [
+                "/*/*/info/refs",
+                "/*/*/git-upload-pack",
+                "/*/*/git-receive-pack",
+                "/api/v1/*"
+              ],
+              "reason": "Owner decision 22: git-over-HTTPS (smart HTTP) with Basic auth and the Gitea API -- Gitea does its own authentication; git clients cannot do a cookie/bearer handshake. The web UI stays gated."
+            },
+            {
+              "host": "diegonmarcos.com",
+              "scope": "paths",
+              "paths": [
+                "/.well-known/openpgpkey/*",
+                "/.well-known/jmap"
+              ],
+              "reason": "Owner decision 22: WKD (OpenPGP key discovery, public keys by design) and the apex /.well-known/jmap autoconfig redirect (redirect only, no content)."
+            },
+            {
+              "host": "mta-sts.diegonmarcos.com",
+              "scope": "paths",
+              "paths": [
+                "/.well-known/mta-sts.txt"
+              ],
+              "reason": "Owner decision 22: MTA-STS policy (RFC 8461) is fetched anonymously by sending MTAs."
+            },
+            {
+              "host": "vpn.diegonmarcos.com",
+              "scope": "websocket",
+              "reason": "Owner decision 2026-10-16: the wstunnel client opens a WebSocket upgrade to a secret path prefix and cannot do a cookie/bearer handshake. The exemption is `Upgrade: websocket` only; wstunnel itself rejects every upgrade whose path is not its secret --http-upgrade-path-prefix, and every non-upgrade request to vpn. is gated."
+            }
+          ],
+          "held": [],
+          "technical": [
+            {
+              "id": "acme-http-01",
+              "match": "/.well-known/acme-challenge/*",
+              "reason": "Owner decision 2026-10-16: ACME http-01 validation requests come from the CA and cannot carry a token. Exempted on EVERY host (the path is excluded from the gate). Caddy core answers a live token before any route runs; this fleet itself issues via DNS-01."
+            },
+            {
+              "id": "cors-preflight",
+              "match": "OPTIONS with Access-Control-Request-Method",
+              "reason": "Browsers never attach credentials to a CORS preflight. The (edge_auth) snippet answers it itself with 204; it is never proxied to an upstream, so it serves no content. Plain OPTIONS (WebDAV discovery) is NOT exempt."
+            },
+            {
+              "id": "mail-protocol-l4",
+              "hosts": [
+                "imap.diegonmarcos.com",
+                "smtps.diegonmarcos.com"
+              ],
+              "reason": "IMAPS / SMTPS are not HTTP: caddy-l4 forwards the raw TLS stream to Stalwart, which authenticates the mail login itself. There is no HTTP request to carry a bearer or cookie."
+            }
+          ]
+        },
         "auth": {
           "authelia_uri": "/api/authz/forward-auth",
           "authelia_copy": [
@@ -5709,12 +5999,68 @@
         },
         "catch_all": {
           "domain": "*.diegonmarcos.com",
-          "page": "/srv/error.html"
+          "page": "/srv/error.html",
+          "redirect_to": "https://diegonmarcos.github.io/c__Cloud/",
+          "_redirect_doc": "Unknown subdomains 302 to the landing hub instead of the 404 error page (caddyfile.nix catchAllBlock). page stays as the edge's fallback file."
         },
         "messages": {
           "portless_placeholder": "Portless worker/sidecar — no HTTP endpoint",
           "db_catalog_template": "DB catalog — container={container} engine={engine} port={port} upstream={upstream} path={path} vm={vm}",
           "app_hub_fallback": "Not Found"
+        },
+        "url_scheme": {
+          "_doc": "Fleet URL scheme (cloud-infra a0_docs/eng-specs/url-scheme.md). container_prefix: every container gets c3-{container}.diegonmarcos.com (wg_only, 403 off-mesh) and c3-{container}.app. APKs get cloud-{name}.diegonmarcos.com (public, never wg_only, Authelia, anonymous -> landing) and, when they declare a container web target, cloud-{name}.app. Both lists are GENERATED: manifests.apk is cloud-u-android's 2_configs/apk-manifest.json (relative to the cloud-infra root), manifests.mcp is cloud-u-containers' _shared/mcp-manifest.json (relative to a_solutions). Nothing here lists an APK, container or MCP by hand. groups documents the special address groups and is asserted by test-url-scheme.sh. extra_routes are additive vhosts: mails. serves the JMAP config URLs (well-known paths public, rest of the vhost mesh-only, like jmap.).",
+          "container_prefix": "c3-",
+          "manifests": {
+            "apk": "../cloud-u-android/2_configs/apk-manifest.json",
+            "mcp": "_shared/mcp-manifest.json"
+          },
+          "groups": {
+            "SPECIAL": {
+              "open": [
+                "auth.diegonmarcos.com",
+                "diegonmarcos.com",
+                "www.diegonmarcos.com",
+                "linktree.diegonmarcos.com",
+                "nexus.diegonmarcos.com",
+                "suite.diegonmarcos.com",
+                "maps.diegonmarcos.com"
+              ],
+              "comment": "Authelia must be open (wg_only:false); the rest are GitHub Pages."
+            },
+            "MAIL": {
+              "open": [
+                "mail.diegonmarcos.com",
+                "mails.diegonmarcos.com",
+                "imap.diegonmarcos.com",
+                "smtps.diegonmarcos.com",
+                "mta-sts.diegonmarcos.com"
+              ],
+              "l4_ports": [
+                25
+              ],
+              "well_known": [
+                "/.well-known/jmap"
+              ],
+              "comment": "All open as before; mails. is the new JMAP config-URL host."
+            },
+            "NETWORK": {
+              "wg_only": [],
+              "pending_wg_only": [
+                "vpn.diegonmarcos.com"
+              ],
+              "comment": "vpn. stays at its previous exposure (wg_only:false, wstunnel path-prefix gated) until the owner confirms they do not join the mesh via WireGuard-over-443 on vpn.; making it wg_only could lock them out. test-url-scheme.sh skips the vpn wg_only check with a TODO."
+            }
+          },
+          "extra_routes": [
+            {
+              "domain": "mails.diegonmarcos.com",
+              "service": "stalwart",
+              "auth": "none",
+              "wg_only": true,
+              "comment": "JMAP config URLs (well-known grafts public; rest of the vhost mesh-only)"
+            }
+          ]
         }
       },
       "tests": {
@@ -6280,14 +6626,27 @@
             "*.bin",
             "*.icns",
             "*.efi",
+            "*.lock",
+            "go.sum",
+            "**/verification-metadata.xml",
+            "gradlew",
+            "gradlew.bat",
+            "*.db",
+            "*.sqlite",
+            "*.sqlite3",
+            "**/src-tauri/gen/",
             "a_solutions/*/src/build-*.json",
             "*_private.json",
             "*_private.yaml",
             "*_private.yml"
           ],
+          "_noindex_value_comment": "Lockfiles (*.lock: flake/Cargo/Gemfile/bun/pubspec, go.sum), Gradle dependency verification metadata, the gradlew/gradlew.bat wrapper copied into every app, binary SQLite dumps (*.db: sqldelight/Room schema snapshots) and Tauri-generated platform projects (src-tauri/gen/) carry no search value but cost embedding time on every first pass of a chunked repo (#888, cloud-u-android). Version catalogs, gradle-wrapper.properties, manifests (Cargo.toml, go.mod, package.json) stay. Asserted by cloud-infra 9_others/test/cgc-db-noindex-value.test.sh.",
           "_noindex_private_comment": "The *_private.* entries above are a NAMING-CONVENTION gate, not a per-file blocklist (ticket #360). A data file whose own name declares it private (aa_cloud-superapp/data/services_private.json — 602 lines enumerating every internal host:port pair and which auth component fronts what) was returned by a plain cgc.octocode.search against the PUBLIC surface. The point of declaring the pattern rather than the path is that the NEXT such file is excluded on the day it is written, with no ticket. Scope was measured before it was chosen: across the indexed repos *_private.json matches that one file and nothing else, while the wider glob *_private.* was REJECTED because it would have swallowed real source (ac_cloud-chat tool_private.ts, convert_private.tsx, public_private.tsx). yaml/yml carry zero matches today and are declared so the convention holds for the fleet's other data format. Applies to BOTH surfaces by construction: there is ONE .runtime.octocode block, one indexer pass and one .noindex per repo, and the pub/pvt split is the VOLUME (private_repos) not the file — so a pvt-only carve-out would need a second full index pass (hours per repo) to spare one 13KB JSON file that is public on github.com anyway. Honored by cloud-cgc-db-update.sh NOINDEX_PATTERNS (gitignore syntax: a slash-free pattern matches the basename at any depth). NOT a substitute for the real fix — cloud-u-android is a PUBLIC repo, so the file is served by github.com with or without this rule. Asserted by cloud-infra 9_others/test/cgc-db-noindex-private.test.sh.",
-          "_noindex_extra_comment": "PER-REPO noindex additions (data-driven, keyed by local repo name) layered ON TOP of noindex_patterns above, for content only ONE repo needs excluded. cloud-data-my-ai-memory: a_sessions/ holds raw Claude Code session transcripts (giant, opaque tool-result JSON that would abort the index; the text is invisible to embeddings anyway) and a_commits/ holds 18 rewritten-wholesale JSON snapshots up to 7.5MB each (embedding noise + whole-file-JSON abort risk). cloud-u-android (#352/#375): 37k tracked files made every slice time out before publishing; Android resource translations/drawables (res/values-*, res/drawable*, mipmap, raw, font, anim, color), the vendored iOS tree of the chat fork, androidTest, i18n/locales/l10n catalogues, fonts and .patch files are ~5.3k files of near-zero code signal -- excluded here so the semantic slice converges. Honored by cloud-cgc-db-update.sh next to NOINDEX_PATTERNS.",
+          "_noindex_extra_comment": "PER-REPO noindex additions (data-driven, keyed by local repo name) layered ON TOP of noindex_patterns above, for content only ONE repo needs excluded. cloud-data-my-ai-memory: a_sessions/ holds raw Claude Code session transcripts (giant, opaque tool-result JSON that would abort the index; the text is invisible to embeddings anyway) and a_commits/ holds 18 rewritten-wholesale JSON snapshots up to 7.5MB each (embedding noise + whole-file-JSON abort risk). cloud-u-android (#352/#375): 37k tracked files made every slice time out before publishing; Android resource translations/drawables (res/values-*, res/drawable*, mipmap, raw, font, anim, color), the vendored iOS tree of the chat fork, androidTest, i18n/locales/l10n catalogues, fonts and .patch files are ~5.3k files of near-zero code signal -- excluded here so the semantic slice converges. #888 (2026-10-09, measured on HEAD e72eed8e): test code the base list misses because it lives beside the source instead of under tests/ (*.spec.*, *.test.*, __tests__/, __mocks__/, snapshots, stories, testFixtures/, src/test*/), keyboard layout/locale/emoji data, Room schema dumps, ac_cloud-code drawables/mipmaps and lang catalogues, zips and .gitkeep -- ~1.3k more files with no search value; together with the chunk planner now ranking .noindex above gitignore re-includes (as octocode does), the indexable set drops from 23286 to ~20.8k. Source, build scripts and docs stay. Honored by cloud-cgc-db-update.sh next to NOINDEX_PATTERNS.",
           "noindex_extra": {
+            "cloud-data": [
+              "secrets/"
+            ],
             "cloud-data-my-ai-memory": [
               "a_sessions/",
               "a_commits/"
@@ -6309,7 +6668,32 @@
               "*.otf",
               "*.woff",
               "*.woff2",
-              "*.patch"
+              "*.patch",
+              "*.spec.ts",
+              "*.spec.tsx",
+              "*.spec.js",
+              "*.spec.jsx",
+              "*.test.ts",
+              "*.test.tsx",
+              "*.test.js",
+              "*.test.jsx",
+              "**/__tests__/",
+              "**/__mocks__/",
+              "**/__snapshots__/",
+              "*.snap",
+              "*.stories.ts",
+              "*.stories.tsx",
+              "**/testFixtures/",
+              "**/src/test*/",
+              "*.zip",
+              ".gitkeep",
+              "**/assets/layouts/",
+              "**/assets/locale_key_texts/",
+              "**/assets/emoji/",
+              "**/app/schemas/",
+              "**/res/android/drawable*/",
+              "**/res/android/mipmap*/",
+              "**/src/lang/*.json"
             ]
           },
           "db_volume": "octocode_db",
@@ -6387,6 +6771,7 @@
             "cloud-data",
             "cloud-data-my-ai-memory"
           ],
+          "_pub_repos_mount_comment": "cloud-cgc-pub-mcp mounts octocode_repos ONLY as one read-only volume.subpath per public repo (index_repos minus private_repos minus sync_exclude) — never the whole volume, which also holds the private checkouts ops_git-sync clones for cloud-cgc-pvt-mcp. compose.nix pubReposMounts; code-level second wall in src/code/surface.ts (CGC_SURFACE, fail-closed to pub). Asserted by .tests.pub-surface-isolation. 2026-10-13.",
           "_repo_map_comment": "GENERATED by 1_cloud-configs/src/derive/derive-repo-map.ts from cloud/repos.json, scoped to index_repos. DO NOT EDIT — add the repo to the registry and to index_repos instead.",
           "repo_map": {
             "cloud-infra": "cloud-infra",
@@ -6424,6 +6809,13 @@
           "sync_exclude": {
             "cloud-vault": "credential store — cloud-cgc-pub-mcp indexes the shared volume; secrets would be embedded in the GraphRAG DB"
           }
+        }
+      },
+      "tests": {
+        "pub-surface-isolation": {
+          "_comment": "Fails when any private repo (runtime.octocode.private_repos + sync_exclude + the surface.ts hard floor) is reachable through cloud-cgc-pub-mcp: evaluates compose.nix (pub mounts only public repos, by subpath), checks surface.ts fail-closed policy, and registers the REAL tool modules against a capturing fake server over a scratch GIT_ROOT that DOES hold private checkouts, asserting enums and handlers refuse every private name. Audit 2026-10-13.",
+          "cmd": "node --experimental-strip-types test-pub-surface-isolation.mjs",
+          "cwd": "src/code"
         }
       },
       "api": {
@@ -6602,9 +6994,12 @@
           "db_engine": "surrealdb",
           "image": "ghcr.io/diegonmarcos/kg-store:latest",
           "resources": {
-            "_comment": "THE ONE DECLARATION of this container's memory budget. src/compose.nix reads mem_limit twice off this single value: once as the cgroup ceiling (deploy.resources.limits.memory) and once to size SurrealDB's own RocksDB caches (SURREAL_ROCKSDB_BLOCK_CACHE_SIZE = half of it, SURREAL_ROCKSDB_WRITE_BUFFER_SIZE = an eighth). Both halves are required: the cgroup alone converts the leak into an OOM kill, and the engine budget alone leaves nothing enforcing it. Change this number and BOTH move — no literal is written in compose.nix. Sized from measurement: kg-store's resident set on oci-apps 2026-09-24 was 140.6MiB, so 1G is ~7x headroom, against the ~10.6GB it held uncapped.",
-            "mem_limit": "1G",
-            "mem_reservation": "128M"
+            "_comment": "THE ONE DECLARATION of this container's memory budget. src/compose.nix reads mem_limit as the cgroup ceiling (deploy.resources.limits.memory) and rocksdb_block_cache / rocksdb_write_buffer below as SurrealDB's own RocksDB budget (SURREAL_ROCKSDB_BLOCK_CACHE_SIZE, SURREAL_ROCKSDB_WRITE_BUFFER_SIZE). Both halves are required: the cgroup alone converts the leak into an OOM kill, and the engine budget alone leaves nothing enforcing it. No literal is written in compose.nix. Sized from measurement: kg-store's resident set on oci-apps 2026-09-24 was 140.6MiB at rest, but a full graph refresh peaked at ~945MiB on 2026-10-10, hence 2G.",
+            "mem_limit": "2G",
+            "mem_reservation": "128M",
+            "_rocksdb_comment": "SurrealDB RocksDB engine budget, declared on its own so the cgroup ceiling above can grow without the cache growing with it. Raised mem_limit 1G -> 2G on 2026-10-10: a full cgc graph refresh (690k-edge cloud-u-containers ingest) peaked at ~945MiB of the 1G cap and restarted both stores once mid-ingest. The cache and memtables are kept exactly where they were (512M cache, 2 x 128M memtables) so the extra GiB is pure headroom for the process, WAL and compaction. compose.nix refuses a block cache above half of mem_limit, and _shared/test-kg-store-memory-ceiling.mjs asserts mem_limit >= 2G.",
+            "rocksdb_block_cache": "512M",
+            "rocksdb_write_buffer": "128M"
           }
         }
       },
@@ -6793,9 +7188,12 @@
           "db_engine": "surrealdb",
           "image": "ghcr.io/diegonmarcos/kg-store-pub:latest",
           "resources": {
-            "_comment": "THE ONE DECLARATION of this container's memory budget — see user-ai_kg-store/build.json for the full note. src/compose.nix derives both the cgroup ceiling and SurrealDB's RocksDB cache budget from this single value; no literal is written in compose.nix. Measured resident set on oci-apps 2026-09-24: 131.1MiB.",
-            "mem_limit": "1G",
-            "mem_reservation": "128M"
+            "_comment": "THE ONE DECLARATION of this container's memory budget — see user-ai_kg-store/build.json for the full note. src/compose.nix takes the cgroup ceiling from mem_limit and SurrealDB's RocksDB budget from rocksdb_block_cache / rocksdb_write_buffer; no literal is written in compose.nix. Measured resident set on oci-apps 2026-09-24: 131.1MiB at rest; ~945MiB peak during a full graph refresh on 2026-10-10, hence 2G.",
+            "mem_limit": "2G",
+            "mem_reservation": "128M",
+            "_rocksdb_comment": "SurrealDB RocksDB engine budget, declared on its own so the cgroup ceiling above can grow without the cache growing with it. Raised mem_limit 1G -> 2G on 2026-10-10: a full cgc graph refresh (690k-edge cloud-u-containers ingest) peaked at ~945MiB of the 1G cap and restarted both stores once mid-ingest. The cache and memtables are kept exactly where they were (512M cache, 2 x 128M memtables) so the extra GiB is pure headroom for the process, WAL and compaction. compose.nix refuses a block cache above half of mem_limit, and _shared/test-kg-store-memory-ceiling.mjs asserts mem_limit >= 2G.",
+            "rocksdb_block_cache": "512M",
+            "rocksdb_write_buffer": "128M"
           }
         }
       },
@@ -7131,6 +7529,10 @@
           "cmd": "node test-agi-container-naming.mjs",
           "cwd": "../_shared"
         },
+        "native-agents": {
+          "cmd": "node test-my-ai-native-agents.mjs",
+          "cwd": "src/code"
+        },
         "agent-credential-scope": {
           "cmd": "node test-agent-credential-scope.mjs",
           "cwd": "../_shared"
@@ -7359,6 +7761,89 @@
         "GH_TOKEN",
         "OPENROUTER_API_KEY"
       ]
+    },
+    "openclaw": {
+      "category": "agi",
+      "vm": "oci-A1-f_0",
+      "folder": "user-ai_openclaw",
+      "description": "OpenClaw (MIT, github.com/openclaw/openclaw) on oci-apps — the open-source personal agent gateway, as a fourth fleet agent next to hermes, goose and claude. Upstream's own image, unmodified. Its gateway listens on 127.0.0.1 only (host network, auth mode none, the documented trusted-loopback setup) with the OpenAI-compatible /v1/chat/completions enabled; the fleet reaches it ONLY through the agent gateway my-ai-api (X-Agent-Mode: openclaw). Its model calls go back through that same gateway's OpenRouter face, which holds the key, so this service has no secret at all. Never public, never on the mesh directly.",
+      "enabled": true,
+      "flake": "user-ai_openclaw",
+      "port": 18789,
+      "dns": "openclaw.app",
+      "upstream": "10.0.0.6:18789",
+      "containers": {
+        "app": {
+          "container_name": "cloud-agi-openclaw",
+          "image": "ghcr.io/openclaw/openclaw:2026.9.9",
+          "_image_comment": "Upstream's public GHCR image, pinned (2026.9.9 = latest on 2026-10-10, arm64 digest sha256:f75083cde787fcb90cdfa91cb17ca0ea135b5f4ee989fc08ca2c2e12abe22e84). Public, so the oci-apps pull needs no GHCR login. 3.4 GB on disk.",
+          "port": 18789,
+          "port_env": "OPENCLAW_GATEWAY_PORT",
+          "dns": "openclaw.app",
+          "public": false,
+          "healthcheck": null,
+          "monitoring": null,
+          "env_file": false,
+          "depends_on": [],
+          "resources": {
+            "mem_limit": "3G",
+            "mem_reservation": "1G",
+            "_comment": "Measured 2026-10-10 on oci-apps (smoke run of this exact config): 1.33 GiB resident after one agent turn. 3G is the ceiling with headroom for tool runs; the agi category default (8G) is more than this service needs."
+          },
+          "read_only": false,
+          "protocol": "http",
+          "_healthcheck_comment": "null on purpose, as for cloud-agi-hermes: the listener is loopback-only, so a mesh probe of openclaw.app:18789 could only ever fail. Liveness is compose.nix's container healthcheck (127.0.0.1/health) and the gateway's /health.modes[openclaw].available."
+        }
+      },
+      "container_names": [
+        "cloud-agi-openclaw"
+      ],
+      "all_ports": [
+        "18789"
+      ],
+      "all_dns": [
+        "openclaw.app"
+      ],
+      "compose": {
+        "containers": [],
+        "ports": [],
+        "networks": []
+      },
+      "proxy": {
+        "app_hub": false
+      },
+      "declared_ports": {
+        "app": 18789
+      },
+      "runtime": {
+        "_comment": "THE ONE DECLARATION of what OpenClaw runs. src/openclaw-config.nix renders configs/openclaw.json from it (a pure function, evaluated by the tester too), compose.nix mounts that read-only and the container copies it into its state volume at every start, so a hand edit inside the container lasts until the next restart and never longer. `model` is the fleet's agent model (the same one goose and hermes declare); `provider` is the fleet gateway's OpenAI-compatible face on the WireGuard bind, which injects the OpenRouter key — the apiKey OpenClaw sends is a placeholder the gateway ignores (passthrough_auth false there).",
+        "model": "deepseek/deepseek-v4-flash-0731",
+        "agent_target": "openclaw/default",
+        "provider": {
+          "id": "fleet",
+          "base_url": "http://10.0.0.6:3217/v1",
+          "api": "openai-completions",
+          "api_key_placeholder": "fleet-gateway-injects-the-key",
+          "context_window": 128000,
+          "max_tokens": 8192
+        },
+        "_bind_comment": "loopback + auth none is the setup OpenClaw documents for a trusted same-host caller (docs/gateway/config-gateway.md: 'auth.mode none — use only for trusted local loopback setups'). Any other bind REQUIRES auth (non-loopback binds refuse to start without it) and would need a shared token in both this service's and my-ai-api's sops files; the tester fails if bind leaves loopback while auth stays none.",
+        "bind": "loopback",
+        "auth": "none"
+      },
+      "tests": {
+        "openclaw-service": {
+          "cmd": "node test-openclaw-service.mjs",
+          "cwd": "src"
+        }
+      },
+      "api": {
+        "has_api": false,
+        "has_web_ui": false,
+        "api_path": null,
+        "api_url": null,
+        "healthcheck_paths": []
+      }
     },
     "session-memory": {
       "category": "agi",
@@ -7718,6 +8203,8 @@
           "env_file": true,
           "depends_on": [],
           "resources": {
+            "_doc_mem_limit": "Measured on oci-mail 2026-10-13: cgroup peak 13MiB, anon ~0. 64M is ~5x that; it replaces the 2G category default, which on a 954MiB VM capped nothing. Gate: _shared/test-mail-stack-limits.mjs.",
+            "mem_limit": "64M",
             "reservations": {
               "memory": "16M"
             }
@@ -8130,6 +8617,8 @@
           "env_file": true,
           "depends_on": [],
           "resources": {
+            "_doc_mem_limit": "Measured on oci-mail 2026-10-13: anon <=30MiB (6MiB resident + 24MiB swapped), cgroup peak 171MiB of which nearly all was reclaimable page cache over imapsql.db. 128M bounds the cache without touching the working set; it replaces the 2G category default, which on a 954MiB VM capped nothing. Gate: _shared/test-mail-stack-limits.mjs.",
+            "mem_limit": "128M",
             "reservations": {
               "memory": "32M"
             }
@@ -8339,6 +8828,9 @@
           "env_file": true,
           "depends_on": [],
           "resources": {
+            "_doc_limits": "oci-mail is a VM.Standard.E2.1.Micro (1 OCPU, 954MiB). 2026-10-13 it ran load 6-10, io PSI ~78%, cpu PSI ~74%, with stalwart at 110-160% CPU and 105GB read in 21h, every mail container capped only by the 2G category default (i.e. by nothing on a 954MiB box). cpus 0.7 leaves 0.3 OCPU for maddy (the MX leg) whatever stalwart does. mem_limit is NOT the 256M first proposed: measured on the box the same day stalwart's anon commit was ~306MiB 30 min after a restart (130MiB resident + 176MiB swapped) and ~345MiB after 21h, and the fleet already learned that 256M on stalwart is a thrash wall (_shared/docker.nix: 2909 memory.max breach events on oci-apps). restart is \"no\" fleet-wide, so an OOM kill here is not a blip -- it is webmail/IMAP down until someone notices. 384M sits above the measured peak with docker's default 2x memswap behind it. Gate: _shared/test-mail-stack-limits.mjs.",
+            "mem_limit": "384M",
+            "cpus": "0.7",
             "reservations": {
               "memory": "32M"
             }
@@ -8358,6 +8850,8 @@
           "image": "ghcr.io/diegonmarcos/stalwart-sorter-binaries:latest",
           "_doc_image": "Was python:3-alpine running a bind-mounted jmap-sorter.py. Now a compiled binary: the rules schema is parsed and validated once at startup, so a malformed or unknown predicate stops the container instead of silently producing an empty filter folder.",
           "resources": {
+            "_doc_mem_limit": "Measured 2026-10-13: cgroup peak 10MiB, anon ~1MiB. 64M is 6x that.",
+            "mem_limit": "64M",
             "mem_reservation": "16M"
           }
         }
@@ -8518,6 +9012,9 @@
       "tests": {
         "mail-rules": {
           "cmd": "bash ../_shared/lib/mail-rules.tests/run-tests.sh"
+        },
+        "mail-stack-limits": {
+          "cmd": "node ../_shared/test-mail-stack-limits.mjs"
         }
       },
       "api": {
@@ -8764,7 +9261,7 @@
           },
           "volumes": [
             "photoprism_storage:/photoprism/storage",
-            "/opt/containers/photoprism/originals:/photoprism/originals:ro",
+            "/opt/containers/photoprism/rclone-mnt:/photoprism/mnt:ro,rslave",
             "photoprism_import:/photoprism/import"
           ],
           "env_file": true,
@@ -8772,7 +9269,11 @@
             "db",
             "rclone"
           ],
-          "resources": null,
+          "resources": {
+            "mem_limit": "2G",
+            "cpus": "2.0",
+            "_comment": "Set in src/compose.nix; recorded here for inventory. PHOTOPRISM_WORKERS=2."
+          },
           "read_only": false,
           "protocol": "http"
         },
@@ -8808,7 +9309,7 @@
           "healthcheck": "cmd",
           "monitoring": null,
           "volumes": [
-            "/opt/containers/photoprism/originals:/data:shared"
+            "/opt/containers/photoprism/rclone-mnt:/mnt:rshared"
           ],
           "env_file": true,
           "depends_on": [],
@@ -9146,6 +9647,178 @@
       "secret_env_vars": [
         "RADICALE_USERS"
       ]
+    },
+    "cloud-notes-sync": {
+      "category": "app",
+      "vm": "oci-A1-f_0",
+      "folder": "user-prod_cloud-notes-sync",
+      "description": "DISABLED pending GHCR package visibility (owner action: make the upstream ghcr package public, then enabled:true). Cloud Notes sync server: Yjs documents (Hocuspocus) and the HTTP delta API at notes-sync.diegonmarcos.com behind the edge gate (fleet Bearer or Authelia). Built by cloud-u-android ship-cloud-notes.yml (ghcr.io/diegonmarcos/cloud-notes-sync).",
+      "enabled": false,
+      "domain": "notes-sync.diegonmarcos.com",
+      "flake": "user-prod_cloud-notes-sync",
+      "port": 8098,
+      "dns": "cloud-notes-sync.app",
+      "upstream": "10.0.0.6:8098",
+      "containers": {
+        "app": {
+          "container_name": "cloud-notes-sync",
+          "image": "ghcr.io/diegonmarcos/cloud-notes-sync-binaries:latest",
+          "port": 8098,
+          "port_env": null,
+          "dns": "cloud-notes-sync.app",
+          "public": true,
+          "proxy": {
+            "domain": "notes-sync.diegonmarcos.com",
+            "auth": "two_factor"
+          },
+          "healthcheck": "/healthz",
+          "monitoring": {
+            "tls_check": true,
+            "dns_check": true,
+            "endpoint_check": true
+          },
+          "volumes": [
+            "cloud_notes_sync_data:/data"
+          ],
+          "env_file": false,
+          "depends_on": [],
+          "resources": null,
+          "read_only": false,
+          "protocol": "http"
+        }
+      },
+      "container_names": [
+        "cloud-notes-sync"
+      ],
+      "all_ports": [
+        "8098"
+      ],
+      "all_dns": [
+        "cloud-notes-sync.app"
+      ],
+      "compose": {
+        "containers": [],
+        "ports": [],
+        "networks": []
+      },
+      "proxy": {
+        "primary": {
+          "wg_only": false,
+          "domain": "notes-sync.diegonmarcos.com",
+          "auth": "two_factor"
+        }
+      },
+      "declared_ports": {
+        "app": 8098
+      },
+      "health": {
+        "path": "/healthz"
+      },
+      "monitoring": {
+        "tls_check": true,
+        "dns_check": true,
+        "endpoint_check": true
+      },
+      "timezone": "Europe/Madrid",
+      "upstream_image": "ghcr.io/diegonmarcos/cloud-notes-sync:latest",
+      "resources": {
+        "mem_reservation": "16M"
+      },
+      "api": {
+        "has_api": false,
+        "has_web_ui": true,
+        "api_path": null,
+        "api_url": null,
+        "healthcheck_paths": [
+          "/healthz"
+        ],
+        "type": "no-api"
+      }
+    },
+    "cloud-notes-web": {
+      "category": "app",
+      "vm": "oci-A1-f_0",
+      "folder": "user-prod_cloud-notes-web",
+      "description": "DISABLED pending GHCR package visibility (owner action: make the upstream ghcr package public, then enabled:true). Cloud Notes web: the AFFiNE-based notes app (Miro + Notion + Obsidian) served as static files at notes.diegonmarcos.com behind the edge gate (Authelia 2FA or fleet Bearer). Built by cloud-u-android ship-cloud-notes.yml (ghcr.io/diegonmarcos/cloud-notes-web).",
+      "enabled": false,
+      "domain": "notes.diegonmarcos.com",
+      "flake": "user-prod_cloud-notes-web",
+      "port": 8097,
+      "dns": "cloud-notes-web.app",
+      "upstream": "10.0.0.6:8097",
+      "containers": {
+        "app": {
+          "container_name": "cloud-notes-web",
+          "image": "ghcr.io/diegonmarcos/cloud-notes-web-binaries:latest",
+          "port": 8097,
+          "port_env": null,
+          "dns": "cloud-notes-web.app",
+          "public": true,
+          "proxy": {
+            "domain": "notes.diegonmarcos.com",
+            "auth": "two_factor"
+          },
+          "healthcheck": "/healthz",
+          "monitoring": {
+            "tls_check": true,
+            "dns_check": true,
+            "endpoint_check": true
+          },
+          "volumes": [],
+          "env_file": false,
+          "depends_on": [],
+          "resources": null,
+          "read_only": false,
+          "protocol": "http"
+        }
+      },
+      "container_names": [
+        "cloud-notes-web"
+      ],
+      "all_ports": [
+        "8097"
+      ],
+      "all_dns": [
+        "cloud-notes-web.app"
+      ],
+      "compose": {
+        "containers": [],
+        "ports": [],
+        "networks": []
+      },
+      "proxy": {
+        "primary": {
+          "wg_only": false,
+          "domain": "notes.diegonmarcos.com",
+          "auth": "two_factor"
+        }
+      },
+      "declared_ports": {
+        "app": 8097
+      },
+      "health": {
+        "path": "/healthz"
+      },
+      "monitoring": {
+        "tls_check": true,
+        "dns_check": true,
+        "endpoint_check": true
+      },
+      "timezone": "Europe/Madrid",
+      "upstream_image": "ghcr.io/diegonmarcos/cloud-notes-web:latest",
+      "resources": {
+        "mem_reservation": "16M"
+      },
+      "api": {
+        "has_api": false,
+        "has_web_ui": true,
+        "api_path": null,
+        "api_url": null,
+        "healthcheck_paths": [
+          "/healthz"
+        ],
+        "type": "no-api"
+      }
     },
     "code-server": {
       "category": "app",
@@ -10256,23 +10929,23 @@
   "databases": {
     "_doc": "Canonical registry of every datastore. `kind` is what it is; `persistence.type` is where it survives. Fleet groups project one axis — never hand-maintain a parallel list. Git existence comes from the fetched GitHub inventory (src/inputs/github-repos.json); mirrored/indexed are declaration-driven flags on top.",
     "_counts": {
-      "total": 94,
+      "total": 98,
       "by_kind": {
         "embedded": 13,
         "container": 9,
         "object-store": 5,
-        "git-remote": 67
+        "git-remote": 71
       },
       "by_persistence": {
         "docker-volume": 19,
         "docker-bind": 1,
         "unknown": 2,
         "s3": 5,
-        "git": 67
+        "git": 71
       },
-      "github_repos": 34,
+      "github_repos": 36,
       "github_indexed": 8,
-      "github_mirrored": 33
+      "github_mirrored": 35
     },
     "_dangling_declarations": [],
     "entries": [
@@ -10796,6 +11469,51 @@
         }
       },
       {
+        "id": "git#gh/cloud-u-containers",
+        "service": "cloud-cgc-pub-mcp",
+        "container": null,
+        "engine": "git",
+        "kind": "git-remote",
+        "host": "github",
+        "repo": "diegonmarcos/cloud-u-containers",
+        "visibility": "public",
+        "fork": false,
+        "pushed_at": "2026-10-15T10:17:12Z",
+        "indexed": true,
+        "local_dir": "cloud-u-containers",
+        "mirrored": true,
+        "persistence": {
+          "type": "git",
+          "ref": "https://github.com/diegonmarcos/cloud-u-containers.git",
+          "mount": null
+        },
+        "vm": null,
+        "backup": {
+          "enabled": false,
+          "strategy": null
+        }
+      },
+      {
+        "id": "git#gitea/cloud-u-containers",
+        "service": "gitea",
+        "container": null,
+        "engine": "git",
+        "kind": "git-remote",
+        "host": "gitea",
+        "repo": "cloud-u-containers",
+        "upstream": "https://github.com/diegonmarcos/cloud-u-containers.git",
+        "persistence": {
+          "type": "git",
+          "ref": "https://github.com/diegonmarcos/cloud-u-containers.git",
+          "mount": null
+        },
+        "vm": "oci-A1-f_0",
+        "backup": {
+          "enabled": true,
+          "strategy": null
+        }
+      },
+      {
         "id": "git#gh/cloud-infra",
         "service": "cloud-cgc-pub-mcp",
         "container": null,
@@ -10805,7 +11523,7 @@
         "repo": "diegonmarcos/cloud-infra",
         "visibility": "public",
         "fork": false,
-        "pushed_at": "2026-10-06T22:25:10Z",
+        "pushed_at": "2026-10-15T10:17:10Z",
         "indexed": true,
         "local_dir": "cloud-infra",
         "mirrored": true,
@@ -10841,51 +11559,6 @@
         }
       },
       {
-        "id": "git#gh/cloud-data-my-ai-memory",
-        "service": "cloud-cgc-pub-mcp",
-        "container": null,
-        "engine": "git",
-        "kind": "git-remote",
-        "host": "github",
-        "repo": "diegonmarcos/cloud-data-my-ai-memory",
-        "visibility": "private",
-        "fork": false,
-        "pushed_at": "2026-10-06T22:23:42Z",
-        "indexed": true,
-        "local_dir": "cloud-data-my-ai-memory",
-        "mirrored": true,
-        "persistence": {
-          "type": "git",
-          "ref": "https://github.com/diegonmarcos/cloud-data-my-ai-memory.git",
-          "mount": null
-        },
-        "vm": null,
-        "backup": {
-          "enabled": false,
-          "strategy": null
-        }
-      },
-      {
-        "id": "git#gitea/cloud-data-my-ai-memory",
-        "service": "gitea",
-        "container": null,
-        "engine": "git",
-        "kind": "git-remote",
-        "host": "gitea",
-        "repo": "cloud-data-my-ai-memory",
-        "upstream": "https://github.com/diegonmarcos/cloud-data-my-ai-memory.git",
-        "persistence": {
-          "type": "git",
-          "ref": "https://github.com/diegonmarcos/cloud-data-my-ai-memory.git",
-          "mount": null
-        },
-        "vm": "oci-A1-f_0",
-        "backup": {
-          "enabled": true,
-          "strategy": null
-        }
-      },
-      {
         "id": "git#gh/cloud-u-android",
         "service": "cloud-cgc-pub-mcp",
         "container": null,
@@ -10895,7 +11568,7 @@
         "repo": "diegonmarcos/cloud-u-android",
         "visibility": "public",
         "fork": false,
-        "pushed_at": "2026-10-06T22:08:24Z",
+        "pushed_at": "2026-10-15T10:17:02Z",
         "indexed": true,
         "local_dir": "cloud-u-android",
         "mirrored": true,
@@ -10940,7 +11613,7 @@
         "repo": "diegonmarcos/cloud-data",
         "visibility": "private",
         "fork": false,
-        "pushed_at": "2026-10-06T22:05:51Z",
+        "pushed_at": "2026-10-15T10:14:52Z",
         "indexed": true,
         "local_dir": "cloud-data",
         "mirrored": true,
@@ -10976,301 +11649,6 @@
         }
       },
       {
-        "id": "git#gh/cloud-me_configs",
-        "service": "gitea",
-        "container": null,
-        "engine": "git",
-        "kind": "git-remote",
-        "host": "github",
-        "repo": "diegonmarcos/cloud-me_configs",
-        "visibility": "private",
-        "fork": false,
-        "pushed_at": "2026-10-06T21:54:36Z",
-        "indexed": false,
-        "local_dir": null,
-        "mirrored": true,
-        "persistence": {
-          "type": "git",
-          "ref": "https://github.com/diegonmarcos/cloud-me_configs.git",
-          "mount": null
-        },
-        "vm": null,
-        "backup": {
-          "enabled": false,
-          "strategy": null
-        }
-      },
-      {
-        "id": "git#gitea/cloud-me_configs",
-        "service": "gitea",
-        "container": null,
-        "engine": "git",
-        "kind": "git-remote",
-        "host": "gitea",
-        "repo": "cloud-me_configs",
-        "upstream": "https://github.com/diegonmarcos/cloud-me_configs.git",
-        "persistence": {
-          "type": "git",
-          "ref": "https://github.com/diegonmarcos/cloud-me_configs.git",
-          "mount": null
-        },
-        "vm": "oci-A1-f_0",
-        "backup": {
-          "enabled": true,
-          "strategy": null
-        }
-      },
-      {
-        "id": "git#gh/cloud-u-containers",
-        "service": "cloud-cgc-pub-mcp",
-        "container": null,
-        "engine": "git",
-        "kind": "git-remote",
-        "host": "github",
-        "repo": "diegonmarcos/cloud-u-containers",
-        "visibility": "public",
-        "fork": false,
-        "pushed_at": "2026-10-06T20:15:43Z",
-        "indexed": true,
-        "local_dir": "cloud-u-containers",
-        "mirrored": true,
-        "persistence": {
-          "type": "git",
-          "ref": "https://github.com/diegonmarcos/cloud-u-containers.git",
-          "mount": null
-        },
-        "vm": null,
-        "backup": {
-          "enabled": false,
-          "strategy": null
-        }
-      },
-      {
-        "id": "git#gitea/cloud-u-containers",
-        "service": "gitea",
-        "container": null,
-        "engine": "git",
-        "kind": "git-remote",
-        "host": "gitea",
-        "repo": "cloud-u-containers",
-        "upstream": "https://github.com/diegonmarcos/cloud-u-containers.git",
-        "persistence": {
-          "type": "git",
-          "ref": "https://github.com/diegonmarcos/cloud-u-containers.git",
-          "mount": null
-        },
-        "vm": "oci-A1-f_0",
-        "backup": {
-          "enabled": true,
-          "strategy": null
-        }
-      },
-      {
-        "id": "git#gh/cloud-u-linux",
-        "service": "gitea",
-        "container": null,
-        "engine": "git",
-        "kind": "git-remote",
-        "host": "github",
-        "repo": "diegonmarcos/cloud-u-linux",
-        "visibility": "public",
-        "fork": false,
-        "pushed_at": "2026-10-06T16:20:41Z",
-        "indexed": false,
-        "local_dir": null,
-        "mirrored": true,
-        "persistence": {
-          "type": "git",
-          "ref": "https://github.com/diegonmarcos/cloud-u-linux.git",
-          "mount": null
-        },
-        "vm": null,
-        "backup": {
-          "enabled": false,
-          "strategy": null
-        }
-      },
-      {
-        "id": "git#gitea/cloud-u-linux",
-        "service": "gitea",
-        "container": null,
-        "engine": "git",
-        "kind": "git-remote",
-        "host": "gitea",
-        "repo": "cloud-u-linux",
-        "upstream": "https://github.com/diegonmarcos/cloud-u-linux.git",
-        "persistence": {
-          "type": "git",
-          "ref": "https://github.com/diegonmarcos/cloud-u-linux.git",
-          "mount": null
-        },
-        "vm": "oci-A1-f_0",
-        "backup": {
-          "enabled": true,
-          "strategy": null
-        }
-      },
-      {
-        "id": "git#gh/diegonmarcos.github.io",
-        "service": "cloud-cgc-pub-mcp",
-        "container": null,
-        "engine": "git",
-        "kind": "git-remote",
-        "host": "github",
-        "repo": "diegonmarcos/diegonmarcos.github.io",
-        "visibility": "public",
-        "fork": false,
-        "pushed_at": "2026-10-06T14:11:25Z",
-        "indexed": true,
-        "local_dir": "front",
-        "mirrored": true,
-        "persistence": {
-          "type": "git",
-          "ref": "https://github.com/diegonmarcos/diegonmarcos.github.io.git",
-          "mount": null
-        },
-        "vm": null,
-        "backup": {
-          "enabled": false,
-          "strategy": null
-        }
-      },
-      {
-        "id": "git#gitea/diegonmarcos.github.io",
-        "service": "gitea",
-        "container": null,
-        "engine": "git",
-        "kind": "git-remote",
-        "host": "gitea",
-        "repo": "diegonmarcos.github.io",
-        "upstream": "https://github.com/diegonmarcos/diegonmarcos.github.io.git",
-        "persistence": {
-          "type": "git",
-          "ref": "https://github.com/diegonmarcos/diegonmarcos.github.io.git",
-          "mount": null
-        },
-        "vm": "oci-A1-f_0",
-        "backup": {
-          "enabled": true,
-          "strategy": null
-        }
-      },
-      {
-        "id": "git#gh/diegonmarcos",
-        "service": "gitea",
-        "container": null,
-        "engine": "git",
-        "kind": "git-remote",
-        "host": "github",
-        "repo": "diegonmarcos/diegonmarcos",
-        "visibility": "public",
-        "fork": false,
-        "pushed_at": "2026-10-06T13:34:37Z",
-        "indexed": false,
-        "local_dir": null,
-        "mirrored": true,
-        "persistence": {
-          "type": "git",
-          "ref": "https://github.com/diegonmarcos/diegonmarcos.git",
-          "mount": null
-        },
-        "vm": null,
-        "backup": {
-          "enabled": false,
-          "strategy": null
-        }
-      },
-      {
-        "id": "git#gitea/diegonmarcos",
-        "service": "gitea",
-        "container": null,
-        "engine": "git",
-        "kind": "git-remote",
-        "host": "gitea",
-        "repo": "diegonmarcos",
-        "upstream": "https://github.com/diegonmarcos/diegonmarcos.git",
-        "persistence": {
-          "type": "git",
-          "ref": "https://github.com/diegonmarcos/diegonmarcos.git",
-          "mount": null
-        },
-        "vm": "oci-A1-f_0",
-        "backup": {
-          "enabled": true,
-          "strategy": null
-        }
-      },
-      {
-        "id": "git#gh/front-data",
-        "service": "cloud-cgc-pub-mcp",
-        "container": null,
-        "engine": "git",
-        "kind": "git-remote",
-        "host": "github",
-        "repo": "diegonmarcos/front-data",
-        "visibility": "public",
-        "fork": false,
-        "pushed_at": "2026-10-06T13:05:03Z",
-        "indexed": true,
-        "local_dir": "front-data",
-        "mirrored": true,
-        "persistence": {
-          "type": "git",
-          "ref": "https://github.com/diegonmarcos/front-data.git",
-          "mount": null
-        },
-        "vm": null,
-        "backup": {
-          "enabled": false,
-          "strategy": null
-        }
-      },
-      {
-        "id": "git#gitea/front-data",
-        "service": "gitea",
-        "container": null,
-        "engine": "git",
-        "kind": "git-remote",
-        "host": "gitea",
-        "repo": "front-data",
-        "upstream": "https://github.com/diegonmarcos/front-data.git",
-        "persistence": {
-          "type": "git",
-          "ref": "https://github.com/diegonmarcos/front-data.git",
-          "mount": null
-        },
-        "vm": "oci-A1-f_0",
-        "backup": {
-          "enabled": true,
-          "strategy": null
-        }
-      },
-      {
-        "id": "git#gh/cloud-me_vault",
-        "service": null,
-        "container": null,
-        "engine": "git",
-        "kind": "git-remote",
-        "host": "github",
-        "repo": "diegonmarcos/cloud-me_vault",
-        "visibility": "private",
-        "fork": false,
-        "pushed_at": "2026-10-06T12:42:30Z",
-        "indexed": false,
-        "local_dir": null,
-        "mirrored": false,
-        "persistence": {
-          "type": "git",
-          "ref": "https://github.com/diegonmarcos/cloud-me_vault.git",
-          "mount": null
-        },
-        "vm": null,
-        "backup": {
-          "enabled": false,
-          "strategy": null
-        }
-      },
-      {
         "id": "git#gh/ops-Mylibs",
         "service": "gitea",
         "container": null,
@@ -11280,7 +11658,7 @@
         "repo": "diegonmarcos/ops-Mylibs",
         "visibility": "public",
         "fork": false,
-        "pushed_at": "2026-10-04T11:05:44Z",
+        "pushed_at": "2026-10-15T10:10:01Z",
         "indexed": false,
         "local_dir": null,
         "mirrored": true,
@@ -11316,51 +11694,6 @@
         }
       },
       {
-        "id": "git#gh/cyber-Cyberwarfare",
-        "service": "gitea",
-        "container": null,
-        "engine": "git",
-        "kind": "git-remote",
-        "host": "github",
-        "repo": "diegonmarcos/cyber-Cyberwarfare",
-        "visibility": "public",
-        "fork": false,
-        "pushed_at": "2026-10-04T11:05:36Z",
-        "indexed": false,
-        "local_dir": null,
-        "mirrored": true,
-        "persistence": {
-          "type": "git",
-          "ref": "https://github.com/diegonmarcos/cyber-Cyberwarfare.git",
-          "mount": null
-        },
-        "vm": null,
-        "backup": {
-          "enabled": false,
-          "strategy": null
-        }
-      },
-      {
-        "id": "git#gitea/cyber-Cyberwarfare",
-        "service": "gitea",
-        "container": null,
-        "engine": "git",
-        "kind": "git-remote",
-        "host": "gitea",
-        "repo": "cyber-Cyberwarfare",
-        "upstream": "https://github.com/diegonmarcos/cyber-Cyberwarfare.git",
-        "persistence": {
-          "type": "git",
-          "ref": "https://github.com/diegonmarcos/cyber-Cyberwarfare.git",
-          "mount": null
-        },
-        "vm": "oci-A1-f_0",
-        "backup": {
-          "enabled": true,
-          "strategy": null
-        }
-      },
-      {
         "id": "git#gh/ml-MachineLearning",
         "service": "gitea",
         "container": null,
@@ -11370,7 +11703,7 @@
         "repo": "diegonmarcos/ml-MachineLearning",
         "visibility": "public",
         "fork": false,
-        "pushed_at": "2026-10-04T11:05:33Z",
+        "pushed_at": "2026-10-15T10:09:48Z",
         "indexed": false,
         "local_dir": null,
         "mirrored": true,
@@ -11415,7 +11748,7 @@
         "repo": "diegonmarcos/ml-DataScience",
         "visibility": "public",
         "fork": false,
-        "pushed_at": "2026-10-04T11:05:30Z",
+        "pushed_at": "2026-10-15T10:09:33Z",
         "indexed": false,
         "local_dir": null,
         "mirrored": true,
@@ -11460,7 +11793,7 @@
         "repo": "diegonmarcos/ml-Agentic",
         "visibility": "public",
         "fork": false,
-        "pushed_at": "2026-10-04T11:05:27Z",
+        "pushed_at": "2026-10-15T10:09:18Z",
         "indexed": false,
         "local_dir": null,
         "mirrored": true,
@@ -11496,6 +11829,141 @@
         }
       },
       {
+        "id": "git#gh/dev",
+        "service": "gitea",
+        "container": null,
+        "engine": "git",
+        "kind": "git-remote",
+        "host": "github",
+        "repo": "diegonmarcos/dev",
+        "visibility": "private",
+        "fork": false,
+        "pushed_at": "2026-10-15T10:09:04Z",
+        "indexed": false,
+        "local_dir": null,
+        "mirrored": true,
+        "persistence": {
+          "type": "git",
+          "ref": "https://github.com/diegonmarcos/dev.git",
+          "mount": null
+        },
+        "vm": null,
+        "backup": {
+          "enabled": false,
+          "strategy": null
+        }
+      },
+      {
+        "id": "git#gitea/dev",
+        "service": "gitea",
+        "container": null,
+        "engine": "git",
+        "kind": "git-remote",
+        "host": "gitea",
+        "repo": "dev",
+        "upstream": "https://github.com/diegonmarcos/dev.git",
+        "persistence": {
+          "type": "git",
+          "ref": "https://github.com/diegonmarcos/dev.git",
+          "mount": null
+        },
+        "vm": "oci-A1-f_0",
+        "backup": {
+          "enabled": true,
+          "strategy": null
+        }
+      },
+      {
+        "id": "git#gh/cyber-Cyberwarfare",
+        "service": "gitea",
+        "container": null,
+        "engine": "git",
+        "kind": "git-remote",
+        "host": "github",
+        "repo": "diegonmarcos/cyber-Cyberwarfare",
+        "visibility": "public",
+        "fork": false,
+        "pushed_at": "2026-10-15T10:08:49Z",
+        "indexed": false,
+        "local_dir": null,
+        "mirrored": true,
+        "persistence": {
+          "type": "git",
+          "ref": "https://github.com/diegonmarcos/cyber-Cyberwarfare.git",
+          "mount": null
+        },
+        "vm": null,
+        "backup": {
+          "enabled": false,
+          "strategy": null
+        }
+      },
+      {
+        "id": "git#gitea/cyber-Cyberwarfare",
+        "service": "gitea",
+        "container": null,
+        "engine": "git",
+        "kind": "git-remote",
+        "host": "gitea",
+        "repo": "cyber-Cyberwarfare",
+        "upstream": "https://github.com/diegonmarcos/cyber-Cyberwarfare.git",
+        "persistence": {
+          "type": "git",
+          "ref": "https://github.com/diegonmarcos/cyber-Cyberwarfare.git",
+          "mount": null
+        },
+        "vm": "oci-A1-f_0",
+        "backup": {
+          "enabled": true,
+          "strategy": null
+        }
+      },
+      {
+        "id": "git#gh/back-System",
+        "service": "gitea",
+        "container": null,
+        "engine": "git",
+        "kind": "git-remote",
+        "host": "github",
+        "repo": "diegonmarcos/back-System",
+        "visibility": "public",
+        "fork": false,
+        "pushed_at": "2026-10-15T10:08:32Z",
+        "indexed": false,
+        "local_dir": null,
+        "mirrored": true,
+        "persistence": {
+          "type": "git",
+          "ref": "https://github.com/diegonmarcos/back-System.git",
+          "mount": null
+        },
+        "vm": null,
+        "backup": {
+          "enabled": false,
+          "strategy": null
+        }
+      },
+      {
+        "id": "git#gitea/back-System",
+        "service": "gitea",
+        "container": null,
+        "engine": "git",
+        "kind": "git-remote",
+        "host": "gitea",
+        "repo": "back-System",
+        "upstream": "https://github.com/diegonmarcos/back-System.git",
+        "persistence": {
+          "type": "git",
+          "ref": "https://github.com/diegonmarcos/back-System.git",
+          "mount": null
+        },
+        "vm": "oci-A1-f_0",
+        "backup": {
+          "enabled": true,
+          "strategy": null
+        }
+      },
+      {
         "id": "git#gh/back-Graphic",
         "service": "gitea",
         "container": null,
@@ -11505,7 +11973,7 @@
         "repo": "diegonmarcos/back-Graphic",
         "visibility": "public",
         "fork": false,
-        "pushed_at": "2026-10-04T11:05:22Z",
+        "pushed_at": "2026-10-15T10:08:12Z",
         "indexed": false,
         "local_dir": null,
         "mirrored": true,
@@ -11550,7 +12018,7 @@
         "repo": "diegonmarcos/back-Algo",
         "visibility": "public",
         "fork": false,
-        "pushed_at": "2026-10-04T11:05:12Z",
+        "pushed_at": "2026-10-15T10:07:40Z",
         "indexed": false,
         "local_dir": null,
         "mirrored": true,
@@ -11586,51 +12054,6 @@
         }
       },
       {
-        "id": "git#gh/back-System",
-        "service": "gitea",
-        "container": null,
-        "engine": "git",
-        "kind": "git-remote",
-        "host": "github",
-        "repo": "diegonmarcos/back-System",
-        "visibility": "public",
-        "fork": false,
-        "pushed_at": "2026-10-04T11:05:04Z",
-        "indexed": false,
-        "local_dir": null,
-        "mirrored": true,
-        "persistence": {
-          "type": "git",
-          "ref": "https://github.com/diegonmarcos/back-System.git",
-          "mount": null
-        },
-        "vm": null,
-        "backup": {
-          "enabled": false,
-          "strategy": null
-        }
-      },
-      {
-        "id": "git#gitea/back-System",
-        "service": "gitea",
-        "container": null,
-        "engine": "git",
-        "kind": "git-remote",
-        "host": "gitea",
-        "repo": "back-System",
-        "upstream": "https://github.com/diegonmarcos/back-System.git",
-        "persistence": {
-          "type": "git",
-          "ref": "https://github.com/diegonmarcos/back-System.git",
-          "mount": null
-        },
-        "vm": "oci-A1-f_0",
-        "backup": {
-          "enabled": true,
-          "strategy": null
-        }
-      },
-      {
         "id": "git#gh/lecole42",
         "service": "gitea",
         "container": null,
@@ -11640,7 +12063,7 @@
         "repo": "diegonmarcos/lecole42",
         "visibility": "private",
         "fork": false,
-        "pushed_at": "2026-10-04T11:04:58Z",
+        "pushed_at": "2026-10-15T10:07:10Z",
         "indexed": false,
         "local_dir": null,
         "mirrored": true,
@@ -11676,22 +12099,22 @@
         }
       },
       {
-        "id": "git#gh/dev",
+        "id": "git#gh/cloud-me_configs",
         "service": "gitea",
         "container": null,
         "engine": "git",
         "kind": "git-remote",
         "host": "github",
-        "repo": "diegonmarcos/dev",
+        "repo": "diegonmarcos/cloud-me_configs",
         "visibility": "private",
         "fork": false,
-        "pushed_at": "2026-10-04T11:04:06Z",
+        "pushed_at": "2026-10-15T10:06:40Z",
         "indexed": false,
         "local_dir": null,
         "mirrored": true,
         "persistence": {
           "type": "git",
-          "ref": "https://github.com/diegonmarcos/dev.git",
+          "ref": "https://github.com/diegonmarcos/cloud-me_configs.git",
           "mount": null
         },
         "vm": null,
@@ -11701,17 +12124,17 @@
         }
       },
       {
-        "id": "git#gitea/dev",
+        "id": "git#gitea/cloud-me_configs",
         "service": "gitea",
         "container": null,
         "engine": "git",
         "kind": "git-remote",
         "host": "gitea",
-        "repo": "dev",
-        "upstream": "https://github.com/diegonmarcos/dev.git",
+        "repo": "cloud-me_configs",
+        "upstream": "https://github.com/diegonmarcos/cloud-me_configs.git",
         "persistence": {
           "type": "git",
-          "ref": "https://github.com/diegonmarcos/dev.git",
+          "ref": "https://github.com/diegonmarcos/cloud-me_configs.git",
           "mount": null
         },
         "vm": "oci-A1-f_0",
@@ -11721,22 +12144,22 @@
         }
       },
       {
-        "id": "git#gh/cloud-data-lfs",
-        "service": "gitea",
+        "id": "git#gh/diegonmarcos.github.io",
+        "service": "cloud-cgc-pub-mcp",
         "container": null,
         "engine": "git",
         "kind": "git-remote",
         "host": "github",
-        "repo": "diegonmarcos/cloud-data-lfs",
-        "visibility": "private",
+        "repo": "diegonmarcos/diegonmarcos.github.io",
+        "visibility": "public",
         "fork": false,
-        "pushed_at": "2026-10-04T11:04:01Z",
-        "indexed": false,
-        "local_dir": null,
+        "pushed_at": "2026-10-15T10:05:57Z",
+        "indexed": true,
+        "local_dir": "front",
         "mirrored": true,
         "persistence": {
           "type": "git",
-          "ref": "https://github.com/diegonmarcos/cloud-data-lfs.git",
+          "ref": "https://github.com/diegonmarcos/diegonmarcos.github.io.git",
           "mount": null
         },
         "vm": null,
@@ -11746,17 +12169,357 @@
         }
       },
       {
-        "id": "git#gitea/cloud-data-lfs",
+        "id": "git#gitea/diegonmarcos.github.io",
         "service": "gitea",
         "container": null,
         "engine": "git",
         "kind": "git-remote",
         "host": "gitea",
-        "repo": "cloud-data-lfs",
-        "upstream": "https://github.com/diegonmarcos/cloud-data-lfs.git",
+        "repo": "diegonmarcos.github.io",
+        "upstream": "https://github.com/diegonmarcos/diegonmarcos.github.io.git",
         "persistence": {
           "type": "git",
-          "ref": "https://github.com/diegonmarcos/cloud-data-lfs.git",
+          "ref": "https://github.com/diegonmarcos/diegonmarcos.github.io.git",
+          "mount": null
+        },
+        "vm": "oci-A1-f_0",
+        "backup": {
+          "enabled": true,
+          "strategy": null
+        }
+      },
+      {
+        "id": "git#gh/diegonmarcos",
+        "service": "gitea",
+        "container": null,
+        "engine": "git",
+        "kind": "git-remote",
+        "host": "github",
+        "repo": "diegonmarcos/diegonmarcos",
+        "visibility": "public",
+        "fork": false,
+        "pushed_at": "2026-10-15T10:05:41Z",
+        "indexed": false,
+        "local_dir": null,
+        "mirrored": true,
+        "persistence": {
+          "type": "git",
+          "ref": "https://github.com/diegonmarcos/diegonmarcos.git",
+          "mount": null
+        },
+        "vm": null,
+        "backup": {
+          "enabled": false,
+          "strategy": null
+        }
+      },
+      {
+        "id": "git#gitea/diegonmarcos",
+        "service": "gitea",
+        "container": null,
+        "engine": "git",
+        "kind": "git-remote",
+        "host": "gitea",
+        "repo": "diegonmarcos",
+        "upstream": "https://github.com/diegonmarcos/diegonmarcos.git",
+        "persistence": {
+          "type": "git",
+          "ref": "https://github.com/diegonmarcos/diegonmarcos.git",
+          "mount": null
+        },
+        "vm": "oci-A1-f_0",
+        "backup": {
+          "enabled": true,
+          "strategy": null
+        }
+      },
+      {
+        "id": "git#gh/front-data",
+        "service": "cloud-cgc-pub-mcp",
+        "container": null,
+        "engine": "git",
+        "kind": "git-remote",
+        "host": "github",
+        "repo": "diegonmarcos/front-data",
+        "visibility": "public",
+        "fork": false,
+        "pushed_at": "2026-10-15T10:05:33Z",
+        "indexed": true,
+        "local_dir": "front-data",
+        "mirrored": true,
+        "persistence": {
+          "type": "git",
+          "ref": "https://github.com/diegonmarcos/front-data.git",
+          "mount": null
+        },
+        "vm": null,
+        "backup": {
+          "enabled": false,
+          "strategy": null
+        }
+      },
+      {
+        "id": "git#gitea/front-data",
+        "service": "gitea",
+        "container": null,
+        "engine": "git",
+        "kind": "git-remote",
+        "host": "gitea",
+        "repo": "front-data",
+        "upstream": "https://github.com/diegonmarcos/front-data.git",
+        "persistence": {
+          "type": "git",
+          "ref": "https://github.com/diegonmarcos/front-data.git",
+          "mount": null
+        },
+        "vm": "oci-A1-f_0",
+        "backup": {
+          "enabled": true,
+          "strategy": null
+        }
+      },
+      {
+        "id": "git#gh/front-assets-cdn",
+        "service": "gitea",
+        "container": null,
+        "engine": "git",
+        "kind": "git-remote",
+        "host": "github",
+        "repo": "diegonmarcos/front-assets-cdn",
+        "visibility": "public",
+        "fork": false,
+        "pushed_at": "2026-10-15T10:05:18Z",
+        "indexed": false,
+        "local_dir": null,
+        "mirrored": true,
+        "persistence": {
+          "type": "git",
+          "ref": "https://github.com/diegonmarcos/front-assets-cdn.git",
+          "mount": null
+        },
+        "vm": null,
+        "backup": {
+          "enabled": false,
+          "strategy": null
+        }
+      },
+      {
+        "id": "git#gitea/front-assets-cdn",
+        "service": "gitea",
+        "container": null,
+        "engine": "git",
+        "kind": "git-remote",
+        "host": "gitea",
+        "repo": "front-assets-cdn",
+        "upstream": "https://github.com/diegonmarcos/front-assets-cdn.git",
+        "persistence": {
+          "type": "git",
+          "ref": "https://github.com/diegonmarcos/front-assets-cdn.git",
+          "mount": null
+        },
+        "vm": "oci-A1-f_0",
+        "backup": {
+          "enabled": true,
+          "strategy": null
+        }
+      },
+      {
+        "id": "git#gh/cloud-me_cgc",
+        "service": "gitea",
+        "container": null,
+        "engine": "git",
+        "kind": "git-remote",
+        "host": "github",
+        "repo": "diegonmarcos/cloud-me_cgc",
+        "visibility": "private",
+        "fork": false,
+        "pushed_at": "2026-10-15T10:05:12Z",
+        "indexed": false,
+        "local_dir": null,
+        "mirrored": true,
+        "persistence": {
+          "type": "git",
+          "ref": "https://github.com/diegonmarcos/cloud-me_cgc.git",
+          "mount": null
+        },
+        "vm": null,
+        "backup": {
+          "enabled": false,
+          "strategy": null
+        }
+      },
+      {
+        "id": "git#gitea/cloud-me_cgc",
+        "service": "gitea",
+        "container": null,
+        "engine": "git",
+        "kind": "git-remote",
+        "host": "gitea",
+        "repo": "cloud-me_cgc",
+        "upstream": "https://github.com/diegonmarcos/cloud-me_cgc.git",
+        "persistence": {
+          "type": "git",
+          "ref": "https://github.com/diegonmarcos/cloud-me_cgc.git",
+          "mount": null
+        },
+        "vm": "oci-A1-f_0",
+        "backup": {
+          "enabled": true,
+          "strategy": null
+        }
+      },
+      {
+        "id": "git#gh/cloud-u-containers_cgc",
+        "service": "gitea",
+        "container": null,
+        "engine": "git",
+        "kind": "git-remote",
+        "host": "github",
+        "repo": "diegonmarcos/cloud-u-containers_cgc",
+        "visibility": "public",
+        "fork": false,
+        "pushed_at": "2026-10-15T10:04:57Z",
+        "indexed": false,
+        "local_dir": null,
+        "mirrored": true,
+        "persistence": {
+          "type": "git",
+          "ref": "https://github.com/diegonmarcos/cloud-u-containers_cgc.git",
+          "mount": null
+        },
+        "vm": null,
+        "backup": {
+          "enabled": false,
+          "strategy": null
+        }
+      },
+      {
+        "id": "git#gitea/cloud-u-containers_cgc",
+        "service": "gitea",
+        "container": null,
+        "engine": "git",
+        "kind": "git-remote",
+        "host": "gitea",
+        "repo": "cloud-u-containers_cgc",
+        "upstream": "https://github.com/diegonmarcos/cloud-u-containers_cgc.git",
+        "persistence": {
+          "type": "git",
+          "ref": "https://github.com/diegonmarcos/cloud-u-containers_cgc.git",
+          "mount": null
+        },
+        "vm": "oci-A1-f_0",
+        "backup": {
+          "enabled": true,
+          "strategy": null
+        }
+      },
+      {
+        "id": "git#gh/cloud",
+        "service": "gitea",
+        "container": null,
+        "engine": "git",
+        "kind": "git-remote",
+        "host": "github",
+        "repo": "diegonmarcos/cloud",
+        "visibility": "public",
+        "fork": false,
+        "pushed_at": "2026-10-15T10:04:41Z",
+        "indexed": false,
+        "local_dir": null,
+        "mirrored": true,
+        "persistence": {
+          "type": "git",
+          "ref": "https://github.com/diegonmarcos/cloud.git",
+          "mount": null
+        },
+        "vm": null,
+        "backup": {
+          "enabled": false,
+          "strategy": null
+        }
+      },
+      {
+        "id": "git#gitea/cloud",
+        "service": "gitea",
+        "container": null,
+        "engine": "git",
+        "kind": "git-remote",
+        "host": "gitea",
+        "repo": "cloud",
+        "upstream": "https://github.com/diegonmarcos/cloud.git",
+        "persistence": {
+          "type": "git",
+          "ref": "https://github.com/diegonmarcos/cloud.git",
+          "mount": null
+        },
+        "vm": "oci-A1-f_0",
+        "backup": {
+          "enabled": true,
+          "strategy": null
+        }
+      },
+      {
+        "id": "git#gh/cloud-me_vault",
+        "service": null,
+        "container": null,
+        "engine": "git",
+        "kind": "git-remote",
+        "host": "github",
+        "repo": "diegonmarcos/cloud-me_vault",
+        "visibility": "private",
+        "fork": false,
+        "pushed_at": "2026-10-15T10:04:21Z",
+        "indexed": false,
+        "local_dir": null,
+        "mirrored": false,
+        "persistence": {
+          "type": "git",
+          "ref": "https://github.com/diegonmarcos/cloud-me_vault.git",
+          "mount": null
+        },
+        "vm": null,
+        "backup": {
+          "enabled": false,
+          "strategy": null
+        }
+      },
+      {
+        "id": "git#gh/cloud-u-linux",
+        "service": "gitea",
+        "container": null,
+        "engine": "git",
+        "kind": "git-remote",
+        "host": "github",
+        "repo": "diegonmarcos/cloud-u-linux",
+        "visibility": "public",
+        "fork": false,
+        "pushed_at": "2026-10-15T10:02:33Z",
+        "indexed": false,
+        "local_dir": null,
+        "mirrored": true,
+        "persistence": {
+          "type": "git",
+          "ref": "https://github.com/diegonmarcos/cloud-u-linux.git",
+          "mount": null
+        },
+        "vm": null,
+        "backup": {
+          "enabled": false,
+          "strategy": null
+        }
+      },
+      {
+        "id": "git#gitea/cloud-u-linux",
+        "service": "gitea",
+        "container": null,
+        "engine": "git",
+        "kind": "git-remote",
+        "host": "gitea",
+        "repo": "cloud-u-linux",
+        "upstream": "https://github.com/diegonmarcos/cloud-u-linux.git",
+        "persistence": {
+          "type": "git",
+          "ref": "https://github.com/diegonmarcos/cloud-u-linux.git",
           "mount": null
         },
         "vm": "oci-A1-f_0",
@@ -11775,7 +12538,7 @@
         "repo": "diegonmarcos/front-unity",
         "visibility": "private",
         "fork": false,
-        "pushed_at": "2026-10-04T11:03:58Z",
+        "pushed_at": "2026-10-15T10:02:24Z",
         "indexed": false,
         "local_dir": null,
         "mirrored": true,
@@ -11820,7 +12583,7 @@
         "repo": "diegonmarcos/front-galaxy-gaia",
         "visibility": "private",
         "fork": false,
-        "pushed_at": "2026-10-04T11:03:53Z",
+        "pushed_at": "2026-10-15T10:02:14Z",
         "indexed": false,
         "local_dir": null,
         "mirrored": true,
@@ -11847,6 +12610,321 @@
         "persistence": {
           "type": "git",
           "ref": "https://github.com/diegonmarcos/front-galaxy-gaia.git",
+          "mount": null
+        },
+        "vm": "oci-A1-f_0",
+        "backup": {
+          "enabled": true,
+          "strategy": null
+        }
+      },
+      {
+        "id": "git#gh/front",
+        "service": "gitea",
+        "container": null,
+        "engine": "git",
+        "kind": "git-remote",
+        "host": "github",
+        "repo": "diegonmarcos/front",
+        "visibility": "public",
+        "fork": false,
+        "pushed_at": "2026-10-15T10:01:38Z",
+        "indexed": false,
+        "local_dir": null,
+        "mirrored": true,
+        "persistence": {
+          "type": "git",
+          "ref": "https://github.com/diegonmarcos/front.git",
+          "mount": null
+        },
+        "vm": null,
+        "backup": {
+          "enabled": false,
+          "strategy": null
+        }
+      },
+      {
+        "id": "git#gitea/front",
+        "service": "gitea",
+        "container": null,
+        "engine": "git",
+        "kind": "git-remote",
+        "host": "gitea",
+        "repo": "front",
+        "upstream": "https://github.com/diegonmarcos/front.git",
+        "persistence": {
+          "type": "git",
+          "ref": "https://github.com/diegonmarcos/front.git",
+          "mount": null
+        },
+        "vm": "oci-A1-f_0",
+        "backup": {
+          "enabled": true,
+          "strategy": null
+        }
+      },
+      {
+        "id": "git#gh/cloud-notes",
+        "service": "gitea",
+        "container": null,
+        "engine": "git",
+        "kind": "git-remote",
+        "host": "github",
+        "repo": "diegonmarcos/cloud-notes",
+        "visibility": "private",
+        "fork": false,
+        "pushed_at": "2026-10-15T10:01:30Z",
+        "indexed": false,
+        "local_dir": null,
+        "mirrored": true,
+        "persistence": {
+          "type": "git",
+          "ref": "https://github.com/diegonmarcos/cloud-notes.git",
+          "mount": null
+        },
+        "vm": null,
+        "backup": {
+          "enabled": false,
+          "strategy": null
+        }
+      },
+      {
+        "id": "git#gitea/cloud-notes",
+        "service": "gitea",
+        "container": null,
+        "engine": "git",
+        "kind": "git-remote",
+        "host": "gitea",
+        "repo": "cloud-notes",
+        "upstream": "https://github.com/diegonmarcos/cloud-notes.git",
+        "persistence": {
+          "type": "git",
+          "ref": "https://github.com/diegonmarcos/cloud-notes.git",
+          "mount": null
+        },
+        "vm": "oci-A1-f_0",
+        "backup": {
+          "enabled": true,
+          "strategy": null
+        }
+      },
+      {
+        "id": "git#gh/cloud-data-my-ai-memory",
+        "service": "cloud-cgc-pub-mcp",
+        "container": null,
+        "engine": "git",
+        "kind": "git-remote",
+        "host": "github",
+        "repo": "diegonmarcos/cloud-data-my-ai-memory",
+        "visibility": "private",
+        "fork": false,
+        "pushed_at": "2026-10-15T10:01:02Z",
+        "indexed": true,
+        "local_dir": "cloud-data-my-ai-memory",
+        "mirrored": true,
+        "persistence": {
+          "type": "git",
+          "ref": "https://github.com/diegonmarcos/cloud-data-my-ai-memory.git",
+          "mount": null
+        },
+        "vm": null,
+        "backup": {
+          "enabled": false,
+          "strategy": null
+        }
+      },
+      {
+        "id": "git#gitea/cloud-data-my-ai-memory",
+        "service": "gitea",
+        "container": null,
+        "engine": "git",
+        "kind": "git-remote",
+        "host": "gitea",
+        "repo": "cloud-data-my-ai-memory",
+        "upstream": "https://github.com/diegonmarcos/cloud-data-my-ai-memory.git",
+        "persistence": {
+          "type": "git",
+          "ref": "https://github.com/diegonmarcos/cloud-data-my-ai-memory.git",
+          "mount": null
+        },
+        "vm": "oci-A1-f_0",
+        "backup": {
+          "enabled": true,
+          "strategy": null
+        }
+      },
+      {
+        "id": "git#gh/cloud-data-lfs",
+        "service": "gitea",
+        "container": null,
+        "engine": "git",
+        "kind": "git-remote",
+        "host": "github",
+        "repo": "diegonmarcos/cloud-data-lfs",
+        "visibility": "private",
+        "fork": false,
+        "pushed_at": "2026-10-15T10:00:49Z",
+        "indexed": false,
+        "local_dir": null,
+        "mirrored": true,
+        "persistence": {
+          "type": "git",
+          "ref": "https://github.com/diegonmarcos/cloud-data-lfs.git",
+          "mount": null
+        },
+        "vm": null,
+        "backup": {
+          "enabled": false,
+          "strategy": null
+        }
+      },
+      {
+        "id": "git#gitea/cloud-data-lfs",
+        "service": "gitea",
+        "container": null,
+        "engine": "git",
+        "kind": "git-remote",
+        "host": "gitea",
+        "repo": "cloud-data-lfs",
+        "upstream": "https://github.com/diegonmarcos/cloud-data-lfs.git",
+        "persistence": {
+          "type": "git",
+          "ref": "https://github.com/diegonmarcos/cloud-data-lfs.git",
+          "mount": null
+        },
+        "vm": "oci-A1-f_0",
+        "backup": {
+          "enabled": true,
+          "strategy": null
+        }
+      },
+      {
+        "id": "git#gh/cloud-infra-desktop",
+        "service": "cloud-cgc-pub-mcp",
+        "container": null,
+        "engine": "git",
+        "kind": "git-remote",
+        "host": "github",
+        "repo": "diegonmarcos/cloud-infra-desktop",
+        "visibility": "public",
+        "fork": false,
+        "pushed_at": "2026-10-15T09:54:50Z",
+        "indexed": true,
+        "local_dir": "cloud-infra-desktop",
+        "mirrored": true,
+        "persistence": {
+          "type": "git",
+          "ref": "https://github.com/diegonmarcos/cloud-infra-desktop.git",
+          "mount": null
+        },
+        "vm": null,
+        "backup": {
+          "enabled": false,
+          "strategy": null
+        }
+      },
+      {
+        "id": "git#gitea/cloud-infra-desktop",
+        "service": "gitea",
+        "container": null,
+        "engine": "git",
+        "kind": "git-remote",
+        "host": "gitea",
+        "repo": "cloud-infra-desktop",
+        "upstream": "https://github.com/diegonmarcos/cloud-infra-desktop.git",
+        "persistence": {
+          "type": "git",
+          "ref": "https://github.com/diegonmarcos/cloud-infra-desktop.git",
+          "mount": null
+        },
+        "vm": "oci-A1-f_0",
+        "backup": {
+          "enabled": true,
+          "strategy": null
+        }
+      },
+      {
+        "id": "git#gh/git-repos-master",
+        "service": "gitea",
+        "container": null,
+        "engine": "git",
+        "kind": "git-remote",
+        "host": "github",
+        "repo": "diegonmarcos/git-repos-master",
+        "visibility": "public",
+        "fork": false,
+        "pushed_at": "2026-10-15T09:53:26Z",
+        "indexed": false,
+        "local_dir": null,
+        "mirrored": true,
+        "persistence": {
+          "type": "git",
+          "ref": "https://github.com/diegonmarcos/git-repos-master.git",
+          "mount": null
+        },
+        "vm": null,
+        "backup": {
+          "enabled": false,
+          "strategy": null
+        }
+      },
+      {
+        "id": "git#gitea/git-repos-master",
+        "service": "gitea",
+        "container": null,
+        "engine": "git",
+        "kind": "git-remote",
+        "host": "gitea",
+        "repo": "git-repos-master",
+        "upstream": "https://github.com/diegonmarcos/git-repos-master.git",
+        "persistence": {
+          "type": "git",
+          "ref": "https://github.com/diegonmarcos/git-repos-master.git",
+          "mount": null
+        },
+        "vm": "oci-A1-f_0",
+        "backup": {
+          "enabled": true,
+          "strategy": null
+        }
+      },
+      {
+        "id": "git#gh/cloud-me",
+        "service": "gitea",
+        "container": null,
+        "engine": "git",
+        "kind": "git-remote",
+        "host": "github",
+        "repo": "diegonmarcos/cloud-me",
+        "visibility": "private",
+        "fork": false,
+        "pushed_at": "2026-10-10T21:10:03Z",
+        "indexed": false,
+        "local_dir": null,
+        "mirrored": true,
+        "persistence": {
+          "type": "git",
+          "ref": "https://github.com/diegonmarcos/cloud-me.git",
+          "mount": null
+        },
+        "vm": null,
+        "backup": {
+          "enabled": false,
+          "strategy": null
+        }
+      },
+      {
+        "id": "git#gitea/cloud-me",
+        "service": "gitea",
+        "container": null,
+        "engine": "git",
+        "kind": "git-remote",
+        "host": "gitea",
+        "repo": "cloud-me",
+        "upstream": "https://github.com/diegonmarcos/cloud-me.git",
+        "persistence": {
+          "type": "git",
+          "ref": "https://github.com/diegonmarcos/cloud-me.git",
           "mount": null
         },
         "vm": "oci-A1-f_0",
@@ -11946,231 +13024,6 @@
         }
       },
       {
-        "id": "git#gh/cloud-me",
-        "service": "gitea",
-        "container": null,
-        "engine": "git",
-        "kind": "git-remote",
-        "host": "github",
-        "repo": "diegonmarcos/cloud-me",
-        "visibility": "private",
-        "fork": false,
-        "pushed_at": "2026-10-04T11:01:58Z",
-        "indexed": false,
-        "local_dir": null,
-        "mirrored": true,
-        "persistence": {
-          "type": "git",
-          "ref": "https://github.com/diegonmarcos/cloud-me.git",
-          "mount": null
-        },
-        "vm": null,
-        "backup": {
-          "enabled": false,
-          "strategy": null
-        }
-      },
-      {
-        "id": "git#gitea/cloud-me",
-        "service": "gitea",
-        "container": null,
-        "engine": "git",
-        "kind": "git-remote",
-        "host": "gitea",
-        "repo": "cloud-me",
-        "upstream": "https://github.com/diegonmarcos/cloud-me.git",
-        "persistence": {
-          "type": "git",
-          "ref": "https://github.com/diegonmarcos/cloud-me.git",
-          "mount": null
-        },
-        "vm": "oci-A1-f_0",
-        "backup": {
-          "enabled": true,
-          "strategy": null
-        }
-      },
-      {
-        "id": "git#gh/cloud-notes",
-        "service": "gitea",
-        "container": null,
-        "engine": "git",
-        "kind": "git-remote",
-        "host": "github",
-        "repo": "diegonmarcos/cloud-notes",
-        "visibility": "private",
-        "fork": false,
-        "pushed_at": "2026-10-04T11:01:51Z",
-        "indexed": false,
-        "local_dir": null,
-        "mirrored": true,
-        "persistence": {
-          "type": "git",
-          "ref": "https://github.com/diegonmarcos/cloud-notes.git",
-          "mount": null
-        },
-        "vm": null,
-        "backup": {
-          "enabled": false,
-          "strategy": null
-        }
-      },
-      {
-        "id": "git#gitea/cloud-notes",
-        "service": "gitea",
-        "container": null,
-        "engine": "git",
-        "kind": "git-remote",
-        "host": "gitea",
-        "repo": "cloud-notes",
-        "upstream": "https://github.com/diegonmarcos/cloud-notes.git",
-        "persistence": {
-          "type": "git",
-          "ref": "https://github.com/diegonmarcos/cloud-notes.git",
-          "mount": null
-        },
-        "vm": "oci-A1-f_0",
-        "backup": {
-          "enabled": true,
-          "strategy": null
-        }
-      },
-      {
-        "id": "git#gh/git-repos-master",
-        "service": "gitea",
-        "container": null,
-        "engine": "git",
-        "kind": "git-remote",
-        "host": "github",
-        "repo": "diegonmarcos/git-repos-master",
-        "visibility": "public",
-        "fork": false,
-        "pushed_at": "2026-10-04T11:01:36Z",
-        "indexed": false,
-        "local_dir": null,
-        "mirrored": true,
-        "persistence": {
-          "type": "git",
-          "ref": "https://github.com/diegonmarcos/git-repos-master.git",
-          "mount": null
-        },
-        "vm": null,
-        "backup": {
-          "enabled": false,
-          "strategy": null
-        }
-      },
-      {
-        "id": "git#gitea/git-repos-master",
-        "service": "gitea",
-        "container": null,
-        "engine": "git",
-        "kind": "git-remote",
-        "host": "gitea",
-        "repo": "git-repos-master",
-        "upstream": "https://github.com/diegonmarcos/git-repos-master.git",
-        "persistence": {
-          "type": "git",
-          "ref": "https://github.com/diegonmarcos/git-repos-master.git",
-          "mount": null
-        },
-        "vm": "oci-A1-f_0",
-        "backup": {
-          "enabled": true,
-          "strategy": null
-        }
-      },
-      {
-        "id": "git#gh/cloud",
-        "service": "gitea",
-        "container": null,
-        "engine": "git",
-        "kind": "git-remote",
-        "host": "github",
-        "repo": "diegonmarcos/cloud",
-        "visibility": "public",
-        "fork": false,
-        "pushed_at": "2026-10-04T11:01:32Z",
-        "indexed": false,
-        "local_dir": null,
-        "mirrored": true,
-        "persistence": {
-          "type": "git",
-          "ref": "https://github.com/diegonmarcos/cloud.git",
-          "mount": null
-        },
-        "vm": null,
-        "backup": {
-          "enabled": false,
-          "strategy": null
-        }
-      },
-      {
-        "id": "git#gitea/cloud",
-        "service": "gitea",
-        "container": null,
-        "engine": "git",
-        "kind": "git-remote",
-        "host": "gitea",
-        "repo": "cloud",
-        "upstream": "https://github.com/diegonmarcos/cloud.git",
-        "persistence": {
-          "type": "git",
-          "ref": "https://github.com/diegonmarcos/cloud.git",
-          "mount": null
-        },
-        "vm": "oci-A1-f_0",
-        "backup": {
-          "enabled": true,
-          "strategy": null
-        }
-      },
-      {
-        "id": "git#gh/front-assets-cdn",
-        "service": "gitea",
-        "container": null,
-        "engine": "git",
-        "kind": "git-remote",
-        "host": "github",
-        "repo": "diegonmarcos/front-assets-cdn",
-        "visibility": "public",
-        "fork": false,
-        "pushed_at": "2026-10-04T10:51:28Z",
-        "indexed": false,
-        "local_dir": null,
-        "mirrored": true,
-        "persistence": {
-          "type": "git",
-          "ref": "https://github.com/diegonmarcos/front-assets-cdn.git",
-          "mount": null
-        },
-        "vm": null,
-        "backup": {
-          "enabled": false,
-          "strategy": null
-        }
-      },
-      {
-        "id": "git#gitea/front-assets-cdn",
-        "service": "gitea",
-        "container": null,
-        "engine": "git",
-        "kind": "git-remote",
-        "host": "gitea",
-        "repo": "front-assets-cdn",
-        "upstream": "https://github.com/diegonmarcos/front-assets-cdn.git",
-        "persistence": {
-          "type": "git",
-          "ref": "https://github.com/diegonmarcos/front-assets-cdn.git",
-          "mount": null
-        },
-        "vm": "oci-A1-f_0",
-        "backup": {
-          "enabled": true,
-          "strategy": null
-        }
-      },
-      {
         "id": "git#gh/My-ai-memory",
         "service": "gitea",
         "container": null,
@@ -12207,96 +13060,6 @@
         "persistence": {
           "type": "git",
           "ref": "https://github.com/diegonmarcos/My-ai-memory.git",
-          "mount": null
-        },
-        "vm": "oci-A1-f_0",
-        "backup": {
-          "enabled": true,
-          "strategy": null
-        }
-      },
-      {
-        "id": "git#gh/cloud-infra-desktop",
-        "service": "cloud-cgc-pub-mcp",
-        "container": null,
-        "engine": "git",
-        "kind": "git-remote",
-        "host": "github",
-        "repo": "diegonmarcos/cloud-infra-desktop",
-        "visibility": "public",
-        "fork": false,
-        "pushed_at": "2026-10-03T23:44:55Z",
-        "indexed": true,
-        "local_dir": "cloud-infra-desktop",
-        "mirrored": true,
-        "persistence": {
-          "type": "git",
-          "ref": "https://github.com/diegonmarcos/cloud-infra-desktop.git",
-          "mount": null
-        },
-        "vm": null,
-        "backup": {
-          "enabled": false,
-          "strategy": null
-        }
-      },
-      {
-        "id": "git#gitea/cloud-infra-desktop",
-        "service": "gitea",
-        "container": null,
-        "engine": "git",
-        "kind": "git-remote",
-        "host": "gitea",
-        "repo": "cloud-infra-desktop",
-        "upstream": "https://github.com/diegonmarcos/cloud-infra-desktop.git",
-        "persistence": {
-          "type": "git",
-          "ref": "https://github.com/diegonmarcos/cloud-infra-desktop.git",
-          "mount": null
-        },
-        "vm": "oci-A1-f_0",
-        "backup": {
-          "enabled": true,
-          "strategy": null
-        }
-      },
-      {
-        "id": "git#gh/front",
-        "service": "gitea",
-        "container": null,
-        "engine": "git",
-        "kind": "git-remote",
-        "host": "github",
-        "repo": "diegonmarcos/front",
-        "visibility": "public",
-        "fork": false,
-        "pushed_at": "2026-10-03T20:55:46Z",
-        "indexed": false,
-        "local_dir": null,
-        "mirrored": true,
-        "persistence": {
-          "type": "git",
-          "ref": "https://github.com/diegonmarcos/front.git",
-          "mount": null
-        },
-        "vm": null,
-        "backup": {
-          "enabled": false,
-          "strategy": null
-        }
-      },
-      {
-        "id": "git#gitea/front",
-        "service": "gitea",
-        "container": null,
-        "engine": "git",
-        "kind": "git-remote",
-        "host": "gitea",
-        "repo": "front",
-        "upstream": "https://github.com/diegonmarcos/front.git",
-        "persistence": {
-          "type": "git",
-          "ref": "https://github.com/diegonmarcos/front.git",
           "mount": null
         },
         "vm": "oci-A1-f_0",
@@ -12551,6 +13314,12 @@
         "service": "my-ai_claude-api"
       },
       {
+        "name": "openclaw.app",
+        "type": "A",
+        "value": "10.0.0.6",
+        "service": "openclaw"
+      },
+      {
         "name": "session-memory.app",
         "type": "A",
         "value": "10.0.0.6",
@@ -12639,6 +13408,18 @@
         "type": "A",
         "value": "10.0.0.6",
         "service": "calendar-radicale"
+      },
+      {
+        "name": "cloud-notes-sync.app",
+        "type": "A",
+        "value": "10.0.0.6",
+        "service": "cloud-notes-sync"
+      },
+      {
+        "name": "cloud-notes-web.app",
+        "type": "A",
+        "value": "10.0.0.6",
+        "service": "cloud-notes-web"
       },
       {
         "name": "code-server.app",
@@ -13151,7 +13932,13 @@
           ],
           "mem_psi_warn": 30,
           "mem_psi_crit": 50,
-          "mem_psi_page": 65
+          "mem_psi_page": 65,
+          "obsolete_systemd_units": [
+            {
+              "unit": "smtp-proxy.service",
+              "_why": "Retired 2026-05: the Python SMTP proxy for Cloudflare Email Routing became the Rust container http-to-smtp-proxy-api, relocated to gcp-proxy (cloud-u-containers infra-api_tools-http-to-smtp-proxy-api; its purge-orphan-smtp-proxy.sh removes the old container). /opt/smtp-proxy/smtp_proxy.py was deleted but this hand-made unit (Restart=always, RestartSec=5) stayed enabled: 610,381 restarts by 2026-10-13. Was listed here once (d28e03ff) and dropped by accident in edc03c3b."
+            }
+          ]
         }
       },
       "oci-analytics": {
@@ -13258,6 +14045,7 @@
           "backup-borg",
           "backup-bup",
           "gitea",
+          "cloudflared",
           "wireguard-mesh",
           "cloud-spec",
           "dagu",
@@ -13275,6 +14063,7 @@
           "kg-store-pub",
           "my-ai-api",
           "my-ai_claude-api",
+          "openclaw",
           "session-memory",
           "chat-mattermost",
           "cloud-webmail",
@@ -13287,6 +14076,8 @@
           "playlist-syncer",
           "news-gdelt",
           "calendar-radicale",
+          "cloud-notes-sync",
+          "cloud-notes-web",
           "code-server",
           "contacts-radicale",
           "etherpad",
@@ -13744,6 +14535,11 @@
         "vm": "gcp-proxy",
         "has_docker": true
       },
+      "cloudflared": {
+        "dir": "infra-net_cloudflared",
+        "vm": "oci-apps",
+        "has_docker": false
+      },
       "hickory-dns": {
         "dir": "infra-net_hickory-dns",
         "vm": "gcp-proxy",
@@ -13864,6 +14660,11 @@
         "vm": "oci-apps",
         "has_docker": true
       },
+      "openclaw": {
+        "dir": "user-ai_openclaw",
+        "vm": "oci-apps",
+        "has_docker": false
+      },
       "session-memory": {
         "dir": "user-ai_session-memory",
         "vm": "oci-apps",
@@ -13936,6 +14737,16 @@
       },
       "calendar-radicale": {
         "dir": "user-prod_calendar-radicale",
+        "vm": "oci-apps",
+        "has_docker": true
+      },
+      "cloud-notes-sync": {
+        "dir": "user-prod_cloud-notes-sync",
+        "vm": "oci-apps",
+        "has_docker": true
+      },
+      "cloud-notes-web": {
+        "dir": "user-prod_cloud-notes-web",
         "vm": "oci-apps",
         "has_docker": true
       },

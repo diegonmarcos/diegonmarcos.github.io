@@ -7,7 +7,7 @@
 // <a href>. A small shared script.js progressively enhances the shipped
 // pages (drawer, radial star menus, overlays, card collapse) — this script
 // only runs at build time.
-import { readFileSync, writeFileSync, mkdirSync } from 'node:fs';
+import { readFileSync, writeFileSync, mkdirSync, existsSync } from 'node:fs';
 import { join, dirname } from 'node:path';
 import { renderView } from './render/views.mjs';
 import { emptyStateHtml } from './render/atoms.mjs';
@@ -21,8 +21,13 @@ const core = readJson('sections-core.json');
 const content = readJson('sections-content.json');
 const mockData = readJson('mock-apps.json');
 const linktreeData = readJson('linktree.json');
+// nav.json is GENERATED from the Android build.json files (scripts/gen-nav.mjs);
+// nav-overlay.json is the hand-written companion. See README "Nav data".
+const nav = readJson('nav.json');
+const navOverlay = readJson('nav-overlay.json');
 
-const { app, bottomNav, cube, stars, longPress, notificationCenter, updateOverlay, statusBar, footer } = shell;
+const { app, bottomNav: shellBottomNav, cube, stars, longPress, notificationCenter, updateOverlay, statusBar, footer } = shell;
+const bottomNav = nav.superapp.bottom_nav ?? shellBottomNav;
 const sections = { ...core.sections, ...content.sections, home: { label: 'Home', icon: 'home', color: 'blue' } };
 // The 4 bottom-nav aggregators (sections-core.json) land straight on their
 // first visible page instead of on a page index — build.json marks them
@@ -207,7 +212,10 @@ function resolveTarget(target) {
   if (target.startsWith('https://') || target.startsWith('http://')) return { href: target, external: true };
   if (target.startsWith('section:')) return { href: routeHref([target.slice(8)]), external: false };
   if (target.startsWith('page:')) return { href: routeHref(target.slice(5).split('/')), external: false };
-  // extapp: / intent: / app: / tab: / action: / mode: / stub: — Android-only, no web destination.
+  // extapp:cloud-<fleet app> has a web mirror here (apps/<id>/, generated from that app's build.json ui).
+  const fx = /^extapp:cloud-(.+)$/.exec(target);
+  if (fx && FLEET.has(fx[1])) return { href: routeHref(['apps', fx[1]]), external: false };
+  // other extapp: / intent: / app: / tab: / action: / mode: / stub: — Android-only, no web destination.
   return { href: null, external: false };
 }
 function routeHref(segments) {
@@ -239,6 +247,57 @@ function iconImg(icon, rel, cls) {
   return `<img class="${cls}" src="${rel}public/icons/${icon}.svg" alt="">`;
 }
 const ICONS_DIR = join(PROJECT_DIR, 'src/public/icons');
+
+// ── nav.json (generated from the Android build.json) over the site data ──
+// Labels, page order, hidden flags, the Configs group/subgroup tree, the page
+// tab ids and any declared tiles/stack titles come from the SuperApp; the page
+// BODIES that exist in sections-content.json stay (reused by same id or via
+// nav-overlay.json page_content_alias). A page the site had but the SuperApp no
+// longer declares is kept hidden (`legacy`) so existing page:<s>/<p> links
+// never go dead.
+function webIcon(name, fallback) {
+  if (!name) return fallback;
+  const m = navOverlay.icon_map[name] ?? name;
+  return existsSync(join(ICONS_DIR, `${m}.svg`)) ? m : fallback;
+}
+const NAV_PAGE_KEYS = ['hidden', 'group', 'subgroup', 'tabs', 'facet', 'url', 'is_action', 'mirror_section', 'mirror_page'];
+for (const g of nav.superapp.sections) {
+  const site = sections[g.id];
+  if (!site || g.id === 'home') continue;
+  site.label = g.label;
+  const old = new Map((site.pages ?? []).map((p) => [p.id, p]));
+  const alias = navOverlay.page_content_alias[g.id] ?? {};
+  const relabel = navOverlay.page_label_override?.[g.id] ?? {};
+  const pages = g.pages.map((gp) => {
+    const base = old.get(gp.id) ?? (alias[gp.id] && old.get(alias[gp.id]) ? { ...old.get(alias[gp.id]) } : {});
+    const p = { ...base, id: gp.id, label: relabel[gp.id] ?? gp.label };
+    if (gp.icon) p.icon = webIcon(gp.icon, site.icon);
+    for (const k of NAV_PAGE_KEYS) if (gp[k] !== undefined) p[k] = gp[k];
+    if (gp.action && /^(section|page):/.test(gp.action)) p.target = gp.action;
+    else if (gp.action && /^https?:/.test(gp.action)) p.target = gp.action;
+    else if (gp.action) p.nativeAction = gp.action;
+    if (gp.tiles && !base.tiles && !base.rows && !base.items) {
+      p.tiles = gp.tiles.filter((t) => !t.separator && t.label).map((t) => ({ ...t, icon: webIcon(t.icon, site.icon) }));
+    }
+    if (gp.stack && !base.stack && !base.rows && !base.items && !base.render) {
+      p.stack = gp.stack.map((c) => ({ kind: c.kind ?? 'panel', title: c.title ?? c.kind, subtitle: c.subtitle }));
+    }
+    return p;
+  });
+  // pages the SuperApp does not declare (yet): the overlay's extra pages, then legacy ones, hidden
+  for (const x of navOverlay.extra_pages?.[g.id] ?? []) {
+    if (pages.some((p) => p.id === x.id)) continue;
+    const at = pages.findIndex((p) => p.id === x.after);
+    pages.splice(at >= 0 ? at + 1 : pages.length, 0, { id: x.id, label: x.label, icon: webIcon(x.icon, site.icon), webapps: x.id === 'webapps' });
+  }
+  for (const [id, p] of old) if (!pages.some((q) => q.id === id) ) pages.push({ ...p, hidden: true, legacy: true });
+  const hint = navOverlay.page_order_hint?.[g.id];
+  if (hint) pages.sort((a, b) => (hint.indexOf(a.id) + 1 || 99) - (hint.indexOf(b.id) + 1 || 99));
+  site.pages = pages;
+  if (g.grid_columns) site.gridColumns = g.grid_columns;
+}
+const NAV_CLOUD_CONFIGS = (nav.superapp.sections.find((s) => s.id === 'cloud')?.tile_groups ?? []).find((t) => t.title === 'Configs');
+const FLEET = new Map(nav.fleet.map((a) => [a.id, a]));
 const iconCache = new Map();
 // Tintable glyph: the shared set's SVGs are stroked/filled with
 // currentColor, which does not apply through an <img src="…svg">. The tint
@@ -647,13 +706,47 @@ function homeCubeHtml() {
             </div>`;
 }
 
-function write(routeSegments, title, sectionId, bodyHtml, backHref) {
+function write(routeSegments, title, sectionId, bodyHtml, backHref, fleet = null) {
   const depth = routeSegments.length;
-  const html = renderShell({ title, sectionId, depth, bodyHtml, backHref });
+  const html = renderShell({ title, sectionId, depth, bodyHtml, backHref, fleet });
   const dir = join(DIST_DIR, ...routeSegments);
   mkdirSync(dir, { recursive: true });
   writeFileSync(join(dir, 'index.html'), html);
   console.log(`✓ /${routeSegments.join('/')}/`);
+}
+
+// ── embed mode ───────────────────────────────────────────────────────────
+// Inline in <head>, BEFORE the stylesheet, so the first paint is already the
+// embedded layout (no flash of the site's own top bar / bottom nav). Embedded
+// when the URL has ?embed=1, when the UA carries "CloudSuperApp-Embed/", or when
+// an earlier page of this tab did (sessionStorage) — the flag survives in-site
+// navigation. main.ts additionally keeps ?embed=1 on internal links, for
+// WebViews with no sessionStorage. CSS: scss/app/_embed.scss.
+const EMBED_HEAD_SCRIPT = `<script>(function(){var d=document.documentElement,e=/[?&]embed=1(&|$)/.test(location.search)||/CloudSuperApp-Embed\\//.test(navigator.userAgent);try{if(!e&&sessionStorage.getItem('cm-embed')==='1')e=true;else if(e)sessionStorage.setItem('cm-embed','1')}catch(x){}if(e)d.classList.add('embed')})()</script>`;
+
+// ── the fleet's shared AppTopBar (libs:bottomnav): hamburger · title · AI + Settings circles ─
+function fleetTopBarHtml(fleet, rel) {
+  const { app, section } = fleet;
+  const tb = app.top_bar ?? {};
+  const settingsSec = app.sections.find((x) => x.id === 'configs' || x.id === 'settings');
+  const settingsHref = tb.settings?.length && settingsSec ? routeHref(['apps', app.id, settingsSec.id]) : null;
+  const drawerLinks = app.sections.map((sec) => {
+    const sub = sec.pages.map((pg) => `<a class="app-drawer__page" href="${routeHref(['apps', app.id, sec.id, pg.id])}">${pg.label}</a>`).join('');
+    return `<a class="app-drawer__section${sec.id === section ? ' is-active' : ''}" href="${routeHref(['apps', app.id, sec.id])}">${sec.label}</a>${sub}`;
+  }).join('\n                ');
+  return `<header class="app-top-bar" data-app-top-bar>
+            ${tb.drawer ? `<a class="app-top-bar__circle app-top-bar__hamburger" href="#app-drawer" aria-label="Menu">${iconImg('menu', rel, '')}</a>` : ''}
+            <h1 class="app-top-bar__title">${app.name}</h1>
+            ${tb.ai ? `<button class="app-top-bar__circle app-top-bar__ai" type="button" aria-label="AI">AI</button>` : ''}
+            ${settingsHref ? `<a class="app-top-bar__circle app-top-bar__settings" href="${settingsHref}" aria-label="Settings">${iconImg('settings', rel, '')}</a>` : ''}
+        </header>
+        <aside class="app-drawer" id="app-drawer" aria-label="${app.name} menu">
+            <a class="app-drawer__close" href="#" aria-label="Close menu">Close</a>
+            <nav>
+                ${drawerLinks}
+                <a class="app-drawer__section app-drawer__back" href="${routeHref([])}">Cloud SuperApp</a>
+            </nav>
+        </aside>`;
 }
 
 // ── shared shell ─────────────────────────────────────────────────────────
@@ -734,7 +827,7 @@ function footerHtml(rel) {
             </footer>`;
 }
 
-function renderShell({ title, sectionId, depth, bodyHtml, backHref }) {
+function renderShell({ title, sectionId, depth, bodyHtml, backHref, fleet = null }) {
   const rel = relPrefix(depth);
   const isHome = sectionId === 'home' ? ' is-home' : '';
   // Mirrors MainActivity's onPrepareOptionsMenu: action_back is visible
@@ -747,7 +840,13 @@ function renderShell({ title, sectionId, depth, bodyHtml, backHref }) {
     ? `<a class="toolbar-action" href="${routeHref(['wallet', 'cards'])}" aria-label="Wallet">${iconImg('wallet', rel, '')}</a>`
     : `<a class="toolbar-action" href="${backHref}" aria-label="Back">${iconImg('back', rel, '')}</a>`;
 
-  const navItems = bottomNav.map((id) => {
+  const navItems = fleet
+    ? fleet.app.bottom_nav.map((id) => {
+        const s = fleet.app.sections.find((x) => x.id === id) ?? { label: id };
+        const active = id === fleet.section ? ' is-active' : '';
+        return `<a class="bottom-nav__item${active}" href="${routeHref(['apps', fleet.app.id, id])}">${iconImg(webIcon(s.icon, 'more'), rel, '')}<span>${s.label}</span></a>`;
+      }).join('\n            ')
+    : bottomNav.map((id) => {
     const s = sections[id];
     const active = id === sectionId ? ' is-active' : '';
     return `<a class="bottom-nav__item${active}" href="${rel}${id === 'home' ? '' : id + '/'}" data-longpress="${id}">${iconImg(s.icon, rel, '')}<span>${s.label}</span></a>`;
@@ -758,7 +857,8 @@ function renderShell({ title, sectionId, depth, bodyHtml, backHref }) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-    <title>${title} · Cloud SuperApp</title>
+    ${EMBED_HEAD_SCRIPT}
+    <title>${title} · ${fleet ? fleet.app.name : 'Cloud SuperApp'}</title>
     <link rel="icon" type="image/svg+xml" href="${rel}public/favicon.svg">
     <link rel="manifest" href="${rel}manifest.webmanifest">
     <meta name="theme-color" content="#000000">
@@ -774,7 +874,8 @@ function renderShell({ title, sectionId, depth, bodyHtml, backHref }) {
     <link rel="stylesheet" href="${rel}style.css">
 </head>
 <body data-section="${sectionId}">
-    <div class="shell${isHome}">
+    <div class="shell${isHome}${fleet ? ' shell--fleet shell--dense' : ''}">
+        ${fleet ? fleetTopBarHtml(fleet, rel) : ''}
         ${statusStripHtml()}
         <div class="galaxy-backdrop" aria-hidden="true"></div>
         ${sectionId === 'home' ? homeCubeHtml() : ''}
@@ -899,8 +1000,81 @@ write([], 'Home', 'home', '', null);
 // Page bodies stay ICONS-FIRST, matching the real app: the page's own tile
 // grid (or group strips) on top, then AggregatorStackFragment's collapsible
 // cards below a divider.
+// ── generated-nav renderers ──────────────────────────────────────────────
+// Configs: Setup{Connect, Apps, Launcher, Network} · Fleet · Observability —
+// the group/subgroup headings are rendered verbatim from nav.json (the
+// SuperApp's ui.sections[config].pages[].group/subgroup), never named here.
+function configTile(p) {
+  const target = (p.nativeAction && resolveTarget(p.nativeAction).href ? p.nativeAction : null) ?? p.target ?? `page:config/${p.id}`;
+  return { id: p.id, label: p.label, icon: p.icon ?? 'settings', target };
+}
+function configsTreeBody(rel) {
+  const pages = visiblePages(sections.config.pages).filter((p) => p.group);
+  const out = [];
+  let group = null, sub = null, run = [];
+  const flush = () => {
+    if (run.length) out.push(`<div class="tile-grid tile-grid--cols" style="--cols:${sections.config.gridColumns ?? 6}" role="list">\n                ${run.map((t) => tileHtml(t, TILE_COLORS[hash(t.id) % TILE_COLORS.length], rel)).join('\n                ')}\n            </div>`);
+    run = [];
+  };
+  for (const p of pages) {
+    if (p.group !== group) { flush(); group = p.group; sub = null; out.push(`<h2 class="tile-group__title config-group">${group}</h2>`); }
+    if ((p.subgroup ?? null) !== sub) { flush(); sub = p.subgroup ?? null; if (sub) out.push(`<h3 class="tile-group__title config-subgroup">${sub}</h3>`); }
+    run.push(configTile(p));
+  }
+  flush();
+  return `<div class="configs-tree" data-config-tree>\n            ${out.join('\n            ')}\n        </div>`;
+}
+// Cloud ▸ Configs: the Configs tile group (SuperApp | Account | Store, Controls, Firewall | C3 | About)
+// with its `|` separators, then the same tree.
+function cloudConfigsBody(rel) {
+  const tiles = (NAV_CLOUD_CONFIGS?.tiles ?? []).map((t) => (t.separator
+    ? `<span class="tile-sep" aria-hidden="true">|</span>`
+    : tileHtml({ ...t, icon: webIcon(t.icon, 'settings') }, 'blue', rel))).join('\n                ');
+  return `<section class="tile-group" data-configs-group>
+                <h2 class="tile-group__title">Configs</h2>
+                <div class="tile-grid tile-grid--dense tile-grid--sep" role="list">
+                ${tiles}
+                </div>
+            </section>
+            ${configsTreeBody(rel)}`;
+}
+// Cloud ▸ WebApps: the fleet apps that have a web mirror in this site.
+function webappsBody(rel) {
+  const tiles = nav.fleet.map((a) => ({ id: a.id, label: a.name.replace(/^Cloud /, ''), icon: webIcon(a.sections[0]?.icon, 'suite'), target: `extapp:cloud-${a.id}` }));
+  return `<section class="tile-group" data-webapps>
+                <h2 class="tile-group__title">WebApps</h2>
+                ${tileGridBody(tiles, rel, () => 'blue', true)}
+            </section>`;
+}
+// Sub-tab strips for pages that declare `tabs` (Controls{Presets, Panels{UI, Tools}}, Agents, …) and for the tab
+// pages themselves: ancestors top-down, then this page's own first-tab chain.
+function tabStripHtml(items) {
+  return `<div class="page-tabs-bar page-tabs-bar--sub">
+                <div class="page-tabs" role="tablist">
+                ${items.map((i) => `<a class="page-tabs__item${i.active ? ' is-active' : ''}" href="${i.href}">${i.label}</a>`).join('\n                ')}
+                </div>
+            </div>`;
+}
+function subTabsHtml(section, sectionId, page) {
+  const byId = new Map(section.pages.map((p) => [p.id, p]));
+  const level = (ids, active) => tabStripHtml(ids.map((id) => ({ label: byId.get(id)?.label ?? id, href: routeHref([sectionId, id]), active: id === active })));
+  const up = [];
+  let cur = page;
+  for (let q; (q = section.pages.find((x) => x.tabs?.includes(cur.id)));) { up.unshift(level(q.tabs, cur.id)); cur = q; }
+  const down = [];
+  for (let c = page; c.tabs?.length;) { down.push(level(c.tabs, c.tabs[0])); c = byId.get(c.tabs[0]) ?? { tabs: [] }; }
+  return [...up, ...down].join('\n            ');
+}
+
 function pageBody(section, sectionId, page, rel) {
   if (typeof page === 'string') return skeletonBody();
+  if (page.webapps) return webappsBody(rel);
+  if (page.mirror_section === 'config') return cloudConfigsBody(rel);
+  if (page.tabs?.length) {
+    // a page that declares tabs shows its FIRST tab's body under the sub-tab strip (the strip is added by the caller)
+    const first = section.pages.find((q) => q.id === page.tabs[0]);
+    if (first) return pageBody(section, sectionId, first, rel);
+  }
   if (page.constellation) return constellationBody(page.constellation);
 
   const parts = [];
@@ -951,11 +1125,12 @@ for (const [id, s] of Object.entries(sections)) {
   // section root serves that page rather than an index of pages.
   if (AGGREGATOR_IDS.includes(id) && shown.length) {
     const first = shown[0];
+    const sub = subTabsHtml(s, id, first);
     write([id], s.label, id,
-      `${pageTabsHtml(s.pages, id, first.id, rel1)}\n            ${pageBody(s, id, first, rel1)}`,
+      `${pageTabsHtml(s.pages, id, first.id, rel1)}\n            ${sub ? sub + '\n            ' : ''}${pageBody(s, id, first, rel1)}`,
       routeHref([]));
   } else {
-    write([id], s.label, id, sectionPagesTileGridBody(s.pages, id, rel1), routeHref([]));
+    write([id], s.label, id, id === 'config' ? configsTreeBody(rel1) : sectionPagesTileGridBody(s.pages, id, rel1), routeHref([]));
   }
 
   // Every DECLARED page gets HTML, hidden ones included — hiding a page from
@@ -964,8 +1139,37 @@ for (const [id, s] of Object.entries(sections)) {
     const label = typeof p === 'string' ? p : p.label;
     const pid = typeof p === 'string' ? slug(p) : p.id;
     if (typeof p === 'object' && p.target) continue; // routes elsewhere or inert — no own page
-    const tabs = shown.length > 1 ? `${pageTabsHtml(s.pages, id, pid, rel2)}\n            ` : '';
-    write([id, pid], `${s.label} · ${label}`, id, tabs + pageBody(s, id, p, rel2), routeHref([id]));
+    const strip = id !== 'config' && shown.length > 1 ? `${pageTabsHtml(s.pages, id, pid, rel2)}\n            ` : '';
+    const sub = subTabsHtml(s, id, p);
+    write([id, pid], `${s.label} · ${label}`, id, strip + (sub ? sub + '\n            ' : '') + pageBody(s, id, p, rel2), routeHref([id]));
+  }
+}
+
+// ── fleet apps — generated from each app's build.json ui (nav.json.fleet) ─
+// One page per (section, page) with the app's own AppTopBar + page-tab strip +
+// bottom island, plus apps/ (the WebApps index) and apps/<id>/ (its default
+// section). The bodies are honest structural mirrors: the live content runs on
+// the phone, so each page says which declaration it mirrors.
+{
+  const tileApps = nav.fleet.map((a) => ({ id: a.id, label: a.name.replace(/^Cloud /, ''), icon: webIcon(a.sections[0]?.icon, 'suite'), target: `extapp:cloud-${a.id}` }));
+  write(['apps'], 'WebApps', 'apps', `<section class="tile-group"><h2 class="tile-group__title">WebApps</h2>${tileGridBody(tileApps, relPrefix(1), () => 'blue', true)}</section>`, routeHref([]));
+  for (const app of nav.fleet) {
+    const secs = app.sections;
+    const body = (sec, pg, depth) => {
+      const rel = relPrefix(depth);
+      const strip = sec.pages.length > 1 ? `<div class="page-tabs-bar"><div class="page-tabs" role="tablist">${sec.pages.map((q) => `<a class="page-tabs__item${pg && q.id === pg.id ? ' is-active' : ''}" href="${routeHref(['apps', app.id, sec.id, q.id])}">${q.label}</a>`).join('')}</div></div>` : '';
+      const what = pg ? `${app.name} ▸ ${sec.label} ▸ ${pg.label}` : `${app.name} ▸ ${sec.label}`;
+      return `${strip}\n            ${emptyStateHtml(pg?.label ?? sec.label, `Structural mirror of ${what} (build.json ui.sections). The live content runs in the ${app.name} app on the phone.`)}`;
+    };
+    const ctx = (sec) => ({ app, section: sec.id });
+    const dflt = secs.find((x) => x.id === app.default_section) ?? secs[0];
+    if (dflt) write(['apps', app.id], app.name, 'apps', body(dflt, dflt.pages[0], 2), routeHref(['apps']), ctx(dflt));
+    for (const sec of secs) {
+      write(['apps', app.id, sec.id], `${app.name} · ${sec.label}`, 'apps', body(sec, sec.pages[0], 3), routeHref(['apps']), ctx(sec));
+      if (sec.pages.length > 1 || (sec.pages.length === 1 && sec.pages[0].id !== sec.id)) {
+        for (const pg of sec.pages) write(['apps', app.id, sec.id, pg.id], `${app.name} · ${pg.label}`, 'apps', body(sec, pg, 4), routeHref(['apps', app.id, sec.id]), ctx(sec));
+      }
+    }
   }
 }
 

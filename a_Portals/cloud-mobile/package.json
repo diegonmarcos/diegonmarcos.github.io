@@ -8,7 +8,10 @@
     "dev": "bash build.sh dev",
     "clean": "bash build.sh clean",
     "lint": "eslint src/typescript/**/*.ts",
-    "format": "prettier --write \"src/**/*.{ts,scss}\""
+    "format": "prettier --write \"src/**/*.{ts,scss}\"",
+    "nav:sync": "node scripts/gen-nav.mjs",
+    "nav:check": "node scripts/gen-nav.mjs --check",
+    "test": "node test/embed.spec.mjs"
   },
   "keywords": [
     "cloud",

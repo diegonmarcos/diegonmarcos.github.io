@@ -1,0 +1,37 @@
+// ==========================================================================
+// Embed mode — SuperApp's Cloud > WebApps tab hosts this site and supplies its
+// OWN top bar and bottom island. `html.embed` (set by the inline head script in
+// every page: ?embed=1, UA "CloudSuperApp-Embed/", or sessionStorage) hides the
+// site's whole chrome and removes the space it reserved, so content fills the
+// viewport from top 0. Normal visitors never get the class: UI unchanged.
+// ==========================================================================
+
+.embed {
+    .shell {
+        --content-top: 0px;
+        --chrome-band-top: 0px;
+        --chrome-band-height: 0px;
+        --safe-area-top: 0px;
+        max-width: none;
+        box-shadow: none;
+    }
+
+    .shell::before,
+    .status-strip,
+    .app-top-bar,
+    .app-drawer,
+    .icon-btn,
+    .toolbar-action,
+    .music-island,
+    .dynamic-island,
+    .star,
+    .bottom-nav {
+        display: none !important;
+    }
+
+    .content {
+        margin-top: 0;
+        padding-top: 0;
+        padding-bottom: 12px;
+    }
+}

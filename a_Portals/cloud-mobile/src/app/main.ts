@@ -40,6 +40,25 @@ function initStatusClock(): void {
   window.setInterval(tick, 15000);
 }
 
+// Embed mode (html.embed, set by the inline <head> script in every page): keep
+// ?embed=1 on same-origin links so the flag survives in-site navigation even
+// where sessionStorage is unavailable. Capture phase + click time, so links
+// the drawer / fan menu / radial menu create later are covered too. The UA
+// marker and sessionStorage need no help; programmatic location.href jumps
+// rely on those two.
+function initEmbedLinks(): void {
+  if (!document.documentElement.classList.contains('embed')) return;
+  document.addEventListener('click', (ev) => {
+    const a = (ev.target as Element | null)?.closest?.('a[href]') as HTMLAnchorElement | null;
+    if (!a || a.origin !== location.origin || a.hasAttribute('download')) return;
+    if (a.hash && a.pathname === location.pathname && a.search === location.search) return;
+    const u = new URL(a.href);
+    if (u.searchParams.get('embed') === '1') return;
+    u.searchParams.set('embed', '1');
+    a.href = u.href;
+  }, true);
+}
+
 // Every widget below is independent progressive enhancement, so one of them
 // throwing must never take the others down with it — without this isolation a
 // single failure (a missing canvas 2d context, a malformed data section, an
@@ -56,6 +75,7 @@ function runInit(name: string, init: () => void): void {
 
 function initApp(): void {
   const data = getData();
+  runInit('embed-links', () => initEmbedLinks());
   runInit('drawer', () => initDrawer(data));
   // lib/onehand/stars.ts can never import app/overlays/overlays.ts itself
   // (see src/README.md's module boundary) — this registers the actual

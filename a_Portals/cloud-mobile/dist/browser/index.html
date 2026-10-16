@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+    <script>(function(){var d=document.documentElement,e=/[?&]embed=1(&|$)/.test(location.search)||/CloudSuperApp-Embed\//.test(navigator.userAgent);try{if(!e&&sessionStorage.getItem('cm-embed')==='1')e=true;else if(e)sessionStorage.setItem('cm-embed','1')}catch(x){}if(e)d.classList.add('embed')})()</script>
     <title>Browser · Cloud SuperApp</title>
     <link rel="icon" type="image/svg+xml" href="../public/favicon.svg">
     <link rel="manifest" href="../manifest.webmanifest">
@@ -20,6 +21,7 @@
 </head>
 <body data-section="browser">
     <div class="shell">
+        
         <div class="status-strip">
             <div class="status-strip__row">
                 <div class="status-strip__cluster status-strip__cluster--left"><span class="status-strip__chip is-active">5G</span><span class="status-strip__chip is-active">WiFi</span><span class="status-strip__chip is-active">WG</span><span class="status-strip__chip">KDE</span><span class="status-strip__chip is-active">BT</span><span class="status-strip__chip">USB</span></div>
@@ -62,11 +64,12 @@
         <main class="content" id="content">
             <div class="tile-grid" role="list">
                 <a class="tile tile--green" href="/cloud-mobile/browser/all/" role="listitem" aria-label="Open Tabs"><span class="tile__icon" aria-hidden="true"><svg width="32" height="32" fill="none" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-  <path d="M4 5a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v14a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2v-14z" />
-  <path d="M4 9h16" />
-  <circle cx="7" cy="7" r="1" />
+  <rect x="4" y="4" width="7" height="7" rx="1.5" />
+  <rect x="13" y="4" width="7" height="7" rx="1.5" />
+  <rect x="4" y="13" width="7" height="7" rx="1.5" />
+  <rect x="13" y="13" width="7" height="7" rx="1.5" />
 </svg></span><span class="tile__label">Open Tabs</span></a>
-                <a class="tile tile--blue" href="/cloud-mobile/browser/linktree/" role="listitem" aria-label="Linktree"><span class="tile__icon" aria-hidden="true"><svg width="32" height="32" fill="none" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <a class="tile tile--blue" href="https://linktree.diegonmarcos.com/" target="_blank" rel="noopener" role="listitem" aria-label="Linktree"><span class="tile__icon" aria-hidden="true"><svg width="32" height="32" fill="none" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
   <path d="M4 5a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v14a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2v-14z" />
   <path d="M4 9h16" />
   <circle cx="7" cy="7" r="1" />
@@ -138,7 +141,7 @@
         </main>
 
         <nav class="bottom-nav" id="bottom-nav" aria-label="Primary">
-            <a class="bottom-nav__item" href="../communication/" data-longpress="communication"><img class="" src="../public/icons/chat.svg" alt=""><span>Inboxes</span></a>
+            <a class="bottom-nav__item" href="../communication/" data-longpress="communication"><img class="" src="../public/icons/chat.svg" alt=""><span>Notify</span></a>
             <a class="bottom-nav__item" href="../infos/" data-longpress="infos"><img class="" src="../public/icons/logs.svg" alt=""><span>Projects</span></a>
             <a class="bottom-nav__item" href="../" data-longpress="home"><img class="" src="../public/icons/home.svg" alt=""><span>Home</span></a>
             <a class="bottom-nav__item" href="../cloud/" data-longpress="cloud"><img class="" src="../public/icons/suite.svg" alt=""><span>Cloud</span></a>

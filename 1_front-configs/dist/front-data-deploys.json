@@ -144,18 +144,6 @@
     "deploy_name": "mymaps-mytrips"
   },
   {
-    "path": "c-Cloud/api",
-    "deploy_name": "api"
-  },
-  {
-    "path": "c-Cloud/mcp-api-swagger",
-    "deploy_name": "mcp-api-swagger"
-  },
-  {
-    "path": "c-Cloud/skills_mcp",
-    "deploy_name": "skills_mcp"
-  },
-  {
     "path": "a_Projects/Warehouse",
     "deploy_name": "Warehouse"
   },

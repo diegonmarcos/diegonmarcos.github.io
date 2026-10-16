@@ -7,6 +7,7 @@ import { readFileSync, existsSync, statSync, readdirSync } from 'node:fs';
 import { join, extname, dirname, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { createRequire } from 'node:module';
+import { spawnSync } from 'node:child_process';
 
 const HERE = dirname(fileURLToPath(import.meta.url));
 const DIST = resolve(HERE, '../dist');
@@ -48,6 +49,15 @@ const browser = await chromium.launch({ executablePath: findChromium(), args: ['
 
 async function probe(ctxOpts, path) {
   const ctx = await browser.newContext({ viewport: { width: 412, height: 860 }, ...ctxOpts });
+  if (process.env.LIVE_VIA_CURL) {
+    // sandboxes whose HTTPS goes through a MITM proxy Chromium does not trust: fetch with curl (which does) and fulfil
+    await ctx.route('**/*', (route) => {
+      const r = spawnSync('curl', ['-sS', '-L', '-w', '\n%{http_code} %{content_type}', route.request().url()], { maxBuffer: 64 * 1024 * 1024 });
+      const out = r.stdout; const nl = out.lastIndexOf(10);
+      const [code, type] = out.subarray(nl + 1).toString().split(' ');
+      route.fulfill({ status: Number(code) || 502, contentType: type, body: out.subarray(0, nl) });
+    });
+  }
   const page = await ctx.newPage();
   await page.goto(`${BASE}${path}`, { waitUntil: 'load' });
   const r = await page.evaluate(() => {

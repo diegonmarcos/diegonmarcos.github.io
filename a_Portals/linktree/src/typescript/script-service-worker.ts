@@ -145,6 +145,28 @@ self.addEventListener('fetch', (event) => {
   if (url.origin !== self.location.origin) return;
   event.respondWith((async () => {
     const cache = await caches.open(RUNTIME_CACHE);
+
+    // Network-first (bypassing the HTTP cache) for navigations/HTML and for
+    // every asset WITHOUT a build hash: a stale index.html must never be
+    // paired with new assets (or vice versa). The cache is only the
+    // offline fallback. Hash-verified assets below stay cache-first — their
+    // bytes are proven identical to this build, so they cannot be stale.
+    const isNav = req.mode === 'navigate' || req.destination === 'document';
+    if (isNav || !BUILD_ASSET_HASHES[scopeRelative(req.url)]) {
+      try {
+        const fresh = await fetch(req, { cache: 'no-cache' });
+        if (fresh.ok && await isCacheable(req, fresh)) {
+          cache.put(req, fresh.clone()).catch(() => undefined);
+        }
+        return fresh;
+      } catch {
+        const cached = await cache.match(req) ?? await caches.match(req);
+        if (cached) return cached;
+        if (isNav) return (await caches.match('./index.html')) ?? Response.error();
+        return Response.error();
+      }
+    }
+
     const hit = await cache.match(req);
 
     // Cache hit:

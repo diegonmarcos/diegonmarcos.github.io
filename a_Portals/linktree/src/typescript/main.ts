@@ -183,7 +183,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   // hot-reload predictable.
   if ('serviceWorker' in navigator && location.protocol.startsWith('http')) {
     onIdle(() => {
-      navigator.serviceWorker.register('./script-service-worker.js').catch(() => undefined);
+      navigator.serviceWorker.register('./script-service-worker.js', { updateViaCache: 'none' }).catch(() => undefined);
     });
 
     // Auto-reload on post-deploy SW updates only — never on first-ever

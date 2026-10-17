@@ -119,7 +119,7 @@ test('torrents: magnet / .torrent only, denied indexes blocked, biggest video pi
   assert.equal(C.parseTorrentInput('https://archive.org/download/x/x_archive.torrent').kind, 'torrent')
   assert.match(C.parseTorrentInput('magnet:?dn=x').error, /info hash/)
   assert.match(C.parseTorrentInput('https://example.org/movie').error, /Not a magnet/)
-  assert.match(C.parseTorrentInput('https://' + 'thepiratebay' + '.org/x.torrent', decl.denylist).error, /blocked/)
+  assert.match(C.parseTorrentInput('https://' + 'thepirate' + 'bay.org/x.torrent', decl.denylist).error, /blocked/)
   assert.equal(C.pickTorrentVideo([{ name: 'a.mp4', length: 5 }, { name: 'b.mp4', length: 9 }, { name: 'c.srt', length: 99 }]).name, 'b.mp4')
 })
 

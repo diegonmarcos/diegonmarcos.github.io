@@ -1,0 +1,3 @@
+# gitleaks false positives, by fingerprint (commit:path:rule:line).
+# a7e12db: prose in sources.json::_doc ("...tokens) are never committed"), not a secret; reworded since.
+a7e12db47b3bee36a896c79ec450d22eaae5d2ba:c_Circus/movies/src/data/sources.json:generic-api-key:2

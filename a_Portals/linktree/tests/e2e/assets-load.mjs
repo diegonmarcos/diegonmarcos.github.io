@@ -18,14 +18,16 @@ let assetCount = 0;
 function watch(page, label) {
   page.on('response', (r) => {
     const u = r.url();
-    if (!u.startsWith(ORIGIN) || !ASSET.test(u)) return;
+    // Image loads only: the loader's network speed probe is a fetch() of a
+    // .jpg with ?t= that it aborts on purpose (modules/loader.ts).
+    if (!u.startsWith(ORIGIN) || !ASSET.test(u) || r.request().resourceType() !== 'image') return;
     assetCount++;
     const s = r.status();
     if (!(s >= 200 && s < 300) && s !== 304) errors.push(`${label}: ${s} ${u}`);
   });
   page.on('requestfailed', (q) => {
     const u = q.url();
-    if (u.startsWith(ORIGIN) && ASSET.test(u)) errors.push(`${label}: failed ${q.failure()?.errorText} ${u}`);
+    if (u.startsWith(ORIGIN) && ASSET.test(u) && q.resourceType() === 'image') errors.push(`${label}: failed ${q.failure()?.errorText} ${u}`);
   });
 }
 

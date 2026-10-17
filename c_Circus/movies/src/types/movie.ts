@@ -11,10 +11,7 @@ export interface Movie {
   Director?: string
   Actors?: string
   Runtime?: string
-  streamer?: string
 }
-
-export type StreamProvider = 'vidsrc' | 'vidsrcme'
 
 export interface OmdbSearchResponse {
   Search?: Movie[]

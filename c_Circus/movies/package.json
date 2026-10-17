@@ -7,7 +7,8 @@
     "dev": "vite --port 8015",
     "build": "vue-tsc -b && vite build",
     "preview": "vite preview",
-    "typecheck": "vue-tsc --noEmit"
+    "typecheck": "vue-tsc --noEmit",
+    "test": "node --test tests/sources-core.test.mjs && sh tests/legal-guard.sh"
   },
   "dependencies": {
     "axios": "^1.6.0",

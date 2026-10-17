@@ -7,6 +7,7 @@
 
   "build": [
     { "mod": "vite" },
+    { "mod": "npm", "script": "test" },
     { "mod": "copy", "files": "matomo.js", "from": "public" }
   ],
 

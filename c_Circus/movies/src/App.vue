@@ -189,6 +189,7 @@ const handleOpenWebPlayerFromHeader = () => {
       :tmdbId="currentMovie.tmdbId"
       :movieType="currentMovie.Type"
       :title="currentMovie.Title"
+      :year="currentMovie.Year"
       @close="closeWebPlayer"
     />
   </div>

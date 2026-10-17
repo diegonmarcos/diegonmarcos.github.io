@@ -40,3 +40,10 @@ jobs:
             echo "attempt $i failed; retrying in 30s"; sleep 30
           done
           exit 1
+      - name: Every icon/image loads (5 cold loads + reload storm)
+        env:
+          NODE_PATH: /tmp/pw/node_modules
+        run: |
+          # A transient here is exactly the bug: no retry loop.
+          cp a_Portals/linktree/tests/e2e/assets-load.mjs /tmp/pw/
+          node /tmp/pw/assets-load.mjs "${{ github.event.inputs.url || 'https://linktree.diegonmarcos.com/' }}"

@@ -40,9 +40,7 @@ self.addEventListener('install', (event) => {
   console.info(TAG, 'install', { hash: BUILD_HASH, precache: PRECACHE.length });
   event.waitUntil(
     caches.open(STATIC_CACHE)
-      .then((c) => c.addAll(PRECACHE).catch((e) => {
-        console.warn(TAG, 'precache failed (continuing anyway)', e?.message);
-      }))
+      .then((c) => precache(c, PRECACHE))
       .then(() => self.skipWaiting())
       .then(() => console.info(TAG, 'install complete · skipWaiting')),
   );
@@ -136,6 +134,64 @@ async function isCacheable(req: Request, res: Response): Promise<boolean> {
   return true;
 }
 
+// Retry with backoff. A 429 (the edge's per-IP limiter), a 5xx or a network
+// error on one icon used to reach the <img> as-is: a broken "?" icon until a
+// manual refresh (SuperApp Linktree, 2026-10-17). Honours Retry-After (capped).
+// Never retries a 4xx other than 408/429: those are real answers.
+const RETRY_DELAYS_MS = [300, 900, 2000];
+function retryable(status: number): boolean {
+  return status === 408 || status === 429 || status >= 500;
+}
+function sleep(ms: number): Promise<void> {
+  return new Promise((r) => setTimeout(r, ms));
+}
+async function fetchRetry(req: Request | string, init?: RequestInit): Promise<Response> {
+  let last: Response | undefined;
+  for (let attempt = 0; ; attempt++) {
+    try {
+      const res = await fetch(req, init);
+      if (!retryable(res.status) || attempt >= RETRY_DELAYS_MS.length) return res;
+      last = res;
+      const ra = Number(res.headers.get('retry-after'));
+      const wait = Number.isFinite(ra) && ra > 0 ? Math.min(ra * 1000, 5000) : RETRY_DELAYS_MS[attempt];
+      console.warn(TAG, 'retrying', { url: typeof req === 'string' ? req : req.url, status: res.status, wait });
+      await sleep(wait);
+    } catch (e) {
+      if (attempt >= RETRY_DELAYS_MS.length) {
+        if (last) return last;
+        throw e;
+      }
+      await sleep(RETRY_DELAYS_MS[attempt]);
+    }
+  }
+}
+
+// Only a real, complete 200 enters a cache. `ok` already excludes 429/5xx and
+// opaque (status 0) responses; redirects and partial (206) bodies are out too.
+async function storable(req: Request, res: Response): Promise<boolean> {
+  return res.ok && res.status === 200 && res.type !== 'opaque' && await isCacheable(req, res);
+}
+
+// Precache a few at a time, each retried, instead of cache.addAll(): addAll
+// fires every URL at once (a burst the edge limiter 429s) and one failure
+// rejects the whole batch. A URL that still fails is simply left uncached.
+async function precache(cache: Cache, urls: string[]): Promise<void> {
+  const queue = [...urls];
+  let failed = 0;
+  const worker = async () => {
+    for (let u = queue.shift(); u !== undefined; u = queue.shift()) {
+      try {
+        const req = new Request(u, { cache: 'reload' });
+        const res = await fetchRetry(req);
+        if (await storable(req, res)) await cache.put(req, res);
+        else failed++;
+      } catch { failed++; }
+    }
+  };
+  await Promise.all(Array.from({ length: Math.min(4, urls.length) }, worker));
+  if (failed) console.warn(TAG, 'precache incomplete (continuing anyway)', { failed, total: urls.length });
+}
+
 self.addEventListener('fetch', (event) => {
   const req = event.request;
   if (req.method !== 'GET') return;
@@ -145,52 +201,60 @@ self.addEventListener('fetch', (event) => {
   if (url.origin !== self.location.origin) return;
   event.respondWith((async () => {
     const cache = await caches.open(RUNTIME_CACHE);
+    const cachedCopy = async () => (await cache.match(req)) ?? (await caches.match(req));
 
-    // Network-first (bypassing the HTTP cache) for navigations/HTML and for
-    // every asset WITHOUT a build hash: a stale index.html must never be
-    // paired with new assets (or vice versa). The cache is only the
-    // offline fallback. Hash-verified assets below stay cache-first — their
-    // bytes are proven identical to this build, so they cannot be stale.
+    // Navigations/HTML: network-first, revalidated past the HTTP cache, so a
+    // stale index.html is never paired with new assets. The cache is the
+    // fallback — also when the network answers with an error status.
     const isNav = req.mode === 'navigate' || req.destination === 'document';
-    if (isNav || !BUILD_ASSET_HASHES[scopeRelative(req.url)]) {
+    if (isNav) {
       try {
-        const fresh = await fetch(req, { cache: 'no-cache' });
-        if (fresh.ok && await isCacheable(req, fresh)) {
+        const fresh = await fetchRetry(req, { cache: 'no-cache' });
+        if (await storable(req, fresh)) {
           cache.put(req, fresh.clone()).catch(() => undefined);
+          return fresh;
         }
-        return fresh;
+        return (await cachedCopy()) ?? fresh;
       } catch {
-        const cached = await cache.match(req) ?? await caches.match(req);
-        if (cached) return cached;
-        if (isNav) return (await caches.match('./index.html')) ?? Response.error();
-        return Response.error();
+        return (await cachedCopy()) ?? (await caches.match('./index.html')) ?? Response.error();
       }
     }
 
+    const expected = BUILD_ASSET_HASHES[scopeRelative(req.url)];
     const hit = await cache.match(req);
 
-    // Cache hit:
-    //   • Assets WITH a known BUILD_ASSET_HASH: hash-verify; on mismatch
-    //     evict and fall through to network (poisoned entry recovery).
-    //   • Assets WITHOUT a known hash (qrcode.html, qrcodes.json, *.png,
-    //     anything not in the build manifest): serve cached for snappy UX
-    //     but refresh the cache in the background. Next load sees fresh
-    //     content without the user needing to hard-refresh or wait for a
-    //     new SW activation. Without this, edits to non-precached files
-    //     never reach the browser once cached.
-    if (hit) {
-      const expected = BUILD_ASSET_HASHES[scopeRelative(req.url)];
-      if (!expected) {
+    // Assets WITHOUT a build hash (icons, images, qrcode.*): stale-while-
+    // revalidate. A cached copy is served at once and refreshed in the
+    // background through the normal HTTP cache (an ETag revalidation is a
+    // cheap 304). Used to be network-first with cache:'no-cache': every page
+    // load re-requested every icon, and a 429 replaced a good cached icon.
+    if (!expected) {
+      if (hit) {
         event.waitUntil((async () => {
           try {
             const fresh = await fetch(req);
-            if (fresh.ok && await isCacheable(req, fresh)) {
-              await cache.put(req, fresh.clone());
-            }
+            if (await storable(req, fresh)) await cache.put(req, fresh.clone());
           } catch { /* offline — keep stale */ }
         })());
         return hit;
       }
+      try {
+        const res = await fetchRetry(req);
+        if (await storable(req, res)) {
+          cache.put(req, res.clone()).catch(() => undefined);
+          return res;
+        }
+        if (!res.ok) console.warn(TAG, 'fetch non-OK after retries', { url: req.url, status: res.status });
+        return (await caches.match(req)) ?? res;
+      } catch (e) {
+        console.error(TAG, 'fetch failed', { url: req.url, err: (e as Error)?.message });
+        return (await caches.match(req)) ?? Response.error();
+      }
+    }
+
+    // Assets WITH a build hash: cache-first, hash-verified. On mismatch evict
+    // and fall through to network (poisoned entry recovery).
+    if (hit) {
       try {
         const got = await sha256_12(await hit.clone().arrayBuffer());
         if (got === expected) return hit;
@@ -199,25 +263,21 @@ self.addEventListener('fetch', (event) => {
     }
 
     try {
-      const res = await fetch(req);
+      const res = await fetchRetry(req);
       if (!res.ok) {
         console.warn(TAG, 'fetch non-OK · passing through', { url: req.url, status: res.status });
-        return res;
+        return (await caches.match(req)) ?? res;
       }
       const verified = await verifyAsset(req, res);
-      if (verified.ok && await isCacheable(req, verified)) {
+      if (await storable(req, verified)) {
         cache.put(req, verified.clone()).catch(() => undefined);
       }
       return verified;
     } catch (e) {
       console.error(TAG, 'fetch failed', { url: req.url, err: (e as Error)?.message });
-      // Offline shell fallback — ONLY for top-level navigations, never
-      // for sub-resources. Returning index.html for a script/style
-      // request poisons the page (HTML parsed as JS/CSS, silent fail).
-      if (req.mode === 'navigate' || req.destination === 'document') {
-        return (await caches.match('./index.html')) ?? Response.error();
-      }
-      return Response.error();
+      // Sub-resource: never the index.html shell (HTML parsed as JS/CSS
+      // poisons the page) — only its own cached copy, if any.
+      return (await caches.match(req)) ?? Response.error();
     }
   })());
 });

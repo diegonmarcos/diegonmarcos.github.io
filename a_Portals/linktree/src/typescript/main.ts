@@ -24,6 +24,10 @@ import { initThemeSwitcher } from './modules/themeSwitcher';
 import { initTilt3d } from './modules/tilt3d';
 import { initCanvasBackground } from './modules/canvas-bg';
 import { setupSwAutoReload } from './utils/sw-auto-reload';
+import { installImgRetry } from './utils/img-retry';
+
+// First thing: any icon that fails to load is retried with backoff.
+installImgRetry();
 
 // requestIdleCallback shim for Safari / older WebKit. Falls through to a
 // 100 ms setTimeout — same yield discipline, slightly less efficient.

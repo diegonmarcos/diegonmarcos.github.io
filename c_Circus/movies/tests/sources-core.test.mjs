@@ -142,3 +142,66 @@ test('probe: only sources that have the title; failures reported, not thrown', a
   assert.match(r.find((x) => x.source.id === 'plex').error, /401/)
   assert.equal(seen.length, decl.sources.length)
 })
+
+test('user sources: add / edit / enable / remove, validation, no presets shipped', () => {
+  let r = C.addUserSource([], { name: 'My Jackett', type: 'torznab', url: 'http://nas:9117/api/v2.0/indexers/all/results/torznab/api', apikey: 'k' }, () => 'a')
+  assert.equal(r.error, undefined); assert.equal(r.list[0].id, 'a'); assert.equal(r.list[0].enabled, true)
+  r = C.addUserSource(r.list, { name: 'Feed', type: 'rss', url: 'https://feed.example/rss' }, () => 'b')
+  assert.equal(r.list.length, 2)
+  assert.match(C.addUserSource(r.list, { name: 'x', type: 'template', url: 'https://s.example/?q=' }).error, /\{query\}/)
+  assert.match(C.addUserSource(r.list, { name: 'x', type: 'torznab', url: 'https://j' }).error, /API key/)
+  assert.match(C.addUserSource(r.list, { name: '', type: 'rss', url: 'https://j' }).error, /name/)
+  assert.match(C.addUserSource(r.list, { name: 'x', type: 'ftp', url: 'https://j' }).error, /type/)
+  r = C.updateUserSource(r.list, 'b', { enabled: false, name: 'Feed 2' })
+  assert.deepEqual(r.list.map((s) => [s.id, s.name, s.enabled]), [['a', 'My Jackett', true], ['b', 'Feed 2', false]])
+  assert.match(C.updateUserSource(r.list, 'b', { url: 'nope' }).error, /URL/)
+  assert.match(C.updateUserSource(r.list, 'zz', {}).error, /No such/)
+  r = C.removeUserSource(r.list, 'a'); assert.deepEqual(r.list.map((s) => s.id), ['b'])
+  assert.deepEqual(C.parseUserSources(JSON.stringify(r.list)).map((s) => s.id), ['b'])
+  assert.deepEqual(C.parseUserSources('garbage'), [])
+  assert.equal(raw.user_sources, undefined, 'sources.json ships no user-source presets')
+})
+test('user sources: URL template substitution and Torznab URL', () => {
+  assert.equal(C.userSearchUrl({ type: 'template', url: 'https://s.example/find/{query}?x={query}' }, 'night of the living dead'), 'https://s.example/find/night%20of%20the%20living%20dead?x=night%20of%20the%20living%20dead')
+  assert.equal(C.userSearchUrl({ type: 'torznab', url: 'http://j/api', apikey: 'K&1' }, 'a b'), 'http://j/api?t=search&apikey=K%261&q=a%20b')
+  assert.equal(C.userSearchUrl({ type: 'torznab', url: 'http://j/api?cat=2000', apikey: 'K' }, 'x'), 'http://j/api?cat=2000&t=search&apikey=K&q=x')
+  assert.equal(C.userSearchUrl({ type: 'rss', url: 'https://f/rss' }, 'x'), 'https://f/rss')
+})
+const TORZNAB = `<?xml version="1.0"?><rss version="2.0" xmlns:torznab="http://torznab.com/schemas/2015/feed"><channel>
+<item><title>Night of the Living Dead (1968)</title><link>http://j/dl/1.torrent</link><comments>http://j/details/1</comments>
+<enclosure url="http://j/dl/1.torrent" length="734003200" type="application/x-bittorrent"/>
+<torznab:attr name="seeders" value="12"/><torznab:attr name="magneturl" value="magnet:?xt=urn:btih:abcdefabcdefabcdefabcdefabcdefabcdefabcd&amp;dn=notld"/></item>
+<item><title><![CDATA[Other & Film]]></title><link>http://j/dl/2.torrent</link><torznab:attr name="seeders" value="40"/></item>
+</channel></rss>`
+const RSS = `<rss><channel><item><title>Night of the Living Dead</title><link>magnet:?xt=urn:btih:1111111111111111111111111111111111111111</link></item>
+<item><title>Something Else</title><enclosure url="https://f/x.torrent" type="application/x-bittorrent"/></item></channel></rss>`
+test('user sources: parse Torznab and RSS', () => {
+  const t = C.parseTorrentFeed(TORZNAB)
+  assert.equal(t.length, 2)
+  assert.deepEqual([t[0].title, t[0].seeders, t[0].size, t[0].torrent, t[0].link], ['Night of the Living Dead (1968)', 12, 734003200, 'http://j/dl/1.torrent', 'http://j/dl/1.torrent'])
+  assert.equal(t[0].magnet, 'magnet:?xt=urn:btih:abcdefabcdefabcdefabcdefabcdefabcdefabcd&dn=notld')
+  assert.equal(t[1].title, 'Other & Film')
+  const r = C.parseTorrentFeed(RSS)
+  assert.equal(r[0].magnet, 'magnet:?xt=urn:btih:1111111111111111111111111111111111111111')
+  assert.equal(r[1].torrent, 'https://f/x.torrent')
+  assert.deepEqual(C.parseTorrentFeed('not xml'), [])
+})
+test('user sources: parallel search, enabled only, badges, RSS filtered, errors kept', async () => {
+  const list = [
+    { id: 'a', name: 'Jack', type: 'torznab', url: 'http://j/api', apikey: 'K', enabled: true },
+    { id: 'b', name: 'Feed', type: 'rss', url: 'https://f/rss', enabled: true },
+    { id: 'c', name: 'Off', type: 'rss', url: 'https://off/rss', enabled: false },
+    { id: 'd', name: 'Site', type: 'template', url: 'https://s/?q={query}', enabled: true },
+    { id: 'e', name: 'Down', type: 'rss', url: 'https://down/rss', enabled: true }
+  ]
+  const asked = []
+  const getText = async (u) => { asked.push(u); if (u.startsWith('https://down')) throw new Error('HTTP 502'); return u.startsWith('http://j') ? TORZNAB : RSS }
+  const { results, errors } = await C.searchUserSources(list, 'night living', getText)
+  assert.ok(!asked.some((u) => u.includes('off')), 'disabled source not queried')
+  assert.ok(results.every((r) => r.user && r.badge.startsWith('user source · ')))
+  assert.equal(results.filter((r) => r.badge.endsWith('Feed')).length, 1, 'RSS filtered by the query')
+  assert.equal(results.find((r) => r.open).open, 'https://s/?q=night%20living')
+  assert.equal(results[0].seeders, 40, 'merged, most seeders first')
+  assert.deepEqual(errors, [{ name: 'Down', error: 'HTTP 502' }])
+  assert.deepEqual((await C.searchUserSources(list, '  ', getText)).results, [])
+})

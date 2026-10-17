@@ -246,6 +246,40 @@ function playPasted() {
   choose({ source: { id: 'pasted', name: 'Your torrent', kind: 'torrent' }, ok: true, torrent: p.uri })
 }
 
+// ── user-defined torrent sources (this browser only; none shipped) ─────────
+const ULS = 'movies_user_sources_v1'
+const userSources = ref<any[]>(Core.parseUserSources((() => { try { return localStorage.getItem(ULS) || '[]' } catch { return '[]' } })()))
+const newSource = reactive({ name: '', type: 'torznab', url: '', apikey: '' })
+const userMsg = ref('')
+function storeUser(r: { list: any[]; error?: string }) {
+  if (r.error) { userMsg.value = r.error; return false }
+  userSources.value = r.list; userMsg.value = ''
+  try { localStorage.setItem(ULS, JSON.stringify(r.list)) } catch { /* storage blocked */ }
+  return true
+}
+function addSource() { if (storeUser(Core.addUserSource(userSources.value, { ...newSource }))) Object.assign(newSource, { name: '', url: '', apikey: '' }) }
+function toggleSource(id: string, enabled: boolean) { storeUser(Core.updateUserSource(userSources.value, id, { enabled })) }
+function renameSource(id: string, name: string) { storeUser(Core.updateUserSource(userSources.value, id, { name })) }
+function deleteSource(id: string) { storeUser(Core.removeUserSource(userSources.value, id)) }
+const userQuery = ref('')
+const userResults = ref<any[]>([])
+const userErrors = ref<any[]>([])
+const userSearching = ref(false)
+async function searchUser() {
+  userSearching.value = true
+  const getText = async (u: string) => { const r = await fetch(u); if (!r.ok) throw new Error('HTTP ' + r.status); return r.text() }
+  try {
+    const out = await Core.searchUserSources(userSources.value, userQuery.value || ids.title, getText)
+    userResults.value = out.results; userErrors.value = out.errors
+  } finally { userSearching.value = false }
+}
+function playUserResult(r: any) {
+  if (r.open) { window.open(r.open, '_blank', 'noopener'); return }
+  const uri = r.magnet || r.torrent
+  if (!uri) { error.value = 'That result has no magnet or .torrent link.'; return }
+  choose({ source: { id: 'user', name: r.title, kind: 'torrent' }, ok: true, torrent: uri, badge: r.badge })
+}
+
 function onPickFiles(e: Event) {
   deviceFiles.value = Array.from((e.target as HTMLInputElement).files || [])
   probe()
@@ -296,6 +330,15 @@ onBeforeUnmount(cleanup)
           <form class="paste" @submit.prevent="playPasted">
             <input v-model="torrentInput" placeholder="magnet:… or https://….torrent">
             <button type="submit">▶</button>
+          </form>
+          <form v-if="userSources.length" class="usearch" @submit.prevent="searchUser">
+            <div class="picker-head">Your sources <span class="muted">{{ userSources.filter((u) => u.enabled).length }} on</span></div>
+            <div class="paste"><input v-model="userQuery" :placeholder="'Search: ' + ids.title"><button type="submit">⌕</button></div>
+            <span v-if="userSearching" class="muted">searching…</span>
+            <button v-for="(r, i) in userResults" :key="i" type="button" class="src" @click="playUserResult(r)">
+              <span>🧲</span><span class="src-name">{{ r.title }}<small class="badge">{{ r.badge }}<template v-if="r.seeders != null"> · {{ r.seeders }} seeders</template></small></span>
+            </button>
+            <div v-for="e in userErrors" :key="e.name" class="failed">{{ e.name }}: {{ e.error }}</div>
           </form>
           <label class="buffer">Buffer
             <select v-model="settings.buffer">
@@ -358,6 +401,20 @@ onBeforeUnmount(cleanup)
         </template>
         <label>Drive media folder URL<input v-model="settings.drive.url" placeholder="https://…/media (serves index.json)"></label>
         <button type="submit" class="update-btn">Save & re-check</button>
+        <h4>Your torrent sources</h4>
+        <p class="muted">Added by you, kept in this browser only. Nothing is preset. Only use sources you have the right to download from.</p>
+        <div v-for="u in userSources" :key="u.id" class="usrc">
+          <input type="checkbox" :checked="u.enabled" :title="u.enabled ? 'Disable' : 'Enable'" @change="toggleSource(u.id, ($event.target as HTMLInputElement).checked)">
+          <input :value="u.name" @change="renameSource(u.id, ($event.target as HTMLInputElement).value)">
+          <small class="muted">{{ u.type }}</small>
+          <button type="button" class="icon-btn" title="Delete" @click="deleteSource(u.id)">🗑</button>
+        </div>
+        <label>Name<input v-model="newSource.name"></label>
+        <label>Type<select v-model="newSource.type"><option value="torznab">Torznab / Jackett</option><option value="rss">RSS feed</option><option value="template">Search URL with {query}</option></select></label>
+        <label>URL<input v-model="newSource.url" placeholder="https://…"></label>
+        <label v-if="newSource.type === 'torznab'">API key<input v-model="newSource.apikey" type="password" autocomplete="off"></label>
+        <button type="button" class="update-btn" @click="addSource">Add source</button>
+        <div v-if="userMsg" class="failed">{{ userMsg }}</div>
       </form>
     </div>
   </div>
@@ -409,6 +466,9 @@ input, select { padding: 7px; background: #333; border: 1px solid #444; border-r
   img { width: 56px; height: 56px; border-radius: 12px; }
   &:hover { color: #fff; }
 }
+.usearch { display: flex; flex-direction: column; gap: 4px; }
+.usrc { display: flex; gap: 6px; align-items: center; input:not([type='checkbox']) { flex: 1; } }
+.settings h4 { margin: 8px 0 0; }
 .settings {
   position: absolute; top: 58px; right: 12px; width: min(420px, 92%); max-height: 80%; overflow-y: auto; background: #202020; border: 1px solid #444; border-radius: 10px; padding: 14px; display: flex; flex-direction: column; gap: 8px; z-index: 5;
   label { display: flex; flex-direction: column; gap: 3px; font-size: 0.85em; color: #aaa; text-transform: capitalize; }

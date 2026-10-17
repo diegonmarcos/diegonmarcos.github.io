@@ -161,7 +161,8 @@
       "is_public_ingress": false,
       "gha": {
         "ssh_secret": "OCI_SSH_KEY",
-        "host_literal": true
+        "host_literal": true,
+        "min_free_gb": 12
       },
       "instance_id": "ocid1.instance.oc1.eu-marseille-1.anwxeljruadvczacj7dfxl7uifar574je7fzlvtdjp4ghljdwuwdemsdbiva",
       "services": [
@@ -225,7 +226,7 @@
         "send",
         "vaultwarden"
       ],
-      "container_count": 67
+      "container_count": 69
     },
     "gcp-E2-f_0": {
       "ip": "35.226.147.64",
@@ -2309,7 +2310,43 @@
         "keys": [
           "vault_id_rsa",
           "vault_id_rsa.pub"
+        ],
+        "_extra_hosts_doc": "Ssh aliases the MCP dials (SUPERAPP_HOSTS in src/compose.nix). The phone's sshd is provided by OUR terminals (cloud-u-android ac_cloud-nix-on-droid / ac_cloud-termux; ports and users as declared in ac_cloud-myterminal/data/terminal-targets.json: nix 8024 user nix-on-droid, termux 8023 user termux). Address = the phone's wg0 mesh client `termux` (config.json native.wireguard.clients), resolved by the derive into /opt/ssh-keys/cloud-superapp-mcp/config. MESH ONLY: the phone has no public ssh route by design (sshd is reached over WireGuard; ide-endpoints.json: public surface is 443+51820+25), so there is no phone-pub. The key offered is vault_id_rsa (keys above); it is authorised on the phone by cloud-u-linux da__my-konsole/termux/authorized_keys. test-superapp-hosts.sh fails if an alias in SUPERAPP_HOSTS has no entry here.",
+        "extra_hosts": [
+          {
+            "host": "phone",
+            "wg_client": "termux",
+            "family": "v4",
+            "user": "nix-on-droid",
+            "port": 8024
+          },
+          {
+            "host": "phone-v6",
+            "wg_client": "termux",
+            "family": "v6",
+            "user": "nix-on-droid",
+            "port": 8024
+          },
+          {
+            "host": "phone-termux",
+            "wg_client": "termux",
+            "family": "v4",
+            "user": "termux",
+            "port": 8023
+          },
+          {
+            "host": "phone-termux-v6",
+            "wg_client": "termux",
+            "family": "v6",
+            "user": "termux",
+            "port": 8023
+          }
         ]
+      },
+      "tests": {
+        "superapp-hosts-declared": {
+          "cmd": "bash test/test-superapp-hosts.sh"
+        }
       },
       "api": {
         "has_api": false,
@@ -3506,28 +3543,12 @@
         },
         "postlite-ntfy": {
           "container_name": "postlite-ntfy"
-        },
-        "sqlite-npm": {
-          "container_name": "sqlite-npm"
-        },
-        "sqlite-vaultwarden": {
-          "container_name": "sqlite-vaultwarden"
-        },
-        "sqlite-ntfy": {
-          "container_name": "sqlite-ntfy"
-        },
-        "sqlite-authelia": {
-          "container_name": "sqlite-authelia"
         }
       },
       "container_names": [
         "postlite-npm",
         "postlite-vaultwarden",
-        "postlite-ntfy",
-        "sqlite-npm",
-        "sqlite-vaultwarden",
-        "sqlite-ntfy",
-        "sqlite-authelia"
+        "postlite-ntfy"
       ],
       "all_ports": [],
       "all_dns": [],
@@ -3536,11 +3557,7 @@
           "postlite-authelia",
           "postlite-npm",
           "postlite-ntfy",
-          "postlite-vaultwarden",
-          "sqlite-authelia",
-          "sqlite-npm",
-          "sqlite-ntfy",
-          "sqlite-vaultwarden"
+          "postlite-vaultwarden"
         ],
         "ports": [],
         "networks": []
@@ -6066,6 +6083,10 @@
       "tests": {
         "authelia-rd-keeps-prefix": {
           "cmd": "bash test/test-authelia-rd-keeps-prefix.sh",
+          "cwd": "src"
+        },
+        "no-site-respond-before-handle": {
+          "cmd": "bash test/test-no-site-respond-before-handle.sh",
           "cwd": "src"
         }
       },
@@ -9652,8 +9673,8 @@
       "category": "app",
       "vm": "oci-A1-f_0",
       "folder": "user-prod_cloud-notes-sync",
-      "description": "DISABLED pending GHCR package visibility (owner action: make the upstream ghcr package public, then enabled:true). Cloud Notes sync server: Yjs documents (Hocuspocus) and the HTTP delta API at notes-sync.diegonmarcos.com behind the edge gate (fleet Bearer or Authelia). Built by cloud-u-android ship-cloud-notes.yml (ghcr.io/diegonmarcos/cloud-notes-sync).",
-      "enabled": false,
+      "description": "Cloud Notes sync server: Yjs documents (Hocuspocus) and the HTTP delta API at notes-sync.diegonmarcos.com behind the edge gate (fleet Bearer or Authelia). Built by cloud-u-android ship-cloud-notes.yml (ghcr.io/diegonmarcos/cloud-notes-sync).",
+      "enabled": true,
       "domain": "notes-sync.diegonmarcos.com",
       "flake": "user-prod_cloud-notes-sync",
       "port": 8098,
@@ -9739,8 +9760,8 @@
       "category": "app",
       "vm": "oci-A1-f_0",
       "folder": "user-prod_cloud-notes-web",
-      "description": "DISABLED pending GHCR package visibility (owner action: make the upstream ghcr package public, then enabled:true). Cloud Notes web: the AFFiNE-based notes app (Miro + Notion + Obsidian) served as static files at notes.diegonmarcos.com behind the edge gate (Authelia 2FA or fleet Bearer). Built by cloud-u-android ship-cloud-notes.yml (ghcr.io/diegonmarcos/cloud-notes-web).",
-      "enabled": false,
+      "description": "Cloud Notes web: the AFFiNE-based notes app (Miro + Notion + Obsidian) served as static files at notes.diegonmarcos.com behind the edge gate (Authelia 2FA or fleet Bearer). Built by cloud-u-android ship-cloud-notes.yml (ghcr.io/diegonmarcos/cloud-notes-web).",
+      "enabled": true,
       "domain": "notes.diegonmarcos.com",
       "flake": "user-prod_cloud-notes-web",
       "port": 8097,
@@ -13993,11 +14014,10 @@
           "host_literal": true
         },
         "protection": {
-          "_doc": "Per-VM overrides for the protection stack; merged over native.protection defaults (config.json). THE FLEET'S ONLY PUBLIC EDGE — tier-1 is the edge data path itself: caddy-public terminates TLS, unbound-dns64 resolves for it, cf-worker-http-to-wg-public-bridge carries inbound off-mesh traffic, and c3-public-api plus git-proxy-api are the public APIs served off-mesh from this VM. Analytics (umami, umami-db) is the sheddable demand. Empty tier1 here made shed_non_tier1() return 1 and escalate straight to `systemctl stop docker` — that amputated the public edge twice in 24h (2026-09-05 ~70min, 2026-09-06 seven hours).",
+          "_doc": "Per-VM overrides for the protection stack; merged over native.protection defaults (config.json). THE FLEET'S ONLY PUBLIC EDGE — tier-1 is the edge data path itself: caddy-public terminates TLS, unbound-dns64 resolves for it, and c3-public-api (which took over inbound off-mesh traffic when cf-worker-http-to-wg-public-bridge was retired 2026-06-23; its container was removed 2026-10-17) plus git-proxy-api are the public APIs served off-mesh from this VM. Analytics (umami, umami-db) is the sheddable demand. Empty tier1 here made shed_non_tier1() return 1 and escalate straight to `systemctl stop docker` — that amputated the public edge twice in 24h (2026-09-05 ~70min, 2026-09-06 seven hours).",
           "tier1_services": [
             "caddy-public",
             "unbound-dns64",
-            "cf-worker-http-to-wg-public-bridge",
             "c3-public-api",
             "git-proxy-api"
           ],
@@ -14091,7 +14111,8 @@
         "method": "key",
         "gha": {
           "ssh_secret": "OCI_SSH_KEY",
-          "host_literal": true
+          "host_literal": true,
+          "min_free_gb": 12
         },
         "protection": {
           "_doc": "Per-VM overrides for the protection stack; merged over native.protection defaults (config.json). 62 containers on one box, and the load-shedder is the DESIGNED enforcement mechanism for agent-runner concurrency (agents are sheddable demand: culled under pressure, resumed later), so graduated shedding must actually work here — an empty tier1_services made shed_non_tier1() return 1 and escalate to a full `systemctl stop docker`. Tier-1 is deliberately TIGHT: only what must survive for the box to stay observable and recoverable while everything else is culled. ntfy is first because it is the fleet's alert bus AND the load-shedder's own primary notify endpoint (10.0.0.6:8090) — shedding it makes every VM's shedder go silent. NOT tier-1 by design: my-ai-api and the agent-runner containers. unshed_delay_secs is declared here rather than inherited from native.protection: the un-shed path restarts the persisted shed list one container at a time, and with ~58 sheddable containers this box has by far the fleet's longest restore queue — that pause is the only thing keeping the restore from becoming the next pressure event, so on this VM it must be a visible, tunable number rather than a silent cross-VM default.",
@@ -14113,7 +14134,8 @@
               "vault_id_rsa.pub",
               "google_compute_engine",
               "google_compute_engine.pub"
-            ]
+            ],
+            "extra_hosts": []
           },
           {
             "name": "cloud-infra-mcp",
@@ -14124,7 +14146,8 @@
               "vault_id_rsa.pub",
               "google_compute_engine",
               "google_compute_engine.pub"
-            ]
+            ],
+            "extra_hosts": []
           },
           {
             "name": "cloud-mail-mcp",
@@ -14133,7 +14156,8 @@
             "keys": [
               "vault_id_rsa",
               "vault_id_rsa.pub"
-            ]
+            ],
+            "extra_hosts": []
           },
           {
             "name": "cloud-superapp-mcp",
@@ -14142,6 +14166,36 @@
             "keys": [
               "vault_id_rsa",
               "vault_id_rsa.pub"
+            ],
+            "extra_hosts": [
+              {
+                "host": "phone",
+                "hostname": "10.0.0.9",
+                "user": "nix-on-droid",
+                "port": 8024,
+                "identity_file": "~/.ssh/vault_id_rsa"
+              },
+              {
+                "host": "phone-v6",
+                "hostname": "fd0c:1d00::9",
+                "user": "nix-on-droid",
+                "port": 8024,
+                "identity_file": "~/.ssh/vault_id_rsa"
+              },
+              {
+                "host": "phone-termux",
+                "hostname": "10.0.0.9",
+                "user": "termux",
+                "port": 8023,
+                "identity_file": "~/.ssh/vault_id_rsa"
+              },
+              {
+                "host": "phone-termux-v6",
+                "hostname": "fd0c:1d00::9",
+                "user": "termux",
+                "port": 8023,
+                "identity_file": "~/.ssh/vault_id_rsa"
+              }
             ]
           },
           {
@@ -14153,7 +14207,8 @@
               "vault_id_rsa.pub",
               "google_compute_engine",
               "google_compute_engine.pub"
-            ]
+            ],
+            "extra_hosts": []
           }
         ]
       },
@@ -14410,7 +14465,8 @@
       "oci-apps": {
         "ssh_secret": "OCI_SSH_KEY",
         "user": "ubuntu",
-        "host": "82.70.229.129"
+        "host": "82.70.229.129",
+        "min_free_gb": 12
       },
       "gcp-proxy": {
         "ssh_secret": "GCP_PROXY_SSH_KEY",

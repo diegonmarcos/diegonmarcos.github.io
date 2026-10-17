@@ -642,6 +642,7 @@
       "port": 8015,
       "build_steps": [
         "vite",
+        "npm",
         "copy"
       ],
       "dep_count": 10,

@@ -62,7 +62,7 @@ try {
   watch(page, 'storm');
   await page.goto(URL_, { waitUntil: 'networkidle', timeout: 60000 });
   for (let i = 0; i < 10; i++) await page.reload({ waitUntil: 'domcontentloaded' });
-  await page.reload({ waitUntil: 'networkidle' });
+  await page.reload({ waitUntil: 'load', timeout: 60000 });
   const n = await brokenImgs(page, 'storm');
   console.log(`reload storm: ${n} <img> after 11 reloads`);
   await ctx.close();

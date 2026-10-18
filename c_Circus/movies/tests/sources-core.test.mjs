@@ -205,3 +205,27 @@ test('user sources: parallel search, enabled only, badges, RSS filtered, errors 
   assert.deepEqual(errors, [{ name: 'Down', error: 'HTTP 502' }])
   assert.deepEqual((await C.searchUserSources(list, '  ', getText)).results, [])
 })
+
+test('movie config: defaults, coercion, legacy offline buffer', () => {
+  const c = C.normalizeMovieConfig('{"region":"pt","buffer":"offline","torrent":{"max_conns":"9999","down_kbps":"-3","sequential":"false"},"jellyfin":{"url":" https://j "},"bogus":1}', 'en-US')
+  assert.equal(c.region, 'PT'); assert.equal(c.buffer, '2m'); assert.equal(c.offline, true)
+  assert.equal(c.torrent.max_conns, 500); assert.equal(c.torrent.down_kbps, 0); assert.equal(c.torrent.sequential, false)
+  assert.equal(c.jellyfin.url, 'https://j'); assert.equal(c.bogus, undefined)
+  assert.equal(C.normalizeMovieConfig('not json', 'fr-FR').region, 'FR')
+  assert.equal(C.effectiveBuffer(c), 'offline')
+  assert.ok(C.MOVIE_CONFIG.every((s) => s.fields.every((f) => C.getPath(C.defaultMovieConfig(), f.key) !== undefined)))
+})
+test('movie config: enable/disable sources, torrent options, seeding', () => {
+  const decl = C.parseSources(raw)
+  let c = C.defaultMovieConfig('en-US')
+  c = C.setSourceEnabled(c, 'archive-torrent', false)
+  assert.ok(!C.enabledSources(decl, c).sources.some((s) => s.id === 'archive-torrent'))
+  c = C.setSourceEnabled(c, 'archive-torrent', true)
+  assert.equal(C.enabledSources(decl, c).sources.length, decl.sources.length)
+  c.torrent.down_kbps = 100
+  assert.deepEqual(C.torrentClientOptions(c), { maxConns: 55, downloadLimit: 102400, uploadLimit: -1 })
+  assert.equal(C.torrentAddOptions(c).strategy, 'sequential')
+  assert.equal(C.seedingDone(c, 0.5, 10), false); assert.equal(C.seedingDone(c, 1, 0), true)
+  c.torrent.seed_minutes = 1; assert.equal(C.seedingDone(c, 0, 60), true)
+  c.torrent.seed_ratio = 0; assert.equal(C.seedingDone(c, 0, 0), true)
+})

@@ -6,6 +6,8 @@
 import { ref, reactive, computed, onMounted, onBeforeUnmount, watch, nextTick } from 'vue'
 import * as Core from '@/lib/sources-core.mjs'
 import sourcesJson from '@/data/sources.json'
+import MovieConfig from './MovieConfig.vue'
+import { loadMovieConfig, saveMovieConfig, USER_SOURCES_KEY } from '@/composables/useMovieConfig'
 
 const props = defineProps<{
   imdbId: string
@@ -17,38 +19,19 @@ const props = defineProps<{
 const emit = defineEmits<{ close: [] }>()
 
 const decl = Core.parseSources(sourcesJson)
-const LS = 'movies_sources_v1'
-const BUFFER_MODES: any[] = Core.BUFFER_MODES
+const BUFFER_MODES: any[] = Core.streamBufferModes()
 
-// ── settings (localStorage only; never committed) ──────────────────────────
-function loadSettings() {
-  let s: any = {}
-  try { s = JSON.parse(localStorage.getItem(LS) || '{}') } catch { s = {} }
-  try { s.tmdb_key = s.tmdb_key || localStorage.getItem('tmdb_api_key') || '' } catch { /* storage blocked */ }
-  return {
-    tmdb_key: (s.tmdb_key || '') as string,
-    region: (s.region || (navigator.language.split('-')[1] || 'US')).toUpperCase() as string,
-    buffer: (s.buffer || '2m') as string,
-    jellyfin: { url: '', token: '', ...(s.jellyfin || {}) },
-    emby: { url: '', token: '', ...(s.emby || {}) },
-    plex: { url: '', token: '', ...(s.plex || {}) },
-    drive: { url: '', ...(s.drive || {}) }
-  }
-}
-const settings = reactive(loadSettings())
-const servers = ['jellyfin', 'emby', 'plex'] as const
+// ── settings: Movies config (MovieConfig.vue, shared schema), this browser only ──
+const settings = reactive<any>(loadMovieConfig())
 const showSettings = ref(false)
-function persist() {
-  try {
-    localStorage.setItem(LS, JSON.stringify(settings))
-    if (settings.tmdb_key) localStorage.setItem('tmdb_api_key', settings.tmdb_key)
-  } catch { /* storage blocked: settings last for this visit only */ }
-}
-function saveSettings() {
-  persist()
+function persist() { saveMovieConfig(settings) }
+function onConfigSaved(cfg: any) {
+  Object.assign(settings, cfg)
+  userSources.value = Core.parseUserSources((() => { try { return localStorage.getItem(ULS) || '[]' } catch { return '[]' } })())
   showSettings.value = false
   probe()
 }
+const enabledDecl = computed(() => Core.enabledSources(decl, settings))
 
 // ── probing ────────────────────────────────────────────────────────────────
 type Result = { source: any; ok: boolean; error?: string; [k: string]: any }
@@ -58,7 +41,7 @@ const deviceFiles = ref<File[]>([])
 const ids = reactive({ imdb: props.imdbId, tmdb: props.tmdbId as number | undefined, title: props.title, year: props.year || '' })
 const available = computed(() => results.value.filter((r) => r.ok))
 const failed = computed(() => results.value.filter((r) => r.error))
-const pending = computed(() => decl.sources.length - results.value.length)
+const pending = computed(() => enabledDecl.value.sources.length - results.value.length)
 
 async function get(url: string, headers?: Record<string, string>) {
   const r = await fetch(url, { headers })
@@ -82,7 +65,7 @@ async function probe() {
   }
   const title = { imdbId: ids.imdb, tmdbId: ids.tmdb, type: props.movieType, title: ids.title, year: ids.year }
   const cfg = { ...settings, deviceFiles: deviceFiles.value }
-  await Core.probeAll(decl, title, cfg, get, (r: Result) => { if (run === probeRun) results.value = [...results.value, r] })
+  await Core.probeAll(enabledDecl.value, title, cfg, get, (r: Result) => { if (run === probeRun) results.value = [...results.value, r] })
   if (run === probeRun) {
     probing.value = false
     if (!active.value && available.value.length) choose(available.value.find((r) => r.play || r.file || r.embed) || available.value[0])
@@ -100,7 +83,7 @@ const downloadPct = ref(-1)
 const torrentStatus = ref('')
 let objectUrl = ''
 let torrentClient: any = null
-const policy = computed(() => Core.bufferPolicy(settings.buffer))
+const policy = computed(() => Core.bufferPolicy(Core.effectiveBuffer(settings)))
 
 function cleanup() {
   if (objectUrl) { URL.revokeObjectURL(objectUrl); objectUrl = '' }
@@ -210,10 +193,10 @@ async function playTorrent(uri: string) {
   if (parsed.error) { error.value = parsed.error; return }
   try {
     const WT = await loadWebTorrent()
-    torrentClient = new WT()
+    torrentClient = new WT(Core.torrentClientOptions(settings))
     torrentStatus.value = 'Connecting to peers…'
     torrentClient.on('error', (e: any) => { error.value = 'Torrent error: ' + (e.message || e) })
-    torrentClient.add(parsed.uri, (t: any) => {
+    torrentClient.add(parsed.uri, Core.torrentAddOptions(settings), (t: any) => {
       const f = Core.pickTorrentVideo(t.files)
       if (!f) { error.value = 'This torrent has no browser-playable video (MP4/WebM).'; t.destroy(); return }
       t.files.forEach((x: any) => { if (x !== f) x.deselect() })
@@ -234,7 +217,15 @@ async function playTorrent(uri: string) {
         if (!torrentClient) return
         torrentStatus.value = Math.round(t.progress * 100) + '% · ' + t.numPeers + ' peers · ' + Math.round(t.downloadSpeed / 1024) + ' KB/s'
         downloadPct.value = Math.round(t.progress * 100)
-        if (t.progress < 1) setTimeout(tick, 1000)
+        if (t.progress < 1) { setTimeout(tick, 1000); return }
+        // Done: seed until the configured ratio / time, then stop.
+        const t0 = Date.now()
+        const seed = () => {
+          if (!torrentClient) return
+          if (Core.seedingDone(settings, t.ratio || 0, (Date.now() - t0) / 1000)) { try { t.pause && t.pause(); t.wires && t.wires.forEach((w: any) => w.destroy()) } catch { /* gone */ } return }
+          setTimeout(seed, 5000)
+        }
+        seed()
       }
       tick()
     })
@@ -247,20 +238,8 @@ function playPasted() {
 }
 
 // ── user-defined torrent sources (this browser only; none shipped) ─────────
-const ULS = 'movies_user_sources_v1'
+const ULS = USER_SOURCES_KEY
 const userSources = ref<any[]>(Core.parseUserSources((() => { try { return localStorage.getItem(ULS) || '[]' } catch { return '[]' } })()))
-const newSource = reactive({ name: '', type: 'torznab', url: '', apikey: '' })
-const userMsg = ref('')
-function storeUser(r: { list: any[]; error?: string }) {
-  if (r.error) { userMsg.value = r.error; return false }
-  userSources.value = r.list; userMsg.value = ''
-  try { localStorage.setItem(ULS, JSON.stringify(r.list)) } catch { /* storage blocked */ }
-  return true
-}
-function addSource() { if (storeUser(Core.addUserSource(userSources.value, { ...newSource }))) Object.assign(newSource, { name: '', url: '', apikey: '' }) }
-function toggleSource(id: string, enabled: boolean) { storeUser(Core.updateUserSource(userSources.value, id, { enabled })) }
-function renameSource(id: string, name: string) { storeUser(Core.updateUserSource(userSources.value, id, { name })) }
-function deleteSource(id: string) { storeUser(Core.removeUserSource(userSources.value, id)) }
 const userQuery = ref('')
 const userResults = ref<any[]>([])
 const userErrors = ref<any[]>([])
@@ -297,7 +276,7 @@ onBeforeUnmount(cleanup)
       <div class="window-header">
         <h2>{{ ids.title }}<span v-if="ids.year" class="year"> · {{ ids.year }}</span></h2>
         <div class="header-buttons">
-          <button class="icon-btn" title="Source settings" @click="showSettings = !showSettings">⚙</button>
+          <button class="icon-btn" title="Movies config" @click="showSettings = !showSettings">⚙</button>
           <button class="icon-btn" title="Close" @click="emit('close')">✕</button>
         </div>
       </div>
@@ -391,31 +370,7 @@ onBeforeUnmount(cleanup)
         </section>
       </div>
 
-      <form v-if="showSettings" class="settings" @submit.prevent="saveSettings">
-        <p class="muted">Stored only in this browser. Nothing is sent anywhere except the servers you enter.</p>
-        <label>TMDB API key<input v-model="settings.tmdb_key" type="password" autocomplete="off"></label>
-        <label>Region<input v-model="settings.region" maxlength="2"></label>
-        <template v-for="k in servers" :key="k">
-          <label>{{ k }} URL<input v-model="settings[k].url" placeholder="https://media.example"></label>
-          <label>{{ k }} token<input v-model="settings[k].token" type="password" autocomplete="off"></label>
-        </template>
-        <label>Drive media folder URL<input v-model="settings.drive.url" placeholder="https://…/media (serves index.json)"></label>
-        <button type="submit" class="update-btn">Save & re-check</button>
-        <h4>Your torrent sources</h4>
-        <p class="muted">Added by you, kept in this browser only. Nothing is preset. Only use sources you have the right to download from.</p>
-        <div v-for="u in userSources" :key="u.id" class="usrc">
-          <input type="checkbox" :checked="u.enabled" :title="u.enabled ? 'Disable' : 'Enable'" @change="toggleSource(u.id, ($event.target as HTMLInputElement).checked)">
-          <input :value="u.name" @change="renameSource(u.id, ($event.target as HTMLInputElement).value)">
-          <small class="muted">{{ u.type }}</small>
-          <button type="button" class="icon-btn" title="Delete" @click="deleteSource(u.id)">🗑</button>
-        </div>
-        <label>Name<input v-model="newSource.name"></label>
-        <label>Type<select v-model="newSource.type"><option value="torznab">Torznab / Jackett</option><option value="rss">RSS feed</option><option value="template">Search URL with {query}</option></select></label>
-        <label>URL<input v-model="newSource.url" placeholder="https://…"></label>
-        <label v-if="newSource.type === 'torznab'">API key<input v-model="newSource.apikey" type="password" autocomplete="off"></label>
-        <button type="button" class="update-btn" @click="addSource">Add source</button>
-        <div v-if="userMsg" class="failed">{{ userMsg }}</div>
-      </form>
+      <MovieConfig v-if="showSettings" @saved="onConfigSaved" @close="showSettings = false" />
     </div>
   </div>
 </template>

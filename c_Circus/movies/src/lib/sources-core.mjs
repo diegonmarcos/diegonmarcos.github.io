@@ -379,3 +379,90 @@ export async function searchUserSources(list, query, getText) {
   results.sort((a, b) => (b.seeders || 0) - (a.seeders || 0))
   return { results, errors }
 }
+
+// ── movie configuration: ONE schema, two settings UIs ──────────────────────
+// My Movies' MovieConfig.vue and cloud-media-center's Configs → Movies page both
+// draw their form from MOVIE_CONFIG, so the two never diverge. Values live in
+// the user's own storage (browser / app webview) only; nothing is committed.
+// A field: { key: 'a.b' path, label, type: text|secret|number|bool|select|region, ... }.
+export const MOVIE_CONFIG = [
+  { id: 'sources', label: 'Sources', fields: [
+    { key: 'tmdb_key', label: 'TMDB API key', type: 'secret' },
+    { key: 'region', label: 'Where-to-watch region', type: 'region' },
+    { key: 'jellyfin.url', label: 'Jellyfin URL', type: 'text', placeholder: 'https://media.example' },
+    { key: 'jellyfin.token', label: 'Jellyfin token', type: 'secret' },
+    { key: 'emby.url', label: 'Emby URL', type: 'text', placeholder: 'https://media.example' },
+    { key: 'emby.token', label: 'Emby token', type: 'secret' },
+    { key: 'plex.url', label: 'Plex URL', type: 'text', placeholder: 'https://media.example' },
+    { key: 'plex.token', label: 'Plex token', type: 'secret' },
+    { key: 'drive.url', label: 'Drive / local media folder URL (serves index.json)', type: 'text', placeholder: 'https://…/media' }
+  ] },
+  { id: 'playback', label: 'Playback', fields: [
+    { key: 'buffer', label: 'Buffer ahead', type: 'select', options: 'buffer' },
+    { key: 'offline', label: 'Offline: download fully, then play', type: 'bool' }
+  ] },
+  { id: 'torrent', label: 'Torrents', fields: [
+    { key: 'torrent.folder', label: 'Download folder', type: 'text', placeholder: 'Movies' },
+    { key: 'torrent.max_conns', label: 'Max connections', type: 'number', min: 1, max: 500 },
+    { key: 'torrent.down_kbps', label: 'Download limit (KB/s, 0 = none)', type: 'number', min: 0 },
+    { key: 'torrent.up_kbps', label: 'Upload limit (KB/s, 0 = none)', type: 'number', min: 0 },
+    { key: 'torrent.seed_ratio', label: 'Stop seeding at ratio (0 = never seed)', type: 'number', min: 0, step: 0.1 },
+    { key: 'torrent.seed_minutes', label: 'Stop seeding after (minutes, 0 = no limit)', type: 'number', min: 0 },
+    { key: 'torrent.sequential', label: 'Sequential (stream) mode', type: 'bool' }
+  ] }
+]
+export function defaultMovieConfig(lang) {
+  return {
+    tmdb_key: '', region: (String(lang || 'en-US').split('-')[1] || 'US').toUpperCase(), buffer: '2m', offline: false,
+    jellyfin: { url: '', token: '' }, emby: { url: '', token: '' }, plex: { url: '', token: '' }, drive: { url: '' },
+    disabled: [],
+    torrent: { folder: 'Movies', max_conns: 55, down_kbps: 0, up_kbps: 0, seed_ratio: 1, seed_minutes: 0, sequential: true }
+  }
+}
+export function getPath(o, key) { return String(key).split('.').reduce((a, k) => (a == null ? a : a[k]), o) }
+export function setPath(o, key, v) { const ks = String(key).split('.'); let c = o; while (ks.length > 1) { const k = ks.shift(); if (!c[k] || typeof c[k] !== 'object') c[k] = {}; c = c[k] } c[ks[0]] = v; return o }
+// Saved JSON (or object) -> a complete config; unknown keys dropped, types coerced.
+export function normalizeMovieConfig(raw, lang) {
+  let s = raw
+  if (typeof s === 'string') { try { s = JSON.parse(s || '{}') } catch { s = {} } }
+  s = s && typeof s === 'object' ? s : {}
+  const c = defaultMovieConfig(lang)
+  for (const sec of MOVIE_CONFIG) for (const f of sec.fields) {
+    const v = getPath(s, f.key)
+    if (v == null || v === '') continue
+    if (f.type === 'bool') setPath(c, f.key, v === true || v === 'true' || v === 'on')
+    else if (f.type === 'number') { const n = Number(v); if (isFinite(n)) setPath(c, f.key, Math.min(f.max != null ? f.max : Infinity, Math.max(f.min || 0, n))) }
+    else if (f.type === 'region') setPath(c, f.key, String(v).trim().toUpperCase().slice(0, 2) || c.region)
+    else if (f.type === 'select') { if (BUFFER_MODES.some((b) => b.id === v)) setPath(c, f.key, v) }
+    else setPath(c, f.key, String(v).trim())
+  }
+  if (s.buffer === 'offline') { c.buffer = '2m'; c.offline = true }
+  if (Array.isArray(s.disabled)) c.disabled = s.disabled.filter((x) => typeof x === 'string')
+  return c
+}
+// Buffer modes offered in the select (offline is its own switch).
+export function streamBufferModes() { return BUFFER_MODES.filter((b) => !b.offline) }
+export function effectiveBuffer(cfg) { return cfg && cfg.offline ? 'offline' : (cfg && cfg.buffer) || '2m' }
+export function isSourceEnabled(cfg, id) { return !((cfg && cfg.disabled) || []).includes(id) }
+export function setSourceEnabled(cfg, id, on) {
+  const d = ((cfg && cfg.disabled) || []).filter((x) => x !== id)
+  return { ...cfg, disabled: on ? d : [...d, id] }
+}
+// The declared list minus what the user switched off.
+export function enabledSources(decl, cfg) { return { ...decl, sources: decl.sources.filter((s) => isSourceEnabled(cfg, s.id)) } }
+// WebTorrent client + add() options from the torrent section.
+export function torrentClientOptions(cfg) {
+  const t = (cfg && cfg.torrent) || defaultMovieConfig().torrent
+  return { maxConns: t.max_conns, downloadLimit: t.down_kbps > 0 ? t.down_kbps * 1024 : -1, uploadLimit: t.up_kbps > 0 ? t.up_kbps * 1024 : -1 }
+}
+export function torrentAddOptions(cfg) {
+  const t = (cfg && cfg.torrent) || defaultMovieConfig().torrent
+  return { strategy: t.sequential ? 'sequential' : 'rarest', path: t.folder || undefined }
+}
+// After the download completes: stop seeding once the ratio or the time limit is reached.
+export function seedingDone(cfg, ratio, seededSeconds) {
+  const t = (cfg && cfg.torrent) || defaultMovieConfig().torrent
+  if (!(t.seed_ratio > 0)) return true
+  if (ratio >= t.seed_ratio) return true
+  return t.seed_minutes > 0 && seededSeconds >= t.seed_minutes * 60
+}

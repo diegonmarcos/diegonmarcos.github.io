@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
     <script>(function(){var d=document.documentElement,e=/[?&]embed=1(&|$)/.test(location.search)||/CloudSuperApp-Embed\//.test(navigator.userAgent);try{if(!e&&sessionStorage.getItem('cm-embed')==='1')e=true;else if(e)sessionStorage.setItem('cm-embed','1')}catch(x){}if(e)d.classList.add('embed')})()</script>
-    <title>Projects · Inboxes · Cloud SuperApp</title>
+    <title>Configs · Apps · Cloud SuperApp</title>
     <link rel="icon" type="image/svg+xml" href="../../public/favicon.svg">
     <link rel="manifest" href="../../manifest.webmanifest">
     <meta name="theme-color" content="#000000">
@@ -19,7 +19,7 @@
 </script>
     <link rel="stylesheet" href="../../style.css">
 </head>
-<body data-section="infos">
+<body data-section="config">
     <div class="shell">
         
         <div class="status-strip">
@@ -59,86 +59,19 @@
             <span class="dynamic-island__shimmer" aria-hidden="true"></span>
         </button>
 
-        <a class="toolbar-action" href="/cloud-mobile/infos/" aria-label="Back"><img class="" src="../../public/icons/back.svg" alt=""></a>
+        <a class="toolbar-action" href="/cloud-mobile/config/" aria-label="Back"><img class="" src="../../public/icons/back.svg" alt=""></a>
 
         <main class="content" id="content">
-            <div class="page-tabs-bar">
+            <div class="page-tabs-bar page-tabs-bar--sub">
                 <div class="page-tabs" role="tablist">
-                <a class="page-tabs__item is-active" href="/cloud-mobile/infos/msgs/">Inboxes</a>
-                <a class="page-tabs__item" href="/cloud-mobile/infos/my-pm/">My-PM</a>
-                <a class="page-tabs__item" href="/cloud-mobile/infos/work-pm/">Work-PM</a>
-                <a class="page-tabs__item" href="/cloud-mobile/infos/cloud/">C3-PM</a>
+                <a class="page-tabs__item is-active" href="/cloud-mobile/config/apps-mesh-members/">Apps</a>
+                <a class="page-tabs__item" href="/cloud-mobile/config/ipc/">IPC</a>
+                <a class="page-tabs__item" href="/cloud-mobile/config/identity/">Identity</a>
                 </div>
             </div>
-            <div class="tile-grid tile-grid--dense" role="list">
-                <div class="tile tile--purple tile--inert" role="listitem" aria-disabled="true" aria-label="Mail"><span class="tile__icon" aria-hidden="true"><!--
-category: Communication
-tags: [inbox, gmail, email, envelope, message]
-version: "1.0"
-unicode: "eae5"
--->
-<svg width="32" height="32" fill="none"
-  xmlns="http://www.w3.org/2000/svg"
- 
- 
-  viewBox="0 0 24 24"
- 
-  stroke="currentColor"
-  stroke-width="2"
-  stroke-linecap="round"
-  stroke-linejoin="round"
->
-  <path d="M3 7a2 2 0 0 1 2 -2h14a2 2 0 0 1 2 2v10a2 2 0 0 1 -2 2h-14a2 2 0 0 1 -2 -2v-10z" />
-  <path d="M3 7l9 6l9 -6" />
-</svg></span><span class="tile__label">Mail</span></div>
-                <div class="tile tile--purple tile--inert" role="listitem" aria-disabled="true" aria-label="Chat-Matrix"><span class="tile__icon" aria-hidden="true"><svg width="32" height="32" fill="none" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-  <path d="M4 6h16" />
-  <path d="M4 12h13" />
-  <path d="M4 18h9" />
-</svg></span><span class="tile__label">Chat-Matrix</span></div>
-                <div class="tile tile--purple tile--inert" role="listitem" aria-disabled="true" aria-label="Chat-Mattermost"><span class="tile__icon" aria-hidden="true"><svg width="32" height="32" fill="none" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-  <path d="M4 6h16" />
-  <path d="M4 12h13" />
-  <path d="M4 18h9" />
-</svg></span><span class="tile__label">Chat-Mattermost</span></div>
-            </div>
-            <h2 class="stack-divider">Details</h2>
-            <div class="stack-list">
-                <div class="stack-card">
-                <button class="stack-card__header" type="button" aria-expanded="true"><span class="stack-card__title">Mail</span><span class="stack-card__chevron" aria-hidden="true">⌄</span></button>
-                <div class="stack-card__content"><div class="empty-state">
-                <p class="empty-state__title">Live on device</p>
-                <p class="empty-state__body">This panel reads live device or infrastructure state, which a browser cannot reach.</p>
-            </div></div>
-            </div>
-                <div class="stack-card">
-                <button class="stack-card__header" type="button" aria-expanded="true"><span class="stack-card__title">Chat</span><span class="stack-card__chevron" aria-hidden="true">⌄</span></button>
-                <div class="stack-card__content"><div class="empty-state">
-                <p class="empty-state__title">Live on device</p>
-                <p class="empty-state__body">This panel reads live device or infrastructure state, which a browser cannot reach.</p>
-            </div></div>
-            </div>
-                <div class="stack-card">
-                <button class="stack-card__header" type="button" aria-expanded="true"><span class="stack-card__title">Messenger</span><span class="stack-card__chevron" aria-hidden="true">⌄</span></button>
-                <div class="stack-card__content"><div class="empty-state">
-                <p class="empty-state__title">Live on device</p>
-                <p class="empty-state__body">This panel reads live device or infrastructure state, which a browser cannot reach.</p>
-            </div></div>
-            </div>
-                <div class="stack-card">
-                <button class="stack-card__header" type="button" aria-expanded="true"><span class="stack-card__title">RSS</span><span class="stack-card__chevron" aria-hidden="true">⌄</span></button>
-                <div class="stack-card__content"><div class="empty-state">
-                <p class="empty-state__title">Live on device</p>
-                <p class="empty-state__body">This panel reads live device or infrastructure state, which a browser cannot reach.</p>
-            </div></div>
-            </div>
-                <div class="stack-card">
-                <button class="stack-card__header" type="button" aria-expanded="true"><span class="stack-card__title">Other</span><span class="stack-card__chevron" aria-hidden="true">⌄</span></button>
-                <div class="stack-card__content"><div class="empty-state">
-                <p class="empty-state__title">Live on device</p>
-                <p class="empty-state__body">This panel reads live device or infrastructure state, which a browser cannot reach.</p>
-            </div></div>
-            </div>
+            <div class="empty-state">
+                <p class="empty-state__title">Nothing to show yet.</p>
+                <p class="empty-state__body">This page has no content declared in src/data/ yet.</p>
             </div>
             <footer class="site-footer">
                 <a class="footer-badge" href="https://github.com/diegonmarcos/cloud-u-android/releases/latest/download/Cloud-SuperApp.apk" download>
@@ -207,7 +140,7 @@ unicode: "eae5"
 
         <nav class="bottom-nav" id="bottom-nav" aria-label="Primary">
             <a class="bottom-nav__item" href="../../communication/" data-longpress="communication"><img class="" src="../../public/icons/chat.svg" alt=""><span>Notify</span></a>
-            <a class="bottom-nav__item is-active" href="../../infos/" data-longpress="infos"><img class="" src="../../public/icons/logs.svg" alt=""><span>Projects</span></a>
+            <a class="bottom-nav__item" href="../../boards/" data-longpress="boards"><img class="" src="../../public/icons/briefcase.svg" alt=""><span>Boards</span></a>
             <a class="bottom-nav__item" href="../../" data-longpress="home"><img class="" src="../../public/icons/home.svg" alt=""><span>Home</span></a>
             <a class="bottom-nav__item" href="../../cloud/" data-longpress="cloud"><img class="" src="../../public/icons/suite.svg" alt=""><span>Cloud</span></a>
             <a class="bottom-nav__item" href="../../phone/" data-longpress="phone"><img class="" src="../../public/icons/phone.svg" alt=""><span>Phone</span></a>
@@ -249,6 +182,7 @@ unicode: "eae5"
     <script src="../../data-sections-content.json.js"></script>
     <script src="../../data-mock-apps.json.js"></script>
     <script src="../../data-linktree.json.js"></script>
+    <script src="../../data-cloud-apps.json.js"></script>
     <script src="../../script.js"></script>
 </body>
 </html>

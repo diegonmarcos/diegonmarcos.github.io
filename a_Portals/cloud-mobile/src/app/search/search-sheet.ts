@@ -38,7 +38,7 @@ function collectCloudApps(data: PortalData): ResultRow[] {
     (page) => typeof page !== 'string' && page.id === 'apps',
   );
   const tileGroups = (typeof appsPage === 'object' && appsPage.groups) || [];
-  return tileGroups.flatMap((group) => group.tiles.map((tile) => ({
+  return tileGroups.flatMap((group) => group.tiles.filter((tile) => tile.label && !(tile as { separator?: boolean }).separator).map((tile) => ({
     label: tile.label,
     icon: tile.icon,
     href: resolveTarget(tile.target).href,

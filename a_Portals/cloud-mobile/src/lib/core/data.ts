@@ -20,6 +20,13 @@ export function getData(): PortalData {
   const contentFile = bag?.['sections-content'] as SectionsFile | undefined;
   if (!shell || !core || !contentFile) throw new Error('cloud-mobile portal data not loaded');
 
+  // Cloud > App groups are GENERATED from the SuperApp (src/data/cloud-apps.json, gen-nav.mjs).
+  const cloudApps = bag?.['cloud-apps'] as { groups?: unknown[] } | undefined;
+  const cloudPages = core.sections.cloud?.pages;
+  if (cloudApps?.groups && cloudPages) {
+    core.sections.cloud.pages = cloudPages.map((p) => (typeof p !== 'string' && p.id === 'apps' ? { ...p, groups: cloudApps.groups } : p)) as typeof cloudPages;
+  }
+
   cached = {
     ...shell,
     sections: {

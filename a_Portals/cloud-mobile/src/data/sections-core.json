@@ -104,49 +104,7 @@
       ],
       "pages": [
         { "id": "apps", "label": "Apps", "icon": "suite",
-          "_doc": "Quickmarks — build.json's cloud.tile_groups, one horizontal strip per group (GroupedTilesFragment's HorizontalScrollView). Most tiles here target a native constellation APK, so on the web they render inert by design.",
-          "groups": [
-            { "title": "AI", "tiles": [
-              { "id": "ai-tlg-hermes", "label": "AI-Tlg-Hermes", "icon": "robot", "target": "extapp:cloud-agent-hermes" },
-              { "id": "ai-tlg-goose", "label": "AI-Tlg-Goose", "icon": "robot", "target": "extapp:cloud-agent-goose" },
-              { "id": "ai-tmx", "label": "AI-Tmx", "icon": "sparkles", "target": "extapp:termux-nix" },
-              { "id": "drive", "label": "IDE (Files Editor)", "icon": "code", "target": "extapp:cloud-ide" }
-            ]},
-            { "title": "Communications", "tiles": [
-              { "id": "mail", "label": "Mail", "icon": "mail", "target": "extapp:cloud-mail" },
-              { "id": "mattermost", "label": "Chat (Mattermost)", "icon": "chat", "target": "extapp:cloud-chat" },
-              { "id": "element", "label": "Messenger (Element)", "icon": "chat", "target": "extapp:cloud-matrix" },
-              { "id": "dialer", "label": "Dialer", "icon": "phone", "target": "extapp:cloud-dialer" },
-              { "id": "c3-bot", "label": "C3-Bot", "icon": "robot", "target": "extapp:cloud-c3-bot" }
-            ]},
-            { "title": "Data Apps",
-              "_doc": "The former 'Photos' tile was removed 2026-08-30 — Media Center is the sole photo entry point now that it ships a green APK.",
-              "tiles": [
-              { "id": "calendar", "label": "Calendar", "icon": "calendar", "target": "extapp:cloud-calendar" },
-              { "id": "news", "label": "News", "icon": "rss", "target": "extapp:cloud-news" },
-              { "id": "contacts", "label": "Contacts", "icon": "user", "target": "extapp:cloud-contacts" },
-              { "id": "notes", "label": "Notes (Obsidian)", "icon": "logs", "target": "extapp:obsidian" },
-              { "id": "sheets", "label": "Office", "icon": "database", "target": "extapp:cloud-sheets" },
-              { "id": "mediacenter", "label": "Media Center", "icon": "photos", "target": "extapp:cloud-media-center" },
-              { "id": "music", "label": "Music", "icon": "music", "target": "extapp:tidal" }
-            ]},
-            { "title": "Tools Primary",
-              "_doc": "Tabs moved OUT of this group into the Sirius Actions ring (shell.json's stars.sirius.actions) 2026-08-31.",
-              "tiles": [
-              { "id": "browser", "label": "Browser", "icon": "browser", "target": "extapp:cloud-browser" },
-              { "id": "wallet", "label": "Wallet", "icon": "wallet", "target": "extapp:cloud-wallet" },
-              { "id": "me", "label": "Me", "icon": "user", "target": "extapp:cloud-me" },
-              { "id": "maps", "label": "Navigation", "icon": "pin", "target": "extapp:cloud-nav" },
-              { "id": "vault", "label": "Vault", "icon": "lock", "target": "extapp:cloud-vault" },
-              { "id": "watchdog", "label": "Watchdog", "icon": "bell", "target": "extapp:cloud-watchdog" }
-            ]},
-            { "title": "Tools Dashboards", "tiles": [
-              { "id": "pmboards", "label": "PM Boards", "icon": "briefcase", "target": "https://paca.diegonmarcos.com" },
-              { "id": "myfin", "label": "MyFin", "icon": "chart", "target": "page:myfin/dashboard" },
-              { "id": "myhealth", "label": "MyHealth", "icon": "heart", "target": "page:health/summary" },
-              { "id": "mysocials", "label": "MySocials", "icon": "database", "target": "https://diegonmarcos.github.io/mySocials/" }
-            ]}
-          ]
+          "_doc": "Cloud > App. Its groups are NOT written here: scripts/gen-nav.mjs generates src/data/cloud-apps.json from the SuperApp ui.sections[cloud].tile_groups (CI fails when they drift); generate-pages.mjs and the client (data.ts) attach them to this page."
         },
         { "id": "lnktree", "label": "Lnktree", "icon": "tools",
           "_doc": "The APK renders linktree.diegonmarcos.com in a WebView; here the same list is rendered natively from linktree.json (render:linktree) so the page stays crawlable. build.json's tiles_labs sits on top — those six entries deep-link into the five hidden Labs pages below plus C3.",

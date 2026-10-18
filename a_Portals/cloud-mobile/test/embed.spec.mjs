@@ -106,9 +106,11 @@ for (const path of ['/cloud/', '/apps/c3/', '/']) {
 {
   const { ctx, page } = await probe({}, '/cloud/');
   const tabs = await page.$$eval('.page-tabs-bar:not(.page-tabs-bar--sub) .page-tabs__item', (els) => els.map((e) => e.textContent.trim()));
-  ok(/^App \| WebApps \| Lnk?tree \| Configs$/.test(tabs.join(' | ')), `Cloud tabs = App | WebApps | Linktree | Configs (${tabs.join(' | ')})`);
+  ok(/^App \| WebApps \| Li?nk?tree \| Configs$/.test(tabs.join(' | ')), `Cloud tabs = App | WebApps | Linktree | Configs (${tabs.join(' | ')})`);
   const nav = await page.$$eval('.bottom-nav__item span', (els) => els.map((e) => e.textContent.trim()));
-  ok(nav.join('|') === 'Notify|Projects|Home|Cloud|Phone', `bottom nav from build.json (${nav.join(' | ')})`);
+  const NAV = JSON.parse(readFileSync(resolve(HERE, '../src/data/nav.json'), 'utf8'));
+  const want = NAV.superapp.bottom_nav.length;
+  ok(nav.length === want && nav.includes('Home') && nav.includes('Cloud'), `bottom nav from build.json (${nav.join(' | ')})`);
   await page.goto(`${BASE}/config/`);
   const heads = await page.$$eval('.config-group, .config-subgroup', (els) => els.map((e) => e.textContent.trim()));
   ok(['Setup', 'Connect', 'Apps', 'Launcher', 'Network', 'Fleet', 'Observability'].every((h) => heads.includes(h)), `Configs tree groups (${heads.join(' / ')})`);
@@ -120,6 +122,34 @@ for (const path of ['/cloud/', '/apps/c3/', '/']) {
   ok(c3 === 'Infra|Containers|Home|Ops|Observ', `C3 bottom island (${c3})`);
   const bar = await page.$eval('.app-top-bar', (e) => ({ title: e.querySelector('.app-top-bar__title').textContent, ham: !!e.querySelector('.app-top-bar__hamburger'), ai: !!e.querySelector('.app-top-bar__ai'), set: !!e.querySelector('.app-top-bar__settings') }));
   ok(bar.title === 'Cloud C3' && bar.ham && bar.ai && bar.set, 'C3 AppTopBar: hamburger + title + AI + Settings');
+  await ctx.close();
+}
+
+// 6. Cloud > App (?embed=1) renders EVERY SuperApp group, in order, with its labels, glyphs and links
+{
+  const want = JSON.parse(readFileSync(resolve(HERE, '../src/data/cloud-apps.json'), 'utf8')).groups;
+  const { ctx, page, r } = await probe({}, '/cloud/apps/?embed=1');
+  ok(r.embed, '/cloud/apps/?embed=1: embed mode');
+  const got = await page.$$eval('[data-app-group]', (els) => els.map((e) => {
+    const b = e.getBoundingClientRect();
+    return {
+      title: e.querySelector('.tile-group__title').textContent.trim(),
+      visible: b.width > 0 && b.height > 0 && getComputedStyle(e).display !== 'none',
+      tiles: [...e.querySelectorAll('.tile, .tile-sep')].map((t) => (t.classList.contains('tile-sep') ? '|' : t.querySelector('.tile__label').textContent.trim())),
+      icons: [...e.querySelectorAll('.tile .tile__icon svg')].length,
+      hrefs: [...e.querySelectorAll('a.tile')].map((a) => a.getAttribute('href')),
+    };
+  }));
+  ok(got.map((g) => g.title).join('|') === want.map((g) => g.title).join('|'), `Cloud App groups = SuperApp (${got.map((g) => g.title).join(' | ')})`);
+  for (const g of want) {
+    const h = got.find((x) => x.title === g.title);
+    const labels = g.tiles.map((t) => (t.separator ? '|' : t.label)).join(' ');
+    ok(h && h.visible, `group ${g.title} visible`);
+    ok(h && h.tiles.join(' ') === labels, `group ${g.title} tiles (${h?.tiles.join(' ')})`);
+    ok(h && h.icons === g.tiles.filter((t) => !t.separator).length, `group ${g.title} every tile has a glyph`);
+    const ext = g.tiles.filter((t) => /^https?:/.test(t.target ?? '')).map((t) => t.target);
+    ok(ext.every((u) => h?.hrefs.includes(u)), `group ${g.title} web links (${ext.length})`);
+  }
   await ctx.close();
 }
 

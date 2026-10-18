@@ -24,6 +24,8 @@ const linktreeData = readJson('linktree.json');
 // nav.json is GENERATED from the Android build.json files (scripts/gen-nav.mjs);
 // nav-overlay.json is the hand-written companion. See README "Nav data".
 const nav = readJson('nav.json');
+// cloud-apps.json is GENERATED too (gen-nav.mjs): the Cloud > App groups as the SuperApp declares them.
+const cloudApps = readJson('cloud-apps.json');
 const navOverlay = readJson('nav-overlay.json');
 
 const { app, bottomNav: shellBottomNav, cube, stars, longPress, notificationCenter, updateOverlay, statusBar, footer } = shell;
@@ -211,6 +213,9 @@ function resolveTarget(target) {
   if (!target) return { href: null, external: false };
   if (target.startsWith('https://') || target.startsWith('http://')) return { href: target, external: true };
   if (target.startsWith('section:')) return { href: routeHref([target.slice(8)]), external: false };
+  // intent:// (Telegram bots): the web has no intent resolver, but the intent names its own browser fallback.
+  const fb = /S\.browser_fallback_url=([^;]+)/.exec(target);
+  if (target.startsWith('intent:') && fb) return { href: decodeURIComponent(fb[1]), external: true };
   if (target.startsWith('page:')) return { href: routeHref(target.slice(5).split('/')), external: false };
   // extapp:cloud-<fleet app> has a web mirror here (apps/<id>/, generated from that app's build.json ui).
   const fx = /^extapp:cloud-(.+)$/.exec(target);
@@ -262,6 +267,9 @@ function webIcon(name, fallback) {
 }
 const NAV_PAGE_KEYS = ['hidden', 'group', 'subgroup', 'tabs', 'facet', 'url', 'is_action', 'mirror_section', 'mirror_page'];
 for (const g of nav.superapp.sections) {
+  // a bottom-nav section the SuperApp added/renamed (e.g. infos -> boards) that the
+  // site has no hand-written body for yet: build it from the declaration alone.
+  if (!sections[g.id] && bottomNav.includes(g.id)) sections[g.id] = { label: g.label, icon: webIcon(g.icon, 'more'), color: 'blue', pages: [] };
   const site = sections[g.id];
   if (!site || g.id === 'home') continue;
   site.label = g.label;
@@ -293,6 +301,10 @@ for (const g of nav.superapp.sections) {
   for (const [id, p] of old) if (!pages.some((q) => q.id === id) ) pages.push({ ...p, hidden: true, legacy: true });
   const hint = navOverlay.page_order_hint?.[g.id];
   if (hint) pages.sort((a, b) => (hint.indexOf(a.id) + 1 || 99) - (hint.indexOf(b.id) + 1 || 99));
+  if (g.id === 'cloud') {
+    const appsPage = pages.find((p) => p.id === 'apps');
+    if (appsPage) appsPage.groups = cloudApps.groups;
+  }
   site.pages = pages;
   if (g.grid_columns) site.gridColumns = g.grid_columns;
 }
@@ -488,10 +500,10 @@ function tileGridBody(tiles, rel, colorFn, dense = false) {
 function groupListBody(groups, rel, footer, footerHref, strip = false) {
   const gridCls = strip ? 'tile-grid tile-grid--strip' : 'tile-grid tile-grid--dense';
   const blocks = groups.map((g) => `
-            <section class="tile-group">
+            <section class="tile-group" data-app-group="${g.title}">
                 <h2 class="tile-group__title">${g.title}</h2>
                 <div class="${gridCls}" role="list">
-                    ${g.tiles.map((t) => tileHtml(t, 'blue', rel)).join('\n                    ')}
+                    ${g.tiles.map((t) => (t.separator ? '<span class="tile-sep" aria-hidden="true">|</span>' : tileHtml(t, 'blue', rel))).join('\n                    ')}
                 </div>
             </section>`).join('\n');
   const footerHtml = footer && footerHref ? `<a class="tile-group__footer" href="${footerHref}"><span class="tile-group__footer-icon" aria-hidden="true">${inlineIcon(footer.icon)}</span><span>${footer.label}</span></a>` : '';
@@ -950,6 +962,7 @@ function renderShell({ title, sectionId, depth, bodyHtml, backHref, fleet = null
     <script src="${rel}data-sections-content.json.js"></script>
     <script src="${rel}data-mock-apps.json.js"></script>
     <script src="${rel}data-linktree.json.js"></script>
+    <script src="${rel}data-cloud-apps.json.js"></script>
     <script src="${rel}script.js"></script>
 </body>
 </html>

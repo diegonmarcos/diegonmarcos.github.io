@@ -150,6 +150,10 @@ for (const path of ['/cloud/', '/apps/c3/', '/']) {
     const ext = g.tiles.filter((t) => /^https?:/.test(t.target ?? '')).map((t) => t.target);
     ok(ext.every((u) => h?.hrefs.includes(u)), `group ${g.title} web links (${ext.length})`);
   }
+  // nothing goes missing: the rendered tile count IS the source list's count (the SuperApp's Cloud apps)
+  const wantN = want.reduce((n, g) => n + g.tiles.filter((t) => !t.separator).length, 0);
+  const gotN = await page.$$eval('[data-app-group] .tile', (els) => els.length);
+  ok(gotN === wantN && wantN >= 40, `embed: rendered tiles ${gotN} == source cloud-apps.json ${wantN}`);
   // embed: the page's own tab strip and the APK download row are gone, every section header stays, and it all fits
   // one screen (no scrolling) at several phone sizes
   const shown = await page.evaluate(() => ['.page-tabs-bar', '.site-footer'].map((s) => { const e = document.querySelector(s); return !!e && getComputedStyle(e).display !== 'none'; }));

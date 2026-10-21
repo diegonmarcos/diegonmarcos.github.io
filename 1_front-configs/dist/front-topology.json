@@ -2,7 +2,7 @@
   "_meta": {
     "generated_by": "1_front-configs/build.sh derive",
     "schema": "front-topology/v1",
-    "project_count": 82
+    "project_count": 87
   },
   "projects": [
     {
@@ -991,6 +991,76 @@
       "dep_count": 0,
       "has_dist": true,
       "deploy_name": "c3-bot"
+    },
+    {
+      "name": "C3 DNS and Routing",
+      "slug": "c3-dns-routing",
+      "path": "cloud-webapps/c3-dns-routing",
+      "category": "cloud-webapps",
+      "framework": "vanilla",
+      "port": null,
+      "build_steps": [
+        "copy"
+      ],
+      "dep_count": 0,
+      "has_dist": true,
+      "deploy_name": "c3-dns-routing"
+    },
+    {
+      "name": "C3 Mail",
+      "slug": "c3-mail",
+      "path": "cloud-webapps/c3-mail",
+      "category": "cloud-webapps",
+      "framework": "vanilla",
+      "port": null,
+      "build_steps": [
+        "copy"
+      ],
+      "dep_count": 0,
+      "has_dist": true,
+      "deploy_name": "c3-mail"
+    },
+    {
+      "name": "C3 MCP and APIs",
+      "slug": "c3-mcp-apis",
+      "path": "cloud-webapps/c3-mcp-apis",
+      "category": "cloud-webapps",
+      "framework": "vanilla",
+      "port": null,
+      "build_steps": [
+        "copy"
+      ],
+      "dep_count": 0,
+      "has_dist": true,
+      "deploy_name": "c3-mcp-apis"
+    },
+    {
+      "name": "C3 Observability",
+      "slug": "c3-observability",
+      "path": "cloud-webapps/c3-observability",
+      "category": "cloud-webapps",
+      "framework": "vanilla",
+      "port": null,
+      "build_steps": [
+        "copy"
+      ],
+      "dep_count": 0,
+      "has_dist": true,
+      "deploy_name": "c3-observability"
+    },
+    {
+      "name": "C3 Security and Network",
+      "slug": "c3-security-network",
+      "path": "cloud-webapps/c3-security-network",
+      "category": "cloud-webapps",
+      "framework": "vanilla",
+      "port": null,
+      "build_steps": [
+        "copy"
+      ],
+      "dep_count": 0,
+      "has_dist": true,
+      "deploy_name": "c3-security-network"
     },
     {
       "name": "Cloud Browser",

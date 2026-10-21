@@ -480,6 +480,56 @@
     "url": "https://diegonmarcos.github.io/cloud-webapps/c3-bot"
   },
   {
+    "id": "cloud-webapps__c3-dns-routing",
+    "project": "c3-dns-routing",
+    "path": "cloud-webapps/c3-dns-routing",
+    "category": "cloud-webapps",
+    "name": "C3 DNS and Routing",
+    "framework": "vanilla",
+    "deploy_name": "cloud-webapps/c3-dns-routing",
+    "url": "https://diegonmarcos.github.io/cloud-webapps/c3-dns-routing"
+  },
+  {
+    "id": "cloud-webapps__c3-mail",
+    "project": "c3-mail",
+    "path": "cloud-webapps/c3-mail",
+    "category": "cloud-webapps",
+    "name": "C3 Mail",
+    "framework": "vanilla",
+    "deploy_name": "cloud-webapps/c3-mail",
+    "url": "https://diegonmarcos.github.io/cloud-webapps/c3-mail"
+  },
+  {
+    "id": "cloud-webapps__c3-mcp-apis",
+    "project": "c3-mcp-apis",
+    "path": "cloud-webapps/c3-mcp-apis",
+    "category": "cloud-webapps",
+    "name": "C3 MCP and APIs",
+    "framework": "vanilla",
+    "deploy_name": "cloud-webapps/c3-mcp-apis",
+    "url": "https://diegonmarcos.github.io/cloud-webapps/c3-mcp-apis"
+  },
+  {
+    "id": "cloud-webapps__c3-observability",
+    "project": "c3-observability",
+    "path": "cloud-webapps/c3-observability",
+    "category": "cloud-webapps",
+    "name": "C3 Observability",
+    "framework": "vanilla",
+    "deploy_name": "cloud-webapps/c3-observability",
+    "url": "https://diegonmarcos.github.io/cloud-webapps/c3-observability"
+  },
+  {
+    "id": "cloud-webapps__c3-security-network",
+    "project": "c3-security-network",
+    "path": "cloud-webapps/c3-security-network",
+    "category": "cloud-webapps",
+    "name": "C3 Security and Network",
+    "framework": "vanilla",
+    "deploy_name": "cloud-webapps/c3-security-network",
+    "url": "https://diegonmarcos.github.io/cloud-webapps/c3-security-network"
+  },
+  {
     "id": "cloud-webapps__cloud-browser",
     "project": "cloud-browser",
     "path": "cloud-webapps/cloud-browser",

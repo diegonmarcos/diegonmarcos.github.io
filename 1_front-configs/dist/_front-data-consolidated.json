@@ -4735,6 +4735,126 @@
     },
     {
       "category": "cloud-webapps",
+      "project": "c3-dns-routing",
+      "key": "cloud-webapps__c3-dns-routing",
+      "path": "cloud-webapps/c3-dns-routing",
+      "build": {
+        "name": "C3 DNS and Routing",
+        "framework": "vanilla",
+        "src": "src",
+        "dist": "dist",
+        "build": [
+          {
+            "_doc": "Copy the static landing page to dist.",
+            "mod": "copy",
+            "files": "*.html",
+            "from": "src"
+          }
+        ],
+        "deploy": {}
+      },
+      "has_package_json": false,
+      "has_manifest": false,
+      "has_dist": true
+    },
+    {
+      "category": "cloud-webapps",
+      "project": "c3-mail",
+      "key": "cloud-webapps__c3-mail",
+      "path": "cloud-webapps/c3-mail",
+      "build": {
+        "name": "C3 Mail",
+        "framework": "vanilla",
+        "src": "src",
+        "dist": "dist",
+        "build": [
+          {
+            "_doc": "Copy the static landing page to dist.",
+            "mod": "copy",
+            "files": "*.html",
+            "from": "src"
+          }
+        ],
+        "deploy": {}
+      },
+      "has_package_json": false,
+      "has_manifest": false,
+      "has_dist": true
+    },
+    {
+      "category": "cloud-webapps",
+      "project": "c3-mcp-apis",
+      "key": "cloud-webapps__c3-mcp-apis",
+      "path": "cloud-webapps/c3-mcp-apis",
+      "build": {
+        "name": "C3 MCP and APIs",
+        "framework": "vanilla",
+        "src": "src",
+        "dist": "dist",
+        "build": [
+          {
+            "_doc": "Copy the static landing page to dist.",
+            "mod": "copy",
+            "files": "*.html",
+            "from": "src"
+          }
+        ],
+        "deploy": {}
+      },
+      "has_package_json": false,
+      "has_manifest": false,
+      "has_dist": true
+    },
+    {
+      "category": "cloud-webapps",
+      "project": "c3-observability",
+      "key": "cloud-webapps__c3-observability",
+      "path": "cloud-webapps/c3-observability",
+      "build": {
+        "name": "C3 Observability",
+        "framework": "vanilla",
+        "src": "src",
+        "dist": "dist",
+        "build": [
+          {
+            "_doc": "Copy the static landing page to dist.",
+            "mod": "copy",
+            "files": "*.html",
+            "from": "src"
+          }
+        ],
+        "deploy": {}
+      },
+      "has_package_json": false,
+      "has_manifest": false,
+      "has_dist": true
+    },
+    {
+      "category": "cloud-webapps",
+      "project": "c3-security-network",
+      "key": "cloud-webapps__c3-security-network",
+      "path": "cloud-webapps/c3-security-network",
+      "build": {
+        "name": "C3 Security and Network",
+        "framework": "vanilla",
+        "src": "src",
+        "dist": "dist",
+        "build": [
+          {
+            "_doc": "Copy the static landing page to dist.",
+            "mod": "copy",
+            "files": "*.html",
+            "from": "src"
+          }
+        ],
+        "deploy": {}
+      },
+      "has_package_json": false,
+      "has_manifest": false,
+      "has_dist": true
+    },
+    {
+      "category": "cloud-webapps",
       "project": "cloud-browser",
       "key": "cloud-webapps__cloud-browser",
       "path": "cloud-webapps/cloud-browser",
@@ -5732,6 +5852,26 @@
       "deploy_name": "cloud-webapps/c3-bot"
     },
     {
+      "path": "cloud-webapps/c3-dns-routing",
+      "deploy_name": "cloud-webapps/c3-dns-routing"
+    },
+    {
+      "path": "cloud-webapps/c3-mail",
+      "deploy_name": "cloud-webapps/c3-mail"
+    },
+    {
+      "path": "cloud-webapps/c3-mcp-apis",
+      "deploy_name": "cloud-webapps/c3-mcp-apis"
+    },
+    {
+      "path": "cloud-webapps/c3-observability",
+      "deploy_name": "cloud-webapps/c3-observability"
+    },
+    {
+      "path": "cloud-webapps/c3-security-network",
+      "deploy_name": "cloud-webapps/c3-security-network"
+    },
+    {
       "path": "cloud-webapps/cloud-browser",
       "deploy_name": "cloud-webapps/cloud-browser"
     },
@@ -5894,6 +6034,130 @@
     {
       "path": "c_Suite/mymaps",
       "deploy_name": "mymaps"
+    },
+    {
+      "path": "${PROJECTS[@]}",
+      "deploy_name": ""
+    },
+    {
+      "path": "${entry%%",
+      "deploy_name": "*}"
+    },
+    {
+      "path": "${entry##*",
+      "deploy_name": "}"
+    },
+    {
+      "path": "$SRC/dist",
+      "deploy_name": ""
+    },
+    {
+      "path": "$DIST",
+      "deploy_name": ""
+    },
+    {
+      "path": "⏭️  $NAME (no dist/)",
+      "deploy_name": ""
+    },
+    {
+      "path": "$(ls -A ",
+      "deploy_name": ""
+    },
+    {
+      "path": " 2>/dev/null)",
+      "deploy_name": ""
+    },
+    {
+      "path": "⚠️  $NAME (dist/ empty)",
+      "deploy_name": ""
+    },
+    {
+      "path": "$NAME",
+      "deploy_name": ""
+    },
+    {
+      "path": ".",
+      "deploy_name": ""
+    },
+    {
+      "path": "$DIST",
+      "deploy_name": ""
+    },
+    {
+      "path": "_site/$NAME",
+      "deploy_name": ""
+    },
+    {
+      "path": "$DIST",
+      "deploy_name": ""
+    },
+    {
+      "path": "_site/$NAME/",
+      "deploy_name": ""
+    },
+    {
+      "path": "_site",
+      "deploy_name": ""
+    },
+    {
+      "path": "$NAME",
+      "deploy_name": ""
+    },
+    {
+      "path": ".",
+      "deploy_name": ""
+    },
+    {
+      "path": "_site/$NAME",
+      "deploy_name": ""
+    },
+    {
+      "path": "$TARGET",
+      "deploy_name": ""
+    },
+    {
+      "path": "$COUNT",
+      "deploy_name": ""
+    },
+    {
+      "path": "✅ $NAME ($COUNT files)",
+      "deploy_name": ""
+    },
+    {
+      "path": "❌ $NAME (0 files after copy)",
+      "deploy_name": ""
+    },
+    {
+      "path": "$FAILED $NAME",
+      "deploy_name": ""
+    },
+    {
+      "path": "=========================================",
+      "deploy_name": ""
+    },
+    {
+      "path": "📊 DEPLOY",
+      "deploy_name": " $COPIED copied, $SKIPPED skipped"
+    },
+    {
+      "path": "$FAILED",
+      "deploy_name": ""
+    },
+    {
+      "path": "⚠️ FAILED",
+      "deploy_name": "$FAILED"
+    },
+    {
+      "path": "",
+      "deploy_name": ""
+    },
+    {
+      "path": "=========================================",
+      "deploy_name": ""
+    },
+    {
+      "path": "📊 Site structure",
+      "deploy_name": ""
     }
   ],
   "links": {

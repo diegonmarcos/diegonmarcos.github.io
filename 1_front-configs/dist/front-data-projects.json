@@ -612,6 +612,66 @@
     "has_pkg": false
   },
   {
+    "path": "cloud-webapps/c3-dns-routing",
+    "category": "cloud-webapps",
+    "project": "c3-dns-routing",
+    "key": "cloud-webapps__c3-dns-routing",
+    "name": "C3 DNS and Routing",
+    "framework": "vanilla",
+    "port": null,
+    "deploy_name": "c3-dns-routing",
+    "has_pwa": false,
+    "has_pkg": false
+  },
+  {
+    "path": "cloud-webapps/c3-mail",
+    "category": "cloud-webapps",
+    "project": "c3-mail",
+    "key": "cloud-webapps__c3-mail",
+    "name": "C3 Mail",
+    "framework": "vanilla",
+    "port": null,
+    "deploy_name": "c3-mail",
+    "has_pwa": false,
+    "has_pkg": false
+  },
+  {
+    "path": "cloud-webapps/c3-mcp-apis",
+    "category": "cloud-webapps",
+    "project": "c3-mcp-apis",
+    "key": "cloud-webapps__c3-mcp-apis",
+    "name": "C3 MCP and APIs",
+    "framework": "vanilla",
+    "port": null,
+    "deploy_name": "c3-mcp-apis",
+    "has_pwa": false,
+    "has_pkg": false
+  },
+  {
+    "path": "cloud-webapps/c3-observability",
+    "category": "cloud-webapps",
+    "project": "c3-observability",
+    "key": "cloud-webapps__c3-observability",
+    "name": "C3 Observability",
+    "framework": "vanilla",
+    "port": null,
+    "deploy_name": "c3-observability",
+    "has_pwa": false,
+    "has_pkg": false
+  },
+  {
+    "path": "cloud-webapps/c3-security-network",
+    "category": "cloud-webapps",
+    "project": "c3-security-network",
+    "key": "cloud-webapps__c3-security-network",
+    "name": "C3 Security and Network",
+    "framework": "vanilla",
+    "port": null,
+    "deploy_name": "c3-security-network",
+    "has_pwa": false,
+    "has_pkg": false
+  },
+  {
     "path": "cloud-webapps/cloud-browser",
     "category": "cloud-webapps",
     "project": "cloud-browser",

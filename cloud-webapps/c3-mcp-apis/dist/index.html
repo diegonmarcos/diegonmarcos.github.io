@@ -6,7 +6,7 @@
 <body><main><h1>C3 MCP and APIs</h1><p id="src"><small>Mock data (signed out).</small></p><pre id="cfg"></pre>
 <script>
 var MOCK={"servers": [{"name": "mock-mcp", "path": "/mock/mcp", "auth": "bearer"}], "rate_limit_per_min": 60};
-var EP="https://example.invalid/config/c3-mcp-apis"; // fleet endpoint behind Authelia/bearer; reads private cloud-me-* repos server-side. No GitHub token in the browser.
+var EP="https://cloud-me-api.app/me/config/c3-mcp-apis"; // fleet endpoint, mesh-only (cloud-me-api.app over wg0, bearer); reads private cloud-me-* repos server-side. No GitHub token in the browser.
 var tok=null;try{tok=sessionStorage.getItem("c3_bearer")}catch(e){}
 function show(j,s){document.getElementById("cfg").textContent=JSON.stringify(j,null,2);document.getElementById("src").innerHTML="<small>"+s+"</small>"}
 show(MOCK,"Mock data (signed out).");

@@ -6,7 +6,7 @@
 <body><main><h1>C3 Observability</h1><p id="src"><small>Mock data (signed out).</small></p><pre id="cfg"></pre>
 <script>
 var MOCK={"scrape_interval_s": 30, "alerts": [{"name": "disk_full", "threshold_pct": 90}], "retention_days": 14};
-var EP="https://example.invalid/config/c3-observability"; // fleet endpoint behind Authelia/bearer; reads private cloud-me-* repos server-side. No GitHub token in the browser.
+var EP="https://cloud-me-api.app/me/config/c3-observability"; // fleet endpoint, mesh-only (cloud-me-api.app over wg0, bearer); reads private cloud-me-* repos server-side. No GitHub token in the browser.
 var tok=null;try{tok=sessionStorage.getItem("c3_bearer")}catch(e){}
 function show(j,s){document.getElementById("cfg").textContent=JSON.stringify(j,null,2);document.getElementById("src").innerHTML="<small>"+s+"</small>"}
 show(MOCK,"Mock data (signed out).");

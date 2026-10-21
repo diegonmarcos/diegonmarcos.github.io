@@ -1,0 +1,3 @@
+**Owner rules:** Read [OWNER-RULES.md](https://github.com/diegonmarcos/cloud-data-my-ai-memory/blob/main/4___ASSETS___/4.3.Memory/OWNER-RULES.md) before acting.
+**Standing rules apply to every session and agent; follow them first.**
+

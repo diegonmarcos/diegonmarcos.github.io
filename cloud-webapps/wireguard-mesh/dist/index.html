@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>wireguard-mesh - Cloud service</title>
+<meta name="description" content="Read-only data-driven control panel for the WireGuard mesh + wstunnel TCP/443 fallback. Mimics Headscale&#39;s UI shape but holds zero state and exposes zero mutations — pure observability over the existing declarative VPN data (cloud-data-topo">
+<style>
+:root{--bg:#0b0f17;--fg:#e6e9ef;--mut:#9aa4b2;--card:#141a26;--bd:#243049;--ac:#4cc2ff}
+@media (prefers-color-scheme:light){:root{--bg:#f6f8fb;--fg:#162033;--mut:#5a6579;--card:#fff;--bd:#d6dde9;--ac:#0a6fb8}}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--fg);font:16px/1.55 system-ui,-apple-system,Segoe UI,Roboto,sans-serif}
+main{max-width:860px;margin:0 auto;padding:24px 16px 64px}a{color:var(--ac)}nav.crumbs{font-size:14px;color:var(--mut);margin-bottom:12px}
+h1{font-size:2rem;margin:.2em 0}h2{font-size:1.2rem;margin:1.8em 0 .6em;border-bottom:1px solid var(--bd);padding-bottom:.3em}
+.lead{color:var(--mut)}.card{background:var(--card);border:1px solid var(--bd);border-radius:12px;padding:16px;margin:12px 0}
+.btn{display:inline-block;padding:10px 16px;border-radius:10px;border:1px solid var(--ac);text-decoration:none;font-weight:600;margin:4px 8px 4px 0}
+.btn.p{background:var(--ac);color:#04121c}code{background:var(--card);border:1px solid var(--bd);border-radius:6px;padding:1px 6px}
+</style>
+<link rel="stylesheet" href="/cloud-webapps/nav.css"><script src="/cloud-webapps/nav.js" defer></script>
+</head>
+<body>
+<main>
+<nav class="crumbs"><a href="/cloud-webapps/">Cloud apps</a> / wireguard-mesh</nav>
+<h1>wireguard-mesh</h1>
+<p class="lead">Read-only data-driven control panel for the WireGuard mesh + wstunnel TCP/443 fallback. Mimics Headscale&#39;s UI shape but holds zero state and exposes zero mutations — pure observability over the existing declarative VPN data (cloud-data-topo</p>
+<p>You reached this page because the service answered 401 or 403 for this browser. Here is how to get in.</p>
+<h2>Sign in</h2><div class="card"><p>This service is at <code>mesh.diegonmarcos.com</code> and needs a signed-in session. Pick a provider (Authelia, Google, GitHub, Cloudflare); you come back to the service afterwards.</p>
+<a class="btn p" data-rd href="https://auth.diegonmarcos.com/?rd=https%3A%2F%2Fmesh.diegonmarcos.com%2F" data-base="https://auth.diegonmarcos.com/?rd=">Sign in (provider chooser)</a><a class="btn " data-rd href="https://account.diegonmarcos.com/?rd=https%3A%2F%2Fmesh.diegonmarcos.com%2F" data-base="https://account.diegonmarcos.com/?rd=">Account</a></div>
+</main>
+<script>(function(){var H=["mesh.diegonmarcos.com"];var ret='https://'+H[0]+'/';
+try{var u=new URL(new URLSearchParams(location.search).get('rd')||'');if(u.protocol==='https:'&&H.indexOf(u.hostname)>=0&&!u.username&&!u.password)ret=u.origin+u.pathname;}catch(e){}
+var e=encodeURIComponent(ret);document.querySelectorAll('a[data-rd]').forEach(function(a){a.href=a.getAttribute('data-base')+e;});})();</script>
+</body>
+</html>

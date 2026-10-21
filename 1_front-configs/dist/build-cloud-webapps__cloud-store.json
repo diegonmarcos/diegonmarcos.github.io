@@ -1,0 +1,43 @@
+{
+  "name": "Cloud Store",
+  "framework": "vanilla",
+  "src": "src",
+  "dist": "dist",
+  "build": [
+    {
+      "_doc": "Copy the static landing page to dist.",
+      "mod": "copy",
+      "files": "*.html",
+      "from": "src"
+    }
+  ],
+  "deploy": {},
+  "_resolved": {
+    "path": "cloud-webapps/cloud-store",
+    "category": "cloud-webapps",
+    "project": "cloud-store",
+    "key": "cloud-webapps__cloud-store",
+    "port": 8000,
+    "framework": "vanilla",
+    "src": "src",
+    "dist": "dist",
+    "analytics": {
+      "matomo": {
+        "container_id": "container_odwLIyPV",
+        "url": "https://analytics.diegonmarcos.com/matomo/js/container_odwLIyPV.js"
+      },
+      "umami": {
+        "site_id": "937cbde7-5ec2-450c-9d6a-8117423ac12f",
+        "url": "https://analytics.diegonmarcos.com/umami/script.js"
+      }
+    },
+    "deploy": {
+      "deployed": true,
+      "deploy_name": "cloud-webapps/cloud-store",
+      "url": "https://diegonmarcos.github.io/cloud-webapps/cloud-store"
+    },
+    "consumers": [],
+    "has_package_json": false,
+    "has_manifest": false
+  }
+}

@@ -1,7 +1,7 @@
 {
   "meta": {
     "generated_from": "front-topology.json",
-    "project_count": 51
+    "project_count": 82
   },
   "categories": [
     {
@@ -515,6 +515,290 @@
           "category": "c_Suite",
           "framework": "react",
           "port": 8032,
+          "has_dist": true
+        }
+      ]
+    },
+    {
+      "category": "cloud-webapps",
+      "projects": [
+        {
+          "name": "AI Chat",
+          "slug": "ai-chat",
+          "path": "cloud-webapps/ai-chat",
+          "category": "cloud-webapps",
+          "framework": "vanilla",
+          "port": null,
+          "has_dist": true
+        },
+        {
+          "name": "C3-Bot",
+          "slug": "c3-bot",
+          "path": "cloud-webapps/c3-bot",
+          "category": "cloud-webapps",
+          "framework": "vanilla",
+          "port": null,
+          "has_dist": true
+        },
+        {
+          "name": "Cloud Browser",
+          "slug": "cloud-browser",
+          "path": "cloud-webapps/cloud-browser",
+          "category": "cloud-webapps",
+          "framework": "vanilla",
+          "port": null,
+          "has_dist": true
+        },
+        {
+          "name": "Cloud C3",
+          "slug": "cloud-c3",
+          "path": "cloud-webapps/cloud-c3",
+          "category": "cloud-webapps",
+          "framework": "vanilla",
+          "port": null,
+          "has_dist": true
+        },
+        {
+          "name": "Cloud Calc",
+          "slug": "cloud-calc",
+          "path": "cloud-webapps/cloud-calc",
+          "category": "cloud-webapps",
+          "framework": "vanilla",
+          "port": null,
+          "has_dist": true
+        },
+        {
+          "name": "Cloud Camera",
+          "slug": "cloud-camera",
+          "path": "cloud-webapps/cloud-camera",
+          "category": "cloud-webapps",
+          "framework": "vanilla",
+          "port": null,
+          "has_dist": true
+        },
+        {
+          "name": "Cloud Chat",
+          "slug": "cloud-chat",
+          "path": "cloud-webapps/cloud-chat",
+          "category": "cloud-webapps",
+          "framework": "vanilla",
+          "port": null,
+          "has_dist": true
+        },
+        {
+          "name": "Cloud Code",
+          "slug": "cloud-code",
+          "path": "cloud-webapps/cloud-code",
+          "category": "cloud-webapps",
+          "framework": "vanilla",
+          "port": null,
+          "has_dist": true
+        },
+        {
+          "name": "Cloud Contacts",
+          "slug": "cloud-contacts",
+          "path": "cloud-webapps/cloud-contacts",
+          "category": "cloud-webapps",
+          "framework": "vanilla",
+          "port": null,
+          "has_dist": true
+        },
+        {
+          "name": "Cloud Dialer",
+          "slug": "cloud-dialer",
+          "path": "cloud-webapps/cloud-dialer",
+          "category": "cloud-webapps",
+          "framework": "vanilla",
+          "port": null,
+          "has_dist": true
+        },
+        {
+          "name": "Cloud Drive",
+          "slug": "cloud-drive",
+          "path": "cloud-webapps/cloud-drive",
+          "category": "cloud-webapps",
+          "framework": "vanilla",
+          "port": null,
+          "has_dist": true
+        },
+        {
+          "name": "Cloud Gallery",
+          "slug": "cloud-gallery",
+          "path": "cloud-webapps/cloud-gallery",
+          "category": "cloud-webapps",
+          "framework": "vanilla",
+          "port": null,
+          "has_dist": true
+        },
+        {
+          "name": "Cloud Keyboard",
+          "slug": "cloud-keyboard",
+          "path": "cloud-webapps/cloud-keyboard",
+          "category": "cloud-webapps",
+          "framework": "vanilla",
+          "port": null,
+          "has_dist": true
+        },
+        {
+          "name": "Cloud Mail",
+          "slug": "cloud-mail",
+          "path": "cloud-webapps/cloud-mail",
+          "category": "cloud-webapps",
+          "framework": "vanilla",
+          "port": null,
+          "has_dist": true
+        },
+        {
+          "name": "Cloud Me",
+          "slug": "cloud-me",
+          "path": "cloud-webapps/cloud-me",
+          "category": "cloud-webapps",
+          "framework": "vanilla",
+          "port": null,
+          "has_dist": true
+        },
+        {
+          "name": "Cloud Media Center",
+          "slug": "cloud-media",
+          "path": "cloud-webapps/cloud-media",
+          "category": "cloud-webapps",
+          "framework": "vanilla",
+          "port": null,
+          "has_dist": true
+        },
+        {
+          "name": "Cloud Messenger (Matrix)",
+          "slug": "cloud-matrix",
+          "path": "cloud-webapps/cloud-matrix",
+          "category": "cloud-webapps",
+          "framework": "vanilla",
+          "port": null,
+          "has_dist": true
+        },
+        {
+          "name": "Cloud MyTerminal",
+          "slug": "cloud-myterminal",
+          "path": "cloud-webapps/cloud-myterminal",
+          "category": "cloud-webapps",
+          "framework": "vanilla",
+          "port": null,
+          "has_dist": true
+        },
+        {
+          "name": "Cloud Navigation",
+          "slug": "cloud-nav",
+          "path": "cloud-webapps/cloud-nav",
+          "category": "cloud-webapps",
+          "framework": "vanilla",
+          "port": null,
+          "has_dist": true
+        },
+        {
+          "name": "Cloud News",
+          "slug": "cloud-news",
+          "path": "cloud-webapps/cloud-news",
+          "category": "cloud-webapps",
+          "framework": "vanilla",
+          "port": null,
+          "has_dist": true
+        },
+        {
+          "name": "Cloud Notes",
+          "slug": "cloud-notes",
+          "path": "cloud-webapps/cloud-notes",
+          "category": "cloud-webapps",
+          "framework": "vanilla",
+          "port": null,
+          "has_dist": true
+        },
+        {
+          "name": "Cloud Office",
+          "slug": "cloud-office",
+          "path": "cloud-webapps/cloud-office",
+          "category": "cloud-webapps",
+          "framework": "vanilla",
+          "port": null,
+          "has_dist": true
+        },
+        {
+          "name": "Cloud Search",
+          "slug": "cloud-search",
+          "path": "cloud-webapps/cloud-search",
+          "category": "cloud-webapps",
+          "framework": "vanilla",
+          "port": null,
+          "has_dist": true
+        },
+        {
+          "name": "Cloud Store",
+          "slug": "cloud-store",
+          "path": "cloud-webapps/cloud-store",
+          "category": "cloud-webapps",
+          "framework": "vanilla",
+          "port": null,
+          "has_dist": true
+        },
+        {
+          "name": "Cloud SuperApp",
+          "slug": "cloud-superapp",
+          "path": "cloud-webapps/cloud-superapp",
+          "category": "cloud-webapps",
+          "framework": "vanilla",
+          "port": null,
+          "has_dist": true
+        },
+        {
+          "name": "Cloud Tasks",
+          "slug": "cloud-tasks",
+          "path": "cloud-webapps/cloud-tasks",
+          "category": "cloud-webapps",
+          "framework": "vanilla",
+          "port": null,
+          "has_dist": true
+        },
+        {
+          "name": "Cloud Terminal",
+          "slug": "cloud-terminal",
+          "path": "cloud-webapps/cloud-terminal",
+          "category": "cloud-webapps",
+          "framework": "vanilla",
+          "port": null,
+          "has_dist": true
+        },
+        {
+          "name": "Cloud Tools (Small LLMs)",
+          "slug": "cloud-tools-small-llms",
+          "path": "cloud-webapps/cloud-tools-small-llms",
+          "category": "cloud-webapps",
+          "framework": "vanilla",
+          "port": null,
+          "has_dist": true
+        },
+        {
+          "name": "Cloud Vault",
+          "slug": "cloud-vault",
+          "path": "cloud-webapps/cloud-vault",
+          "category": "cloud-webapps",
+          "framework": "vanilla",
+          "port": null,
+          "has_dist": true
+        },
+        {
+          "name": "Cloud Wallet",
+          "slug": "cloud-wallet",
+          "path": "cloud-webapps/cloud-wallet",
+          "category": "cloud-webapps",
+          "framework": "vanilla",
+          "port": null,
+          "has_dist": true
+        },
+        {
+          "name": "Cloud Writer",
+          "slug": "cloud-writer",
+          "path": "cloud-webapps/cloud-writer",
+          "category": "cloud-webapps",
+          "framework": "vanilla",
+          "port": null,
           "has_dist": true
         }
       ]

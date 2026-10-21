@@ -148,192 +148,132 @@
     "deploy_name": "Warehouse"
   },
   {
-    "path": "c__Cloud",
-    "deploy_name": "c__Cloud"
+    "path": "cloud-webapps/_shared",
+    "deploy_name": "cloud-webapps"
   },
   {
-    "path": "c__Cloud/c_agi",
-    "deploy_name": "c__Cloud/c_agi"
+    "path": "cloud-webapps/ai-chat",
+    "deploy_name": "cloud-webapps/ai-chat"
   },
   {
-    "path": "c__Cloud/c_agi/ai-chat",
-    "deploy_name": "c__Cloud/c_agi/ai-chat"
+    "path": "cloud-webapps/c3-bot",
+    "deploy_name": "cloud-webapps/c3-bot"
   },
   {
-    "path": "c__Cloud/c_agi/cloud-code",
-    "deploy_name": "c__Cloud/c_agi/cloud-code"
+    "path": "cloud-webapps/cloud-browser",
+    "deploy_name": "cloud-webapps/cloud-browser"
   },
   {
-    "path": "c__Cloud/c_agi/cloud-myterminal",
-    "deploy_name": "c__Cloud/c_agi/cloud-myterminal"
+    "path": "cloud-webapps/cloud-c3",
+    "deploy_name": "cloud-webapps/cloud-c3"
   },
   {
-    "path": "c__Cloud/c_agi/cloud-search",
-    "deploy_name": "c__Cloud/c_agi/cloud-search"
+    "path": "cloud-webapps/cloud-calc",
+    "deploy_name": "cloud-webapps/cloud-calc"
   },
   {
-    "path": "c__Cloud/c_agi/cloud-terminal",
-    "deploy_name": "c__Cloud/c_agi/cloud-terminal"
+    "path": "cloud-webapps/cloud-camera",
+    "deploy_name": "cloud-webapps/cloud-camera"
   },
   {
-    "path": "c__Cloud/c_agi/cloud-tools-small-llms",
-    "deploy_name": "c__Cloud/c_agi/cloud-tools-small-llms"
+    "path": "cloud-webapps/cloud-chat",
+    "deploy_name": "cloud-webapps/cloud-chat"
   },
   {
-    "path": "c__Cloud/c_agi/dist",
-    "deploy_name": "c__Cloud/c_agi/dist"
+    "path": "cloud-webapps/cloud-code",
+    "deploy_name": "cloud-webapps/cloud-code"
   },
   {
-    "path": "c__Cloud/c_agi/src",
-    "deploy_name": "c__Cloud/c_agi/src"
+    "path": "cloud-webapps/cloud-contacts",
+    "deploy_name": "cloud-webapps/cloud-contacts"
   },
   {
-    "path": "c__Cloud/c_configs",
-    "deploy_name": "c__Cloud/c_configs"
+    "path": "cloud-webapps/cloud-dialer",
+    "deploy_name": "cloud-webapps/cloud-dialer"
   },
   {
-    "path": "c__Cloud/c_configs/cloud-c3",
-    "deploy_name": "c__Cloud/c_configs/cloud-c3"
+    "path": "cloud-webapps/cloud-drive",
+    "deploy_name": "cloud-webapps/cloud-drive"
   },
   {
-    "path": "c__Cloud/c_configs/cloud-store",
-    "deploy_name": "c__Cloud/c_configs/cloud-store"
+    "path": "cloud-webapps/cloud-gallery",
+    "deploy_name": "cloud-webapps/cloud-gallery"
   },
   {
-    "path": "c__Cloud/c_configs/cloud-superapp",
-    "deploy_name": "c__Cloud/c_configs/cloud-superapp"
+    "path": "cloud-webapps/cloud-keyboard",
+    "deploy_name": "cloud-webapps/cloud-keyboard"
   },
   {
-    "path": "c__Cloud/c_configs/dist",
-    "deploy_name": "c__Cloud/c_configs/dist"
+    "path": "cloud-webapps/cloud-mail",
+    "deploy_name": "cloud-webapps/cloud-mail"
   },
   {
-    "path": "c__Cloud/c_configs/src",
-    "deploy_name": "c__Cloud/c_configs/src"
+    "path": "cloud-webapps/cloud-matrix",
+    "deploy_name": "cloud-webapps/cloud-matrix"
   },
   {
-    "path": "c__Cloud/c_data-apps",
-    "deploy_name": "c__Cloud/c_data-apps"
+    "path": "cloud-webapps/cloud-me",
+    "deploy_name": "cloud-webapps/cloud-me"
   },
   {
-    "path": "c__Cloud/c_data-apps/cloud-contacts",
-    "deploy_name": "c__Cloud/c_data-apps/cloud-contacts"
+    "path": "cloud-webapps/cloud-media",
+    "deploy_name": "cloud-webapps/cloud-media"
   },
   {
-    "path": "c__Cloud/c_data-apps/cloud-drive",
-    "deploy_name": "c__Cloud/c_data-apps/cloud-drive"
+    "path": "cloud-webapps/cloud-myterminal",
+    "deploy_name": "cloud-webapps/cloud-myterminal"
   },
   {
-    "path": "c__Cloud/c_data-apps/cloud-gallery",
-    "deploy_name": "c__Cloud/c_data-apps/cloud-gallery"
+    "path": "cloud-webapps/cloud-nav",
+    "deploy_name": "cloud-webapps/cloud-nav"
   },
   {
-    "path": "c__Cloud/c_data-apps/cloud-media",
-    "deploy_name": "c__Cloud/c_data-apps/cloud-media"
+    "path": "cloud-webapps/cloud-news",
+    "deploy_name": "cloud-webapps/cloud-news"
   },
   {
-    "path": "c__Cloud/c_data-apps/cloud-notes",
-    "deploy_name": "c__Cloud/c_data-apps/cloud-notes"
+    "path": "cloud-webapps/cloud-notes",
+    "deploy_name": "cloud-webapps/cloud-notes"
   },
   {
-    "path": "c__Cloud/c_data-apps/cloud-office",
-    "deploy_name": "c__Cloud/c_data-apps/cloud-office"
+    "path": "cloud-webapps/cloud-office",
+    "deploy_name": "cloud-webapps/cloud-office"
   },
   {
-    "path": "c__Cloud/c_data-apps/cloud-tasks",
-    "deploy_name": "c__Cloud/c_data-apps/cloud-tasks"
+    "path": "cloud-webapps/cloud-search",
+    "deploy_name": "cloud-webapps/cloud-search"
   },
   {
-    "path": "c__Cloud/c_data-apps/cloud-vault",
-    "deploy_name": "c__Cloud/c_data-apps/cloud-vault"
+    "path": "cloud-webapps/cloud-store",
+    "deploy_name": "cloud-webapps/cloud-store"
   },
   {
-    "path": "c__Cloud/c_data-apps/dist",
-    "deploy_name": "c__Cloud/c_data-apps/dist"
+    "path": "cloud-webapps/cloud-superapp",
+    "deploy_name": "cloud-webapps/cloud-superapp"
   },
   {
-    "path": "c__Cloud/c_data-apps/src",
-    "deploy_name": "c__Cloud/c_data-apps/src"
+    "path": "cloud-webapps/cloud-tasks",
+    "deploy_name": "cloud-webapps/cloud-tasks"
   },
   {
-    "path": "c__Cloud/c_inboxes",
-    "deploy_name": "c__Cloud/c_inboxes"
+    "path": "cloud-webapps/cloud-terminal",
+    "deploy_name": "cloud-webapps/cloud-terminal"
   },
   {
-    "path": "c__Cloud/c_inboxes/c3-bot",
-    "deploy_name": "c__Cloud/c_inboxes/c3-bot"
+    "path": "cloud-webapps/cloud-tools-small-llms",
+    "deploy_name": "cloud-webapps/cloud-tools-small-llms"
   },
   {
-    "path": "c__Cloud/c_inboxes/cloud-chat",
-    "deploy_name": "c__Cloud/c_inboxes/cloud-chat"
+    "path": "cloud-webapps/cloud-vault",
+    "deploy_name": "cloud-webapps/cloud-vault"
   },
   {
-    "path": "c__Cloud/c_inboxes/cloud-dialer",
-    "deploy_name": "c__Cloud/c_inboxes/cloud-dialer"
+    "path": "cloud-webapps/cloud-wallet",
+    "deploy_name": "cloud-webapps/cloud-wallet"
   },
   {
-    "path": "c__Cloud/c_inboxes/cloud-mail",
-    "deploy_name": "c__Cloud/c_inboxes/cloud-mail"
-  },
-  {
-    "path": "c__Cloud/c_inboxes/cloud-matrix",
-    "deploy_name": "c__Cloud/c_inboxes/cloud-matrix"
-  },
-  {
-    "path": "c__Cloud/c_inboxes/cloud-news",
-    "deploy_name": "c__Cloud/c_inboxes/cloud-news"
-  },
-  {
-    "path": "c__Cloud/c_inboxes/dist",
-    "deploy_name": "c__Cloud/c_inboxes/dist"
-  },
-  {
-    "path": "c__Cloud/c_inboxes/src",
-    "deploy_name": "c__Cloud/c_inboxes/src"
-  },
-  {
-    "path": "c__Cloud/c_tools",
-    "deploy_name": "c__Cloud/c_tools"
-  },
-  {
-    "path": "c__Cloud/c_tools/cloud-browser",
-    "deploy_name": "c__Cloud/c_tools/cloud-browser"
-  },
-  {
-    "path": "c__Cloud/c_tools/cloud-calc",
-    "deploy_name": "c__Cloud/c_tools/cloud-calc"
-  },
-  {
-    "path": "c__Cloud/c_tools/cloud-camera",
-    "deploy_name": "c__Cloud/c_tools/cloud-camera"
-  },
-  {
-    "path": "c__Cloud/c_tools/cloud-keyboard",
-    "deploy_name": "c__Cloud/c_tools/cloud-keyboard"
-  },
-  {
-    "path": "c__Cloud/c_tools/cloud-me",
-    "deploy_name": "c__Cloud/c_tools/cloud-me"
-  },
-  {
-    "path": "c__Cloud/c_tools/cloud-nav",
-    "deploy_name": "c__Cloud/c_tools/cloud-nav"
-  },
-  {
-    "path": "c__Cloud/c_tools/cloud-wallet",
-    "deploy_name": "c__Cloud/c_tools/cloud-wallet"
-  },
-  {
-    "path": "c__Cloud/c_tools/cloud-writer",
-    "deploy_name": "c__Cloud/c_tools/cloud-writer"
-  },
-  {
-    "path": "c__Cloud/c_tools/dist",
-    "deploy_name": "c__Cloud/c_tools/dist"
-  },
-  {
-    "path": "c__Cloud/c_tools/src",
-    "deploy_name": "c__Cloud/c_tools/src"
+    "path": "cloud-webapps/cloud-writer",
+    "deploy_name": "cloud-webapps/cloud-writer"
   },
   {
     "path": "e-Others/others",

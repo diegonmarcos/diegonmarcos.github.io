@@ -3461,6 +3461,595 @@
     "_project": "tldraw"
   },
   {
+    "name": "AI Chat",
+    "framework": "vanilla",
+    "src": "src",
+    "dist": "dist",
+    "build": [
+      {
+        "_doc": "Copy the static landing page to dist.",
+        "mod": "copy",
+        "files": "*.html",
+        "from": "src"
+      }
+    ],
+    "deploy": {},
+    "_path": "cloud-webapps/ai-chat",
+    "_key": "cloud-webapps__ai-chat",
+    "_category": "cloud-webapps",
+    "_project": "ai-chat"
+  },
+  {
+    "name": "C3-Bot",
+    "framework": "vanilla",
+    "src": "src",
+    "dist": "dist",
+    "build": [
+      {
+        "_doc": "Copy the static landing page to dist.",
+        "mod": "copy",
+        "files": "*.html",
+        "from": "src"
+      }
+    ],
+    "deploy": {},
+    "_path": "cloud-webapps/c3-bot",
+    "_key": "cloud-webapps__c3-bot",
+    "_category": "cloud-webapps",
+    "_project": "c3-bot"
+  },
+  {
+    "name": "Cloud Browser",
+    "framework": "vanilla",
+    "src": "src",
+    "dist": "dist",
+    "build": [
+      {
+        "_doc": "Copy the static landing page to dist.",
+        "mod": "copy",
+        "files": "*.html",
+        "from": "src"
+      }
+    ],
+    "deploy": {},
+    "_path": "cloud-webapps/cloud-browser",
+    "_key": "cloud-webapps__cloud-browser",
+    "_category": "cloud-webapps",
+    "_project": "cloud-browser"
+  },
+  {
+    "name": "Cloud C3",
+    "framework": "vanilla",
+    "src": "src",
+    "dist": "dist",
+    "build": [
+      {
+        "_doc": "Copy the static landing page to dist.",
+        "mod": "copy",
+        "files": "*.html",
+        "from": "src"
+      }
+    ],
+    "deploy": {},
+    "_path": "cloud-webapps/cloud-c3",
+    "_key": "cloud-webapps__cloud-c3",
+    "_category": "cloud-webapps",
+    "_project": "cloud-c3"
+  },
+  {
+    "name": "Cloud Calc",
+    "framework": "vanilla",
+    "src": "src",
+    "dist": "dist",
+    "build": [
+      {
+        "_doc": "Copy the static landing page to dist.",
+        "mod": "copy",
+        "files": "*.html",
+        "from": "src"
+      }
+    ],
+    "deploy": {},
+    "_path": "cloud-webapps/cloud-calc",
+    "_key": "cloud-webapps__cloud-calc",
+    "_category": "cloud-webapps",
+    "_project": "cloud-calc"
+  },
+  {
+    "name": "Cloud Camera",
+    "framework": "vanilla",
+    "src": "src",
+    "dist": "dist",
+    "build": [
+      {
+        "_doc": "Copy the static landing page to dist.",
+        "mod": "copy",
+        "files": "*.html",
+        "from": "src"
+      }
+    ],
+    "deploy": {},
+    "_path": "cloud-webapps/cloud-camera",
+    "_key": "cloud-webapps__cloud-camera",
+    "_category": "cloud-webapps",
+    "_project": "cloud-camera"
+  },
+  {
+    "name": "Cloud Chat",
+    "framework": "vanilla",
+    "src": "src",
+    "dist": "dist",
+    "build": [
+      {
+        "_doc": "Copy the static landing page to dist.",
+        "mod": "copy",
+        "files": "*.html",
+        "from": "src"
+      }
+    ],
+    "deploy": {},
+    "_path": "cloud-webapps/cloud-chat",
+    "_key": "cloud-webapps__cloud-chat",
+    "_category": "cloud-webapps",
+    "_project": "cloud-chat"
+  },
+  {
+    "name": "Cloud Code",
+    "framework": "vanilla",
+    "src": "src",
+    "dist": "dist",
+    "build": [
+      {
+        "_doc": "Copy the static landing page to dist.",
+        "mod": "copy",
+        "files": "*.html",
+        "from": "src"
+      }
+    ],
+    "deploy": {},
+    "_path": "cloud-webapps/cloud-code",
+    "_key": "cloud-webapps__cloud-code",
+    "_category": "cloud-webapps",
+    "_project": "cloud-code"
+  },
+  {
+    "name": "Cloud Contacts",
+    "framework": "vanilla",
+    "src": "src",
+    "dist": "dist",
+    "build": [
+      {
+        "_doc": "Copy the static landing page to dist.",
+        "mod": "copy",
+        "files": "*.html",
+        "from": "src"
+      }
+    ],
+    "deploy": {},
+    "_path": "cloud-webapps/cloud-contacts",
+    "_key": "cloud-webapps__cloud-contacts",
+    "_category": "cloud-webapps",
+    "_project": "cloud-contacts"
+  },
+  {
+    "name": "Cloud Dialer",
+    "framework": "vanilla",
+    "src": "src",
+    "dist": "dist",
+    "build": [
+      {
+        "_doc": "Copy the static landing page to dist.",
+        "mod": "copy",
+        "files": "*.html",
+        "from": "src"
+      }
+    ],
+    "deploy": {},
+    "_path": "cloud-webapps/cloud-dialer",
+    "_key": "cloud-webapps__cloud-dialer",
+    "_category": "cloud-webapps",
+    "_project": "cloud-dialer"
+  },
+  {
+    "name": "Cloud Drive",
+    "framework": "vanilla",
+    "src": "src",
+    "dist": "dist",
+    "build": [
+      {
+        "_doc": "Copy the static landing page to dist.",
+        "mod": "copy",
+        "files": "*.html",
+        "from": "src"
+      }
+    ],
+    "deploy": {},
+    "_path": "cloud-webapps/cloud-drive",
+    "_key": "cloud-webapps__cloud-drive",
+    "_category": "cloud-webapps",
+    "_project": "cloud-drive"
+  },
+  {
+    "name": "Cloud Gallery",
+    "framework": "vanilla",
+    "src": "src",
+    "dist": "dist",
+    "build": [
+      {
+        "_doc": "Copy the static landing page to dist.",
+        "mod": "copy",
+        "files": "*.html",
+        "from": "src"
+      }
+    ],
+    "deploy": {},
+    "_path": "cloud-webapps/cloud-gallery",
+    "_key": "cloud-webapps__cloud-gallery",
+    "_category": "cloud-webapps",
+    "_project": "cloud-gallery"
+  },
+  {
+    "name": "Cloud Keyboard",
+    "framework": "vanilla",
+    "src": "src",
+    "dist": "dist",
+    "build": [
+      {
+        "_doc": "Copy the static landing page to dist.",
+        "mod": "copy",
+        "files": "*.html",
+        "from": "src"
+      }
+    ],
+    "deploy": {},
+    "_path": "cloud-webapps/cloud-keyboard",
+    "_key": "cloud-webapps__cloud-keyboard",
+    "_category": "cloud-webapps",
+    "_project": "cloud-keyboard"
+  },
+  {
+    "name": "Cloud Mail",
+    "framework": "vanilla",
+    "src": "src",
+    "dist": "dist",
+    "build": [
+      {
+        "_doc": "Copy the static landing page to dist.",
+        "mod": "copy",
+        "files": "*.html",
+        "from": "src"
+      }
+    ],
+    "deploy": {},
+    "_path": "cloud-webapps/cloud-mail",
+    "_key": "cloud-webapps__cloud-mail",
+    "_category": "cloud-webapps",
+    "_project": "cloud-mail"
+  },
+  {
+    "name": "Cloud Messenger (Matrix)",
+    "framework": "vanilla",
+    "src": "src",
+    "dist": "dist",
+    "build": [
+      {
+        "_doc": "Copy the static landing page to dist.",
+        "mod": "copy",
+        "files": "*.html",
+        "from": "src"
+      }
+    ],
+    "deploy": {},
+    "_path": "cloud-webapps/cloud-matrix",
+    "_key": "cloud-webapps__cloud-matrix",
+    "_category": "cloud-webapps",
+    "_project": "cloud-matrix"
+  },
+  {
+    "name": "Cloud Me",
+    "framework": "vanilla",
+    "src": "src",
+    "dist": "dist",
+    "build": [
+      {
+        "_doc": "Copy the static landing page to dist.",
+        "mod": "copy",
+        "files": "*.html",
+        "from": "src"
+      }
+    ],
+    "deploy": {},
+    "_path": "cloud-webapps/cloud-me",
+    "_key": "cloud-webapps__cloud-me",
+    "_category": "cloud-webapps",
+    "_project": "cloud-me"
+  },
+  {
+    "name": "Cloud Media Center",
+    "framework": "vanilla",
+    "src": "src",
+    "dist": "dist",
+    "build": [
+      {
+        "_doc": "Copy the static landing page to dist.",
+        "mod": "copy",
+        "files": "*.html",
+        "from": "src"
+      }
+    ],
+    "deploy": {},
+    "_path": "cloud-webapps/cloud-media",
+    "_key": "cloud-webapps__cloud-media",
+    "_category": "cloud-webapps",
+    "_project": "cloud-media"
+  },
+  {
+    "name": "Cloud MyTerminal",
+    "framework": "vanilla",
+    "src": "src",
+    "dist": "dist",
+    "build": [
+      {
+        "_doc": "Copy the static landing page to dist.",
+        "mod": "copy",
+        "files": "*.html",
+        "from": "src"
+      }
+    ],
+    "deploy": {},
+    "_path": "cloud-webapps/cloud-myterminal",
+    "_key": "cloud-webapps__cloud-myterminal",
+    "_category": "cloud-webapps",
+    "_project": "cloud-myterminal"
+  },
+  {
+    "name": "Cloud Navigation",
+    "framework": "vanilla",
+    "src": "src",
+    "dist": "dist",
+    "build": [
+      {
+        "_doc": "Copy the static landing page to dist.",
+        "mod": "copy",
+        "files": "*.html",
+        "from": "src"
+      }
+    ],
+    "deploy": {},
+    "_path": "cloud-webapps/cloud-nav",
+    "_key": "cloud-webapps__cloud-nav",
+    "_category": "cloud-webapps",
+    "_project": "cloud-nav"
+  },
+  {
+    "name": "Cloud News",
+    "framework": "vanilla",
+    "src": "src",
+    "dist": "dist",
+    "build": [
+      {
+        "_doc": "Copy the static landing page to dist.",
+        "mod": "copy",
+        "files": "*.html",
+        "from": "src"
+      }
+    ],
+    "deploy": {},
+    "_path": "cloud-webapps/cloud-news",
+    "_key": "cloud-webapps__cloud-news",
+    "_category": "cloud-webapps",
+    "_project": "cloud-news"
+  },
+  {
+    "name": "Cloud Notes",
+    "framework": "vanilla",
+    "src": "src",
+    "dist": "dist",
+    "build": [
+      {
+        "_doc": "Copy the static landing page to dist.",
+        "mod": "copy",
+        "files": "*.html",
+        "from": "src"
+      }
+    ],
+    "deploy": {},
+    "_path": "cloud-webapps/cloud-notes",
+    "_key": "cloud-webapps__cloud-notes",
+    "_category": "cloud-webapps",
+    "_project": "cloud-notes"
+  },
+  {
+    "name": "Cloud Office",
+    "framework": "vanilla",
+    "src": "src",
+    "dist": "dist",
+    "build": [
+      {
+        "_doc": "Copy the static landing page to dist.",
+        "mod": "copy",
+        "files": "*.html",
+        "from": "src"
+      }
+    ],
+    "deploy": {},
+    "_path": "cloud-webapps/cloud-office",
+    "_key": "cloud-webapps__cloud-office",
+    "_category": "cloud-webapps",
+    "_project": "cloud-office"
+  },
+  {
+    "name": "Cloud Search",
+    "framework": "vanilla",
+    "src": "src",
+    "dist": "dist",
+    "build": [
+      {
+        "_doc": "Copy the static landing page to dist.",
+        "mod": "copy",
+        "files": "*.html",
+        "from": "src"
+      }
+    ],
+    "deploy": {},
+    "_path": "cloud-webapps/cloud-search",
+    "_key": "cloud-webapps__cloud-search",
+    "_category": "cloud-webapps",
+    "_project": "cloud-search"
+  },
+  {
+    "name": "Cloud Store",
+    "framework": "vanilla",
+    "src": "src",
+    "dist": "dist",
+    "build": [
+      {
+        "_doc": "Copy the static landing page to dist.",
+        "mod": "copy",
+        "files": "*.html",
+        "from": "src"
+      }
+    ],
+    "deploy": {},
+    "_path": "cloud-webapps/cloud-store",
+    "_key": "cloud-webapps__cloud-store",
+    "_category": "cloud-webapps",
+    "_project": "cloud-store"
+  },
+  {
+    "name": "Cloud SuperApp",
+    "framework": "vanilla",
+    "src": "src",
+    "dist": "dist",
+    "build": [
+      {
+        "_doc": "Copy the static landing page to dist.",
+        "mod": "copy",
+        "files": "*.html",
+        "from": "src"
+      }
+    ],
+    "deploy": {},
+    "_path": "cloud-webapps/cloud-superapp",
+    "_key": "cloud-webapps__cloud-superapp",
+    "_category": "cloud-webapps",
+    "_project": "cloud-superapp"
+  },
+  {
+    "name": "Cloud Tasks",
+    "framework": "vanilla",
+    "src": "src",
+    "dist": "dist",
+    "build": [
+      {
+        "_doc": "Copy the static landing page to dist.",
+        "mod": "copy",
+        "files": "*.html",
+        "from": "src"
+      }
+    ],
+    "deploy": {},
+    "_path": "cloud-webapps/cloud-tasks",
+    "_key": "cloud-webapps__cloud-tasks",
+    "_category": "cloud-webapps",
+    "_project": "cloud-tasks"
+  },
+  {
+    "name": "Cloud Terminal",
+    "framework": "vanilla",
+    "src": "src",
+    "dist": "dist",
+    "build": [
+      {
+        "_doc": "Copy the static landing page to dist.",
+        "mod": "copy",
+        "files": "*.html",
+        "from": "src"
+      }
+    ],
+    "deploy": {},
+    "_path": "cloud-webapps/cloud-terminal",
+    "_key": "cloud-webapps__cloud-terminal",
+    "_category": "cloud-webapps",
+    "_project": "cloud-terminal"
+  },
+  {
+    "name": "Cloud Tools (Small LLMs)",
+    "framework": "vanilla",
+    "src": "src",
+    "dist": "dist",
+    "build": [
+      {
+        "_doc": "Copy the static landing page to dist.",
+        "mod": "copy",
+        "files": "*.html",
+        "from": "src"
+      }
+    ],
+    "deploy": {},
+    "_path": "cloud-webapps/cloud-tools-small-llms",
+    "_key": "cloud-webapps__cloud-tools-small-llms",
+    "_category": "cloud-webapps",
+    "_project": "cloud-tools-small-llms"
+  },
+  {
+    "name": "Cloud Vault",
+    "framework": "vanilla",
+    "src": "src",
+    "dist": "dist",
+    "build": [
+      {
+        "_doc": "Copy the static landing page to dist.",
+        "mod": "copy",
+        "files": "*.html",
+        "from": "src"
+      }
+    ],
+    "deploy": {},
+    "_path": "cloud-webapps/cloud-vault",
+    "_key": "cloud-webapps__cloud-vault",
+    "_category": "cloud-webapps",
+    "_project": "cloud-vault"
+  },
+  {
+    "name": "Cloud Wallet",
+    "framework": "vanilla",
+    "src": "src",
+    "dist": "dist",
+    "build": [
+      {
+        "_doc": "Copy the static landing page to dist.",
+        "mod": "copy",
+        "files": "*.html",
+        "from": "src"
+      }
+    ],
+    "deploy": {},
+    "_path": "cloud-webapps/cloud-wallet",
+    "_key": "cloud-webapps__cloud-wallet",
+    "_category": "cloud-webapps",
+    "_project": "cloud-wallet"
+  },
+  {
+    "name": "Cloud Writer",
+    "framework": "vanilla",
+    "src": "src",
+    "dist": "dist",
+    "build": [
+      {
+        "_doc": "Copy the static landing page to dist.",
+        "mod": "copy",
+        "files": "*.html",
+        "from": "src"
+      }
+    ],
+    "deploy": {},
+    "_path": "cloud-webapps/cloud-writer",
+    "_key": "cloud-webapps__cloud-writer",
+    "_category": "cloud-webapps",
+    "_project": "cloud-writer"
+  },
+  {
     "name": "Others",
     "framework": "vanilla",
     "port": 8008,

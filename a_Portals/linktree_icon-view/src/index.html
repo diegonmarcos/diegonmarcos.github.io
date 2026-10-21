@@ -26,20 +26,20 @@
 
     <link rel="stylesheet" href="style.css">
     <!-- Portal-local additions. MUST come after style.css — that is
-         cloud-mobile's stylesheet, reached through the src/scss symlink. -->
+         cloud-superapp's stylesheet, reached through the src/scss symlink. -->
     <link rel="stylesheet" href="overrides.css">
     <script async src="https://analytics.diegonmarcos.com/umami/script.js" data-website-id="937cbde7-5ec2-450c-9d6a-8117423ac12f"></script>
 </head>
-<!-- data-section drives the section accent in cloud-mobile's stylesheet; this
+<!-- data-section drives the section accent in cloud-superapp's stylesheet; this
      portal is the Cloud section's Apps page, rendered over linktree data. -->
 <body data-section="cloud">
-    <!-- Shell chrome copied from cloud-mobile's cloud/apps page so the two are
+    <!-- Shell chrome copied from cloud-superapp's cloud/apps page so the two are
          the same layout, not merely the same palette. style.css IS
-         cloud-mobile's stylesheet (src/scss is a symlink), so every class here
+         cloud-superapp's stylesheet (src/scss is a symlink), so every class here
          resolves against the same rules the Kotlin-derived UI uses.
 
          LauncherStatusStripView has no web equivalent for real device metrics,
-         so the left/right clusters are static in cloud-mobile too; only the
+         so the left/right clusters are static in cloud-superapp too; only the
          clock is live. Same here. -->
     <div class="shell">
         <div class="status-strip">

@@ -1,7 +1,7 @@
 [
   {
-    "key": "a_Portals__cloud-mobile",
-    "path": "a_Portals/cloud-mobile",
+    "key": "a_Portals__cloud-superapp",
+    "path": "a_Portals/cloud-superapp",
     "manifest": {
       "name": "Cloud SuperApp — Mobile UI",
       "short_name": "Cloud Mobile",

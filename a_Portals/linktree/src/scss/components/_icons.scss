@@ -274,7 +274,7 @@
 // status strip at the very top of its viewport, and 3rem above it pushed the
 // strip into the middle of a floating panel.
 //
-// The portal still constrains ITSELF — cloud-mobile's .shell caps at
+// The portal still constrains ITSELF — cloud-superapp's .shell caps at
 // --phone-max-width (480px) and centres — so filling the viewport here gives a
 // phone-width screen on a black field, which is the intended effect. Fighting
 // that with a second, outer constraint just shrank the phone.

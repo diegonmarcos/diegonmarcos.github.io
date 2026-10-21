@@ -167,13 +167,13 @@ jobs:
           cd ../..
           echo "✅ Cloud Dashboard build complete"
       - name: 🔨 Build Cloud Mobile
-        id: build-cloud-mobile
+        id: build-cloud-superapp
         if:
-          contains(steps.changed-files.outputs.all_changed_files, 'a_Portals/cloud-mobile/src/')
+          contains(steps.changed-files.outputs.all_changed_files, 'a_Portals/cloud-superapp/src/')
 
         run: |
           echo "🔨 Building Cloud Mobile..."
-          cd a_Portals/cloud-mobile
+          cd a_Portals/cloud-superapp
           bash build.sh build
           cd ../..
           echo "✅ Cloud Mobile build complete"
@@ -593,7 +593,7 @@ jobs:
           PROJECTS=(
             "e-Root:."
             "a_Portals/cloud:cloud"
-            "a_Portals/cloud-mobile:cloud-mobile"
+            "a_Portals/cloud-superapp:cloud-superapp"
             "a_Portals/cloud-web:cloud-web"
             "a_Portals/linktree:linktree"
             "a_Portals/linktree_mindmap:linktree_mindmap"
@@ -628,53 +628,38 @@ jobs:
             "c_Circus/music:music"
             "b_MyData/mymaps-mytrips:mymaps-mytrips"
             "a_Projects/Warehouse:Warehouse"
-            "c__Cloud:c__Cloud"
-            "c__Cloud/c_agi:c__Cloud/c_agi"
-            "c__Cloud/c_agi/ai-chat:c__Cloud/c_agi/ai-chat"
-            "c__Cloud/c_agi/cloud-code:c__Cloud/c_agi/cloud-code"
-            "c__Cloud/c_agi/cloud-myterminal:c__Cloud/c_agi/cloud-myterminal"
-            "c__Cloud/c_agi/cloud-search:c__Cloud/c_agi/cloud-search"
-            "c__Cloud/c_agi/cloud-terminal:c__Cloud/c_agi/cloud-terminal"
-            "c__Cloud/c_agi/cloud-tools-small-llms:c__Cloud/c_agi/cloud-tools-small-llms"
-            "c__Cloud/c_agi/dist:c__Cloud/c_agi/dist"
-            "c__Cloud/c_agi/src:c__Cloud/c_agi/src"
-            "c__Cloud/c_configs:c__Cloud/c_configs"
-            "c__Cloud/c_configs/cloud-c3:c__Cloud/c_configs/cloud-c3"
-            "c__Cloud/c_configs/cloud-store:c__Cloud/c_configs/cloud-store"
-            "c__Cloud/c_configs/cloud-superapp:c__Cloud/c_configs/cloud-superapp"
-            "c__Cloud/c_configs/dist:c__Cloud/c_configs/dist"
-            "c__Cloud/c_configs/src:c__Cloud/c_configs/src"
-            "c__Cloud/c_data-apps:c__Cloud/c_data-apps"
-            "c__Cloud/c_data-apps/cloud-contacts:c__Cloud/c_data-apps/cloud-contacts"
-            "c__Cloud/c_data-apps/cloud-drive:c__Cloud/c_data-apps/cloud-drive"
-            "c__Cloud/c_data-apps/cloud-gallery:c__Cloud/c_data-apps/cloud-gallery"
-            "c__Cloud/c_data-apps/cloud-media:c__Cloud/c_data-apps/cloud-media"
-            "c__Cloud/c_data-apps/cloud-notes:c__Cloud/c_data-apps/cloud-notes"
-            "c__Cloud/c_data-apps/cloud-office:c__Cloud/c_data-apps/cloud-office"
-            "c__Cloud/c_data-apps/cloud-tasks:c__Cloud/c_data-apps/cloud-tasks"
-            "c__Cloud/c_data-apps/cloud-vault:c__Cloud/c_data-apps/cloud-vault"
-            "c__Cloud/c_data-apps/dist:c__Cloud/c_data-apps/dist"
-            "c__Cloud/c_data-apps/src:c__Cloud/c_data-apps/src"
-            "c__Cloud/c_inboxes:c__Cloud/c_inboxes"
-            "c__Cloud/c_inboxes/c3-bot:c__Cloud/c_inboxes/c3-bot"
-            "c__Cloud/c_inboxes/cloud-chat:c__Cloud/c_inboxes/cloud-chat"
-            "c__Cloud/c_inboxes/cloud-dialer:c__Cloud/c_inboxes/cloud-dialer"
-            "c__Cloud/c_inboxes/cloud-mail:c__Cloud/c_inboxes/cloud-mail"
-            "c__Cloud/c_inboxes/cloud-matrix:c__Cloud/c_inboxes/cloud-matrix"
-            "c__Cloud/c_inboxes/cloud-news:c__Cloud/c_inboxes/cloud-news"
-            "c__Cloud/c_inboxes/dist:c__Cloud/c_inboxes/dist"
-            "c__Cloud/c_inboxes/src:c__Cloud/c_inboxes/src"
-            "c__Cloud/c_tools:c__Cloud/c_tools"
-            "c__Cloud/c_tools/cloud-browser:c__Cloud/c_tools/cloud-browser"
-            "c__Cloud/c_tools/cloud-calc:c__Cloud/c_tools/cloud-calc"
-            "c__Cloud/c_tools/cloud-camera:c__Cloud/c_tools/cloud-camera"
-            "c__Cloud/c_tools/cloud-keyboard:c__Cloud/c_tools/cloud-keyboard"
-            "c__Cloud/c_tools/cloud-me:c__Cloud/c_tools/cloud-me"
-            "c__Cloud/c_tools/cloud-nav:c__Cloud/c_tools/cloud-nav"
-            "c__Cloud/c_tools/cloud-wallet:c__Cloud/c_tools/cloud-wallet"
-            "c__Cloud/c_tools/cloud-writer:c__Cloud/c_tools/cloud-writer"
-            "c__Cloud/c_tools/dist:c__Cloud/c_tools/dist"
-            "c__Cloud/c_tools/src:c__Cloud/c_tools/src"
+            "cloud-webapps/_shared:cloud-webapps"
+            "cloud-webapps/ai-chat:cloud-webapps/ai-chat"
+            "cloud-webapps/c3-bot:cloud-webapps/c3-bot"
+            "cloud-webapps/cloud-browser:cloud-webapps/cloud-browser"
+            "cloud-webapps/cloud-c3:cloud-webapps/cloud-c3"
+            "cloud-webapps/cloud-calc:cloud-webapps/cloud-calc"
+            "cloud-webapps/cloud-camera:cloud-webapps/cloud-camera"
+            "cloud-webapps/cloud-chat:cloud-webapps/cloud-chat"
+            "cloud-webapps/cloud-code:cloud-webapps/cloud-code"
+            "cloud-webapps/cloud-contacts:cloud-webapps/cloud-contacts"
+            "cloud-webapps/cloud-dialer:cloud-webapps/cloud-dialer"
+            "cloud-webapps/cloud-drive:cloud-webapps/cloud-drive"
+            "cloud-webapps/cloud-gallery:cloud-webapps/cloud-gallery"
+            "cloud-webapps/cloud-keyboard:cloud-webapps/cloud-keyboard"
+            "cloud-webapps/cloud-mail:cloud-webapps/cloud-mail"
+            "cloud-webapps/cloud-matrix:cloud-webapps/cloud-matrix"
+            "cloud-webapps/cloud-me:cloud-webapps/cloud-me"
+            "cloud-webapps/cloud-media:cloud-webapps/cloud-media"
+            "cloud-webapps/cloud-myterminal:cloud-webapps/cloud-myterminal"
+            "cloud-webapps/cloud-nav:cloud-webapps/cloud-nav"
+            "cloud-webapps/cloud-news:cloud-webapps/cloud-news"
+            "cloud-webapps/cloud-notes:cloud-webapps/cloud-notes"
+            "cloud-webapps/cloud-office:cloud-webapps/cloud-office"
+            "cloud-webapps/cloud-search:cloud-webapps/cloud-search"
+            "cloud-webapps/cloud-store:cloud-webapps/cloud-store"
+            "cloud-webapps/cloud-superapp:cloud-webapps/cloud-superapp"
+            "cloud-webapps/cloud-tasks:cloud-webapps/cloud-tasks"
+            "cloud-webapps/cloud-terminal:cloud-webapps/cloud-terminal"
+            "cloud-webapps/cloud-tools-small-llms:cloud-webapps/cloud-tools-small-llms"
+            "cloud-webapps/cloud-vault:cloud-webapps/cloud-vault"
+            "cloud-webapps/cloud-wallet:cloud-webapps/cloud-wallet"
+            "cloud-webapps/cloud-writer:cloud-webapps/cloud-writer"
             "e-Others/others:others"
             "c_LabTools/sailytics:sailytics"
             "c_LabTools/news:news"
@@ -732,6 +717,8 @@ jobs:
           find _site -type l ! -exec test -e {} \; -delete 2>/dev/null || true
           echo "📊 Site structure:"
           ls -lah _site/ | head -20
+      - name: 🔀 Redirect stubs for renamed URLs
+        run: node cloud-webapps/scripts/gen-redirects.mjs _site
       - name: ⬆️ Upload Site Artifact
         uses: actions/upload-pages-artifact@v3
         with:

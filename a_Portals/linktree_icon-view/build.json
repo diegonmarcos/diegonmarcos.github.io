@@ -19,7 +19,7 @@
       "output": "style.css"
     },
     {
-      "_doc": "Portal-local additions, compiled separately and loaded AFTER style.css. It cannot live in src/scss: that path is a symlink to cloud-mobile's stylesheet, so a rule added there would change the Cloud SuperApp mirror too.",
+      "_doc": "Portal-local additions, compiled separately and loaded AFTER style.css. It cannot live in src/scss: that path is a symlink to cloud-superapp's stylesheet, so a rule added there would change the Cloud SuperApp mirror too.",
       "mod": "sass",
       "input": "src/scss-local/overrides.scss",
       "output": "overrides.css"

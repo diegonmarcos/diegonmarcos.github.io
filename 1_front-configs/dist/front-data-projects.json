@@ -72,14 +72,14 @@
     "has_pkg": false
   },
   {
-    "path": "a_Portals/cloud-mobile",
+    "path": "a_Portals/cloud-superapp",
     "category": "a_Portals",
-    "project": "cloud-mobile",
-    "key": "a_Portals__cloud-mobile",
+    "project": "cloud-superapp",
+    "key": "a_Portals__cloud-superapp",
     "name": "Cloud Mobile",
     "framework": "vanilla",
     "port": 8036,
-    "deploy_name": "cloud-mobile",
+    "deploy_name": "cloud-superapp",
     "has_pwa": true,
     "has_pkg": true
   },

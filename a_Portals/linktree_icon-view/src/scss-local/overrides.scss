@@ -1,7 +1,7 @@
 // ==========================================================================
 // Icon-View-only additions.
 //
-// src/scss is a SYMLINK to cloud-mobile's stylesheet — that is deliberate, so
+// src/scss is a SYMLINK to cloud-superapp's stylesheet — that is deliberate, so
 // the two cannot drift — which means nothing may be added there: a rule meant
 // for this portal would change the Cloud SuperApp mirror as well. Anything
 // specific to this page belongs here, and this sheet loads AFTER style.css.
@@ -11,7 +11,7 @@
 // first group has no rule above it — a leading line reads as a stray border
 // under the tabs rather than as a divider.
 //
-// Colour is cloud-mobile's own --drawer-separator (the NavigationView divider),
+// Colour is cloud-superapp's own --drawer-separator (the NavigationView divider),
 // not a new value: this file must not introduce colours the design system does
 // not already have.
 .tile-group + .tile-group {

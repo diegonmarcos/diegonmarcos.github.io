@@ -670,9 +670,9 @@
     },
     {
       "category": "a_Portals",
-      "project": "cloud-mobile",
-      "key": "a_Portals__cloud-mobile",
-      "path": "a_Portals/cloud-mobile",
+      "project": "cloud-superapp",
+      "key": "a_Portals__cloud-superapp",
+      "path": "a_Portals/cloud-superapp",
       "build": {
         "name": "Cloud Mobile",
         "framework": "vanilla",
@@ -760,7 +760,7 @@
       "has_manifest": true,
       "has_dist": true,
       "package": {
-        "name": "cloud-mobile",
+        "name": "cloud-superapp",
         "version": "1.0.0",
         "description": "Web replica of the Cloud SuperApp Android launcher UI",
         "main": "dist/index.html",
@@ -1327,7 +1327,7 @@
             "output": "style.css"
           },
           {
-            "_doc": "Portal-local additions, compiled separately and loaded AFTER style.css. It cannot live in src/scss: that path is a symlink to cloud-mobile's stylesheet, so a rule added there would change the Cloud SuperApp mirror too.",
+            "_doc": "Portal-local additions, compiled separately and loaded AFTER style.css. It cannot live in src/scss: that path is a symlink to cloud-superapp's stylesheet, so a rule added there would change the Cloud SuperApp mirror too.",
             "mod": "sass",
             "input": "src/scss-local/overrides.scss",
             "output": "overrides.css"
@@ -4836,8 +4836,8 @@
       "deploy_name": "cloud"
     },
     {
-      "path": "a_Portals/cloud-mobile",
-      "deploy_name": "cloud-mobile"
+      "path": "a_Portals/cloud-superapp",
+      "deploy_name": "cloud-superapp"
     },
     {
       "path": "a_Portals/cloud-web",

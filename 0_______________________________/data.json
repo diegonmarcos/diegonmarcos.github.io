@@ -96,8 +96,8 @@
         },
         {
           "name": "Cloud Mobile",
-          "slug": "cloud-mobile",
-          "path": "a_Portals/cloud-mobile",
+          "slug": "cloud-superapp",
+          "path": "a_Portals/cloud-superapp",
           "category": "a_Portals",
           "framework": "vanilla",
           "port": 8036,

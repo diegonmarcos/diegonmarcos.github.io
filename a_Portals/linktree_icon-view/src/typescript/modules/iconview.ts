@@ -12,7 +12,7 @@ const FALLBACK_ICON = 'link';
 // Icons
 // ---------------------------------------------------------------------------
 // The glyph is INLINED into the span rather than set as an <img src> or a CSS
-// mask. cloud-mobile's _tiles.scss records why, and it applies verbatim here:
+// mask. cloud-superapp's _tiles.scss records why, and it applies verbatim here:
 // the tint comes from `color` through the SVG's own currentColor, an <img>
 // cannot inherit that, and Android WebView renders `mask-image` as a solid
 // square. All 55 icons in linktree/src/public/icons use currentColor, so they
@@ -52,7 +52,7 @@ function paintIcon(host: HTMLElement, name: string): void {
 //   Comms                                -> settings-list__group (title 2)
 //   Mail                                 -> tile              (icon)
 //
-// Both title styles are cloud-mobile's own. tile-group__title is the bold
+// Both title styles are cloud-superapp's own. tile-group__title is the bold
 // 16sp mixed-case lavender heading the APK uses for a Suite group;
 // settings-list__group is the uppercase tracked-out divider it uses between
 // subsections — the very style tile-group__title's comment contrasts itself
@@ -64,7 +64,7 @@ let active = 0;
 // ---------------------------------------------------------------------------
 // Rendering
 // ---------------------------------------------------------------------------
-// Every class here is cloud-mobile's. style.css IS its stylesheet (src/scss is
+// Every class here is cloud-superapp's. style.css IS its stylesheet (src/scss is
 // a symlink), so invented class names paint nothing.
 
 function renderTabs(): HTMLElement {
@@ -182,7 +182,7 @@ function render(): void {
   }
 }
 
-/** The one genuinely live bit of the status strip, as in cloud-mobile. */
+/** The one genuinely live bit of the status strip, as in cloud-superapp. */
 function startClock(): void {
   const el = document.getElementById('status-clock');
   if (!el) return;

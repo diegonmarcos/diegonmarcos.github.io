@@ -75,14 +75,14 @@
     "url": "https://diegonmarcos.github.io/cloud"
   },
   {
-    "id": "a_Portals__cloud-mobile",
-    "project": "cloud-mobile",
-    "path": "a_Portals/cloud-mobile",
+    "id": "a_Portals__cloud-superapp",
+    "project": "cloud-superapp",
+    "path": "a_Portals/cloud-superapp",
     "category": "a_Portals",
     "name": "Cloud Mobile",
     "framework": "vanilla",
-    "deploy_name": "cloud-mobile",
-    "url": "https://diegonmarcos.github.io/cloud-mobile"
+    "deploy_name": "cloud-superapp",
+    "url": "https://diegonmarcos.github.io/cloud-superapp"
   },
   {
     "id": "a_Portals__cloud-web",

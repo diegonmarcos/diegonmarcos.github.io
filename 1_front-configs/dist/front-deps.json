@@ -172,7 +172,7 @@
       },
       {
         "service": "Cloud Mobile",
-        "folder": "a_Portals/cloud-mobile",
+        "folder": "a_Portals/cloud-superapp",
         "category": "a_Portals",
         "dependencies": {},
         "devDependencies": {

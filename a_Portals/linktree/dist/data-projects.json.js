@@ -1166,7 +1166,7 @@
         "primary_links": [
           {
             "label": "Cloud Mobile",
-            "url": "https://diegonmarcos.github.io/cloud-mobile",
+            "url": "https://diegonmarcos.github.io/cloud-superapp",
             "icon": "device-mobile.svg"
           }
         ],

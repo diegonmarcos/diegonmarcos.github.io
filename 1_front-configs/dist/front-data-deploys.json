@@ -8,8 +8,8 @@
     "deploy_name": "cloud"
   },
   {
-    "path": "a_Portals/cloud-mobile",
-    "deploy_name": "cloud-mobile"
+    "path": "a_Portals/cloud-superapp",
+    "deploy_name": "cloud-superapp"
   },
   {
     "path": "a_Portals/cloud-web",

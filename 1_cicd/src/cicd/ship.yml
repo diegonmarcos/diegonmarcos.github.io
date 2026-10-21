@@ -722,6 +722,20 @@ jobs:
           find _site -type l ! -exec test -e {} \; -delete 2>/dev/null || true
           echo "📊 Site structure:"
           ls -lah _site/ | head -20
+      - name: 🧭 Service fallback pages (cloud-webapps/<service>/dist)
+        run: |
+          # Generated per-service fallback sites (cloud-webapps scripts/gen-fallback.mjs): every
+          # cloud-webapps/<folder>/dist/index.html not already published above ships at the same path.
+          n=0
+          for d in cloud-webapps/*/dist; do
+            name="$(basename "$(dirname "$d")")"
+            [ -f "$d/index.html" ] || continue
+            [ -e "_site/cloud-webapps/$name" ] && continue
+            mkdir -p "_site/cloud-webapps/$name"
+            cp -rL "$d"/. "_site/cloud-webapps/$name/"
+            n=$((n + 1))
+          done
+          echo "service fallback pages published: $n"
       - name: 🔀 Redirect stubs for renamed URLs
         run: node cloud-webapps/scripts/gen-redirects.mjs _site
       - name: ⬆️ Upload Site Artifact

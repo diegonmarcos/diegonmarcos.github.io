@@ -858,7 +858,7 @@
       "color": "pink",
       "pages": [
         {
-          "id": "pw-list",
+          "id": "passwords",
           "label": "Passwords",
           "view": {
             "type": "list",

@@ -1044,7 +1044,7 @@
         "icon": "ic_vault",
         "pages": [
           {
-            "id": "pw-list",
+            "id": "passwords",
             "label": "Passwords",
             "icon": "ic_p_vault_pw"
           },

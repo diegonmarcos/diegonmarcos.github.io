@@ -8,7 +8,11 @@ import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const root = join(dirname(fileURLToPath(import.meta.url)), '..');
-const list = JSON.parse(readFileSync(join(root, '../a_Portals/cloud-superapp/src/data/cloud-apps.json'), 'utf8'));
+// In the Pages repo the list sits at ../a_Portals/...; in cloud-webapps use the vendored copy (scripts/cloud-apps.json).
+const pagesList = join(root, '../a_Portals/cloud-superapp/src/data/cloud-apps.json');
+const list = JSON.parse(readFileSync(existsSync(pagesList) ? pagesList : join(root, 'scripts/cloud-apps.json'), 'utf8'));
+// Web-only sites with no APK tile (#1063): one per backend, c3-*.
+const WEB_ONLY = [['c3-mail', 'C3 Mail'], ['c3-security-network', 'C3 Security & Network'], ['c3-dns-routing', 'C3 DNS & Routing'], ['c3-observability', 'C3 Observability'], ['c3-mcp-apis', 'C3 MCP & APIs']];
 const ALIAS = { 'cloud-media-center': 'cloud-media', 'cloud-terminal-nix': 'cloud-terminal' }; // extapp id -> APK/site name
 const BY_ID = { 'c3-bot': 'c3-bot', 'ai-chat': 'ai-chat', 'cloud-superapp': 'cloud-superapp' };
 
@@ -20,6 +24,7 @@ for (const g of list.groups) for (const t of g.tiles) {
   if (!slug || seen.has(slug)) continue;
   seen.add(slug); apps.push({ slug, label: t.label || slug, group: g.title });
 }
+for (const [slug, label] of WEB_ONLY) if (!seen.has(slug)) { seen.add(slug); apps.push({ slug, label, group: 'C3 config' }); }
 const missing = apps.filter(a => !existsSync(join(root, a.slug, 'src/index.html'))).map(a => a.slug);
 const extra = readdirSync(root).filter(d => existsSync(join(root, d, 'build.json')) && !seen.has(d));
 if (missing.length || extra.length) { console.error('nav/site mismatch', { missing, extra }); process.exit(1); }

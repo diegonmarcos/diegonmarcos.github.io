@@ -25,7 +25,9 @@
     .music-island,
     .dynamic-island,
     .star,
-    .bottom-nav {
+    .bottom-nav,
+    .page-tabs-bar,     // the page's own App / WebApps / Linktree / Configs strip: SuperApp draws its own
+    .site-footer {      // the APK download badge + chips row
         display: none !important;
     }
 
@@ -33,5 +35,29 @@
         margin-top: 0;
         padding-top: 0;
         padding-bottom: 12px;
+    }
+
+    // One screen, no scrolling: initEmbedFit() (main.ts) wraps the content in #embed-fit and sets
+    // --embed-fit-scale so every section (headers, subtitles, tiles) fits window.innerHeight.
+    &, & body {
+        overflow: hidden;
+    }
+
+    .content {
+        overflow: hidden;
+    }
+
+    // Every tile of a group stays on screen: strips wrap instead of scrolling sideways (the fit scale does the rest).
+    .tile-grid--strip {
+        flex-wrap: wrap;
+        overflow-x: visible;
+    }
+
+    #embed-fit {
+        padding-top: 6px;
+        box-sizing: border-box;
+        width: calc(100% / var(--embed-fit-scale, 1));
+        transform: scale(var(--embed-fit-scale, 1));
+        transform-origin: 0 0;
     }
 }

@@ -59,6 +59,40 @@ function initEmbedLinks(): void {
   }, true);
 }
 
+// Embed mode fits ONE screen with no scrolling: the content is wrapped in #embed-fit, which is scaled
+// (CSS transform, width compensated so the tiles reflow at the scaled width) by the largest factor whose
+// height still fits window.innerHeight. Measured, not guessed, so it holds on any screen; re-run on resize.
+function initEmbedFit(): void {
+  const root = document.documentElement;
+  const content = document.querySelector<HTMLElement>('.content');
+  if (!root.classList.contains('embed') || !content) return;
+  const wrap = document.createElement('div');
+  wrap.id = 'embed-fit';
+  while (content.firstChild) wrap.appendChild(content.firstChild);
+  content.appendChild(wrap);
+  const heightAt = (scale: number): number => {
+    root.style.setProperty('--embed-fit-scale', String(scale));
+    return wrap.getBoundingClientRect().height;
+  };
+  const fit = (): void => {
+    wrap.style.marginBottom = '0px';
+    const room = window.innerHeight - content.getBoundingClientRect().top - 12; // 12 = .content bottom padding
+    let lo = 0.3;
+    let hi = 1.6;
+    for (let i = 0; i < 14; i++) {
+      const mid = (lo + hi) / 2;
+      if (heightAt(mid) <= room) lo = mid;
+      else hi = mid;
+    }
+    root.style.setProperty('--embed-fit-scale', String(lo));
+    // The transform does not shrink the layout box: give back the difference so nothing is left to scroll.
+    wrap.style.marginBottom = `${wrap.getBoundingClientRect().height - wrap.offsetHeight}px`;
+  };
+  fit();
+  window.addEventListener('resize', fit);
+  window.addEventListener('load', fit);
+}
+
 // Every widget below is independent progressive enhancement, so one of them
 // throwing must never take the others down with it — without this isolation a
 // single failure (a missing canvas 2d context, a malformed data section, an
@@ -76,6 +110,7 @@ function runInit(name: string, init: () => void): void {
 function initApp(): void {
   const data = getData();
   runInit('embed-links', () => initEmbedLinks());
+  runInit('embed-fit', () => initEmbedFit());
   runInit('drawer', () => initDrawer(data));
   // lib/onehand/stars.ts can never import app/overlays/overlays.ts itself
   // (see src/README.md's module boundary) — this registers the actual

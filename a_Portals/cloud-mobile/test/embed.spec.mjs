@@ -96,7 +96,7 @@ for (const path of ['/cloud/', '/apps/c3/', '/']) {
 // 4. flag survives in-site navigation (internal link click, no param typed)
 {
   const { ctx, page } = await probe({}, '/cloud/?embed=1');
-  await page.locator('.content a[href]').first().click();
+  await page.locator('.content a.tile[href^="/cloud-mobile/"]').first().click();
   await page.waitForLoadState('load');
   const still = await page.evaluate(() => document.documentElement.classList.contains('embed'));
   ok(still, `embed persists after navigating to ${new URL(page.url()).pathname}`);
@@ -150,7 +150,25 @@ for (const path of ['/cloud/', '/apps/c3/', '/']) {
     const ext = g.tiles.filter((t) => /^https?:/.test(t.target ?? '')).map((t) => t.target);
     ok(ext.every((u) => h?.hrefs.includes(u)), `group ${g.title} web links (${ext.length})`);
   }
+  // embed: the page's own tab strip and the APK download row are gone, every section header stays, and it all fits
+  // one screen (no scrolling) at several phone sizes
+  const shown = await page.evaluate(() => ['.page-tabs-bar', '.site-footer'].map((s) => { const e = document.querySelector(s); return !!e && getComputedStyle(e).display !== 'none'; }));
+  ok(!shown[0] && !shown[1], 'embed: own tab bar and APK row hidden');
   await ctx.close();
+  for (const [w, h] of [[384, 832], [412, 860], [360, 640]]) {
+    const c = await browser.newContext({ viewport: { width: w, height: h } });
+    const pg = await c.newPage();
+    await pg.goto(`${BASE}/cloud/apps/?embed=1`, { waitUntil: 'load' });
+    const f = await pg.evaluate(() => {
+      const ct = document.querySelector('.content');
+      const r = document.querySelector('#embed-fit')?.getBoundingClientRect();
+      return { titles: document.querySelectorAll('.tile-group__title').length, bottom: r ? Math.round(r.bottom) : -1, right: r ? Math.round(r.right) : -1,
+        over: ct.scrollHeight > ct.clientHeight + 1 || document.documentElement.scrollHeight > innerHeight, scale: getComputedStyle(document.documentElement).getPropertyValue('--embed-fit-scale') };
+    });
+    ok(f.titles === want.length, `embed ${w}x${h}: all ${want.length} section headers kept (${f.titles})`);
+    ok(f.bottom > 0 && f.bottom <= h && f.right <= w + 1 && !f.over, `embed ${w}x${h}: fits one screen, no scroll (bottom ${f.bottom}/${h}, scale ${f.scale})`);
+    await c.close();
+  }
 }
 
 await browser.close();

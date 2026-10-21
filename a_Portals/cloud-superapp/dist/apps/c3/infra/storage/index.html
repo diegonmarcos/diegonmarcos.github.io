@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
     <script>(function(){var d=document.documentElement,e=/[?&]embed=1(&|$)/.test(location.search)||/CloudSuperApp-Embed\//.test(navigator.userAgent);try{if(!e&&sessionStorage.getItem('cm-embed')==='1')e=true;else if(e)sessionStorage.setItem('cm-embed','1')}catch(x){}if(e)d.classList.add('embed')})()</script>
-    <title>Cloud Store · Search · Cloud Store</title>
+    <title>Cloud C3 · Storage · Cloud C3</title>
     <link rel="icon" type="image/svg+xml" href="../../../../public/favicon.svg">
     <link rel="manifest" href="../../../../manifest.webmanifest">
     <meta name="theme-color" content="#000000">
@@ -23,18 +23,19 @@
     <div class="shell shell--fleet shell--dense">
         <header class="app-top-bar" data-app-top-bar>
             <a class="app-top-bar__circle app-top-bar__hamburger" href="#app-drawer" aria-label="Menu"><img class="" src="../../../../public/icons/menu.svg" alt=""></a>
-            <h1 class="app-top-bar__title">Cloud Store</h1>
+            <h1 class="app-top-bar__title">Cloud C3</h1>
             <button class="app-top-bar__circle app-top-bar__ai" type="button" aria-label="AI">AI</button>
-            <a class="app-top-bar__circle app-top-bar__settings" href="/cloud-superapp/apps/store/settings/" aria-label="Settings"><img class="" src="../../../../public/icons/settings.svg" alt=""></a>
+            <a class="app-top-bar__circle app-top-bar__settings" href="/cloud-superapp/apps/c3/configs/" aria-label="Settings"><img class="" src="../../../../public/icons/settings.svg" alt=""></a>
         </header>
-        <aside class="app-drawer" id="app-drawer" aria-label="Cloud Store menu">
+        <aside class="app-drawer" id="app-drawer" aria-label="Cloud C3 menu">
             <a class="app-drawer__close" href="#" aria-label="Close menu">Close</a>
             <nav>
-                <a class="app-drawer__section" href="/cloud-superapp/apps/store/cloud/">Cloud</a>
-                <a class="app-drawer__section is-active" href="/cloud-superapp/apps/store/phone/">Phone</a><a class="app-drawer__page" href="/cloud-superapp/apps/store/phone/installed/">Installed</a><a class="app-drawer__page" href="/cloud-superapp/apps/store/phone/search/">Search</a><a class="app-drawer__page" href="/cloud-superapp/apps/store/phone/declared/">Declared</a>
-                <a class="app-drawer__section" href="/cloud-superapp/apps/store/feed/">Feed</a><a class="app-drawer__page" href="/cloud-superapp/apps/store/feed/commits/">Commits</a><a class="app-drawer__page" href="/cloud-superapp/apps/store/feed/cicd/">CI-CD</a>
-                <a class="app-drawer__section" href="/cloud-superapp/apps/store/access/">Access</a><a class="app-drawer__page" href="/cloud-superapp/apps/store/access/mesh/">Apps Mesh</a><a class="app-drawer__page" href="/cloud-superapp/apps/store/access/ipc/">IPC</a><a class="app-drawer__page" href="/cloud-superapp/apps/store/access/android/">Android Perms</a><a class="app-drawer__page" href="/cloud-superapp/apps/store/access/cloud/">Cloud Perms</a>
-                <a class="app-drawer__section" href="/cloud-superapp/apps/store/settings/">Settings</a><a class="app-drawer__page" href="/cloud-superapp/apps/store/settings/sources/">Sources</a><a class="app-drawer__page" href="/cloud-superapp/apps/store/settings/adb/">ADB Shell</a><a class="app-drawer__page" href="/cloud-superapp/apps/store/settings/ai/">AI</a><a class="app-drawer__page" href="/cloud-superapp/apps/store/settings/notifications/">Notifications</a><a class="app-drawer__page" href="/cloud-superapp/apps/store/settings/about/">About</a>
+                <a class="app-drawer__section is-active" href="/cloud-superapp/apps/c3/infra/">Infra</a><a class="app-drawer__page" href="/cloud-superapp/apps/c3/infra/providers/">Providers</a><a class="app-drawer__page" href="/cloud-superapp/apps/c3/infra/machines/">VMs</a><a class="app-drawer__page" href="/cloud-superapp/apps/c3/infra/storage/">Storage</a><a class="app-drawer__page" href="/cloud-superapp/apps/c3/infra/electronics/">Electronics</a><a class="app-drawer__page" href="/cloud-superapp/apps/c3/infra/domains/">Domains</a>
+                <a class="app-drawer__section" href="/cloud-superapp/apps/c3/containers/">Containers</a><a class="app-drawer__page" href="/cloud-superapp/apps/c3/containers/topology/">Topology</a><a class="app-drawer__page" href="/cloud-superapp/apps/c3/containers/table/">Table</a>
+                <a class="app-drawer__section" href="/cloud-superapp/apps/c3/home/">Home</a>
+                <a class="app-drawer__section" href="/cloud-superapp/apps/c3/ops/">Ops</a><a class="app-drawer__page" href="/cloud-superapp/apps/c3/ops/agents/">Agents</a><a class="app-drawer__page" href="/cloud-superapp/apps/c3/ops/services/">Services</a><a class="app-drawer__page" href="/cloud-superapp/apps/c3/ops/tools/">Tools</a>
+                <a class="app-drawer__section" href="/cloud-superapp/apps/c3/observ/">Observ</a><a class="app-drawer__page" href="/cloud-superapp/apps/c3/observ/observability/">Observability</a><a class="app-drawer__page" href="/cloud-superapp/apps/c3/observ/health/">Health</a><a class="app-drawer__page" href="/cloud-superapp/apps/c3/observ/dagu/">Dagu</a><a class="app-drawer__page" href="/cloud-superapp/apps/c3/observ/mesh/">WG mesh</a>
+                <a class="app-drawer__section" href="/cloud-superapp/apps/c3/configs/">Configs</a><a class="app-drawer__page" href="/cloud-superapp/apps/c3/configs/about/">About</a>
                 <a class="app-drawer__section app-drawer__back" href="/cloud-superapp/">Cloud SuperApp</a>
             </nav>
         </aside>
@@ -75,13 +76,13 @@
             <span class="dynamic-island__shimmer" aria-hidden="true"></span>
         </button>
 
-        <a class="toolbar-action" href="/cloud-superapp/apps/store/phone/" aria-label="Back"><img class="" src="../../../../public/icons/back.svg" alt=""></a>
+        <a class="toolbar-action" href="/cloud-superapp/apps/c3/infra/" aria-label="Back"><img class="" src="../../../../public/icons/back.svg" alt=""></a>
 
         <main class="content" id="content">
-            <div class="page-tabs-bar"><div class="page-tabs" role="tablist"><a class="page-tabs__item" href="/cloud-superapp/apps/store/phone/installed/">Installed</a><a class="page-tabs__item is-active" href="/cloud-superapp/apps/store/phone/search/">Search</a><a class="page-tabs__item" href="/cloud-superapp/apps/store/phone/declared/">Declared</a></div></div>
+            <div class="page-tabs-bar"><div class="page-tabs" role="tablist"><a class="page-tabs__item" href="/cloud-superapp/apps/c3/infra/providers/">Providers</a><a class="page-tabs__item" href="/cloud-superapp/apps/c3/infra/machines/">VMs</a><a class="page-tabs__item is-active" href="/cloud-superapp/apps/c3/infra/storage/">Storage</a><a class="page-tabs__item" href="/cloud-superapp/apps/c3/infra/electronics/">Electronics</a><a class="page-tabs__item" href="/cloud-superapp/apps/c3/infra/domains/">Domains</a></div></div>
             <div class="empty-state">
-                <p class="empty-state__title">Search</p>
-                <p class="empty-state__body">Structural mirror of Cloud Store ▸ Phone ▸ Search (build.json ui.sections). The live content runs in the Cloud Store app on the phone.</p>
+                <p class="empty-state__title">Storage</p>
+                <p class="empty-state__body">Structural mirror of Cloud C3 ▸ Infra ▸ Storage (build.json ui.sections). The live content runs in the Cloud C3 app on the phone.</p>
             </div>
             <footer class="site-footer">
                 <a class="footer-badge" href="https://github.com/diegonmarcos/cloud-u-android/releases/latest/download/Cloud-SuperApp.apk" download>
@@ -149,10 +150,11 @@
         </main>
 
         <nav class="bottom-nav" id="bottom-nav" aria-label="Primary">
-            <a class="bottom-nav__item" href="/cloud-superapp/apps/store/cloud/"><img class="" src="../../../../public/icons/suite.svg" alt=""><span>Cloud</span></a>
-            <a class="bottom-nav__item is-active" href="/cloud-superapp/apps/store/phone/"><img class="" src="../../../../public/icons/phone.svg" alt=""><span>Phone</span></a>
-            <a class="bottom-nav__item" href="/cloud-superapp/apps/store/feed/"><img class="" src="../../../../public/icons/rss.svg" alt=""><span>Feed</span></a>
-            <a class="bottom-nav__item" href="/cloud-superapp/apps/store/access/"><img class="" src="../../../../public/icons/lock.svg" alt=""><span>Access</span></a>
+            <a class="bottom-nav__item is-active" href="/cloud-superapp/apps/c3/infra/"><img class="" src="../../../../public/icons/suite.svg" alt=""><span>Infra</span></a>
+            <a class="bottom-nav__item" href="/cloud-superapp/apps/c3/containers/"><img class="" src="../../../../public/icons/cube.svg" alt=""><span>Containers</span></a>
+            <a class="bottom-nav__item" href="/cloud-superapp/apps/c3/home/"><img class="" src="../../../../public/icons/home.svg" alt=""><span>Home</span></a>
+            <a class="bottom-nav__item" href="/cloud-superapp/apps/c3/ops/"><img class="" src="../../../../public/icons/robot.svg" alt=""><span>Ops</span></a>
+            <a class="bottom-nav__item" href="/cloud-superapp/apps/c3/observ/"><img class="" src="../../../../public/icons/workflow.svg" alt=""><span>Observ</span></a>
         </nav>
 
         <div class="drawer-scrim" id="drawer-scrim"></div>

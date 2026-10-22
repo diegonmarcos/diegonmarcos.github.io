@@ -54,7 +54,8 @@ const groupOf = (src) => {
 const sites = entries.map(({ src, name }) => {
   const custom = name === "." ? null : domains.get(name) || null;
   const url = custom ? `https://${custom}/` : name === "." ? base : `${base}${name}/`;
-  const date = git("log", "-1", "--format=%cs", "--", src, `:(exclude)${src}/dist`);
+  // Last source commit (dist/ excluded: bot noise); sites that only ship a dist/ fall back to its last commit.
+  const date = git("log", "-1", "--format=%cs", "--", src, `:(exclude)${src}/dist`) || git("log", "-1", "--format=%cs", "--", src);
   return {
     group: groupOf(src),
     title: name === "." ? "Root index" : titles.get(src) || readJson(`${src}/build.json`, {}).name || name,

@@ -2,3 +2,4 @@
 #cwa-nav a{flex:none;padding:5px 10px;border-radius:8px;color:#9aa4b2;text-decoration:none;white-space:nowrap}
 #cwa-nav a:hover{color:#e6e9ef}#cwa-nav a[aria-current]{background:#4cc2ff;color:#04121c;font-weight:600}
 #cwa-nav a.home{color:#4cc2ff;font-weight:700}
+html[data-embed] #cwa-nav{display:none}

@@ -3,6 +3,7 @@
 set -euo pipefail
 cd "$(dirname "$0")/.."
 node scripts/gen-nav.mjs --check
+node scripts/test-embed.mjs
 for s in c3-mail c3-security-network c3-dns-routing c3-observability c3-mcp-apis; do
   f=$s/src/index.html
   [ -f "$f" ] && cmp -s "$f" "$s/dist/index.html" || { echo "FAIL $s src/dist"; exit 1; }
@@ -25,4 +26,8 @@ for slug in $(node -e 'for(const s of require("./scripts/fallback-services.json"
   if grep -q 'data-rd' "$slug/dist/index.html"; then grep -q "H.indexOf(u.hostname)>=0" "$slug/dist/index.html" || { echo "FAIL $slug rd not validated"; exit 1; }; fi
 done
 echo "ok: $n service fallback pages"
+# the index lists every service page
+for slug in $(node -e 'for(const s of require("./scripts/fallback-services.json").services)console.log(s.slug)'); do
+  grep -q "href=\"/cloud-webapps/$slug/\"" _shared/dist/index.html || { echo "FAIL index lacks service $slug"; exit 1; }
+done
 echo "cloud-webapps tests green"

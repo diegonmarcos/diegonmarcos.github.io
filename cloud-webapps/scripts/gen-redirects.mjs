@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 // Writes redirect stubs for URLs that moved, into the deploy dir (arg 1, default _site):
 //   /cloud-mobile/            -> /cloud-superapp/        (deep links: root 404.html maps the rest)
+//   /cloud-superapp/cloud/apps/ (the old WebApps landing) -> /cloud-webapps/ (query kept, so ?embed=1 survives)
 //   /c__Cloud/, /c__Cloud/<group>/, /c__Cloud/<group>/<app>/ -> /cloud-webapps/[<app>/]
 import { mkdirSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
@@ -17,6 +18,7 @@ const stub = (to) => `<!DOCTYPE html><html><head><meta charset="utf-8"><title>Mo
 const put = (path, to) => { const d = join(site, path); mkdirSync(d, { recursive: true }); writeFileSync(join(d, 'index.html'), stub(to)); };
 
 put('cloud-mobile', '/cloud-superapp/');
+put('cloud-superapp/cloud/apps', '/cloud-webapps/');
 put('c__Cloud', '/cloud-webapps/');
 for (const [g, apps] of Object.entries(GROUPS)) {
   put(`c__Cloud/${g}`, '/cloud-webapps/');

@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 // Generates one fallback site per container/service: <service>/src/index.html (+ identical dist/index.html),
 // next to the per-APK folders, from scripts/fallback-services.json (vendored copy of
-// cloud-u-containers _shared/fallback-services.json, itself generated from every <service>/build.json).
+// cloud-u-containers _shared/fallback-services.json, kept in sync by scripts/sync-fallback-services.mjs; itself generated from every <service>/build.json).
 // Caddy's shared 401/403 handler redirects browsers here: https://diegonmarcos.github.io/cloud-webapps/<service>/.
 // Same nav + design as the app sites. Public facts only: no secrets, no addresses. `--check` fails when stale.
 import { readFileSync, writeFileSync, existsSync, mkdirSync, readdirSync } from 'node:fs';

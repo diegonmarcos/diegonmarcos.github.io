@@ -43,6 +43,65 @@
       ]
     },
     {
+      "title": "Tools Primary",
+      "tiles": [
+        {
+          "id": "wallet",
+          "label": "Wallet",
+          "icon": "sa/ic_wallet",
+          "target": "extapp:cloud-wallet"
+        },
+        {
+          "id": "keyboard",
+          "label": "Keyboard",
+          "icon": "sa/ic_keyboard",
+          "target": "extapp:cloud-keyboard"
+        },
+        {
+          "id": "calc",
+          "label": "Calc",
+          "icon": "sa/ic_calc",
+          "target": "extapp:cloud-calc"
+        },
+        {
+          "id": "writer",
+          "label": "Writer",
+          "icon": "sa/ic_writer",
+          "target": "extapp:cloud-writer"
+        },
+        {
+          "id": "browser",
+          "label": "Browser",
+          "icon": "sa/ic_world",
+          "target": "extapp:cloud-browser"
+        },
+        {
+          "id": "maps",
+          "label": "Navigation",
+          "icon": "sa/ic_nav",
+          "target": "extapp:cloud-nav"
+        },
+        {
+          "id": "camera",
+          "label": "Camera",
+          "icon": "sa/ic_camera",
+          "target": "extapp:cloud-camera"
+        },
+        {
+          "id": "vault",
+          "label": "Vault",
+          "icon": "sa/ic_vault",
+          "target": "extapp:cloud-vault"
+        },
+        {
+          "id": "tools-account",
+          "label": "Account",
+          "icon": "sa/ic_p_accounts",
+          "target": "page:config/profile"
+        }
+      ]
+    },
+    {
       "title": "Data Apps",
       "tiles": [
         {
@@ -89,64 +148,50 @@
           "label": "Media",
           "icon": "sa/ic_music",
           "target": "extapp:cloud-media-center"
-        },
-        {
-          "id": "vault",
-          "label": "Vault",
-          "icon": "sa/ic_vault",
-          "target": "extapp:cloud-vault"
         }
       ]
     },
     {
-      "title": "Tools Primary",
+      "title": "Me",
       "tiles": [
         {
+          "id": "me",
           "label": "Me",
           "icon": "sa/ic_vcard",
           "target": "extapp:cloud-me"
         },
         {
-          "id": "wallet",
-          "label": "Wallet",
-          "icon": "sa/ic_wallet",
-          "target": "extapp:cloud-wallet"
+          "separator": true
         },
         {
-          "id": "keyboard",
-          "label": "Keyboard",
-          "icon": "sa/ic_keyboard",
-          "target": "extapp:cloud-keyboard"
+          "id": "mysocials",
+          "label": "MySocials",
+          "icon": "sa/ic_p_identities",
+          "target": "https://diegonmarcos.github.io/mySocials/"
         },
         {
-          "id": "calc",
-          "label": "Calc",
-          "icon": "sa/ic_calc",
-          "target": "extapp:cloud-calc"
+          "id": "myburo",
+          "label": "MyBuro",
+          "icon": "sa/ic_p_folder",
+          "target": "extapp:cloud-me#page:buro/summary"
         },
         {
-          "id": "writer",
-          "label": "Writer",
-          "icon": "sa/ic_writer",
-          "target": "extapp:cloud-writer"
+          "id": "myhealth",
+          "label": "MyHealth",
+          "icon": "sa/ic_heart",
+          "target": "extapp:cloud-me#page:projects/health"
         },
         {
-          "id": "browser",
-          "label": "Browser",
-          "icon": "sa/ic_world",
-          "target": "extapp:cloud-browser"
+          "id": "mystudy",
+          "label": "MyStudy",
+          "icon": "sa/ic_file_stack",
+          "target": "extapp:cloud-me#page:projects/studying"
         },
         {
-          "id": "maps",
-          "label": "Navigation",
-          "icon": "sa/ic_nav",
-          "target": "extapp:cloud-nav"
-        },
-        {
-          "id": "camera",
-          "label": "Camera",
-          "icon": "sa/ic_camera",
-          "target": "extapp:cloud-camera"
+          "id": "mytrips",
+          "label": "MyTrips",
+          "icon": "sa/ic_map_pin",
+          "target": "extapp:cloud-me#page:projects/trips"
         }
       ]
     },
@@ -188,56 +233,6 @@
           "label": "Terminal",
           "icon": "sa/ic_terminal",
           "target": "extapp:cloud-terminal-nix"
-        }
-      ]
-    },
-    {
-      "title": "Projects Me",
-      "tiles": [
-        {
-          "id": "agenda",
-          "label": "Agenda",
-          "icon": "sa/ic_p_cal_agenda",
-          "target": "extapp:cloud-me#page:agenda/agenda"
-        },
-        {
-          "separator": true
-        },
-        {
-          "id": "myburo",
-          "label": "MyBuro",
-          "icon": "sa/ic_p_folder",
-          "target": "extapp:cloud-me#page:buro/summary"
-        },
-        {
-          "separator": true
-        },
-        {
-          "id": "myhealth",
-          "label": "MyHealth",
-          "icon": "sa/ic_heart",
-          "target": "extapp:cloud-me#page:projects/health"
-        },
-        {
-          "id": "mystudy",
-          "label": "MyStudy",
-          "icon": "sa/ic_file_stack",
-          "target": "extapp:cloud-me#page:projects/studying"
-        },
-        {
-          "id": "mytrips",
-          "label": "MyTrips",
-          "icon": "sa/ic_map_pin",
-          "target": "extapp:cloud-me#page:projects/trips"
-        },
-        {
-          "separator": true
-        },
-        {
-          "id": "mysocials",
-          "label": "MySocials",
-          "icon": "sa/ic_p_identities",
-          "target": "https://diegonmarcos.github.io/mySocials/"
         }
       ]
     },

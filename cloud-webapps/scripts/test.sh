@@ -10,7 +10,7 @@ for s in c3-mail c3-security-network c3-dns-routing c3-observability c3-mcp-apis
   sed -n 's/^var MOCK=\(.*\);$/\1/p' "$f" | node -e 'JSON.parse(require("fs").readFileSync(0,"utf8"))' || { echo "FAIL $s MOCK json"; exit 1; }
   if grep -Eq 'ghp_|github_pat_|api\.github\.com' "$f"; then echo "FAIL $s github token/api in browser"; exit 1; fi
   grep -q 'Bearer' "$f" || { echo "FAIL $s no bearer fetch"; exit 1; }
-  grep -q "^var EP=\"https://api.diegonmarcos.com/me/config/$s\";" "$f" || { echo "FAIL $s EP is not the cloud-me-api dataset endpoint"; exit 1; }
+  grep -q "^var EP=\"https://cloud-me-api.app/me/config/$s\";" "$f" || { echo "FAIL $s EP is not the mesh-only cloud-me-api dataset endpoint"; exit 1; }
 done
 # Service fallback pages: generated from the vendored build.json service data; one page per service, current, public-safe.
 node scripts/gen-fallback.mjs --check

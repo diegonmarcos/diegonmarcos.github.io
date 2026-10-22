@@ -1,5 +1,4 @@
-// GENERATED FROM gh-pages.json by front-data-json-js-wrapper.sh — DO NOT EDIT BY HAND.
-// Re-generate with: bash a_Portals/linktree/src/data/build.sh
+// GENERATED FROM gh-pages.json by scripts/gh-pages-gen.mjs — DO NOT EDIT BY HAND.
 (function () {
   var g = (typeof globalThis !== "undefined") ? globalThis : (typeof window !== "undefined" ? window : this);
   g.PORTAL_DATA = g.PORTAL_DATA || {};
@@ -350,11 +349,11 @@
       "url": "https://diegonmarcos.github.io/myhealth-profile/",
       "custom_domain": null,
       "description": "",
-      "updated": "2026-10-14",
+      "updated": "2026-10-22",
       "source": "b_MyData/myhealth-profile",
       "kind": "monorepo",
-      "status": 404,
-      "ok": false
+      "status": 200,
+      "ok": true
     },
     {
       "group": "MyData",

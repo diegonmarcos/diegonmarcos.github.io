@@ -272,7 +272,7 @@
           "id": "cloud-superapp",
           "label": "SuperApp",
           "icon": "sa/ic_superapp_d",
-          "target": "section:config"
+          "target": "app://com.diegonmarcos.superapp"
         },
         {
           "separator": true

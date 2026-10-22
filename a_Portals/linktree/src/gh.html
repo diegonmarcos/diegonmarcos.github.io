@@ -67,6 +67,12 @@
         .gh-url:hover { text-decoration: underline; }
         .gh-desc { color: #a78bfa; font-size: 0.9rem; overflow-wrap: anywhere; }
         .gh-date { color: #a78bfa; font-size: 0.85rem; white-space: nowrap; }
+        .gh-group { margin: 2rem 0 0.2rem; font-size: 1.2rem; color: #c4b5fd; display: flex; align-items: baseline; gap: 0.6rem; }
+        .gh-group small { font-size: 0.8rem; color: #8b7bbf; font-weight: 400; }
+        .gh-row { grid-template-columns: minmax(0, 1.2fr) minmax(0, 1.6fr) minmax(0, 2fr) auto auto; }
+        .gh-status { font-size: 0.75rem; padding: 0.15rem 0.6rem; border-radius: 999px; border: 1px solid rgba(110, 231, 183, 0.5); color: #6ee7b7; white-space: nowrap; }
+        .gh-status.bad { border-color: rgba(248, 113, 113, 0.7); color: #fca5a5; }
+        .gh-row.broken { border-color: rgba(248, 113, 113, 0.5); }
         .gh-empty { text-align: center; color: #a78bfa; padding: 2rem 0; }
         .footer { text-align: center; margin-top: 2rem; }
         .back-button {
@@ -90,6 +96,7 @@
             .container { padding: 1.5rem; }
             h1 { font-size: 2rem; }
             .gh-row { grid-template-columns: 1fr; gap: 0.4rem; padding: 1rem; }
+            .gh-status { justify-self: start; }
         }
     </style>
 </head>
@@ -97,7 +104,7 @@
     <div class="container">
         <header>
             <h1>GitHub Pages</h1>
-            <p class="subtitle">Every GitHub Pages site of diegonmarcos</p>
+            <p class="subtitle">Every site the monorepo publishes, plus separate Pages repos</p>
         </header>
         <div class="gh-list" id="gh-list"></div>
         <div class="footer">
@@ -118,26 +125,33 @@
                 return e;
             }
             if (!data.sites.length) list.appendChild(el("p", "gh-empty", "No GitHub Pages sites listed yet."));
+            var groups = [], byGroup = {};
             data.sites.forEach(function (s) {
-                var row = el("div", "gh-row");
-                var name = el("div", "gh-name");
-                var repo = el("a", null, s.repo);
-                repo.href = s.repo_url;
-                repo.target = "_blank";
-                repo.rel = "noopener";
-                name.appendChild(repo);
-                if (s.archived) name.appendChild(el("span", "gh-badge", "archived"));
-                var url = el("a", "gh-url", s.url.replace(/^https:\/\//, ""));
-                url.href = s.url;
-                url.target = "_blank";
-                url.rel = "noopener";
-                row.appendChild(name);
-                row.appendChild(url);
-                row.appendChild(el("div", "gh-desc", s.description));
-                row.appendChild(el("div", "gh-date", s.updated));
-                list.appendChild(row);
+                if (!byGroup[s.group]) { byGroup[s.group] = []; groups.push(s.group); }
+                byGroup[s.group].push(s);
             });
-            if (data.generated) document.getElementById("gh-generated").textContent = "List generated " + data.generated;
+            groups.forEach(function (g) {
+                var items = byGroup[g], bad = items.filter(function (s) { return !s.ok; }).length;
+                var h = el("h2", "gh-group", g);
+                h.appendChild(el("small", null, items.length + (items.length === 1 ? " site" : " sites") + (bad ? ", " + bad + " not reachable" : "")));
+                list.appendChild(h);
+                items.forEach(function (s) {
+                    var row = el("div", "gh-row" + (s.ok ? "" : " broken"));
+                    var name = el("div", "gh-name");
+                    var t = el("a", null, s.title);
+                    t.href = s.url; t.target = "_blank"; t.rel = "noopener";
+                    name.appendChild(t);
+                    var url = el("a", "gh-url", s.url.replace(/^https:\/\//, ""));
+                    url.href = s.url; url.target = "_blank"; url.rel = "noopener";
+                    row.appendChild(name);
+                    row.appendChild(url);
+                    row.appendChild(el("div", "gh-desc", s.description));
+                    row.appendChild(el("div", "gh-date", s.updated));
+                    row.appendChild(el("span", "gh-status" + (s.ok ? "" : " bad"), s.ok ? "200 OK" : (s.status ? "HTTP " + s.status : "unreachable")));
+                    list.appendChild(row);
+                });
+            });
+            if (data.generated) document.getElementById("gh-generated").textContent = "List generated " + data.generated + " (status = HTTP result at generation time)";
         })();
     </script>
 </body>

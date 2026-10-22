@@ -465,6 +465,366 @@
     "url": "https://diegonmarcos.github.io/tldraw"
   },
   {
+    "id": "cloud-webapps__ai-chat",
+    "project": "ai-chat",
+    "path": "cloud-webapps/ai-chat",
+    "category": "cloud-webapps",
+    "name": "AI Chat",
+    "framework": "vanilla",
+    "deploy_name": "cloud-webapps/ai-chat",
+    "url": "https://diegonmarcos.github.io/cloud-webapps/ai-chat"
+  },
+  {
+    "id": "cloud-webapps__c3-bot",
+    "project": "c3-bot",
+    "path": "cloud-webapps/c3-bot",
+    "category": "cloud-webapps",
+    "name": "C3-Bot",
+    "framework": "vanilla",
+    "deploy_name": "cloud-webapps/c3-bot",
+    "url": "https://diegonmarcos.github.io/cloud-webapps/c3-bot"
+  },
+  {
+    "id": "cloud-webapps__c3-dns-routing",
+    "project": "c3-dns-routing",
+    "path": "cloud-webapps/c3-dns-routing",
+    "category": "cloud-webapps",
+    "name": "C3 DNS and Routing",
+    "framework": "vanilla",
+    "deploy_name": "cloud-webapps/c3-dns-routing",
+    "url": "https://diegonmarcos.github.io/cloud-webapps/c3-dns-routing"
+  },
+  {
+    "id": "cloud-webapps__c3-mail",
+    "project": "c3-mail",
+    "path": "cloud-webapps/c3-mail",
+    "category": "cloud-webapps",
+    "name": "C3 Mail",
+    "framework": "vanilla",
+    "deploy_name": "cloud-webapps/c3-mail",
+    "url": "https://diegonmarcos.github.io/cloud-webapps/c3-mail"
+  },
+  {
+    "id": "cloud-webapps__c3-mcp-apis",
+    "project": "c3-mcp-apis",
+    "path": "cloud-webapps/c3-mcp-apis",
+    "category": "cloud-webapps",
+    "name": "C3 MCP and APIs",
+    "framework": "vanilla",
+    "deploy_name": "cloud-webapps/c3-mcp-apis",
+    "url": "https://diegonmarcos.github.io/cloud-webapps/c3-mcp-apis"
+  },
+  {
+    "id": "cloud-webapps__c3-observability",
+    "project": "c3-observability",
+    "path": "cloud-webapps/c3-observability",
+    "category": "cloud-webapps",
+    "name": "C3 Observability",
+    "framework": "vanilla",
+    "deploy_name": "cloud-webapps/c3-observability",
+    "url": "https://diegonmarcos.github.io/cloud-webapps/c3-observability"
+  },
+  {
+    "id": "cloud-webapps__c3-security-network",
+    "project": "c3-security-network",
+    "path": "cloud-webapps/c3-security-network",
+    "category": "cloud-webapps",
+    "name": "C3 Security and Network",
+    "framework": "vanilla",
+    "deploy_name": "cloud-webapps/c3-security-network",
+    "url": "https://diegonmarcos.github.io/cloud-webapps/c3-security-network"
+  },
+  {
+    "id": "cloud-webapps__cloud-browser",
+    "project": "cloud-browser",
+    "path": "cloud-webapps/cloud-browser",
+    "category": "cloud-webapps",
+    "name": "Cloud Browser",
+    "framework": "vanilla",
+    "deploy_name": "cloud-webapps/cloud-browser",
+    "url": "https://diegonmarcos.github.io/cloud-webapps/cloud-browser"
+  },
+  {
+    "id": "cloud-webapps__cloud-c3",
+    "project": "cloud-c3",
+    "path": "cloud-webapps/cloud-c3",
+    "category": "cloud-webapps",
+    "name": "Cloud C3",
+    "framework": "vanilla",
+    "deploy_name": "cloud-webapps/cloud-c3",
+    "url": "https://diegonmarcos.github.io/cloud-webapps/cloud-c3"
+  },
+  {
+    "id": "cloud-webapps__cloud-calc",
+    "project": "cloud-calc",
+    "path": "cloud-webapps/cloud-calc",
+    "category": "cloud-webapps",
+    "name": "Cloud Calc",
+    "framework": "vanilla",
+    "deploy_name": "cloud-webapps/cloud-calc",
+    "url": "https://diegonmarcos.github.io/cloud-webapps/cloud-calc"
+  },
+  {
+    "id": "cloud-webapps__cloud-camera",
+    "project": "cloud-camera",
+    "path": "cloud-webapps/cloud-camera",
+    "category": "cloud-webapps",
+    "name": "Cloud Camera",
+    "framework": "vanilla",
+    "deploy_name": "cloud-webapps/cloud-camera",
+    "url": "https://diegonmarcos.github.io/cloud-webapps/cloud-camera"
+  },
+  {
+    "id": "cloud-webapps__cloud-chat",
+    "project": "cloud-chat",
+    "path": "cloud-webapps/cloud-chat",
+    "category": "cloud-webapps",
+    "name": "Cloud Chat",
+    "framework": "vanilla",
+    "deploy_name": "cloud-webapps/cloud-chat",
+    "url": "https://diegonmarcos.github.io/cloud-webapps/cloud-chat"
+  },
+  {
+    "id": "cloud-webapps__cloud-code",
+    "project": "cloud-code",
+    "path": "cloud-webapps/cloud-code",
+    "category": "cloud-webapps",
+    "name": "Cloud Code",
+    "framework": "vanilla",
+    "deploy_name": "cloud-webapps/cloud-code",
+    "url": "https://diegonmarcos.github.io/cloud-webapps/cloud-code"
+  },
+  {
+    "id": "cloud-webapps__cloud-contacts",
+    "project": "cloud-contacts",
+    "path": "cloud-webapps/cloud-contacts",
+    "category": "cloud-webapps",
+    "name": "Cloud Contacts",
+    "framework": "vanilla",
+    "deploy_name": "cloud-webapps/cloud-contacts",
+    "url": "https://diegonmarcos.github.io/cloud-webapps/cloud-contacts"
+  },
+  {
+    "id": "cloud-webapps__cloud-dialer",
+    "project": "cloud-dialer",
+    "path": "cloud-webapps/cloud-dialer",
+    "category": "cloud-webapps",
+    "name": "Cloud Dialer",
+    "framework": "vanilla",
+    "deploy_name": "cloud-webapps/cloud-dialer",
+    "url": "https://diegonmarcos.github.io/cloud-webapps/cloud-dialer"
+  },
+  {
+    "id": "cloud-webapps__cloud-drive",
+    "project": "cloud-drive",
+    "path": "cloud-webapps/cloud-drive",
+    "category": "cloud-webapps",
+    "name": "Cloud Drive",
+    "framework": "vanilla",
+    "deploy_name": "cloud-webapps/cloud-drive",
+    "url": "https://diegonmarcos.github.io/cloud-webapps/cloud-drive"
+  },
+  {
+    "id": "cloud-webapps__cloud-gallery",
+    "project": "cloud-gallery",
+    "path": "cloud-webapps/cloud-gallery",
+    "category": "cloud-webapps",
+    "name": "Cloud Gallery",
+    "framework": "vanilla",
+    "deploy_name": "cloud-webapps/cloud-gallery",
+    "url": "https://diegonmarcos.github.io/cloud-webapps/cloud-gallery"
+  },
+  {
+    "id": "cloud-webapps__cloud-keyboard",
+    "project": "cloud-keyboard",
+    "path": "cloud-webapps/cloud-keyboard",
+    "category": "cloud-webapps",
+    "name": "Cloud Keyboard",
+    "framework": "vanilla",
+    "deploy_name": "cloud-webapps/cloud-keyboard",
+    "url": "https://diegonmarcos.github.io/cloud-webapps/cloud-keyboard"
+  },
+  {
+    "id": "cloud-webapps__cloud-mail",
+    "project": "cloud-mail",
+    "path": "cloud-webapps/cloud-mail",
+    "category": "cloud-webapps",
+    "name": "Cloud Mail",
+    "framework": "vanilla",
+    "deploy_name": "cloud-webapps/cloud-mail",
+    "url": "https://diegonmarcos.github.io/cloud-webapps/cloud-mail"
+  },
+  {
+    "id": "cloud-webapps__cloud-matrix",
+    "project": "cloud-matrix",
+    "path": "cloud-webapps/cloud-matrix",
+    "category": "cloud-webapps",
+    "name": "Cloud Messenger (Matrix)",
+    "framework": "vanilla",
+    "deploy_name": "cloud-webapps/cloud-matrix",
+    "url": "https://diegonmarcos.github.io/cloud-webapps/cloud-matrix"
+  },
+  {
+    "id": "cloud-webapps__cloud-me",
+    "project": "cloud-me",
+    "path": "cloud-webapps/cloud-me",
+    "category": "cloud-webapps",
+    "name": "Cloud Me",
+    "framework": "vanilla",
+    "deploy_name": "cloud-webapps/cloud-me",
+    "url": "https://diegonmarcos.github.io/cloud-webapps/cloud-me"
+  },
+  {
+    "id": "cloud-webapps__cloud-media",
+    "project": "cloud-media",
+    "path": "cloud-webapps/cloud-media",
+    "category": "cloud-webapps",
+    "name": "Cloud Media Center",
+    "framework": "vanilla",
+    "deploy_name": "cloud-webapps/cloud-media",
+    "url": "https://diegonmarcos.github.io/cloud-webapps/cloud-media"
+  },
+  {
+    "id": "cloud-webapps__cloud-myterminal",
+    "project": "cloud-myterminal",
+    "path": "cloud-webapps/cloud-myterminal",
+    "category": "cloud-webapps",
+    "name": "Cloud MyTerminal",
+    "framework": "vanilla",
+    "deploy_name": "cloud-webapps/cloud-myterminal",
+    "url": "https://diegonmarcos.github.io/cloud-webapps/cloud-myterminal"
+  },
+  {
+    "id": "cloud-webapps__cloud-nav",
+    "project": "cloud-nav",
+    "path": "cloud-webapps/cloud-nav",
+    "category": "cloud-webapps",
+    "name": "Cloud Navigation",
+    "framework": "vanilla",
+    "deploy_name": "cloud-webapps/cloud-nav",
+    "url": "https://diegonmarcos.github.io/cloud-webapps/cloud-nav"
+  },
+  {
+    "id": "cloud-webapps__cloud-news",
+    "project": "cloud-news",
+    "path": "cloud-webapps/cloud-news",
+    "category": "cloud-webapps",
+    "name": "Cloud News",
+    "framework": "vanilla",
+    "deploy_name": "cloud-webapps/cloud-news",
+    "url": "https://diegonmarcos.github.io/cloud-webapps/cloud-news"
+  },
+  {
+    "id": "cloud-webapps__cloud-notes",
+    "project": "cloud-notes",
+    "path": "cloud-webapps/cloud-notes",
+    "category": "cloud-webapps",
+    "name": "Cloud Notes",
+    "framework": "vanilla",
+    "deploy_name": "cloud-webapps/cloud-notes",
+    "url": "https://diegonmarcos.github.io/cloud-webapps/cloud-notes"
+  },
+  {
+    "id": "cloud-webapps__cloud-office",
+    "project": "cloud-office",
+    "path": "cloud-webapps/cloud-office",
+    "category": "cloud-webapps",
+    "name": "Cloud Office",
+    "framework": "vanilla",
+    "deploy_name": "cloud-webapps/cloud-office",
+    "url": "https://diegonmarcos.github.io/cloud-webapps/cloud-office"
+  },
+  {
+    "id": "cloud-webapps__cloud-search",
+    "project": "cloud-search",
+    "path": "cloud-webapps/cloud-search",
+    "category": "cloud-webapps",
+    "name": "Cloud Search",
+    "framework": "vanilla",
+    "deploy_name": "cloud-webapps/cloud-search",
+    "url": "https://diegonmarcos.github.io/cloud-webapps/cloud-search"
+  },
+  {
+    "id": "cloud-webapps__cloud-store",
+    "project": "cloud-store",
+    "path": "cloud-webapps/cloud-store",
+    "category": "cloud-webapps",
+    "name": "Cloud Store",
+    "framework": "vanilla",
+    "deploy_name": "cloud-webapps/cloud-store",
+    "url": "https://diegonmarcos.github.io/cloud-webapps/cloud-store"
+  },
+  {
+    "id": "cloud-webapps__cloud-superapp",
+    "project": "cloud-superapp",
+    "path": "cloud-webapps/cloud-superapp",
+    "category": "cloud-webapps",
+    "name": "Cloud SuperApp",
+    "framework": "vanilla",
+    "deploy_name": "cloud-webapps/cloud-superapp",
+    "url": "https://diegonmarcos.github.io/cloud-webapps/cloud-superapp"
+  },
+  {
+    "id": "cloud-webapps__cloud-tasks",
+    "project": "cloud-tasks",
+    "path": "cloud-webapps/cloud-tasks",
+    "category": "cloud-webapps",
+    "name": "Cloud Tasks",
+    "framework": "vanilla",
+    "deploy_name": "cloud-webapps/cloud-tasks",
+    "url": "https://diegonmarcos.github.io/cloud-webapps/cloud-tasks"
+  },
+  {
+    "id": "cloud-webapps__cloud-terminal",
+    "project": "cloud-terminal",
+    "path": "cloud-webapps/cloud-terminal",
+    "category": "cloud-webapps",
+    "name": "Cloud Terminal",
+    "framework": "vanilla",
+    "deploy_name": "cloud-webapps/cloud-terminal",
+    "url": "https://diegonmarcos.github.io/cloud-webapps/cloud-terminal"
+  },
+  {
+    "id": "cloud-webapps__cloud-tools-small-llms",
+    "project": "cloud-tools-small-llms",
+    "path": "cloud-webapps/cloud-tools-small-llms",
+    "category": "cloud-webapps",
+    "name": "Cloud Tools (Small LLMs)",
+    "framework": "vanilla",
+    "deploy_name": "cloud-webapps/cloud-tools-small-llms",
+    "url": "https://diegonmarcos.github.io/cloud-webapps/cloud-tools-small-llms"
+  },
+  {
+    "id": "cloud-webapps__cloud-vault",
+    "project": "cloud-vault",
+    "path": "cloud-webapps/cloud-vault",
+    "category": "cloud-webapps",
+    "name": "Cloud Vault",
+    "framework": "vanilla",
+    "deploy_name": "cloud-webapps/cloud-vault",
+    "url": "https://diegonmarcos.github.io/cloud-webapps/cloud-vault"
+  },
+  {
+    "id": "cloud-webapps__cloud-wallet",
+    "project": "cloud-wallet",
+    "path": "cloud-webapps/cloud-wallet",
+    "category": "cloud-webapps",
+    "name": "Cloud Wallet",
+    "framework": "vanilla",
+    "deploy_name": "cloud-webapps/cloud-wallet",
+    "url": "https://diegonmarcos.github.io/cloud-webapps/cloud-wallet"
+  },
+  {
+    "id": "cloud-webapps__cloud-writer",
+    "project": "cloud-writer",
+    "path": "cloud-webapps/cloud-writer",
+    "category": "cloud-webapps",
+    "name": "Cloud Writer",
+    "framework": "vanilla",
+    "deploy_name": "cloud-webapps/cloud-writer",
+    "url": "https://diegonmarcos.github.io/cloud-webapps/cloud-writer"
+  },
+  {
     "id": "e-Others__others",
     "project": "others",
     "path": "e-Others/others",

@@ -128,11 +128,12 @@
       "services": [
         "alerts-api",
         "c3-public-api",
+        "cloud-me-api",
         "git-proxy-api",
         "unbound-dns64",
         "caddy-public"
       ],
-      "container_count": 5
+      "container_count": 6
     },
     "oci-A1-f_0": {
       "ip": "82.70.229.129",
@@ -194,7 +195,9 @@
         "umami",
         "agents-tmp-reaper",
         "disk-janitor",
+        "auth-broker",
         "crowdsec",
+        "tokens-api",
         "cloud-cgc-pub-mcp",
         "hermes-agent",
         "kg-store",
@@ -226,7 +229,7 @@
         "send",
         "vaultwarden"
       ],
-      "container_count": 69
+      "container_count": 73
     },
     "gcp-E2-f_0": {
       "ip": "35.226.147.64",
@@ -313,9 +316,10 @@
         "wireguard-mesh-ws-tunnel",
         "authelia",
         "caddy",
-        "introspect-proxy"
+        "introspect-proxy",
+        "mcp-oauth"
       ],
-      "container_count": 8
+      "container_count": 9
     },
     "gcp-L4-e_0": {
       "ip": "34.66.107.117",
@@ -1162,6 +1166,10 @@
         "drift-multi-container": {
           "cmd": "node test-drift-multi-container.ts",
           "cwd": "src"
+        },
+        "jev-alert-priority": {
+          "cmd": "node test-jev-alert-priority.ts",
+          "cwd": "src"
         }
       },
       "ssh": {
@@ -1818,6 +1826,10 @@
           "cmd": "node --experimental-strip-types test-gha-policy.mjs",
           "cwd": "src/code"
         },
+        "jev-flake": {
+          "cmd": "node --experimental-strip-types test-jev-flake.mjs",
+          "cwd": "src/code"
+        },
         "shell-quote": {
           "cmd": "node --experimental-strip-types test-shell-quote.mjs",
           "cwd": "src/code"
@@ -2102,6 +2114,214 @@
         "MM_TEAM_ID",
         "MM_ADMIN_USERNAME",
         "CLAUDE_MODEL"
+      ]
+    },
+    "cloud-me-api": {
+      "category": "app",
+      "vm": "oci-E2-f_1",
+      "folder": "infra-api_cloud-me-api",
+      "description": "Cloud Me API: read-only, authenticated read path to the owner's private cloud-me-* repos. The service holds one READ-ONLY deploy key per repo server-side, keeps a shallow clone of each declared repo, and serves declared JSON datasets (and filtered config files) to fleet apps, so no app holds a GitHub credential (#1079). First consumer: the cloud-webapps c3-* sites (#1063).",
+      "enabled": true,
+      "flake": "infra-api_cloud-me-api",
+      "port": 8124,
+      "dns": "cloud-me-api.app",
+      "upstream": "10.0.0.4:8124",
+      "containers": {
+        "app": {
+          "container_name": "cloud-me-api",
+          "image": "ghcr.io/diegonmarcos/cloud-me-api:latest",
+          "port": 8124,
+          "port_env": "PORT",
+          "dns": "cloud-me-api.app",
+          "public": true,
+          "healthcheck": "/health",
+          "monitoring": {
+            "tls_check": true,
+            "dns_check": true,
+            "endpoint_check": true
+          },
+          "volumes": [],
+          "env_file": true,
+          "depends_on": [],
+          "resources": null,
+          "read_only": false,
+          "protocol": "http"
+        }
+      },
+      "container_names": [
+        "cloud-me-api"
+      ],
+      "all_ports": [
+        "8124"
+      ],
+      "all_dns": [
+        "cloud-me-api.app"
+      ],
+      "compose": {
+        "containers": [],
+        "ports": [],
+        "networks": []
+      },
+      "declared_ports": {
+        "app": 8124
+      },
+      "health": {
+        "path": "/me/health"
+      },
+      "monitoring": {
+        "tls_check": true,
+        "dns_check": true,
+        "endpoint_check": true
+      },
+      "resources": {
+        "_doc": "Clones live on a size-capped tmpfs (compose.nix), never on the VM disk: oci disks have sat at 87-97%. mem_limit covers node plus that tmpfs.",
+        "mem_limit": "192M",
+        "mem_reservation": "48M"
+      },
+      "runtime": {
+        "_doc": "THE endpoint contract, declared once. The image-wrapper COPYs build.json to /app/build.json and code/contract.mjs reads this block, so GET /me/endpoints serves it verbatim.",
+        "base_path": "/me",
+        "endpoints": [
+          {
+            "method": "GET",
+            "path": "/me/health",
+            "auth": "none",
+            "description": "Liveness. The only pre-auth route. Returns {\"status\":\"ok\",\"service\":\"cloud-me-api\"} and nothing about the repos."
+          },
+          {
+            "method": "GET",
+            "path": "/me/endpoints",
+            "auth": "authelia",
+            "description": "This contract from build.json runtime, minus transport fields (ssh URLs, key env names, host key) and the filter regexes."
+          },
+          {
+            "method": "GET",
+            "path": "/me/repos",
+            "auth": "authelia",
+            "description": "The declared repos and their sync state: {repos:[{name,branch,commit,synced_at,ok}]}. A projection: no URL, key or path of the server is included."
+          },
+          {
+            "method": "GET",
+            "path": "/me/config/:name",
+            "auth": "authelia",
+            "description": "A declared dataset (runtime.datasets[name]) as JSON: the file at {repo,path} of the last sync, parsed and re-serialised. Unknown name -> 404 not_found; a dataset that has not synced yet -> 503 not_synced; a file that fails the secret filter -> 403 secret_filtered and the file is never sent."
+          },
+          {
+            "method": "GET",
+            "path": "/me/repos/:repo/file",
+            "auth": "authelia",
+            "description": "One config file of a declared repo (query `path`). Only runtime.files.allowed_ext, at most runtime.files.max_bytes, never a path matching runtime.files.deny_path, never content matching runtime.files.deny_content (403 secret_filtered). Errors {error,code}: 400 bad_path, 403 repo_not_declared/path_denied/secret_filtered, 404 not_found, 413 too_large, 503 not_synced."
+          }
+        ],
+        "repos": {
+          "_doc": "The allow-list is DATA, here. Each repo is read with its OWN read-only deploy key (GitHub allows a deploy key on one repo only), delivered as a base64 sops env_file value named by key_env. cloud-me_vault is deliberately NOT declared: it holds credentials and the test asserts it is never served.",
+          "sync_interval_s": 300,
+          "git_timeout_ms": 60000,
+          "list": [
+            {
+              "name": "cloud-me-containers",
+              "ssh": "git@github.com:diegonmarcos/cloud-me-containers.git",
+              "branch": "main",
+              "key_env": "CME_KEY_CONTAINERS_B64"
+            },
+            {
+              "name": "cloud-me_configs",
+              "ssh": "git@github.com:diegonmarcos/cloud-me_configs.git",
+              "branch": "main",
+              "key_env": "CME_KEY_CONFIGS_B64"
+            },
+            {
+              "name": "cloud-me_cgc",
+              "ssh": "git@github.com:diegonmarcos/cloud-me_cgc.git",
+              "branch": "main",
+              "key_env": "CME_KEY_CGC_B64"
+            }
+          ],
+          "known_hosts": "github.com ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIOMqqnkVzrm0SdG6UOoqKLsabgH5C9okWi0dh2l9GKJl"
+        },
+        "datasets": {
+          "_doc": "name -> {builtin} | {repo,path}. The c3-* front ends fetch /me/config/<site>. builtin = real fleet config generated from this repo's build.json files by src/gen-c3-datasets.mjs into src/code/data/ (shipped in the image, never hand-edited; the test fails when stale). No placeholder seed is read.",
+          "c3-mail": {
+            "builtin": "data/c3-mail.json"
+          },
+          "c3-security-network": {
+            "builtin": "data/c3-security-network.json"
+          },
+          "c3-dns-routing": {
+            "builtin": "data/c3-dns-routing.json"
+          },
+          "c3-observability": {
+            "builtin": "data/c3-observability.json"
+          },
+          "c3-mcp-apis": {
+            "builtin": "data/c3-mcp-apis.json"
+          }
+        },
+        "files": {
+          "_doc": "The no-secrets-in-responses guard. deny_path and deny_content are regular expressions (case-insensitive); a hit refuses the whole file, nothing is partially redacted. Every string leaving the service also passes redactSecrets() against the deploy keys it holds.",
+          "allowed_ext": [
+            ".json",
+            ".yaml",
+            ".yml",
+            ".md",
+            ".txt"
+          ],
+          "max_bytes": 262144,
+          "deny_path": "(^|/)(\\.git|\\.ssh|\\.gnupg|secrets?|vault|credentials?|creds?|tokens?|keys?)(/|\\.|$)|(secret|token|credential|creds|password|passwd|private|\\.env|id_rsa|id_ed25519|\\.pem|\\.key|\\.age|sops)",
+          "deny_content": "-----BEGIN [A-Z ]*PRIVATE KEY-----|\\bgh[pousr]_[A-Za-z0-9]{20,}|github_pat_[A-Za-z0-9_]{20,}|AKIA[0-9A-Z]{16}|AGE-SECRET-KEY-|\\bxox[abprs]-[A-Za-z0-9-]{10,}|\"[A-Za-z0-9_-]*(password|passwd|secret|token|api_?key|private_?key)[A-Za-z0-9_-]*\"\\s*:\\s*\"[^\"\\s]{6,}\"|^\\s*[A-Za-z0-9_-]*(password|passwd|secret|token|api_?key)[A-Za-z0-9_-]*\\s*[:=]\\s*['\"]?[^\\s'\"]{8,}|ENC\\[AES256_GCM"
+        },
+        "cors": {
+          "_doc": "Browser callers: the c3-* pages are static sites on another origin and send Authorization: Bearer, so the service answers the preflight and echoes ONLY a declared origin. No wildcard, and no credentials mode.",
+          "origins": [
+            "https://diegonmarcos.github.io",
+            "https://diegonmarcos.com",
+            "https://www.diegonmarcos.com"
+          ],
+          "origin_suffix": ".diegonmarcos.com"
+        },
+        "authelia": {
+          "jwks_url": "https://auth.diegonmarcos.com/jwks.json",
+          "issuer": "https://auth.diegonmarcos.com",
+          "required_scope": "authelia.bearer.authz",
+          "jwks_cache_ttl_s": 600,
+          "jwks_fetch_timeout_ms": 3000,
+          "session": {
+            "verify_url": "https://auth.diegonmarcos.com/api/authz/auth-request",
+            "public_url": "https://api.diegonmarcos.com",
+            "users": [
+              "me@diegonmarcos.com"
+            ],
+            "timeout_ms": 3000,
+            "_doc": "Same two credentials as git-proxy-api: an Authelia bearer (JWKS verified in-service) or a live Authelia session cookie asked of Authelia's auth-request endpoint; the user must be listed."
+          },
+          "_doc": "Same three values infra-sec_introspect-proxy validates on, so a token minted for any existing Authelia client works unchanged."
+        }
+      },
+      "tests": {
+        "contract-and-authz": {
+          "cmd": "node test-cloud-me-api.mjs",
+          "cwd": "src"
+        }
+      },
+      "api": {
+        "has_api": true,
+        "has_web_ui": false,
+        "api_path": "/me",
+        "api_url": null,
+        "healthcheck_paths": [
+          "/health"
+        ],
+        "type": "custom-rest",
+        "base_path": "/me",
+        "endpoint_count": 5,
+        "display_name": "Cloud Me API",
+        "description": "Authenticated read-only access to declared datasets and config files of the owner's private cloud-me-* repos. Deploy keys stay server-side; secret-looking files are never served.",
+        "auth": "mixed"
+      },
+      "secret_env_vars": [
+        "CME_KEY_CONTAINERS_B64",
+        "CME_KEY_CONFIGS_B64",
+        "CME_KEY_CGC_B64"
       ]
     },
     "cloud-services-mcp": {
@@ -2519,7 +2739,6 @@
       "proxy": {
         "_doc": "auth=two_factor is what the deriver turns into the Caddy mkProtected block: `@bearer header Authorization Bearer*` -> forward_auth 10.0.0.1:4182 /auth (infra-sec_introspect-proxy), with the interactive Authelia session as the non-bearer fallback. That is exactly the credential the phone ALREADY holds (cloud-u-android ab_cloud-libs-shared/build.json auth.sign_in.providers[id=authelia], kind=authelia_bearer, scope authelia.bearer.authz) — no new OIDC client, no new grant. Only /git/health is pre-auth, via the engine-supported public_paths[] array, so #646's chain has an unauthenticated reachability probe.",
         "primary": {
-          "wg_only": false,
           "auth": "two_factor",
           "type": "path",
           "parent_domain": "api.diegonmarcos.com",
@@ -3317,7 +3536,6 @@
       "proxy": {
         "primary": {
           "domain": "git.diegonmarcos.com",
-          "wg_only": false,
           "auth": "two_factor",
           "strip_authorization": true,
           "_strip_authorization_doc": "The edge withholds the fleet bearer from gitea after introspect-proxy validates it. Gitea reads any Authorization header as one of ITS OWN tokens, so forwarding the fleet JWT got a 401 from gitea on a request the gate had already passed — no bearer client could reach the API or clone, even a public repo. The identity the gate validated reaches gitea through `identity` below instead.",
@@ -3376,30 +3594,91 @@
           "_doc": "Gitea honours its reverse-proxy user header from ANY peer: REVERSE_PROXY_TRUSTED_PROXIES only feeds the X-Forwarded-For rewrite (gitea v28.0.0 routers/common/middleware.go:33); services/auth/reverseproxy.go never checks the source. With 0.0.0.0:3002 reachable from every wg0/wg-public peer and ~40 host-network containers on oci-apps, enabling reverse-proxy auth on that listener would let any of them become `diego` with one header. So gitea listens only on a unix socket in a tmpfs volume that no other container mounts, and this caddy owns :3002: it forwards `identity.header` (and X-Real-IP) only when the peer is in trusted_proxies AND the Host is this service's domain — the .app catalog routes the hub also serves from 10.0.0.1 carry Host gitea.app, so they cannot mint an identity either. Everything else reaches gitea exactly as before, anonymous."
         },
         "mirrors": {
-          "cloud-u-containers": {
-            "upstream": "https://github.com/diegonmarcos/cloud-u-containers.git"
-          },
           "cloud-infra": {
             "upstream": "https://github.com/diegonmarcos/cloud-infra.git"
           },
+          "front-unity": {
+            "upstream": "https://github.com/diegonmarcos/front-unity.git",
+            "private": true
+          },
+          "front-galaxy-gaia": {
+            "upstream": "https://github.com/diegonmarcos/front-galaxy-gaia.git",
+            "private": true
+          },
+          "cloud-u-containers_cgc": {
+            "upstream": "https://github.com/diegonmarcos/cloud-u-containers_cgc.git"
+          },
           "cloud-u-android": {
             "upstream": "https://github.com/diegonmarcos/cloud-u-android.git"
+          },
+          "cloud-me_cgc": {
+            "upstream": "https://github.com/diegonmarcos/cloud-me_cgc.git",
+            "private": true
           },
           "cloud-data": {
             "upstream": "https://github.com/diegonmarcos/cloud-data.git",
             "private": true
           },
-          "ops-Mylibs": {
-            "upstream": "https://github.com/diegonmarcos/ops-Mylibs.git"
+          "cloud-data-my-ai-memory": {
+            "upstream": "https://github.com/diegonmarcos/cloud-data-my-ai-memory.git",
+            "private": true
+          },
+          "git-repos-master": {
+            "upstream": "https://github.com/diegonmarcos/git-repos-master.git"
+          },
+          "ml-Agentic": {
+            "upstream": "https://github.com/diegonmarcos/ml-Agentic.git"
+          },
+          "cloud-u-containers": {
+            "upstream": "https://github.com/diegonmarcos/cloud-u-containers.git"
+          },
+          "cloud": {
+            "upstream": "https://github.com/diegonmarcos/cloud.git"
           },
           "ml-MachineLearning": {
             "upstream": "https://github.com/diegonmarcos/ml-MachineLearning.git"
           },
+          "diegonmarcos.github.io": {
+            "upstream": "https://github.com/diegonmarcos/diegonmarcos.github.io.git"
+          },
+          "cloud-me-containers": {
+            "upstream": "https://github.com/diegonmarcos/cloud-me-containers.git",
+            "private": true
+          },
+          "cloud-u-linux": {
+            "upstream": "https://github.com/diegonmarcos/cloud-u-linux.git"
+          },
+          "cloud-me_configs": {
+            "upstream": "https://github.com/diegonmarcos/cloud-me_configs.git",
+            "private": true
+          },
+          "cloud-webapps": {
+            "upstream": "https://github.com/diegonmarcos/cloud-webapps.git"
+          },
+          "diegonmarcos": {
+            "upstream": "https://github.com/diegonmarcos/diegonmarcos.git"
+          },
+          "front-data": {
+            "upstream": "https://github.com/diegonmarcos/front-data.git"
+          },
+          "front": {
+            "upstream": "https://github.com/diegonmarcos/front.git"
+          },
+          "front-assets-cdn": {
+            "upstream": "https://github.com/diegonmarcos/front-assets-cdn.git"
+          },
+          "cloud-infra-desktop": {
+            "upstream": "https://github.com/diegonmarcos/cloud-infra-desktop.git"
+          },
+          "cloud-data-lfs": {
+            "upstream": "https://github.com/diegonmarcos/cloud-data-lfs.git",
+            "private": true
+          },
+          "ops-Mylibs": {
+            "upstream": "https://github.com/diegonmarcos/ops-Mylibs.git"
+          },
           "ml-DataScience": {
             "upstream": "https://github.com/diegonmarcos/ml-DataScience.git"
-          },
-          "ml-Agentic": {
-            "upstream": "https://github.com/diegonmarcos/ml-Agentic.git"
           },
           "dev": {
             "upstream": "https://github.com/diegonmarcos/dev.git",
@@ -3421,63 +3700,9 @@
             "upstream": "https://github.com/diegonmarcos/lecole42.git",
             "private": true
           },
-          "cloud-me_configs": {
-            "upstream": "https://github.com/diegonmarcos/cloud-me_configs.git",
-            "private": true
-          },
-          "diegonmarcos.github.io": {
-            "upstream": "https://github.com/diegonmarcos/diegonmarcos.github.io.git"
-          },
-          "diegonmarcos": {
-            "upstream": "https://github.com/diegonmarcos/diegonmarcos.git"
-          },
-          "front-data": {
-            "upstream": "https://github.com/diegonmarcos/front-data.git"
-          },
-          "front-assets-cdn": {
-            "upstream": "https://github.com/diegonmarcos/front-assets-cdn.git"
-          },
-          "cloud-me_cgc": {
-            "upstream": "https://github.com/diegonmarcos/cloud-me_cgc.git",
-            "private": true
-          },
-          "cloud-u-containers_cgc": {
-            "upstream": "https://github.com/diegonmarcos/cloud-u-containers_cgc.git"
-          },
-          "cloud": {
-            "upstream": "https://github.com/diegonmarcos/cloud.git"
-          },
-          "cloud-u-linux": {
-            "upstream": "https://github.com/diegonmarcos/cloud-u-linux.git"
-          },
-          "front-unity": {
-            "upstream": "https://github.com/diegonmarcos/front-unity.git",
-            "private": true
-          },
-          "front-galaxy-gaia": {
-            "upstream": "https://github.com/diegonmarcos/front-galaxy-gaia.git",
-            "private": true
-          },
-          "front": {
-            "upstream": "https://github.com/diegonmarcos/front.git"
-          },
           "cloud-notes": {
             "upstream": "https://github.com/diegonmarcos/cloud-notes.git",
             "private": true
-          },
-          "cloud-data-my-ai-memory": {
-            "upstream": "https://github.com/diegonmarcos/cloud-data-my-ai-memory.git",
-            "private": true
-          },
-          "cloud-data-lfs": {
-            "upstream": "https://github.com/diegonmarcos/cloud-data-lfs.git",
-            "private": true
-          },
-          "cloud-infra-desktop": {
-            "upstream": "https://github.com/diegonmarcos/cloud-infra-desktop.git"
-          },
-          "git-repos-master": {
-            "upstream": "https://github.com/diegonmarcos/git-repos-master.git"
           },
           "cloud-me": {
             "upstream": "https://github.com/diegonmarcos/cloud-me.git",
@@ -3962,7 +4187,9 @@
           ],
           "env_file": true,
           "depends_on": [],
-          "resources": {},
+          "resources": {
+            "mem_limit": "64M"
+          },
           "healthcheck": null,
           "monitoring": {
             "tls_check": true
@@ -4319,6 +4546,9 @@
         },
         "dag-keys": {
           "cmd": "python3 src/dags/test_dag-keys.py"
+        },
+        "jev-call-sites": {
+          "cmd": "python3 src/dags/test_jev-call-sites.py"
         }
       },
       "api": {
@@ -5345,6 +5575,10 @@
         "ports": [],
         "networks": []
       },
+      "git_tree_maintenance": {
+        "_comment": "The janitor `git gc`s the fleet's shared checkout (cloud-git-gh) and never deletes from it. It is NOT an agent (no toolbelt, no GH_TOKEN, no owner-repair), so it must not use agent.git_tree; but the volume mount and its pinned name still have ONE declaration, _shared/engine.nix, which supplies both from this key (test-git-tree-one-mount-pattern S1 forbids a hand-written pair in compose.nix). Writable because git gc rewrites packs.",
+        "mount": "/vol/shared-git-tree"
+      },
       "timezone": "Europe/Berlin",
       "resources": {
         "mem_reservation": "16m"
@@ -5362,6 +5596,203 @@
         "api_url": null,
         "healthcheck_paths": []
       }
+    },
+    "auth-broker": {
+      "category": "sec",
+      "vm": "oci-A1-f_0",
+      "folder": "infra-sec_auth-broker",
+      "description": "Identity broker for the multi-SSO sign-in: GitHub (device flow + web), Google (web code flow + PKCE) and Cloudflare One (Access JWT), owner only (#1066, #1083)",
+      "enabled": true,
+      "flake": "infra-sec_auth-broker",
+      "dns": "auth-broker.app",
+      "containers": {
+        "google": {
+          "container_name": "auth-broker-google",
+          "image": "ghcr.io/diegonmarcos/auth-broker-binaries:latest",
+          "port": 4180,
+          "public": false,
+          "healthcheck": "/oauth2/google/health",
+          "volumes": [],
+          "env_file": true,
+          "resources": {
+            "mem_reservation": "16m",
+            "mem_limit": "64m"
+          },
+          "protocol": "http"
+        },
+        "github": {
+          "container_name": "auth-broker-github",
+          "image": "ghcr.io/diegonmarcos/auth-broker-binaries:latest",
+          "port": 4181,
+          "public": false,
+          "healthcheck": "/oauth2/github/health",
+          "volumes": [],
+          "env_file": true,
+          "resources": {
+            "mem_reservation": "16m",
+            "mem_limit": "64m"
+          },
+          "protocol": "http"
+        },
+        "cloudflare": {
+          "container_name": "auth-broker-cloudflare",
+          "image": "ghcr.io/diegonmarcos/auth-broker-binaries:latest",
+          "port": 4182,
+          "public": false,
+          "healthcheck": "/oauth2/cloudflare/health",
+          "volumes": [],
+          "env_file": true,
+          "resources": {
+            "mem_reservation": "16m",
+            "mem_limit": "64m"
+          },
+          "protocol": "http"
+        }
+      },
+      "container_names": [
+        "auth-broker-google",
+        "auth-broker-github",
+        "auth-broker-cloudflare"
+      ],
+      "all_ports": [
+        "4180",
+        "4181",
+        "4182"
+      ],
+      "all_dns": [],
+      "compose": {
+        "containers": [],
+        "ports": [],
+        "networks": []
+      },
+      "proxy": {
+        "app_hub": false
+      },
+      "declared_ports": {
+        "google": 4180,
+        "github": 4181,
+        "cloudflare": 4182
+      },
+      "bind_host": "10.0.0.6",
+      "auth_broker": {
+        "_doc": "THE allowlist: the only identities the broker admits. Google: `allowed_emails` (verified email, exact match). GitHub: `allowed_github` (login AND numeric account id must both match; `email` is the identity handed to the gate). No email-domain rule exists on purpose (a domain-wide rule would admit every address at that domain). Sign-in: GitHub uses the OAuth device flow (RFC 8628: the broker shows a user code and the provider's verification link, polls the provider); Google uses the standard web authorization-code flow with PKCE S256 and a single-use state bound to the browser (callback paths below). Either way the provider's user is then checked against these lists. Each provider has its own `enabled` flag; a disabled provider refuses new sign-ins but its instance still validates the shared session cookie. The guard src/test in infra-sec_caddy (test-multi-sso.sh) fails when these lists hold anyone else, or a domain-wide rule appears; infra-sec_auth-broker/src/test/test-broker.py exercises the device flow against stub providers.",
+        "allowed_emails": [
+          "me@diegonmarcos.com"
+        ],
+        "allowed_github": [
+          {
+            "login": "diegonmarcos",
+            "id": 100614489,
+            "email": "me@diegonmarcos.com"
+          }
+        ],
+        "cookie_name": "_diego_sso",
+        "cookie_domain": ".diegonmarcos.com",
+        "cookie_expire": "12h",
+        "cookie_expire_seconds": 43200,
+        "rd_domain": "diegonmarcos.com",
+        "providers": [
+          {
+            "id": "google",
+            "label": "Google",
+            "enabled": true,
+            "provider": "google",
+            "flow": "web",
+            "secret_prefix": "AUTH_BROKER_GOOGLE",
+            "port": 4180,
+            "prefix": "/oauth2/google",
+            "scope": "openid email",
+            "token_url": "https://oauth2.googleapis.com/token",
+            "userinfo_url": "https://openidconnect.googleapis.com/v1/userinfo",
+            "_doc_flow": "Web application client (sops: AUTH_BROKER_GOOGLE_CLIENT_ID/SECRET). Redirect URIs registered at Google must equal redirect_uris exactly. The consent screen is in Testing mode: the owner account must be a listed test user.",
+            "auth_url": "https://accounts.google.com/o/oauth2/v2/auth",
+            "redirect_uris": [
+              "https://auth.diegonmarcos.com/oauth2/google/callback",
+              "https://account.diegonmarcos.com/oauth2/google/callback"
+            ]
+          },
+          {
+            "id": "github",
+            "label": "GitHub",
+            "enabled": true,
+            "provider": "github",
+            "flow": "device",
+            "_doc_client_id": "The GitHub CLI's public OAuth client id (device flow, no secret). Public by design; not a credential.",
+            "client_id": "178c6fc778ccc68e1d6a",
+            "port": 4181,
+            "prefix": "/oauth2/github",
+            "scope": "read:user",
+            "device_url": "https://github.com/login/device/code",
+            "token_url": "https://github.com/login/oauth/access_token",
+            "user_url": "https://api.github.com/user",
+            "web": {
+              "_doc": "The owner's own GitHub OAuth App (web redirect flow, PKCE + state). client_id is public. The client secret is sops key AUTH_BROKER_GITHUB_APP_CLIENT_SECRET: until it is present the web leg stays off and /oauth2/github/start serves the device flow (gh public client above, also reachable with ?flow=device). GitHub allows one callback URL per App: auth. only.",
+              "enabled": true,
+              "client_id": "Ov23li1WLY8SoctMF2hp",
+              "secret_prefix": "AUTH_BROKER_GITHUB_APP",
+              "scope": "read:user",
+              "auth_url": "https://github.com/login/oauth/authorize",
+              "token_url": "https://github.com/login/oauth/access_token",
+              "redirect_uris": [
+                "https://auth.diegonmarcos.com/oauth2/github/callback"
+              ]
+            }
+          },
+          {
+            "id": "cloudflare",
+            "label": "Cloudflare One",
+            "enabled": true,
+            "provider": "cloudflare",
+            "flow": "access",
+            "port": 4182,
+            "prefix": "/oauth2/cloudflare",
+            "_doc_flow": "Cloudflare One (Zero Trust) sign-in. <prefix>/start (on the chooser hosts in `hosts`) sends the browser to `login_url`, a hostname that Cloudflare Access protects (cloud-infra c_vps/ba-clo_cloudflare terraform.json zero_trust.broker_app: Access app + owner-only policy, proxied through the fleet tunnel straight to this instance). After the Access login, Cloudflare forwards the request with Cf-Access-Jwt-Assertion; <prefix>/callback verifies it (RS256 against the team certs, issuer, audience in cloudflare_access.aud, expiry, owner email only), issues the shared _diego_sso cookie and 302s to rd (an https URL under rd_domain; a relative rd is resolved against the chooser host it came from). A request without a valid JWT gets 401 and no cookie. No client id or secret exists for this provider.",
+            "hosts": [
+              "auth.diegonmarcos.com",
+              "account.diegonmarcos.com"
+            ],
+            "login_url": "https://auth-cf.diegonmarcos.com/oauth2/cloudflare/callback",
+            "home_url": "https://auth.diegonmarcos.com/"
+          }
+        ],
+        "cloudflare_access": {
+          "_doc": "Cloudflare Access (Zero Trust) as a fourth credential: the broker verifies Cf-Access-Jwt-Assertion (RS256 signature against the team certs, issuer, audience, expiry) and admits only a token whose email is in allowed_emails (service-token JWTs carry no email and are refused). `aud` lists the AUD tags of the Access applications trusted (terraform outputs zt_pilot_aud and zt_broker_aud in cloud-infra c_vps/ba-clo_cloudflare; zt_broker_aud is the Cloudflare One sign-in app, #1083). Served on every instance at <prefix>/cf-auth; the edge gate calls it when the request carries the header.",
+          "enabled": true,
+          "team_domain": "diegonmarcos.cloudflareaccess.com",
+          "certs_url": "https://diegonmarcos.cloudflareaccess.com/cdn-cgi/access/certs",
+          "aud": [
+            "fd961754aece540b409ee165bc028105168acece9dca1f530e38f5f62e5b8f3c",
+            "669d709af5740d926d2f122e7752331015a22a5487b1c82e8b63d4f32f31dfc0"
+          ]
+        }
+      },
+      "tests": {
+        "broker-device-flow": {
+          "cmd": "python3 -I test/test-broker.py",
+          "cwd": "src"
+        },
+        "broker-hub": {
+          "cmd": "python3 -I test/test-broker-hub.py",
+          "cwd": "src"
+        }
+      },
+      "api": {
+        "has_api": false,
+        "has_web_ui": false,
+        "api_path": null,
+        "api_url": null,
+        "healthcheck_paths": [
+          "/oauth2/google/health",
+          "/oauth2/github/health",
+          "/oauth2/cloudflare/health"
+        ]
+      },
+      "secret_env_vars": [
+        "AUTH_BROKER_GOOGLE_CLIENT_ID",
+        "AUTH_BROKER_GOOGLE_CLIENT_SECRET",
+        "AUTH_BROKER_COOKIE_SECRET",
+        "AUTH_BROKER_GITHUB_APP_CLIENT_SECRET"
+      ]
     },
     "authelia": {
       "category": "sec",
@@ -5819,6 +6250,79 @@
           }
         },
         "edge_auth": {
+          "multi_sso": {
+            "_doc": "MULTI-SSO (#1066). ONE flag. ON since 2026-10-21 (guard: src/test/test-multi-sso.sh pins this state and proves the ON render only ADDS to the OFF render; OFF/absent renders the pre-multi-SSO Caddyfile). enabled=true: the auth vhost also answers every host in `hosts` (account.diegonmarcos.com; DNS is covered by the wildcard record, TLS is on-demand), serves the four-button chooser (Authelia, Cloudflare One, Google, GitHub) on GET / for a browser with no Authelia session, proxies /oauth2/<provider>/* to the auth broker (device flow and web flow for GitHub, web code flow + PKCE for Google, Cloudflare Access login bridge for Cloudflare One; infra-sec_auth-broker, on oci-apps over the mesh), and the shared edge gate accepts a broker session cookie as a third credential beside the fleet Bearer and the Authelia session. The broker only admits `allowed_emails`. Per-provider switches live in infra-sec_auth-broker/build.json (providers[].enabled); a switched-off provider's button is hidden by the chooser.",
+            "enabled": true,
+            "primary_host": "auth.diegonmarcos.com",
+            "hosts": [
+              "auth.diegonmarcos.com",
+              "account.diegonmarcos.com"
+            ],
+            "cookie_name": "_diego_sso",
+            "authelia_cookie": "authelia_session",
+            "providers": [
+              {
+                "id": "google",
+                "label": "Google",
+                "upstream": "10.0.0.6:4180",
+                "prefix": "/oauth2/google"
+              },
+              {
+                "id": "github",
+                "label": "GitHub",
+                "upstream": "10.0.0.6:4181",
+                "prefix": "/oauth2/github"
+              },
+              {
+                "id": "cloudflare",
+                "label": "Cloudflare One",
+                "upstream": "10.0.0.6:4182",
+                "prefix": "/oauth2/cloudflare"
+              }
+            ],
+            "chooser": {
+              "_doc": "The sign-in chooser page served on the auth vhost (src/sso-chooser.html), GENERATED from this block, `providers` above and src/sso-chooser.tpl.html by src/gen-sso-chooser.py (test/test-sso-chooser.sh fails on drift). Self-contained: no third-party request at runtime. `order` is the button order (digit keys 1..n pick them); `authelia` is the portal entry that is not a broker; `hints` are the one-line captions; `links` are the footer icon links (public pages).",
+              "home": "https://suite.diegonmarcos.com/",
+              "order": [
+                "authelia",
+                "cloudflare",
+                "google",
+                "github"
+              ],
+              "authelia": {
+                "label": "Authelia",
+                "href": "https://auth.diegonmarcos.com/?ui=authelia"
+              },
+              "hints": {
+                "authelia": "fleet SSO portal",
+                "cloudflare": "Zero Trust login bridge",
+                "google": "owner account",
+                "github": "owner account"
+              },
+              "links": [
+                {
+                  "id": "linktree",
+                  "label": "Linktree",
+                  "url": "https://diegonmarcos.github.io/linktree"
+                },
+                {
+                  "id": "superapp",
+                  "label": "Cloud SuperApp",
+                  "url": "https://diegonmarcos.github.io/cloud-webapps/cloud-superapp"
+                },
+                {
+                  "id": "store",
+                  "label": "Cloud Store",
+                  "url": "https://diegonmarcos.github.io/cloud-webapps/cloud-store"
+                }
+              ]
+            },
+            "cloudflare_access": {
+              "_doc": "Cloudflare Access JWT as the third credential (after the Authelia session and the broker cookie): a request carrying Cf-Access-Jwt-Assertion and neither cookie is sent to the broker's <prefix>/cf-auth, which verifies it against the team certs and the AUDs in infra-sec_auth-broker/build.json auth_broker.cloudflare_access (owner email only). Only active while multi_sso.enabled is true.",
+              "enabled": true,
+              "header": "Cf-Access-Jwt-Assertion"
+            }
+          },
           "_doc": "THE edge auth policy, one list, three tiers. Every public URL is exactly one of: (a) private -- mesh/WireGuard only (route wg_only:true, or a *.app/.db/s3 name), answered 403 to any non-mesh source and never served by the public edge (caddy-public); (b) public-protected -- the DEFAULT for anything public: the shared (edge_auth) snippet requires `Authorization: Bearer <fleet token>` (introspect-proxy) OR a valid Authelia session cookie, else 401 (API / non-browser) or 302 to auth. (browser); (c) public-open -- anonymous allowed, ONLY what is listed in public_open / technical below, each with a reason. Adding a host to public_open is the only way to make something anonymous; add more entries here. The CI guard (cloud-infra 9_others/test/edge-auth-gate.test.sh) fails on a public site that is in no tier, in two tiers, or open without an entry here. Rendered by _shared/edge-auth.nix into BOTH Caddyfiles (hub infra-sec_caddy, edge infra-sec_caddy-public); the derive copies this block into build-caddy.json and build-caddy-edge.json.",
           "public_open": [
             {
@@ -5830,6 +6334,11 @@
               "host": "linktree.diegonmarcos.com",
               "scope": "host",
               "reason": "Owner decision 2026-10-16: the public link page is deliberately anonymous."
+            },
+            {
+              "host": "c3-pub.diegonmarcos.com",
+              "scope": "host",
+              "reason": "Routing tier pub (#1104): Cloudflare-proxied, explicit unauthenticated allowlist only (_shared/fleet-addressing.json tiers.pub); every other path answers 404 and no upstream is reachable beyond the listed paths."
             },
             {
               "host": "mcp.diegonmarcos.com",
@@ -5898,12 +6407,18 @@
             },
             {
               "host": "diegonmarcos.com",
-              "scope": "paths",
-              "paths": [
-                "/.well-known/openpgpkey/*",
-                "/.well-known/jmap"
-              ],
-              "reason": "Owner decision 22: WKD (OpenPGP key discovery, public keys by design) and the apex /.well-known/jmap autoconfig redirect (redirect only, no content)."
+              "scope": "host",
+              "reason": "Routing tier public HTML (#1104, owner ruling 2026-10-22): the apex and www are the ONLY unauthenticated public hosts. Static landing page plus WKD (OpenPGP public keys by design) and the /.well-known/jmap autoconfig redirect."
+            },
+            {
+              "host": "www.diegonmarcos.com",
+              "scope": "host",
+              "reason": "Routing tier public HTML (#1104, owner ruling 2026-10-22): www and the apex are the ONLY unauthenticated public hosts; static landing page."
+            },
+            {
+              "host": "*.diegonmarcos.com",
+              "scope": "host",
+              "reason": "Routing tier (#1104, owner ruling 2026-10-22): there is NO public wildcard route. This catch-all serves nothing: an undeclared subdomain is redirected to the apex and reaches no upstream. Guard: _shared/test-fleet-addressing.mjs."
             },
             {
               "host": "mta-sts.diegonmarcos.com",
@@ -5917,6 +6432,16 @@
               "host": "vpn.diegonmarcos.com",
               "scope": "websocket",
               "reason": "Owner decision 2026-10-16: the wstunnel client opens a WebSocket upgrade to a secret path prefix and cannot do a cookie/bearer handshake. The exemption is `Upgrade: websocket` only; wstunnel itself rejects every upgrade whose path is not its secret --http-upgrade-path-prefix, and every non-upgrade request to vpn. is gated."
+            }
+          ],
+          "bearer_passthrough": [
+            {
+              "host": "jmap.diegonmarcos.com",
+              "reason": "Owner decision 2026-10-18: mail clients log in with a Stalwart OAuth or API token in `Authorization: Bearer`, which introspect-proxy (Authelia/fleet tokens) can never recognise, so the edge answered 401 and the client never reached Stalwart. The edge no longer introspects Bearer here; Stalwart validates it and answers its own 401. Still protected: Stalwart requires auth on every JMAP route, a request with NO Authorization still goes to the Authelia branch and is refused at the edge, X-Fleet-Authorization is still introspected, and the jmap rate limit stays."
+            },
+            {
+              "host": "mails.diegonmarcos.com",
+              "reason": "Same as jmap.: the mails. vhost serves the same Stalwart JMAP surface to the same clients."
             }
           ],
           "held": [],
@@ -5939,6 +6464,26 @@
               ],
               "reason": "IMAPS / SMTPS are not HTTP: caddy-l4 forwards the raw TLS stream to Stalwart, which authenticates the mail login itself. There is no HTTP request to carry a bearer or cookie."
             }
+          ]
+        },
+        "mcp_oauth": {
+          "_doc": "WIP option 31.1 (branch wip/mcp-oauth, NOT approved). MCP OAuth authorization server (infra-sec_mcp-oauth) routes on mcp.diegonmarcos.com, rendered by _shared/mcp-oauth.nix into BOTH Caddyfiles. Every path here must already be in edge_auth.public_open for this host (the render asserts it). authorize_paths additionally require an Authelia session via forward_auth. The derive (cloud-infra) must copy this block into build-caddy.json and build-caddy-edge.json; until it does, nothing renders.",
+          "host": "mcp.diegonmarcos.com",
+          "upstream": "10.0.0.1:4183",
+          "open_paths": [
+            "/.well-known/oauth-protected-resource*",
+            "/.well-known/oauth-authorization-server*",
+            "/.well-known/openid-configuration*",
+            "/register",
+            "/token",
+            "/*/.well-known/oauth-protected-resource*",
+            "/*/.well-known/oauth-authorization-server*",
+            "/*/register",
+            "/*/token"
+          ],
+          "authorize_paths": [
+            "/authorize",
+            "/*/authorize"
           ]
         },
         "auth": {
@@ -6017,8 +6562,8 @@
         "catch_all": {
           "domain": "*.diegonmarcos.com",
           "page": "/srv/error.html",
-          "redirect_to": "https://diegonmarcos.github.io/c__Cloud/",
-          "_redirect_doc": "Unknown subdomains 302 to the landing hub instead of the 404 error page (caddyfile.nix catchAllBlock). page stays as the edge's fallback file."
+          "redirect_to": "https://diegonmarcos.com/",
+          "_redirect_doc": "Undeclared subdomains have no route (#1104, owner ruling 2026-10-22): 302 to the apex, ungated, no upstream (caddyfile.nix catchAllBlock). page stays as the edge's fallback file."
         },
         "messages": {
           "portless_placeholder": "Portless worker/sidecar — no HTTP endpoint",
@@ -6088,6 +6633,26 @@
         "no-site-respond-before-handle": {
           "cmd": "bash test/test-no-site-respond-before-handle.sh",
           "cwd": "src"
+        },
+        "multi-sso": {
+          "cmd": "bash test/test-multi-sso.sh",
+          "cwd": "src"
+        },
+        "sso-chooser": {
+          "cmd": "bash test/test-sso-chooser.sh",
+          "cwd": "src"
+        },
+        "hub-resource-budget": {
+          "cmd": "bash test/test-hub-resource-budget.sh",
+          "cwd": "src"
+        },
+        "fallback-redirect": {
+          "cmd": "bash test/test-fallback-redirect.sh",
+          "cwd": "src"
+        },
+        "public-route-allowlist": {
+          "cmd": "node test-public-route-allowlist.mjs",
+          "cwd": "../_shared"
         }
       },
       "api": {
@@ -6447,7 +7012,7 @@
           "healthcheck": "/health",
           "monitoring": null,
           "volumes": [],
-          "env_file": false,
+          "env_file": true,
           "depends_on": [],
           "resources": null,
           "read_only": false,
@@ -6479,7 +7044,14 @@
       },
       "bind_host": "10.0.0.1",
       "resources": {
+        "mem_limit": "128M",
         "mem_reservation": "16M"
+      },
+      "tests": {
+        "unit": {
+          "cmd": "python3 -m pip install -q flask==3.0.0 'PyJWT[crypto]==2.9.0' pytest && python3 -m pytest -q -p no:cacheprovider test",
+          "cwd": "src"
+        }
       },
       "api": {
         "has_api": true,
@@ -6495,7 +7067,197 @@
         "display_name": "JWT Introspection Proxy",
         "description": "Validates bearer JWT tokens locally using Authelia JWKS public keys for Caddy forward_auth.",
         "auth": "bearer"
+      },
+      "secret_env_vars": [
+        "TOKENS_VERIFY_SECRET"
+      ]
+    },
+    "mcp-oauth": {
+      "category": "sec",
+      "vm": "gcp-E2-f_0",
+      "folder": "infra-sec_mcp-oauth",
+      "description": "MCP OAuth 2.1 authorization server for mcp.diegonmarcos.com (option 31.1, WIP, NOT approved): RFC 8414/9728 discovery, RFC 7591 DCR, /authorize behind Authelia, PKCE S256 /token, opaque tokens introspected by introspect-proxy",
+      "enabled": true,
+      "flake": "infra-sec_mcp-oauth",
+      "port": 4183,
+      "dns": "mcp-oauth.app",
+      "upstream": "10.0.0.1:4183",
+      "containers": {
+        "app": {
+          "container_name": "mcp-oauth",
+          "image": "ghcr.io/diegonmarcos/mcp-oauth:latest",
+          "port": 4183,
+          "port_env": null,
+          "dns": "mcp-oauth.app",
+          "public": false,
+          "proxy": null,
+          "healthcheck": "/health",
+          "monitoring": null,
+          "volumes": [
+            "./data:/data"
+          ],
+          "env_file": true,
+          "depends_on": [],
+          "resources": null,
+          "read_only": false,
+          "protocol": "http"
+        }
+      },
+      "container_names": [
+        "mcp-oauth"
+      ],
+      "all_ports": [
+        "4183"
+      ],
+      "all_dns": [
+        "mcp-oauth.app"
+      ],
+      "compose": {
+        "containers": [],
+        "ports": [],
+        "networks": []
+      },
+      "proxy": {
+        "app_hub": false
+      },
+      "declared_ports": {
+        "app": 4183
+      },
+      "health": {
+        "path": "/health"
+      },
+      "_status": "WIP on branch wip/mcp-oauth. Owner has not chosen option 31.1. Do not merge to main: a push to main dispatches cloud-infra Ship for every touched service.",
+      "bind_host": "10.0.0.1",
+      "resources": {
+        "mem_reservation": "16M",
+        "mem_limit": "128M"
+      },
+      "tests": {
+        "unit": {
+          "cmd": "python3 -m pip install -q flask==3.0.0 'PyJWT[crypto]==2.9.0' pytest && python3 -m pytest -q -p no:cacheprovider test",
+          "cwd": "src"
+        },
+        "caddy-render": {
+          "cmd": "bash test/test-caddy-render.sh",
+          "cwd": "src"
+        }
+      },
+      "api": {
+        "has_api": true,
+        "has_web_ui": false,
+        "api_path": "/",
+        "api_url": null,
+        "healthcheck_paths": [
+          "/health"
+        ],
+        "type": "custom-rest",
+        "base_path": "/",
+        "endpoint_count": 9,
+        "display_name": "MCP OAuth Authorization Server",
+        "description": "OAuth 2.1 AS for MCP connectors (claude.ai, claude.com, localhost). Public paths are exactly the mcp.diegonmarcos.com entry of caddy_config.edge_auth.public_open; /introspect is mesh-only.",
+        "auth": "oauth2"
       }
+    },
+    "tokens-api": {
+      "category": "sec",
+      "vm": "oci-A1-f_0",
+      "folder": "infra-sec_tokens-api",
+      "description": "Fleet token engine: lists, generates, reveals and revokes every fleet bearer token (fleet ft_ tokens and adopted Authelia JWTs); introspect-proxy asks it before accepting a Bearer, so a revoked token stops working within 60 seconds",
+      "enabled": true,
+      "domain": "tokens-api.diegonmarcos.com",
+      "flake": "infra-sec_tokens-api",
+      "port": 4184,
+      "dns": "tokens-api.app",
+      "upstream": "10.0.0.6:4184",
+      "containers": {
+        "app": {
+          "container_name": "tokens-api",
+          "image": "ghcr.io/diegonmarcos/tokens-api-binaries:latest",
+          "port": 4184,
+          "port_env": null,
+          "dns": "tokens-api.app",
+          "public": true,
+          "proxy": {
+            "domain": "tokens-api.diegonmarcos.com",
+            "auth": "two_factor"
+          },
+          "healthcheck": "/health",
+          "monitoring": {
+            "tls_check": true,
+            "dns_check": true,
+            "endpoint_check": true
+          },
+          "volumes": [
+            "tokens_api_data:/data"
+          ],
+          "env_file": true,
+          "depends_on": [],
+          "resources": null,
+          "read_only": false,
+          "protocol": "http"
+        }
+      },
+      "container_names": [
+        "tokens-api"
+      ],
+      "all_ports": [
+        "4184"
+      ],
+      "all_dns": [
+        "tokens-api.app"
+      ],
+      "compose": {
+        "containers": [],
+        "ports": [],
+        "networks": []
+      },
+      "proxy": {
+        "primary": {
+          "domain": "tokens-api.diegonmarcos.com",
+          "auth": "two_factor"
+        }
+      },
+      "declared_ports": {
+        "app": 4184
+      },
+      "health": {
+        "path": "/health"
+      },
+      "monitoring": {
+        "tls_check": true,
+        "dns_check": true,
+        "endpoint_check": true
+      },
+      "timezone": "Europe/Madrid",
+      "resources": {
+        "mem_reservation": "16M",
+        "mem_limit": "128M"
+      },
+      "tests": {
+        "unit": {
+          "cmd": "python3 -m pip install -q flask==3.0.0 'PyJWT[crypto]==2.9.0' cryptography==43.0.3 pytest && python3 -m pytest -q -p no:cacheprovider test",
+          "cwd": "src"
+        }
+      },
+      "api": {
+        "has_api": true,
+        "has_web_ui": true,
+        "api_path": "/",
+        "api_url": "https://tokens-api.diegonmarcos.com/",
+        "healthcheck_paths": [
+          "/health"
+        ],
+        "type": "custom-rest",
+        "base_path": "/",
+        "endpoint_count": 8,
+        "display_name": "Fleet Token Engine",
+        "description": "Owner-only token manager (list, reveal, generate, import, revoke, audit) and the mesh-only /v1/verify that introspect-proxy calls.",
+        "auth": "bearer"
+      },
+      "secret_env_vars": [
+        "TOKENS_FLEET_KEY",
+        "TOKENS_VERIFY_SECRET"
+      ]
     },
     "cloud-cgc-pub-mcp": {
       "category": "obs",
@@ -6670,7 +7432,9 @@
             ],
             "cloud-data-my-ai-memory": [
               "a_sessions/",
-              "a_commits/"
+              "a_commits/",
+              "a___SESSIONS___/a_sessions/",
+              "a___SESSIONS___/a_commits/"
             ],
             "cloud-u-android": [
               "**/res/values-*/",
@@ -7015,8 +7779,8 @@
           "db_engine": "surrealdb",
           "image": "ghcr.io/diegonmarcos/kg-store:latest",
           "resources": {
-            "_comment": "THE ONE DECLARATION of this container's memory budget. src/compose.nix reads mem_limit as the cgroup ceiling (deploy.resources.limits.memory) and rocksdb_block_cache / rocksdb_write_buffer below as SurrealDB's own RocksDB budget (SURREAL_ROCKSDB_BLOCK_CACHE_SIZE, SURREAL_ROCKSDB_WRITE_BUFFER_SIZE). Both halves are required: the cgroup alone converts the leak into an OOM kill, and the engine budget alone leaves nothing enforcing it. No literal is written in compose.nix. Sized from measurement: kg-store's resident set on oci-apps 2026-09-24 was 140.6MiB at rest, but a full graph refresh peaked at ~945MiB on 2026-10-10, hence 2G.",
-            "mem_limit": "2G",
+            "_comment": "THE ONE DECLARATION of this container's memory budget. src/compose.nix reads mem_limit as the cgroup ceiling (deploy.resources.limits.memory) and rocksdb_block_cache / rocksdb_write_buffer below as SurrealDB's own RocksDB budget (SURREAL_ROCKSDB_BLOCK_CACHE_SIZE, SURREAL_ROCKSDB_WRITE_BUFFER_SIZE). Both halves are required: the cgroup alone converts the leak into an OOM kill, and the engine budget alone leaves nothing enforcing it. No literal is written in compose.nix. Sized from measurement: kg-store's resident set on oci-apps 2026-09-24 was 140.6MiB at rest, but a full graph refresh peaked at ~945MiB on 2026-10-10, hence 2G. Raised to 4G on 2026-10-21: a pvt restore (407k-edge cloud-u-android repo-scoped delete) hit the 2G ceiling, the kernel OOM-killed surreal at 2.09GB anon-rss and the ingest aborted with ECONNREFUSED (#1061).",
+            "mem_limit": "4G",
             "mem_reservation": "128M",
             "_rocksdb_comment": "SurrealDB RocksDB engine budget, declared on its own so the cgroup ceiling above can grow without the cache growing with it. Raised mem_limit 1G -> 2G on 2026-10-10: a full cgc graph refresh (690k-edge cloud-u-containers ingest) peaked at ~945MiB of the 1G cap and restarted both stores once mid-ingest. The cache and memtables are kept exactly where they were (512M cache, 2 x 128M memtables) so the extra GiB is pure headroom for the process, WAL and compaction. compose.nix refuses a block cache above half of mem_limit, and _shared/test-kg-store-memory-ceiling.mjs asserts mem_limit >= 2G.",
             "rocksdb_block_cache": "512M",
@@ -7518,6 +8282,10 @@
           "cmd": "node test-my-ai-resume-by-name.mjs",
           "cwd": "src/code"
         },
+        "jev-tier": {
+          "cmd": "node test-my-ai-jev-tier.mjs",
+          "cwd": "src/code"
+        },
         "src-dist-parity": {
           "cmd": "node test-my-ai-src-dist-parity.mjs",
           "cwd": "src/code"
@@ -7835,6 +8603,10 @@
       },
       "declared_ports": {
         "app": 18789
+      },
+      "agent": {
+        "_comment": "Explicit opt-OUT, required by 9_others/test/test_agent_git_tree_declared.sh in cloud-infra. openclaw is upstream's stock image, unmodified, reached only through the agent gateway on loopback; it is not wired to read or commit the fleet repositories, and a writable shared tree would widen its blast radius for nothing. Flip to true (with git_tree_writable true) only together with a decision that this agent works in the checkout.",
+        "git_tree": false
       },
       "runtime": {
         "_comment": "THE ONE DECLARATION of what OpenClaw runs. src/openclaw-config.nix renders configs/openclaw.json from it (a pure function, evaluated by the tester too), compose.nix mounts that read-only and the container copies it into its state volume at every start, so a hand edit inside the container lasts until the next restart and never longer. `model` is the fleet's agent model (the same one goose and hermes declare); `provider` is the fleet gateway's OpenAI-compatible face on the WireGuard bind, which injects the OpenRouter key — the apiKey OpenClaw sends is a placeholder the gateway ignores (passthrough_auth false there).",
@@ -8736,6 +9508,14 @@
         "host": "smtp.email.eu-marseille-1.oci.oraclecloud.com",
         "port": "587"
       },
+      "tests": {
+        "jev-fallback": {
+          "cmd": "bash src/test-jev-fallback.sh"
+        },
+        "sorter-jev": {
+          "cmd": "cargo test --manifest-path src/crate/Cargo.toml"
+        }
+      },
       "api": {
         "has_api": false,
         "has_web_ui": true,
@@ -8817,6 +9597,17 @@
               ],
               "service": "imap_ssl",
               "desc": "IMAPS (host:2993 → stalwart:993)"
+            },
+            {
+              "port": 2080,
+              "container_port": 8080,
+              "protocol": "http",
+              "bind": [
+                "10.0.0.3",
+                "10.1.0.3"
+              ],
+              "service": "jmap_mesh_http",
+              "desc": "Plain-HTTP JMAP on the MESH ONLY (host:2080 → stalwart:8080). Bound on wg0/wg-public, never on a public interface: .app is WireGuard-only and WG already encrypts, so the mesh endpoint stalwart.app is plain http (fleet convention, #1093). Cloud Mail and the fleet apps reach JMAP here first and fall back to the public jmap.diegonmarcos.com with the bearer."
             },
             {
               "port": 6190,
@@ -9106,7 +9897,6 @@
           "parent_domain": "api.diegonmarcos.com",
           "base_path": "/scrappers",
           "auth": "two_factor",
-          "wg_only": false,
           "public_paths": [
             "/scrappers/health",
             "/scrappers/openapi.json"
@@ -9212,6 +10002,7 @@
           "type": "path",
           "parent_domain": "api.diegonmarcos.com",
           "base_path": "/fin-api",
+          "public_host": "fin-api.diegonmarcos.com",
           "auth": "two_factor",
           "paths": {
             "/health": {
@@ -9724,7 +10515,6 @@
       },
       "proxy": {
         "primary": {
-          "wg_only": false,
           "domain": "notes-sync.diegonmarcos.com",
           "auth": "two_factor"
         }
@@ -9760,7 +10550,7 @@
       "category": "app",
       "vm": "oci-A1-f_0",
       "folder": "user-prod_cloud-notes-web",
-      "description": "Cloud Notes web: the AFFiNE-based notes app (Miro + Notion + Obsidian) served as static files at notes.diegonmarcos.com behind the edge gate (Authelia 2FA or fleet Bearer). Built by cloud-u-android ship-cloud-notes.yml (ghcr.io/diegonmarcos/cloud-notes-web).",
+      "description": "Cloud Notes web: the notes app (Miro + Notion + Obsidian) served as static files at notes.diegonmarcos.com behind the edge gate (Authelia 2FA or fleet Bearer). Built by cloud-u-android ship-cloud-notes.yml (ghcr.io/diegonmarcos/cloud-notes-web).",
       "enabled": true,
       "domain": "notes.diegonmarcos.com",
       "flake": "user-prod_cloud-notes-web",
@@ -9809,7 +10599,6 @@
       },
       "proxy": {
         "primary": {
-          "wg_only": false,
           "domain": "notes.diegonmarcos.com",
           "auth": "two_factor"
         }
@@ -10950,23 +11739,23 @@
   "databases": {
     "_doc": "Canonical registry of every datastore. `kind` is what it is; `persistence.type` is where it survives. Fleet groups project one axis — never hand-maintain a parallel list. Git existence comes from the fetched GitHub inventory (src/inputs/github-repos.json); mirrored/indexed are declaration-driven flags on top.",
     "_counts": {
-      "total": 98,
+      "total": 102,
       "by_kind": {
         "embedded": 13,
         "container": 9,
         "object-store": 5,
-        "git-remote": 71
+        "git-remote": 75
       },
       "by_persistence": {
         "docker-volume": 19,
         "docker-bind": 1,
         "unknown": 2,
         "s3": 5,
-        "git": 71
+        "git": 75
       },
-      "github_repos": 36,
+      "github_repos": 38,
       "github_indexed": 8,
-      "github_mirrored": 35
+      "github_mirrored": 37
     },
     "_dangling_declarations": [],
     "entries": [
@@ -11490,51 +12279,6 @@
         }
       },
       {
-        "id": "git#gh/cloud-u-containers",
-        "service": "cloud-cgc-pub-mcp",
-        "container": null,
-        "engine": "git",
-        "kind": "git-remote",
-        "host": "github",
-        "repo": "diegonmarcos/cloud-u-containers",
-        "visibility": "public",
-        "fork": false,
-        "pushed_at": "2026-10-15T10:17:12Z",
-        "indexed": true,
-        "local_dir": "cloud-u-containers",
-        "mirrored": true,
-        "persistence": {
-          "type": "git",
-          "ref": "https://github.com/diegonmarcos/cloud-u-containers.git",
-          "mount": null
-        },
-        "vm": null,
-        "backup": {
-          "enabled": false,
-          "strategy": null
-        }
-      },
-      {
-        "id": "git#gitea/cloud-u-containers",
-        "service": "gitea",
-        "container": null,
-        "engine": "git",
-        "kind": "git-remote",
-        "host": "gitea",
-        "repo": "cloud-u-containers",
-        "upstream": "https://github.com/diegonmarcos/cloud-u-containers.git",
-        "persistence": {
-          "type": "git",
-          "ref": "https://github.com/diegonmarcos/cloud-u-containers.git",
-          "mount": null
-        },
-        "vm": "oci-A1-f_0",
-        "backup": {
-          "enabled": true,
-          "strategy": null
-        }
-      },
-      {
         "id": "git#gh/cloud-infra",
         "service": "cloud-cgc-pub-mcp",
         "container": null,
@@ -11544,7 +12288,7 @@
         "repo": "diegonmarcos/cloud-infra",
         "visibility": "public",
         "fork": false,
-        "pushed_at": "2026-10-15T10:17:10Z",
+        "pushed_at": "2026-10-21T16:53:29Z",
         "indexed": true,
         "local_dir": "cloud-infra",
         "mirrored": true,
@@ -11580,6 +12324,166 @@
         }
       },
       {
+        "id": "git#gh/front-unity",
+        "service": "gitea",
+        "container": null,
+        "engine": "git",
+        "kind": "git-remote",
+        "host": "github",
+        "repo": "diegonmarcos/front-unity",
+        "visibility": "private",
+        "fork": false,
+        "pushed_at": "2026-10-21T16:53:02Z",
+        "indexed": false,
+        "local_dir": null,
+        "mirrored": true,
+        "persistence": {
+          "type": "git",
+          "ref": "https://github.com/diegonmarcos/front-unity.git",
+          "mount": null
+        },
+        "vm": null,
+        "backup": {
+          "enabled": false,
+          "strategy": null
+        }
+      },
+      {
+        "id": "git#gitea/front-unity",
+        "service": "gitea",
+        "container": null,
+        "engine": "git",
+        "kind": "git-remote",
+        "host": "gitea",
+        "repo": "front-unity",
+        "upstream": "https://github.com/diegonmarcos/front-unity.git",
+        "persistence": {
+          "type": "git",
+          "ref": "https://github.com/diegonmarcos/front-unity.git",
+          "mount": null
+        },
+        "vm": "oci-A1-f_0",
+        "backup": {
+          "enabled": true,
+          "strategy": null
+        }
+      },
+      {
+        "id": "git#gh/front-galaxy-gaia",
+        "service": "gitea",
+        "container": null,
+        "engine": "git",
+        "kind": "git-remote",
+        "host": "github",
+        "repo": "diegonmarcos/front-galaxy-gaia",
+        "visibility": "private",
+        "fork": false,
+        "pushed_at": "2026-10-21T16:53:00Z",
+        "indexed": false,
+        "local_dir": null,
+        "mirrored": true,
+        "persistence": {
+          "type": "git",
+          "ref": "https://github.com/diegonmarcos/front-galaxy-gaia.git",
+          "mount": null
+        },
+        "vm": null,
+        "backup": {
+          "enabled": false,
+          "strategy": null
+        }
+      },
+      {
+        "id": "git#gitea/front-galaxy-gaia",
+        "service": "gitea",
+        "container": null,
+        "engine": "git",
+        "kind": "git-remote",
+        "host": "gitea",
+        "repo": "front-galaxy-gaia",
+        "upstream": "https://github.com/diegonmarcos/front-galaxy-gaia.git",
+        "persistence": {
+          "type": "git",
+          "ref": "https://github.com/diegonmarcos/front-galaxy-gaia.git",
+          "mount": null
+        },
+        "vm": "oci-A1-f_0",
+        "backup": {
+          "enabled": true,
+          "strategy": null
+        }
+      },
+      {
+        "id": "git#gh/cloud-me_vault",
+        "service": null,
+        "container": null,
+        "engine": "git",
+        "kind": "git-remote",
+        "host": "github",
+        "repo": "diegonmarcos/cloud-me_vault",
+        "visibility": "private",
+        "fork": false,
+        "pushed_at": "2026-10-21T16:52:55Z",
+        "indexed": false,
+        "local_dir": null,
+        "mirrored": false,
+        "persistence": {
+          "type": "git",
+          "ref": "https://github.com/diegonmarcos/cloud-me_vault.git",
+          "mount": null
+        },
+        "vm": null,
+        "backup": {
+          "enabled": false,
+          "strategy": null
+        }
+      },
+      {
+        "id": "git#gh/cloud-u-containers_cgc",
+        "service": "gitea",
+        "container": null,
+        "engine": "git",
+        "kind": "git-remote",
+        "host": "github",
+        "repo": "diegonmarcos/cloud-u-containers_cgc",
+        "visibility": "public",
+        "fork": false,
+        "pushed_at": "2026-10-21T16:52:53Z",
+        "indexed": false,
+        "local_dir": null,
+        "mirrored": true,
+        "persistence": {
+          "type": "git",
+          "ref": "https://github.com/diegonmarcos/cloud-u-containers_cgc.git",
+          "mount": null
+        },
+        "vm": null,
+        "backup": {
+          "enabled": false,
+          "strategy": null
+        }
+      },
+      {
+        "id": "git#gitea/cloud-u-containers_cgc",
+        "service": "gitea",
+        "container": null,
+        "engine": "git",
+        "kind": "git-remote",
+        "host": "gitea",
+        "repo": "cloud-u-containers_cgc",
+        "upstream": "https://github.com/diegonmarcos/cloud-u-containers_cgc.git",
+        "persistence": {
+          "type": "git",
+          "ref": "https://github.com/diegonmarcos/cloud-u-containers_cgc.git",
+          "mount": null
+        },
+        "vm": "oci-A1-f_0",
+        "backup": {
+          "enabled": true,
+          "strategy": null
+        }
+      },
+      {
         "id": "git#gh/cloud-u-android",
         "service": "cloud-cgc-pub-mcp",
         "container": null,
@@ -11589,7 +12493,7 @@
         "repo": "diegonmarcos/cloud-u-android",
         "visibility": "public",
         "fork": false,
-        "pushed_at": "2026-10-15T10:17:02Z",
+        "pushed_at": "2026-10-21T16:52:45Z",
         "indexed": true,
         "local_dir": "cloud-u-android",
         "mirrored": true,
@@ -11625,6 +12529,51 @@
         }
       },
       {
+        "id": "git#gh/cloud-me_cgc",
+        "service": "gitea",
+        "container": null,
+        "engine": "git",
+        "kind": "git-remote",
+        "host": "github",
+        "repo": "diegonmarcos/cloud-me_cgc",
+        "visibility": "private",
+        "fork": false,
+        "pushed_at": "2026-10-21T16:52:37Z",
+        "indexed": false,
+        "local_dir": null,
+        "mirrored": true,
+        "persistence": {
+          "type": "git",
+          "ref": "https://github.com/diegonmarcos/cloud-me_cgc.git",
+          "mount": null
+        },
+        "vm": null,
+        "backup": {
+          "enabled": false,
+          "strategy": null
+        }
+      },
+      {
+        "id": "git#gitea/cloud-me_cgc",
+        "service": "gitea",
+        "container": null,
+        "engine": "git",
+        "kind": "git-remote",
+        "host": "gitea",
+        "repo": "cloud-me_cgc",
+        "upstream": "https://github.com/diegonmarcos/cloud-me_cgc.git",
+        "persistence": {
+          "type": "git",
+          "ref": "https://github.com/diegonmarcos/cloud-me_cgc.git",
+          "mount": null
+        },
+        "vm": "oci-A1-f_0",
+        "backup": {
+          "enabled": true,
+          "strategy": null
+        }
+      },
+      {
         "id": "git#gh/cloud-data",
         "service": "cloud-cgc-pub-mcp",
         "container": null,
@@ -11634,7 +12583,7 @@
         "repo": "diegonmarcos/cloud-data",
         "visibility": "private",
         "fork": false,
-        "pushed_at": "2026-10-15T10:14:52Z",
+        "pushed_at": "2026-10-21T16:52:34Z",
         "indexed": true,
         "local_dir": "cloud-data",
         "mirrored": true,
@@ -11661,6 +12610,771 @@
         "persistence": {
           "type": "git",
           "ref": "https://github.com/diegonmarcos/cloud-data.git",
+          "mount": null
+        },
+        "vm": "oci-A1-f_0",
+        "backup": {
+          "enabled": true,
+          "strategy": null
+        }
+      },
+      {
+        "id": "git#gh/cloud-data-my-ai-memory",
+        "service": "cloud-cgc-pub-mcp",
+        "container": null,
+        "engine": "git",
+        "kind": "git-remote",
+        "host": "github",
+        "repo": "diegonmarcos/cloud-data-my-ai-memory",
+        "visibility": "private",
+        "fork": false,
+        "pushed_at": "2026-10-21T16:52:31Z",
+        "indexed": true,
+        "local_dir": "cloud-data-my-ai-memory",
+        "mirrored": true,
+        "persistence": {
+          "type": "git",
+          "ref": "https://github.com/diegonmarcos/cloud-data-my-ai-memory.git",
+          "mount": null
+        },
+        "vm": null,
+        "backup": {
+          "enabled": false,
+          "strategy": null
+        }
+      },
+      {
+        "id": "git#gitea/cloud-data-my-ai-memory",
+        "service": "gitea",
+        "container": null,
+        "engine": "git",
+        "kind": "git-remote",
+        "host": "gitea",
+        "repo": "cloud-data-my-ai-memory",
+        "upstream": "https://github.com/diegonmarcos/cloud-data-my-ai-memory.git",
+        "persistence": {
+          "type": "git",
+          "ref": "https://github.com/diegonmarcos/cloud-data-my-ai-memory.git",
+          "mount": null
+        },
+        "vm": "oci-A1-f_0",
+        "backup": {
+          "enabled": true,
+          "strategy": null
+        }
+      },
+      {
+        "id": "git#gh/git-repos-master",
+        "service": "gitea",
+        "container": null,
+        "engine": "git",
+        "kind": "git-remote",
+        "host": "github",
+        "repo": "diegonmarcos/git-repos-master",
+        "visibility": "public",
+        "fork": false,
+        "pushed_at": "2026-10-21T16:50:25Z",
+        "indexed": false,
+        "local_dir": null,
+        "mirrored": true,
+        "persistence": {
+          "type": "git",
+          "ref": "https://github.com/diegonmarcos/git-repos-master.git",
+          "mount": null
+        },
+        "vm": null,
+        "backup": {
+          "enabled": false,
+          "strategy": null
+        }
+      },
+      {
+        "id": "git#gitea/git-repos-master",
+        "service": "gitea",
+        "container": null,
+        "engine": "git",
+        "kind": "git-remote",
+        "host": "gitea",
+        "repo": "git-repos-master",
+        "upstream": "https://github.com/diegonmarcos/git-repos-master.git",
+        "persistence": {
+          "type": "git",
+          "ref": "https://github.com/diegonmarcos/git-repos-master.git",
+          "mount": null
+        },
+        "vm": "oci-A1-f_0",
+        "backup": {
+          "enabled": true,
+          "strategy": null
+        }
+      },
+      {
+        "id": "git#gh/ml-Agentic",
+        "service": "gitea",
+        "container": null,
+        "engine": "git",
+        "kind": "git-remote",
+        "host": "github",
+        "repo": "diegonmarcos/ml-Agentic",
+        "visibility": "public",
+        "fork": false,
+        "pushed_at": "2026-10-21T16:45:27Z",
+        "indexed": false,
+        "local_dir": null,
+        "mirrored": true,
+        "persistence": {
+          "type": "git",
+          "ref": "https://github.com/diegonmarcos/ml-Agentic.git",
+          "mount": null
+        },
+        "vm": null,
+        "backup": {
+          "enabled": false,
+          "strategy": null
+        }
+      },
+      {
+        "id": "git#gitea/ml-Agentic",
+        "service": "gitea",
+        "container": null,
+        "engine": "git",
+        "kind": "git-remote",
+        "host": "gitea",
+        "repo": "ml-Agentic",
+        "upstream": "https://github.com/diegonmarcos/ml-Agentic.git",
+        "persistence": {
+          "type": "git",
+          "ref": "https://github.com/diegonmarcos/ml-Agentic.git",
+          "mount": null
+        },
+        "vm": "oci-A1-f_0",
+        "backup": {
+          "enabled": true,
+          "strategy": null
+        }
+      },
+      {
+        "id": "git#gh/cloud-u-containers",
+        "service": "cloud-cgc-pub-mcp",
+        "container": null,
+        "engine": "git",
+        "kind": "git-remote",
+        "host": "github",
+        "repo": "diegonmarcos/cloud-u-containers",
+        "visibility": "public",
+        "fork": false,
+        "pushed_at": "2026-10-21T16:45:09Z",
+        "indexed": true,
+        "local_dir": "cloud-u-containers",
+        "mirrored": true,
+        "persistence": {
+          "type": "git",
+          "ref": "https://github.com/diegonmarcos/cloud-u-containers.git",
+          "mount": null
+        },
+        "vm": null,
+        "backup": {
+          "enabled": false,
+          "strategy": null
+        }
+      },
+      {
+        "id": "git#gitea/cloud-u-containers",
+        "service": "gitea",
+        "container": null,
+        "engine": "git",
+        "kind": "git-remote",
+        "host": "gitea",
+        "repo": "cloud-u-containers",
+        "upstream": "https://github.com/diegonmarcos/cloud-u-containers.git",
+        "persistence": {
+          "type": "git",
+          "ref": "https://github.com/diegonmarcos/cloud-u-containers.git",
+          "mount": null
+        },
+        "vm": "oci-A1-f_0",
+        "backup": {
+          "enabled": true,
+          "strategy": null
+        }
+      },
+      {
+        "id": "git#gh/cloud",
+        "service": "gitea",
+        "container": null,
+        "engine": "git",
+        "kind": "git-remote",
+        "host": "github",
+        "repo": "diegonmarcos/cloud",
+        "visibility": "public",
+        "fork": false,
+        "pushed_at": "2026-10-21T16:44:01Z",
+        "indexed": false,
+        "local_dir": null,
+        "mirrored": true,
+        "persistence": {
+          "type": "git",
+          "ref": "https://github.com/diegonmarcos/cloud.git",
+          "mount": null
+        },
+        "vm": null,
+        "backup": {
+          "enabled": false,
+          "strategy": null
+        }
+      },
+      {
+        "id": "git#gitea/cloud",
+        "service": "gitea",
+        "container": null,
+        "engine": "git",
+        "kind": "git-remote",
+        "host": "gitea",
+        "repo": "cloud",
+        "upstream": "https://github.com/diegonmarcos/cloud.git",
+        "persistence": {
+          "type": "git",
+          "ref": "https://github.com/diegonmarcos/cloud.git",
+          "mount": null
+        },
+        "vm": "oci-A1-f_0",
+        "backup": {
+          "enabled": true,
+          "strategy": null
+        }
+      },
+      {
+        "id": "git#gh/ml-MachineLearning",
+        "service": "gitea",
+        "container": null,
+        "engine": "git",
+        "kind": "git-remote",
+        "host": "github",
+        "repo": "diegonmarcos/ml-MachineLearning",
+        "visibility": "public",
+        "fork": false,
+        "pushed_at": "2026-10-21T16:42:25Z",
+        "indexed": false,
+        "local_dir": null,
+        "mirrored": true,
+        "persistence": {
+          "type": "git",
+          "ref": "https://github.com/diegonmarcos/ml-MachineLearning.git",
+          "mount": null
+        },
+        "vm": null,
+        "backup": {
+          "enabled": false,
+          "strategy": null
+        }
+      },
+      {
+        "id": "git#gitea/ml-MachineLearning",
+        "service": "gitea",
+        "container": null,
+        "engine": "git",
+        "kind": "git-remote",
+        "host": "gitea",
+        "repo": "ml-MachineLearning",
+        "upstream": "https://github.com/diegonmarcos/ml-MachineLearning.git",
+        "persistence": {
+          "type": "git",
+          "ref": "https://github.com/diegonmarcos/ml-MachineLearning.git",
+          "mount": null
+        },
+        "vm": "oci-A1-f_0",
+        "backup": {
+          "enabled": true,
+          "strategy": null
+        }
+      },
+      {
+        "id": "git#gh/diegonmarcos.github.io",
+        "service": "cloud-cgc-pub-mcp",
+        "container": null,
+        "engine": "git",
+        "kind": "git-remote",
+        "host": "github",
+        "repo": "diegonmarcos/diegonmarcos.github.io",
+        "visibility": "public",
+        "fork": false,
+        "pushed_at": "2026-10-21T15:09:24Z",
+        "indexed": true,
+        "local_dir": "front",
+        "mirrored": true,
+        "persistence": {
+          "type": "git",
+          "ref": "https://github.com/diegonmarcos/diegonmarcos.github.io.git",
+          "mount": null
+        },
+        "vm": null,
+        "backup": {
+          "enabled": false,
+          "strategy": null
+        }
+      },
+      {
+        "id": "git#gitea/diegonmarcos.github.io",
+        "service": "gitea",
+        "container": null,
+        "engine": "git",
+        "kind": "git-remote",
+        "host": "gitea",
+        "repo": "diegonmarcos.github.io",
+        "upstream": "https://github.com/diegonmarcos/diegonmarcos.github.io.git",
+        "persistence": {
+          "type": "git",
+          "ref": "https://github.com/diegonmarcos/diegonmarcos.github.io.git",
+          "mount": null
+        },
+        "vm": "oci-A1-f_0",
+        "backup": {
+          "enabled": true,
+          "strategy": null
+        }
+      },
+      {
+        "id": "git#gh/cloud-me-containers",
+        "service": "gitea",
+        "container": null,
+        "engine": "git",
+        "kind": "git-remote",
+        "host": "github",
+        "repo": "diegonmarcos/cloud-me-containers",
+        "visibility": "private",
+        "fork": false,
+        "pushed_at": "2026-10-21T15:06:17Z",
+        "indexed": false,
+        "local_dir": null,
+        "mirrored": true,
+        "persistence": {
+          "type": "git",
+          "ref": "https://github.com/diegonmarcos/cloud-me-containers.git",
+          "mount": null
+        },
+        "vm": null,
+        "backup": {
+          "enabled": false,
+          "strategy": null
+        }
+      },
+      {
+        "id": "git#gitea/cloud-me-containers",
+        "service": "gitea",
+        "container": null,
+        "engine": "git",
+        "kind": "git-remote",
+        "host": "gitea",
+        "repo": "cloud-me-containers",
+        "upstream": "https://github.com/diegonmarcos/cloud-me-containers.git",
+        "persistence": {
+          "type": "git",
+          "ref": "https://github.com/diegonmarcos/cloud-me-containers.git",
+          "mount": null
+        },
+        "vm": "oci-A1-f_0",
+        "backup": {
+          "enabled": true,
+          "strategy": null
+        }
+      },
+      {
+        "id": "git#gh/cloud-u-linux",
+        "service": "gitea",
+        "container": null,
+        "engine": "git",
+        "kind": "git-remote",
+        "host": "github",
+        "repo": "diegonmarcos/cloud-u-linux",
+        "visibility": "public",
+        "fork": false,
+        "pushed_at": "2026-10-21T14:49:21Z",
+        "indexed": false,
+        "local_dir": null,
+        "mirrored": true,
+        "persistence": {
+          "type": "git",
+          "ref": "https://github.com/diegonmarcos/cloud-u-linux.git",
+          "mount": null
+        },
+        "vm": null,
+        "backup": {
+          "enabled": false,
+          "strategy": null
+        }
+      },
+      {
+        "id": "git#gitea/cloud-u-linux",
+        "service": "gitea",
+        "container": null,
+        "engine": "git",
+        "kind": "git-remote",
+        "host": "gitea",
+        "repo": "cloud-u-linux",
+        "upstream": "https://github.com/diegonmarcos/cloud-u-linux.git",
+        "persistence": {
+          "type": "git",
+          "ref": "https://github.com/diegonmarcos/cloud-u-linux.git",
+          "mount": null
+        },
+        "vm": "oci-A1-f_0",
+        "backup": {
+          "enabled": true,
+          "strategy": null
+        }
+      },
+      {
+        "id": "git#gh/cloud-me_configs",
+        "service": "gitea",
+        "container": null,
+        "engine": "git",
+        "kind": "git-remote",
+        "host": "github",
+        "repo": "diegonmarcos/cloud-me_configs",
+        "visibility": "private",
+        "fork": false,
+        "pushed_at": "2026-10-21T14:49:17Z",
+        "indexed": false,
+        "local_dir": null,
+        "mirrored": true,
+        "persistence": {
+          "type": "git",
+          "ref": "https://github.com/diegonmarcos/cloud-me_configs.git",
+          "mount": null
+        },
+        "vm": null,
+        "backup": {
+          "enabled": false,
+          "strategy": null
+        }
+      },
+      {
+        "id": "git#gitea/cloud-me_configs",
+        "service": "gitea",
+        "container": null,
+        "engine": "git",
+        "kind": "git-remote",
+        "host": "gitea",
+        "repo": "cloud-me_configs",
+        "upstream": "https://github.com/diegonmarcos/cloud-me_configs.git",
+        "persistence": {
+          "type": "git",
+          "ref": "https://github.com/diegonmarcos/cloud-me_configs.git",
+          "mount": null
+        },
+        "vm": "oci-A1-f_0",
+        "backup": {
+          "enabled": true,
+          "strategy": null
+        }
+      },
+      {
+        "id": "git#gh/cloud-webapps",
+        "service": "gitea",
+        "container": null,
+        "engine": "git",
+        "kind": "git-remote",
+        "host": "github",
+        "repo": "diegonmarcos/cloud-webapps",
+        "visibility": "public",
+        "fork": false,
+        "pushed_at": "2026-10-21T14:37:45Z",
+        "indexed": false,
+        "local_dir": null,
+        "mirrored": true,
+        "persistence": {
+          "type": "git",
+          "ref": "https://github.com/diegonmarcos/cloud-webapps.git",
+          "mount": null
+        },
+        "vm": null,
+        "backup": {
+          "enabled": false,
+          "strategy": null
+        }
+      },
+      {
+        "id": "git#gitea/cloud-webapps",
+        "service": "gitea",
+        "container": null,
+        "engine": "git",
+        "kind": "git-remote",
+        "host": "gitea",
+        "repo": "cloud-webapps",
+        "upstream": "https://github.com/diegonmarcos/cloud-webapps.git",
+        "persistence": {
+          "type": "git",
+          "ref": "https://github.com/diegonmarcos/cloud-webapps.git",
+          "mount": null
+        },
+        "vm": "oci-A1-f_0",
+        "backup": {
+          "enabled": true,
+          "strategy": null
+        }
+      },
+      {
+        "id": "git#gh/diegonmarcos",
+        "service": "gitea",
+        "container": null,
+        "engine": "git",
+        "kind": "git-remote",
+        "host": "github",
+        "repo": "diegonmarcos/diegonmarcos",
+        "visibility": "public",
+        "fork": false,
+        "pushed_at": "2026-10-21T12:05:00Z",
+        "indexed": false,
+        "local_dir": null,
+        "mirrored": true,
+        "persistence": {
+          "type": "git",
+          "ref": "https://github.com/diegonmarcos/diegonmarcos.git",
+          "mount": null
+        },
+        "vm": null,
+        "backup": {
+          "enabled": false,
+          "strategy": null
+        }
+      },
+      {
+        "id": "git#gitea/diegonmarcos",
+        "service": "gitea",
+        "container": null,
+        "engine": "git",
+        "kind": "git-remote",
+        "host": "gitea",
+        "repo": "diegonmarcos",
+        "upstream": "https://github.com/diegonmarcos/diegonmarcos.git",
+        "persistence": {
+          "type": "git",
+          "ref": "https://github.com/diegonmarcos/diegonmarcos.git",
+          "mount": null
+        },
+        "vm": "oci-A1-f_0",
+        "backup": {
+          "enabled": true,
+          "strategy": null
+        }
+      },
+      {
+        "id": "git#gh/front-data",
+        "service": "cloud-cgc-pub-mcp",
+        "container": null,
+        "engine": "git",
+        "kind": "git-remote",
+        "host": "github",
+        "repo": "diegonmarcos/front-data",
+        "visibility": "public",
+        "fork": false,
+        "pushed_at": "2026-10-21T11:20:03Z",
+        "indexed": true,
+        "local_dir": "front-data",
+        "mirrored": true,
+        "persistence": {
+          "type": "git",
+          "ref": "https://github.com/diegonmarcos/front-data.git",
+          "mount": null
+        },
+        "vm": null,
+        "backup": {
+          "enabled": false,
+          "strategy": null
+        }
+      },
+      {
+        "id": "git#gitea/front-data",
+        "service": "gitea",
+        "container": null,
+        "engine": "git",
+        "kind": "git-remote",
+        "host": "gitea",
+        "repo": "front-data",
+        "upstream": "https://github.com/diegonmarcos/front-data.git",
+        "persistence": {
+          "type": "git",
+          "ref": "https://github.com/diegonmarcos/front-data.git",
+          "mount": null
+        },
+        "vm": "oci-A1-f_0",
+        "backup": {
+          "enabled": true,
+          "strategy": null
+        }
+      },
+      {
+        "id": "git#gh/front",
+        "service": "gitea",
+        "container": null,
+        "engine": "git",
+        "kind": "git-remote",
+        "host": "github",
+        "repo": "diegonmarcos/front",
+        "visibility": "public",
+        "fork": false,
+        "pushed_at": "2026-10-21T09:45:22Z",
+        "indexed": false,
+        "local_dir": null,
+        "mirrored": true,
+        "persistence": {
+          "type": "git",
+          "ref": "https://github.com/diegonmarcos/front.git",
+          "mount": null
+        },
+        "vm": null,
+        "backup": {
+          "enabled": false,
+          "strategy": null
+        }
+      },
+      {
+        "id": "git#gitea/front",
+        "service": "gitea",
+        "container": null,
+        "engine": "git",
+        "kind": "git-remote",
+        "host": "gitea",
+        "repo": "front",
+        "upstream": "https://github.com/diegonmarcos/front.git",
+        "persistence": {
+          "type": "git",
+          "ref": "https://github.com/diegonmarcos/front.git",
+          "mount": null
+        },
+        "vm": "oci-A1-f_0",
+        "backup": {
+          "enabled": true,
+          "strategy": null
+        }
+      },
+      {
+        "id": "git#gh/front-assets-cdn",
+        "service": "gitea",
+        "container": null,
+        "engine": "git",
+        "kind": "git-remote",
+        "host": "github",
+        "repo": "diegonmarcos/front-assets-cdn",
+        "visibility": "public",
+        "fork": false,
+        "pushed_at": "2026-10-21T09:22:38Z",
+        "indexed": false,
+        "local_dir": null,
+        "mirrored": true,
+        "persistence": {
+          "type": "git",
+          "ref": "https://github.com/diegonmarcos/front-assets-cdn.git",
+          "mount": null
+        },
+        "vm": null,
+        "backup": {
+          "enabled": false,
+          "strategy": null
+        }
+      },
+      {
+        "id": "git#gitea/front-assets-cdn",
+        "service": "gitea",
+        "container": null,
+        "engine": "git",
+        "kind": "git-remote",
+        "host": "gitea",
+        "repo": "front-assets-cdn",
+        "upstream": "https://github.com/diegonmarcos/front-assets-cdn.git",
+        "persistence": {
+          "type": "git",
+          "ref": "https://github.com/diegonmarcos/front-assets-cdn.git",
+          "mount": null
+        },
+        "vm": "oci-A1-f_0",
+        "backup": {
+          "enabled": true,
+          "strategy": null
+        }
+      },
+      {
+        "id": "git#gh/cloud-infra-desktop",
+        "service": "cloud-cgc-pub-mcp",
+        "container": null,
+        "engine": "git",
+        "kind": "git-remote",
+        "host": "github",
+        "repo": "diegonmarcos/cloud-infra-desktop",
+        "visibility": "public",
+        "fork": false,
+        "pushed_at": "2026-10-20T21:37:56Z",
+        "indexed": true,
+        "local_dir": "cloud-infra-desktop",
+        "mirrored": true,
+        "persistence": {
+          "type": "git",
+          "ref": "https://github.com/diegonmarcos/cloud-infra-desktop.git",
+          "mount": null
+        },
+        "vm": null,
+        "backup": {
+          "enabled": false,
+          "strategy": null
+        }
+      },
+      {
+        "id": "git#gitea/cloud-infra-desktop",
+        "service": "gitea",
+        "container": null,
+        "engine": "git",
+        "kind": "git-remote",
+        "host": "gitea",
+        "repo": "cloud-infra-desktop",
+        "upstream": "https://github.com/diegonmarcos/cloud-infra-desktop.git",
+        "persistence": {
+          "type": "git",
+          "ref": "https://github.com/diegonmarcos/cloud-infra-desktop.git",
+          "mount": null
+        },
+        "vm": "oci-A1-f_0",
+        "backup": {
+          "enabled": true,
+          "strategy": null
+        }
+      },
+      {
+        "id": "git#gh/cloud-data-lfs",
+        "service": "gitea",
+        "container": null,
+        "engine": "git",
+        "kind": "git-remote",
+        "host": "github",
+        "repo": "diegonmarcos/cloud-data-lfs",
+        "visibility": "private",
+        "fork": false,
+        "pushed_at": "2026-10-15T20:33:27Z",
+        "indexed": false,
+        "local_dir": null,
+        "mirrored": true,
+        "persistence": {
+          "type": "git",
+          "ref": "https://github.com/diegonmarcos/cloud-data-lfs.git",
+          "mount": null
+        },
+        "vm": null,
+        "backup": {
+          "enabled": false,
+          "strategy": null
+        }
+      },
+      {
+        "id": "git#gitea/cloud-data-lfs",
+        "service": "gitea",
+        "container": null,
+        "engine": "git",
+        "kind": "git-remote",
+        "host": "gitea",
+        "repo": "cloud-data-lfs",
+        "upstream": "https://github.com/diegonmarcos/cloud-data-lfs.git",
+        "persistence": {
+          "type": "git",
+          "ref": "https://github.com/diegonmarcos/cloud-data-lfs.git",
           "mount": null
         },
         "vm": "oci-A1-f_0",
@@ -11715,51 +13429,6 @@
         }
       },
       {
-        "id": "git#gh/ml-MachineLearning",
-        "service": "gitea",
-        "container": null,
-        "engine": "git",
-        "kind": "git-remote",
-        "host": "github",
-        "repo": "diegonmarcos/ml-MachineLearning",
-        "visibility": "public",
-        "fork": false,
-        "pushed_at": "2026-10-15T10:09:48Z",
-        "indexed": false,
-        "local_dir": null,
-        "mirrored": true,
-        "persistence": {
-          "type": "git",
-          "ref": "https://github.com/diegonmarcos/ml-MachineLearning.git",
-          "mount": null
-        },
-        "vm": null,
-        "backup": {
-          "enabled": false,
-          "strategy": null
-        }
-      },
-      {
-        "id": "git#gitea/ml-MachineLearning",
-        "service": "gitea",
-        "container": null,
-        "engine": "git",
-        "kind": "git-remote",
-        "host": "gitea",
-        "repo": "ml-MachineLearning",
-        "upstream": "https://github.com/diegonmarcos/ml-MachineLearning.git",
-        "persistence": {
-          "type": "git",
-          "ref": "https://github.com/diegonmarcos/ml-MachineLearning.git",
-          "mount": null
-        },
-        "vm": "oci-A1-f_0",
-        "backup": {
-          "enabled": true,
-          "strategy": null
-        }
-      },
-      {
         "id": "git#gh/ml-DataScience",
         "service": "gitea",
         "container": null,
@@ -11796,51 +13465,6 @@
         "persistence": {
           "type": "git",
           "ref": "https://github.com/diegonmarcos/ml-DataScience.git",
-          "mount": null
-        },
-        "vm": "oci-A1-f_0",
-        "backup": {
-          "enabled": true,
-          "strategy": null
-        }
-      },
-      {
-        "id": "git#gh/ml-Agentic",
-        "service": "gitea",
-        "container": null,
-        "engine": "git",
-        "kind": "git-remote",
-        "host": "github",
-        "repo": "diegonmarcos/ml-Agentic",
-        "visibility": "public",
-        "fork": false,
-        "pushed_at": "2026-10-15T10:09:18Z",
-        "indexed": false,
-        "local_dir": null,
-        "mirrored": true,
-        "persistence": {
-          "type": "git",
-          "ref": "https://github.com/diegonmarcos/ml-Agentic.git",
-          "mount": null
-        },
-        "vm": null,
-        "backup": {
-          "enabled": false,
-          "strategy": null
-        }
-      },
-      {
-        "id": "git#gitea/ml-Agentic",
-        "service": "gitea",
-        "container": null,
-        "engine": "git",
-        "kind": "git-remote",
-        "host": "gitea",
-        "repo": "ml-Agentic",
-        "upstream": "https://github.com/diegonmarcos/ml-Agentic.git",
-        "persistence": {
-          "type": "git",
-          "ref": "https://github.com/diegonmarcos/ml-Agentic.git",
           "mount": null
         },
         "vm": "oci-A1-f_0",
@@ -12120,571 +13744,6 @@
         }
       },
       {
-        "id": "git#gh/cloud-me_configs",
-        "service": "gitea",
-        "container": null,
-        "engine": "git",
-        "kind": "git-remote",
-        "host": "github",
-        "repo": "diegonmarcos/cloud-me_configs",
-        "visibility": "private",
-        "fork": false,
-        "pushed_at": "2026-10-15T10:06:40Z",
-        "indexed": false,
-        "local_dir": null,
-        "mirrored": true,
-        "persistence": {
-          "type": "git",
-          "ref": "https://github.com/diegonmarcos/cloud-me_configs.git",
-          "mount": null
-        },
-        "vm": null,
-        "backup": {
-          "enabled": false,
-          "strategy": null
-        }
-      },
-      {
-        "id": "git#gitea/cloud-me_configs",
-        "service": "gitea",
-        "container": null,
-        "engine": "git",
-        "kind": "git-remote",
-        "host": "gitea",
-        "repo": "cloud-me_configs",
-        "upstream": "https://github.com/diegonmarcos/cloud-me_configs.git",
-        "persistence": {
-          "type": "git",
-          "ref": "https://github.com/diegonmarcos/cloud-me_configs.git",
-          "mount": null
-        },
-        "vm": "oci-A1-f_0",
-        "backup": {
-          "enabled": true,
-          "strategy": null
-        }
-      },
-      {
-        "id": "git#gh/diegonmarcos.github.io",
-        "service": "cloud-cgc-pub-mcp",
-        "container": null,
-        "engine": "git",
-        "kind": "git-remote",
-        "host": "github",
-        "repo": "diegonmarcos/diegonmarcos.github.io",
-        "visibility": "public",
-        "fork": false,
-        "pushed_at": "2026-10-15T10:05:57Z",
-        "indexed": true,
-        "local_dir": "front",
-        "mirrored": true,
-        "persistence": {
-          "type": "git",
-          "ref": "https://github.com/diegonmarcos/diegonmarcos.github.io.git",
-          "mount": null
-        },
-        "vm": null,
-        "backup": {
-          "enabled": false,
-          "strategy": null
-        }
-      },
-      {
-        "id": "git#gitea/diegonmarcos.github.io",
-        "service": "gitea",
-        "container": null,
-        "engine": "git",
-        "kind": "git-remote",
-        "host": "gitea",
-        "repo": "diegonmarcos.github.io",
-        "upstream": "https://github.com/diegonmarcos/diegonmarcos.github.io.git",
-        "persistence": {
-          "type": "git",
-          "ref": "https://github.com/diegonmarcos/diegonmarcos.github.io.git",
-          "mount": null
-        },
-        "vm": "oci-A1-f_0",
-        "backup": {
-          "enabled": true,
-          "strategy": null
-        }
-      },
-      {
-        "id": "git#gh/diegonmarcos",
-        "service": "gitea",
-        "container": null,
-        "engine": "git",
-        "kind": "git-remote",
-        "host": "github",
-        "repo": "diegonmarcos/diegonmarcos",
-        "visibility": "public",
-        "fork": false,
-        "pushed_at": "2026-10-15T10:05:41Z",
-        "indexed": false,
-        "local_dir": null,
-        "mirrored": true,
-        "persistence": {
-          "type": "git",
-          "ref": "https://github.com/diegonmarcos/diegonmarcos.git",
-          "mount": null
-        },
-        "vm": null,
-        "backup": {
-          "enabled": false,
-          "strategy": null
-        }
-      },
-      {
-        "id": "git#gitea/diegonmarcos",
-        "service": "gitea",
-        "container": null,
-        "engine": "git",
-        "kind": "git-remote",
-        "host": "gitea",
-        "repo": "diegonmarcos",
-        "upstream": "https://github.com/diegonmarcos/diegonmarcos.git",
-        "persistence": {
-          "type": "git",
-          "ref": "https://github.com/diegonmarcos/diegonmarcos.git",
-          "mount": null
-        },
-        "vm": "oci-A1-f_0",
-        "backup": {
-          "enabled": true,
-          "strategy": null
-        }
-      },
-      {
-        "id": "git#gh/front-data",
-        "service": "cloud-cgc-pub-mcp",
-        "container": null,
-        "engine": "git",
-        "kind": "git-remote",
-        "host": "github",
-        "repo": "diegonmarcos/front-data",
-        "visibility": "public",
-        "fork": false,
-        "pushed_at": "2026-10-15T10:05:33Z",
-        "indexed": true,
-        "local_dir": "front-data",
-        "mirrored": true,
-        "persistence": {
-          "type": "git",
-          "ref": "https://github.com/diegonmarcos/front-data.git",
-          "mount": null
-        },
-        "vm": null,
-        "backup": {
-          "enabled": false,
-          "strategy": null
-        }
-      },
-      {
-        "id": "git#gitea/front-data",
-        "service": "gitea",
-        "container": null,
-        "engine": "git",
-        "kind": "git-remote",
-        "host": "gitea",
-        "repo": "front-data",
-        "upstream": "https://github.com/diegonmarcos/front-data.git",
-        "persistence": {
-          "type": "git",
-          "ref": "https://github.com/diegonmarcos/front-data.git",
-          "mount": null
-        },
-        "vm": "oci-A1-f_0",
-        "backup": {
-          "enabled": true,
-          "strategy": null
-        }
-      },
-      {
-        "id": "git#gh/front-assets-cdn",
-        "service": "gitea",
-        "container": null,
-        "engine": "git",
-        "kind": "git-remote",
-        "host": "github",
-        "repo": "diegonmarcos/front-assets-cdn",
-        "visibility": "public",
-        "fork": false,
-        "pushed_at": "2026-10-15T10:05:18Z",
-        "indexed": false,
-        "local_dir": null,
-        "mirrored": true,
-        "persistence": {
-          "type": "git",
-          "ref": "https://github.com/diegonmarcos/front-assets-cdn.git",
-          "mount": null
-        },
-        "vm": null,
-        "backup": {
-          "enabled": false,
-          "strategy": null
-        }
-      },
-      {
-        "id": "git#gitea/front-assets-cdn",
-        "service": "gitea",
-        "container": null,
-        "engine": "git",
-        "kind": "git-remote",
-        "host": "gitea",
-        "repo": "front-assets-cdn",
-        "upstream": "https://github.com/diegonmarcos/front-assets-cdn.git",
-        "persistence": {
-          "type": "git",
-          "ref": "https://github.com/diegonmarcos/front-assets-cdn.git",
-          "mount": null
-        },
-        "vm": "oci-A1-f_0",
-        "backup": {
-          "enabled": true,
-          "strategy": null
-        }
-      },
-      {
-        "id": "git#gh/cloud-me_cgc",
-        "service": "gitea",
-        "container": null,
-        "engine": "git",
-        "kind": "git-remote",
-        "host": "github",
-        "repo": "diegonmarcos/cloud-me_cgc",
-        "visibility": "private",
-        "fork": false,
-        "pushed_at": "2026-10-15T10:05:12Z",
-        "indexed": false,
-        "local_dir": null,
-        "mirrored": true,
-        "persistence": {
-          "type": "git",
-          "ref": "https://github.com/diegonmarcos/cloud-me_cgc.git",
-          "mount": null
-        },
-        "vm": null,
-        "backup": {
-          "enabled": false,
-          "strategy": null
-        }
-      },
-      {
-        "id": "git#gitea/cloud-me_cgc",
-        "service": "gitea",
-        "container": null,
-        "engine": "git",
-        "kind": "git-remote",
-        "host": "gitea",
-        "repo": "cloud-me_cgc",
-        "upstream": "https://github.com/diegonmarcos/cloud-me_cgc.git",
-        "persistence": {
-          "type": "git",
-          "ref": "https://github.com/diegonmarcos/cloud-me_cgc.git",
-          "mount": null
-        },
-        "vm": "oci-A1-f_0",
-        "backup": {
-          "enabled": true,
-          "strategy": null
-        }
-      },
-      {
-        "id": "git#gh/cloud-u-containers_cgc",
-        "service": "gitea",
-        "container": null,
-        "engine": "git",
-        "kind": "git-remote",
-        "host": "github",
-        "repo": "diegonmarcos/cloud-u-containers_cgc",
-        "visibility": "public",
-        "fork": false,
-        "pushed_at": "2026-10-15T10:04:57Z",
-        "indexed": false,
-        "local_dir": null,
-        "mirrored": true,
-        "persistence": {
-          "type": "git",
-          "ref": "https://github.com/diegonmarcos/cloud-u-containers_cgc.git",
-          "mount": null
-        },
-        "vm": null,
-        "backup": {
-          "enabled": false,
-          "strategy": null
-        }
-      },
-      {
-        "id": "git#gitea/cloud-u-containers_cgc",
-        "service": "gitea",
-        "container": null,
-        "engine": "git",
-        "kind": "git-remote",
-        "host": "gitea",
-        "repo": "cloud-u-containers_cgc",
-        "upstream": "https://github.com/diegonmarcos/cloud-u-containers_cgc.git",
-        "persistence": {
-          "type": "git",
-          "ref": "https://github.com/diegonmarcos/cloud-u-containers_cgc.git",
-          "mount": null
-        },
-        "vm": "oci-A1-f_0",
-        "backup": {
-          "enabled": true,
-          "strategy": null
-        }
-      },
-      {
-        "id": "git#gh/cloud",
-        "service": "gitea",
-        "container": null,
-        "engine": "git",
-        "kind": "git-remote",
-        "host": "github",
-        "repo": "diegonmarcos/cloud",
-        "visibility": "public",
-        "fork": false,
-        "pushed_at": "2026-10-15T10:04:41Z",
-        "indexed": false,
-        "local_dir": null,
-        "mirrored": true,
-        "persistence": {
-          "type": "git",
-          "ref": "https://github.com/diegonmarcos/cloud.git",
-          "mount": null
-        },
-        "vm": null,
-        "backup": {
-          "enabled": false,
-          "strategy": null
-        }
-      },
-      {
-        "id": "git#gitea/cloud",
-        "service": "gitea",
-        "container": null,
-        "engine": "git",
-        "kind": "git-remote",
-        "host": "gitea",
-        "repo": "cloud",
-        "upstream": "https://github.com/diegonmarcos/cloud.git",
-        "persistence": {
-          "type": "git",
-          "ref": "https://github.com/diegonmarcos/cloud.git",
-          "mount": null
-        },
-        "vm": "oci-A1-f_0",
-        "backup": {
-          "enabled": true,
-          "strategy": null
-        }
-      },
-      {
-        "id": "git#gh/cloud-me_vault",
-        "service": null,
-        "container": null,
-        "engine": "git",
-        "kind": "git-remote",
-        "host": "github",
-        "repo": "diegonmarcos/cloud-me_vault",
-        "visibility": "private",
-        "fork": false,
-        "pushed_at": "2026-10-15T10:04:21Z",
-        "indexed": false,
-        "local_dir": null,
-        "mirrored": false,
-        "persistence": {
-          "type": "git",
-          "ref": "https://github.com/diegonmarcos/cloud-me_vault.git",
-          "mount": null
-        },
-        "vm": null,
-        "backup": {
-          "enabled": false,
-          "strategy": null
-        }
-      },
-      {
-        "id": "git#gh/cloud-u-linux",
-        "service": "gitea",
-        "container": null,
-        "engine": "git",
-        "kind": "git-remote",
-        "host": "github",
-        "repo": "diegonmarcos/cloud-u-linux",
-        "visibility": "public",
-        "fork": false,
-        "pushed_at": "2026-10-15T10:02:33Z",
-        "indexed": false,
-        "local_dir": null,
-        "mirrored": true,
-        "persistence": {
-          "type": "git",
-          "ref": "https://github.com/diegonmarcos/cloud-u-linux.git",
-          "mount": null
-        },
-        "vm": null,
-        "backup": {
-          "enabled": false,
-          "strategy": null
-        }
-      },
-      {
-        "id": "git#gitea/cloud-u-linux",
-        "service": "gitea",
-        "container": null,
-        "engine": "git",
-        "kind": "git-remote",
-        "host": "gitea",
-        "repo": "cloud-u-linux",
-        "upstream": "https://github.com/diegonmarcos/cloud-u-linux.git",
-        "persistence": {
-          "type": "git",
-          "ref": "https://github.com/diegonmarcos/cloud-u-linux.git",
-          "mount": null
-        },
-        "vm": "oci-A1-f_0",
-        "backup": {
-          "enabled": true,
-          "strategy": null
-        }
-      },
-      {
-        "id": "git#gh/front-unity",
-        "service": "gitea",
-        "container": null,
-        "engine": "git",
-        "kind": "git-remote",
-        "host": "github",
-        "repo": "diegonmarcos/front-unity",
-        "visibility": "private",
-        "fork": false,
-        "pushed_at": "2026-10-15T10:02:24Z",
-        "indexed": false,
-        "local_dir": null,
-        "mirrored": true,
-        "persistence": {
-          "type": "git",
-          "ref": "https://github.com/diegonmarcos/front-unity.git",
-          "mount": null
-        },
-        "vm": null,
-        "backup": {
-          "enabled": false,
-          "strategy": null
-        }
-      },
-      {
-        "id": "git#gitea/front-unity",
-        "service": "gitea",
-        "container": null,
-        "engine": "git",
-        "kind": "git-remote",
-        "host": "gitea",
-        "repo": "front-unity",
-        "upstream": "https://github.com/diegonmarcos/front-unity.git",
-        "persistence": {
-          "type": "git",
-          "ref": "https://github.com/diegonmarcos/front-unity.git",
-          "mount": null
-        },
-        "vm": "oci-A1-f_0",
-        "backup": {
-          "enabled": true,
-          "strategy": null
-        }
-      },
-      {
-        "id": "git#gh/front-galaxy-gaia",
-        "service": "gitea",
-        "container": null,
-        "engine": "git",
-        "kind": "git-remote",
-        "host": "github",
-        "repo": "diegonmarcos/front-galaxy-gaia",
-        "visibility": "private",
-        "fork": false,
-        "pushed_at": "2026-10-15T10:02:14Z",
-        "indexed": false,
-        "local_dir": null,
-        "mirrored": true,
-        "persistence": {
-          "type": "git",
-          "ref": "https://github.com/diegonmarcos/front-galaxy-gaia.git",
-          "mount": null
-        },
-        "vm": null,
-        "backup": {
-          "enabled": false,
-          "strategy": null
-        }
-      },
-      {
-        "id": "git#gitea/front-galaxy-gaia",
-        "service": "gitea",
-        "container": null,
-        "engine": "git",
-        "kind": "git-remote",
-        "host": "gitea",
-        "repo": "front-galaxy-gaia",
-        "upstream": "https://github.com/diegonmarcos/front-galaxy-gaia.git",
-        "persistence": {
-          "type": "git",
-          "ref": "https://github.com/diegonmarcos/front-galaxy-gaia.git",
-          "mount": null
-        },
-        "vm": "oci-A1-f_0",
-        "backup": {
-          "enabled": true,
-          "strategy": null
-        }
-      },
-      {
-        "id": "git#gh/front",
-        "service": "gitea",
-        "container": null,
-        "engine": "git",
-        "kind": "git-remote",
-        "host": "github",
-        "repo": "diegonmarcos/front",
-        "visibility": "public",
-        "fork": false,
-        "pushed_at": "2026-10-15T10:01:38Z",
-        "indexed": false,
-        "local_dir": null,
-        "mirrored": true,
-        "persistence": {
-          "type": "git",
-          "ref": "https://github.com/diegonmarcos/front.git",
-          "mount": null
-        },
-        "vm": null,
-        "backup": {
-          "enabled": false,
-          "strategy": null
-        }
-      },
-      {
-        "id": "git#gitea/front",
-        "service": "gitea",
-        "container": null,
-        "engine": "git",
-        "kind": "git-remote",
-        "host": "gitea",
-        "repo": "front",
-        "upstream": "https://github.com/diegonmarcos/front.git",
-        "persistence": {
-          "type": "git",
-          "ref": "https://github.com/diegonmarcos/front.git",
-          "mount": null
-        },
-        "vm": "oci-A1-f_0",
-        "backup": {
-          "enabled": true,
-          "strategy": null
-        }
-      },
-      {
         "id": "git#gh/cloud-notes",
         "service": "gitea",
         "container": null,
@@ -12721,186 +13780,6 @@
         "persistence": {
           "type": "git",
           "ref": "https://github.com/diegonmarcos/cloud-notes.git",
-          "mount": null
-        },
-        "vm": "oci-A1-f_0",
-        "backup": {
-          "enabled": true,
-          "strategy": null
-        }
-      },
-      {
-        "id": "git#gh/cloud-data-my-ai-memory",
-        "service": "cloud-cgc-pub-mcp",
-        "container": null,
-        "engine": "git",
-        "kind": "git-remote",
-        "host": "github",
-        "repo": "diegonmarcos/cloud-data-my-ai-memory",
-        "visibility": "private",
-        "fork": false,
-        "pushed_at": "2026-10-15T10:01:02Z",
-        "indexed": true,
-        "local_dir": "cloud-data-my-ai-memory",
-        "mirrored": true,
-        "persistence": {
-          "type": "git",
-          "ref": "https://github.com/diegonmarcos/cloud-data-my-ai-memory.git",
-          "mount": null
-        },
-        "vm": null,
-        "backup": {
-          "enabled": false,
-          "strategy": null
-        }
-      },
-      {
-        "id": "git#gitea/cloud-data-my-ai-memory",
-        "service": "gitea",
-        "container": null,
-        "engine": "git",
-        "kind": "git-remote",
-        "host": "gitea",
-        "repo": "cloud-data-my-ai-memory",
-        "upstream": "https://github.com/diegonmarcos/cloud-data-my-ai-memory.git",
-        "persistence": {
-          "type": "git",
-          "ref": "https://github.com/diegonmarcos/cloud-data-my-ai-memory.git",
-          "mount": null
-        },
-        "vm": "oci-A1-f_0",
-        "backup": {
-          "enabled": true,
-          "strategy": null
-        }
-      },
-      {
-        "id": "git#gh/cloud-data-lfs",
-        "service": "gitea",
-        "container": null,
-        "engine": "git",
-        "kind": "git-remote",
-        "host": "github",
-        "repo": "diegonmarcos/cloud-data-lfs",
-        "visibility": "private",
-        "fork": false,
-        "pushed_at": "2026-10-15T10:00:49Z",
-        "indexed": false,
-        "local_dir": null,
-        "mirrored": true,
-        "persistence": {
-          "type": "git",
-          "ref": "https://github.com/diegonmarcos/cloud-data-lfs.git",
-          "mount": null
-        },
-        "vm": null,
-        "backup": {
-          "enabled": false,
-          "strategy": null
-        }
-      },
-      {
-        "id": "git#gitea/cloud-data-lfs",
-        "service": "gitea",
-        "container": null,
-        "engine": "git",
-        "kind": "git-remote",
-        "host": "gitea",
-        "repo": "cloud-data-lfs",
-        "upstream": "https://github.com/diegonmarcos/cloud-data-lfs.git",
-        "persistence": {
-          "type": "git",
-          "ref": "https://github.com/diegonmarcos/cloud-data-lfs.git",
-          "mount": null
-        },
-        "vm": "oci-A1-f_0",
-        "backup": {
-          "enabled": true,
-          "strategy": null
-        }
-      },
-      {
-        "id": "git#gh/cloud-infra-desktop",
-        "service": "cloud-cgc-pub-mcp",
-        "container": null,
-        "engine": "git",
-        "kind": "git-remote",
-        "host": "github",
-        "repo": "diegonmarcos/cloud-infra-desktop",
-        "visibility": "public",
-        "fork": false,
-        "pushed_at": "2026-10-15T09:54:50Z",
-        "indexed": true,
-        "local_dir": "cloud-infra-desktop",
-        "mirrored": true,
-        "persistence": {
-          "type": "git",
-          "ref": "https://github.com/diegonmarcos/cloud-infra-desktop.git",
-          "mount": null
-        },
-        "vm": null,
-        "backup": {
-          "enabled": false,
-          "strategy": null
-        }
-      },
-      {
-        "id": "git#gitea/cloud-infra-desktop",
-        "service": "gitea",
-        "container": null,
-        "engine": "git",
-        "kind": "git-remote",
-        "host": "gitea",
-        "repo": "cloud-infra-desktop",
-        "upstream": "https://github.com/diegonmarcos/cloud-infra-desktop.git",
-        "persistence": {
-          "type": "git",
-          "ref": "https://github.com/diegonmarcos/cloud-infra-desktop.git",
-          "mount": null
-        },
-        "vm": "oci-A1-f_0",
-        "backup": {
-          "enabled": true,
-          "strategy": null
-        }
-      },
-      {
-        "id": "git#gh/git-repos-master",
-        "service": "gitea",
-        "container": null,
-        "engine": "git",
-        "kind": "git-remote",
-        "host": "github",
-        "repo": "diegonmarcos/git-repos-master",
-        "visibility": "public",
-        "fork": false,
-        "pushed_at": "2026-10-15T09:53:26Z",
-        "indexed": false,
-        "local_dir": null,
-        "mirrored": true,
-        "persistence": {
-          "type": "git",
-          "ref": "https://github.com/diegonmarcos/git-repos-master.git",
-          "mount": null
-        },
-        "vm": null,
-        "backup": {
-          "enabled": false,
-          "strategy": null
-        }
-      },
-      {
-        "id": "git#gitea/git-repos-master",
-        "service": "gitea",
-        "container": null,
-        "engine": "git",
-        "kind": "git-remote",
-        "host": "gitea",
-        "repo": "git-repos-master",
-        "upstream": "https://github.com/diegonmarcos/git-repos-master.git",
-        "persistence": {
-          "type": "git",
-          "ref": "https://github.com/diegonmarcos/git-repos-master.git",
           "mount": null
         },
         "vm": "oci-A1-f_0",
@@ -13155,6 +14034,12 @@
         "service": "cloud-mattermost-mcp"
       },
       {
+        "name": "cloud-me-api.app",
+        "type": "A",
+        "value": "10.0.0.4",
+        "service": "cloud-me-api"
+      },
+      {
         "name": "c3-services-mcp.app",
         "type": "A",
         "value": "10.0.0.6",
@@ -13309,6 +14194,18 @@
         "type": "A",
         "value": "10.0.0.1",
         "service": "introspect-proxy"
+      },
+      {
+        "name": "mcp-oauth.app",
+        "type": "A",
+        "value": "10.0.0.1",
+        "service": "mcp-oauth"
+      },
+      {
+        "name": "tokens-api.app",
+        "type": "A",
+        "value": "10.0.0.6",
+        "service": "tokens-api"
       },
       {
         "name": "cloud-cgc-pub-mcp.app",
@@ -14004,6 +14901,7 @@
         "containers": [
           "alerts-api",
           "c3-public-api",
+          "cloud-me-api",
           "git-proxy-api",
           "unbound-dns64",
           "caddy-public"
@@ -14076,7 +14974,9 @@
           "umami",
           "agents-tmp-reaper",
           "disk-janitor",
+          "auth-broker",
           "crowdsec",
+          "tokens-api",
           "cloud-cgc-pub-mcp",
           "hermes-agent",
           "kg-store",
@@ -14287,7 +15187,8 @@
           "wireguard-mesh-ws-tunnel",
           "authelia",
           "caddy",
-          "introspect-proxy"
+          "introspect-proxy",
+          "mcp-oauth"
         ],
         "method": "gcloud",
         "gha": {
@@ -14526,6 +15427,11 @@
         "vm": "oci-apps",
         "has_docker": true
       },
+      "cloud-me-api": {
+        "dir": "infra-api_cloud-me-api",
+        "vm": "oci-analytics",
+        "has_docker": true
+      },
       "cloud-services-mcp": {
         "dir": "infra-api_cloud-services-mcp",
         "vm": "oci-apps",
@@ -14661,6 +15567,11 @@
         "vm": "oci-apps",
         "has_docker": true
       },
+      "auth-broker": {
+        "dir": "infra-sec_auth-broker",
+        "vm": "oci-apps",
+        "has_docker": true
+      },
       "authelia": {
         "dir": "infra-sec_authelia",
         "vm": "gcp-proxy",
@@ -14684,6 +15595,16 @@
       "introspect-proxy": {
         "dir": "infra-sec_introspect-proxy",
         "vm": "gcp-proxy",
+        "has_docker": true
+      },
+      "mcp-oauth": {
+        "dir": "infra-sec_mcp-oauth",
+        "vm": "gcp-proxy",
+        "has_docker": true
+      },
+      "tokens-api": {
+        "dir": "infra-sec_tokens-api",
+        "vm": "oci-apps",
         "has_docker": true
       },
       "cloud-cgc-pub-mcp": {

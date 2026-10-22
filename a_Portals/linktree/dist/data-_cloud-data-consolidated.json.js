@@ -1532,6 +1532,9 @@
       "declared_ports": {
         "app": 3109
       },
+      "dns_aliases": [
+        "cloud-drive-mcp.app"
+      ],
       "drive": {
         "_doc": "Routing table for the single `drive` tool. Adding a capability is a JSON edit, not a code change. `backends` say WHERE to send a call; `methods` say WHAT to send. Every http backend resolves its base URL, api base_path and auth mode from cloud-data services{} at runtime — nothing here repeats an IP or a port.",
         "backends": {
@@ -1798,6 +1801,9 @@
       "health": {
         "path": "/mcp"
       },
+      "dns_aliases": [
+        "cloud-infra-mcp.app"
+      ],
       "env_config": {
         "mattermost_url": "http://mattermost.app"
       },
@@ -1957,6 +1963,9 @@
       "declared_ports": {
         "app": 3103
       },
+      "dns_aliases": [
+        "cloud-mail-mcp.app"
+      ],
       "ssh": {
         "uid": 0,
         "ssh_dir": "/root/.ssh",
@@ -2087,6 +2096,9 @@
       "declared_ports": {
         "app": 3102
       },
+      "dns_aliases": [
+        "cloud-mattermost-mcp.app"
+      ],
       "upstream_image": "ghcr.io/diegonmarcos/cloud-mattermost-mcp:latest",
       "api": {
         "has_api": false,
@@ -2392,6 +2404,9 @@
       "health": {
         "path": "/mcp"
       },
+      "dns_aliases": [
+        "cloud-services-mcp.app"
+      ],
       "runtime": {
         "init": true,
         "pids_limit": 512,
@@ -2524,6 +2539,9 @@
       "declared_ports": {
         "app": 3110
       },
+      "dns_aliases": [
+        "cloud-superapp-mcp.app"
+      ],
       "ssh": {
         "uid": 0,
         "ssh_dir": "/root/.ssh",
@@ -2659,6 +2677,9 @@
       "declared_ports": {
         "app": 3111
       },
+      "dns_aliases": [
+        "cloud-vault-mcp.app"
+      ],
       "api": {
         "has_api": false,
         "has_web_ui": false,
@@ -2959,6 +2980,9 @@
       "health": {
         "path": "/health"
       },
+      "dns_aliases": [
+        "google-personal-mcp.app"
+      ],
       "auth": {
         "mode": "app_password",
         "imap_host": "imap.gmail.com",
@@ -3068,6 +3092,9 @@
       "health": {
         "path": "/health"
       },
+      "dns_aliases": [
+        "google-workspace-mcp.app"
+      ],
       "user_google_email": "me@diegonmarcos.com",
       "tests": {
         "startup-contract": {
@@ -4439,6 +4466,9 @@
       "declared_ports": {
         "app": 3080
       },
+      "dns_aliases": [
+        "cloud-spec.app"
+      ],
       "runtime": {
         "command": "busybox httpd -f -p %PORT% -h /srv"
       },
@@ -7162,9 +7192,8 @@
       "category": "sec",
       "vm": "oci-A1-f_0",
       "folder": "infra-sec_tokens-api",
-      "description": "Fleet token engine: lists, generates, reveals and revokes every fleet bearer token (fleet ft_ tokens and adopted Authelia JWTs); introspect-proxy asks it before accepting a Bearer, so a revoked token stops working within 60 seconds",
+      "description": "Fleet token engine: lists, generates, reveals and revokes every fleet bearer token (fleet ft_ tokens and adopted Authelia JWTs); introspect-proxy asks it before accepting a Bearer, so a revoked token stops working within 60 seconds. Public address: c3-pvt.diegonmarcos.com/tokens-api (shared gate, #1104); mesh tokens-api.app",
       "enabled": true,
-      "domain": "tokens-api.diegonmarcos.com",
       "flake": "infra-sec_tokens-api",
       "port": 4184,
       "dns": "tokens-api.app",
@@ -7176,14 +7205,11 @@
           "port": 4184,
           "port_env": null,
           "dns": "tokens-api.app",
-          "public": true,
-          "proxy": {
-            "domain": "tokens-api.diegonmarcos.com",
-            "auth": "two_factor"
-          },
+          "public": false,
+          "proxy": null,
           "healthcheck": "/health",
           "monitoring": {
-            "tls_check": true,
+            "tls_check": false,
             "dns_check": true,
             "endpoint_check": true
           },
@@ -7211,12 +7237,6 @@
         "ports": [],
         "networks": []
       },
-      "proxy": {
-        "primary": {
-          "domain": "tokens-api.diegonmarcos.com",
-          "auth": "two_factor"
-        }
-      },
       "declared_ports": {
         "app": 4184
       },
@@ -7224,7 +7244,7 @@
         "path": "/health"
       },
       "monitoring": {
-        "tls_check": true,
+        "tls_check": false,
         "dns_check": true,
         "endpoint_check": true
       },
@@ -7241,9 +7261,9 @@
       },
       "api": {
         "has_api": true,
-        "has_web_ui": true,
+        "has_web_ui": false,
         "api_path": "/",
-        "api_url": "https://tokens-api.diegonmarcos.com/",
+        "api_url": null,
         "healthcheck_paths": [
           "/health"
         ],
@@ -7544,7 +7564,7 @@
           "index_repos": [
             "cloud-infra",
             "cloud-infra-desktop",
-            "front",
+            "front-diegonmarcos",
             "cloud-data",
             "front-data",
             "cloud-data-my-ai-memory",
@@ -7561,7 +7581,7 @@
           "repo_map": {
             "cloud-infra": "cloud-infra",
             "cloud-infra-desktop": "cloud-infra-desktop",
-            "front": "diegonmarcos.github.io",
+            "front-diegonmarcos": "diegonmarcos.github.io",
             "cloud-data": "cloud-data",
             "front-data": "front-data",
             "cloud-data-my-ai-memory": "cloud-data-my-ai-memory",
@@ -8829,6 +8849,9 @@
           "mattermost_postgres"
         ]
       },
+      "dns_aliases": [
+        "chat-mattermost.app"
+      ],
       "timezone": "America/Chicago",
       "c3": {
         "api_url": "http://c3-infra-api:8081",
@@ -8937,6 +8960,9 @@
       "health": {
         "path": "/api/health"
       },
+      "dns_aliases": [
+        "cloud-webmail.app"
+      ],
       "_upstream_image_doc": "Type-A vendored-Dockerfile build. Top-level upstream_image makes the ship engine (cloud-ship-container-step-build-docker.sh) select BUILD_CONTEXT=dist/code/<arch> and build our own multi-stage src/code/arm64/Dockerfile (staged there by engine.nix via nativeBuild.dockerfile). It is NOT a FROM-override — the real multi-stage Dockerfile (node:24-alpine builder → runner) is preserved. Pairs with docker.dockerfile='Dockerfile' (the flat name engine.nix emits into dist/code/<arch>/), NOT a nested path: BUILD_CONTEXT is already dist/code/<arch>, so a nested 'code/arm64/Dockerfile' resolved to dist/code/arm64/code/arm64/Dockerfile → missing → step_docker fell through to a configs-only push (binaries image never built).",
       "upstream_image": "node:24-alpine",
       "resources": {
@@ -10441,6 +10467,9 @@
         "dns_check": true,
         "endpoint_check": true
       },
+      "dns_aliases": [
+        "calendar-radicale.app"
+      ],
       "upstream_image": "tomsquest/docker-radicale:latest",
       "api": {
         "has_api": true,
@@ -10793,6 +10822,9 @@
         "dns_check": true,
         "endpoint_check": true
       },
+      "dns_aliases": [
+        "contacts-radicale.app"
+      ],
       "upstream_image": "tomsquest/docker-radicale:latest",
       "api": {
         "has_api": true,
@@ -12900,7 +12932,7 @@
         "fork": false,
         "pushed_at": "2026-10-21T15:09:24Z",
         "indexed": true,
-        "local_dir": "front",
+        "local_dir": "front-diegonmarcos",
         "mirrored": true,
         "persistence": {
           "type": "git",

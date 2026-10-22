@@ -419,7 +419,7 @@
             "port": 4184,
             "private_ip": "10.0.0.6",
             "private_url": "https://tokens-api.app",
-            "public_url": "https://tokens-api.diegonmarcos.com"
+            "public_url": null
           },
           {
             "id": "cloud-cgc-pub-mcp",
@@ -2546,7 +2546,7 @@
             "fork": false,
             "pushed_at": "2026-10-21T15:09:24Z",
             "indexed": true,
-            "local_dir": "front",
+            "local_dir": "front-diegonmarcos",
             "mirrored": true,
             "persistence": {
               "type": "git",
@@ -4201,17 +4201,6 @@
           "private_ip": "10.0.0.6",
           "private_url": "https://crowdsec.app",
           "public_url": "https://crowdsec.diegonmarcos.com"
-        },
-        {
-          "id": "tokens-api",
-          "name": "tokens-api",
-          "vm": "oci-A1-f_0",
-          "category": "sec",
-          "subgroup": "Security",
-          "port": 4184,
-          "private_ip": "10.0.0.6",
-          "private_url": "https://tokens-api.app",
-          "public_url": "https://tokens-api.diegonmarcos.com"
         },
         {
           "id": "scrappers-api",
@@ -6240,7 +6229,7 @@
           "fork": false,
           "pushed_at": "2026-10-21T15:09:24Z",
           "indexed": true,
-          "local_dir": "front",
+          "local_dir": "front-diegonmarcos",
           "mirrored": true,
           "persistence": {
             "type": "git",

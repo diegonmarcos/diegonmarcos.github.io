@@ -220,6 +220,7 @@
         "copy",
         "copy",
         "copy",
+        "copy",
         "symlink",
         "sw_register",
         "console_log",

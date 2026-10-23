@@ -224,7 +224,7 @@
         "send",
         "vaultwarden"
       ],
-      "container_count": 73
+      "container_count": 74
     },
     "gcp-E2-f_0": {
       "ip": "35.226.147.64",
@@ -1165,6 +1165,10 @@
         "jev-alert-priority": {
           "cmd": "node test-jev-alert-priority.ts",
           "cwd": "src"
+        },
+        "app-logs": {
+          "cmd": "node test-app-logs.ts",
+          "cwd": "src"
         }
       },
       "ssh": {
@@ -1843,6 +1847,10 @@
           "cmd": "node --experimental-strip-types test-caddy-cert-repair.mjs",
           "cwd": "src/code"
         },
+        "plugin-gh": {
+          "cmd": "node --experimental-strip-types test-plugin-gh.mjs",
+          "cwd": "src/code"
+        },
         "cf-bridge": {
           "cmd": "node --experimental-strip-types test-cf-bridge.mjs",
           "cwd": "src/code"
@@ -2218,8 +2226,19 @@
             "path": "/me/repos/:repo/file",
             "auth": "authelia",
             "description": "One config file of a declared repo (query `path`). Only runtime.files.allowed_ext, at most runtime.files.max_bytes, never a path matching runtime.files.deny_path, never content matching runtime.files.deny_content (403 secret_filtered). Errors {error,code}: 400 bad_path, 403 repo_not_declared/path_denied/secret_filtered, 404 not_found, 413 too_large, 503 not_synced."
+          },
+          {
+            "method": "GET",
+            "path": "/me/autocomplete",
+            "auth": "authelia",
+            "description": "#1103 The owner's Autocomplete rows {v:1,ids,addresses,urls,secrets:[{label,value}]} from runtime.autocomplete {repo,path}; only the four pages, string label/value, at most 500 rows a page. The one personal file served past the secret filter, so it is authenticated (Authelia bearer or session), no-store, and never reachable through /me/config or /me/repos/:repo/file. No file yet -> 200 with empty pages; repo not synced -> 503 not_synced."
           }
         ],
+        "autocomplete": {
+          "_doc": "#1103 the ONE personal file this service serves past the secret filter, at GET /me/autocomplete: a JSON object {ids,addresses,urls,secrets: [{label,value}]} in a declared private repo. Cloud Account pulls it (mesh first, then c3-pvt.diegonmarcos.com/cloud-me-api with the fleet bearer) and hands it to Cloud Keyboard's own store. Absent file = an empty document.",
+          "repo": "cloud-me_configs",
+          "path": "autocomplete.json"
+        },
         "repos": {
           "_doc": "The allow-list is DATA, here. Each repo is read with its OWN read-only deploy key (GitHub allows a deploy key on one repo only), delivered as a base64 sops env_file value named by key_env. cloud-me_vault is deliberately NOT declared: it holds credentials and the test asserts it is never served.",
           "sync_interval_s": 300,
@@ -2320,7 +2339,7 @@
         ],
         "type": "custom-rest",
         "base_path": "/me",
-        "endpoint_count": 5,
+        "endpoint_count": 6,
         "display_name": "Cloud Me API",
         "description": "Authenticated read-only access to declared datasets and config files of the owner's private cloud-me-* repos. Deploy keys stay server-side; secret-looking files are never served.",
         "auth": "mixed"
@@ -2544,32 +2563,87 @@
           "vault_id_rsa",
           "vault_id_rsa.pub"
         ],
-        "_extra_hosts_doc": "Ssh aliases the MCP dials (SUPERAPP_HOSTS in src/compose.nix). The phone's sshd is provided by OUR terminals (cloud-u-android ac_cloud-nix-on-droid / ac_cloud-termux; ports and users as declared in ac_cloud-myterminal/data/terminal-targets.json: nix 8024 user nix-on-droid, termux 8023 user termux). Address = the phone's wg0 mesh client `termux` (config.json native.wireguard.clients), resolved by the derive into /opt/ssh-keys/cloud-superapp-mcp/config. MESH ONLY: the phone has no public ssh route by design (sshd is reached over WireGuard; ide-endpoints.json: public surface is 443+51820+25), so there is no phone-pub. The key offered is vault_id_rsa (keys above); it is authorised on the phone by cloud-u-linux da__my-konsole/termux/authorized_keys. test-superapp-hosts.sh fails if an alias in SUPERAPP_HOSTS has no entry here.",
+        "_phones_doc": "THE ONE declaration of the phones this MCP dials (two phones since #573: the S21+ on wg client `termux` 10.0.0.9 and the A37 on wg client `samsung-a37` 10.0.0.10). Each phone's mesh addresses and peer key are NOT restated here: `wg_client` names its row in cloud-infra config.json#native.wireguard.clients (the same row superapp-users.json peers point at), and the derive resolves it into /opt/ssh-keys/cloud-superapp-mcp/config. `alias` is the phone's fleet name; for each phone and each door in `doors` the MCP dials <alias><suffix> (v4) and <alias><suffix>-v6. extra_hosts below is exactly that expansion — test/test-superapp-hosts.sh fails on any drift, and on a SUPERAPP_PHONES alias that is not declared here. Every tool takes `phone` (alias or id); omitted, the phone that answered most recently is tried first, then the rest, and every result names the phone that answered.",
+        "phones": [
+          {
+            "alias": "phone1",
+            "id": "samsung-s21plus",
+            "name": "Samsung Galaxy S21+",
+            "wg_client": "termux"
+          },
+          {
+            "alias": "phone2",
+            "id": "samsung-a37",
+            "name": "Samsung Galaxy A37",
+            "wg_client": "samsung-a37"
+          }
+        ],
+        "doors": [
+          {
+            "suffix": "",
+            "user": "nix-on-droid",
+            "port": 8024
+          },
+          {
+            "suffix": "-termux",
+            "user": "termux",
+            "port": 8023
+          }
+        ],
+        "_extra_hosts_doc": "Ssh aliases the MCP dials (expanded from phones x doors; SUPERAPP_PHONES in src/compose.nix picks the order). The phone's sshd is provided by OUR terminals (cloud-u-android ac_cloud-nix-on-droid / ac_cloud-termux; ports and users as declared in ac_cloud-myterminal/data/terminal-targets.json: nix 8024 user nix-on-droid, termux 8023 user termux). Address = each phone's wg0 mesh client (phones[].wg_client) (config.json native.wireguard.clients), resolved by the derive into /opt/ssh-keys/cloud-superapp-mcp/config. MESH ONLY: the phone has no public ssh route by design (sshd is reached over WireGuard; ide-endpoints.json: public surface is 443+51820+25), so there is no phone-pub. The key offered is vault_id_rsa (keys above); it is authorised on the phone by cloud-u-linux da__my-konsole/termux/authorized_keys. test-superapp-hosts.sh fails if an alias in SUPERAPP_HOSTS has no entry here.",
         "extra_hosts": [
           {
-            "host": "phone",
+            "host": "phone1",
             "wg_client": "termux",
             "family": "v4",
             "user": "nix-on-droid",
             "port": 8024
           },
           {
-            "host": "phone-v6",
+            "host": "phone1-v6",
             "wg_client": "termux",
             "family": "v6",
             "user": "nix-on-droid",
             "port": 8024
           },
           {
-            "host": "phone-termux",
+            "host": "phone1-termux",
             "wg_client": "termux",
             "family": "v4",
             "user": "termux",
             "port": 8023
           },
           {
-            "host": "phone-termux-v6",
+            "host": "phone1-termux-v6",
             "wg_client": "termux",
+            "family": "v6",
+            "user": "termux",
+            "port": 8023
+          },
+          {
+            "host": "phone2",
+            "wg_client": "samsung-a37",
+            "family": "v4",
+            "user": "nix-on-droid",
+            "port": 8024
+          },
+          {
+            "host": "phone2-v6",
+            "wg_client": "samsung-a37",
+            "family": "v6",
+            "user": "nix-on-droid",
+            "port": 8024
+          },
+          {
+            "host": "phone2-termux",
+            "wg_client": "samsung-a37",
+            "family": "v4",
+            "user": "termux",
+            "port": 8023
+          },
+          {
+            "host": "phone2-termux-v6",
+            "wg_client": "samsung-a37",
             "family": "v6",
             "user": "termux",
             "port": 8023
@@ -3637,19 +3711,19 @@
             "upstream": "https://github.com/diegonmarcos/cloud-me_cgc.git",
             "private": true
           },
-          "cloud-data": {
-            "upstream": "https://github.com/diegonmarcos/cloud-data.git",
+          "cloud-me-data-pvt": {
+            "upstream": "https://github.com/diegonmarcos/cloud-me-data-pvt.git",
             "private": true
           },
-          "cloud-data-my-ai-memory": {
-            "upstream": "https://github.com/diegonmarcos/cloud-data-my-ai-memory.git",
+          "cloud-me-my-ai": {
+            "upstream": "https://github.com/diegonmarcos/cloud-me-my-ai.git",
             "private": true
           },
           "git-repos-master": {
             "upstream": "https://github.com/diegonmarcos/git-repos-master.git"
           },
-          "ml-Agentic": {
-            "upstream": "https://github.com/diegonmarcos/ml-Agentic.git"
+          "lecole-42_ml-Agentic": {
+            "upstream": "https://github.com/diegonmarcos/lecole-42_ml-Agentic.git"
           },
           "cloud-u-containers": {
             "upstream": "https://github.com/diegonmarcos/cloud-u-containers.git"
@@ -3657,8 +3731,8 @@
           "cloud": {
             "upstream": "https://github.com/diegonmarcos/cloud.git"
           },
-          "ml-MachineLearning": {
-            "upstream": "https://github.com/diegonmarcos/ml-MachineLearning.git"
+          "lecole-42_ml-MachineLearning": {
+            "upstream": "https://github.com/diegonmarcos/lecole-42_ml-MachineLearning.git"
           },
           "diegonmarcos.github.io": {
             "upstream": "https://github.com/diegonmarcos/diegonmarcos.github.io.git"
@@ -3680,8 +3754,8 @@
           "diegonmarcos": {
             "upstream": "https://github.com/diegonmarcos/diegonmarcos.git"
           },
-          "front-data": {
-            "upstream": "https://github.com/diegonmarcos/front-data.git"
+          "z-archived_front-data": {
+            "upstream": "https://github.com/diegonmarcos/z-archived_front-data.git"
           },
           "front": {
             "upstream": "https://github.com/diegonmarcos/front.git"
@@ -3689,41 +3763,41 @@
           "front-assets-cdn": {
             "upstream": "https://github.com/diegonmarcos/front-assets-cdn.git"
           },
-          "cloud-infra-desktop": {
-            "upstream": "https://github.com/diegonmarcos/cloud-infra-desktop.git"
+          "cloud-u-desktop": {
+            "upstream": "https://github.com/diegonmarcos/cloud-u-desktop.git"
           },
           "cloud-data-lfs": {
             "upstream": "https://github.com/diegonmarcos/cloud-data-lfs.git",
             "private": true
           },
-          "ops-Mylibs": {
-            "upstream": "https://github.com/diegonmarcos/ops-Mylibs.git"
+          "lecole-42_ops-Mylibs": {
+            "upstream": "https://github.com/diegonmarcos/lecole-42_ops-Mylibs.git"
           },
-          "ml-DataScience": {
-            "upstream": "https://github.com/diegonmarcos/ml-DataScience.git"
+          "lecole-42_ml-DataScience": {
+            "upstream": "https://github.com/diegonmarcos/lecole-42_ml-DataScience.git"
           },
-          "dev": {
-            "upstream": "https://github.com/diegonmarcos/dev.git",
+          "lecole-42_dev": {
+            "upstream": "https://github.com/diegonmarcos/lecole-42_dev.git",
             "private": true
           },
-          "cyber-Cyberwarfare": {
-            "upstream": "https://github.com/diegonmarcos/cyber-Cyberwarfare.git"
+          "lecole-42_cyber-Cyberwarfare": {
+            "upstream": "https://github.com/diegonmarcos/lecole-42_cyber-Cyberwarfare.git"
           },
-          "back-System": {
-            "upstream": "https://github.com/diegonmarcos/back-System.git"
+          "lecole-42_back-System": {
+            "upstream": "https://github.com/diegonmarcos/lecole-42_back-System.git"
           },
-          "back-Graphic": {
-            "upstream": "https://github.com/diegonmarcos/back-Graphic.git"
+          "lecole-42_back-Graphic": {
+            "upstream": "https://github.com/diegonmarcos/lecole-42_back-Graphic.git"
           },
-          "back-Algo": {
-            "upstream": "https://github.com/diegonmarcos/back-Algo.git"
+          "lecole-42_back-Algo": {
+            "upstream": "https://github.com/diegonmarcos/lecole-42_back-Algo.git"
           },
-          "lecole42": {
-            "upstream": "https://github.com/diegonmarcos/lecole42.git",
+          "lecole-42-projects": {
+            "upstream": "https://github.com/diegonmarcos/lecole-42-projects.git",
             "private": true
           },
-          "cloud-notes": {
-            "upstream": "https://github.com/diegonmarcos/cloud-notes.git",
+          "cloud-me-notes": {
+            "upstream": "https://github.com/diegonmarcos/cloud-me-notes.git",
             "private": true
           },
           "cloud-me": {
@@ -3739,6 +3813,10 @@
           },
           "My-ai-memory": {
             "upstream": "https://github.com/diegonmarcos/My-ai-memory.git",
+            "private": true
+          },
+          "lecole-42": {
+            "upstream": "https://github.com/diegonmarcos/lecole-42.git",
             "private": true
           }
         }
@@ -5626,7 +5704,7 @@
       "category": "sec",
       "vm": "oci-A1-f_0",
       "folder": "infra-sec_auth-broker",
-      "description": "Identity broker for the multi-SSO sign-in: GitHub (device flow + web), Google (web code flow + PKCE) and Cloudflare One (Access JWT), owner only (#1066, #1083)",
+      "description": "Identity broker for the multi-SSO sign-in: GitHub (device flow + web), Google (web code flow + PKCE) and Cloudflare One (Access JWT) and Email code (one-time code), owner only (#1066, #1083, #1118)",
       "enabled": true,
       "flake": "infra-sec_auth-broker",
       "dns": "auth-broker.app",
@@ -5672,17 +5750,33 @@
             "mem_limit": "64m"
           },
           "protocol": "http"
+        },
+        "email": {
+          "container_name": "auth-broker-email",
+          "image": "ghcr.io/diegonmarcos/auth-broker-binaries:latest",
+          "port": 4183,
+          "public": false,
+          "healthcheck": "/oauth2/email/health",
+          "volumes": [],
+          "env_file": true,
+          "resources": {
+            "mem_reservation": "16m",
+            "mem_limit": "64m"
+          },
+          "protocol": "http"
         }
       },
       "container_names": [
         "auth-broker-google",
         "auth-broker-github",
-        "auth-broker-cloudflare"
+        "auth-broker-cloudflare",
+        "auth-broker-email"
       ],
       "all_ports": [
         "4180",
         "4181",
-        "4182"
+        "4182",
+        "4183"
       ],
       "all_dns": [],
       "compose": {
@@ -5696,7 +5790,8 @@
       "declared_ports": {
         "google": 4180,
         "github": 4181,
-        "cloudflare": 4182
+        "cloudflare": 4182,
+        "email": 4183
       },
       "bind_host": "10.0.0.6",
       "auth_broker": {
@@ -5778,6 +5873,16 @@
             ],
             "login_url": "https://auth-cf.diegonmarcos.com/oauth2/cloudflare/callback",
             "home_url": "https://auth.diegonmarcos.com/"
+          },
+          {
+            "id": "email",
+            "label": "Email code",
+            "enabled": true,
+            "provider": "email",
+            "flow": "email",
+            "port": 4183,
+            "prefix": "/oauth2/email",
+            "_doc_flow": "Email one-time code (#1118), the recovery path when the TOTP vault is unreachable. <prefix>/start serves the address form; POST <prefix>/request answers every address identically (the allowlist cannot be probed) and mails a code only to an address in allowed_emails; POST <prefix>/verify checks the code and issues the same _diego_sso cookie as the other providers. No dependency on the vault, Authelia or TOTP."
           }
         ],
         "cloudflare_access": {
@@ -5789,6 +5894,29 @@
             "fd961754aece540b409ee165bc028105168acece9dca1f530e38f5f62e5b8f3c",
             "669d709af5740d926d2f122e7752331015a22a5487b1c82e8b63d4f32f31dfc0"
           ]
+        },
+        "email_otp": {
+          "_doc": "Code: 6 digits, valid 10 minutes, single use, at most 5 attempts per code; only an HMAC of the code is held (in memory). Send limits: per allowlisted address and per client IP in a window. Delivery: Stalwart over the mesh (implicit-TLS submission at the mesh IP, certificate checked against tls_server_name) first, the Resend API as fallback. Secrets come from sops (src/secrets.yaml), referenced by env name only.",
+          "code_length": 6,
+          "ttl_seconds": 600,
+          "max_attempts": 5,
+          "send_per_address": 3,
+          "send_per_ip": 10,
+          "send_window_seconds": 600,
+          "subject": "Your sign-in code",
+          "smtp": {
+            "host": "10.0.0.3",
+            "port": 2465,
+            "tls_server_name": "mail.diegonmarcos.com",
+            "user_env": "AUTH_BROKER_SMTP_USER",
+            "password_env": "AUTH_BROKER_SMTP_PASSWORD",
+            "from": "noreply-auth@diegonmarcos.com"
+          },
+          "resend": {
+            "url": "https://api.resend.com/emails",
+            "api_key_env": "AUTH_BROKER_RESEND_API_KEY",
+            "from": "no-reply@diegonmarcos.com"
+          }
         }
       },
       "tests": {
@@ -5798,6 +5926,10 @@
         },
         "broker-hub": {
           "cmd": "python3 -I test/test-broker-hub.py",
+          "cwd": "src"
+        },
+        "broker-email-otp": {
+          "cmd": "python3 -I test/test-broker-email.py",
           "cwd": "src"
         }
       },
@@ -5809,14 +5941,18 @@
         "healthcheck_paths": [
           "/oauth2/google/health",
           "/oauth2/github/health",
-          "/oauth2/cloudflare/health"
+          "/oauth2/cloudflare/health",
+          "/oauth2/email/health"
         ]
       },
       "secret_env_vars": [
         "AUTH_BROKER_GOOGLE_CLIENT_ID",
         "AUTH_BROKER_GOOGLE_CLIENT_SECRET",
         "AUTH_BROKER_COOKIE_SECRET",
-        "AUTH_BROKER_GITHUB_APP_CLIENT_SECRET"
+        "AUTH_BROKER_GITHUB_APP_CLIENT_SECRET",
+        "AUTH_BROKER_SMTP_USER",
+        "AUTH_BROKER_SMTP_PASSWORD",
+        "AUTH_BROKER_RESEND_API_KEY"
       ]
     },
     "authelia": {
@@ -6303,6 +6439,12 @@
                 "label": "Cloudflare One",
                 "upstream": "10.0.0.6:4182",
                 "prefix": "/oauth2/cloudflare"
+              },
+              {
+                "id": "email",
+                "label": "Email code",
+                "upstream": "10.0.0.6:4183",
+                "prefix": "/oauth2/email"
               }
             ],
             "chooser": {
@@ -6312,7 +6454,8 @@
                 "authelia",
                 "cloudflare",
                 "google",
-                "github"
+                "github",
+                "email"
               ],
               "authelia": {
                 "label": "Authelia",
@@ -6322,7 +6465,8 @@
                 "authelia": "fleet SSO portal",
                 "cloudflare": "Zero Trust login bridge",
                 "google": "owner account",
-                "github": "owner account"
+                "github": "owner account",
+                "email": "one-time code (recovery)"
               },
               "links": [
                 {
@@ -6439,6 +6583,21 @@
               "host": "www.diegonmarcos.com",
               "scope": "host",
               "reason": "Routing tier public HTML (#1104, owner ruling 2026-10-22): www and the apex are the ONLY unauthenticated public hosts; static landing page."
+            },
+            {
+              "host": "nexus.diegonmarcos.com",
+              "scope": "host",
+              "reason": "Owner ruling 2026-10-22 (#1104): GitHub Pages custom domain, explicit public HTML host without auth; the content is public on github.io anyway."
+            },
+            {
+              "host": "suite.diegonmarcos.com",
+              "scope": "host",
+              "reason": "Owner ruling 2026-10-22 (#1104): GitHub Pages custom domain, explicit public HTML host without auth; the content is public on github.io anyway."
+            },
+            {
+              "host": "maps.diegonmarcos.com",
+              "scope": "host",
+              "reason": "Owner ruling 2026-10-22 (#1104): GitHub Pages custom domain, explicit public HTML host without auth; the content is public on github.io anyway."
             },
             {
               "host": "*.diegonmarcos.com",
@@ -7200,8 +7359,7 @@
           "port": 4184,
           "port_env": null,
           "dns": "tokens-api.app",
-          "public": false,
-          "proxy": null,
+          "public": true,
           "healthcheck": "/health",
           "monitoring": {
             "tls_check": false,
@@ -7440,12 +7598,12 @@
           ],
           "_noindex_value_comment": "Lockfiles (*.lock: flake/Cargo/Gemfile/bun/pubspec, go.sum), Gradle dependency verification metadata, the gradlew/gradlew.bat wrapper copied into every app, binary SQLite dumps (*.db: sqldelight/Room schema snapshots) and Tauri-generated platform projects (src-tauri/gen/) carry no search value but cost embedding time on every first pass of a chunked repo (#888, cloud-u-android). Version catalogs, gradle-wrapper.properties, manifests (Cargo.toml, go.mod, package.json) stay. Asserted by cloud-infra 9_others/test/cgc-db-noindex-value.test.sh.",
           "_noindex_private_comment": "The *_private.* entries above are a NAMING-CONVENTION gate, not a per-file blocklist (ticket #360). A data file whose own name declares it private (aa_cloud-superapp/data/services_private.json — 602 lines enumerating every internal host:port pair and which auth component fronts what) was returned by a plain cgc.octocode.search against the PUBLIC surface. The point of declaring the pattern rather than the path is that the NEXT such file is excluded on the day it is written, with no ticket. Scope was measured before it was chosen: across the indexed repos *_private.json matches that one file and nothing else, while the wider glob *_private.* was REJECTED because it would have swallowed real source (ac_cloud-chat tool_private.ts, convert_private.tsx, public_private.tsx). yaml/yml carry zero matches today and are declared so the convention holds for the fleet's other data format. Applies to BOTH surfaces by construction: there is ONE .runtime.octocode block, one indexer pass and one .noindex per repo, and the pub/pvt split is the VOLUME (private_repos) not the file — so a pvt-only carve-out would need a second full index pass (hours per repo) to spare one 13KB JSON file that is public on github.com anyway. Honored by cloud-cgc-db-update.sh NOINDEX_PATTERNS (gitignore syntax: a slash-free pattern matches the basename at any depth). NOT a substitute for the real fix — cloud-u-android is a PUBLIC repo, so the file is served by github.com with or without this rule. Asserted by cloud-infra 9_others/test/cgc-db-noindex-private.test.sh.",
-          "_noindex_extra_comment": "PER-REPO noindex additions (data-driven, keyed by local repo name) layered ON TOP of noindex_patterns above, for content only ONE repo needs excluded. cloud-data-my-ai-memory: a_sessions/ holds raw Claude Code session transcripts (giant, opaque tool-result JSON that would abort the index; the text is invisible to embeddings anyway) and a_commits/ holds 18 rewritten-wholesale JSON snapshots up to 7.5MB each (embedding noise + whole-file-JSON abort risk). cloud-u-android (#352/#375): 37k tracked files made every slice time out before publishing; Android resource translations/drawables (res/values-*, res/drawable*, mipmap, raw, font, anim, color), the vendored iOS tree of the chat fork, androidTest, i18n/locales/l10n catalogues, fonts and .patch files are ~5.3k files of near-zero code signal -- excluded here so the semantic slice converges. #888 (2026-10-09, measured on HEAD e72eed8e): test code the base list misses because it lives beside the source instead of under tests/ (*.spec.*, *.test.*, __tests__/, __mocks__/, snapshots, stories, testFixtures/, src/test*/), keyboard layout/locale/emoji data, Room schema dumps, ac_cloud-code drawables/mipmaps and lang catalogues, zips and .gitkeep -- ~1.3k more files with no search value; together with the chunk planner now ranking .noindex above gitignore re-includes (as octocode does), the indexable set drops from 23286 to ~20.8k. Source, build scripts and docs stay. Honored by cloud-cgc-db-update.sh next to NOINDEX_PATTERNS.",
+          "_noindex_extra_comment": "PER-REPO noindex additions (data-driven, keyed by local repo name) layered ON TOP of noindex_patterns above, for content only ONE repo needs excluded. cloud-me-my-ai: a_sessions/ holds raw Claude Code session transcripts (giant, opaque tool-result JSON that would abort the index; the text is invisible to embeddings anyway) and a_commits/ holds 18 rewritten-wholesale JSON snapshots up to 7.5MB each (embedding noise + whole-file-JSON abort risk). cloud-u-android (#352/#375): 37k tracked files made every slice time out before publishing; Android resource translations/drawables (res/values-*, res/drawable*, mipmap, raw, font, anim, color), the vendored iOS tree of the chat fork, androidTest, i18n/locales/l10n catalogues, fonts and .patch files are ~5.3k files of near-zero code signal -- excluded here so the semantic slice converges. #888 (2026-10-09, measured on HEAD e72eed8e): test code the base list misses because it lives beside the source instead of under tests/ (*.spec.*, *.test.*, __tests__/, __mocks__/, snapshots, stories, testFixtures/, src/test*/), keyboard layout/locale/emoji data, Room schema dumps, ac_cloud-code drawables/mipmaps and lang catalogues, zips and .gitkeep -- ~1.3k more files with no search value; together with the chunk planner now ranking .noindex above gitignore re-includes (as octocode does), the indexable set drops from 23286 to ~20.8k. Source, build scripts and docs stay. Honored by cloud-cgc-db-update.sh next to NOINDEX_PATTERNS.",
           "noindex_extra": {
             "cloud-data": [
               "secrets/"
             ],
-            "cloud-data-my-ai-memory": [
+            "cloud-me-my-ai": [
               "a_sessions/",
               "a_commits/",
               "a___SESSIONS___/a_sessions/",
@@ -7562,14 +7720,14 @@
             "front-diegonmarcos",
             "cloud-data",
             "front-data",
-            "cloud-data-my-ai-memory",
+            "cloud-me-my-ai",
             "cloud-u-containers",
             "cloud-u-android"
           ],
           "_private_repos_comment": "Repos in index_repos whose GitHub source is PRIVATE. Their DBs must never land in the volume the PUBLIC MCP mounts. cloud-cgc-db-restore-all.sh filters these out unless CGC_INCLUDE_PRIVATE=1, which cloud-cgc-pvt-mcp will set together with its own CGC_DB_TARGET_VOLUME. Keep in sync with repo_map: the value is the local_name (the index_repos entry), not the GitHub remote name.",
           "private_repos": [
             "cloud-data",
-            "cloud-data-my-ai-memory"
+            "cloud-me-my-ai"
           ],
           "_pub_repos_mount_comment": "cloud-cgc-pub-mcp mounts octocode_repos ONLY as one read-only volume.subpath per public repo (index_repos minus private_repos minus sync_exclude) — never the whole volume, which also holds the private checkouts ops_git-sync clones for cloud-cgc-pvt-mcp. compose.nix pubReposMounts; code-level second wall in src/code/surface.ts (CGC_SURFACE, fail-closed to pub). Asserted by .tests.pub-surface-isolation. 2026-10-13.",
           "_repo_map_comment": "GENERATED by 1_cloud-configs/src/derive/derive-repo-map.ts from cloud/repos.json, scoped to index_repos. DO NOT EDIT — add the repo to the registry and to index_repos instead.",
@@ -7579,7 +7737,7 @@
             "front-diegonmarcos": "diegonmarcos.github.io",
             "cloud-data": "cloud-data",
             "front-data": "front-data",
-            "cloud-data-my-ai-memory": "cloud-data-my-ai-memory",
+            "cloud-me-my-ai": "cloud-me-my-ai",
             "cloud-u-containers": "cloud-u-containers",
             "cloud-u-android": "cloud-u-android"
           },
@@ -8449,7 +8607,7 @@
             "claude-haiku-4-5"
           ]
         },
-        "_repos_comment": "The ONE declaration of what lands in the shared agent tree (docker volume cloud-git-gh, mounted at $HOME/git in EVERY agi container by _shared/engine.nix). bootstrap_repos() in src/code/start.sh iterates THIS list; it used to carry a hardcoded four-repo shell loop, which is why the tree had drifted to seven — cloud-data, cloud-data-my-ai-memory and cloud-vault were cloned by hand and would have vanished on the next volume recreate. They are declared here now. Clones run as appuser (uid 10001), NOT as root: gitea used to hold a rw mount on this same tree and its root-owned writes left 260 unwritable paths (#558). `dir` overrides the checkout directory when it differs from the repo name — the front family names its members front-<thing>, so diegonmarcos.github.io is checked out as front-diegonmarcos exactly as front/repos.json (the front registry index, the repo formerly named ffront) declares. `renamed_from` lists the names a repo was checked out under before an upstream rename: bootstrap_repos MOVES such a checkout to the declared dir and repoints its remotes, so the tree never keeps a stale old-name clone beside a fresh one. `submodules` is only for cloud-infra, whose a_solutions is empty without it.",
+        "_repos_comment": "The ONE declaration of what lands in the shared agent tree (docker volume cloud-git-gh, mounted at $HOME/git in EVERY agi container by _shared/engine.nix). bootstrap_repos() in src/code/start.sh iterates THIS list; it used to carry a hardcoded four-repo shell loop, which is why the tree had drifted to seven — cloud-data, cloud-me-my-ai and cloud-vault were cloned by hand and would have vanished on the next volume recreate. They are declared here now. Clones run as appuser (uid 10001), NOT as root: gitea used to hold a rw mount on this same tree and its root-owned writes left 260 unwritable paths (#558). `dir` overrides the checkout directory when it differs from the repo name — the front family names its members front-<thing>, so diegonmarcos.github.io is checked out as front-diegonmarcos exactly as front/repos.json (the front registry index, the repo formerly named ffront) declares. `renamed_from` lists the names a repo was checked out under before an upstream rename: bootstrap_repos MOVES such a checkout to the declared dir and repoints its remotes, so the tree never keeps a stale old-name clone beside a fresh one. `submodules` is only for cloud-infra, whose a_solutions is empty without it.",
         "_repos_size_warning": "front-assets-cdn is ~1.4GB and front-diegonmarcos ~460MB. oci-apps root was at 94% after #492 reclaimed 5.3GB. If the volume runs out, DROP A LINE HERE rather than hand-deleting a checkout — a hand-deleted repo is re-cloned on the next boot.",
         "repos": [
           {
@@ -8469,7 +8627,7 @@
             "repo": "cloud-data"
           },
           {
-            "repo": "cloud-data-my-ai-memory"
+            "repo": "cloud-me-my-ai"
           },
           {
             "repo": "cloud-me_vault",
@@ -9800,6 +9958,10 @@
             "noreply"
           ]
         },
+        "noreply-auth": {
+          "name": "noreply-auth",
+          "pass_env": "AUTH_NOREPLY_PASSWORD"
+        },
         "mailadmin": {
           "name": "admin",
           "pass_env": "ADMIN_PASSWORD"
@@ -9866,7 +10028,8 @@
         "OCI_RELAYUSER",
         "OCI_RELAYPASSWORD",
         "DKIM_PRIVATE_KEY_B64",
-        "MAIL_DEFAULT_PASSWORD"
+        "MAIL_DEFAULT_PASSWORD",
+        "AUTH_NOREPLY_PASSWORD"
       ]
     },
     "scrappers-api": {
@@ -10023,7 +10186,6 @@
           "type": "path",
           "parent_domain": "api.diegonmarcos.com",
           "base_path": "/fin-api",
-          "public_host": "fin-api.diegonmarcos.com",
           "auth": "two_factor",
           "paths": {
             "/health": {
@@ -11766,25 +11928,41 @@
   "databases": {
     "_doc": "Canonical registry of every datastore. `kind` is what it is; `persistence.type` is where it survives. Fleet groups project one axis — never hand-maintain a parallel list. Git existence comes from the fetched GitHub inventory (src/inputs/github-repos.json); mirrored/indexed are declaration-driven flags on top.",
     "_counts": {
-      "total": 102,
+      "total": 104,
       "by_kind": {
         "embedded": 13,
         "container": 9,
         "object-store": 5,
-        "git-remote": 75
+        "git-remote": 77
       },
       "by_persistence": {
         "docker-volume": 19,
         "docker-bind": 1,
         "unknown": 2,
         "s3": 5,
-        "git": 75
+        "git": 77
       },
-      "github_repos": 38,
-      "github_indexed": 8,
-      "github_mirrored": 37
+      "github_repos": 39,
+      "github_indexed": 5,
+      "github_mirrored": 38
     },
-    "_dangling_declarations": [],
+    "_dangling_declarations": [
+      {
+        "kind": "octocode-index",
+        "repo": "cloud-infra-desktop",
+        "declared_by": "cloud-cgc-pub-mcp"
+      },
+      {
+        "kind": "octocode-index",
+        "repo": "cloud-data",
+        "declared_by": "cloud-cgc-pub-mcp"
+      },
+      {
+        "kind": "octocode-index",
+        "repo": "front-data",
+        "declared_by": "cloud-cgc-pub-mcp"
+      }
+    ],
     "entries": [
       {
         "id": "gitea/app#sqlite",
@@ -12601,22 +12779,22 @@
         }
       },
       {
-        "id": "git#gh/cloud-data",
-        "service": "cloud-cgc-pub-mcp",
+        "id": "git#gh/cloud-me-data-pvt",
+        "service": "gitea",
         "container": null,
         "engine": "git",
         "kind": "git-remote",
         "host": "github",
-        "repo": "diegonmarcos/cloud-data",
+        "repo": "diegonmarcos/cloud-me-data-pvt",
         "visibility": "private",
         "fork": false,
         "pushed_at": "2026-10-21T16:52:34Z",
-        "indexed": true,
-        "local_dir": "cloud-data",
+        "indexed": false,
+        "local_dir": null,
         "mirrored": true,
         "persistence": {
           "type": "git",
-          "ref": "https://github.com/diegonmarcos/cloud-data.git",
+          "ref": "https://github.com/diegonmarcos/cloud-me-data-pvt.git",
           "mount": null
         },
         "vm": null,
@@ -12626,17 +12804,17 @@
         }
       },
       {
-        "id": "git#gitea/cloud-data",
+        "id": "git#gitea/cloud-me-data-pvt",
         "service": "gitea",
         "container": null,
         "engine": "git",
         "kind": "git-remote",
         "host": "gitea",
-        "repo": "cloud-data",
-        "upstream": "https://github.com/diegonmarcos/cloud-data.git",
+        "repo": "cloud-me-data-pvt",
+        "upstream": "https://github.com/diegonmarcos/cloud-me-data-pvt.git",
         "persistence": {
           "type": "git",
-          "ref": "https://github.com/diegonmarcos/cloud-data.git",
+          "ref": "https://github.com/diegonmarcos/cloud-me-data-pvt.git",
           "mount": null
         },
         "vm": "oci-A1-f_0",
@@ -12646,22 +12824,22 @@
         }
       },
       {
-        "id": "git#gh/cloud-data-my-ai-memory",
+        "id": "git#gh/cloud-me-my-ai",
         "service": "cloud-cgc-pub-mcp",
         "container": null,
         "engine": "git",
         "kind": "git-remote",
         "host": "github",
-        "repo": "diegonmarcos/cloud-data-my-ai-memory",
+        "repo": "diegonmarcos/cloud-me-my-ai",
         "visibility": "private",
         "fork": false,
         "pushed_at": "2026-10-21T16:52:31Z",
         "indexed": true,
-        "local_dir": "cloud-data-my-ai-memory",
+        "local_dir": "cloud-me-my-ai",
         "mirrored": true,
         "persistence": {
           "type": "git",
-          "ref": "https://github.com/diegonmarcos/cloud-data-my-ai-memory.git",
+          "ref": "https://github.com/diegonmarcos/cloud-me-my-ai.git",
           "mount": null
         },
         "vm": null,
@@ -12671,17 +12849,17 @@
         }
       },
       {
-        "id": "git#gitea/cloud-data-my-ai-memory",
+        "id": "git#gitea/cloud-me-my-ai",
         "service": "gitea",
         "container": null,
         "engine": "git",
         "kind": "git-remote",
         "host": "gitea",
-        "repo": "cloud-data-my-ai-memory",
-        "upstream": "https://github.com/diegonmarcos/cloud-data-my-ai-memory.git",
+        "repo": "cloud-me-my-ai",
+        "upstream": "https://github.com/diegonmarcos/cloud-me-my-ai.git",
         "persistence": {
           "type": "git",
-          "ref": "https://github.com/diegonmarcos/cloud-data-my-ai-memory.git",
+          "ref": "https://github.com/diegonmarcos/cloud-me-my-ai.git",
           "mount": null
         },
         "vm": "oci-A1-f_0",
@@ -12736,13 +12914,13 @@
         }
       },
       {
-        "id": "git#gh/ml-Agentic",
+        "id": "git#gh/lecole-42_ml-Agentic",
         "service": "gitea",
         "container": null,
         "engine": "git",
         "kind": "git-remote",
         "host": "github",
-        "repo": "diegonmarcos/ml-Agentic",
+        "repo": "diegonmarcos/lecole-42_ml-Agentic",
         "visibility": "public",
         "fork": false,
         "pushed_at": "2026-10-21T16:45:27Z",
@@ -12751,7 +12929,7 @@
         "mirrored": true,
         "persistence": {
           "type": "git",
-          "ref": "https://github.com/diegonmarcos/ml-Agentic.git",
+          "ref": "https://github.com/diegonmarcos/lecole-42_ml-Agentic.git",
           "mount": null
         },
         "vm": null,
@@ -12761,17 +12939,17 @@
         }
       },
       {
-        "id": "git#gitea/ml-Agentic",
+        "id": "git#gitea/lecole-42_ml-Agentic",
         "service": "gitea",
         "container": null,
         "engine": "git",
         "kind": "git-remote",
         "host": "gitea",
-        "repo": "ml-Agentic",
-        "upstream": "https://github.com/diegonmarcos/ml-Agentic.git",
+        "repo": "lecole-42_ml-Agentic",
+        "upstream": "https://github.com/diegonmarcos/lecole-42_ml-Agentic.git",
         "persistence": {
           "type": "git",
-          "ref": "https://github.com/diegonmarcos/ml-Agentic.git",
+          "ref": "https://github.com/diegonmarcos/lecole-42_ml-Agentic.git",
           "mount": null
         },
         "vm": "oci-A1-f_0",
@@ -12871,13 +13049,13 @@
         }
       },
       {
-        "id": "git#gh/ml-MachineLearning",
+        "id": "git#gh/lecole-42_ml-MachineLearning",
         "service": "gitea",
         "container": null,
         "engine": "git",
         "kind": "git-remote",
         "host": "github",
-        "repo": "diegonmarcos/ml-MachineLearning",
+        "repo": "diegonmarcos/lecole-42_ml-MachineLearning",
         "visibility": "public",
         "fork": false,
         "pushed_at": "2026-10-21T16:42:25Z",
@@ -12886,7 +13064,7 @@
         "mirrored": true,
         "persistence": {
           "type": "git",
-          "ref": "https://github.com/diegonmarcos/ml-MachineLearning.git",
+          "ref": "https://github.com/diegonmarcos/lecole-42_ml-MachineLearning.git",
           "mount": null
         },
         "vm": null,
@@ -12896,17 +13074,17 @@
         }
       },
       {
-        "id": "git#gitea/ml-MachineLearning",
+        "id": "git#gitea/lecole-42_ml-MachineLearning",
         "service": "gitea",
         "container": null,
         "engine": "git",
         "kind": "git-remote",
         "host": "gitea",
-        "repo": "ml-MachineLearning",
-        "upstream": "https://github.com/diegonmarcos/ml-MachineLearning.git",
+        "repo": "lecole-42_ml-MachineLearning",
+        "upstream": "https://github.com/diegonmarcos/lecole-42_ml-MachineLearning.git",
         "persistence": {
           "type": "git",
-          "ref": "https://github.com/diegonmarcos/ml-MachineLearning.git",
+          "ref": "https://github.com/diegonmarcos/lecole-42_ml-MachineLearning.git",
           "mount": null
         },
         "vm": "oci-A1-f_0",
@@ -13186,22 +13364,22 @@
         }
       },
       {
-        "id": "git#gh/front-data",
-        "service": "cloud-cgc-pub-mcp",
+        "id": "git#gh/z-archived_front-data",
+        "service": "gitea",
         "container": null,
         "engine": "git",
         "kind": "git-remote",
         "host": "github",
-        "repo": "diegonmarcos/front-data",
+        "repo": "diegonmarcos/z-archived_front-data",
         "visibility": "public",
         "fork": false,
         "pushed_at": "2026-10-21T11:20:03Z",
-        "indexed": true,
-        "local_dir": "front-data",
+        "indexed": false,
+        "local_dir": null,
         "mirrored": true,
         "persistence": {
           "type": "git",
-          "ref": "https://github.com/diegonmarcos/front-data.git",
+          "ref": "https://github.com/diegonmarcos/z-archived_front-data.git",
           "mount": null
         },
         "vm": null,
@@ -13211,17 +13389,17 @@
         }
       },
       {
-        "id": "git#gitea/front-data",
+        "id": "git#gitea/z-archived_front-data",
         "service": "gitea",
         "container": null,
         "engine": "git",
         "kind": "git-remote",
         "host": "gitea",
-        "repo": "front-data",
-        "upstream": "https://github.com/diegonmarcos/front-data.git",
+        "repo": "z-archived_front-data",
+        "upstream": "https://github.com/diegonmarcos/z-archived_front-data.git",
         "persistence": {
           "type": "git",
-          "ref": "https://github.com/diegonmarcos/front-data.git",
+          "ref": "https://github.com/diegonmarcos/z-archived_front-data.git",
           "mount": null
         },
         "vm": "oci-A1-f_0",
@@ -13321,22 +13499,22 @@
         }
       },
       {
-        "id": "git#gh/cloud-infra-desktop",
-        "service": "cloud-cgc-pub-mcp",
+        "id": "git#gh/cloud-u-desktop",
+        "service": "gitea",
         "container": null,
         "engine": "git",
         "kind": "git-remote",
         "host": "github",
-        "repo": "diegonmarcos/cloud-infra-desktop",
+        "repo": "diegonmarcos/cloud-u-desktop",
         "visibility": "public",
         "fork": false,
         "pushed_at": "2026-10-20T21:37:56Z",
-        "indexed": true,
-        "local_dir": "cloud-infra-desktop",
+        "indexed": false,
+        "local_dir": null,
         "mirrored": true,
         "persistence": {
           "type": "git",
-          "ref": "https://github.com/diegonmarcos/cloud-infra-desktop.git",
+          "ref": "https://github.com/diegonmarcos/cloud-u-desktop.git",
           "mount": null
         },
         "vm": null,
@@ -13346,17 +13524,17 @@
         }
       },
       {
-        "id": "git#gitea/cloud-infra-desktop",
+        "id": "git#gitea/cloud-u-desktop",
         "service": "gitea",
         "container": null,
         "engine": "git",
         "kind": "git-remote",
         "host": "gitea",
-        "repo": "cloud-infra-desktop",
-        "upstream": "https://github.com/diegonmarcos/cloud-infra-desktop.git",
+        "repo": "cloud-u-desktop",
+        "upstream": "https://github.com/diegonmarcos/cloud-u-desktop.git",
         "persistence": {
           "type": "git",
-          "ref": "https://github.com/diegonmarcos/cloud-infra-desktop.git",
+          "ref": "https://github.com/diegonmarcos/cloud-u-desktop.git",
           "mount": null
         },
         "vm": "oci-A1-f_0",
@@ -13411,13 +13589,13 @@
         }
       },
       {
-        "id": "git#gh/ops-Mylibs",
+        "id": "git#gh/lecole-42_ops-Mylibs",
         "service": "gitea",
         "container": null,
         "engine": "git",
         "kind": "git-remote",
         "host": "github",
-        "repo": "diegonmarcos/ops-Mylibs",
+        "repo": "diegonmarcos/lecole-42_ops-Mylibs",
         "visibility": "public",
         "fork": false,
         "pushed_at": "2026-10-15T10:10:01Z",
@@ -13426,7 +13604,7 @@
         "mirrored": true,
         "persistence": {
           "type": "git",
-          "ref": "https://github.com/diegonmarcos/ops-Mylibs.git",
+          "ref": "https://github.com/diegonmarcos/lecole-42_ops-Mylibs.git",
           "mount": null
         },
         "vm": null,
@@ -13436,17 +13614,17 @@
         }
       },
       {
-        "id": "git#gitea/ops-Mylibs",
+        "id": "git#gitea/lecole-42_ops-Mylibs",
         "service": "gitea",
         "container": null,
         "engine": "git",
         "kind": "git-remote",
         "host": "gitea",
-        "repo": "ops-Mylibs",
-        "upstream": "https://github.com/diegonmarcos/ops-Mylibs.git",
+        "repo": "lecole-42_ops-Mylibs",
+        "upstream": "https://github.com/diegonmarcos/lecole-42_ops-Mylibs.git",
         "persistence": {
           "type": "git",
-          "ref": "https://github.com/diegonmarcos/ops-Mylibs.git",
+          "ref": "https://github.com/diegonmarcos/lecole-42_ops-Mylibs.git",
           "mount": null
         },
         "vm": "oci-A1-f_0",
@@ -13456,13 +13634,13 @@
         }
       },
       {
-        "id": "git#gh/ml-DataScience",
+        "id": "git#gh/lecole-42_ml-DataScience",
         "service": "gitea",
         "container": null,
         "engine": "git",
         "kind": "git-remote",
         "host": "github",
-        "repo": "diegonmarcos/ml-DataScience",
+        "repo": "diegonmarcos/lecole-42_ml-DataScience",
         "visibility": "public",
         "fork": false,
         "pushed_at": "2026-10-15T10:09:33Z",
@@ -13471,7 +13649,7 @@
         "mirrored": true,
         "persistence": {
           "type": "git",
-          "ref": "https://github.com/diegonmarcos/ml-DataScience.git",
+          "ref": "https://github.com/diegonmarcos/lecole-42_ml-DataScience.git",
           "mount": null
         },
         "vm": null,
@@ -13481,17 +13659,17 @@
         }
       },
       {
-        "id": "git#gitea/ml-DataScience",
+        "id": "git#gitea/lecole-42_ml-DataScience",
         "service": "gitea",
         "container": null,
         "engine": "git",
         "kind": "git-remote",
         "host": "gitea",
-        "repo": "ml-DataScience",
-        "upstream": "https://github.com/diegonmarcos/ml-DataScience.git",
+        "repo": "lecole-42_ml-DataScience",
+        "upstream": "https://github.com/diegonmarcos/lecole-42_ml-DataScience.git",
         "persistence": {
           "type": "git",
-          "ref": "https://github.com/diegonmarcos/ml-DataScience.git",
+          "ref": "https://github.com/diegonmarcos/lecole-42_ml-DataScience.git",
           "mount": null
         },
         "vm": "oci-A1-f_0",
@@ -13501,13 +13679,13 @@
         }
       },
       {
-        "id": "git#gh/dev",
+        "id": "git#gh/lecole-42_dev",
         "service": "gitea",
         "container": null,
         "engine": "git",
         "kind": "git-remote",
         "host": "github",
-        "repo": "diegonmarcos/dev",
+        "repo": "diegonmarcos/lecole-42_dev",
         "visibility": "private",
         "fork": false,
         "pushed_at": "2026-10-15T10:09:04Z",
@@ -13516,7 +13694,7 @@
         "mirrored": true,
         "persistence": {
           "type": "git",
-          "ref": "https://github.com/diegonmarcos/dev.git",
+          "ref": "https://github.com/diegonmarcos/lecole-42_dev.git",
           "mount": null
         },
         "vm": null,
@@ -13526,17 +13704,17 @@
         }
       },
       {
-        "id": "git#gitea/dev",
+        "id": "git#gitea/lecole-42_dev",
         "service": "gitea",
         "container": null,
         "engine": "git",
         "kind": "git-remote",
         "host": "gitea",
-        "repo": "dev",
-        "upstream": "https://github.com/diegonmarcos/dev.git",
+        "repo": "lecole-42_dev",
+        "upstream": "https://github.com/diegonmarcos/lecole-42_dev.git",
         "persistence": {
           "type": "git",
-          "ref": "https://github.com/diegonmarcos/dev.git",
+          "ref": "https://github.com/diegonmarcos/lecole-42_dev.git",
           "mount": null
         },
         "vm": "oci-A1-f_0",
@@ -13546,13 +13724,13 @@
         }
       },
       {
-        "id": "git#gh/cyber-Cyberwarfare",
+        "id": "git#gh/lecole-42_cyber-Cyberwarfare",
         "service": "gitea",
         "container": null,
         "engine": "git",
         "kind": "git-remote",
         "host": "github",
-        "repo": "diegonmarcos/cyber-Cyberwarfare",
+        "repo": "diegonmarcos/lecole-42_cyber-Cyberwarfare",
         "visibility": "public",
         "fork": false,
         "pushed_at": "2026-10-15T10:08:49Z",
@@ -13561,7 +13739,7 @@
         "mirrored": true,
         "persistence": {
           "type": "git",
-          "ref": "https://github.com/diegonmarcos/cyber-Cyberwarfare.git",
+          "ref": "https://github.com/diegonmarcos/lecole-42_cyber-Cyberwarfare.git",
           "mount": null
         },
         "vm": null,
@@ -13571,17 +13749,17 @@
         }
       },
       {
-        "id": "git#gitea/cyber-Cyberwarfare",
+        "id": "git#gitea/lecole-42_cyber-Cyberwarfare",
         "service": "gitea",
         "container": null,
         "engine": "git",
         "kind": "git-remote",
         "host": "gitea",
-        "repo": "cyber-Cyberwarfare",
-        "upstream": "https://github.com/diegonmarcos/cyber-Cyberwarfare.git",
+        "repo": "lecole-42_cyber-Cyberwarfare",
+        "upstream": "https://github.com/diegonmarcos/lecole-42_cyber-Cyberwarfare.git",
         "persistence": {
           "type": "git",
-          "ref": "https://github.com/diegonmarcos/cyber-Cyberwarfare.git",
+          "ref": "https://github.com/diegonmarcos/lecole-42_cyber-Cyberwarfare.git",
           "mount": null
         },
         "vm": "oci-A1-f_0",
@@ -13591,13 +13769,13 @@
         }
       },
       {
-        "id": "git#gh/back-System",
+        "id": "git#gh/lecole-42_back-System",
         "service": "gitea",
         "container": null,
         "engine": "git",
         "kind": "git-remote",
         "host": "github",
-        "repo": "diegonmarcos/back-System",
+        "repo": "diegonmarcos/lecole-42_back-System",
         "visibility": "public",
         "fork": false,
         "pushed_at": "2026-10-15T10:08:32Z",
@@ -13606,7 +13784,7 @@
         "mirrored": true,
         "persistence": {
           "type": "git",
-          "ref": "https://github.com/diegonmarcos/back-System.git",
+          "ref": "https://github.com/diegonmarcos/lecole-42_back-System.git",
           "mount": null
         },
         "vm": null,
@@ -13616,17 +13794,17 @@
         }
       },
       {
-        "id": "git#gitea/back-System",
+        "id": "git#gitea/lecole-42_back-System",
         "service": "gitea",
         "container": null,
         "engine": "git",
         "kind": "git-remote",
         "host": "gitea",
-        "repo": "back-System",
-        "upstream": "https://github.com/diegonmarcos/back-System.git",
+        "repo": "lecole-42_back-System",
+        "upstream": "https://github.com/diegonmarcos/lecole-42_back-System.git",
         "persistence": {
           "type": "git",
-          "ref": "https://github.com/diegonmarcos/back-System.git",
+          "ref": "https://github.com/diegonmarcos/lecole-42_back-System.git",
           "mount": null
         },
         "vm": "oci-A1-f_0",
@@ -13636,13 +13814,13 @@
         }
       },
       {
-        "id": "git#gh/back-Graphic",
+        "id": "git#gh/lecole-42_back-Graphic",
         "service": "gitea",
         "container": null,
         "engine": "git",
         "kind": "git-remote",
         "host": "github",
-        "repo": "diegonmarcos/back-Graphic",
+        "repo": "diegonmarcos/lecole-42_back-Graphic",
         "visibility": "public",
         "fork": false,
         "pushed_at": "2026-10-15T10:08:12Z",
@@ -13651,7 +13829,7 @@
         "mirrored": true,
         "persistence": {
           "type": "git",
-          "ref": "https://github.com/diegonmarcos/back-Graphic.git",
+          "ref": "https://github.com/diegonmarcos/lecole-42_back-Graphic.git",
           "mount": null
         },
         "vm": null,
@@ -13661,17 +13839,17 @@
         }
       },
       {
-        "id": "git#gitea/back-Graphic",
+        "id": "git#gitea/lecole-42_back-Graphic",
         "service": "gitea",
         "container": null,
         "engine": "git",
         "kind": "git-remote",
         "host": "gitea",
-        "repo": "back-Graphic",
-        "upstream": "https://github.com/diegonmarcos/back-Graphic.git",
+        "repo": "lecole-42_back-Graphic",
+        "upstream": "https://github.com/diegonmarcos/lecole-42_back-Graphic.git",
         "persistence": {
           "type": "git",
-          "ref": "https://github.com/diegonmarcos/back-Graphic.git",
+          "ref": "https://github.com/diegonmarcos/lecole-42_back-Graphic.git",
           "mount": null
         },
         "vm": "oci-A1-f_0",
@@ -13681,13 +13859,13 @@
         }
       },
       {
-        "id": "git#gh/back-Algo",
+        "id": "git#gh/lecole-42_back-Algo",
         "service": "gitea",
         "container": null,
         "engine": "git",
         "kind": "git-remote",
         "host": "github",
-        "repo": "diegonmarcos/back-Algo",
+        "repo": "diegonmarcos/lecole-42_back-Algo",
         "visibility": "public",
         "fork": false,
         "pushed_at": "2026-10-15T10:07:40Z",
@@ -13696,7 +13874,7 @@
         "mirrored": true,
         "persistence": {
           "type": "git",
-          "ref": "https://github.com/diegonmarcos/back-Algo.git",
+          "ref": "https://github.com/diegonmarcos/lecole-42_back-Algo.git",
           "mount": null
         },
         "vm": null,
@@ -13706,17 +13884,17 @@
         }
       },
       {
-        "id": "git#gitea/back-Algo",
+        "id": "git#gitea/lecole-42_back-Algo",
         "service": "gitea",
         "container": null,
         "engine": "git",
         "kind": "git-remote",
         "host": "gitea",
-        "repo": "back-Algo",
-        "upstream": "https://github.com/diegonmarcos/back-Algo.git",
+        "repo": "lecole-42_back-Algo",
+        "upstream": "https://github.com/diegonmarcos/lecole-42_back-Algo.git",
         "persistence": {
           "type": "git",
-          "ref": "https://github.com/diegonmarcos/back-Algo.git",
+          "ref": "https://github.com/diegonmarcos/lecole-42_back-Algo.git",
           "mount": null
         },
         "vm": "oci-A1-f_0",
@@ -13726,13 +13904,13 @@
         }
       },
       {
-        "id": "git#gh/lecole42",
+        "id": "git#gh/lecole-42-projects",
         "service": "gitea",
         "container": null,
         "engine": "git",
         "kind": "git-remote",
         "host": "github",
-        "repo": "diegonmarcos/lecole42",
+        "repo": "diegonmarcos/lecole-42-projects",
         "visibility": "private",
         "fork": false,
         "pushed_at": "2026-10-15T10:07:10Z",
@@ -13741,7 +13919,7 @@
         "mirrored": true,
         "persistence": {
           "type": "git",
-          "ref": "https://github.com/diegonmarcos/lecole42.git",
+          "ref": "https://github.com/diegonmarcos/lecole-42-projects.git",
           "mount": null
         },
         "vm": null,
@@ -13751,17 +13929,17 @@
         }
       },
       {
-        "id": "git#gitea/lecole42",
+        "id": "git#gitea/lecole-42-projects",
         "service": "gitea",
         "container": null,
         "engine": "git",
         "kind": "git-remote",
         "host": "gitea",
-        "repo": "lecole42",
-        "upstream": "https://github.com/diegonmarcos/lecole42.git",
+        "repo": "lecole-42-projects",
+        "upstream": "https://github.com/diegonmarcos/lecole-42-projects.git",
         "persistence": {
           "type": "git",
-          "ref": "https://github.com/diegonmarcos/lecole42.git",
+          "ref": "https://github.com/diegonmarcos/lecole-42-projects.git",
           "mount": null
         },
         "vm": "oci-A1-f_0",
@@ -13771,13 +13949,13 @@
         }
       },
       {
-        "id": "git#gh/cloud-notes",
+        "id": "git#gh/cloud-me-notes",
         "service": "gitea",
         "container": null,
         "engine": "git",
         "kind": "git-remote",
         "host": "github",
-        "repo": "diegonmarcos/cloud-notes",
+        "repo": "diegonmarcos/cloud-me-notes",
         "visibility": "private",
         "fork": false,
         "pushed_at": "2026-10-15T10:01:30Z",
@@ -13786,7 +13964,7 @@
         "mirrored": true,
         "persistence": {
           "type": "git",
-          "ref": "https://github.com/diegonmarcos/cloud-notes.git",
+          "ref": "https://github.com/diegonmarcos/cloud-me-notes.git",
           "mount": null
         },
         "vm": null,
@@ -13796,17 +13974,17 @@
         }
       },
       {
-        "id": "git#gitea/cloud-notes",
+        "id": "git#gitea/cloud-me-notes",
         "service": "gitea",
         "container": null,
         "engine": "git",
         "kind": "git-remote",
         "host": "gitea",
-        "repo": "cloud-notes",
-        "upstream": "https://github.com/diegonmarcos/cloud-notes.git",
+        "repo": "cloud-me-notes",
+        "upstream": "https://github.com/diegonmarcos/cloud-me-notes.git",
         "persistence": {
           "type": "git",
-          "ref": "https://github.com/diegonmarcos/cloud-notes.git",
+          "ref": "https://github.com/diegonmarcos/cloud-me-notes.git",
           "mount": null
         },
         "vm": "oci-A1-f_0",
@@ -13987,6 +14165,51 @@
         "persistence": {
           "type": "git",
           "ref": "https://github.com/diegonmarcos/My-ai-memory.git",
+          "mount": null
+        },
+        "vm": "oci-A1-f_0",
+        "backup": {
+          "enabled": true,
+          "strategy": null
+        }
+      },
+      {
+        "id": "git#gh/lecole-42",
+        "service": "gitea",
+        "container": null,
+        "engine": "git",
+        "kind": "git-remote",
+        "host": "github",
+        "repo": "diegonmarcos/lecole-42",
+        "visibility": "private",
+        "fork": false,
+        "pushed_at": "2026-10-23T12:00:00Z",
+        "indexed": false,
+        "local_dir": null,
+        "mirrored": true,
+        "persistence": {
+          "type": "git",
+          "ref": "https://github.com/diegonmarcos/lecole-42.git",
+          "mount": null
+        },
+        "vm": null,
+        "backup": {
+          "enabled": false,
+          "strategy": null
+        }
+      },
+      {
+        "id": "git#gitea/lecole-42",
+        "service": "gitea",
+        "container": null,
+        "engine": "git",
+        "kind": "git-remote",
+        "host": "gitea",
+        "repo": "lecole-42",
+        "upstream": "https://github.com/diegonmarcos/lecole-42.git",
+        "persistence": {
+          "type": "git",
+          "ref": "https://github.com/diegonmarcos/lecole-42.git",
           "mount": null
         },
         "vm": "oci-A1-f_0",
@@ -15096,29 +15319,57 @@
             ],
             "extra_hosts": [
               {
-                "host": "phone",
+                "host": "phone1",
                 "hostname": "10.0.0.9",
                 "user": "nix-on-droid",
                 "port": 8024,
                 "identity_file": "~/.ssh/vault_id_rsa"
               },
               {
-                "host": "phone-v6",
+                "host": "phone1-v6",
                 "hostname": "fd0c:1d00::9",
                 "user": "nix-on-droid",
                 "port": 8024,
                 "identity_file": "~/.ssh/vault_id_rsa"
               },
               {
-                "host": "phone-termux",
+                "host": "phone1-termux",
                 "hostname": "10.0.0.9",
                 "user": "termux",
                 "port": 8023,
                 "identity_file": "~/.ssh/vault_id_rsa"
               },
               {
-                "host": "phone-termux-v6",
+                "host": "phone1-termux-v6",
                 "hostname": "fd0c:1d00::9",
+                "user": "termux",
+                "port": 8023,
+                "identity_file": "~/.ssh/vault_id_rsa"
+              },
+              {
+                "host": "phone2",
+                "hostname": "10.0.0.10",
+                "user": "nix-on-droid",
+                "port": 8024,
+                "identity_file": "~/.ssh/vault_id_rsa"
+              },
+              {
+                "host": "phone2-v6",
+                "hostname": "fd0c:1d00::10",
+                "user": "nix-on-droid",
+                "port": 8024,
+                "identity_file": "~/.ssh/vault_id_rsa"
+              },
+              {
+                "host": "phone2-termux",
+                "hostname": "10.0.0.10",
+                "user": "termux",
+                "port": 8023,
+                "identity_file": "~/.ssh/vault_id_rsa"
+              },
+              {
+                "host": "phone2-termux-v6",
+                "hostname": "fd0c:1d00::10",
                 "user": "termux",
                 "port": 8023,
                 "identity_file": "~/.ssh/vault_id_rsa"

@@ -229,7 +229,7 @@
         "send",
         "vaultwarden"
       ],
-      "container_count": 73
+      "container_count": 74
     },
     "gcp-E2-f_0": {
       "ip": "35.226.147.64",
@@ -1169,6 +1169,10 @@
         },
         "jev-alert-priority": {
           "cmd": "node test-jev-alert-priority.ts",
+          "cwd": "src"
+        },
+        "app-logs": {
+          "cmd": "node test-app-logs.ts",
           "cwd": "src"
         }
       },
@@ -2223,8 +2227,19 @@
             "path": "/me/repos/:repo/file",
             "auth": "authelia",
             "description": "One config file of a declared repo (query `path`). Only runtime.files.allowed_ext, at most runtime.files.max_bytes, never a path matching runtime.files.deny_path, never content matching runtime.files.deny_content (403 secret_filtered). Errors {error,code}: 400 bad_path, 403 repo_not_declared/path_denied/secret_filtered, 404 not_found, 413 too_large, 503 not_synced."
+          },
+          {
+            "method": "GET",
+            "path": "/me/autocomplete",
+            "auth": "authelia",
+            "description": "#1103 The owner's Autocomplete rows {v:1,ids,addresses,urls,secrets:[{label,value}]} from runtime.autocomplete {repo,path}; only the four pages, string label/value, at most 500 rows a page. The one personal file served past the secret filter, so it is authenticated (Authelia bearer or session), no-store, and never reachable through /me/config or /me/repos/:repo/file. No file yet -> 200 with empty pages; repo not synced -> 503 not_synced."
           }
         ],
+        "autocomplete": {
+          "_doc": "#1103 the ONE personal file this service serves past the secret filter, at GET /me/autocomplete: a JSON object {ids,addresses,urls,secrets: [{label,value}]} in a declared private repo. Cloud Account pulls it (mesh first, then c3-pvt.diegonmarcos.com/cloud-me-api with the fleet bearer) and hands it to Cloud Keyboard's own store. Absent file = an empty document.",
+          "repo": "cloud-me_configs",
+          "path": "autocomplete.json"
+        },
         "repos": {
           "_doc": "The allow-list is DATA, here. Each repo is read with its OWN read-only deploy key (GitHub allows a deploy key on one repo only), delivered as a base64 sops env_file value named by key_env. cloud-me_vault is deliberately NOT declared: it holds credentials and the test asserts it is never served.",
           "sync_interval_s": 300,
@@ -2325,7 +2340,7 @@
         ],
         "type": "custom-rest",
         "base_path": "/me",
-        "endpoint_count": 5,
+        "endpoint_count": 6,
         "display_name": "Cloud Me API",
         "description": "Authenticated read-only access to declared datasets and config files of the owner's private cloud-me-* repos. Deploy keys stay server-side; secret-looking files are never served.",
         "auth": "mixed"
@@ -2549,32 +2564,87 @@
           "vault_id_rsa",
           "vault_id_rsa.pub"
         ],
-        "_extra_hosts_doc": "Ssh aliases the MCP dials (SUPERAPP_HOSTS in src/compose.nix). The phone's sshd is provided by OUR terminals (cloud-u-android ac_cloud-nix-on-droid / ac_cloud-termux; ports and users as declared in ac_cloud-myterminal/data/terminal-targets.json: nix 8024 user nix-on-droid, termux 8023 user termux). Address = the phone's wg0 mesh client `termux` (config.json native.wireguard.clients), resolved by the derive into /opt/ssh-keys/cloud-superapp-mcp/config. MESH ONLY: the phone has no public ssh route by design (sshd is reached over WireGuard; ide-endpoints.json: public surface is 443+51820+25), so there is no phone-pub. The key offered is vault_id_rsa (keys above); it is authorised on the phone by cloud-u-linux da__my-konsole/termux/authorized_keys. test-superapp-hosts.sh fails if an alias in SUPERAPP_HOSTS has no entry here.",
+        "_phones_doc": "THE ONE declaration of the phones this MCP dials (two phones since #573: the S21+ on wg client `termux` 10.0.0.9 and the A37 on wg client `samsung-a37` 10.0.0.10). Each phone's mesh addresses and peer key are NOT restated here: `wg_client` names its row in cloud-infra config.json#native.wireguard.clients (the same row superapp-users.json peers point at), and the derive resolves it into /opt/ssh-keys/cloud-superapp-mcp/config. `alias` is the phone's fleet name; for each phone and each door in `doors` the MCP dials <alias><suffix> (v4) and <alias><suffix>-v6. extra_hosts below is exactly that expansion — test/test-superapp-hosts.sh fails on any drift, and on a SUPERAPP_PHONES alias that is not declared here. Every tool takes `phone` (alias or id); omitted, the phone that answered most recently is tried first, then the rest, and every result names the phone that answered.",
+        "phones": [
+          {
+            "alias": "phone1",
+            "id": "samsung-s21plus",
+            "name": "Samsung Galaxy S21+",
+            "wg_client": "termux"
+          },
+          {
+            "alias": "phone2",
+            "id": "samsung-a37",
+            "name": "Samsung Galaxy A37",
+            "wg_client": "samsung-a37"
+          }
+        ],
+        "doors": [
+          {
+            "suffix": "",
+            "user": "nix-on-droid",
+            "port": 8024
+          },
+          {
+            "suffix": "-termux",
+            "user": "termux",
+            "port": 8023
+          }
+        ],
+        "_extra_hosts_doc": "Ssh aliases the MCP dials (expanded from phones x doors; SUPERAPP_PHONES in src/compose.nix picks the order). The phone's sshd is provided by OUR terminals (cloud-u-android ac_cloud-nix-on-droid / ac_cloud-termux; ports and users as declared in ac_cloud-myterminal/data/terminal-targets.json: nix 8024 user nix-on-droid, termux 8023 user termux). Address = each phone's wg0 mesh client (phones[].wg_client) (config.json native.wireguard.clients), resolved by the derive into /opt/ssh-keys/cloud-superapp-mcp/config. MESH ONLY: the phone has no public ssh route by design (sshd is reached over WireGuard; ide-endpoints.json: public surface is 443+51820+25), so there is no phone-pub. The key offered is vault_id_rsa (keys above); it is authorised on the phone by cloud-u-linux da__my-konsole/termux/authorized_keys. test-superapp-hosts.sh fails if an alias in SUPERAPP_HOSTS has no entry here.",
         "extra_hosts": [
           {
-            "host": "phone",
+            "host": "phone1",
             "wg_client": "termux",
             "family": "v4",
             "user": "nix-on-droid",
             "port": 8024
           },
           {
-            "host": "phone-v6",
+            "host": "phone1-v6",
             "wg_client": "termux",
             "family": "v6",
             "user": "nix-on-droid",
             "port": 8024
           },
           {
-            "host": "phone-termux",
+            "host": "phone1-termux",
             "wg_client": "termux",
             "family": "v4",
             "user": "termux",
             "port": 8023
           },
           {
-            "host": "phone-termux-v6",
+            "host": "phone1-termux-v6",
             "wg_client": "termux",
+            "family": "v6",
+            "user": "termux",
+            "port": 8023
+          },
+          {
+            "host": "phone2",
+            "wg_client": "samsung-a37",
+            "family": "v4",
+            "user": "nix-on-droid",
+            "port": 8024
+          },
+          {
+            "host": "phone2-v6",
+            "wg_client": "samsung-a37",
+            "family": "v6",
+            "user": "nix-on-droid",
+            "port": 8024
+          },
+          {
+            "host": "phone2-termux",
+            "wg_client": "samsung-a37",
+            "family": "v4",
+            "user": "termux",
+            "port": 8023
+          },
+          {
+            "host": "phone2-termux-v6",
+            "wg_client": "samsung-a37",
             "family": "v6",
             "user": "termux",
             "port": 8023
@@ -5631,7 +5701,7 @@
       "category": "sec",
       "vm": "oci-A1-f_0",
       "folder": "infra-sec_auth-broker",
-      "description": "Identity broker for the multi-SSO sign-in: GitHub (device flow + web), Google (web code flow + PKCE) and Cloudflare One (Access JWT), owner only (#1066, #1083)",
+      "description": "Identity broker for the multi-SSO sign-in: GitHub (device flow + web), Google (web code flow + PKCE) and Cloudflare One (Access JWT) and Email code (one-time code), owner only (#1066, #1083, #1118)",
       "enabled": true,
       "flake": "infra-sec_auth-broker",
       "dns": "auth-broker.app",
@@ -5677,17 +5747,33 @@
             "mem_limit": "64m"
           },
           "protocol": "http"
+        },
+        "email": {
+          "container_name": "auth-broker-email",
+          "image": "ghcr.io/diegonmarcos/auth-broker-binaries:latest",
+          "port": 4183,
+          "public": false,
+          "healthcheck": "/oauth2/email/health",
+          "volumes": [],
+          "env_file": true,
+          "resources": {
+            "mem_reservation": "16m",
+            "mem_limit": "64m"
+          },
+          "protocol": "http"
         }
       },
       "container_names": [
         "auth-broker-google",
         "auth-broker-github",
-        "auth-broker-cloudflare"
+        "auth-broker-cloudflare",
+        "auth-broker-email"
       ],
       "all_ports": [
         "4180",
         "4181",
-        "4182"
+        "4182",
+        "4183"
       ],
       "all_dns": [],
       "compose": {
@@ -5701,7 +5787,8 @@
       "declared_ports": {
         "google": 4180,
         "github": 4181,
-        "cloudflare": 4182
+        "cloudflare": 4182,
+        "email": 4183
       },
       "bind_host": "10.0.0.6",
       "auth_broker": {
@@ -5783,6 +5870,16 @@
             ],
             "login_url": "https://auth-cf.diegonmarcos.com/oauth2/cloudflare/callback",
             "home_url": "https://auth.diegonmarcos.com/"
+          },
+          {
+            "id": "email",
+            "label": "Email code",
+            "enabled": true,
+            "provider": "email",
+            "flow": "email",
+            "port": 4183,
+            "prefix": "/oauth2/email",
+            "_doc_flow": "Email one-time code (#1118), the recovery path when the TOTP vault is unreachable. <prefix>/start serves the address form; POST <prefix>/request answers every address identically (the allowlist cannot be probed) and mails a code only to an address in allowed_emails; POST <prefix>/verify checks the code and issues the same _diego_sso cookie as the other providers. No dependency on the vault, Authelia or TOTP."
           }
         ],
         "cloudflare_access": {
@@ -5794,6 +5891,29 @@
             "fd961754aece540b409ee165bc028105168acece9dca1f530e38f5f62e5b8f3c",
             "669d709af5740d926d2f122e7752331015a22a5487b1c82e8b63d4f32f31dfc0"
           ]
+        },
+        "email_otp": {
+          "_doc": "Code: 6 digits, valid 10 minutes, single use, at most 5 attempts per code; only an HMAC of the code is held (in memory). Send limits: per allowlisted address and per client IP in a window. Delivery: Stalwart over the mesh (implicit-TLS submission at the mesh IP, certificate checked against tls_server_name) first, the Resend API as fallback. Secrets come from sops (src/secrets.yaml), referenced by env name only.",
+          "code_length": 6,
+          "ttl_seconds": 600,
+          "max_attempts": 5,
+          "send_per_address": 3,
+          "send_per_ip": 10,
+          "send_window_seconds": 600,
+          "subject": "Your sign-in code",
+          "smtp": {
+            "host": "10.0.0.3",
+            "port": 2465,
+            "tls_server_name": "mail.diegonmarcos.com",
+            "user_env": "AUTH_BROKER_SMTP_USER",
+            "password_env": "AUTH_BROKER_SMTP_PASSWORD",
+            "from": "no-reply@diegonmarcos.com"
+          },
+          "resend": {
+            "url": "https://api.resend.com/emails",
+            "api_key_env": "AUTH_BROKER_RESEND_API_KEY",
+            "from": "no-reply@diegonmarcos.com"
+          }
         }
       },
       "tests": {
@@ -5803,6 +5923,10 @@
         },
         "broker-hub": {
           "cmd": "python3 -I test/test-broker-hub.py",
+          "cwd": "src"
+        },
+        "broker-email-otp": {
+          "cmd": "python3 -I test/test-broker-email.py",
           "cwd": "src"
         }
       },
@@ -5814,7 +5938,8 @@
         "healthcheck_paths": [
           "/oauth2/google/health",
           "/oauth2/github/health",
-          "/oauth2/cloudflare/health"
+          "/oauth2/cloudflare/health",
+          "/oauth2/email/health"
         ]
       },
       "secret_env_vars": [
@@ -6308,6 +6433,12 @@
                 "label": "Cloudflare One",
                 "upstream": "10.0.0.6:4182",
                 "prefix": "/oauth2/cloudflare"
+              },
+              {
+                "id": "email",
+                "label": "Email code",
+                "upstream": "10.0.0.6:4183",
+                "prefix": "/oauth2/email"
               }
             ],
             "chooser": {
@@ -6317,7 +6448,8 @@
                 "authelia",
                 "cloudflare",
                 "google",
-                "github"
+                "github",
+                "email"
               ],
               "authelia": {
                 "label": "Authelia",
@@ -6327,7 +6459,8 @@
                 "authelia": "fleet SSO portal",
                 "cloudflare": "Zero Trust login bridge",
                 "google": "owner account",
-                "github": "owner account"
+                "github": "owner account",
+                "email": "one-time code (recovery)"
               },
               "links": [
                 {
@@ -6444,6 +6577,21 @@
               "host": "www.diegonmarcos.com",
               "scope": "host",
               "reason": "Routing tier public HTML (#1104, owner ruling 2026-10-22): www and the apex are the ONLY unauthenticated public hosts; static landing page."
+            },
+            {
+              "host": "nexus.diegonmarcos.com",
+              "scope": "host",
+              "reason": "Owner ruling 2026-10-22 (#1104): GitHub Pages custom domain, explicit public HTML host without auth; the content is public on github.io anyway."
+            },
+            {
+              "host": "suite.diegonmarcos.com",
+              "scope": "host",
+              "reason": "Owner ruling 2026-10-22 (#1104): GitHub Pages custom domain, explicit public HTML host without auth; the content is public on github.io anyway."
+            },
+            {
+              "host": "maps.diegonmarcos.com",
+              "scope": "host",
+              "reason": "Owner ruling 2026-10-22 (#1104): GitHub Pages custom domain, explicit public HTML host without auth; the content is public on github.io anyway."
             },
             {
               "host": "*.diegonmarcos.com",
@@ -10027,7 +10175,6 @@
           "type": "path",
           "parent_domain": "api.diegonmarcos.com",
           "base_path": "/fin-api",
-          "public_host": "fin-api.diegonmarcos.com",
           "auth": "two_factor",
           "paths": {
             "/health": {
@@ -15100,29 +15247,57 @@
             ],
             "extra_hosts": [
               {
-                "host": "phone",
+                "host": "phone1",
                 "hostname": "10.0.0.9",
                 "user": "nix-on-droid",
                 "port": 8024,
                 "identity_file": "~/.ssh/vault_id_rsa"
               },
               {
-                "host": "phone-v6",
+                "host": "phone1-v6",
                 "hostname": "fd0c:1d00::9",
                 "user": "nix-on-droid",
                 "port": 8024,
                 "identity_file": "~/.ssh/vault_id_rsa"
               },
               {
-                "host": "phone-termux",
+                "host": "phone1-termux",
                 "hostname": "10.0.0.9",
                 "user": "termux",
                 "port": 8023,
                 "identity_file": "~/.ssh/vault_id_rsa"
               },
               {
-                "host": "phone-termux-v6",
+                "host": "phone1-termux-v6",
                 "hostname": "fd0c:1d00::9",
+                "user": "termux",
+                "port": 8023,
+                "identity_file": "~/.ssh/vault_id_rsa"
+              },
+              {
+                "host": "phone2",
+                "hostname": "10.0.0.10",
+                "user": "nix-on-droid",
+                "port": 8024,
+                "identity_file": "~/.ssh/vault_id_rsa"
+              },
+              {
+                "host": "phone2-v6",
+                "hostname": "fd0c:1d00::10",
+                "user": "nix-on-droid",
+                "port": 8024,
+                "identity_file": "~/.ssh/vault_id_rsa"
+              },
+              {
+                "host": "phone2-termux",
+                "hostname": "10.0.0.10",
+                "user": "termux",
+                "port": 8023,
+                "identity_file": "~/.ssh/vault_id_rsa"
+              },
+              {
+                "host": "phone2-termux-v6",
+                "hostname": "fd0c:1d00::10",
                 "user": "termux",
                 "port": 8023,
                 "identity_file": "~/.ssh/vault_id_rsa"

@@ -1,5 +1,0 @@
-node_modules/
-.svelte-kit/
-.build.pid
-.DS_Store
-*.log

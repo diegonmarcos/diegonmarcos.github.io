@@ -11,7 +11,7 @@
 # ╚══════════════════════════════════════════════════════════════════╝
 set -uo pipefail  # no -e: grep exit codes are handled by || true
 
-STAGED=$(git diff --cached --name-only)
+STAGED=$(git diff --cached --name-only --diff-filter=d)  # deletions cannot add a secret (#1072)
 [ -z "$STAGED" ] && exit 0
 
 BLOCKED=""
@@ -79,7 +79,7 @@ if [ -f .gitmodules ]; then
       done
       echo "Continuing with remaining staged changes." >&2
       echo "──────────────────────────────────────────────────" >&2
-      STAGED=$(git diff --cached --name-only)
+      STAGED=$(git diff --cached --name-only --diff-filter=d)  # deletions cannot add a secret (#1072)
       [ -z "$STAGED" ] && exit 0
     fi
   fi

@@ -22,6 +22,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
+          repository: diegonmarcos/front-linktree  # #1072: sources moved out of this repo
           sparse-checkout: a_Portals/linktree/tests/e2e
       - uses: actions/setup-node@v4
         with:

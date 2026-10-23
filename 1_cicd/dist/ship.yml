@@ -18,6 +18,10 @@ on:
   # Cloud-<App>.wasm.zip on its rolling release; the portal refetches the pages.
   repository_dispatch:
     types: [cloud-web-refresh]
+  # #1072: the split source repos cannot dispatch without a secret; redeploy daily and on demand.
+  schedule:
+    - cron: '41 5 * * *'
+  workflow_dispatch:
 permissions:
   contents: write
   pages: write
@@ -34,6 +38,15 @@ jobs:
         uses: actions/checkout@v4
         with:
           fetch-depth: 0 # Needed to compare changes
+      # #1072: linktree and the project sources live in their own public repos;
+      # overlay them at their original paths so every path below still resolves.
+      - name: 🧩 Overlay split source repos
+        run: |
+          for r in front-linktree front-projects; do
+            git clone --depth 1 "https://github.com/diegonmarcos/$r.git" "$RUNNER_TEMP/$r"
+            rsync -a --exclude='.git' --exclude='README.md' --exclude='SPLIT-PATHS.txt' "$RUNNER_TEMP/$r/" ./
+            sed 's#^#/#' "$RUNNER_TEMP/$r/SPLIT-PATHS.txt" >> .git/info/exclude
+          done
       - name: 📂 Get Changed Files
         id: changed-files
         uses: tj-actions/changed-files@v41
@@ -462,7 +475,7 @@ jobs:
         run: |
           echo "🔨 Building Galaxy..."
           cd b_Projects/galaxy
-          node test/scene.test.mjs
+          node test/hub.test.mjs
           bash build.sh build
           cd ../..
           echo "✅ Galaxy build complete"
@@ -580,6 +593,7 @@ jobs:
           git config user.name  "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
           while IFS= read -r p; do
+            git check-ignore -q "$p" && continue  # overlaid from a split repo (#1072)
             [ -d "$p/dist" ] && git add "$p/dist"
           done < <(jq -r '.[].path' 1_front-configs/dist/front-data-projects.json)
           if git diff --cached --quiet; then

@@ -25,6 +25,16 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      # #1072: linktree and the project sources live in their own public repos;
+      # overlay them at their original paths so every path below still resolves.
+      - name: 🧩 Overlay split source repos
+        run: |
+          for r in front-linktree front-projects; do
+            git clone --depth 1 "https://github.com/diegonmarcos/$r.git" "$RUNNER_TEMP/$r"
+            rsync -a --exclude='.git' --exclude='README.md' --exclude='SPLIT-PATHS.txt' "$RUNNER_TEMP/$r/" ./
+            sed 's#^#/#' "$RUNNER_TEMP/$r/SPLIT-PATHS.txt" >> .git/info/exclude
+          done
+
       - uses: actions/setup-node@v4
         with:
           node-version-file: '.node-version'

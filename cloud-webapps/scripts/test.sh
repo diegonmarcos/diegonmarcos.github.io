@@ -30,4 +30,10 @@ echo "ok: $n service fallback pages"
 for slug in $(node -e 'for(const s of require("./scripts/fallback-services.json").services)console.log(s.slug)'); do
   grep -q "href=\"/cloud-webapps/$slug/\"" _shared/dist/index.html || { echo "FAIL index lacks service $slug"; exit 1; }
 done
+# redirects: every old per-app page maps to its own site (or the index when none), and the stubs are written
+rt=$(mktemp -d); node scripts/gen-redirects.mjs "$rt" >/dev/null
+grep -q 'url=/cloud-webapps/cloud-calc/"' "$rt/cloud-superapp/apps/calc/calculator/graph/index.html" || { echo "FAIL old calc page does not redirect to cloud-calc"; exit 1; }
+grep -q 'url=/cloud-webapps/cloud-c3/"' "$rt/cloud-superapp/apps/c3/infra/machines/index.html" || { echo "FAIL old c3 page does not redirect to cloud-c3"; exit 1; }
+for id in $(cut -d/ -f2 scripts/old-app-paths.txt | sort -u); do [ -d "cloud-$id" ] || echo "note: old app '$id' has no site, redirects to the index"; done
+rm -rf "$rt"
 echo "cloud-webapps tests green"

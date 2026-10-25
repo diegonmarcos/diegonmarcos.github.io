@@ -28,11 +28,13 @@ jobs:
           fetch-depth: 0 # Needed to compare changes
       # #1072: linktree and the project sources live in their own public repos;
       # overlay them at their original paths so every path below still resolves.
+      # Each front repo carries the deployer as submodule 0_deployer plus symlinks 1_cicd and .github into it, so its
+      # build.sh/ship.yml symlinks resolve standalone; those four entries belong to the repo, never to the overlay.
       - name: 🧩 Overlay split source repos
         run: |
           for r in front-linktree front-companies front-individual front-warehouse front-feeds front-media front-mydata front-profiles front-galaxy front-circus front-labtools front-suite front-others; do
             git clone --depth 1 "https://github.com/diegonmarcos/$r.git" "$RUNNER_TEMP/$r"
-            rsync -a --exclude='.git' --exclude='README.md' --exclude='SPLIT-PATHS.txt' "$RUNNER_TEMP/$r/" ./
+            rsync -a --exclude='.git' --exclude='README.md' --exclude='SPLIT-PATHS.txt' --exclude='/.gitmodules' --exclude='/0_deployer' --exclude='/1_cicd' --exclude='/.github' "$RUNNER_TEMP/$r/" ./
             sed 's#^#/#' "$RUNNER_TEMP/$r/SPLIT-PATHS.txt" >> .git/info/exclude
           done
       - name: 📂 Get Changed Files
@@ -54,7 +56,7 @@ jobs:
         # Excludes test_framework + test_watcher_reap (flaky in headless
         # CI; tracked separately). Runs the deterministic SW + cache
         # tests added by the SW-hashing modularization.
-        run: bash 9_others/test/run.sh "test_front_cache_*" "test_front_sw_*" "test_engine_sw_*" "test_front_sw_register" "test_engine_copy_glob"
+        run: bash 9_others/test/run.sh "test_front_cache_*" "test_front_sw_*" "test_engine_sw_*" "test_front_sw_register" "test_engine_copy_glob" "test_profiles_privacy"
       # ============================================
       # PROJECT BUILDS (All use build.sh)
       # ============================================

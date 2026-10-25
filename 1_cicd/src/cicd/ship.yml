@@ -32,7 +32,7 @@ jobs:
       # build.sh/ship.yml symlinks resolve standalone; those four entries belong to the repo, never to the overlay.
       - name: 🧩 Overlay split source repos
         run: |
-          for r in front-linktree front-companies front-individual front-warehouse front-feeds front-media front-mydata front-profiles front-galaxy front-circus front-labtools front-suite front-others; do
+          for r in front-linktree front-companies front-individual front-warehouse front-feeds front-media cloud-me-others cloud-me-profiles front-galaxy front-circus front-labtools cloud-webapps-2 front-others; do
             git clone --depth 1 "https://github.com/diegonmarcos/$r.git" "$RUNNER_TEMP/$r"
             rsync -a --exclude='.git' --exclude='README.md' --exclude='SPLIT-PATHS.txt' --exclude='/.gitmodules' --exclude='/0_deployer' --exclude='/1_cicd' --exclude='/.github' "$RUNNER_TEMP/$r/" ./
             sed 's#^#/#' "$RUNNER_TEMP/$r/SPLIT-PATHS.txt" >> .git/info/exclude

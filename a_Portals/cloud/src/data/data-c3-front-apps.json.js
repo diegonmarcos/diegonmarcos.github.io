@@ -239,8 +239,8 @@
   {
    "name": "SlabTwin 3D Warehouse",
    "slug": "Warehouse",
-   "path": "a_Projects/Warehouse",
-   "category": "a_Projects",
+   "path": "a_Companies/Warehouse",
+   "category": "a_Companies",
    "framework": "vanilla",
    "port": 8020,
    "build_steps": [
@@ -255,8 +255,8 @@
   {
    "name": "myAstro",
    "slug": "myAstro",
-   "path": "b_Data/myAstro",
-   "category": "b_Data",
+   "path": "c_Circus/myAstro",
+   "category": "c_Circus",
    "framework": "vanilla",
    "port": 8019,
    "build_steps": [
@@ -276,8 +276,8 @@
   {
    "name": "MyFeed",
    "slug": "myfeed",
-   "path": "b_Data/myfeed",
-   "category": "b_Data",
+   "path": "c_Circus/myfeed",
+   "category": "c_Circus",
    "framework": "vue",
    "port": 8003,
    "build_steps": [
@@ -902,8 +902,8 @@
   {
    "name": "Others",
    "slug": "others",
-   "path": "e-Others/others",
-   "category": "e-Others",
+   "path": "c_Circus/others",
+   "category": "c_Circus",
    "framework": "vanilla",
    "port": 8008,
    "build_steps": [

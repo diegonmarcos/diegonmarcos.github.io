@@ -47,6 +47,15 @@
           "framework": "vanilla",
           "port": 8022,
           "has_dist": true
+        },
+        {
+          "name": "SlabTwin 3D Warehouse",
+          "slug": "Warehouse",
+          "path": "a_Companies/Warehouse",
+          "category": "a_Companies",
+          "framework": "vanilla",
+          "port": 8020,
+          "has_dist": true
         }
       ]
     },
@@ -112,43 +121,6 @@
           "slug": "linktree_pixel-world",
           "path": "a_Portals/linktree_pixel-world",
           "category": "a_Portals",
-          "framework": "vanilla",
-          "port": 8019,
-          "has_dist": true
-        }
-      ]
-    },
-    {
-      "category": "a_Projects",
-      "projects": [
-        {
-          "name": "SlabTwin 3D Warehouse",
-          "slug": "Warehouse",
-          "path": "a_Projects/Warehouse",
-          "category": "a_Projects",
-          "framework": "vanilla",
-          "port": 8020,
-          "has_dist": true
-        }
-      ]
-    },
-    {
-      "category": "b_Data",
-      "projects": [
-        {
-          "name": "MyFeed",
-          "slug": "myfeed",
-          "path": "b_Data/myfeed",
-          "category": "b_Data",
-          "framework": "vue",
-          "port": 8003,
-          "has_dist": true
-        },
-        {
-          "name": "myAstro",
-          "slug": "myAstro",
-          "path": "b_Data/myAstro",
-          "category": "b_Data",
           "framework": "vanilla",
           "port": 8019,
           "has_dist": true
@@ -351,6 +323,33 @@
           "category": "c_Circus",
           "framework": "vue",
           "port": 8016,
+          "has_dist": true
+        },
+        {
+          "name": "MyFeed",
+          "slug": "myfeed",
+          "path": "c_Circus/myfeed",
+          "category": "c_Circus",
+          "framework": "vue",
+          "port": 8003,
+          "has_dist": true
+        },
+        {
+          "name": "myAstro",
+          "slug": "myAstro",
+          "path": "c_Circus/myAstro",
+          "category": "c_Circus",
+          "framework": "vanilla",
+          "port": 8019,
+          "has_dist": true
+        },
+        {
+          "name": "Others",
+          "slug": "others",
+          "path": "c_Circus/others",
+          "category": "c_Circus",
+          "framework": "vanilla",
+          "port": 8008,
           "has_dist": true
         }
       ]
@@ -834,20 +833,6 @@
           "category": "cloud-webapps",
           "framework": "vanilla",
           "port": null,
-          "has_dist": true
-        }
-      ]
-    },
-    {
-      "category": "e-Others",
-      "projects": [
-        {
-          "name": "Others",
-          "slug": "others",
-          "path": "e-Others/others",
-          "category": "e-Others",
-          "framework": "vanilla",
-          "port": 8008,
           "has_dist": true
         }
       ]

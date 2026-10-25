@@ -44,7 +44,7 @@ jobs:
       # build.sh/ship.yml symlinks resolve standalone; those four entries belong to the repo, never to the overlay.
       - name: 🧩 Overlay split source repos
         run: |
-          for r in front-linktree front-companies front-warehouse front-feeds cloud-me-others cloud-me-profiles front-galaxy front-circus front-labtools cloud-webapps-2 front-others; do
+          for r in front-linktree front-endeavours cloud-me-others cloud-me-profiles front-galaxy front-circus front-labtools cloud-webapps-2; do
             git clone --depth 1 "https://github.com/diegonmarcos/$r.git" "$RUNNER_TEMP/$r"
             rsync -a --exclude='.git' --exclude='README.md' --exclude='SPLIT-PATHS.txt' --exclude='/.gitmodules' --exclude='/0_deployer' --exclude='/1_cicd' --exclude='/.github' "$RUNNER_TEMP/$r/" ./
             sed 's#^#/#' "$RUNNER_TEMP/$r/SPLIT-PATHS.txt" >> .git/info/exclude
@@ -152,11 +152,11 @@ jobs:
       - name: 🔨 Build MyFeed
         id: build-myfeed
         if:
-          contains(steps.changed-files.outputs.all_changed_files, 'b_Data/myfeed/src/')
+          contains(steps.changed-files.outputs.all_changed_files, 'c_Circus/myfeed/src/')
 
         run: |
           echo "🔨 Building MyFeed..."
-          cd b_Data/myfeed
+          cd c_Circus/myfeed
           bash build.sh build
           cd ../..
           echo "✅ MyFeed build complete"
@@ -251,11 +251,11 @@ jobs:
       - name: 🔨 Build Others
         id: build-others
         if:
-          contains(steps.changed-files.outputs.all_changed_files, 'e-Others/others/src/')
+          contains(steps.changed-files.outputs.all_changed_files, 'c_Circus/others/src/')
 
         run: |
           echo "🔨 Building Others..."
-          cd e-Others/others
+          cd c_Circus/others
           bash build.sh build
           cd ../..
           echo "✅ Others build complete"
@@ -531,22 +531,22 @@ jobs:
       - name: 🔨 Build Astro
         id: build-astro
         if:
-          contains(steps.changed-files.outputs.all_changed_files, 'b_Data/myAstro/src/')
+          contains(steps.changed-files.outputs.all_changed_files, 'c_Circus/myAstro/src/')
 
         run: |
           echo "🔨 Building Astro..."
-          cd b_Data/myAstro
+          cd c_Circus/myAstro
           bash build.sh build
           cd ../..
           echo "✅ Astro build complete"
       - name: 🔨 Build Warehouse
         id: build-warehouse
         if:
-          contains(steps.changed-files.outputs.all_changed_files, 'a_Projects/Warehouse/src/')
+          contains(steps.changed-files.outputs.all_changed_files, 'a_Companies/Warehouse/src/')
 
         run: |
           echo "🔨 Building Warehouse..."
-          cd a_Projects/Warehouse
+          cd a_Companies/Warehouse
           bash build.sh build
           cd ../..
           echo "✅ Warehouse build complete"
@@ -642,20 +642,20 @@ jobs:
             "b_MyData/myTrackers:myTrackers"
             "c_Suite/suite:suite"
             "c_Suite/tldraw:tldraw"
-            "b_Data/myAstro:myAstro"
+            "c_Circus/myAstro:myAstro"
             "c_Circus/carto:carto"
             "c_LabTools/central_bank:central_bank"
             "c_Suite/myhealth-feedyourself:myhealth-feedyourself"
             "b_MyData/myhealth-profile:myhealth-profile"
             "c_Suite/mymaps-maps:mymaps-maps"
             "c_LabTools/market_watch:market_watch"
-            "b_Data/myfeed:myfeed"
+            "c_Circus/myfeed:myfeed"
             "c_Circus/games:games"
             "c_Suite/mymaps-navigation:mymaps-navigation"
             "c_Circus/movies:movies"
             "c_Circus/music:music"
             "b_MyData/mymaps-mytrips:mymaps-mytrips"
-            "a_Projects/Warehouse:Warehouse"
+            "a_Companies/Warehouse:Warehouse"
             "cloud-webapps/_shared:cloud-webapps"
             "cloud-webapps/ai-chat:cloud-webapps/ai-chat"
             "cloud-webapps/c3-bot:cloud-webapps/c3-bot"
@@ -693,7 +693,7 @@ jobs:
             "cloud-webapps/cloud-vault:cloud-webapps/cloud-vault"
             "cloud-webapps/cloud-wallet:cloud-webapps/cloud-wallet"
             "cloud-webapps/cloud-writer:cloud-webapps/cloud-writer"
-            "e-Others/others:others"
+            "c_Circus/others:others"
             "c_LabTools/sailytics:sailytics"
             "c_LabTools/news:news"
             "c_LabTools/fin-terminal:fin-terminal"

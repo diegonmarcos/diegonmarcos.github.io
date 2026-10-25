@@ -80,8 +80,8 @@
   {
    "name": "CV PDF",
    "slug": "cv_pdf",
-   "path": "a_Individual/cv_pdf",
-   "category": "a_Individual",
+   "path": "b_Profiles/cv_pdf",
+   "category": "b_Profiles",
    "framework": "vanilla",
    "port": 8012,
    "build_steps": [
@@ -101,8 +101,8 @@
   {
    "name": "CV Web",
    "slug": "cv_web",
-   "path": "a_Individual/cv_web",
-   "category": "a_Individual",
+   "path": "b_Profiles/cv_web",
+   "category": "b_Profiles",
    "framework": "vanilla",
    "port": 8002,
    "build_steps": [
@@ -123,8 +123,8 @@
   {
    "name": "Landpage",
    "slug": "landpage",
-   "path": "a_Individual/landpage",
-   "category": "a_Individual",
+   "path": "b_Profiles/landpage",
+   "category": "b_Profiles",
    "framework": "vanilla",
    "port": 8000,
    "build_steps": [
@@ -290,8 +290,8 @@
   {
    "name": "mySocials",
    "slug": "mySocials",
-   "path": "b_Media/mySocials",
-   "category": "b_Media",
+   "path": "b_Profiles/mySocials",
+   "category": "b_Profiles",
    "framework": "vanilla",
    "port": 8028,
    "build_steps": [

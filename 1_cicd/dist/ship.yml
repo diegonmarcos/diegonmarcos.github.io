@@ -42,7 +42,7 @@ jobs:
       # overlay them at their original paths so every path below still resolves.
       - name: 🧩 Overlay split source repos
         run: |
-          for r in front-linktree front-companies front-individual front-warehouse front-feeds front-media cloud-me-others cloud-me-profiles front-galaxy front-circus front-labtools cloud-webapps-2 front-others; do
+          for r in front-linktree front-companies front-warehouse front-feeds cloud-me-others cloud-me-profiles front-galaxy front-circus front-labtools cloud-webapps-2 front-others; do
             git clone --depth 1 "https://github.com/diegonmarcos/$r.git" "$RUNNER_TEMP/$r"
             rsync -a --exclude='.git' --exclude='README.md' --exclude='SPLIT-PATHS.txt' "$RUNNER_TEMP/$r/" ./
             sed 's#^#/#' "$RUNNER_TEMP/$r/SPLIT-PATHS.txt" >> .git/info/exclude
@@ -84,11 +84,11 @@ jobs:
       - name: 🔨 Build Landpage
         id: build-landpage
         if:
-          contains(steps.changed-files.outputs.all_changed_files, 'a_Individual/landpage/src/')
+          contains(steps.changed-files.outputs.all_changed_files, 'b_Profiles/landpage/src/')
 
         run: |
           echo "🔨 Building Landpage..."
-          cd a_Individual/landpage
+          cd b_Profiles/landpage
           bash build.sh build
           cd ../..
           echo "✅ Landpage build complete"
@@ -139,11 +139,11 @@ jobs:
       - name: 🔨 Build CV Web
         id: build-cv-web
         if:
-          contains(steps.changed-files.outputs.all_changed_files, 'a_Individual/cv_web/src/')
+          contains(steps.changed-files.outputs.all_changed_files, 'b_Profiles/cv_web/src/')
 
         run: |
           echo "🔨 Building CV Web..."
-          cd a_Individual/cv_web
+          cd b_Profiles/cv_web
           bash build.sh build
           cd ../..
           echo "✅ CV Web build complete"
@@ -518,11 +518,11 @@ jobs:
       - name: 🔨 Build CV PDF
         id: build-cv-pdf
         if:
-          contains(steps.changed-files.outputs.all_changed_files, 'a_Individual/cv_pdf/src/')
+          contains(steps.changed-files.outputs.all_changed_files, 'b_Profiles/cv_pdf/src/')
 
         run: |
           echo "🔨 Building CV PDF..."
-          cd a_Individual/cv_pdf
+          cd b_Profiles/cv_pdf
           bash build.sh build
           cd ../..
           echo "✅ CV PDF build complete"
@@ -551,11 +551,11 @@ jobs:
       - name: 🔨 Build MySocials
         id: build-mysocials
         if:
-          contains(steps.changed-files.outputs.all_changed_files, 'b_Media/mySocials/src/')
+          contains(steps.changed-files.outputs.all_changed_files, 'b_Profiles/mySocials/src/')
 
         run: |
           echo "🔨 Building MySocials..."
-          cd b_Media/mySocials
+          cd b_Profiles/mySocials
           bash build.sh build
           cd ../..
           echo "✅ MySocials build complete"
@@ -625,9 +625,9 @@ jobs:
             "a_Portals/linktree_mindmap:linktree_mindmap"
             "a_Portals/linktree_pixel-world:linktree_pixel-world"
             "a_Portals/linktree_icon-view:linktree_icon-view"
-            "a_Individual/cv_pdf:cv_pdf"
-            "a_Individual/cv_web:cv_web"
-            "a_Individual/landpage:landpage"
+            "b_Profiles/cv_pdf:cv_pdf"
+            "b_Profiles/cv_web:cv_web"
+            "b_Profiles/landpage:landpage"
             "a_Companies/leafy:leafy"
             "b_Projects/galaxy:galaxy"
             "b_Projects/galaxy-gaia:galaxy-gaia"
@@ -698,7 +698,7 @@ jobs:
             "c_LabTools/Music_DJ-Mixer_Mixxx:Music_DJ-Mixer_Mixxx"
             "c_LabTools/Music_DAW_LLMS:Music_DAW_LLMS"
             "b_MyData/my-fin:my-fin"
-            "b_Media/mySocials:mySocials"
+            "b_Profiles/mySocials:mySocials"
             "b_MyData/myhealth:myhealth"
             "b_MyData/myhealth-tracker:myhealth-tracker"
             "b_MyData/myid:myid"

@@ -29,7 +29,7 @@ jobs:
       # overlay them at their original paths so every path below still resolves.
       - name: 🧩 Overlay split source repos
         run: |
-          for r in front-linktree front-companies front-individual front-warehouse front-feeds front-media cloud-me-others cloud-me-profiles front-galaxy front-circus front-labtools cloud-webapps-2 front-others; do
+          for r in front-linktree front-companies front-warehouse front-feeds cloud-me-others cloud-me-profiles front-galaxy front-circus front-labtools cloud-webapps-2 front-others; do
             git clone --depth 1 "https://github.com/diegonmarcos/$r.git" "$RUNNER_TEMP/$r"
             rsync -a --exclude='.git' --exclude='README.md' --exclude='SPLIT-PATHS.txt' "$RUNNER_TEMP/$r/" ./
             sed 's#^#/#' "$RUNNER_TEMP/$r/SPLIT-PATHS.txt" >> .git/info/exclude

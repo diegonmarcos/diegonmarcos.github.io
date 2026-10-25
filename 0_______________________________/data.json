@@ -51,38 +51,6 @@
       ]
     },
     {
-      "category": "a_Individual",
-      "projects": [
-        {
-          "name": "CV PDF",
-          "slug": "cv_pdf",
-          "path": "a_Individual/cv_pdf",
-          "category": "a_Individual",
-          "framework": "vanilla",
-          "port": 8012,
-          "has_dist": true
-        },
-        {
-          "name": "CV Web",
-          "slug": "cv_web",
-          "path": "a_Individual/cv_web",
-          "category": "a_Individual",
-          "framework": "vanilla",
-          "port": 8002,
-          "has_dist": true
-        },
-        {
-          "name": "Landpage",
-          "slug": "landpage",
-          "path": "a_Individual/landpage",
-          "category": "a_Individual",
-          "framework": "vanilla",
-          "port": 8000,
-          "has_dist": true
-        }
-      ]
-    },
-    {
       "category": "a_Portals",
       "projects": [
         {
@@ -188,20 +156,6 @@
       ]
     },
     {
-      "category": "b_Media",
-      "projects": [
-        {
-          "name": "mySocials",
-          "slug": "mySocials",
-          "path": "b_Media/mySocials",
-          "category": "b_Media",
-          "framework": "vanilla",
-          "port": 8028,
-          "has_dist": true
-        }
-      ]
-    },
-    {
       "category": "b_MyData",
       "projects": [
         {
@@ -288,6 +242,42 @@
           "category": "b_Profiles",
           "framework": "sveltekit",
           "port": 8013,
+          "has_dist": true
+        },
+        {
+          "name": "CV PDF",
+          "slug": "cv_pdf",
+          "path": "b_Profiles/cv_pdf",
+          "category": "b_Profiles",
+          "framework": "vanilla",
+          "port": 8012,
+          "has_dist": true
+        },
+        {
+          "name": "CV Web",
+          "slug": "cv_web",
+          "path": "b_Profiles/cv_web",
+          "category": "b_Profiles",
+          "framework": "vanilla",
+          "port": 8002,
+          "has_dist": true
+        },
+        {
+          "name": "Landpage",
+          "slug": "landpage",
+          "path": "b_Profiles/landpage",
+          "category": "b_Profiles",
+          "framework": "vanilla",
+          "port": 8000,
+          "has_dist": true
+        },
+        {
+          "name": "mySocials",
+          "slug": "mySocials",
+          "path": "b_Profiles/mySocials",
+          "category": "b_Profiles",
+          "framework": "vanilla",
+          "port": 8028,
           "has_dist": true
         }
       ]

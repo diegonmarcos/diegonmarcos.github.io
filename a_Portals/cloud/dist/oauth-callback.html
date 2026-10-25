@@ -112,8 +112,9 @@
 
   function reg() {
     console.info(TAG, 'registering ./script-service-worker.js');
-    navigator.serviceWorker.register('./script-service-worker.js')
+    navigator.serviceWorker.register('./script-service-worker.js', { updateViaCache: 'none' })
       .then(function (r) {
+        try { r.update(); } catch (e) { /* best effort */ }
         console.info(TAG, 'register OK', {
           scope: r.scope,
           installing: !!r.installing,

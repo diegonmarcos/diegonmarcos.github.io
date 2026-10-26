@@ -55,7 +55,7 @@ Built with a universal `build.sh` engine — one engine, per-project `build.json
 cd a_Portals/linktree && bash build.sh build
 
 # Dev server with hot reload
-cd c_Circus/movies && bash build.sh dev
+cd c_Suite/movies && bash build.sh dev
 
 # Build everything
 ./build.sh build

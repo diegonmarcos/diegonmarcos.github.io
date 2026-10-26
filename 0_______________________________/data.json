@@ -308,33 +308,6 @@
           "has_dist": true
         },
         {
-          "name": "Movies",
-          "slug": "movies",
-          "path": "c_Circus/movies",
-          "category": "c_Circus",
-          "framework": "vue",
-          "port": 8015,
-          "has_dist": true
-        },
-        {
-          "name": "Music",
-          "slug": "music",
-          "path": "c_Circus/music",
-          "category": "c_Circus",
-          "framework": "vue",
-          "port": 8016,
-          "has_dist": true
-        },
-        {
-          "name": "MyFeed",
-          "slug": "myfeed",
-          "path": "c_Circus/myfeed",
-          "category": "c_Circus",
-          "framework": "vue",
-          "port": 8003,
-          "has_dist": true
-        },
-        {
           "name": "myAstro",
           "slug": "myAstro",
           "path": "c_Circus/myAstro",
@@ -504,6 +477,33 @@
           "category": "c_Suite",
           "framework": "react",
           "port": 8032,
+          "has_dist": true
+        },
+        {
+          "name": "Movies",
+          "slug": "movies",
+          "path": "c_Suite/movies",
+          "category": "c_Suite",
+          "framework": "vue",
+          "port": 8015,
+          "has_dist": true
+        },
+        {
+          "name": "Music",
+          "slug": "music",
+          "path": "c_Suite/music",
+          "category": "c_Suite",
+          "framework": "vue",
+          "port": 8016,
+          "has_dist": true
+        },
+        {
+          "name": "MyFeed",
+          "slug": "myfeed",
+          "path": "c_Suite/myfeed",
+          "category": "c_Suite",
+          "framework": "vue",
+          "port": 8003,
           "has_dist": true
         }
       ]

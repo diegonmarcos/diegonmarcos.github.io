@@ -276,8 +276,8 @@
   {
    "name": "MyFeed",
    "slug": "myfeed",
-   "path": "c_Circus/myfeed",
-   "category": "c_Circus",
+   "path": "c_Suite/myfeed",
+   "category": "c_Suite",
    "framework": "vue",
    "port": 8003,
    "build_steps": [
@@ -572,8 +572,8 @@
   {
    "name": "Movies",
    "slug": "movies",
-   "path": "c_Circus/movies",
-   "category": "c_Circus",
+   "path": "c_Suite/movies",
+   "category": "c_Suite",
    "framework": "vue",
    "port": 8015,
    "build_steps": [
@@ -587,8 +587,8 @@
   {
    "name": "Music",
    "slug": "music",
-   "path": "c_Circus/music",
-   "category": "c_Circus",
+   "path": "c_Suite/music",
+   "category": "c_Suite",
    "framework": "vue",
    "port": 8016,
    "build_steps": [

@@ -32,7 +32,7 @@ jobs:
       # build.sh/ship.yml symlinks resolve standalone; those four entries belong to the repo, never to the overlay.
       - name: 🧩 Overlay split source repos
         run: |
-          for r in front-linktree front-endeavours cloud-me-others cloud-me-profiles front-galaxy front-circus front-labtools cloud-webapps-2; do
+          for r in front-linktree front-endeavours cloud-me-others cloud-me-profiles CG-galaxy CG-circus front-labtools cloud-webapps-2; do
             git clone --depth 1 "https://github.com/diegonmarcos/$r.git" "$RUNNER_TEMP/$r"
             rsync -a --exclude='.git' --exclude='README.md' --exclude='SPLIT-PATHS.txt' --exclude='/.gitmodules' --exclude='/0_deployer' --exclude='/1_cicd' --exclude='/.github' "$RUNNER_TEMP/$r/" ./
             sed 's#^#/#' "$RUNNER_TEMP/$r/SPLIT-PATHS.txt" >> .git/info/exclude
@@ -140,11 +140,11 @@ jobs:
       - name: 🔨 Build MyFeed
         id: build-myfeed
         if:
-          contains(steps.changed-files.outputs.all_changed_files, 'c_Circus/myfeed/src/')
+          contains(steps.changed-files.outputs.all_changed_files, 'c_Suite/myfeed/src/')
 
         run: |
           echo "🔨 Building MyFeed..."
-          cd c_Circus/myfeed
+          cd c_Suite/myfeed
           bash build.sh build
           cd ../..
           echo "✅ MyFeed build complete"
@@ -371,22 +371,22 @@ jobs:
       - name: 🔨 Build MyMovies (Vue 3)
         id: build-mymovies
         if:
-          contains(steps.changed-files.outputs.all_changed_files, 'c_Circus/movies/src/')
+          contains(steps.changed-files.outputs.all_changed_files, 'c_Suite/movies/src/')
 
         run: |
           echo "🔨 Building MyMovies..."
-          cd c_Circus/movies
+          cd c_Suite/movies
           bash build.sh build
           cd ../..
           echo "✅ MyMovies build complete"
       - name: 🔨 Build MyMusic (Vue 3)
         id: build-mymusic
         if:
-          contains(steps.changed-files.outputs.all_changed_files, 'c_Circus/music/src/')
+          contains(steps.changed-files.outputs.all_changed_files, 'c_Suite/music/src/')
 
         run: |
           echo "🔨 Building MyMusic..."
-          cd c_Circus/music
+          cd c_Suite/music
           bash build.sh build
           cd ../..
           echo "✅ MyMusic build complete"
@@ -637,11 +637,11 @@ jobs:
             "b_MyData/myhealth-profile:myhealth-profile"
             "c_Suite/mymaps-maps:mymaps-maps"
             "c_LabTools/market_watch:market_watch"
-            "c_Circus/myfeed:myfeed"
+            "c_Suite/myfeed:myfeed"
             "c_Circus/games:games"
             "c_Suite/mymaps-navigation:mymaps-navigation"
-            "c_Circus/movies:movies"
-            "c_Circus/music:music"
+            "c_Suite/movies:movies"
+            "c_Suite/music:music"
             "b_MyData/mymaps-mytrips:mymaps-mytrips"
             "a_Companies/Warehouse:Warehouse"
             "cloud-webapps/_shared:cloud-webapps"

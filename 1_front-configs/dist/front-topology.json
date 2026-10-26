@@ -6,6 +6,22 @@
   },
   "projects": [
     {
+      "name": "SlabTwin 3D Warehouse",
+      "slug": "Warehouse",
+      "path": "a_Companies/Warehouse",
+      "category": "a_Companies",
+      "framework": "vanilla",
+      "port": 8020,
+      "build_steps": [
+        "copy",
+        "symlink",
+        "symlink"
+      ],
+      "dep_count": 0,
+      "has_dist": true,
+      "deploy_name": "Warehouse"
+    },
+    {
       "name": "Leafy",
       "slug": "leafy",
       "path": "a_Companies/leafy",
@@ -71,71 +87,6 @@
       "dep_count": 0,
       "has_dist": true,
       "deploy_name": "stark"
-    },
-    {
-      "name": "CV PDF",
-      "slug": "cv_pdf",
-      "path": "a_Individual/cv_pdf",
-      "category": "a_Individual",
-      "framework": "vanilla",
-      "port": 8012,
-      "build_steps": [
-        "data_wrap",
-        "copy",
-        "copy",
-        "symlink",
-        "symlink",
-        "sw_register",
-        "console_log",
-        "esbuild_sw"
-      ],
-      "dep_count": 0,
-      "has_dist": true,
-      "deploy_name": "cv_pdf"
-    },
-    {
-      "name": "CV Web",
-      "slug": "cv_web",
-      "path": "a_Individual/cv_web",
-      "category": "a_Individual",
-      "framework": "vanilla",
-      "port": 8002,
-      "build_steps": [
-        "data_wrap",
-        "copy",
-        "esbuild",
-        "sass",
-        "copy",
-        "symlink",
-        "sw_register",
-        "console_log",
-        "esbuild_sw"
-      ],
-      "dep_count": 3,
-      "has_dist": true,
-      "deploy_name": "cv_web"
-    },
-    {
-      "name": "Landpage",
-      "slug": "landpage",
-      "path": "a_Individual/landpage",
-      "category": "a_Individual",
-      "framework": "vanilla",
-      "port": 8000,
-      "build_steps": [
-        "data_wrap",
-        "copy",
-        "sass",
-        "tsc",
-        "copy",
-        "symlink",
-        "sw_register",
-        "console_log",
-        "esbuild_sw"
-      ],
-      "dep_count": 0,
-      "has_dist": true,
-      "deploy_name": "landpage"
     },
     {
       "name": "Cloud",
@@ -294,93 +245,6 @@
       "dep_count": 4,
       "has_dist": true,
       "deploy_name": "linktree_pixel-world"
-    },
-    {
-      "name": "SlabTwin 3D Warehouse",
-      "slug": "Warehouse",
-      "path": "a_Projects/Warehouse",
-      "category": "a_Projects",
-      "framework": "vanilla",
-      "port": 8020,
-      "build_steps": [
-        "copy",
-        "symlink",
-        "symlink"
-      ],
-      "dep_count": 0,
-      "has_dist": true,
-      "deploy_name": "Warehouse"
-    },
-    {
-      "name": "myAstro",
-      "slug": "myAstro",
-      "path": "b_Data/myAstro",
-      "category": "b_Data",
-      "framework": "vanilla",
-      "port": 8019,
-      "build_steps": [
-        "data_wrap",
-        "copy",
-        "esbuild",
-        "sass",
-        "copy",
-        "sw_register",
-        "console_log",
-        "esbuild_sw"
-      ],
-      "dep_count": 5,
-      "has_dist": true,
-      "deploy_name": "myAstro"
-    },
-    {
-      "name": "MyFeed",
-      "slug": "myfeed",
-      "path": "b_Data/myfeed",
-      "category": "b_Data",
-      "framework": "vue",
-      "port": 8003,
-      "build_steps": [
-        "vite"
-      ],
-      "dep_count": 47,
-      "has_dist": true,
-      "deploy_name": "myfeed"
-    },
-    {
-      "name": "mySocials",
-      "slug": "mySocials",
-      "path": "b_Media/mySocials",
-      "category": "b_Media",
-      "framework": "vanilla",
-      "port": 8028,
-      "build_steps": [
-        "data_wrap",
-        "copy",
-        "copy",
-        "sass",
-        "sass",
-        "sass",
-        "sass",
-        "sass",
-        "sass",
-        "sass",
-        "sass",
-        "sass",
-        "sass",
-        "sass",
-        "sass",
-        "sass",
-        "sass",
-        "sass",
-        "esbuild",
-        "copy",
-        "sw_register",
-        "console_log",
-        "esbuild_sw"
-      ],
-      "dep_count": 0,
-      "has_dist": true,
-      "deploy_name": "mySocials"
     },
     {
       "name": "My Financials",
@@ -543,6 +407,109 @@
       "deploy_name": "myphotos"
     },
     {
+      "name": "CV PDF",
+      "slug": "cv_pdf",
+      "path": "b_Profiles/cv_pdf",
+      "category": "b_Profiles",
+      "framework": "vanilla",
+      "port": 8012,
+      "build_steps": [
+        "data_wrap",
+        "copy",
+        "copy",
+        "symlink",
+        "symlink",
+        "sw_register",
+        "console_log",
+        "esbuild_sw"
+      ],
+      "dep_count": 0,
+      "has_dist": true,
+      "deploy_name": "cv_pdf"
+    },
+    {
+      "name": "CV Web",
+      "slug": "cv_web",
+      "path": "b_Profiles/cv_web",
+      "category": "b_Profiles",
+      "framework": "vanilla",
+      "port": 8002,
+      "build_steps": [
+        "data_wrap",
+        "copy",
+        "esbuild",
+        "sass",
+        "copy",
+        "symlink",
+        "sw_register",
+        "console_log",
+        "esbuild_sw"
+      ],
+      "dep_count": 3,
+      "has_dist": true,
+      "deploy_name": "cv_web"
+    },
+    {
+      "name": "Landpage",
+      "slug": "landpage",
+      "path": "b_Profiles/landpage",
+      "category": "b_Profiles",
+      "framework": "vanilla",
+      "port": 8000,
+      "build_steps": [
+        "data_wrap",
+        "copy",
+        "sass",
+        "tsc",
+        "copy",
+        "symlink",
+        "sw_register",
+        "console_log",
+        "esbuild_sw"
+      ],
+      "dep_count": 0,
+      "has_dist": true,
+      "deploy_name": "landpage"
+    },
+    {
+      "name": "mySocials",
+      "slug": "mySocials",
+      "path": "b_Profiles/mySocials",
+      "category": "b_Profiles",
+      "framework": "vanilla",
+      "port": 8028,
+      "build_steps": [
+        "data_wrap",
+        "copy",
+        "copy",
+        "copy",
+        "copy",
+        "sass",
+        "sass",
+        "sass",
+        "sass",
+        "sass",
+        "sass",
+        "sass",
+        "sass",
+        "sass",
+        "sass",
+        "sass",
+        "sass",
+        "sass",
+        "sass",
+        "sass",
+        "esbuild",
+        "copy",
+        "sw_register",
+        "console_log",
+        "esbuild_sw"
+      ],
+      "dep_count": 0,
+      "has_dist": true,
+      "deploy_name": "mySocials"
+    },
+    {
       "name": "MyProfile",
       "slug": "myprofile",
       "path": "b_Profiles/myprofile",
@@ -635,34 +602,44 @@
       "deploy_name": "games"
     },
     {
-      "name": "Movies",
-      "slug": "movies",
-      "path": "c_Circus/movies",
+      "name": "myAstro",
+      "slug": "myAstro",
+      "path": "c_Circus/myAstro",
       "category": "c_Circus",
-      "framework": "vue",
-      "port": 8015,
+      "framework": "vanilla",
+      "port": 8019,
       "build_steps": [
-        "vite",
-        "npm",
-        "copy"
+        "data_wrap",
+        "copy",
+        "esbuild",
+        "sass",
+        "copy",
+        "sw_register",
+        "console_log",
+        "esbuild_sw"
       ],
-      "dep_count": 10,
+      "dep_count": 5,
       "has_dist": true,
-      "deploy_name": "movies"
+      "deploy_name": "myAstro"
     },
     {
-      "name": "Music",
-      "slug": "music",
-      "path": "c_Circus/music",
+      "name": "Others",
+      "slug": "others",
+      "path": "c_Circus/others",
       "category": "c_Circus",
-      "framework": "vue",
-      "port": 8016,
+      "framework": "vanilla",
+      "port": 8008,
       "build_steps": [
-        "vite"
+        "data_wrap",
+        "copy",
+        "copy",
+        "sw_register",
+        "console_log",
+        "esbuild_sw"
       ],
-      "dep_count": 10,
+      "dep_count": 0,
       "has_dist": true,
-      "deploy_name": "music"
+      "deploy_name": "others"
     },
     {
       "name": "LMMS",
@@ -831,6 +808,50 @@
       "dep_count": 9,
       "has_dist": true,
       "deploy_name": "json-vision"
+    },
+    {
+      "name": "Movies",
+      "slug": "movies",
+      "path": "c_Suite/movies",
+      "category": "c_Suite",
+      "framework": "vue",
+      "port": 8015,
+      "build_steps": [
+        "vite",
+        "npm",
+        "copy"
+      ],
+      "dep_count": 10,
+      "has_dist": true,
+      "deploy_name": "movies"
+    },
+    {
+      "name": "Music",
+      "slug": "music",
+      "path": "c_Suite/music",
+      "category": "c_Suite",
+      "framework": "vue",
+      "port": 8016,
+      "build_steps": [
+        "vite"
+      ],
+      "dep_count": 10,
+      "has_dist": true,
+      "deploy_name": "music"
+    },
+    {
+      "name": "MyFeed",
+      "slug": "myfeed",
+      "path": "c_Suite/myfeed",
+      "category": "c_Suite",
+      "framework": "vue",
+      "port": 8003,
+      "build_steps": [
+        "vite"
+      ],
+      "dep_count": 47,
+      "has_dist": true,
+      "deploy_name": "myfeed"
     },
     {
       "name": "MyHealth FeedYourself",
@@ -1468,25 +1489,6 @@
       "dep_count": 0,
       "has_dist": true,
       "deploy_name": "cloud-writer"
-    },
-    {
-      "name": "Others",
-      "slug": "others",
-      "path": "e-Others/others",
-      "category": "e-Others",
-      "framework": "vanilla",
-      "port": 8008,
-      "build_steps": [
-        "data_wrap",
-        "copy",
-        "copy",
-        "sw_register",
-        "console_log",
-        "esbuild_sw"
-      ],
-      "dep_count": 0,
-      "has_dist": true,
-      "deploy_name": "others"
     },
     {
       "name": "c_root",

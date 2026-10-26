@@ -1,8 +1,8 @@
 {
-  "name": "CV Web",
+  "name": "Others",
   "framework": "vanilla",
-  "port": 8002,
-  "src": "src",
+  "port": 8008,
+  "src": ".",
   "dist": "dist",
   "build": [
     {
@@ -17,35 +17,19 @@
       "from": "src/data"
     },
     {
-      "mod": "esbuild",
-      "input": "src/main.ts",
-      "output": "script.js",
-      "format": "iife",
-      "target": "es2020"
-    },
-    {
-      "mod": "sass",
-      "input": "src/scss/main.scss",
-      "output": "style.css"
-    },
-    {
       "mod": "copy",
-      "files": "index.html",
-      "from": "src"
-    },
-    {
-      "mod": "symlink",
-      "files": "public"
+      "files": "*.html,*.css,*.js",
+      "from": "."
     },
     {
       "_doc": "Inject navigator.serviceWorker.register(...) before </head>. MUST run BEFORE esbuild_sw so the modified HTML feeds into BUILD_HASH.",
       "mod": "sw_register",
-      "files": "index.html"
+      "files": "about.html, cv.html, earth.html, feed_yourself.html, health_tracker.html, index.html, quill.html, repos.html"
     },
     {
       "_doc": "Inject single-namespace observability SDK (Sentry/OpenObserve-style). Mirrors console.* + errors + SW lifecycle to OPFS console.log. window.consoleLogs.{captureException, captureMessage, addBreadcrumb, read, readJSON, tail, clear, download}.",
       "mod": "console_log",
-      "files": "index.html"
+      "files": "about.html, cv.html, earth.html, feed_yourself.html, health_tracker.html, index.html, quill.html, repos.html"
     },
     {
       "_doc": "MUST run last — hashes the dist artifacts above to derive BUILD_HASH and inject it into the SW bundle.",
@@ -55,45 +39,41 @@
       "format": "iife",
       "target": "es2020",
       "hash_of": [
+        "about.html",
+        "cv.html",
+        "earth.html",
+        "feed_yourself.html",
+        "health_tracker.html",
         "index.html",
-        "script.js",
-        "style.css"
+        "quill.html",
+        "repos.html"
       ],
       "precache": [
         "./",
+        "./about.html",
+        "./cv.html",
+        "./earth.html",
+        "./feed_yourself.html",
+        "./health_tracker.html",
         "./index.html",
-        "./script.js",
-        "./style.css"
+        "./quill.html",
+        "./repos.html"
       ]
     }
   ],
   "serve": {
     "mode": "auto",
-    "dir": "src",
-    "watch": [
-      {
-        "mod": "sass",
-        "input": "scss/main.scss",
-        "output": "style.css"
-      },
-      {
-        "mod": "esbuild",
-        "input": "main.ts",
-        "output": "script.js",
-        "format": "iife",
-        "target": "es2020"
-      }
-    ]
+    "dir": "."
   },
   "deploy": {},
   "_resolved": {
-    "path": "a_Individual/cv_web",
-    "category": "a_Individual",
-    "project": "cv_web",
-    "key": "a_Individual__cv_web",
-    "port": 8002,
+    "path": "c_Circus/others",
+    "category": "c_Circus",
+    "project": "others",
+    "key": "c_Circus__others",
+    "port": 8008,
     "framework": "vanilla",
-    "src": "src",
+    "src": ".",
     "dist": "dist",
     "analytics": {
       "matomo": {
@@ -107,11 +87,11 @@
     },
     "deploy": {
       "deployed": true,
-      "deploy_name": "cv_web",
-      "url": "https://diegonmarcos.github.io/cv_web"
+      "deploy_name": "others",
+      "url": "https://diegonmarcos.github.io/others"
     },
     "consumers": [],
-    "has_package_json": true,
+    "has_package_json": false,
     "has_manifest": false
   }
 }

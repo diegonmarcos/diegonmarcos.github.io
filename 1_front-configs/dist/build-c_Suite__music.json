@@ -1,21 +1,12 @@
 {
-  "name": "Movies",
+  "name": "Music",
   "framework": "vue",
-  "port": 8015,
+  "port": 8016,
   "src": "src",
   "dist": "dist",
   "build": [
     {
       "mod": "vite"
-    },
-    {
-      "mod": "npm",
-      "script": "test"
-    },
-    {
-      "mod": "copy",
-      "files": "matomo.js",
-      "from": "public"
     }
   ],
   "serve": {
@@ -23,11 +14,11 @@
   },
   "deploy": {},
   "_resolved": {
-    "path": "c_Circus/movies",
-    "category": "c_Circus",
-    "project": "movies",
-    "key": "c_Circus__movies",
-    "port": 8015,
+    "path": "c_Suite/music",
+    "category": "c_Suite",
+    "project": "music",
+    "key": "c_Suite__music",
+    "port": 8016,
     "framework": "vue",
     "src": "src",
     "dist": "dist",
@@ -43,11 +34,11 @@
     },
     "deploy": {
       "deployed": true,
-      "deploy_name": "movies",
-      "url": "https://diegonmarcos.github.io/movies"
+      "deploy_name": "music",
+      "url": "https://diegonmarcos.github.io/music"
     },
     "consumers": [
-      "Movies"
+      "Music"
     ],
     "has_package_json": true,
     "has_manifest": false

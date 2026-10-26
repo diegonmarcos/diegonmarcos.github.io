@@ -32,15 +32,15 @@
     "deploy_name": "linktree_icon-view"
   },
   {
-    "path": "a_Individual/cv_pdf",
+    "path": "b_Profiles/cv_pdf",
     "deploy_name": "cv_pdf"
   },
   {
-    "path": "a_Individual/cv_web",
+    "path": "b_Profiles/cv_web",
     "deploy_name": "cv_web"
   },
   {
-    "path": "a_Individual/landpage",
+    "path": "b_Profiles/landpage",
     "deploy_name": "landpage"
   },
   {
@@ -92,7 +92,7 @@
     "deploy_name": "tldraw"
   },
   {
-    "path": "b_Data/myAstro",
+    "path": "c_Circus/myAstro",
     "deploy_name": "myAstro"
   },
   {
@@ -120,7 +120,7 @@
     "deploy_name": "market_watch"
   },
   {
-    "path": "b_Data/myfeed",
+    "path": "c_Suite/myfeed",
     "deploy_name": "myfeed"
   },
   {
@@ -132,11 +132,11 @@
     "deploy_name": "mymaps-navigation"
   },
   {
-    "path": "c_Circus/movies",
+    "path": "c_Suite/movies",
     "deploy_name": "movies"
   },
   {
-    "path": "c_Circus/music",
+    "path": "c_Suite/music",
     "deploy_name": "music"
   },
   {
@@ -144,7 +144,7 @@
     "deploy_name": "mymaps-mytrips"
   },
   {
-    "path": "a_Projects/Warehouse",
+    "path": "a_Companies/Warehouse",
     "deploy_name": "Warehouse"
   },
   {
@@ -296,7 +296,7 @@
     "deploy_name": "cloud-webapps/cloud-writer"
   },
   {
-    "path": "e-Others/others",
+    "path": "c_Circus/others",
     "deploy_name": "others"
   },
   {
@@ -324,7 +324,7 @@
     "deploy_name": "my-fin"
   },
   {
-    "path": "b_Media/mySocials",
+    "path": "b_Profiles/mySocials",
     "deploy_name": "mySocials"
   },
   {

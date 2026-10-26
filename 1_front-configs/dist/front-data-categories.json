@@ -5,27 +5,11 @@
   },
   {
     "category": "a_Companies",
-    "count": 3
-  },
-  {
-    "category": "a_Individual",
-    "count": 3
+    "count": 4
   },
   {
     "category": "a_Portals",
     "count": 7
-  },
-  {
-    "category": "a_Projects",
-    "count": 1
-  },
-  {
-    "category": "b_Data",
-    "count": 2
-  },
-  {
-    "category": "b_Media",
-    "count": 1
   },
   {
     "category": "b_MyData",
@@ -33,7 +17,7 @@
   },
   {
     "category": "b_Profiles",
-    "count": 1
+    "count": 5
   },
   {
     "category": "b_Projects",
@@ -49,14 +33,10 @@
   },
   {
     "category": "c_Suite",
-    "count": 9
+    "count": 12
   },
   {
     "category": "cloud-webapps",
     "count": 36
-  },
-  {
-    "category": "e-Others",
-    "count": 1
   }
 ]

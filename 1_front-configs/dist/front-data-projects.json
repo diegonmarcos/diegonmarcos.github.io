@@ -1,5 +1,17 @@
 [
   {
+    "path": "a_Companies/Warehouse",
+    "category": "a_Companies",
+    "project": "Warehouse",
+    "key": "a_Companies__Warehouse",
+    "name": "SlabTwin 3D Warehouse",
+    "framework": "vanilla",
+    "port": 8020,
+    "deploy_name": "Warehouse",
+    "has_pwa": false,
+    "has_pkg": true
+  },
+  {
     "path": "a_Companies/leafy",
     "category": "a_Companies",
     "project": "leafy",
@@ -32,42 +44,6 @@
     "framework": "vanilla",
     "port": 8022,
     "deploy_name": "stark",
-    "has_pwa": false,
-    "has_pkg": false
-  },
-  {
-    "path": "a_Individual/cv_pdf",
-    "category": "a_Individual",
-    "project": "cv_pdf",
-    "key": "a_Individual__cv_pdf",
-    "name": "CV PDF",
-    "framework": "vanilla",
-    "port": 8012,
-    "deploy_name": "cv_pdf",
-    "has_pwa": false,
-    "has_pkg": false
-  },
-  {
-    "path": "a_Individual/cv_web",
-    "category": "a_Individual",
-    "project": "cv_web",
-    "key": "a_Individual__cv_web",
-    "name": "CV Web",
-    "framework": "vanilla",
-    "port": 8002,
-    "deploy_name": "cv_web",
-    "has_pwa": false,
-    "has_pkg": true
-  },
-  {
-    "path": "a_Individual/landpage",
-    "category": "a_Individual",
-    "project": "landpage",
-    "key": "a_Individual__landpage",
-    "name": "Landpage",
-    "framework": "vanilla",
-    "port": 8000,
-    "deploy_name": "landpage",
     "has_pwa": false,
     "has_pkg": false
   },
@@ -154,54 +130,6 @@
     "deploy_name": "linktree_pixel-world",
     "has_pwa": false,
     "has_pkg": true
-  },
-  {
-    "path": "a_Projects/Warehouse",
-    "category": "a_Projects",
-    "project": "Warehouse",
-    "key": "a_Projects__Warehouse",
-    "name": "SlabTwin 3D Warehouse",
-    "framework": "vanilla",
-    "port": 8020,
-    "deploy_name": "Warehouse",
-    "has_pwa": false,
-    "has_pkg": true
-  },
-  {
-    "path": "b_Data/myAstro",
-    "category": "b_Data",
-    "project": "myAstro",
-    "key": "b_Data__myAstro",
-    "name": "myAstro",
-    "framework": "vanilla",
-    "port": 8019,
-    "deploy_name": "myAstro",
-    "has_pwa": false,
-    "has_pkg": true
-  },
-  {
-    "path": "b_Data/myfeed",
-    "category": "b_Data",
-    "project": "myfeed",
-    "key": "b_Data__myfeed",
-    "name": "MyFeed",
-    "framework": "vue",
-    "port": 8003,
-    "deploy_name": "myfeed",
-    "has_pwa": false,
-    "has_pkg": true
-  },
-  {
-    "path": "b_Media/mySocials",
-    "category": "b_Media",
-    "project": "mySocials",
-    "key": "b_Media__mySocials",
-    "name": "mySocials",
-    "framework": "vanilla",
-    "port": 8028,
-    "deploy_name": "mySocials",
-    "has_pwa": false,
-    "has_pkg": false
   },
   {
     "path": "b_MyData/my-fin",
@@ -300,6 +228,54 @@
     "has_pkg": false
   },
   {
+    "path": "b_Profiles/cv_pdf",
+    "category": "b_Profiles",
+    "project": "cv_pdf",
+    "key": "b_Profiles__cv_pdf",
+    "name": "CV PDF",
+    "framework": "vanilla",
+    "port": 8012,
+    "deploy_name": "cv_pdf",
+    "has_pwa": false,
+    "has_pkg": false
+  },
+  {
+    "path": "b_Profiles/cv_web",
+    "category": "b_Profiles",
+    "project": "cv_web",
+    "key": "b_Profiles__cv_web",
+    "name": "CV Web",
+    "framework": "vanilla",
+    "port": 8002,
+    "deploy_name": "cv_web",
+    "has_pwa": false,
+    "has_pkg": true
+  },
+  {
+    "path": "b_Profiles/landpage",
+    "category": "b_Profiles",
+    "project": "landpage",
+    "key": "b_Profiles__landpage",
+    "name": "Landpage",
+    "framework": "vanilla",
+    "port": 8000,
+    "deploy_name": "landpage",
+    "has_pwa": false,
+    "has_pkg": false
+  },
+  {
+    "path": "b_Profiles/mySocials",
+    "category": "b_Profiles",
+    "project": "mySocials",
+    "key": "b_Profiles__mySocials",
+    "name": "mySocials",
+    "framework": "vanilla",
+    "port": 8028,
+    "deploy_name": "mySocials",
+    "has_pwa": false,
+    "has_pkg": false
+  },
+  {
     "path": "b_Profiles/myprofile",
     "category": "b_Profiles",
     "project": "myprofile",
@@ -372,28 +348,28 @@
     "has_pkg": true
   },
   {
-    "path": "c_Circus/movies",
+    "path": "c_Circus/myAstro",
     "category": "c_Circus",
-    "project": "movies",
-    "key": "c_Circus__movies",
-    "name": "Movies",
-    "framework": "vue",
-    "port": 8015,
-    "deploy_name": "movies",
+    "project": "myAstro",
+    "key": "c_Circus__myAstro",
+    "name": "myAstro",
+    "framework": "vanilla",
+    "port": 8019,
+    "deploy_name": "myAstro",
     "has_pwa": false,
     "has_pkg": true
   },
   {
-    "path": "c_Circus/music",
+    "path": "c_Circus/others",
     "category": "c_Circus",
-    "project": "music",
-    "key": "c_Circus__music",
-    "name": "Music",
-    "framework": "vue",
-    "port": 8016,
-    "deploy_name": "music",
+    "project": "others",
+    "key": "c_Circus__others",
+    "name": "Others",
+    "framework": "vanilla",
+    "port": 8008,
+    "deploy_name": "others",
     "has_pwa": false,
-    "has_pkg": true
+    "has_pkg": false
   },
   {
     "path": "c_LabTools/Music_DAW_LLMS",
@@ -500,6 +476,42 @@
     "framework": "vue",
     "port": 8017,
     "deploy_name": "json-vision",
+    "has_pwa": false,
+    "has_pkg": true
+  },
+  {
+    "path": "c_Suite/movies",
+    "category": "c_Suite",
+    "project": "movies",
+    "key": "c_Suite__movies",
+    "name": "Movies",
+    "framework": "vue",
+    "port": 8015,
+    "deploy_name": "movies",
+    "has_pwa": false,
+    "has_pkg": true
+  },
+  {
+    "path": "c_Suite/music",
+    "category": "c_Suite",
+    "project": "music",
+    "key": "c_Suite__music",
+    "name": "Music",
+    "framework": "vue",
+    "port": 8016,
+    "deploy_name": "music",
+    "has_pwa": false,
+    "has_pkg": true
+  },
+  {
+    "path": "c_Suite/myfeed",
+    "category": "c_Suite",
+    "project": "myfeed",
+    "key": "c_Suite__myfeed",
+    "name": "MyFeed",
+    "framework": "vue",
+    "port": 8003,
+    "deploy_name": "myfeed",
     "has_pwa": false,
     "has_pkg": true
   },
@@ -1016,18 +1028,6 @@
     "framework": "vanilla",
     "port": null,
     "deploy_name": "cloud-writer",
-    "has_pwa": false,
-    "has_pkg": false
-  },
-  {
-    "path": "e-Others/others",
-    "category": "e-Others",
-    "project": "others",
-    "key": "e-Others__others",
-    "name": "Others",
-    "framework": "vanilla",
-    "port": 8008,
-    "deploy_name": "others",
     "has_pwa": false,
     "has_pkg": false
   },

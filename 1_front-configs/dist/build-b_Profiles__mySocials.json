@@ -23,6 +23,17 @@
       "from": "src/media"
     },
     {
+      "_doc": "Profile pages (Social, Health, DD): plain CSS and the shared record-page script, copied as is (no sass/esbuild needed). Health and DD ship the public SCHEMA only (src/data/profile-<id>.json, labels, no values); the owner's values stay in the private repo cloud-me-data-pvt and reach the page through the Cloud Me app bridge after sign-in. test-profiles-privacy.sh guards it.",
+      "mod": "copy",
+      "files": "*.css",
+      "from": "src/css"
+    },
+    {
+      "mod": "copy",
+      "files": "*.js",
+      "from": "src/js"
+    },
+    {
       "mod": "sass",
       "input": "src/scss/main.scss",
       "output": "style.css"
@@ -249,10 +260,10 @@
   },
   "deploy": {},
   "_resolved": {
-    "path": "b_Media/mySocials",
-    "category": "b_Media",
+    "path": "b_Profiles/mySocials",
+    "category": "b_Profiles",
     "project": "mySocials",
-    "key": "b_Media__mySocials",
+    "key": "b_Profiles__mySocials",
     "port": 8028,
     "framework": "vanilla",
     "src": "src",

@@ -123,6 +123,13 @@
     },
     "per_service": [
       {
+        "service": "SlabTwin 3D Warehouse",
+        "folder": "a_Companies/Warehouse",
+        "category": "a_Companies",
+        "dependencies": {},
+        "devDependencies": {}
+      },
+      {
         "service": "Leafy",
         "folder": "a_Companies/leafy",
         "category": "a_Companies",
@@ -139,18 +146,6 @@
         "dependencies": {},
         "devDependencies": {
           "sass": "^1.77.0",
-          "typescript": "^5.9.3"
-        }
-      },
-      {
-        "service": "CV Web",
-        "folder": "a_Individual/cv_web",
-        "category": "a_Individual",
-        "dependencies": {
-          "sass": "^1.77.4"
-        },
-        "devDependencies": {
-          "esbuild": "^0.20.2",
           "typescript": "^5.9.3"
         }
       },
@@ -254,82 +249,6 @@
         }
       },
       {
-        "service": "SlabTwin 3D Warehouse",
-        "folder": "a_Projects/Warehouse",
-        "category": "a_Projects",
-        "dependencies": {},
-        "devDependencies": {}
-      },
-      {
-        "service": "myAstro",
-        "folder": "b_Data/myAstro",
-        "category": "b_Data",
-        "dependencies": {},
-        "devDependencies": {
-          "esbuild": "^0.20.2",
-          "sass": "^1.77.0",
-          "three": "^0.162.0",
-          "typescript": "^5.3.3",
-          "@types/three": "^0.162.0"
-        }
-      },
-      {
-        "service": "MyFeed",
-        "folder": "b_Data/myfeed",
-        "category": "b_Data",
-        "dependencies": {
-          "@floating-ui/vue": "^1.0.0",
-          "@formkit/auto-animate": "^0.8.0",
-          "@orama/orama": "^2.0.0",
-          "@sanity/client": "^6.12.0",
-          "@sanity/image-url": "^1.0.2",
-          "@tanstack/vue-query": "^5.28.0",
-          "@tanstack/vue-virtual": "^3.1.0",
-          "@vueuse/core": "^10.9.0",
-          "blurhash": "^2.0.0",
-          "clsx": "^2.1.0",
-          "date-fns": "^3.3.0",
-          "dompurify": "^3.0.0",
-          "lucide-vue-next": "^0.340.0",
-          "marked": "^12.0.0",
-          "pinia": "^2.1.0",
-          "radix-vue": "^1.5.0",
-          "shiki": "^1.0.0",
-          "unlazy": "^0.11.0",
-          "vue": "^3.4.0",
-          "vue-sonner": "^1.0.0",
-          "web-vitals": "^3.5.0"
-        },
-        "devDependencies": {
-          "@testing-library/vue": "^8.0.0",
-          "@types/dompurify": "^3.0.0",
-          "@vitejs/plugin-vue": "^5.0.0",
-          "@vue/eslint-config-typescript": "^12.0.0",
-          "autoprefixer": "^10.4.0",
-          "class-variance-authority": "^0.7.1",
-          "eslint": "^8.57.0",
-          "eslint-plugin-vue": "^9.20.0",
-          "postcss": "^8.4.0",
-          "prettier": "^3.2.0",
-          "prettier-plugin-tailwindcss": "^0.5.0",
-          "sass": "^1.94.1",
-          "shadcn-vue": "^2.3.3",
-          "tailwind-merge": "^3.4.0",
-          "tailwindcss": "^3.4.0",
-          "tailwindcss-animate": "^1.0.7",
-          "terser": "^5.44.1",
-          "typescript": "^5.3.0",
-          "unplugin-auto-import": "^0.17.0",
-          "unplugin-vue-components": "^0.26.0",
-          "vite": "^5.1.0",
-          "vite-plugin-compression": "^0.5.0",
-          "vite-plugin-singlefile": "^2.3.0",
-          "vite-plugin-vue-devtools": "^7.0.0",
-          "vitest": "^1.3.0",
-          "vue-tsc": "^1.8.0"
-        }
-      },
-      {
         "service": "MyMaps MyTrips",
         "folder": "b_MyData/mymaps-mytrips",
         "category": "b_MyData",
@@ -356,6 +275,18 @@
           "vite": "^7.3.1",
           "vue": "^3.5.27",
           "vue-tsc": "^3.2.4"
+        }
+      },
+      {
+        "service": "CV Web",
+        "folder": "b_Profiles/cv_web",
+        "category": "b_Profiles",
+        "dependencies": {
+          "sass": "^1.77.4"
+        },
+        "devDependencies": {
+          "esbuild": "^0.20.2",
+          "typescript": "^5.9.3"
         }
       },
       {
@@ -451,41 +382,16 @@
         }
       },
       {
-        "service": "Movies",
-        "folder": "c_Circus/movies",
+        "service": "myAstro",
+        "folder": "c_Circus/myAstro",
         "category": "c_Circus",
-        "dependencies": {
-          "axios": "^1.6.0",
-          "lodash-es": "^4.17.21",
-          "vue": "^3.4.0"
-        },
+        "dependencies": {},
         "devDependencies": {
-          "@types/lodash-es": "^4.17.12",
-          "@vitejs/plugin-vue": "^5.0.0",
-          "sass": "^1.69.0",
-          "typescript": "^5.3.0",
-          "vite": "^5.0.0",
-          "vite-plugin-singlefile": "^2.0.0",
-          "vue-tsc": "^2.0.0"
-        }
-      },
-      {
-        "service": "Music",
-        "folder": "c_Circus/music",
-        "category": "c_Circus",
-        "dependencies": {
-          "axios": "^1.6.0",
-          "lodash-es": "^4.17.21",
-          "vue": "^3.4.0"
-        },
-        "devDependencies": {
-          "@types/lodash-es": "^4.17.12",
-          "@vitejs/plugin-vue": "^5.0.0",
-          "sass": "^1.69.0",
-          "typescript": "^5.3.0",
-          "vite": "^5.0.0",
-          "vite-plugin-singlefile": "^2.0.0",
-          "vue-tsc": "^2.0.0"
+          "esbuild": "^0.20.2",
+          "sass": "^1.77.0",
+          "three": "^0.162.0",
+          "typescript": "^5.3.3",
+          "@types/three": "^0.162.0"
         }
       },
       {
@@ -575,6 +481,100 @@
           "vite": "^5.0.0",
           "vite-plugin-singlefile": "^2.0.0",
           "vue-tsc": "^2.0.0"
+        }
+      },
+      {
+        "service": "Movies",
+        "folder": "c_Suite/movies",
+        "category": "c_Suite",
+        "dependencies": {
+          "axios": "^1.6.0",
+          "lodash-es": "^4.17.21",
+          "vue": "^3.4.0"
+        },
+        "devDependencies": {
+          "@types/lodash-es": "^4.17.12",
+          "@vitejs/plugin-vue": "^5.0.0",
+          "sass": "^1.69.0",
+          "typescript": "^5.3.0",
+          "vite": "^5.0.0",
+          "vite-plugin-singlefile": "^2.0.0",
+          "vue-tsc": "^2.0.0"
+        }
+      },
+      {
+        "service": "Music",
+        "folder": "c_Suite/music",
+        "category": "c_Suite",
+        "dependencies": {
+          "axios": "^1.6.0",
+          "lodash-es": "^4.17.21",
+          "vue": "^3.4.0"
+        },
+        "devDependencies": {
+          "@types/lodash-es": "^4.17.12",
+          "@vitejs/plugin-vue": "^5.0.0",
+          "sass": "^1.69.0",
+          "typescript": "^5.3.0",
+          "vite": "^5.0.0",
+          "vite-plugin-singlefile": "^2.0.0",
+          "vue-tsc": "^2.0.0"
+        }
+      },
+      {
+        "service": "MyFeed",
+        "folder": "c_Suite/myfeed",
+        "category": "c_Suite",
+        "dependencies": {
+          "@floating-ui/vue": "^1.0.0",
+          "@formkit/auto-animate": "^0.8.0",
+          "@orama/orama": "^2.0.0",
+          "@sanity/client": "^6.12.0",
+          "@sanity/image-url": "^1.0.2",
+          "@tanstack/vue-query": "^5.28.0",
+          "@tanstack/vue-virtual": "^3.1.0",
+          "@vueuse/core": "^10.9.0",
+          "blurhash": "^2.0.0",
+          "clsx": "^2.1.0",
+          "date-fns": "^3.3.0",
+          "dompurify": "^3.0.0",
+          "lucide-vue-next": "^0.340.0",
+          "marked": "^12.0.0",
+          "pinia": "^2.1.0",
+          "radix-vue": "^1.5.0",
+          "shiki": "^1.0.0",
+          "unlazy": "^0.11.0",
+          "vue": "^3.4.0",
+          "vue-sonner": "^1.0.0",
+          "web-vitals": "^3.5.0"
+        },
+        "devDependencies": {
+          "@testing-library/vue": "^8.0.0",
+          "@types/dompurify": "^3.0.0",
+          "@vitejs/plugin-vue": "^5.0.0",
+          "@vue/eslint-config-typescript": "^12.0.0",
+          "autoprefixer": "^10.4.0",
+          "class-variance-authority": "^0.7.1",
+          "eslint": "^8.57.0",
+          "eslint-plugin-vue": "^9.20.0",
+          "postcss": "^8.4.0",
+          "prettier": "^3.2.0",
+          "prettier-plugin-tailwindcss": "^0.5.0",
+          "sass": "^1.94.1",
+          "shadcn-vue": "^2.3.3",
+          "tailwind-merge": "^3.4.0",
+          "tailwindcss": "^3.4.0",
+          "tailwindcss-animate": "^1.0.7",
+          "terser": "^5.44.1",
+          "typescript": "^5.3.0",
+          "unplugin-auto-import": "^0.17.0",
+          "unplugin-vue-components": "^0.26.0",
+          "vite": "^5.1.0",
+          "vite-plugin-compression": "^0.5.0",
+          "vite-plugin-singlefile": "^2.3.0",
+          "vite-plugin-vue-devtools": "^7.0.0",
+          "vitest": "^1.3.0",
+          "vue-tsc": "^1.8.0"
         }
       },
       {

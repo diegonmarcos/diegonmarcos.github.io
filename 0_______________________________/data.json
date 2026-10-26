@@ -40,21 +40,21 @@
           "has_dist": true
         },
         {
-          "name": "Stark",
-          "slug": "stark",
-          "path": "a_Companies/stark",
-          "category": "a_Companies",
-          "framework": "vanilla",
-          "port": 8022,
-          "has_dist": true
-        },
-        {
           "name": "SlabTwin 3D Warehouse",
           "slug": "Warehouse",
           "path": "a_Companies/Warehouse",
           "category": "a_Companies",
           "framework": "vanilla",
           "port": 8020,
+          "has_dist": true
+        },
+        {
+          "name": "Stark",
+          "slug": "stark",
+          "path": "a_Companies/stark",
+          "category": "a_Companies",
+          "framework": "vanilla",
+          "port": 8022,
           "has_dist": true
         }
       ]
@@ -208,15 +208,6 @@
       "category": "b_Profiles",
       "projects": [
         {
-          "name": "MyProfile",
-          "slug": "myprofile",
-          "path": "b_Profiles/myprofile",
-          "category": "b_Profiles",
-          "framework": "sveltekit",
-          "port": 8013,
-          "has_dist": true
-        },
-        {
           "name": "CV PDF",
           "slug": "cv_pdf",
           "path": "b_Profiles/cv_pdf",
@@ -241,6 +232,15 @@
           "category": "b_Profiles",
           "framework": "vanilla",
           "port": 8000,
+          "has_dist": true
+        },
+        {
+          "name": "MyProfile",
+          "slug": "myprofile",
+          "path": "b_Profiles/myprofile",
+          "category": "b_Profiles",
+          "framework": "sveltekit",
+          "port": 8013,
           "has_dist": true
         },
         {
@@ -308,21 +308,21 @@
           "has_dist": true
         },
         {
-          "name": "myAstro",
-          "slug": "myAstro",
-          "path": "c_Circus/myAstro",
-          "category": "c_Circus",
-          "framework": "vanilla",
-          "port": 8019,
-          "has_dist": true
-        },
-        {
           "name": "Others",
           "slug": "others",
           "path": "c_Circus/others",
           "category": "c_Circus",
           "framework": "vanilla",
           "port": 8008,
+          "has_dist": true
+        },
+        {
+          "name": "myAstro",
+          "slug": "myAstro",
+          "path": "c_Circus/myAstro",
+          "category": "c_Circus",
+          "framework": "vanilla",
+          "port": 8019,
           "has_dist": true
         }
       ]
@@ -408,6 +408,33 @@
           "has_dist": true
         },
         {
+          "name": "Movies",
+          "slug": "movies",
+          "path": "c_Suite/movies",
+          "category": "c_Suite",
+          "framework": "vue",
+          "port": 8015,
+          "has_dist": true
+        },
+        {
+          "name": "Music",
+          "slug": "music",
+          "path": "c_Suite/music",
+          "category": "c_Suite",
+          "framework": "vue",
+          "port": 8016,
+          "has_dist": true
+        },
+        {
+          "name": "MyFeed",
+          "slug": "myfeed",
+          "path": "c_Suite/myfeed",
+          "category": "c_Suite",
+          "framework": "vue",
+          "port": 8003,
+          "has_dist": true
+        },
+        {
           "name": "MyHealth FeedYourself",
           "slug": "myhealth-feedyourself",
           "path": "c_Suite/myhealth-feedyourself",
@@ -477,33 +504,6 @@
           "category": "c_Suite",
           "framework": "react",
           "port": 8032,
-          "has_dist": true
-        },
-        {
-          "name": "Movies",
-          "slug": "movies",
-          "path": "c_Suite/movies",
-          "category": "c_Suite",
-          "framework": "vue",
-          "port": 8015,
-          "has_dist": true
-        },
-        {
-          "name": "Music",
-          "slug": "music",
-          "path": "c_Suite/music",
-          "category": "c_Suite",
-          "framework": "vue",
-          "port": 8016,
-          "has_dist": true
-        },
-        {
-          "name": "MyFeed",
-          "slug": "myfeed",
-          "path": "c_Suite/myfeed",
-          "category": "c_Suite",
-          "framework": "vue",
-          "port": 8003,
           "has_dist": true
         }
       ]

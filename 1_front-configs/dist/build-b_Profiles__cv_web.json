@@ -1,7 +1,7 @@
 {
-  "name": "Landpage",
+  "name": "CV Web",
   "framework": "vanilla",
-  "port": 8000,
+  "port": 8002,
   "src": "src",
   "dist": "dist",
   "build": [
@@ -17,14 +17,16 @@
       "from": "src/data"
     },
     {
-      "mod": "sass",
-      "input": "src/scss/style.scss",
-      "output": "style.css"
+      "mod": "esbuild",
+      "input": "src/main.ts",
+      "output": "script.js",
+      "format": "iife",
+      "target": "es2020"
     },
     {
-      "mod": "tsc",
-      "dir": "src/typescript",
-      "output": "script.js"
+      "mod": "sass",
+      "input": "src/scss/main.scss",
+      "output": "style.css"
     },
     {
       "mod": "copy",
@@ -71,22 +73,25 @@
     "watch": [
       {
         "mod": "sass",
-        "input": "scss/style.scss",
+        "input": "scss/main.scss",
         "output": "style.css"
       },
       {
-        "mod": "tsc",
-        "input": "typescript"
+        "mod": "esbuild",
+        "input": "main.ts",
+        "output": "script.js",
+        "format": "iife",
+        "target": "es2020"
       }
     ]
   },
   "deploy": {},
   "_resolved": {
-    "path": "a_Individual/landpage",
-    "category": "a_Individual",
-    "project": "landpage",
-    "key": "a_Individual__landpage",
-    "port": 8000,
+    "path": "b_Profiles/cv_web",
+    "category": "b_Profiles",
+    "project": "cv_web",
+    "key": "b_Profiles__cv_web",
+    "port": 8002,
     "framework": "vanilla",
     "src": "src",
     "dist": "dist",
@@ -102,11 +107,11 @@
     },
     "deploy": {
       "deployed": true,
-      "deploy_name": "landpage",
-      "url": "https://diegonmarcos.github.io/landpage"
+      "deploy_name": "cv_web",
+      "url": "https://diegonmarcos.github.io/cv_web"
     },
     "consumers": [],
-    "has_package_json": false,
+    "has_package_json": true,
     "has_manifest": false
   }
 }

@@ -1,7 +1,7 @@
 {
-  "name": "myAstro",
+  "name": "Landpage",
   "framework": "vanilla",
-  "port": 8019,
+  "port": 8000,
   "src": "src",
   "dist": "dist",
   "build": [
@@ -17,21 +17,23 @@
       "from": "src/data"
     },
     {
-      "mod": "esbuild",
-      "input": "src/typescript/main.ts",
-      "output": "script.js",
-      "format": "iife",
-      "target": "es2020"
+      "mod": "sass",
+      "input": "src/scss/style.scss",
+      "output": "style.css"
     },
     {
-      "mod": "sass",
-      "input": "src/scss/main.scss",
-      "output": "style.css"
+      "mod": "tsc",
+      "dir": "src/typescript",
+      "output": "script.js"
     },
     {
       "mod": "copy",
       "files": "index.html",
       "from": "src"
+    },
+    {
+      "mod": "symlink",
+      "files": "public"
     },
     {
       "_doc": "Inject navigator.serviceWorker.register(...) before </head>. MUST run BEFORE esbuild_sw so the modified HTML feeds into BUILD_HASH.",
@@ -69,25 +71,22 @@
     "watch": [
       {
         "mod": "sass",
-        "input": "scss/main.scss",
+        "input": "scss/style.scss",
         "output": "style.css"
       },
       {
-        "mod": "esbuild",
-        "input": "typescript/main.ts",
-        "output": "script.js",
-        "format": "iife",
-        "target": "es2020"
+        "mod": "tsc",
+        "input": "typescript"
       }
     ]
   },
   "deploy": {},
   "_resolved": {
-    "path": "b_Data/myAstro",
-    "category": "b_Data",
-    "project": "myAstro",
-    "key": "b_Data__myAstro",
-    "port": 8019,
+    "path": "b_Profiles/landpage",
+    "category": "b_Profiles",
+    "project": "landpage",
+    "key": "b_Profiles__landpage",
+    "port": 8000,
     "framework": "vanilla",
     "src": "src",
     "dist": "dist",
@@ -103,13 +102,11 @@
     },
     "deploy": {
       "deployed": true,
-      "deploy_name": "myAstro",
-      "url": "https://diegonmarcos.github.io/myAstro"
+      "deploy_name": "landpage",
+      "url": "https://diegonmarcos.github.io/landpage"
     },
-    "consumers": [
-      "myAstro"
-    ],
-    "has_package_json": true,
+    "consumers": [],
+    "has_package_json": false,
     "has_manifest": false
   }
 }

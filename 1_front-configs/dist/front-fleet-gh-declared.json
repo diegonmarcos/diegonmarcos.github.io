@@ -1,5 +1,15 @@
 [
   {
+    "id": "a_Companies__Warehouse",
+    "project": "Warehouse",
+    "path": "a_Companies/Warehouse",
+    "category": "a_Companies",
+    "name": "SlabTwin 3D Warehouse",
+    "framework": "vanilla",
+    "deploy_name": "Warehouse",
+    "url": "https://diegonmarcos.github.io/Warehouse"
+  },
+  {
     "id": "a_Companies__leafy",
     "project": "leafy",
     "path": "a_Companies/leafy",
@@ -28,36 +38,6 @@
     "framework": "vanilla",
     "deploy_name": "stark",
     "url": "https://diegonmarcos.github.io/stark"
-  },
-  {
-    "id": "a_Individual__cv_pdf",
-    "project": "cv_pdf",
-    "path": "a_Individual/cv_pdf",
-    "category": "a_Individual",
-    "name": "CV PDF",
-    "framework": "vanilla",
-    "deploy_name": "cv_pdf",
-    "url": "https://diegonmarcos.github.io/cv_pdf"
-  },
-  {
-    "id": "a_Individual__cv_web",
-    "project": "cv_web",
-    "path": "a_Individual/cv_web",
-    "category": "a_Individual",
-    "name": "CV Web",
-    "framework": "vanilla",
-    "deploy_name": "cv_web",
-    "url": "https://diegonmarcos.github.io/cv_web"
-  },
-  {
-    "id": "a_Individual__landpage",
-    "project": "landpage",
-    "path": "a_Individual/landpage",
-    "category": "a_Individual",
-    "name": "Landpage",
-    "framework": "vanilla",
-    "deploy_name": "landpage",
-    "url": "https://diegonmarcos.github.io/landpage"
   },
   {
     "id": "a_Portals__cloud",
@@ -128,46 +108,6 @@
     "framework": "vanilla",
     "deploy_name": "linktree_pixel-world",
     "url": "https://diegonmarcos.github.io/linktree_pixel-world"
-  },
-  {
-    "id": "a_Projects__Warehouse",
-    "project": "Warehouse",
-    "path": "a_Projects/Warehouse",
-    "category": "a_Projects",
-    "name": "SlabTwin 3D Warehouse",
-    "framework": "vanilla",
-    "deploy_name": "Warehouse",
-    "url": "https://diegonmarcos.github.io/Warehouse"
-  },
-  {
-    "id": "b_Data__myAstro",
-    "project": "myAstro",
-    "path": "b_Data/myAstro",
-    "category": "b_Data",
-    "name": "myAstro",
-    "framework": "vanilla",
-    "deploy_name": "myAstro",
-    "url": "https://diegonmarcos.github.io/myAstro"
-  },
-  {
-    "id": "b_Data__myfeed",
-    "project": "myfeed",
-    "path": "b_Data/myfeed",
-    "category": "b_Data",
-    "name": "MyFeed",
-    "framework": "vue",
-    "deploy_name": "myfeed",
-    "url": "https://diegonmarcos.github.io/myfeed"
-  },
-  {
-    "id": "b_Media__mySocials",
-    "project": "mySocials",
-    "path": "b_Media/mySocials",
-    "category": "b_Media",
-    "name": "mySocials",
-    "framework": "vanilla",
-    "deploy_name": "mySocials",
-    "url": "https://diegonmarcos.github.io/mySocials"
   },
   {
     "id": "b_MyData__my-fin",
@@ -250,6 +190,46 @@
     "url": "https://diegonmarcos.github.io/myphotos"
   },
   {
+    "id": "b_Profiles__cv_pdf",
+    "project": "cv_pdf",
+    "path": "b_Profiles/cv_pdf",
+    "category": "b_Profiles",
+    "name": "CV PDF",
+    "framework": "vanilla",
+    "deploy_name": "cv_pdf",
+    "url": "https://diegonmarcos.github.io/cv_pdf"
+  },
+  {
+    "id": "b_Profiles__cv_web",
+    "project": "cv_web",
+    "path": "b_Profiles/cv_web",
+    "category": "b_Profiles",
+    "name": "CV Web",
+    "framework": "vanilla",
+    "deploy_name": "cv_web",
+    "url": "https://diegonmarcos.github.io/cv_web"
+  },
+  {
+    "id": "b_Profiles__landpage",
+    "project": "landpage",
+    "path": "b_Profiles/landpage",
+    "category": "b_Profiles",
+    "name": "Landpage",
+    "framework": "vanilla",
+    "deploy_name": "landpage",
+    "url": "https://diegonmarcos.github.io/landpage"
+  },
+  {
+    "id": "b_Profiles__mySocials",
+    "project": "mySocials",
+    "path": "b_Profiles/mySocials",
+    "category": "b_Profiles",
+    "name": "mySocials",
+    "framework": "vanilla",
+    "deploy_name": "mySocials",
+    "url": "https://diegonmarcos.github.io/mySocials"
+  },
+  {
     "id": "b_Profiles__myprofile",
     "project": "myprofile",
     "path": "b_Profiles/myprofile",
@@ -290,24 +270,24 @@
     "url": "https://diegonmarcos.github.io/games"
   },
   {
-    "id": "c_Circus__movies",
-    "project": "movies",
-    "path": "c_Circus/movies",
+    "id": "c_Circus__myAstro",
+    "project": "myAstro",
+    "path": "c_Circus/myAstro",
     "category": "c_Circus",
-    "name": "Movies",
-    "framework": "vue",
-    "deploy_name": "movies",
-    "url": "https://diegonmarcos.github.io/movies"
+    "name": "myAstro",
+    "framework": "vanilla",
+    "deploy_name": "myAstro",
+    "url": "https://diegonmarcos.github.io/myAstro"
   },
   {
-    "id": "c_Circus__music",
-    "project": "music",
-    "path": "c_Circus/music",
+    "id": "c_Circus__others",
+    "project": "others",
+    "path": "c_Circus/others",
     "category": "c_Circus",
-    "name": "Music",
-    "framework": "vue",
-    "deploy_name": "music",
-    "url": "https://diegonmarcos.github.io/music"
+    "name": "Others",
+    "framework": "vanilla",
+    "deploy_name": "others",
+    "url": "https://diegonmarcos.github.io/others"
   },
   {
     "id": "c_LabTools__Music_DAW_LLMS",
@@ -388,6 +368,36 @@
     "framework": "vue",
     "deploy_name": "json-vision",
     "url": "https://diegonmarcos.github.io/json-vision"
+  },
+  {
+    "id": "c_Suite__movies",
+    "project": "movies",
+    "path": "c_Suite/movies",
+    "category": "c_Suite",
+    "name": "Movies",
+    "framework": "vue",
+    "deploy_name": "movies",
+    "url": "https://diegonmarcos.github.io/movies"
+  },
+  {
+    "id": "c_Suite__music",
+    "project": "music",
+    "path": "c_Suite/music",
+    "category": "c_Suite",
+    "name": "Music",
+    "framework": "vue",
+    "deploy_name": "music",
+    "url": "https://diegonmarcos.github.io/music"
+  },
+  {
+    "id": "c_Suite__myfeed",
+    "project": "myfeed",
+    "path": "c_Suite/myfeed",
+    "category": "c_Suite",
+    "name": "MyFeed",
+    "framework": "vue",
+    "deploy_name": "myfeed",
+    "url": "https://diegonmarcos.github.io/myfeed"
   },
   {
     "id": "c_Suite__myhealth-feedyourself",
@@ -818,15 +828,5 @@
     "framework": "vanilla",
     "deploy_name": "cloud-webapps/cloud-writer",
     "url": "https://diegonmarcos.github.io/cloud-webapps/cloud-writer"
-  },
-  {
-    "id": "e-Others__others",
-    "project": "others",
-    "path": "e-Others/others",
-    "category": "e-Others",
-    "name": "Others",
-    "framework": "vanilla",
-    "deploy_name": "others",
-    "url": "https://diegonmarcos.github.io/others"
   }
 ]

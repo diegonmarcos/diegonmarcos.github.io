@@ -31,7 +31,7 @@ jobs:
         run: |
           for r in front-linktree front-endeavours cloud-me-others cloud-me-profiles CG-galaxy CG-circus front-labtools cloud-webapps-2; do
             git clone --depth 1 "https://github.com/diegonmarcos/$r.git" "$RUNNER_TEMP/$r"
-            rsync -a --exclude='.git' --exclude='README.md' --exclude='SPLIT-PATHS.txt' "$RUNNER_TEMP/$r/" ./
+            rsync -a --exclude='.git' --exclude='README.md' --exclude='SPLIT-PATHS.txt' --exclude='/.gitmodules' --exclude='/0_deployer' --exclude='/1_cicd' --exclude='/.github' "$RUNNER_TEMP/$r/" ./
             sed 's#^#/#' "$RUNNER_TEMP/$r/SPLIT-PATHS.txt" >> .git/info/exclude
           done
 

@@ -123,6 +123,62 @@
     },
     "per_service": [
       {
+        "service": "Linktree",
+        "folder": "Lnktree/linktree",
+        "category": "Lnktree",
+        "dependencies": {
+          "swiper": "^11.0.0"
+        },
+        "devDependencies": {
+          "@types/jsdom": "^21.1.7",
+          "@types/node": "^22.0.0",
+          "@types/qrcode": "^1.5.5",
+          "esbuild": "^0.20.2",
+          "jsdom": "^25.0.0",
+          "qr-code-styling": "^1.9.2",
+          "qrcode": "^1.5.4",
+          "sass": "^1.77.0",
+          "sharp": "^0.33.5",
+          "tsx": "^4.19.0",
+          "typescript": "^5.9.3"
+        }
+      },
+      {
+        "service": "Linktree Icon View",
+        "folder": "Lnktree/linktree_icon-view",
+        "category": "Lnktree",
+        "dependencies": {},
+        "devDependencies": {
+          "esbuild": "^0.20.2",
+          "sass": "^1.77.0",
+          "typescript": "^5.9.3"
+        }
+      },
+      {
+        "service": "Linktree Mindmap",
+        "folder": "Lnktree/linktree_mindmap",
+        "category": "Lnktree",
+        "dependencies": {},
+        "devDependencies": {
+          "esbuild": "^0.20.2",
+          "sass": "^1.77.0",
+          "typescript": "^5.9.3"
+        }
+      },
+      {
+        "service": "Linktree Pixel World",
+        "folder": "Lnktree/linktree_pixel-world",
+        "category": "Lnktree",
+        "dependencies": {
+          "pixi.js": "^8.6.0"
+        },
+        "devDependencies": {
+          "esbuild": "^0.20.2",
+          "sass": "^1.77.0",
+          "typescript": "^5.9.3"
+        }
+      },
+      {
         "service": "SlabTwin 3D Warehouse",
         "folder": "a_Companies/Warehouse",
         "category": "a_Companies",
@@ -193,59 +249,63 @@
         }
       },
       {
-        "service": "Linktree",
-        "folder": "a_Portals/linktree",
-        "category": "a_Portals",
+        "service": "FinTerminal",
+        "folder": "b-Nxs_Blmmbrg/fin-terminal",
+        "category": "b-Nxs_Blmmbrg",
         "dependencies": {
-          "swiper": "^11.0.0"
+          "lightweight-charts": "^5.0.0"
         },
         "devDependencies": {
-          "@types/jsdom": "^21.1.7",
           "@types/node": "^22.0.0",
-          "@types/qrcode": "^1.5.5",
-          "esbuild": "^0.20.2",
+          "esbuild": "^0.24.0",
           "jsdom": "^25.0.0",
-          "qr-code-styling": "^1.9.2",
-          "qrcode": "^1.5.4",
-          "sass": "^1.77.0",
-          "sharp": "^0.33.5",
-          "tsx": "^4.19.0",
-          "typescript": "^5.9.3"
+          "sass": "^1.94.0",
+          "typescript": "^5.6.0",
+          "vitest": "^2.1.0"
         }
       },
       {
-        "service": "Linktree Icon View",
-        "folder": "a_Portals/linktree_icon-view",
-        "category": "a_Portals",
+        "service": "MarketWatch",
+        "folder": "b-Nxs_Blmmbrg/market_watch",
+        "category": "b-Nxs_Blmmbrg",
         "dependencies": {},
         "devDependencies": {
-          "esbuild": "^0.20.2",
-          "sass": "^1.77.0",
-          "typescript": "^5.9.3"
+          "@types/node": "^20.10.0",
+          "@typescript-eslint/eslint-plugin": "^6.13.0",
+          "@typescript-eslint/parser": "^6.13.0",
+          "esbuild": "^0.19.8",
+          "eslint": "^8.54.0",
+          "prettier": "^3.1.0",
+          "sass": "^1.69.5",
+          "typescript": "^5.3.2"
         }
       },
       {
-        "service": "Linktree Mindmap",
-        "folder": "a_Portals/linktree_mindmap",
-        "category": "a_Portals",
+        "service": "GDELTNews",
+        "folder": "b-Nxs_Blmmbrg/news",
+        "category": "b-Nxs_Blmmbrg",
         "dependencies": {},
         "devDependencies": {
-          "esbuild": "^0.20.2",
-          "sass": "^1.77.0",
-          "typescript": "^5.9.3"
+          "esbuild": "^0.24.0",
+          "sass": "^1.83.0",
+          "typescript": "^5.7.0"
         }
       },
       {
-        "service": "Linktree Pixel World",
-        "folder": "a_Portals/linktree_pixel-world",
-        "category": "a_Portals",
+        "service": "CentralBank",
+        "folder": "b-Nxs_PA/central_bank",
+        "category": "b-Nxs_PA",
         "dependencies": {
-          "pixi.js": "^8.6.0"
+          "chart.js": "^4.4.0",
+          "lucide": "^0.460.0"
         },
         "devDependencies": {
-          "esbuild": "^0.20.2",
-          "sass": "^1.77.0",
-          "typescript": "^5.9.3"
+          "@tailwindcss/vite": "^4.0.0",
+          "sass": "^1.94.2",
+          "tailwindcss": "^4.0.0",
+          "typescript": "^5.6.0",
+          "vite": "^6.0.0",
+          "vite-plugin-singlefile": "^2.3.0"
         }
       },
       {
@@ -361,6 +421,17 @@
         }
       },
       {
+        "service": "Sailyng",
+        "folder": "c-Stk_DsX/sailytics",
+        "category": "c-Stk_DsX",
+        "dependencies": {
+          "three": "^0.170.0"
+        },
+        "devDependencies": {
+          "@types/three": "^0.170.0"
+        }
+      },
+      {
         "service": "Games",
         "folder": "c_Circus/games",
         "category": "c_Circus",
@@ -392,77 +463,6 @@
           "three": "^0.162.0",
           "typescript": "^5.3.3",
           "@types/three": "^0.162.0"
-        }
-      },
-      {
-        "service": "CentralBank",
-        "folder": "c_LabTools/central_bank",
-        "category": "c_LabTools",
-        "dependencies": {
-          "chart.js": "^4.4.0",
-          "lucide": "^0.460.0"
-        },
-        "devDependencies": {
-          "@tailwindcss/vite": "^4.0.0",
-          "sass": "^1.94.2",
-          "tailwindcss": "^4.0.0",
-          "typescript": "^5.6.0",
-          "vite": "^6.0.0",
-          "vite-plugin-singlefile": "^2.3.0"
-        }
-      },
-      {
-        "service": "FinTerminal",
-        "folder": "c_LabTools/fin-terminal",
-        "category": "c_LabTools",
-        "dependencies": {
-          "lightweight-charts": "^5.0.0"
-        },
-        "devDependencies": {
-          "@types/node": "^22.0.0",
-          "esbuild": "^0.24.0",
-          "jsdom": "^25.0.0",
-          "sass": "^1.94.0",
-          "typescript": "^5.6.0",
-          "vitest": "^2.1.0"
-        }
-      },
-      {
-        "service": "MarketWatch",
-        "folder": "c_LabTools/market_watch",
-        "category": "c_LabTools",
-        "dependencies": {},
-        "devDependencies": {
-          "@types/node": "^20.10.0",
-          "@typescript-eslint/eslint-plugin": "^6.13.0",
-          "@typescript-eslint/parser": "^6.13.0",
-          "esbuild": "^0.19.8",
-          "eslint": "^8.54.0",
-          "prettier": "^3.1.0",
-          "sass": "^1.69.5",
-          "typescript": "^5.3.2"
-        }
-      },
-      {
-        "service": "GDELTNews",
-        "folder": "c_LabTools/news",
-        "category": "c_LabTools",
-        "dependencies": {},
-        "devDependencies": {
-          "esbuild": "^0.24.0",
-          "sass": "^1.83.0",
-          "typescript": "^5.7.0"
-        }
-      },
-      {
-        "service": "Sailyng",
-        "folder": "c_LabTools/sailytics",
-        "category": "c_LabTools",
-        "dependencies": {
-          "three": "^0.170.0"
-        },
-        "devDependencies": {
-          "@types/three": "^0.170.0"
         }
       },
       {

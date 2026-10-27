@@ -1,26 +1,7 @@
 [
   {
-    "key": "a_Portals__cloud-superapp",
-    "path": "a_Portals/cloud-superapp",
-    "manifest": {
-      "name": "Cloud SuperApp — Mobile UI",
-      "short_name": "Cloud Mobile",
-      "start_url": "./index.html",
-      "display": "standalone",
-      "background_color": "#000000",
-      "theme_color": "#000000",
-      "icons": [
-        {
-          "src": "public/favicon.svg",
-          "sizes": "any",
-          "type": "image/svg+xml"
-        }
-      ]
-    }
-  },
-  {
-    "key": "a_Portals__linktree",
-    "path": "a_Portals/linktree",
+    "key": "Lnktree__linktree",
+    "path": "Lnktree/linktree",
     "manifest": {
       "name": "Diego Nepomuceno Marcos | Linktree",
       "short_name": "DNM",
@@ -61,6 +42,25 @@
           "sizes": "512x512",
           "type": "image/png",
           "purpose": "maskable"
+        }
+      ]
+    }
+  },
+  {
+    "key": "a_Portals__cloud-superapp",
+    "path": "a_Portals/cloud-superapp",
+    "manifest": {
+      "name": "Cloud SuperApp — Mobile UI",
+      "short_name": "Cloud Mobile",
+      "start_url": "./index.html",
+      "display": "standalone",
+      "background_color": "#000000",
+      "theme_color": "#000000",
+      "icons": [
+        {
+          "src": "public/favicon.svg",
+          "sizes": "any",
+          "type": "image/svg+xml"
         }
       ]
     }

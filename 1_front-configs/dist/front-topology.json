@@ -6,6 +6,136 @@
   },
   "projects": [
     {
+      "name": "Linktree",
+      "slug": "linktree",
+      "path": "Lnktree/linktree",
+      "category": "Lnktree",
+      "framework": "vanilla",
+      "port": 8001,
+      "build_steps": [
+        "gh_commits",
+        "data_wrap",
+        "pwa_icons",
+        "qrcode_gen",
+        "esbuild",
+        "sass",
+        "copy",
+        "copy",
+        "copy",
+        "copy",
+        "copy",
+        "copy",
+        "symlink",
+        "sw_register",
+        "console_log",
+        "esbuild_sw"
+      ],
+      "dep_count": 12,
+      "has_dist": true,
+      "deploy_name": "linktree"
+    },
+    {
+      "name": "Linktree Icon View",
+      "slug": "linktree_icon-view",
+      "path": "Lnktree/linktree_icon-view",
+      "category": "Lnktree",
+      "framework": "vanilla",
+      "port": 8020,
+      "build_steps": [
+        "esbuild",
+        "sass",
+        "sass",
+        "copy",
+        "symlink",
+        "sw_register",
+        "console_log",
+        "esbuild_sw"
+      ],
+      "dep_count": 3,
+      "has_dist": true,
+      "deploy_name": "linktree_icon-view"
+    },
+    {
+      "name": "Linktree Mindmap",
+      "slug": "linktree_mindmap",
+      "path": "Lnktree/linktree_mindmap",
+      "category": "Lnktree",
+      "framework": "vanilla",
+      "port": 8018,
+      "build_steps": [
+        "data_wrap",
+        "copy",
+        "esbuild",
+        "sass",
+        "copy",
+        "symlink",
+        "sw_register",
+        "console_log",
+        "esbuild_sw"
+      ],
+      "dep_count": 3,
+      "has_dist": true,
+      "deploy_name": "linktree_mindmap"
+    },
+    {
+      "name": "Linktree Pixel World",
+      "slug": "linktree_pixel-world",
+      "path": "Lnktree/linktree_pixel-world",
+      "category": "Lnktree",
+      "framework": "vanilla",
+      "port": 8019,
+      "build_steps": [
+        "data_wrap",
+        "copy",
+        "esbuild",
+        "sass",
+        "copy",
+        "symlink",
+        "sw_register",
+        "console_log",
+        "esbuild_sw"
+      ],
+      "dep_count": 4,
+      "has_dist": true,
+      "deploy_name": "linktree_pixel-world"
+    },
+    {
+      "name": "LMMS",
+      "slug": "Music_DAW_LLMS",
+      "path": "a-Lfy_CG-Zirkus/Music_DAW_LLMS",
+      "category": "a-Lfy_CG-Zirkus",
+      "framework": "vanilla",
+      "port": 8035,
+      "build_steps": [
+        "data_wrap",
+        "copy",
+        "sass",
+        "esbuild",
+        "copy"
+      ],
+      "dep_count": 0,
+      "has_dist": true,
+      "deploy_name": "Music_DAW_LLMS"
+    },
+    {
+      "name": "Mixxx",
+      "slug": "Music_DJ-Mixer_Mixxx",
+      "path": "a-Lfy_CG-Zirkus/Music_DJ-Mixer_Mixxx",
+      "category": "a-Lfy_CG-Zirkus",
+      "framework": "vanilla",
+      "port": 8034,
+      "build_steps": [
+        "data_wrap",
+        "copy",
+        "sass",
+        "esbuild",
+        "copy"
+      ],
+      "dep_count": 0,
+      "has_dist": true,
+      "deploy_name": "Music_DJ-Mixer_Mixxx"
+    },
+    {
       "name": "SlabTwin 3D Warehouse",
       "slug": "Warehouse",
       "path": "a_Companies/Warehouse",
@@ -153,45 +283,61 @@
       "deploy_name": "cloud-web"
     },
     {
-      "name": "Linktree",
-      "slug": "linktree",
-      "path": "a_Portals/linktree",
-      "category": "a_Portals",
+      "name": "FinTerminal",
+      "slug": "fin-terminal",
+      "path": "b-Nxs_Blmmbrg/fin-terminal",
+      "category": "b-Nxs_Blmmbrg",
       "framework": "vanilla",
-      "port": 8001,
+      "port": 8024,
       "build_steps": [
-        "gh_commits",
         "data_wrap",
-        "pwa_icons",
-        "qrcode_gen",
-        "esbuild",
+        "copy",
         "sass",
-        "copy",
-        "copy",
-        "copy",
-        "copy",
-        "copy",
+        "esbuild",
         "copy",
         "symlink",
         "sw_register",
         "console_log",
         "esbuild_sw"
       ],
-      "dep_count": 12,
+      "dep_count": 7,
       "has_dist": true,
-      "deploy_name": "linktree"
+      "deploy_name": "fin-terminal"
     },
     {
-      "name": "Linktree Icon View",
-      "slug": "linktree_icon-view",
-      "path": "a_Portals/linktree_icon-view",
-      "category": "a_Portals",
+      "name": "MarketWatch",
+      "slug": "market_watch",
+      "path": "b-Nxs_Blmmbrg/market_watch",
+      "category": "b-Nxs_Blmmbrg",
       "framework": "vanilla",
-      "port": 8020,
+      "port": 8010,
       "build_steps": [
+        "data_wrap",
+        "copy",
+        "sass",
         "esbuild",
+        "copy",
+        "symlink",
+        "sw_register",
+        "console_log",
+        "esbuild_sw"
+      ],
+      "dep_count": 8,
+      "has_dist": true,
+      "deploy_name": "market_watch"
+    },
+    {
+      "name": "GDELTNews",
+      "slug": "news",
+      "path": "b-Nxs_Blmmbrg/news",
+      "category": "b-Nxs_Blmmbrg",
+      "framework": "vanilla",
+      "port": 8029,
+      "build_steps": [
+        "data_wrap",
+        "copy",
         "sass",
-        "sass",
+        "esbuild",
         "copy",
         "symlink",
         "sw_register",
@@ -200,51 +346,23 @@
       ],
       "dep_count": 3,
       "has_dist": true,
-      "deploy_name": "linktree_icon-view"
+      "deploy_name": "news"
     },
     {
-      "name": "Linktree Mindmap",
-      "slug": "linktree_mindmap",
-      "path": "a_Portals/linktree_mindmap",
-      "category": "a_Portals",
+      "name": "CentralBank",
+      "slug": "central_bank",
+      "path": "b-Nxs_PA/central_bank",
+      "category": "b-Nxs_PA",
       "framework": "vanilla",
-      "port": 8018,
+      "port": 8011,
       "build_steps": [
         "data_wrap",
         "copy",
-        "esbuild",
-        "sass",
-        "copy",
-        "symlink",
-        "sw_register",
-        "console_log",
-        "esbuild_sw"
+        "vite"
       ],
-      "dep_count": 3,
+      "dep_count": 8,
       "has_dist": true,
-      "deploy_name": "linktree_mindmap"
-    },
-    {
-      "name": "Linktree Pixel World",
-      "slug": "linktree_pixel-world",
-      "path": "a_Portals/linktree_pixel-world",
-      "category": "a_Portals",
-      "framework": "vanilla",
-      "port": 8019,
-      "build_steps": [
-        "data_wrap",
-        "copy",
-        "esbuild",
-        "sass",
-        "copy",
-        "symlink",
-        "sw_register",
-        "console_log",
-        "esbuild_sw"
-      ],
-      "dep_count": 4,
-      "has_dist": true,
-      "deploy_name": "linktree_pixel-world"
+      "deploy_name": "central_bank"
     },
     {
       "name": "My Financials",
@@ -566,6 +684,28 @@
       "deploy_name": "galaxy-x1"
     },
     {
+      "name": "Sailyng",
+      "slug": "sailytics",
+      "path": "c-Stk_DsX/sailytics",
+      "category": "c-Stk_DsX",
+      "framework": "vanilla",
+      "port": 8023,
+      "build_steps": [
+        "data_wrap",
+        "copy",
+        "sass",
+        "esbuild",
+        "copy",
+        "symlink",
+        "sw_register",
+        "console_log",
+        "esbuild_sw"
+      ],
+      "dep_count": 2,
+      "has_dist": true,
+      "deploy_name": "sailytics"
+    },
+    {
       "name": "Carto",
       "slug": "carto",
       "path": "c_Circus/carto",
@@ -640,146 +780,6 @@
       "dep_count": 0,
       "has_dist": true,
       "deploy_name": "others"
-    },
-    {
-      "name": "LMMS",
-      "slug": "Music_DAW_LLMS",
-      "path": "c_LabTools/Music_DAW_LLMS",
-      "category": "c_LabTools",
-      "framework": "vanilla",
-      "port": 8035,
-      "build_steps": [
-        "data_wrap",
-        "copy",
-        "sass",
-        "esbuild",
-        "copy"
-      ],
-      "dep_count": 0,
-      "has_dist": true,
-      "deploy_name": "Music_DAW_LLMS"
-    },
-    {
-      "name": "Mixxx",
-      "slug": "Music_DJ-Mixer_Mixxx",
-      "path": "c_LabTools/Music_DJ-Mixer_Mixxx",
-      "category": "c_LabTools",
-      "framework": "vanilla",
-      "port": 8034,
-      "build_steps": [
-        "data_wrap",
-        "copy",
-        "sass",
-        "esbuild",
-        "copy"
-      ],
-      "dep_count": 0,
-      "has_dist": true,
-      "deploy_name": "Music_DJ-Mixer_Mixxx"
-    },
-    {
-      "name": "CentralBank",
-      "slug": "central_bank",
-      "path": "c_LabTools/central_bank",
-      "category": "c_LabTools",
-      "framework": "vanilla",
-      "port": 8011,
-      "build_steps": [
-        "data_wrap",
-        "copy",
-        "vite"
-      ],
-      "dep_count": 8,
-      "has_dist": true,
-      "deploy_name": "central_bank"
-    },
-    {
-      "name": "FinTerminal",
-      "slug": "fin-terminal",
-      "path": "c_LabTools/fin-terminal",
-      "category": "c_LabTools",
-      "framework": "vanilla",
-      "port": 8024,
-      "build_steps": [
-        "data_wrap",
-        "copy",
-        "sass",
-        "esbuild",
-        "copy",
-        "symlink",
-        "sw_register",
-        "console_log",
-        "esbuild_sw"
-      ],
-      "dep_count": 7,
-      "has_dist": true,
-      "deploy_name": "fin-terminal"
-    },
-    {
-      "name": "MarketWatch",
-      "slug": "market_watch",
-      "path": "c_LabTools/market_watch",
-      "category": "c_LabTools",
-      "framework": "vanilla",
-      "port": 8010,
-      "build_steps": [
-        "data_wrap",
-        "copy",
-        "sass",
-        "esbuild",
-        "copy",
-        "symlink",
-        "sw_register",
-        "console_log",
-        "esbuild_sw"
-      ],
-      "dep_count": 8,
-      "has_dist": true,
-      "deploy_name": "market_watch"
-    },
-    {
-      "name": "GDELTNews",
-      "slug": "news",
-      "path": "c_LabTools/news",
-      "category": "c_LabTools",
-      "framework": "vanilla",
-      "port": 8029,
-      "build_steps": [
-        "data_wrap",
-        "copy",
-        "sass",
-        "esbuild",
-        "copy",
-        "symlink",
-        "sw_register",
-        "console_log",
-        "esbuild_sw"
-      ],
-      "dep_count": 3,
-      "has_dist": true,
-      "deploy_name": "news"
-    },
-    {
-      "name": "Sailyng",
-      "slug": "sailytics",
-      "path": "c_LabTools/sailytics",
-      "category": "c_LabTools",
-      "framework": "vanilla",
-      "port": 8023,
-      "build_steps": [
-        "data_wrap",
-        "copy",
-        "sass",
-        "esbuild",
-        "copy",
-        "symlink",
-        "sw_register",
-        "console_log",
-        "esbuild_sw"
-      ],
-      "dep_count": 2,
-      "has_dist": true,
-      "deploy_name": "sailytics"
     },
     {
       "name": "Sheets (Grist)",

@@ -16,19 +16,19 @@
     "deploy_name": "cloud-web"
   },
   {
-    "path": "a_Portals/linktree",
+    "path": "Lnktree/linktree",
     "deploy_name": "linktree"
   },
   {
-    "path": "a_Portals/linktree_mindmap",
+    "path": "Lnktree/linktree_mindmap",
     "deploy_name": "linktree_mindmap"
   },
   {
-    "path": "a_Portals/linktree_pixel-world",
+    "path": "Lnktree/linktree_pixel-world",
     "deploy_name": "linktree_pixel-world"
   },
   {
-    "path": "a_Portals/linktree_icon-view",
+    "path": "Lnktree/linktree_icon-view",
     "deploy_name": "linktree_icon-view"
   },
   {
@@ -100,7 +100,7 @@
     "deploy_name": "carto"
   },
   {
-    "path": "c_LabTools/central_bank",
+    "path": "b-Nxs_PA/central_bank",
     "deploy_name": "central_bank"
   },
   {
@@ -116,7 +116,7 @@
     "deploy_name": "mymaps-maps"
   },
   {
-    "path": "c_LabTools/market_watch",
+    "path": "b-Nxs_Blmmbrg/market_watch",
     "deploy_name": "market_watch"
   },
   {
@@ -300,23 +300,23 @@
     "deploy_name": "others"
   },
   {
-    "path": "c_LabTools/sailytics",
+    "path": "c-Stk_DsX/sailytics",
     "deploy_name": "sailytics"
   },
   {
-    "path": "c_LabTools/news",
+    "path": "b-Nxs_Blmmbrg/news",
     "deploy_name": "news"
   },
   {
-    "path": "c_LabTools/fin-terminal",
+    "path": "b-Nxs_Blmmbrg/fin-terminal",
     "deploy_name": "fin-terminal"
   },
   {
-    "path": "c_LabTools/Music_DJ-Mixer_Mixxx",
+    "path": "a-Lfy_CG-Zirkus/Music_DJ-Mixer_Mixxx",
     "deploy_name": "Music_DJ-Mixer_Mixxx"
   },
   {
-    "path": "c_LabTools/Music_DAW_LLMS",
+    "path": "a-Lfy_CG-Zirkus/Music_DAW_LLMS",
     "deploy_name": "Music_DAW_LLMS"
   },
   {

@@ -40,12 +40,25 @@ jobs:
           fetch-depth: 0 # Needed to compare changes
       # #1072: linktree and the project sources live in their own public repos;
       # overlay them at their original paths so every path below still resolves.
+      # Each front repo carries the deployer as submodule 0_deployer plus symlinks 1_cicd and .github into it, so its
+      # build.sh/ship.yml symlinks resolve standalone; those four entries belong to the repo, never to the overlay.
       - name: 🧩 Overlay split source repos
         run: |
           for r in front-endeavours cloud-me-others cloud-me-profiles CG-galaxy CG-circus front-labtools cloud-webapps-2; do
             git clone --depth 1 "https://github.com/diegonmarcos/$r.git" "$RUNNER_TEMP/$r"
-            rsync -a --exclude='.git' --exclude='README.md' --exclude='SPLIT-PATHS.txt' "$RUNNER_TEMP/$r/" ./
+            rsync -a --exclude='.git' --exclude='README.md' --exclude='SPLIT-PATHS.txt' --exclude='/.gitmodules' --exclude='/0_deployer' --exclude='/1_cicd' --exclude='/.github' --exclude='/a_Companies/leafy' --exclude='/a_Companies/nexus' --exclude='/a_Companies/stark' "$RUNNER_TEMP/$r/" ./
             sed 's#^#/#' "$RUNNER_TEMP/$r/SPLIT-PATHS.txt" >> .git/info/exclude
+          done
+          # #1224: one-project repos (project at the repo root, not a mirrored layout) are overlaid at the path
+          # the project had before the move, so every path below and every published URL is unchanged.
+          for pair in DuckPeng-LeafY:a_Companies/leafy Fin-CM-NexusZ:a_Companies/nexus DeepSc-StarkX:a_Companies/stark Fin-CM-mqpm:a_Companies/mqpm Fin-CM-Blmbrg:a_Companies/blmbrg DeepSc-X:a_Companies/deepsc-x; do
+            r="${pair%%:*}"; d="${pair##*:}"
+            git clone --depth 1 "https://github.com/diegonmarcos/$r.git" "$RUNNER_TEMP/$r"
+            mkdir -p "$d"
+            rsync -a --exclude='.git' --exclude='/README.md' --exclude='/.gitmodules' --exclude='/0_deployer' --exclude='/1_cicd' --exclude='/.github' --exclude='/build.sh' --exclude='/ship.yml' "$RUNNER_TEMP/$r/" "$d/"
+            ln -sfn ../../1_cicd/src/scripts/_engine.sh "$d/build.sh"
+            ln -sfn ../../.github/workflows/ship.yml "$d/ship.yml"
+            echo "/$d" >> .git/info/exclude
           done
       - name: 📂 Get Changed Files
         id: changed-files
@@ -66,7 +79,7 @@ jobs:
         # Excludes test_framework + test_watcher_reap (flaky in headless
         # CI; tracked separately). Runs the deterministic SW + cache
         # tests added by the SW-hashing modularization.
-        run: bash 9_others/test/run.sh "test_front_cache_*" "test_front_sw_*" "test_engine_sw_*" "test_front_sw_register" "test_engine_copy_glob"
+        run: bash 9_others/test/run.sh "test_front_cache_*" "test_front_sw_*" "test_engine_sw_*" "test_front_sw_register" "test_engine_copy_glob" "test_profiles_privacy"
       # ============================================
       # PROJECT BUILDS (All use build.sh)
       # ============================================
@@ -654,6 +667,9 @@ jobs:
             "c_Suite/music:music"
             "b_MyData/mymaps-mytrips:mymaps-mytrips"
             "a_Companies/Warehouse:Warehouse"
+            "a_Companies/mqpm:mqpm"
+            "a_Companies/blmbrg:blmbrg"
+            "a_Companies/deepsc-x:deepsc-x"
             "cloud-webapps/_shared:cloud-webapps"
             "cloud-webapps/ai-chat:cloud-webapps/ai-chat"
             "cloud-webapps/c3-bot:cloud-webapps/c3-bot"

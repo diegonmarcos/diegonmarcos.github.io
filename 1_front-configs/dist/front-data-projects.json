@@ -84,6 +84,30 @@
     "has_pkg": true
   },
   {
+    "path": "a_Companies/blmbrg",
+    "category": "a_Companies",
+    "project": "blmbrg",
+    "key": "a_Companies__blmbrg",
+    "name": "Blmbrg",
+    "framework": "vanilla",
+    "port": 8032,
+    "deploy_name": "blmbrg",
+    "has_pwa": false,
+    "has_pkg": false
+  },
+  {
+    "path": "a_Companies/deepsc-x",
+    "category": "a_Companies",
+    "project": "deepsc-x",
+    "key": "a_Companies__deepsc-x",
+    "name": "DeepScX",
+    "framework": "vanilla",
+    "port": 8033,
+    "deploy_name": "deepsc-x",
+    "has_pwa": false,
+    "has_pkg": false
+  },
+  {
     "path": "a_Companies/leafy",
     "category": "a_Companies",
     "project": "leafy",
@@ -94,6 +118,18 @@
     "deploy_name": "leafy",
     "has_pwa": false,
     "has_pkg": true
+  },
+  {
+    "path": "a_Companies/mqpm",
+    "category": "a_Companies",
+    "project": "mqpm",
+    "key": "a_Companies__mqpm",
+    "name": "MQPM",
+    "framework": "vanilla",
+    "port": 8031,
+    "deploy_name": "mqpm",
+    "has_pwa": false,
+    "has_pkg": false
   },
   {
     "path": "a_Companies/nexus",

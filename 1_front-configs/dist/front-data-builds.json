@@ -565,6 +565,42 @@
     "_project": "Warehouse"
   },
   {
+    "name": "Blmbrg",
+    "framework": "vanilla",
+    "port": 8032,
+    "src": "src",
+    "dist": "dist",
+    "_doc": "Skeleton (#1224): no content yet. Add build steps and an index.html under src/, then add the SRC:NAME pair to PROJECTS in the deployer; until dist/ exists the deployer skips this project.",
+    "build": [],
+    "serve": {
+      "mode": "auto",
+      "dir": "src"
+    },
+    "deploy": {},
+    "_path": "a_Companies/blmbrg",
+    "_key": "a_Companies__blmbrg",
+    "_category": "a_Companies",
+    "_project": "blmbrg"
+  },
+  {
+    "name": "DeepScX",
+    "framework": "vanilla",
+    "port": 8033,
+    "src": "src",
+    "dist": "dist",
+    "_doc": "Skeleton (#1224): no content yet. Add build steps and an index.html under src/, then add the SRC:NAME pair to PROJECTS in the deployer; until dist/ exists the deployer skips this project.",
+    "build": [],
+    "serve": {
+      "mode": "auto",
+      "dir": "src"
+    },
+    "deploy": {},
+    "_path": "a_Companies/deepsc-x",
+    "_key": "a_Companies__deepsc-x",
+    "_category": "a_Companies",
+    "_project": "deepsc-x"
+  },
+  {
     "name": "Leafy",
     "framework": "vanilla",
     "port": 8021,
@@ -649,6 +685,24 @@
     "_key": "a_Companies__leafy",
     "_category": "a_Companies",
     "_project": "leafy"
+  },
+  {
+    "name": "MQPM",
+    "framework": "vanilla",
+    "port": 8031,
+    "src": "src",
+    "dist": "dist",
+    "_doc": "Skeleton (#1224): no content yet. Add build steps and an index.html under src/, then add the SRC:NAME pair to PROJECTS in the deployer; until dist/ exists the deployer skips this project.",
+    "build": [],
+    "serve": {
+      "mode": "auto",
+      "dir": "src"
+    },
+    "deploy": {},
+    "_path": "a_Companies/mqpm",
+    "_key": "a_Companies__mqpm",
+    "_category": "a_Companies",
+    "_project": "mqpm"
   },
   {
     "name": "Nexus",

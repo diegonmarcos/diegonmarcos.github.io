@@ -1,0 +1,42 @@
+{
+  "name": "Blmbrg",
+  "framework": "vanilla",
+  "port": 8032,
+  "src": "src",
+  "dist": "dist",
+  "_doc": "Skeleton (#1224): no content yet. Add build steps and an index.html under src/, then add the SRC:NAME pair to PROJECTS in the deployer; until dist/ exists the deployer skips this project.",
+  "build": [],
+  "serve": {
+    "mode": "auto",
+    "dir": "src"
+  },
+  "deploy": {},
+  "_resolved": {
+    "path": "a_Companies/blmbrg",
+    "category": "a_Companies",
+    "project": "blmbrg",
+    "key": "a_Companies__blmbrg",
+    "port": 8032,
+    "framework": "vanilla",
+    "src": "src",
+    "dist": "dist",
+    "analytics": {
+      "matomo": {
+        "container_id": "container_odwLIyPV",
+        "url": "https://analytics.diegonmarcos.com/matomo/js/container_odwLIyPV.js"
+      },
+      "umami": {
+        "site_id": "937cbde7-5ec2-450c-9d6a-8117423ac12f",
+        "url": "https://analytics.diegonmarcos.com/umami/script.js"
+      }
+    },
+    "deploy": {
+      "deployed": true,
+      "deploy_name": "blmbrg",
+      "url": "https://diegonmarcos.github.io/blmbrg"
+    },
+    "consumers": [],
+    "has_package_json": false,
+    "has_manifest": false
+  }
+}

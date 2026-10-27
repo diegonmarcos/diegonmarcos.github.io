@@ -148,6 +148,18 @@
     "deploy_name": "Warehouse"
   },
   {
+    "path": "a_Companies/mqpm",
+    "deploy_name": "mqpm"
+  },
+  {
+    "path": "a_Companies/blmbrg",
+    "deploy_name": "blmbrg"
+  },
+  {
+    "path": "a_Companies/deepsc-x",
+    "deploy_name": "deepsc-x"
+  },
+  {
     "path": "cloud-webapps/_shared",
     "deploy_name": "cloud-webapps"
   },

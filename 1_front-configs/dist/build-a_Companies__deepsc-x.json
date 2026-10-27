@@ -1,0 +1,42 @@
+{
+  "name": "DeepScX",
+  "framework": "vanilla",
+  "port": 8033,
+  "src": "src",
+  "dist": "dist",
+  "_doc": "Skeleton (#1224): no content yet. Add build steps and an index.html under src/, then add the SRC:NAME pair to PROJECTS in the deployer; until dist/ exists the deployer skips this project.",
+  "build": [],
+  "serve": {
+    "mode": "auto",
+    "dir": "src"
+  },
+  "deploy": {},
+  "_resolved": {
+    "path": "a_Companies/deepsc-x",
+    "category": "a_Companies",
+    "project": "deepsc-x",
+    "key": "a_Companies__deepsc-x",
+    "port": 8033,
+    "framework": "vanilla",
+    "src": "src",
+    "dist": "dist",
+    "analytics": {
+      "matomo": {
+        "container_id": "container_odwLIyPV",
+        "url": "https://analytics.diegonmarcos.com/matomo/js/container_odwLIyPV.js"
+      },
+      "umami": {
+        "site_id": "937cbde7-5ec2-450c-9d6a-8117423ac12f",
+        "url": "https://analytics.diegonmarcos.com/umami/script.js"
+      }
+    },
+    "deploy": {
+      "deployed": true,
+      "deploy_name": "deepsc-x",
+      "url": "https://diegonmarcos.github.io/deepsc-x"
+    },
+    "consumers": [],
+    "has_package_json": false,
+    "has_manifest": false
+  }
+}

@@ -70,6 +70,26 @@
     "url": "https://diegonmarcos.github.io/Warehouse"
   },
   {
+    "id": "a_Companies__blmbrg",
+    "project": "blmbrg",
+    "path": "a_Companies/blmbrg",
+    "category": "a_Companies",
+    "name": "Blmbrg",
+    "framework": "vanilla",
+    "deploy_name": "blmbrg",
+    "url": "https://diegonmarcos.github.io/blmbrg"
+  },
+  {
+    "id": "a_Companies__deepsc-x",
+    "project": "deepsc-x",
+    "path": "a_Companies/deepsc-x",
+    "category": "a_Companies",
+    "name": "DeepScX",
+    "framework": "vanilla",
+    "deploy_name": "deepsc-x",
+    "url": "https://diegonmarcos.github.io/deepsc-x"
+  },
+  {
     "id": "a_Companies__leafy",
     "project": "leafy",
     "path": "a_Companies/leafy",
@@ -78,6 +98,16 @@
     "framework": "vanilla",
     "deploy_name": "leafy",
     "url": "https://diegonmarcos.github.io/leafy"
+  },
+  {
+    "id": "a_Companies__mqpm",
+    "project": "mqpm",
+    "path": "a_Companies/mqpm",
+    "category": "a_Companies",
+    "name": "MQPM",
+    "framework": "vanilla",
+    "deploy_name": "mqpm",
+    "url": "https://diegonmarcos.github.io/mqpm"
   },
   {
     "id": "a_Companies__nexus",

@@ -1,7 +1,7 @@
 {
   "meta": {
     "generated_from": "front-topology.json",
-    "project_count": 87
+    "project_count": 90
   },
   "categories": [
     {
@@ -86,6 +86,24 @@
       "category": "a_Companies",
       "projects": [
         {
+          "name": "Blmbrg",
+          "slug": "blmbrg",
+          "path": "a_Companies/blmbrg",
+          "category": "a_Companies",
+          "framework": "vanilla",
+          "port": 8032,
+          "has_dist": false
+        },
+        {
+          "name": "DeepScX",
+          "slug": "deepsc-x",
+          "path": "a_Companies/deepsc-x",
+          "category": "a_Companies",
+          "framework": "vanilla",
+          "port": 8033,
+          "has_dist": false
+        },
+        {
           "name": "Leafy",
           "slug": "leafy",
           "path": "a_Companies/leafy",
@@ -93,6 +111,15 @@
           "framework": "vanilla",
           "port": 8021,
           "has_dist": true
+        },
+        {
+          "name": "MQPM",
+          "slug": "mqpm",
+          "path": "a_Companies/mqpm",
+          "category": "a_Companies",
+          "framework": "vanilla",
+          "port": 8031,
+          "has_dist": false
         },
         {
           "name": "Nexus",

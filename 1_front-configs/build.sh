@@ -67,11 +67,11 @@ step_populate_src() {
   # workflow's dist commit. Build outputs go to src/data-generated/ instead.
   find "$SRC/data-links" -maxdepth 1 -type l -delete 2>/dev/null || true
   local n_d=0
-  for f in "$ROOT/a_Portals/linktree/src/data/"*.json; do
+  for f in "$ROOT/Lnktree/linktree/src/data/"*.json; do
     [ -f "$f" ] || continue
     base=$(basename "$f")
     case "$base" in *.json.js) continue ;; esac
-    ln -sf "../../../a_Portals/linktree/src/data/$base" "$SRC/data-links/$base"
+    ln -sf "../../../Lnktree/linktree/src/data/$base" "$SRC/data-links/$base"
     n_d=$((n_d+1))
   done
   log "  data-links:    $n_d symlinks"

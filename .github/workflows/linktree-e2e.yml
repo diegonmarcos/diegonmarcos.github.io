@@ -22,8 +22,8 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
-          repository: diegonmarcos/front-linktree  # #1072: sources moved out of this repo
-          sparse-checkout: a_Portals/linktree/tests/e2e
+          repository: diegonmarcos/cloud-me-profiles  # #1072/#1217: sources moved out of this repo
+          sparse-checkout: Lnktree/linktree/tests/e2e
       - uses: actions/setup-node@v4
         with:
           node-version: 22
@@ -37,7 +37,7 @@ jobs:
         run: |
           # Pages CDN may lag a few seconds behind the deploy job; retry.
           for i in 1 2 3; do
-            node a_Portals/linktree/tests/e2e/sections-visible.mjs "${{ github.event.inputs.url || 'https://linktree.diegonmarcos.com/' }}" && exit 0
+            node Lnktree/linktree/tests/e2e/sections-visible.mjs "${{ github.event.inputs.url || 'https://linktree.diegonmarcos.com/' }}" && exit 0
             echo "attempt $i failed; retrying in 30s"; sleep 30
           done
           exit 1
@@ -46,5 +46,5 @@ jobs:
           NODE_PATH: /tmp/pw/node_modules
         run: |
           # A transient here is exactly the bug: no retry loop.
-          cp a_Portals/linktree/tests/e2e/assets-load.mjs /tmp/pw/
+          cp Lnktree/linktree/tests/e2e/assets-load.mjs /tmp/pw/
           node /tmp/pw/assets-load.mjs "${{ github.event.inputs.url || 'https://linktree.diegonmarcos.com/' }}"

@@ -14,7 +14,7 @@
 ├── 0.spec/README.md                # this file
 ├── src/
 │   ├── builds/<cat>__<proj>.build.json   ← symlinks to every project's build.json
-│   └── data-links/<file>.json            ← symlinks to a_Portals/linktree/src/data/*.json
+│   └── data-links/<file>.json            ← symlinks to Lnktree/linktree/src/data/*.json
 └── dist/                                  # generated, git-tracked
     ├── front-data-builds.json     # array — every build.json with _path injected
     ├── front-data-projects.json   # array — flat topology

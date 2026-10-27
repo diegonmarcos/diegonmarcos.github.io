@@ -1,5 +1,5 @@
 // GENERATED FROM c3-front-apps.json by front-data-json-js-wrapper.sh — DO NOT EDIT BY HAND.
-// Re-generate with: bash a_Portals/linktree/src/data/build.sh
+// Re-generate with: bash Lnktree/linktree/src/data/build.sh
 (function () {
   var g = (typeof globalThis !== "undefined") ? globalThis : (typeof window !== "undefined" ? window : this);
   g.PORTAL_DATA = g.PORTAL_DATA || {};
@@ -168,8 +168,8 @@
   {
    "name": "Linktree",
    "slug": "linktree",
-   "path": "a_Portals/linktree",
-   "category": "a_Portals",
+   "path": "Lnktree/linktree",
+   "category": "Lnktree",
    "framework": "vanilla",
    "port": 8001,
    "build_steps": [
@@ -195,8 +195,8 @@
   {
    "name": "Linktree Mindmap",
    "slug": "linktree_mindmap",
-   "path": "a_Portals/linktree_mindmap",
-   "category": "a_Portals",
+   "path": "Lnktree/linktree_mindmap",
+   "category": "Lnktree",
    "framework": "vanilla",
    "port": 8018,
    "build_steps": [
@@ -217,8 +217,8 @@
   {
    "name": "Linktree Pixel World",
    "slug": "linktree_pixel-world",
-   "path": "a_Portals/linktree_pixel-world",
-   "category": "a_Portals",
+   "path": "Lnktree/linktree_pixel-world",
+   "category": "Lnktree",
    "framework": "vanilla",
    "port": 8019,
    "build_steps": [
@@ -601,8 +601,8 @@
   {
    "name": "LMMS",
    "slug": "Music_DAW_LLMS",
-   "path": "c_LabTools/Music_DAW_LLMS",
-   "category": "c_LabTools",
+   "path": "a-Lfy_CG-Zirkus/Music_DAW_LLMS",
+   "category": "a-Lfy_CG-Zirkus",
    "framework": "vanilla",
    "port": 8035,
    "build_steps": [
@@ -619,8 +619,8 @@
   {
    "name": "Mixxx",
    "slug": "Music_DJ-Mixer_Mixxx",
-   "path": "c_LabTools/Music_DJ-Mixer_Mixxx",
-   "category": "c_LabTools",
+   "path": "a-Lfy_CG-Zirkus/Music_DJ-Mixer_Mixxx",
+   "category": "a-Lfy_CG-Zirkus",
    "framework": "vanilla",
    "port": 8034,
    "build_steps": [
@@ -637,8 +637,8 @@
   {
    "name": "CentralBank",
    "slug": "central_bank",
-   "path": "c_LabTools/central_bank",
-   "category": "c_LabTools",
+   "path": "b-Nxs_PA/central_bank",
+   "category": "b-Nxs_PA",
    "framework": "vanilla",
    "port": 8011,
    "build_steps": [
@@ -653,8 +653,8 @@
   {
    "name": "FinTerminal",
    "slug": "fin-terminal",
-   "path": "c_LabTools/fin-terminal",
-   "category": "c_LabTools",
+   "path": "b-Nxs_Blmmbrg/fin-terminal",
+   "category": "b-Nxs_Blmmbrg",
    "framework": "vanilla",
    "port": 8024,
    "build_steps": [
@@ -675,8 +675,8 @@
   {
    "name": "MarketWatch",
    "slug": "market_watch",
-   "path": "c_LabTools/market_watch",
-   "category": "c_LabTools",
+   "path": "b-Nxs_Blmmbrg/market_watch",
+   "category": "b-Nxs_Blmmbrg",
    "framework": "vanilla",
    "port": 8010,
    "build_steps": [
@@ -697,8 +697,8 @@
   {
    "name": "GDELTNews",
    "slug": "news",
-   "path": "c_LabTools/news",
-   "category": "c_LabTools",
+   "path": "b-Nxs_Blmmbrg/news",
+   "category": "b-Nxs_Blmmbrg",
    "framework": "vanilla",
    "port": 8029,
    "build_steps": [
@@ -719,8 +719,8 @@
   {
    "name": "Sailyng",
    "slug": "sailytics",
-   "path": "c_LabTools/sailytics",
-   "category": "c_LabTools",
+   "path": "c-Stk_DsX/sailytics",
+   "category": "c-Stk_DsX",
    "framework": "vanilla",
    "port": 8023,
    "build_steps": [

@@ -52,7 +52,7 @@ Built with a universal `build.sh` engine — one engine, per-project `build.json
 ./build.sh deps
 
 # Build a single project
-cd a_Portals/linktree && bash build.sh build
+cd Lnktree/linktree && bash build.sh build
 
 # Dev server with hot reload
 cd c_Suite/movies && bash build.sh dev
@@ -104,7 +104,8 @@ front/
 │   ├── myphotos              Photo viewer (static copy)
 │   └── myphotos-myorkut      Social network homage (dark Orkut)
 │
-├── c_LabTools/           Lab experiments & data tools
+├── Lnktree/              Linktree portals (sources in cloud-me-profiles, #1217)
+├── a-Lfy_CG-Zirkus/ a-Lfy_C3/ b-Nxs_PA/ b-Nxs_Blmmbrg/ c-Stk_DsX/   Lab projects (ex c_LabTools, sources in front-labtools, #1218)
 │   ├── carto                 Cartography games (Sass+tsc)
 │   ├── central_bank          Banking tool (Vite)
 │   ├── market_watch          Market tracker (Sass+esbuild)
@@ -129,7 +130,7 @@ front/
 | Profiles | `b_Profiles/` | 6 | CV, portfolio, landing pages, company sites |
 | Suite | `c_Suite/` | 5 | Integrated tools (JSON editor, analytics, mail, photos) |
 | MyTools | `c-MyTools/` | 15 | Personal apps (health, maps, movies, music, games, photos) |
-| LabTools | `c_LabTools/` | 4 | Lab experiments & data tools (carto, finance, sailing) |
+| LabTools | `a-Lfy_CG-Zirkus/`, `b-Nxs_PA/`, `b-Nxs_Blmmbrg/`, `c-Stk_DsX/` (ex `c_LabTools/`) | 4 | Lab experiments & data tools (carto, finance, sailing) |
 | Cloud | `c-Cloud/` | 3 | API docs, MCP docs, Swagger UI |
 | Others | `e-Others/` | 1 | Python scripts, misc |
 | Root | `e-Root/` | 1 | Main 3D cube index page |

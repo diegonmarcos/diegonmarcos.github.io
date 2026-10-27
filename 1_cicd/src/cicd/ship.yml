@@ -32,7 +32,7 @@ jobs:
       # build.sh/ship.yml symlinks resolve standalone; those four entries belong to the repo, never to the overlay.
       - name: 🧩 Overlay split source repos
         run: |
-          for r in front-linktree front-endeavours cloud-me-others cloud-me-profiles CG-galaxy CG-circus front-labtools cloud-webapps-2; do
+          for r in front-endeavours cloud-me-others cloud-me-profiles CG-galaxy CG-circus front-labtools cloud-webapps-2; do
             git clone --depth 1 "https://github.com/diegonmarcos/$r.git" "$RUNNER_TEMP/$r"
             rsync -a --exclude='.git' --exclude='README.md' --exclude='SPLIT-PATHS.txt' --exclude='/.gitmodules' --exclude='/0_deployer' --exclude='/1_cicd' --exclude='/.github' "$RUNNER_TEMP/$r/" ./
             sed 's#^#/#' "$RUNNER_TEMP/$r/SPLIT-PATHS.txt" >> .git/info/exclude
@@ -85,44 +85,44 @@ jobs:
       - name: 🔨 Build Linktree
         id: build-linktree
         if:
-          contains(steps.changed-files.outputs.all_changed_files, 'a_Portals/linktree/src/')
+          contains(steps.changed-files.outputs.all_changed_files, 'Lnktree/linktree/src/')
 
         run: |
           echo "🔨 Building Linktree..."
-          cd a_Portals/linktree
+          cd Lnktree/linktree
           bash build.sh build
           cd ../..
           echo "✅ Linktree build complete"
       - name: 🔨 Build Linktree Mindmap
         id: build-linktree-mindmap
         if:
-          contains(steps.changed-files.outputs.all_changed_files, 'a_Portals/linktree_mindmap/src/')
+          contains(steps.changed-files.outputs.all_changed_files, 'Lnktree/linktree_mindmap/src/')
 
         run: |
           echo "🔨 Building Linktree Mindmap..."
-          cd a_Portals/linktree_mindmap
+          cd Lnktree/linktree_mindmap
           bash build.sh build
           cd ../..
           echo "✅ Linktree Mindmap build complete"
       - name: 🔨 Build Linktree Pixel World
         id: build-linktree-pixel-world
         if:
-          contains(steps.changed-files.outputs.all_changed_files, 'a_Portals/linktree_pixel-world/src/')
+          contains(steps.changed-files.outputs.all_changed_files, 'Lnktree/linktree_pixel-world/src/')
 
         run: |
           echo "🔨 Building Linktree Pixel World..."
-          cd a_Portals/linktree_pixel-world
+          cd Lnktree/linktree_pixel-world
           bash build.sh build
           cd ../..
           echo "✅ Linktree Pixel World build complete"
       - name: 🔨 Build Linktree Icon View
         id: build-linktree-icon-view
         if:
-          contains(steps.changed-files.outputs.all_changed_files, 'a_Portals/linktree_icon-view/src/')
+          contains(steps.changed-files.outputs.all_changed_files, 'Lnktree/linktree_icon-view/src/')
 
         run: |
           echo "🔨 Building Linktree Icon View..."
-          cd a_Portals/linktree_icon-view
+          cd Lnktree/linktree_icon-view
           bash build.sh build
           cd ../..
           echo "✅ Linktree Icon View build complete"
@@ -250,11 +250,11 @@ jobs:
       - name: 🔨 Build Sailytics
         id: build-sailytics
         if:
-          contains(steps.changed-files.outputs.all_changed_files, 'c_LabTools/sailytics/src/')
+          contains(steps.changed-files.outputs.all_changed_files, 'c-Stk_DsX/sailytics/src/')
 
         run: |
           echo "🔨 Building Sailytics..."
-          cd c_LabTools/sailytics
+          cd c-Stk_DsX/sailytics
           bash build.sh build
           cd ../..
           echo "✅ Sailytics build complete"
@@ -327,33 +327,33 @@ jobs:
       - name: 🔨 Build Market Watch
         id: build-market-watch
         if:
-          contains(steps.changed-files.outputs.all_changed_files, 'c_LabTools/market_watch/src/')
+          contains(steps.changed-files.outputs.all_changed_files, 'b-Nxs_Blmmbrg/market_watch/src/')
 
         run: |
           echo "🔨 Building Market Watch..."
-          cd c_LabTools/market_watch
+          cd b-Nxs_Blmmbrg/market_watch
           bash build.sh build
           cd ../..
           echo "✅ Market Watch build complete"
       - name: 🔨 Build Central Bank
         id: build-central-bank
         if:
-          contains(steps.changed-files.outputs.all_changed_files, 'c_LabTools/central_bank/src/')
+          contains(steps.changed-files.outputs.all_changed_files, 'b-Nxs_PA/central_bank/src/')
 
         run: |
           echo "🔨 Building Central Bank..."
-          cd c_LabTools/central_bank
+          cd b-Nxs_PA/central_bank
           bash build.sh build
           cd ../..
           echo "✅ Central Bank build complete"
       - name: 🔨 Build Fin Terminal
         id: build-fin-terminal
         if:
-          contains(steps.changed-files.outputs.all_changed_files, 'c_LabTools/fin-terminal/src/')
+          contains(steps.changed-files.outputs.all_changed_files, 'b-Nxs_Blmmbrg/fin-terminal/src/')
 
         run: |
           echo "🔨 Building Fin Terminal..."
-          cd c_LabTools/fin-terminal
+          cd b-Nxs_Blmmbrg/fin-terminal
           bash build.sh build
           cd ../..
           echo "✅ Fin Terminal build complete"
@@ -426,11 +426,11 @@ jobs:
       - name: 🔨 Build GDELT News
         id: build-news
         if:
-          contains(steps.changed-files.outputs.all_changed_files, 'c_LabTools/news/src/')
+          contains(steps.changed-files.outputs.all_changed_files, 'b-Nxs_Blmmbrg/news/src/')
 
         run: |
           echo "🔨 Building GDELT News..."
-          cd c_LabTools/news
+          cd b-Nxs_Blmmbrg/news
           bash build.sh build
           cd ../..
           echo "✅ GDELT News build complete"
@@ -552,22 +552,22 @@ jobs:
       - name: 🔨 Build Mixxx (DJ Mixer)
         id: build-mixxx
         if:
-          contains(steps.changed-files.outputs.all_changed_files, 'c_LabTools/Music_DJ-Mixer_Mixxx/src/')
+          contains(steps.changed-files.outputs.all_changed_files, 'a-Lfy_CG-Zirkus/Music_DJ-Mixer_Mixxx/src/')
 
         run: |
           echo "🔨 Building Mixxx..."
-          cd c_LabTools/Music_DJ-Mixer_Mixxx
+          cd a-Lfy_CG-Zirkus/Music_DJ-Mixer_Mixxx
           bash build.sh build
           cd ../..
           echo "✅ Mixxx build complete"
       - name: 🔨 Build LMMS (Beat Sequencer)
         id: build-lmms
         if:
-          contains(steps.changed-files.outputs.all_changed_files, 'c_LabTools/Music_DAW_LLMS/src/')
+          contains(steps.changed-files.outputs.all_changed_files, 'a-Lfy_CG-Zirkus/Music_DAW_LLMS/src/')
 
         run: |
           echo "🔨 Building LMMS..."
-          cd c_LabTools/Music_DAW_LLMS
+          cd a-Lfy_CG-Zirkus/Music_DAW_LLMS
           bash build.sh build
           cd ../..
           echo "✅ LMMS build complete"
@@ -611,10 +611,10 @@ jobs:
             "a_Portals/cloud:cloud"
             "a_Portals/cloud-superapp:cloud-superapp"
             "a_Portals/cloud-web:cloud-web"
-            "a_Portals/linktree:linktree"
-            "a_Portals/linktree_mindmap:linktree_mindmap"
-            "a_Portals/linktree_pixel-world:linktree_pixel-world"
-            "a_Portals/linktree_icon-view:linktree_icon-view"
+            "Lnktree/linktree:linktree"
+            "Lnktree/linktree_mindmap:linktree_mindmap"
+            "Lnktree/linktree_pixel-world:linktree_pixel-world"
+            "Lnktree/linktree_icon-view:linktree_icon-view"
             "b_Profiles/cv_pdf:cv_pdf"
             "b_Profiles/cv_web:cv_web"
             "b_Profiles/landpage:landpage"
@@ -632,11 +632,11 @@ jobs:
             "c_Suite/tldraw:tldraw"
             "c_Circus/myAstro:myAstro"
             "c_Circus/carto:carto"
-            "c_LabTools/central_bank:central_bank"
+            "b-Nxs_PA/central_bank:central_bank"
             "c_Suite/myhealth-feedyourself:myhealth-feedyourself"
             "b_MyData/myhealth-profile:myhealth-profile"
             "c_Suite/mymaps-maps:mymaps-maps"
-            "c_LabTools/market_watch:market_watch"
+            "b-Nxs_Blmmbrg/market_watch:market_watch"
             "c_Suite/myfeed:myfeed"
             "c_Circus/games:games"
             "c_Suite/mymaps-navigation:mymaps-navigation"
@@ -682,11 +682,11 @@ jobs:
             "cloud-webapps/cloud-wallet:cloud-webapps/cloud-wallet"
             "cloud-webapps/cloud-writer:cloud-webapps/cloud-writer"
             "c_Circus/others:others"
-            "c_LabTools/sailytics:sailytics"
-            "c_LabTools/news:news"
-            "c_LabTools/fin-terminal:fin-terminal"
-            "c_LabTools/Music_DJ-Mixer_Mixxx:Music_DJ-Mixer_Mixxx"
-            "c_LabTools/Music_DAW_LLMS:Music_DAW_LLMS"
+            "c-Stk_DsX/sailytics:sailytics"
+            "b-Nxs_Blmmbrg/news:news"
+            "b-Nxs_Blmmbrg/fin-terminal:fin-terminal"
+            "a-Lfy_CG-Zirkus/Music_DJ-Mixer_Mixxx:Music_DJ-Mixer_Mixxx"
+            "a-Lfy_CG-Zirkus/Music_DAW_LLMS:Music_DAW_LLMS"
             "b_MyData/my-fin:my-fin"
             "b_Profiles/mySocials:mySocials"
             "b_MyData/myhealth:myhealth"

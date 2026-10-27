@@ -19,8 +19,81 @@
       ]
     },
     {
+      "category": "Lnktree",
+      "projects": [
+        {
+          "name": "Linktree",
+          "slug": "linktree",
+          "path": "Lnktree/linktree",
+          "category": "Lnktree",
+          "framework": "vanilla",
+          "port": 8001,
+          "has_dist": true
+        },
+        {
+          "name": "Linktree Icon View",
+          "slug": "linktree_icon-view",
+          "path": "Lnktree/linktree_icon-view",
+          "category": "Lnktree",
+          "framework": "vanilla",
+          "port": 8020,
+          "has_dist": true
+        },
+        {
+          "name": "Linktree Mindmap",
+          "slug": "linktree_mindmap",
+          "path": "Lnktree/linktree_mindmap",
+          "category": "Lnktree",
+          "framework": "vanilla",
+          "port": 8018,
+          "has_dist": true
+        },
+        {
+          "name": "Linktree Pixel World",
+          "slug": "linktree_pixel-world",
+          "path": "Lnktree/linktree_pixel-world",
+          "category": "Lnktree",
+          "framework": "vanilla",
+          "port": 8019,
+          "has_dist": true
+        }
+      ]
+    },
+    {
+      "category": "a-Lfy_CG-Zirkus",
+      "projects": [
+        {
+          "name": "LMMS",
+          "slug": "Music_DAW_LLMS",
+          "path": "a-Lfy_CG-Zirkus/Music_DAW_LLMS",
+          "category": "a-Lfy_CG-Zirkus",
+          "framework": "vanilla",
+          "port": 8035,
+          "has_dist": true
+        },
+        {
+          "name": "Mixxx",
+          "slug": "Music_DJ-Mixer_Mixxx",
+          "path": "a-Lfy_CG-Zirkus/Music_DJ-Mixer_Mixxx",
+          "category": "a-Lfy_CG-Zirkus",
+          "framework": "vanilla",
+          "port": 8034,
+          "has_dist": true
+        }
+      ]
+    },
+    {
       "category": "a_Companies",
       "projects": [
+        {
+          "name": "SlabTwin 3D Warehouse",
+          "slug": "Warehouse",
+          "path": "a_Companies/Warehouse",
+          "category": "a_Companies",
+          "framework": "vanilla",
+          "port": 8020,
+          "has_dist": true
+        },
         {
           "name": "Leafy",
           "slug": "leafy",
@@ -37,15 +110,6 @@
           "category": "a_Companies",
           "framework": "vanilla",
           "port": 8005,
-          "has_dist": true
-        },
-        {
-          "name": "SlabTwin 3D Warehouse",
-          "slug": "Warehouse",
-          "path": "a_Companies/Warehouse",
-          "category": "a_Companies",
-          "framework": "vanilla",
-          "port": 8020,
           "has_dist": true
         },
         {
@@ -88,41 +152,51 @@
           "framework": "vanilla",
           "port": 8037,
           "has_dist": true
-        },
+        }
+      ]
+    },
+    {
+      "category": "b-Nxs_Blmmbrg",
+      "projects": [
         {
-          "name": "Linktree",
-          "slug": "linktree",
-          "path": "a_Portals/linktree",
-          "category": "a_Portals",
+          "name": "FinTerminal",
+          "slug": "fin-terminal",
+          "path": "b-Nxs_Blmmbrg/fin-terminal",
+          "category": "b-Nxs_Blmmbrg",
           "framework": "vanilla",
-          "port": 8001,
+          "port": 8024,
           "has_dist": true
         },
         {
-          "name": "Linktree Icon View",
-          "slug": "linktree_icon-view",
-          "path": "a_Portals/linktree_icon-view",
-          "category": "a_Portals",
+          "name": "MarketWatch",
+          "slug": "market_watch",
+          "path": "b-Nxs_Blmmbrg/market_watch",
+          "category": "b-Nxs_Blmmbrg",
           "framework": "vanilla",
-          "port": 8020,
+          "port": 8010,
           "has_dist": true
         },
         {
-          "name": "Linktree Mindmap",
-          "slug": "linktree_mindmap",
-          "path": "a_Portals/linktree_mindmap",
-          "category": "a_Portals",
+          "name": "GDELTNews",
+          "slug": "news",
+          "path": "b-Nxs_Blmmbrg/news",
+          "category": "b-Nxs_Blmmbrg",
           "framework": "vanilla",
-          "port": 8018,
+          "port": 8029,
           "has_dist": true
-        },
+        }
+      ]
+    },
+    {
+      "category": "b-Nxs_PA",
+      "projects": [
         {
-          "name": "Linktree Pixel World",
-          "slug": "linktree_pixel-world",
-          "path": "a_Portals/linktree_pixel-world",
-          "category": "a_Portals",
+          "name": "CentralBank",
+          "slug": "central_bank",
+          "path": "b-Nxs_PA/central_bank",
+          "category": "b-Nxs_PA",
           "framework": "vanilla",
-          "port": 8019,
+          "port": 8011,
           "has_dist": true
         }
       ]
@@ -137,6 +211,15 @@
           "category": "b_MyData",
           "framework": "vanilla",
           "port": 8030,
+          "has_dist": true
+        },
+        {
+          "name": "MyTrackers",
+          "slug": "myTrackers",
+          "path": "b_MyData/myTrackers",
+          "category": "b_MyData",
+          "framework": "vanilla",
+          "port": 8026,
           "has_dist": true
         },
         {
@@ -167,6 +250,15 @@
           "has_dist": true
         },
         {
+          "name": "myID",
+          "slug": "myid",
+          "path": "b_MyData/myid",
+          "category": "b_MyData",
+          "framework": "vanilla",
+          "port": 8031,
+          "has_dist": true
+        },
+        {
           "name": "MyMaps MyTrips",
           "slug": "mymaps-mytrips",
           "path": "b_MyData/mymaps-mytrips",
@@ -182,24 +274,6 @@
           "category": "b_MyData",
           "framework": "vanilla",
           "port": 8019,
-          "has_dist": true
-        },
-        {
-          "name": "MyTrackers",
-          "slug": "myTrackers",
-          "path": "b_MyData/myTrackers",
-          "category": "b_MyData",
-          "framework": "vanilla",
-          "port": 8026,
-          "has_dist": true
-        },
-        {
-          "name": "myID",
-          "slug": "myid",
-          "path": "b_MyData/myid",
-          "category": "b_MyData",
-          "framework": "vanilla",
-          "port": 8031,
           "has_dist": true
         }
       ]
@@ -235,21 +309,21 @@
           "has_dist": true
         },
         {
-          "name": "MyProfile",
-          "slug": "myprofile",
-          "path": "b_Profiles/myprofile",
-          "category": "b_Profiles",
-          "framework": "sveltekit",
-          "port": 8013,
-          "has_dist": true
-        },
-        {
           "name": "mySocials",
           "slug": "mySocials",
           "path": "b_Profiles/mySocials",
           "category": "b_Profiles",
           "framework": "vanilla",
           "port": 8028,
+          "has_dist": true
+        },
+        {
+          "name": "MyProfile",
+          "slug": "myprofile",
+          "path": "b_Profiles/myprofile",
+          "category": "b_Profiles",
+          "framework": "sveltekit",
+          "port": 8013,
           "has_dist": true
         }
       ]
@@ -287,6 +361,20 @@
       ]
     },
     {
+      "category": "c-Stk_DsX",
+      "projects": [
+        {
+          "name": "Sailyng",
+          "slug": "sailytics",
+          "path": "c-Stk_DsX/sailytics",
+          "category": "c-Stk_DsX",
+          "framework": "vanilla",
+          "port": 8023,
+          "has_dist": true
+        }
+      ]
+    },
+    {
       "category": "c_Circus",
       "projects": [
         {
@@ -308,15 +396,6 @@
           "has_dist": true
         },
         {
-          "name": "Others",
-          "slug": "others",
-          "path": "c_Circus/others",
-          "category": "c_Circus",
-          "framework": "vanilla",
-          "port": 8008,
-          "has_dist": true
-        },
-        {
           "name": "myAstro",
           "slug": "myAstro",
           "path": "c_Circus/myAstro",
@@ -324,73 +403,14 @@
           "framework": "vanilla",
           "port": 8019,
           "has_dist": true
-        }
-      ]
-    },
-    {
-      "category": "c_LabTools",
-      "projects": [
-        {
-          "name": "CentralBank",
-          "slug": "central_bank",
-          "path": "c_LabTools/central_bank",
-          "category": "c_LabTools",
-          "framework": "vanilla",
-          "port": 8011,
-          "has_dist": true
         },
         {
-          "name": "FinTerminal",
-          "slug": "fin-terminal",
-          "path": "c_LabTools/fin-terminal",
-          "category": "c_LabTools",
+          "name": "Others",
+          "slug": "others",
+          "path": "c_Circus/others",
+          "category": "c_Circus",
           "framework": "vanilla",
-          "port": 8024,
-          "has_dist": true
-        },
-        {
-          "name": "GDELTNews",
-          "slug": "news",
-          "path": "c_LabTools/news",
-          "category": "c_LabTools",
-          "framework": "vanilla",
-          "port": 8029,
-          "has_dist": true
-        },
-        {
-          "name": "LMMS",
-          "slug": "Music_DAW_LLMS",
-          "path": "c_LabTools/Music_DAW_LLMS",
-          "category": "c_LabTools",
-          "framework": "vanilla",
-          "port": 8035,
-          "has_dist": true
-        },
-        {
-          "name": "MarketWatch",
-          "slug": "market_watch",
-          "path": "c_LabTools/market_watch",
-          "category": "c_LabTools",
-          "framework": "vanilla",
-          "port": 8010,
-          "has_dist": true
-        },
-        {
-          "name": "Mixxx",
-          "slug": "Music_DJ-Mixer_Mixxx",
-          "path": "c_LabTools/Music_DJ-Mixer_Mixxx",
-          "category": "c_LabTools",
-          "framework": "vanilla",
-          "port": 8034,
-          "has_dist": true
-        },
-        {
-          "name": "Sailyng",
-          "slug": "sailytics",
-          "path": "c_LabTools/sailytics",
-          "category": "c_LabTools",
-          "framework": "vanilla",
-          "port": 8023,
+          "port": 8008,
           "has_dist": true
         }
       ]
@@ -398,6 +418,15 @@
     {
       "category": "c_Suite",
       "projects": [
+        {
+          "name": "Sheets (Grist)",
+          "slug": "grist",
+          "path": "c_Suite/grist",
+          "category": "c_Suite",
+          "framework": "vanilla",
+          "port": 8033,
+          "has_dist": true
+        },
         {
           "name": "JSON Vision",
           "slug": "json-vision",
@@ -480,15 +509,6 @@
           "has_dist": true
         },
         {
-          "name": "Sheets (Grist)",
-          "slug": "grist",
-          "path": "c_Suite/grist",
-          "category": "c_Suite",
-          "framework": "vanilla",
-          "port": 8033,
-          "has_dist": true
-        },
-        {
           "name": "Suite",
           "slug": "suite",
           "path": "c_Suite/suite",
@@ -521,6 +541,15 @@
           "has_dist": true
         },
         {
+          "name": "C3-Bot",
+          "slug": "c3-bot",
+          "path": "cloud-webapps/c3-bot",
+          "category": "cloud-webapps",
+          "framework": "vanilla",
+          "port": null,
+          "has_dist": true
+        },
+        {
           "name": "C3 DNS and Routing",
           "slug": "c3-dns-routing",
           "path": "cloud-webapps/c3-dns-routing",
@@ -530,18 +559,18 @@
           "has_dist": true
         },
         {
-          "name": "C3 MCP and APIs",
-          "slug": "c3-mcp-apis",
-          "path": "cloud-webapps/c3-mcp-apis",
+          "name": "C3 Mail",
+          "slug": "c3-mail",
+          "path": "cloud-webapps/c3-mail",
           "category": "cloud-webapps",
           "framework": "vanilla",
           "port": null,
           "has_dist": true
         },
         {
-          "name": "C3 Mail",
-          "slug": "c3-mail",
-          "path": "cloud-webapps/c3-mail",
+          "name": "C3 MCP and APIs",
+          "slug": "c3-mcp-apis",
+          "path": "cloud-webapps/c3-mcp-apis",
           "category": "cloud-webapps",
           "framework": "vanilla",
           "port": null,
@@ -560,15 +589,6 @@
           "name": "C3 Security and Network",
           "slug": "c3-security-network",
           "path": "cloud-webapps/c3-security-network",
-          "category": "cloud-webapps",
-          "framework": "vanilla",
-          "port": null,
-          "has_dist": true
-        },
-        {
-          "name": "C3-Bot",
-          "slug": "c3-bot",
-          "path": "cloud-webapps/c3-bot",
           "category": "cloud-webapps",
           "framework": "vanilla",
           "port": null,
@@ -683,6 +703,15 @@
           "has_dist": true
         },
         {
+          "name": "Cloud Messenger (Matrix)",
+          "slug": "cloud-matrix",
+          "path": "cloud-webapps/cloud-matrix",
+          "category": "cloud-webapps",
+          "framework": "vanilla",
+          "port": null,
+          "has_dist": true
+        },
+        {
           "name": "Cloud Me",
           "slug": "cloud-me",
           "path": "cloud-webapps/cloud-me",
@@ -695,15 +724,6 @@
           "name": "Cloud Media Center",
           "slug": "cloud-media",
           "path": "cloud-webapps/cloud-media",
-          "category": "cloud-webapps",
-          "framework": "vanilla",
-          "port": null,
-          "has_dist": true
-        },
-        {
-          "name": "Cloud Messenger (Matrix)",
-          "slug": "cloud-matrix",
-          "path": "cloud-webapps/cloud-matrix",
           "category": "cloud-webapps",
           "framework": "vanilla",
           "port": null,

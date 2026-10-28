@@ -104,7 +104,7 @@ front/
 │   ├── myphotos              Photo viewer (static copy)
 │   └── myphotos-myorkut      Social network homage (dark Orkut)
 │
-├── Lnktree/              Linktree portals (sources in Me-Profiles-_Lnktree, #1217)
+├── Lnktree/              Linktree portals (sources in cloud-me-pub-profiles-_lnktree, #1217)
 ├── a-Lfy_CG-Zirkus/ a-Lfy_C3/ b-Nxs_PA/ b-Nxs_Blmmbrg/ c-Stk_DsX/   Lab projects (ex c_LabTools, sources in Projects-labtools, #1218)
 │   ├── carto                 Cartography games (Sass+tsc)
 │   ├── central_bank          Banking tool (Vite)

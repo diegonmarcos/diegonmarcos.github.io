@@ -41,14 +41,14 @@ jobs:
       # overlay them at their original paths so every path below still resolves.
       - name: 🧩 Overlay split source repos
         run: |
-          for r in Projects-endeavours cloud-me-others Me-Profiles-Prf-Prs Me-Profiles-_Lnktree CG-galaxy CG-circus Projects-labtools cloud-h-webapps-2; do
+          for r in Projects-endeavours cloud-me-pub-shared cloud-me-pub-profiles-prf-prs cloud-me-pub-profiles-_lnktree CG-galaxy CG-circus Projects-labtools cloud-h-webapps-2; do
             git clone --depth 1 "https://github.com/diegonmarcos/$r.git" "$RUNNER_TEMP/$r"
             rsync -a --exclude='.git' --exclude='README.md' --exclude='SPLIT-PATHS.txt' --exclude='/.gitmodules' --exclude='/0_deployer' --exclude='/1_cicd' --exclude='/.github' --exclude='/a_Companies/leafy' --exclude='/a_Companies/nexus' --exclude='/a_Companies/stark' "$RUNNER_TEMP/$r/" ./
             sed 's#^#/#' "$RUNNER_TEMP/$r/SPLIT-PATHS.txt" >> .git/info/exclude
           done
           # #1224: one-project repos (project at the repo root, not a mirrored layout) are overlaid at the path
           # the project had before the move, so every path below and every published URL is unchanged.
-          for pair in Me-Profiles-Leaf.y:a_Companies/leafy Me-Profiles-Nexus.z:a_Companies/nexus Me-Profiles-Stark.x:a_Companies/stark Fin-CM-mqpm:a_Companies/mqpm Fin-CM-Blmbrg:a_Companies/blmbrg DeepSc-X:a_Companies/deepsc-x; do
+          for pair in cloud-me-pub-profiles-leaf.y:a_Companies/leafy cloud-me-pub-profiles-nexus.z:a_Companies/nexus cloud-me-pub-profiles-stark.x:a_Companies/stark Fin-CM-mqpm:a_Companies/mqpm Fin-CM-Blmbrg:a_Companies/blmbrg DeepSc-X:a_Companies/deepsc-x; do
             r="${pair%%:*}"; d="${pair##*:}"
             git clone --depth 1 "https://github.com/diegonmarcos/$r.git" "$RUNNER_TEMP/$r"
             mkdir -p "$d"

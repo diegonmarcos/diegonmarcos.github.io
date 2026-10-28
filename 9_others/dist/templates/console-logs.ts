@@ -439,11 +439,47 @@ declare global { interface Window { consoleLogs: ConsoleLogsAPI } }
   // ════════════════════════════════════════════════════════════════════════
   interface ProbeResult { name: string; pass: boolean; got: unknown; want: string }
 
+  // .section-box elements with no visible, non-empty content element.
+  function emptySections(): Element[] {
+    return Array.from(document.querySelectorAll('.section-box')).filter(b => {
+      const cands = Array.from(b.querySelectorAll('.swiper-slide, .link-section'));
+      return !cands.some(c => {
+        const el = c as HTMLElement;
+        const r = el.getBoundingClientRect();
+        return r.width > 0 && r.height > 0 && ((el.innerText || '').trim().length > 0 || !!el.querySelector('img,svg,a'));
+      });
+    });
+  }
+
+  // Self-heal: sections empty LATE (after loader + swiper init) while a SW
+  // controls the page = stale/poisoned cache. __resetSW once per session
+  // (sessionStorage guard) so a page broken for another reason cannot loop.
+  function selfHeal(): void {
+    try {
+      const ctl = navigator.serviceWorker && navigator.serviceWorker.controller;
+      if (!ctl || emptySections().length === 0) return;
+      const w = window as Window & { __resetSW?: (r?: string) => Promise<void> };
+      if (sessionStorage.getItem('__swSelfHeal') || !w.__resetSW) return;
+      sessionStorage.setItem('__swSelfHeal', '1');
+      console.warn('[self-test] section content missing under SW control — auto __resetSW (once per session)');
+      void w.__resetSW('self-test: section content missing');
+    } catch { /* storage blocked — skip rather than risk a reload loop */ }
+  }
+
   function runSelfTest(): ProbeResult[] {
-    const proj = projectIdFromPath();
     const probes: ProbeResult[] = [];
     const bag = (globalThis as { PORTAL_DATA?: Record<string, unknown> }).PORTAL_DATA;
     const app = document.getElementById('app');
+    // Page identity: the URL path only names the project on sub-path hosting
+    // (/myid/). On a custom domain served from "/" it is "root", so prefer
+    // the PORTAL_DATA key the page itself hydrated when the path key is absent.
+    const pathKey = projectIdFromPath();
+    const bagKeys = bag ? Object.keys(bag) : [];
+    const proj = bag && !(pathKey in bag) && bagKeys.length === 1 ? bagKeys[0] : pathKey;
+    // Multi-section portal (no #app SPA shell): the pages declares its
+    // sections with .section-box / [data-portal-mount]. The SPA shell probes
+    // do not apply; a visible-content probe replaces them.
+    const multi = !app && !!document.querySelector('.section-box, [data-portal-mount]');
     const reg = navigator.serviceWorker;
 
     probes.push({
@@ -466,22 +502,35 @@ declare global { interface Window { consoleLogs: ConsoleLogsAPI } }
     });
     probes.push({
       name: '#app element present',
-      pass: !!app,
+      pass: multi || !!app,
       got: !!app,
       want: 'true',
     });
     probes.push({
       name: '#app mounted (children > 0)',
-      pass: !!app && app.childElementCount > 0,
+      pass: multi || (!!app && app.childElementCount > 0),
       got: app?.childElementCount ?? 0,
       want: '≥1 child',
     });
     probes.push({
       name: 'SPA shell rendered (#main present)',
-      pass: !!document.getElementById('main'),
-      got: !!document.getElementById('main'),
+      pass: multi || !!document.getElementById('main'),
+      got: multi ? 'n/a (multi-section page)' : !!document.getElementById('main'),
       want: 'true (only if SPA uses #main)',
     });
+    // Multi-section portals: every .section-box must show >=1 VISIBLE
+    // element with content. Informational at +1.5s (the loader may still be
+    // up); the auto-heal below re-checks late before acting.
+    const boxes = Array.from(document.querySelectorAll('.section-box'));
+    const emptyBoxes = emptySections();
+    const contentProbe: ProbeResult = {
+      name: 'every section has visible content',
+      // Before ~8s the loader overlay may still be up: not a verdict yet.
+      pass: emptyBoxes.length === 0 || performance.now() < 8000,
+      got: boxes.length + ' sections, ' + emptyBoxes.length + ' empty' + (emptyBoxes.length && performance.now() < 8000 ? ' (still loading — judged by auto-heal at 15s)' : ''),
+      want: '0 empty sections',
+    };
+    probes.push(contentProbe);
     probes.push({
       name: 'serviceWorker controller active',
       pass: !!reg && !!reg.controller,
@@ -568,6 +617,7 @@ declare global { interface Window { consoleLogs: ConsoleLogsAPI } }
   // to fetch data, render shell, mount #main/#topbar/#sidebar. The probe
   // catches "page came up but never rendered" silently-broken states.
   scheduleAfterDCL(runSelfTest, 1500);
+  scheduleAfterDCL(selfHeal, 15000);
 })();
 
 export {};  // module-scope so `declare global` is allowed

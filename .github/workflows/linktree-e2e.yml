@@ -26,7 +26,7 @@ jobs:
           sparse-checkout: Lnktree/linktree/tests/e2e
       - uses: actions/checkout@v4
         with:
-          repository: diegonmarcos/cloud-u-android  # #1140: the Cloud Browser's declared user agents
+          repository: diegonmarcos/cloudy-u-android  # #1140: the Cloud Browser's declared user agents
           sparse-checkout: ac_cloud-browser/build.json
           sparse-checkout-cone-mode: false
           path: android

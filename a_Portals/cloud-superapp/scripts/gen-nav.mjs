@@ -20,7 +20,7 @@ import { execFileSync } from 'node:child_process';
 const HERE = dirname(fileURLToPath(import.meta.url));
 const DATA = resolve(HERE, '../src/data');
 const OUT = join(DATA, 'nav.json');
-const REPO = 'diegonmarcos/cloud-u-android';
+const REPO = 'diegonmarcos/cloudy-u-android';
 
 const args = process.argv.slice(2);
 const CHECK = args.includes('--check');

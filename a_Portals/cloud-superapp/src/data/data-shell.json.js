@@ -333,73 +333,73 @@
     "apk": {
       "label": "Cloud SuperApp",
       "sub": "Download APK · arm64",
-      "url": "https://github.com/diegonmarcos/cloud-u-android/releases/latest/download/Cloud-SuperApp.apk"
+      "url": "https://github.com/diegonmarcos/cloudy-u-android/releases/latest/download/Cloud-SuperApp.apk"
     },
     "constellation": [
       {
         "id": "cloud-mail",
         "label": "Mail",
-        "url": "https://github.com/diegonmarcos/cloud-u-android/releases/latest/download/cloud-comms-mail.apk"
+        "url": "https://github.com/diegonmarcos/cloudy-u-android/releases/latest/download/cloud-comms-mail.apk"
       },
       {
         "id": "cloud-chat",
         "label": "Chat",
-        "url": "https://github.com/diegonmarcos/cloud-u-android/releases/latest/download/cloud-comms-chat.apk"
+        "url": "https://github.com/diegonmarcos/cloudy-u-android/releases/latest/download/cloud-comms-chat.apk"
       },
       {
         "id": "cloud-matrix",
         "label": "Messenger",
-        "url": "https://github.com/diegonmarcos/cloud-u-android/releases/latest/download/cloud-comms-matrix.apk"
+        "url": "https://github.com/diegonmarcos/cloudy-u-android/releases/latest/download/cloud-comms-matrix.apk"
       },
       {
         "id": "cloud-dialer",
         "label": "Dialer",
-        "url": "https://github.com/diegonmarcos/cloud-u-android/releases/latest/download/cloud-comms-dialer.apk"
+        "url": "https://github.com/diegonmarcos/cloudy-u-android/releases/latest/download/cloud-comms-dialer.apk"
       },
       {
         "id": "cloud-ide",
         "label": "IDE",
-        "url": "https://github.com/diegonmarcos/cloud-u-android/releases/latest/download/Cloud-IDE-Hub.apk"
+        "url": "https://github.com/diegonmarcos/cloudy-u-android/releases/latest/download/Cloud-IDE-Hub.apk"
       },
       {
         "id": "cloud-nav",
         "label": "Nav",
-        "url": "https://github.com/diegonmarcos/cloud-u-android/releases/latest/download/Cloud-Nav.apk"
+        "url": "https://github.com/diegonmarcos/cloudy-u-android/releases/latest/download/Cloud-Nav.apk"
       },
       {
         "id": "cloud-calendar",
         "label": "Calendar",
-        "url": "https://github.com/diegonmarcos/cloud-u-android/releases/latest/download/Cloud-Calendar.apk"
+        "url": "https://github.com/diegonmarcos/cloudy-u-android/releases/latest/download/Cloud-Calendar.apk"
       },
       {
         "id": "cloud-news",
         "label": "News",
-        "url": "https://github.com/diegonmarcos/cloud-u-android/releases/latest/download/Cloud-News.apk"
+        "url": "https://github.com/diegonmarcos/cloudy-u-android/releases/latest/download/Cloud-News.apk"
       },
       {
         "id": "cloud-keyboard",
         "label": "Keyboard",
-        "url": "https://github.com/diegonmarcos/cloud-u-android/releases/latest/download/Cloud-Keyboard.apk"
+        "url": "https://github.com/diegonmarcos/cloudy-u-android/releases/latest/download/Cloud-Keyboard.apk"
       },
       {
         "id": "cloud-wallet",
         "label": "Wallet",
-        "url": "https://github.com/diegonmarcos/cloud-u-android/releases/latest/download/Cloud-Wallet.apk"
+        "url": "https://github.com/diegonmarcos/cloudy-u-android/releases/latest/download/Cloud-Wallet.apk"
       },
       {
         "id": "cloud-browser",
         "label": "Browser",
-        "url": "https://github.com/diegonmarcos/cloud-u-android/releases/latest/download/Cloud-Browser.apk"
+        "url": "https://github.com/diegonmarcos/cloudy-u-android/releases/latest/download/Cloud-Browser.apk"
       },
       {
         "id": "cloud-vault",
         "label": "Vault",
-        "url": "https://github.com/diegonmarcos/cloud-u-android/releases/latest/download/Cloud-Vault.apk"
+        "url": "https://github.com/diegonmarcos/cloudy-u-android/releases/latest/download/Cloud-Vault.apk"
       },
       {
         "id": "cloud-media-center",
         "label": "Media",
-        "url": "https://github.com/diegonmarcos/cloud-u-android/releases/latest/download/cloud-media-center.apk"
+        "url": "https://github.com/diegonmarcos/cloudy-u-android/releases/latest/download/cloud-media-center.apk"
       }
     ]
   },

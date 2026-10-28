@@ -1323,7 +1323,7 @@
               "subtitle": "Android constellation build",
               "meta": "success",
               "tone": "ok",
-              "target": "https://github.com/diegonmarcos/cloud-u-android/actions"
+              "target": "https://github.com/diegonmarcos/cloudy-u-android/actions"
             },
             {
               "title": "cloud-infra",

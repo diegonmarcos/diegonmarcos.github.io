@@ -278,7 +278,7 @@
           "id": "lf-dp-cloud-apk",
           "label": "Lf.y-D&P-Cloud-apk",
           "icon": "sa/ic_p_sol_other",
-          "target": "https://github.com/diegonmarcos/cloud-u-android"
+          "target": "https://github.com/diegonmarcos/cloudy-u-android"
         },
         {
           "id": "lf-dp-cloud-c3",

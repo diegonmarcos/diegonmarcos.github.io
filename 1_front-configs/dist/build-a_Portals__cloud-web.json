@@ -58,7 +58,7 @@
   "deploy": {},
   "wasm": {
     "_doc": "#876 where the pages come from: every constellation-fleet.json row with assets.wasm (a Cloud-<App>.wasm.zip on the rolling release of `repo`) is unzipped by scripts/fetch-wasm.sh into dist/apps/<row label>/, and its tile opens apps/<label>/index.html in an iframe. Refreshed when cloud-u-android's ship-<app>-wasm workflow sends repository_dispatch cloud-web-refresh (ship.yml).",
-    "repo": "diegonmarcos/cloud-u-android",
+    "repo": "diegonmarcos/cloudy-u-android",
     "release_tag": "latest",
     "fleet_manifest": "aa_cloud-superapp/data/constellation-fleet.json"
   },

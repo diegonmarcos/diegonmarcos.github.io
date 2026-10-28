@@ -2578,7 +2578,7 @@
       "upstream": "https://github.com/diegonmarcos/cloud-data.git"
      },
      "front": {
-      "upstream": "https://github.com/diegonmarcos/front.git"
+      "upstream": "https://github.com/diegonmarcos/Projects.git"
      },
      "front-data": {
       "upstream": "https://github.com/diegonmarcos/front-data.git"

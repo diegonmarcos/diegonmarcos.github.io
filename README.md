@@ -105,7 +105,7 @@ front/
 │   └── myphotos-myorkut      Social network homage (dark Orkut)
 │
 ├── Lnktree/              Linktree portals (sources in cloud-me-profiles, #1217)
-├── a-Lfy_CG-Zirkus/ a-Lfy_C3/ b-Nxs_PA/ b-Nxs_Blmmbrg/ c-Stk_DsX/   Lab projects (ex c_LabTools, sources in front-labtools, #1218)
+├── a-Lfy_CG-Zirkus/ a-Lfy_C3/ b-Nxs_PA/ b-Nxs_Blmmbrg/ c-Stk_DsX/   Lab projects (ex c_LabTools, sources in Projects-labtools, #1218)
 │   ├── carto                 Cartography games (Sass+tsc)
 │   ├── central_bank          Banking tool (Vite)
 │   ├── market_watch          Market tracker (Sass+esbuild)

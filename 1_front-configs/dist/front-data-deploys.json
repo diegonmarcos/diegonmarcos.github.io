@@ -56,6 +56,14 @@
     "deploy_name": "galaxy-gaia"
   },
   {
+    "path": "b_Projects/galaxy-x1",
+    "deploy_name": "galaxy-x1"
+  },
+  {
+    "path": "b_Projects/galaxy-earth",
+    "deploy_name": "galaxy-earth"
+  },
+  {
     "path": "b_Profiles/myprofile",
     "deploy_name": "myprofile"
   },
@@ -66,6 +74,10 @@
   {
     "path": "a_Companies/stark",
     "deploy_name": "stark"
+  },
+  {
+    "path": "c_Suite/grist",
+    "deploy_name": "grist"
   },
   {
     "path": "c_Suite/json-vision",

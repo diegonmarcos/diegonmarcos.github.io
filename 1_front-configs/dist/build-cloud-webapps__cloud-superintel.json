@@ -1,0 +1,44 @@
+{
+  "name": "Cloud SuperIntel",
+  "framework": "vanilla",
+  "src": "src",
+  "dist": "dist",
+  "build": [
+    {
+      "_doc": "Copy the static landing page to dist.",
+      "mod": "copy",
+      "files": "*.html",
+      "from": "src"
+    }
+  ],
+  "deploy": {},
+  "_resolved": {
+    "path": "cloud-webapps/cloud-superintel",
+    "category": "cloud-webapps",
+    "project": "cloud-superintel",
+    "key": "cloud-webapps__cloud-superintel",
+    "port": 8000,
+    "framework": "vanilla",
+    "src": "src",
+    "dist": "dist",
+    "analytics": {
+      "matomo": {
+        "container_id": "container_odwLIyPV",
+        "url": "https://analytics.diegonmarcos.com/matomo/js/container_odwLIyPV.js"
+      },
+      "umami": {
+        "site_id": "937cbde7-5ec2-450c-9d6a-8117423ac12f",
+        "url": "https://analytics.diegonmarcos.com/umami/script.js"
+      }
+    },
+    "deploy": {
+      "deployed": false,
+      "deploy_name": "cloud-superintel",
+      "url": null,
+      "reason": "no entry in ship.yml PROJECTS=()"
+    },
+    "consumers": [],
+    "has_package_json": false,
+    "has_manifest": false
+  }
+}

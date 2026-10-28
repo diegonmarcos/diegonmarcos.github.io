@@ -340,6 +340,26 @@
     "url": "https://diegonmarcos.github.io/galaxy"
   },
   {
+    "id": "b_Projects__galaxy-earth",
+    "project": "galaxy-earth",
+    "path": "b_Projects/galaxy-earth",
+    "category": "b_Projects",
+    "name": "Galaxy-Earth",
+    "framework": "sveltekit",
+    "deploy_name": "galaxy-earth",
+    "url": "https://diegonmarcos.github.io/galaxy-earth"
+  },
+  {
+    "id": "b_Projects__galaxy-x1",
+    "project": "galaxy-x1",
+    "path": "b_Projects/galaxy-x1",
+    "category": "b_Projects",
+    "name": "Galaxy-X1",
+    "framework": "sveltekit",
+    "deploy_name": "galaxy-x1",
+    "url": "https://diegonmarcos.github.io/galaxy-x1"
+  },
+  {
     "id": "c-Stk_DsX__sailytics",
     "project": "sailytics",
     "path": "c-Stk_DsX/sailytics",
@@ -388,6 +408,16 @@
     "framework": "vanilla",
     "deploy_name": "others",
     "url": "https://diegonmarcos.github.io/others"
+  },
+  {
+    "id": "c_Suite__grist",
+    "project": "grist",
+    "path": "c_Suite/grist",
+    "category": "c_Suite",
+    "name": "Sheets (Grist)",
+    "framework": "vanilla",
+    "deploy_name": "grist",
+    "url": "https://diegonmarcos.github.io/grist"
   },
   {
     "id": "c_Suite__json-vision",

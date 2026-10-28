@@ -848,7 +848,7 @@
       },
       "has_package_json": false,
       "has_manifest": false,
-      "has_dist": false
+      "has_dist": true
     },
     {
       "category": "a_Companies",
@@ -871,7 +871,7 @@
       },
       "has_package_json": false,
       "has_manifest": false,
-      "has_dist": false
+      "has_dist": true
     },
     {
       "category": "a_Companies",
@@ -1008,7 +1008,7 @@
       },
       "has_package_json": false,
       "has_manifest": false,
-      "has_dist": false
+      "has_dist": true
     },
     {
       "category": "a_Companies",
@@ -5283,6 +5283,30 @@
     },
     {
       "category": "cloud-webapps",
+      "project": "cloud-kg-store",
+      "key": "cloud-webapps__cloud-kg-store",
+      "path": "cloud-webapps/cloud-kg-store",
+      "build": {
+        "name": "Cloud KG Store",
+        "framework": "vanilla",
+        "src": "src",
+        "dist": "dist",
+        "build": [
+          {
+            "_doc": "Copy the static landing page to dist.",
+            "mod": "copy",
+            "files": "*.html",
+            "from": "src"
+          }
+        ],
+        "deploy": {}
+      },
+      "has_package_json": false,
+      "has_manifest": false,
+      "has_dist": true
+    },
+    {
+      "category": "cloud-webapps",
       "project": "cloud-mail",
       "key": "cloud-webapps__cloud-mail",
       "path": "cloud-webapps/cloud-mail",
@@ -5571,6 +5595,30 @@
     },
     {
       "category": "cloud-webapps",
+      "project": "cloud-superintel",
+      "key": "cloud-webapps__cloud-superintel",
+      "path": "cloud-webapps/cloud-superintel",
+      "build": {
+        "name": "Cloud SuperIntel",
+        "framework": "vanilla",
+        "src": "src",
+        "dist": "dist",
+        "build": [
+          {
+            "_doc": "Copy the static landing page to dist.",
+            "mod": "copy",
+            "files": "*.html",
+            "from": "src"
+          }
+        ],
+        "deploy": {}
+      },
+      "has_package_json": false,
+      "has_manifest": false,
+      "has_dist": true
+    },
+    {
+      "category": "cloud-webapps",
       "project": "cloud-tasks",
       "key": "cloud-webapps__cloud-tasks",
       "path": "cloud-webapps/cloud-tasks",
@@ -5834,6 +5882,14 @@
       "deploy_name": "galaxy-gaia"
     },
     {
+      "path": "b_Projects/galaxy-x1",
+      "deploy_name": "galaxy-x1"
+    },
+    {
+      "path": "b_Projects/galaxy-earth",
+      "deploy_name": "galaxy-earth"
+    },
+    {
       "path": "b_Profiles/myprofile",
       "deploy_name": "myprofile"
     },
@@ -5844,6 +5900,10 @@
     {
       "path": "a_Companies/stark",
       "deploy_name": "stark"
+    },
+    {
+      "path": "c_Suite/grist",
+      "deploy_name": "grist"
     },
     {
       "path": "c_Suite/json-vision",
@@ -6549,7 +6609,7 @@
         "slide": "projects",
         "column": "AI & IDE",
         "label": "my-ai",
-        "url": "https://github.com/diegonmarcos/cloudy-u-linux/tree/main/da_my-ai",
+        "url": "https://github.com/diegonmarcos/cloud-u-linux/tree/main/da_my-ai",
         "icon": "brain.svg"
       },
       {
@@ -6557,7 +6617,7 @@
         "slide": "projects",
         "column": "AI & IDE",
         "label": "my-konsole",
-        "url": "https://github.com/diegonmarcos/cloudy-u-linux/tree/main/da_my-konsole",
+        "url": "https://github.com/diegonmarcos/cloud-u-linux/tree/main/da_my-konsole",
         "icon": "device-desktop.svg"
       },
       {
@@ -6973,7 +7033,7 @@
         "slide": "projects",
         "column": "BOOT MANAGER",
         "label": "KDE Plasma",
-        "url": "https://github.com/diegonmarcos/cloudy-u-android/tree/main/aa_cloud-superapp/libs/kde-connect",
+        "url": "https://github.com/diegonmarcos/cloud-u-android/tree/main/aa_cloud-superapp/libs/kde-connect",
         "icon": "settings.svg"
       },
       {
@@ -7053,7 +7113,7 @@
         "slide": "projects",
         "column": "UNIX BIN",
         "label": "myAI",
-        "url": "https://github.com/diegonmarcos/cloudy-u-linux/tree/main/da_my-ai",
+        "url": "https://github.com/diegonmarcos/cloud-u-linux/tree/main/da_my-ai",
         "icon": "brain.svg"
       },
       {
@@ -7061,7 +7121,7 @@
         "slide": "projects",
         "column": "UNIX BIN",
         "label": "myBrowser",
-        "url": "https://github.com/diegonmarcos/cloudy-u-linux/tree/main/da_my-browser-qute",
+        "url": "https://github.com/diegonmarcos/cloud-u-linux/tree/main/da_my-browser-qute",
         "icon": "world.svg"
       },
       {
@@ -7069,7 +7129,7 @@
         "slide": "projects",
         "column": "UNIX BIN",
         "label": "myKonsole",
-        "url": "https://github.com/diegonmarcos/cloudy-u-linux/tree/main/da_my-konsole",
+        "url": "https://github.com/diegonmarcos/cloud-u-linux/tree/main/da_my-konsole",
         "icon": "device-desktop.svg"
       },
       {
@@ -7077,7 +7137,7 @@
         "slide": "projects",
         "column": "ANDROID APK",
         "label": "Browser",
-        "url": "https://github.com/diegonmarcos/cloudy-u-android/tree/main/aa_cloud-browser",
+        "url": "https://github.com/diegonmarcos/cloud-u-android/tree/main/aa_cloud-browser",
         "icon": "world.svg"
       },
       {
@@ -7085,7 +7145,7 @@
         "slide": "projects",
         "column": "ANDROID APK",
         "label": "Chat",
-        "url": "https://github.com/diegonmarcos/cloudy-u-android/tree/main/aa_cloud-chat",
+        "url": "https://github.com/diegonmarcos/cloud-u-android/tree/main/aa_cloud-chat",
         "icon": "brand-whatsapp.svg"
       },
       {
@@ -7093,7 +7153,7 @@
         "slide": "projects",
         "column": "ANDROID APK",
         "label": "Dialer",
-        "url": "https://github.com/diegonmarcos/cloudy-u-android/tree/main/aa_cloud-dialer",
+        "url": "https://github.com/diegonmarcos/cloud-u-android/tree/main/aa_cloud-dialer",
         "icon": "link.svg"
       },
       {
@@ -7101,7 +7161,7 @@
         "slide": "projects",
         "column": "ANDROID APK",
         "label": "IDE",
-        "url": "https://github.com/diegonmarcos/cloudy-u-android/tree/main/aa_cloud-ide",
+        "url": "https://github.com/diegonmarcos/cloud-u-android/tree/main/aa_cloud-ide",
         "icon": "code.svg"
       },
       {
@@ -7109,7 +7169,7 @@
         "slide": "projects",
         "column": "ANDROID APK",
         "label": "Keyboard",
-        "url": "https://github.com/diegonmarcos/cloudy-u-android/tree/main/aa_cloud-keyboard",
+        "url": "https://github.com/diegonmarcos/cloud-u-android/tree/main/aa_cloud-keyboard",
         "icon": "file-type-html.svg"
       },
       {
@@ -7117,7 +7177,7 @@
         "slide": "projects",
         "column": "ANDROID APK",
         "label": "Keyboard Libs",
-        "url": "https://github.com/diegonmarcos/cloudy-u-android/tree/main/aa_cloud-keyboard-libs",
+        "url": "https://github.com/diegonmarcos/cloud-u-android/tree/main/aa_cloud-keyboard-libs",
         "icon": "file-type-html.svg"
       },
       {
@@ -7125,7 +7185,7 @@
         "slide": "projects",
         "column": "ANDROID APK",
         "label": "Mail",
-        "url": "https://github.com/diegonmarcos/cloudy-u-android/tree/main/aa_cloud-mail",
+        "url": "https://github.com/diegonmarcos/cloud-u-android/tree/main/aa_cloud-mail",
         "icon": "mail.svg"
       },
       {
@@ -7133,7 +7193,7 @@
         "slide": "projects",
         "column": "ANDROID APK",
         "label": "Matrix",
-        "url": "https://github.com/diegonmarcos/cloudy-u-android/tree/main/aa_cloud-matrix",
+        "url": "https://github.com/diegonmarcos/cloud-u-android/tree/main/aa_cloud-matrix",
         "icon": "brand-whatsapp.svg"
       },
       {
@@ -7141,7 +7201,7 @@
         "slide": "projects",
         "column": "ANDROID APK",
         "label": "Media Center",
-        "url": "https://github.com/diegonmarcos/cloudy-u-android/tree/main/aa_cloud-media-center",
+        "url": "https://github.com/diegonmarcos/cloud-u-android/tree/main/aa_cloud-media-center",
         "icon": "headphones.svg"
       },
       {
@@ -7149,7 +7209,7 @@
         "slide": "projects",
         "column": "ANDROID APK",
         "label": "Nav",
-        "url": "https://github.com/diegonmarcos/cloudy-u-android/tree/main/aa_cloud-nav",
+        "url": "https://github.com/diegonmarcos/cloud-u-android/tree/main/aa_cloud-nav",
         "icon": "world-longitude.svg"
       },
       {
@@ -7157,7 +7217,7 @@
         "slide": "projects",
         "column": "ANDROID APK",
         "label": "SuperApp",
-        "url": "https://github.com/diegonmarcos/cloudy-u-android/tree/main/aa_cloud-superapp",
+        "url": "https://github.com/diegonmarcos/cloud-u-android/tree/main/aa_cloud-superapp",
         "icon": "device-gamepad.svg"
       },
       {
@@ -7165,7 +7225,7 @@
         "slide": "projects",
         "column": "ANDROID APK",
         "label": "Vault",
-        "url": "https://github.com/diegonmarcos/cloudy-u-android/tree/main/aa_cloud-vault",
+        "url": "https://github.com/diegonmarcos/cloud-u-android/tree/main/aa_cloud-vault",
         "icon": "lock.svg"
       },
       {
@@ -7173,7 +7233,7 @@
         "slide": "projects",
         "column": "ANDROID APK",
         "label": "Wallet",
-        "url": "https://github.com/diegonmarcos/cloudy-u-android/tree/main/aa_cloud-wallet",
+        "url": "https://github.com/diegonmarcos/cloud-u-android/tree/main/aa_cloud-wallet",
         "icon": "ledger.svg"
       },
       {
@@ -7973,7 +8033,7 @@
         "slide": "projects",
         "column": "UNIX",
         "label": "Android Apks",
-        "url": "https://github.com/diegonmarcos/cloudy-u-android/tree/main/aa_cloud-superapp",
+        "url": "https://github.com/diegonmarcos/cloud-u-android/tree/main/aa_cloud-superapp",
         "icon": "device-gamepad.svg"
       },
       {

@@ -3947,6 +3947,25 @@
     "_project": "cloud-keyboard"
   },
   {
+    "name": "Cloud KG Store",
+    "framework": "vanilla",
+    "src": "src",
+    "dist": "dist",
+    "build": [
+      {
+        "_doc": "Copy the static landing page to dist.",
+        "mod": "copy",
+        "files": "*.html",
+        "from": "src"
+      }
+    ],
+    "deploy": {},
+    "_path": "cloud-webapps/cloud-kg-store",
+    "_key": "cloud-webapps__cloud-kg-store",
+    "_category": "cloud-webapps",
+    "_project": "cloud-kg-store"
+  },
+  {
     "name": "Cloud Mail",
     "framework": "vanilla",
     "src": "src",
@@ -4173,6 +4192,25 @@
     "_key": "cloud-webapps__cloud-superapp",
     "_category": "cloud-webapps",
     "_project": "cloud-superapp"
+  },
+  {
+    "name": "Cloud SuperIntel",
+    "framework": "vanilla",
+    "src": "src",
+    "dist": "dist",
+    "build": [
+      {
+        "_doc": "Copy the static landing page to dist.",
+        "mod": "copy",
+        "files": "*.html",
+        "from": "src"
+      }
+    ],
+    "deploy": {},
+    "_path": "cloud-webapps/cloud-superintel",
+    "_key": "cloud-webapps__cloud-superintel",
+    "_category": "cloud-webapps",
+    "_project": "cloud-superintel"
   },
   {
     "name": "Cloud Tasks",

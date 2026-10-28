@@ -2,7 +2,7 @@
   "_meta": {
     "generated_by": "1_front-configs/build.sh derive",
     "schema": "front-topology/v1",
-    "project_count": 90
+    "project_count": 92
   },
   "projects": [
     {
@@ -160,7 +160,7 @@
       "port": 8032,
       "build_steps": [],
       "dep_count": 0,
-      "has_dist": false,
+      "has_dist": true,
       "deploy_name": "blmbrg"
     },
     {
@@ -172,7 +172,7 @@
       "port": 8033,
       "build_steps": [],
       "dep_count": 0,
-      "has_dist": false,
+      "has_dist": true,
       "deploy_name": "deepsc-x"
     },
     {
@@ -206,7 +206,7 @@
       "port": 8031,
       "build_steps": [],
       "dep_count": 0,
-      "has_dist": false,
+      "has_dist": true,
       "deploy_name": "mqpm"
     },
     {
@@ -1275,6 +1275,20 @@
       "deploy_name": "cloud-keyboard"
     },
     {
+      "name": "Cloud KG Store",
+      "slug": "cloud-kg-store",
+      "path": "cloud-webapps/cloud-kg-store",
+      "category": "cloud-webapps",
+      "framework": "vanilla",
+      "port": null,
+      "build_steps": [
+        "copy"
+      ],
+      "dep_count": 0,
+      "has_dist": true,
+      "deploy_name": "cloud-kg-store"
+    },
+    {
       "name": "Cloud Mail",
       "slug": "cloud-mail",
       "path": "cloud-webapps/cloud-mail",
@@ -1441,6 +1455,20 @@
       "dep_count": 0,
       "has_dist": true,
       "deploy_name": "cloud-superapp"
+    },
+    {
+      "name": "Cloud SuperIntel",
+      "slug": "cloud-superintel",
+      "path": "cloud-webapps/cloud-superintel",
+      "category": "cloud-webapps",
+      "framework": "vanilla",
+      "port": null,
+      "build_steps": [
+        "copy"
+      ],
+      "dep_count": 0,
+      "has_dist": true,
+      "deploy_name": "cloud-superintel"
     },
     {
       "name": "Cloud Tasks",

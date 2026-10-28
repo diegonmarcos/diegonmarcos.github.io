@@ -1,7 +1,7 @@
 {
   "meta": {
     "generated_from": "front-topology.json",
-    "project_count": 90
+    "project_count": 92
   },
   "categories": [
     {
@@ -92,7 +92,7 @@
           "category": "a_Companies",
           "framework": "vanilla",
           "port": 8032,
-          "has_dist": false
+          "has_dist": true
         },
         {
           "name": "DeepScX",
@@ -101,7 +101,7 @@
           "category": "a_Companies",
           "framework": "vanilla",
           "port": 8033,
-          "has_dist": false
+          "has_dist": true
         },
         {
           "name": "Leafy",
@@ -119,7 +119,7 @@
           "category": "a_Companies",
           "framework": "vanilla",
           "port": 8031,
-          "has_dist": false
+          "has_dist": true
         },
         {
           "name": "Nexus",
@@ -712,6 +712,15 @@
           "has_dist": true
         },
         {
+          "name": "Cloud KG Store",
+          "slug": "cloud-kg-store",
+          "path": "cloud-webapps/cloud-kg-store",
+          "category": "cloud-webapps",
+          "framework": "vanilla",
+          "port": null,
+          "has_dist": true
+        },
+        {
           "name": "Cloud Keyboard",
           "slug": "cloud-keyboard",
           "path": "cloud-webapps/cloud-keyboard",
@@ -823,6 +832,15 @@
           "name": "Cloud SuperApp",
           "slug": "cloud-superapp",
           "path": "cloud-webapps/cloud-superapp",
+          "category": "cloud-webapps",
+          "framework": "vanilla",
+          "port": null,
+          "has_dist": true
+        },
+        {
+          "name": "Cloud SuperIntel",
+          "slug": "cloud-superintel",
+          "path": "cloud-webapps/cloud-superintel",
           "category": "cloud-webapps",
           "framework": "vanilla",
           "port": null,

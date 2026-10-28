@@ -116,7 +116,7 @@ for (const path of ['/cloud/', '/apps/c3/', '/']) {
   ok(['Setup', 'Connect', 'Apps', 'Launcher', 'Network', 'Fleet', 'Observability'].every((h) => heads.includes(h)), `Configs tree groups (${heads.join(' / ')})`);
   await page.goto(`${BASE}/cloud/configs/`);
   const tiles = await page.$$eval('[data-configs-group] .tile__label, [data-configs-group] .tile-sep', (els) => els.map((e) => e.textContent.trim()).join(' '));
-  ok(tiles === 'SuperApp | Account | Store Controls Firewall | C3 | About', `Cloud Configs tile group (${tiles})`);
+  ok(tiles === 'SuperApp | Account | Store Quick Actions Firewall | C3 | About', `Cloud Configs tile group (${tiles})`);
   await page.goto(`${BASE}/apps/c3/`);
   const c3 = await page.$$eval('.bottom-nav__item span', (els) => els.map((e) => e.textContent.trim()).join('|'));
   ok(c3 === 'Infra|Containers|Home|Ops|Observ', `C3 bottom island (${c3})`);

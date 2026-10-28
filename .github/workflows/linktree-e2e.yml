@@ -22,7 +22,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
-          repository: diegonmarcos/cloud-me-profiles  # #1072/#1217: sources moved out of this repo
+          repository: diegonmarcos/Me-Profiles-_Lnktree  # #1072/#1217: sources moved out of this repo
           sparse-checkout: Lnktree/linktree/tests/e2e
       - uses: actions/checkout@v4
         with:

@@ -2,7 +2,7 @@
 # Refreshes the declarative GitHub Pages list behind linktree.diegonmarcos.com/gh:
 # Lnktree/linktree/scripts/gh-pages-gen.mjs (in the linktree source repo, overlaid here) reads ship.yml PROJECTS
 # (+ titles, custom domains, descriptions, commit dates), adds separate Pages repos from the GitHub API and probes every URL.
-#  - The linktree sources live in cloud-me-profiles (#1072), which the default token cannot push to. The generated
+#  - The linktree sources live in Me-Profiles-_Lnktree (#1072), which the default token cannot push to. The generated
 #    files are therefore kept in this repo at 1_front-configs/linktree-gh-pages/ and ship.yml copies them into the
 #    linktree before the Pages deploy.
 #  - schedule: daily; workflow_dispatch: manual.

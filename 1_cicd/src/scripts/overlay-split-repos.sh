@@ -7,14 +7,14 @@ set -euo pipefail
 tmp="${RUNNER_TEMP:-/tmp}"
 
 # Mirrored-layout repos: the repo carries the original top-level paths and a SPLIT-PATHS.txt.
-for r in Projects-endeavours cloud-me-others cloud-me-profiles CG-galaxy CG-circus Projects-labtools cloud-h-webapps-2; do
+for r in Projects-endeavours cloud-me-others Me-Profiles-Prf-Prs Me-Profiles-_Lnktree CG-galaxy CG-circus Projects-labtools cloud-h-webapps-2; do
   git clone --depth 1 "https://github.com/diegonmarcos/$r.git" "$tmp/$r"
   rsync -a --exclude='.git' --exclude='README.md' --exclude='SPLIT-PATHS.txt' --exclude='/.gitmodules' --exclude='/0_deployer' --exclude='/1_cicd' --exclude='/.github' --exclude='/a_Companies/leafy' --exclude='/a_Companies/nexus' --exclude='/a_Companies/stark' "$tmp/$r/" ./
   sed 's#^#/#' "$tmp/$r/SPLIT-PATHS.txt" >> .git/info/exclude
 done
 
 # One-project repos (project at the repo root): overlaid at the path the project had before the move.
-for pair in DuckPeng-LeafY:a_Companies/leafy Fin-CM-NexusZ:a_Companies/nexus DeepSc-StarkX:a_Companies/stark Fin-CM-mqpm:a_Companies/mqpm Fin-CM-Blmbrg:a_Companies/blmbrg DeepSc-X:a_Companies/deepsc-x; do
+for pair in Me-Profiles-Leaf.y:a_Companies/leafy Me-Profiles-Nexus.z:a_Companies/nexus Me-Profiles-Stark.x:a_Companies/stark Fin-CM-mqpm:a_Companies/mqpm Fin-CM-Blmbrg:a_Companies/blmbrg DeepSc-X:a_Companies/deepsc-x; do
   r="${pair%%:*}"; d="${pair##*:}"
   git clone --depth 1 "https://github.com/diegonmarcos/$r.git" "$tmp/$r"
   mkdir -p "$d"

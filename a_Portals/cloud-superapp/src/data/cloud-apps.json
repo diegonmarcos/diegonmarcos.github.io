@@ -273,7 +273,7 @@
           "id": "lf-dp-cloud-apk",
           "label": "Lf.y-D&P-Cloud-apk",
           "icon": "sa/ic_p_sol_other",
-          "target": "https://paca.diegonmarcos.com/projects"
+          "target": "https://github.com/diegonmarcos/cloud-u-android"
         },
         {
           "id": "lf-dp-cloud-c3",
@@ -285,13 +285,13 @@
           "id": "lf-cg-galaxy",
           "label": "Lf.y-CG-Galaxy",
           "icon": "sa/ic_pm_boards",
-          "target": "https://paca.diegonmarcos.com/projects"
+          "target": "https://github.com/diegonmarcos/CG-galaxy"
         },
         {
           "id": "lf-cg-zirkus",
           "label": "Lf.y-CG-Zirkus",
           "icon": "sa/ic_p_sol_pro",
-          "target": "https://paca.diegonmarcos.com/projects"
+          "target": "https://github.com/diegonmarcos/CG-circus"
         },
         {
           "separator": true
@@ -300,13 +300,13 @@
           "id": "nx-cm-mqpm",
           "label": "Nx.z-CM-MQPM",
           "icon": "sa/ic_p_markets_prices",
-          "target": "https://paca.diegonmarcos.com/projects"
+          "target": "https://github.com/diegonmarcos/Fin-CM-mqpm"
         },
         {
           "id": "nx-cm-blmbrg",
           "label": "Nx.z-CM-Blmbrg",
           "icon": "sa/ic_p_markets_prices",
-          "target": "https://paca.diegonmarcos.com/projects"
+          "target": "https://github.com/diegonmarcos/Fin-CM-Blmbrg"
         },
         {
           "separator": true
@@ -315,7 +315,7 @@
           "id": "st-deepsc-x",
           "label": "St.x-DeepSc-X",
           "icon": "sa/ic_p_sol_tools",
-          "target": "https://paca.diegonmarcos.com/projects"
+          "target": "https://github.com/diegonmarcos/DeepSc-X"
         }
       ]
     },

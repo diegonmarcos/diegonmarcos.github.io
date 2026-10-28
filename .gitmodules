@@ -16,3 +16,6 @@
 # cloud-mykonsole-dtk; the II_tools checkout was deleted. The ship engine
 # reconciles declaratively against this file, so re-adding a section here
 # resurrects a submodule on the next ship.
+[submodule "0_hub/Projects-___"]
+	path = 0_hub/Projects-___
+	url = https://github.com/diegonmarcos/Projects-___.git

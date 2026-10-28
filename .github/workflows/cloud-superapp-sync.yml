@@ -46,6 +46,8 @@ jobs:
     timeout-minutes: 20
     steps:
       - uses: actions/checkout@v4
+      - name: Overlay split source repos (config consolidation reads every project)
+        run: bash 1_cicd/src/scripts/overlay-split-repos.sh
       - uses: actions/setup-node@v4
         with:
           node-version-file: '.node-version'

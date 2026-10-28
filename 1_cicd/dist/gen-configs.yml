@@ -40,23 +40,7 @@ jobs:
       # #1072: linktree and the project sources live in their own public repos;
       # overlay them at their original paths so every path below still resolves.
       - name: 🧩 Overlay split source repos
-        run: |
-          for r in Projects-endeavours cloud-me-pub-shared cloud-me-pub-profiles-prf-prs cloud-me-pub-profiles-_lnktree CG-galaxy CG-circus Projects-labtools cloud-h-webapps-2; do
-            git clone --depth 1 "https://github.com/diegonmarcos/$r.git" "$RUNNER_TEMP/$r"
-            rsync -a --exclude='.git' --exclude='README.md' --exclude='SPLIT-PATHS.txt' --exclude='/.gitmodules' --exclude='/0_deployer' --exclude='/1_cicd' --exclude='/.github' --exclude='/a_Companies/leafy' --exclude='/a_Companies/nexus' --exclude='/a_Companies/stark' "$RUNNER_TEMP/$r/" ./
-            sed 's#^#/#' "$RUNNER_TEMP/$r/SPLIT-PATHS.txt" >> .git/info/exclude
-          done
-          # #1224: one-project repos (project at the repo root, not a mirrored layout) are overlaid at the path
-          # the project had before the move, so every path below and every published URL is unchanged.
-          for pair in cloud-me-pub-profiles-leaf.y:a_Companies/leafy cloud-me-pub-profiles-nexus.z:a_Companies/nexus cloud-me-pub-profiles-stark.x:a_Companies/stark Fin-CM-mqpm:a_Companies/mqpm Fin-CM-Blmbrg:a_Companies/blmbrg DeepSc-X:a_Companies/deepsc-x; do
-            r="${pair%%:*}"; d="${pair##*:}"
-            git clone --depth 1 "https://github.com/diegonmarcos/$r.git" "$RUNNER_TEMP/$r"
-            mkdir -p "$d"
-            rsync -a --exclude='.git' --exclude='/README.md' --exclude='/.gitmodules' --exclude='/0_deployer' --exclude='/1_cicd' --exclude='/.github' --exclude='/build.sh' --exclude='/ship.yml' "$RUNNER_TEMP/$r/" "$d/"
-            ln -sfn ../../1_cicd/src/scripts/_engine.sh "$d/build.sh"
-            ln -sfn ../../.github/workflows/ship.yml "$d/ship.yml"
-            echo "/$d" >> .git/info/exclude
-          done
+        run: bash 1_cicd/src/scripts/overlay-split-repos.sh
 
       - uses: actions/setup-node@v4
         with:

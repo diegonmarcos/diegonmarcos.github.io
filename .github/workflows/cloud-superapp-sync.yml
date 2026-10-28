@@ -42,7 +42,7 @@ jobs:
       - name: Shared web-app nav == SuperApp list (cloud-webapps gen-nav --check)
         run: node cloud-webapps/scripts/gen-nav.mjs --check
   e2e:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04  # Playwright 1.56.1 does not support 26.04 (ubuntu-latest)
     timeout-minutes: 20
     steps:
       - uses: actions/checkout@v4

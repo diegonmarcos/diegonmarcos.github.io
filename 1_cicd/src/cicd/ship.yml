@@ -88,9 +88,8 @@ jobs:
           echo "✅ Landpage build complete"
       - name: 🔨 Build Linktree
         id: build-linktree
-        if:
-          contains(steps.changed-files.outputs.all_changed_files, 'Lnktree/linktree/src/')
-
+        # #1140: always. The sources live in cloud-me-profiles and are overlaid above, so this repo's own diff never lists
+        # Lnktree/linktree/src/ and the old changed-files gate skipped the build: a source fix never reached the deployed dist.
         run: |
           echo "🔨 Building Linktree..."
           cd Lnktree/linktree

@@ -24,6 +24,12 @@ jobs:
         with:
           repository: diegonmarcos/cloud-me-profiles  # #1072/#1217: sources moved out of this repo
           sparse-checkout: Lnktree/linktree/tests/e2e
+      - uses: actions/checkout@v4
+        with:
+          repository: diegonmarcos/cloud-u-android  # #1140: the Cloud Browser's declared user agents
+          sparse-checkout: ac_cloud-browser/build.json
+          sparse-checkout-cone-mode: false
+          path: android
       - uses: actions/setup-node@v4
         with:
           node-version: 22
@@ -48,3 +54,8 @@ jobs:
           # A transient here is exactly the bug: no retry loop.
           cp Lnktree/linktree/tests/e2e/assets-load.mjs /tmp/pw/
           node /tmp/pw/assets-load.mjs "${{ github.event.inputs.url || 'https://linktree.diegonmarcos.com/' }}"
+      - name: Cards render for the Cloud Browser user agents (#1140)
+        env:
+          NODE_PATH: /tmp/pw/node_modules
+        run: |
+          node Lnktree/linktree/tests/e2e/cloud-browser-ua.mjs android/ac_cloud-browser/build.json "${{ github.event.inputs.url || 'https://linktree.diegonmarcos.com/' }}"

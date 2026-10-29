@@ -2,7 +2,7 @@
 # ║                                                                  ║
 # ║   GENERATED FILE — DO NOT EDIT                                   ║
 # ║                                                                  ║
-# ║   Source : 0_git/src/gitconfig
+# ║   Source : _dotfiles/git/src/gitconfig
 # ║   Engine : 1_cicd/src/scripts/front-ship-repo-workflow-engine.sh
 # ║   Rebuild: ./9_others/build.sh
 # ║                                                                  ║
@@ -19,7 +19,7 @@
 [fetch]
 	recurseSubmodules = on-demand
 [core]
-	hooksPath = 0_git/dist/hooks
+	hooksPath = _dotfiles/git/dist/hooks
 [pull]
 	rebase = true
 [rebase]

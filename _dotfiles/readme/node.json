@@ -5,6 +5,7 @@
   "label": "front-diegonmarcos",
   "code": "7.2.1.1",
   "kind": "repo",
+  "variant": "repo",
   "description": "Does Ducks lives in the north pole with bears or south with Penguins?",
   "visibility": "public",
   "url": "https://github.com/diegonmarcos/diegonmarcos.github.io",

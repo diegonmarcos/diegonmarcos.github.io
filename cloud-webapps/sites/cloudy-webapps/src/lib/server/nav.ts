@@ -43,7 +43,8 @@ export function linkOf(t: Tile): AppLink | undefined {
 }
 /** Phone-only apps open their own About page. */
 export const aboutPath = (appId: string) => `${appId}/about/`;
-export const ABOUT_IDS = [...LINKS.values()].filter((l) => l.kind === 'phone-only').map((l) => l.id);
+// An app that declares its own `about` section (ad_ apps, #1335) renders it as a fleet page at the same URL: no generic About card.
+export const ABOUT_IDS = [...LINKS.values()].filter((l) => l.kind === 'phone-only' && !APPS.find((a) => a.id === l.id)?.sections.some((s) => s.id === 'about')).map((l) => l.id);
 
 /** TileStrip input: a separator rides on the previous tile (separatorAfter). */
 export function tileItems(base: string, tiles: Tile[]): TileItem[] {
@@ -320,6 +321,12 @@ function whatItDoes(a: App & { description?: string | null }): string {
   if (!d) return `${a.label} is one of the apps of the cloudy APK fleet.`;
   const first = d.match(/^.{20,}?[.!?](?=\s|$)/)?.[0] ?? d;
   return first.length > 300 ? `${first.slice(0, 297).trimEnd()}...` : first;
+}
+/** The About text of a phone-only app that declares its own `about` section (it renders inside the fleet shell, same URL), else null. */
+export function declaredAbout(appId: string): { what: string } | null {
+  const app = APPS.find((a) => a.id === appId);
+  if (!app || LINKS.get(appId)?.kind !== 'phone-only' || !app.sections.some((s) => s.id === 'about')) return null;
+  return { what: whatItDoes(app as never) };
 }
 /** /<app>/about/ : the About page of a phone-only app (#1326). */
 export function aboutView(base: string, path: string): AboutView | null {

@@ -1,1 +1,0 @@
-../../../../1_cicd/dist/scripts/front-data-json-js-wrapper.sh

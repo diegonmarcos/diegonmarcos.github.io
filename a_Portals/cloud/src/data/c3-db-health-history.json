@@ -1,4 +1,0 @@
-{
- "error": "querystring must have required property 'vm'",
- "statusCode": 400
-}

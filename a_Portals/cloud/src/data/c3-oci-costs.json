@@ -1,5 +1,0 @@
-{
- "ok": false,
- "costs": [],
- "error": "No OCI tenancy ID found. Set OCI_COMPARTMENT_ID or configure ~/.oci/config"
-}

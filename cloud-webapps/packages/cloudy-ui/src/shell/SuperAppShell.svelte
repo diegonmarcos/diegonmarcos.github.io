@@ -11,6 +11,7 @@
   import BottomNavIsland from './BottomNavIsland.svelte';
   import PageTabs from './PageTabs.svelte';
   import Drawer from './Drawer.svelte';
+  import { scrollHideStep, DEFAULT_NAV_UI, type ChromeState } from './navUi';
   import EmptyState from '../components/EmptyState.svelte';
   import { swipe } from './gestures';
   import { trackLayout } from './layout';
@@ -24,12 +25,15 @@
   } = $props();
 
   let drawerOpen = $state(false);
-  let collapsed = $state(false);
   let stripH = $state(0);
   onMount(() => trackLayout());
-  // BottomNavCollapse / collapseFor: a downward scroll collapses the island to icons, an upward one restores the labels.
+  // scroll-hide (NavUiDecl, on by default): a downward scroll hides ALL bars (top row, island) until an upward scroll reveals them.
+  // The SuperApp stays Classic: its Clean mode and Configs > UI follow with the SuperApp's own Android host (nav-shape.json nav_ui.pending).
+  let chrome = $state<ChromeState>('shown');
+  const hidden = $derived(chrome === 'hidden');
   let lastY = 0;
-  const onScroll = (e: Event) => { const y = (e.currentTarget as HTMLElement).scrollTop; const d = y - lastY; lastY = y; if (d > 0) collapsed = y > 0; else if (d < 0) collapsed = false; };
+  const onScroll = (e: Event) => { const y = (e.currentTarget as HTMLElement).scrollTop; const d = y - lastY; lastY = y; chrome = scrollHideStep(chrome, y <= 0 ? -1 : d, DEFAULT_NAV_UI.scrollHide); };
+
   const tabSwipe = (dir: -1 | 1) => {
     const i = tabs.findIndex((t) => t.id === tabSelected);
     const next = tabHrefs[i + dir];
@@ -41,7 +45,7 @@
 <div class="shell" data-section={section} data-home={atHome ? '1' : '0'} style:--strip-h={stripH ? `${stripH}px` : null}>
   <Window />
   <div class="strip-wrap" bind:clientHeight={stripH}><StatusStrip chips={shell.chips} right={shell.right} battery={shell.battery} /></div>
-  <TopRow {atHome} {backHref} {historyBack} orbHref={shell.orbHref} islandHref={shell.islandHref} onMenu={() => (drawerOpen = true)} />
+  <TopRow {atHome} {backHref} {historyBack} orbHref={shell.orbHref} islandHref={shell.islandHref} onMenu={() => (drawerOpen = true)} {hidden} />
   <div class="panes" class:split={!atHome}>
     <main class="pane master content" onscroll={onScroll} use:swipe={{ onTab: tabSwipe, onEdge: () => (drawerOpen = true) }} data-testid="content">
       {#if tabs.length}<PageTabs {tabs} selected={tabSelected} />{/if}
@@ -55,7 +59,7 @@
       </section>
     {/if}
   </div>
-  <BottomNavIsland items={shell.bottom} selected={section} {collapsed} />
+  <BottomNavIsland items={shell.bottom} selected={section} {hidden} />
   <Drawer bind:open={drawerOpen} rows={shell.drawer} tabs={drawerTabs} selectedTab={atHome ? 'home' : section} app={shell.app} />
 </div>
 

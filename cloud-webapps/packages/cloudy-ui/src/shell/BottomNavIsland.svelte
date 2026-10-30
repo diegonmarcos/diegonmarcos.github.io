@@ -6,7 +6,8 @@
   import { planIsland, lerp } from './planIsland';
   import { tokens } from '../../tokens/tokens';
   import type { NavItem } from './types';
-  let { items, selected, collapsed = false, label = 'Sections' }: { items: NavItem[]; selected: string | null; collapsed?: boolean; label?: string } = $props();
+  /** hidden: scroll-hide has taken the island away. */
+  let { items, selected, collapsed = false, label = 'Sections', hidden = false }: { items: NavItem[]; selected: string | null; collapsed?: boolean; label?: string; hidden?: boolean } = $props();
   const T = tokens.nav;
   let width = $state(0);
   const plan = $derived(width ? planIsland(width, T.widthFraction, T.endInset, items.length, T) : null);
@@ -16,7 +17,7 @@
   const text = $derived(fitted && plan ? lerp(T.fitLabelTextSize, T.labelTextSize, plan.scale) : T.labelTextSize);
 </script>
 
-<nav class="bottom-nav" aria-label={label} bind:clientWidth={width} data-testid="bottom-nav" data-collapsed={collapsed ? '1' : '0'}>
+<nav class="bottom-nav" class:away={hidden} aria-label={label} bind:clientWidth={width} data-testid="bottom-nav" data-collapsed={collapsed ? '1' : '0'}>
   <div class="island" role="tablist" data-testid="island"
     style:width={fitted && plan ? `${plan.islandWidth}px` : null}
     style:padding-inline={plan ? `${plan.endInset}px` : null}>
@@ -44,5 +45,10 @@
     transition: max-height var(--nav-collapse-ms) ease, opacity var(--nav-collapse-ms) ease, padding-top var(--nav-collapse-ms) ease; }
   [data-collapsed='1'] .label { max-height: 0; opacity: 0; padding-top: 0 !important; }
   @media (prefers-reduced-motion: reduce) { .label { transition: none; } }
+  /* scroll-hide */
+  .bottom-nav { transition: transform 220ms, opacity 220ms; }
+  .away { transform: translateY(100%); opacity: 0; }
+  .away .island { pointer-events: none; }
+  @media (prefers-reduced-motion: reduce) { .bottom-nav { transition: none; } }
   :global(html.embed) .bottom-nav { display: none; }
 </style>

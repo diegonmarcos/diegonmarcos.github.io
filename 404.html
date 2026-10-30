@@ -2,9 +2,17 @@
 <html lang="en">
 <head>
 <script>
-// Moved URLs: /cloud-mobile/<rest> -> /cloud-superapp/<rest>; /c__Cloud/<group>/<app>/ -> /cloud-webapps/<app>/
-(function(){var p=location.pathname,m;
-if((m=/^\/cloud-mobile(\/.*)?$/.exec(p)))location.replace('/cloud-superapp'+(m[1]||'/')+location.search+location.hash);
+// Moved URLs (#1320 M7). Exact old pages have redirect stubs (cloud-webapps/scripts/gen-redirects.mjs); this catches the rest:
+//   /cloud-webapps/t/<target>  -> the target resolver /cloud-webapps/t/?target=<target> (Android target strings, deep links)
+//   /cloud-mobile/<rest>, /cloud-superapp/<rest> -> /cloud-webapps/<rest>   (the SuperApp mimic)
+//   /cloud/<rest>              -> /cloudy-c3/                                (the C3 portal moved)
+//   /cloud-web/apps/<slug>/    -> /cloud-webapps/<slug>/                     (a retired Kotlin/Wasm page)
+//   /c__Cloud/<group>/<app>/   -> /cloud-webapps/<app>/
+(function(){var p=location.pathname,q=location.search,h=location.hash,m;
+if((m=/^\/cloud-webapps\/t\/(.+)$/.exec(p)))location.replace('/cloud-webapps/t/?target='+encodeURIComponent(decodeURIComponent(m[1]).replace(/\/$/,'')+(h?h:'')));
+else if((m=/^\/cloud-(?:mobile|superapp)(\/.*)?$/.exec(p)))location.replace('/cloud-webapps'+(m[1]||'/')+q+h);
+else if(/^\/cloud(\/|$)/.test(p))location.replace('/cloudy-c3/'+q+h);
+else if((m=/^\/cloud-web\/apps\/([^\/]+)/.exec(p)))location.replace('/cloud-webapps/'+m[1]+'/'+q+h);
 else if((m=/^\/c__Cloud\/[^\/]+\/([^\/]+)/.exec(p)))location.replace('/cloud-webapps/'+m[1]+'/');
 else if(/^\/c__Cloud/.test(p))location.replace('/cloud-webapps/');})();
 </script>

@@ -173,32 +173,12 @@ jobs:
           bash build.sh build
           cd ../..
           echo "✅ Nexus build complete"
-      - name: 🔨 Build Cloud Dashboard
-        id: build-cloud
-        # always: the sources live in cloudy-h-webapps-2 and are overlaid above, so this repo's own diff never lists
-        # a_Portals/cloud/src/ and a changed-files gate would skip the build (same reason as Linktree, #1140).
-        run: |
-          echo "🔨 Building Cloud Dashboard..."
-          cd a_Portals/cloud
-          bash build.sh build
-          cd ../..
-          echo "✅ Cloud Dashboard build complete"
-      - name: 🔨 Build Cloud Mobile
-        id: build-cloud-superapp
-        # always: the sources live in cloudy-h-webapps-2 and are overlaid above, so this repo's own diff never lists
-        # a_Portals/cloud-superapp/src/ and a changed-files gate would skip the build (same reason as Linktree, #1140).
-        run: |
-          echo "🔨 Building Cloud Mobile..."
-          cd a_Portals/cloud-superapp
-          bash build.sh build
-          cd ../..
-          echo "✅ Cloud Mobile build complete"
-      # Cloud Web = the fleet's Kotlin/Wasm pages. Rebuilt when its own source moves OR when a
-      # page was re-released (repository_dispatch cloud-web-refresh). fetch-wasm.sh data refreshes
-      # the fleet manifest BEFORE the build (data_wrap bakes it in).
+      # Cloud Web = the fleet's Kotlin/Wasm pages (/cloud-web/apps/<slug>/), kept until each app's Svelte mimic ships
+      # (#1320); /cloud-web/ itself redirects to /cloud-webapps/cloud/webapps/ (gen-redirects.mjs). fetch-wasm.sh data
+      # refreshes the fleet manifest BEFORE the build (data_wrap bakes it in).
       - name: 🔨 Build Cloud Web
         id: build-cloud-web
-        # always (sources overlaid from cloudy-h-webapps-2; see Cloud Dashboard above).
+        # always: the sources live in cloudy-h-webapps-2 and are overlaid above, so a changed-files gate would skip it (#1140).
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
@@ -606,8 +586,6 @@ jobs:
           # Project registry: path:deploy_name
           PROJECTS=(
             "e-Root:."
-            "a_Portals/cloud:cloud"
-            "a_Portals/cloud-superapp:cloud-superapp"
             "a_Portals/cloud-web:cloud-web"
             "Lnktree/linktree:linktree"
             "Lnktree/linktree_mindmap:linktree_mindmap"
@@ -648,43 +626,8 @@ jobs:
             "a_Companies/mqpm:mqpm"
             "a_Companies/blmbrg:blmbrg"
             "a_Companies/deepsc-x:deepsc-x"
-            "cloud-webapps/_shared:cloud-webapps"
-            "cloud-webapps/ai-chat:cloud-webapps/ai-chat"
-            "cloud-webapps/c3-bot:cloud-webapps/c3-bot"
-            "cloud-webapps/c3-dns-routing:cloud-webapps/c3-dns-routing"
-            "cloud-webapps/c3-mail:cloud-webapps/c3-mail"
-            "cloud-webapps/c3-mcp-apis:cloud-webapps/c3-mcp-apis"
-            "cloud-webapps/c3-observability:cloud-webapps/c3-observability"
-            "cloud-webapps/c3-security-network:cloud-webapps/c3-security-network"
-            "cloud-webapps/cloud-browser:cloud-webapps/cloud-browser"
-            "cloud-webapps/cloud-c3:cloud-webapps/cloud-c3"
-            "cloud-webapps/cloud-calc:cloud-webapps/cloud-calc"
-            "cloud-webapps/cloud-camera:cloud-webapps/cloud-camera"
-            "cloud-webapps/cloud-chat:cloud-webapps/cloud-chat"
-            "cloud-webapps/cloud-code:cloud-webapps/cloud-code"
-            "cloud-webapps/cloud-contacts:cloud-webapps/cloud-contacts"
-            "cloud-webapps/cloud-dialer:cloud-webapps/cloud-dialer"
-            "cloud-webapps/cloud-drive:cloud-webapps/cloud-drive"
-            "cloud-webapps/cloud-gallery:cloud-webapps/cloud-gallery"
-            "cloud-webapps/cloud-keyboard:cloud-webapps/cloud-keyboard"
-            "cloud-webapps/cloud-mail:cloud-webapps/cloud-mail"
-            "cloud-webapps/cloud-matrix:cloud-webapps/cloud-matrix"
-            "cloud-webapps/cloud-me:cloud-webapps/cloud-me"
-            "cloud-webapps/cloud-media:cloud-webapps/cloud-media"
-            "cloud-webapps/cloud-myterminal:cloud-webapps/cloud-myterminal"
-            "cloud-webapps/cloud-nav:cloud-webapps/cloud-nav"
-            "cloud-webapps/cloud-news:cloud-webapps/cloud-news"
-            "cloud-webapps/cloud-notes:cloud-webapps/cloud-notes"
-            "cloud-webapps/cloud-office:cloud-webapps/cloud-office"
-            "cloud-webapps/cloud-search:cloud-webapps/cloud-search"
-            "cloud-webapps/cloud-store:cloud-webapps/cloud-store"
-            "cloud-webapps/cloud-superapp:cloud-webapps/cloud-superapp"
-            "cloud-webapps/cloud-tasks:cloud-webapps/cloud-tasks"
-            "cloud-webapps/cloud-terminal:cloud-webapps/cloud-terminal"
-            "cloud-webapps/cloud-tools-small-llms:cloud-webapps/cloud-tools-small-llms"
-            "cloud-webapps/cloud-vault:cloud-webapps/cloud-vault"
-            "cloud-webapps/cloud-wallet:cloud-webapps/cloud-wallet"
-            "cloud-webapps/cloud-writer:cloud-webapps/cloud-writer"
+            "cloud-webapps/sites/cloudy-webapps:cloud-webapps"
+            "cloud-webapps/sites/cloudy-c3:cloudy-c3"
             "c_Circus/others:others"
             "c-Stk_DsX/sailytics:sailytics"
             "b-Nxs_Blmmbrg/news:news"
@@ -745,10 +688,10 @@ jobs:
       - name: 🧭 Service fallback pages (cloud-webapps/<service>/dist)
         run: |
           # Generated per-service fallback sites (cloud-webapps scripts/gen-fallback.mjs): every
-          # cloud-webapps/<folder>/dist/index.html (and, since #1320 M0, cloud-webapps/services/<slug>/dist)
-          # not already published above ships at /cloud-webapps/<slug>/.
+          # cloud-webapps/services/<slug>/dist not already published above ships at /cloud-webapps/<slug>/,
+          # with the shared nav they load (/cloud-webapps/nav.js + nav.css, #1320 M7).
           n=0
-          for d in cloud-webapps/*/dist cloud-webapps/services/*/dist; do
+          for d in cloud-webapps/services/*/dist; do
             name="$(basename "$(dirname "$d")")"
             [ -f "$d/index.html" ] || continue
             [ -e "_site/cloud-webapps/$name" ] && continue
@@ -756,9 +699,12 @@ jobs:
             cp -rL "$d"/. "_site/cloud-webapps/$name/"
             n=$((n + 1))
           done
+          cp cloud-webapps/_shared/dist/nav.js cloud-webapps/_shared/dist/nav.css _site/cloud-webapps/
           echo "service fallback pages published: $n"
       - name: 🔀 Redirect stubs for renamed URLs
-        run: node cloud-webapps/scripts/gen-redirects.mjs _site
+        run: |
+          node cloud-webapps/scripts/gen-redirects.mjs _site
+          cp 404.html _site/404.html
       - name: ⬆️ Upload Site Artifact
         uses: actions/upload-pages-artifact@v3
         with:

@@ -11,6 +11,8 @@ import content from '../../apps/superapp/data/sections-content.json';
 import core from '../../apps/superapp/data/sections-core.json';
 import linktree from '../../apps/superapp/data/linktree.json';
 import shellSeed from '../../apps/superapp/data/shell.json';
+import statusBarJson from '@cloudy/ui/nav/status-bar.json';
+import { stripChips, stripRight, stripShowsBattery, type StatusBarDecl } from '@cloudy/ui/src/shell/statusBar.ts';
 
 type Page = { id: string; label: string; icon?: string; hidden?: boolean; action?: string; is_action?: boolean; pages?: Page[]; mirror_section?: string; mode?: string; url?: string; separator_before?: boolean; group?: string; subgroup?: string };
 type Tile = { id?: string; label: string; icon?: string; target?: string; separator?: boolean; tint?: boolean };
@@ -66,6 +68,8 @@ export function cloudGroups(base: string): TileGroup[] {
   return (cloud?.tile_groups ?? []).map((g) => ({ title: g.title, tiles: tileItems(base, g.tiles) }));
 }
 
+const STATUS_BAR = statusBarJson.statusBar as unknown as StatusBarDecl;
+
 export function shellData(base: string): ShellData {
   const seed = shellSeed as unknown as { app: { name: string; build: string; user: ShellData['app']['user'] }; statusBar: { left: { label: string; active: boolean }[]; right: { label: string; value: string }[] } };
   const left = seed.statusBar.left;
@@ -79,14 +83,15 @@ export function shellData(base: string): ShellData {
     homeHref: joinBase(base, ''),
     orbHref: href(base, SA.top_orbs?.right).href,
     islandHref: href(base, SA.dynamic_island_action).href,
-    // NetworkSections.ORDER: mobile, WiFi, BT, WG, KDE, ADB, Data, HS, GPS (on = white, off = #44FFFFFF); the replica's mock state.
-    chips: [
-      { label: '5G', on: on('5G'), dots: 4 }, { label: 'WiFi', on: on('WiFi'), dots: 3 }, { label: 'BT', on: on('BT'), dots: 1 },
-      { label: 'WG', on: on('WG'), dots: 0 }, { label: 'KDE', on: on('KDE'), dots: 0 }, { label: 'ADB', on: false, dots: -1 },
-      { label: 'Data', on: on('USB'), dots: -1 }, { label: 'HS', on: false, dots: -1 }, { label: 'GPS', on: false, dots: 0 },
-    ],
-    right: seed.statusBar.right.filter((r) => r.label !== 'BAT').map((r) => `${r.label} ${r.value}`),
-    battery: parseInt(seed.statusBar.right.find((r) => r.label === 'BAT')?.value ?? '84', 10),
+    // The bar is RENDERED FROM build.json::home_status_bar (nav/status-bar.json): the elements, their cluster, order and
+    // visibility are the declaration's; only the mock state (on/off, dots, values) is the replica's own.
+    chips: stripChips(STATUS_BAR, {
+      cellular: { on: on('5G'), dots: 4 }, wifi: { on: on('WiFi'), dots: 3 }, bluetooth: { on: on('BT'), dots: 1 },
+      mesh: { on: on('WG'), dots: 0 }, kde: { on: on('KDE'), dots: 0 }, adb: { on: false, dots: -1 },
+      data: { on: on('USB'), dots: -1 }, hotspot: { on: false, dots: -1 }, gps: { on: false, dots: 0 },
+    }),
+    right: stripRight(STATUS_BAR, Object.fromEntries(seed.statusBar.right.map((r) => [{ R: 'ram', S: 'storage', C: 'cpu' }[r.label] ?? r.label, r.value]))),
+    battery: stripShowsBattery(STATUS_BAR) ? parseInt(seed.statusBar.right.find((r) => r.label === 'BAT')?.value ?? '84', 10) : 0,
     app: { name: seed.app.name, build: seed.app.build, stamp: 'web mimic · #1320', user: seed.app.user },
   };
 }
@@ -105,7 +110,7 @@ function tabsOf(base: string, prefix: string, pages: Page[]): Tab[] {
   }));
 }
 
-export type StackCardData = { title: string; subtitle: string; rows: [string, string][]; caption: string; href: string | null };
+export type StackCardData = { title: string; subtitle: string; rows: [string, string][]; caption: string; href: string | null; planned?: boolean };
 export type ItemRow = { title: string; subtitle: string; meta: string; href: string | null; lead: string };
 export type Body = {
   cube?: boolean;
@@ -127,9 +132,16 @@ function contentPage(sectionId: string, pageId: string): ContentPage | undefined
   return sec?.pages.find((p) => p.id === pageId) ?? corePage?.pages.find((p) => p.id === pageId);
 }
 
-function stackCards(base: string, declared: { kind?: string; title: string; subtitle?: string }[] | undefined, seed: Record<string, unknown>[] | undefined): StackCardData[] {
+function stackCards(base: string, declared: { kind?: string; title: string; subtitle?: string; url?: string; planned?: boolean; note?: string }[] | undefined, seed: Record<string, unknown>[] | undefined): StackCardData[] {
   const out: StackCardData[] = [];
-  for (const c of declared ?? []) {
+  for (const c of (declared ?? []) as { kind?: string; title: string; subtitle?: string; url?: string; planned?: boolean; note?: string }[]) {
+    // kind=entry (Cloud > Lnktree pages, #1331): title, one-line description and the url gen-navdata resolved from the declared
+    // source; an entry with no url is planned: greyed, with its short note, nothing to open.
+    if (c.kind === 'entry') {
+      out.push({ title: c.title, subtitle: c.subtitle ?? '', rows: [], caption: c.url ? '' : (c.note ?? 'Planned'), href: c.url ?? null, planned: !c.url });
+      continue;
+    }
+    if (c.kind === 'section_title') { out.push({ title: c.title, subtitle: '', rows: [], caption: '', href: null }); continue; }
     const s = (seed ?? []).find((x) => x.title === c.title || (c.kind && x.kind === c.kind));
     out.push({ title: c.title, subtitle: c.subtitle ?? (s?.subtitle as string) ?? '', rows: ((s?.rows as unknown[]) ?? []).filter((r): r is [string, string] => Array.isArray(r) && typeof r[0] === 'string').map((r) => [r[0], String(r[1] ?? '')]),
       caption: (s?.caption as string) ?? 'Live on the device: this card reads phone or fleet state a browser cannot reach.', href: href(base, s?.target as string).href });

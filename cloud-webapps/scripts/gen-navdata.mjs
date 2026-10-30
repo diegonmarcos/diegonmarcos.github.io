@@ -9,6 +9,7 @@
 //   routes.json  : every URL path both shells prerender (relative to the site base), with what it renders
 //   targets.json : Android target string -> canonical web path (section:, page:, extapp:, extapp:#page:) for /t/<target>
 //   app-ids.json : the [app=appId] param matcher list
+//   status-bar.json : the home status bar, the Tasks popup and the One-Hand index declarations (#1332), top-level build.json keys
 //   apps-ui.json : each fleet app's other ui declarations (calc modes/keys, c3_ops, ...), read at build time only
 // Hand-written companion: packages/cloudy-ui/nav/nav-overlay.json (what Android cannot say: list-detail flags, portals).
 // The legacy shared nav (scripts/gen-nav.mjs -> /cloud-webapps/nav.js, used by the service pages) is a separate script.
@@ -36,6 +37,29 @@ const SHELL_KEYS = ['default_section', 'bottom_nav', 'sections', 'main_menu', 'h
   'swipe_walk', 'home_actions', 'dynamic_island_action', 'notification_center', 'floating_nav', 'app_tabs', 'search_scopes', 'retired_tile_ids'];
 const superapp = pick(ui, SHELL_KEYS);
 superapp.external_apps = (ui.external_apps ?? []).map((e) => pick(e, ['id', 'folder', 'hub_package', 'install_package', 'site']));
+// kind=entry stack panels (Cloud > Lnktree pages, #1331) name a DECLARED source, never a URL; the web page needs the URL, so it is
+// resolved here exactly the way LnktreeTargets.kt resolves it on the phone: `site` = the single linktree.json link of that label,
+// `registry` = ui.app_urls.registry_sites[code], `repo` (+ `path`) = ui.app_urls.repo_base + repo [+ /tree/main/path]. Planned or
+// unresolved entries get no url and are drawn greyed.
+const lnkLinks = new Map();
+(function collect(o) {
+  if (Array.isArray(o)) o.forEach(collect);
+  else if (o && typeof o === 'object') {
+    if (typeof o.label === 'string' && typeof o.url === 'string' && /^https?:\/\//.test(o.url)) lnkLinks.set(o.label, new Set([...(lnkLinks.get(o.label) ?? []), o.url]));
+    Object.values(o).forEach(collect);
+  }
+})(JSON.parse(need('aa_cloud-superapp/data/linktree.json')));
+const appUrls = ui.app_urls ?? {};
+function entryUrl(e) {
+  if (e.planned) return null;
+  if (e.site) { const u = lnkLinks.get(e.site); return u && u.size === 1 ? [...u][0] : null; }
+  if (e.registry) return appUrls.registry_sites?.[e.registry] ?? null;
+  if (e.repo) return appUrls.repo_base ? `${appUrls.repo_base}${e.repo}${e.path ? `/tree/main/${e.path}` : ''}` : null;
+  return null;
+}
+for (const s of superapp.sections) for (const [k, v] of Object.entries(s)) {
+  if (k.startsWith('stack_') && Array.isArray(v)) for (const e of v) if (e.kind === 'entry') { const u = entryUrl(e); if (u) e.url = u; for (const f of ['site', 'registry', 'repo', 'path']) delete e[f]; }
+}
 for (const s of superapp.sections) {
   if (/^(cloud|c3)-/.test(s.id)) fail(`SuperApp section id ${s.id} would collide with the app-id route matcher`);
 }
@@ -128,7 +152,12 @@ const clash = [...new Set([...services, ...extraSvc])].filter((s) => firstSeg.ha
 if (clash.length) fail(`service slug(s) collide with a site route: ${clash.join(', ')} (rename the service page or the route)`);
 
 const json = (o) => JSON.stringify(o, null, 2) + '\n';
+// The home status bar, the Tasks popup (the clock's popup) and the One-Hand page index, as the SuperApp declares them in
+// aa_cloud-superapp/build.json (home_status_bar / tasks_popup / onehand_page, #1332). The strip below renders from the first.
+const chrome = {};
+for (const k of ['home_status_bar', 'tasks_popup', 'onehand_page']) chrome[k] = strip(saBuild[k] ?? fail(`aa_cloud-superapp/build.json has no ${k}`));
 emit(root, {
+  [`${OUT}/status-bar.json`]: json({ _generated: HEADER, statusBar: chrome.home_status_bar, tasksPopup: chrome.tasks_popup, onehandPage: chrome.onehand_page }),
   [`${OUT}/nav.json`]: json({ _generated: HEADER, superapp, apps }),
   [`${OUT}/routes.json`]: json({ _generated: HEADER, count: routes.length, routes }),
   [`${OUT}/targets.json`]: json({ _generated: HEADER, count: Object.keys(targets).length, targets }),

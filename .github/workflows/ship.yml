@@ -640,6 +640,7 @@ jobs:
             "a_Companies/deepsc-x:deepsc-x"
             "cloud-webapps/sites/cloudy-webapps:cloud-webapps"
             "cloud-webapps/sites/cloudy-c3:cloudy-c3"
+            "desktop/sites/cloudy-webdesktop:cloud-desktop"
             "c_Circus/others:others"
             "c-Stk_DsX/sailytics:sailytics"
             "b-Nxs_Blmmbrg/news:news"

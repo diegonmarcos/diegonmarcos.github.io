@@ -20,7 +20,11 @@ const zi = args.indexOf('--zip');
 rmSync(OUT, { recursive: true, force: true });
 mkdirSync(join(OUT, 'android'), { recursive: true });
 const zip = zi >= 0 ? args[zi + 1] : join(OUT, 'Cloud-UI-Baseline.zip');
-if (zi < 0) execFileSync('gh', ['release', 'download', 'latest', '-R', 'diegonmarcos/cloudy-u-android', '-p', 'Cloud-UI-Baseline.zip', '-D', OUT, '--clobber'], { stdio: 'inherit' });
+// no published baseline (or no network) is a warning, not a failure: only a compared pair over the limit blocks
+if (zi < 0) {
+  try { execFileSync('gh', ['release', 'download', 'latest', '-R', 'diegonmarcos/cloudy-u-android', '-p', 'Cloud-UI-Baseline.zip', '-D', OUT, '--clobber'], { stdio: 'inherit' }); }
+  catch { console.log('::warning::Cloud-UI-Baseline.zip unavailable: baseline compare skipped'); process.exit(0); }
+}
 execFileSync('unzip', ['-qo', zip, '-d', join(OUT, 'android')]);
 
 const LIMIT = 0.05;
@@ -57,7 +61,10 @@ for (const dev of existsSync(WEB) ? readdirSync(WEB) : []) {
   for (const [name, [y0, y1], blocking] of PAIRS) {
     const a = join(OUT, 'android', dev, `${name}.png`), w = join(WEB, dev, `${name}.png`);
     if (!existsSync(a) || !existsSync(w)) { rows.push(`| ${dev} | ${name} ${y0}-${y1} | - | missing ${existsSync(a) ? 'web' : 'android'} |`); continue; }
-    const A = PNG.sync.read(readFileSync(a)), W = resize(PNG.sync.read(readFileSync(w)), A.width, A.height);
+    // an emulator that died mid-capture leaves a truncated PNG: report it, do not abort the whole compare
+    let A, W;
+    try { A = PNG.sync.read(readFileSync(a)); } catch { rows.push(`| ${dev} | ${name} ${y0}-${y1} | - | unreadable android |`); continue; }
+    try { W = resize(PNG.sync.read(readFileSync(w)), A.width, A.height); } catch { rows.push(`| ${dev} | ${name} ${y0}-${y1} | - | unreadable web |`); continue; }
     const ca = crop(A, y0, y1), cw = crop(W, y0, y1), diff = new PNG({ width: ca.width, height: ca.height });
     const n = pixelmatch(ca.data, cw.data, diff.data, ca.width, ca.height, { threshold: 0.15 });
     const ratio = n / (ca.width * ca.height);

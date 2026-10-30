@@ -187,9 +187,8 @@ jobs:
           echo "✅ Nexus build complete"
       - name: 🔨 Build Cloud Dashboard
         id: build-cloud
-        if:
-          contains(steps.changed-files.outputs.all_changed_files, 'a_Portals/cloud/src/')
-
+        # always: the sources live in cloudy-h-webapps-2 and are overlaid above, so this repo's own diff never lists
+        # a_Portals/cloud/src/ and a changed-files gate would skip the build (same reason as Linktree, #1140).
         run: |
           echo "🔨 Building Cloud Dashboard..."
           cd a_Portals/cloud
@@ -198,9 +197,8 @@ jobs:
           echo "✅ Cloud Dashboard build complete"
       - name: 🔨 Build Cloud Mobile
         id: build-cloud-superapp
-        if:
-          contains(steps.changed-files.outputs.all_changed_files, 'a_Portals/cloud-superapp/src/')
-
+        # always: the sources live in cloudy-h-webapps-2 and are overlaid above, so this repo's own diff never lists
+        # a_Portals/cloud-superapp/src/ and a changed-files gate would skip the build (same reason as Linktree, #1140).
         run: |
           echo "🔨 Building Cloud Mobile..."
           cd a_Portals/cloud-superapp
@@ -212,10 +210,7 @@ jobs:
       # the fleet manifest BEFORE the build (data_wrap bakes it in).
       - name: 🔨 Build Cloud Web
         id: build-cloud-web
-        if: >-
-          github.event_name == 'repository_dispatch' ||
-          contains(steps.changed-files.outputs.all_changed_files, 'a_Portals/cloud-web/src/') ||
-          contains(steps.changed-files.outputs.all_changed_files, 'a_Portals/cloud-web/scripts/')
+        # always (sources overlaid from cloudy-h-webapps-2; see Cloud Dashboard above).
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
@@ -762,9 +757,10 @@ jobs:
       - name: 🧭 Service fallback pages (cloud-webapps/<service>/dist)
         run: |
           # Generated per-service fallback sites (cloud-webapps scripts/gen-fallback.mjs): every
-          # cloud-webapps/<folder>/dist/index.html not already published above ships at the same path.
+          # cloud-webapps/<folder>/dist/index.html (and, since #1320 M0, cloud-webapps/services/<slug>/dist)
+          # not already published above ships at /cloud-webapps/<slug>/.
           n=0
-          for d in cloud-webapps/*/dist; do
+          for d in cloud-webapps/*/dist cloud-webapps/services/*/dist; do
             name="$(basename "$(dirname "$d")")"
             [ -f "$d/index.html" ] || continue
             [ -e "_site/cloud-webapps/$name" ] && continue

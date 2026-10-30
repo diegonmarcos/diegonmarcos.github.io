@@ -757,9 +757,10 @@ jobs:
       - name: 🧭 Service fallback pages (cloud-webapps/<service>/dist)
         run: |
           # Generated per-service fallback sites (cloud-webapps scripts/gen-fallback.mjs): every
-          # cloud-webapps/<folder>/dist/index.html not already published above ships at the same path.
+          # cloud-webapps/<folder>/dist/index.html (and, since #1320 M0, cloud-webapps/services/<slug>/dist)
+          # not already published above ships at /cloud-webapps/<slug>/.
           n=0
-          for d in cloud-webapps/*/dist; do
+          for d in cloud-webapps/*/dist cloud-webapps/services/*/dist; do
             name="$(basename "$(dirname "$d")")"
             [ -f "$d/index.html" ] || continue
             [ -e "_site/cloud-webapps/$name" ] && continue

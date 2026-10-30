@@ -20,7 +20,7 @@ set -euo pipefail
 tmp="${RUNNER_TEMP:-/tmp}"
 
 # Mirrored-layout repos: the repo carries the original top-level paths and a SPLIT-PATHS.txt.
-for r in Projects-endeavours cloud-me-pub-shared cloud-me-pub-profiles-prf-prs cloud-me-pub-profiles-_lnktree CG-galaxy CG-circus Projects-labtools cloud-h-webapps-2; do
+for r in Projects-endeavours cloud-me-pub-shared cloud-me-pub-profiles-prf-prs cloud-me-pub-profiles-_lnktree CG-galaxy CG-circus Projects-labtools cloudy-h-webapps-desk; do
   git clone --depth 1 "https://github.com/diegonmarcos/$r.git" "$tmp/$r"
   rsync -a --exclude='.git' --exclude='README.md' --exclude='SPLIT-PATHS.txt' --exclude='/.gitmodules' --exclude='/0_deployer' --exclude='/1_cicd' --exclude='/.github' --exclude='/a_Companies/leafy' --exclude='/a_Companies/nexus' --exclude='/a_Companies/stark' "$tmp/$r/" ./
   sed 's#^#/#' "$tmp/$r/SPLIT-PATHS.txt" >> .git/info/exclude

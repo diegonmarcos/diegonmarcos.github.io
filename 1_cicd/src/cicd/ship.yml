@@ -178,7 +178,7 @@ jobs:
       # refreshes the fleet manifest BEFORE the build (data_wrap bakes it in).
       - name: 🔨 Build Cloud Web
         id: build-cloud-web
-        # always: the sources live in cloudy-h-webapps-2 and are overlaid above, so a changed-files gate would skip it (#1140).
+        # always: the sources live in cloudy-h-webapps-desk and are overlaid above, so a changed-files gate would skip it (#1140).
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |

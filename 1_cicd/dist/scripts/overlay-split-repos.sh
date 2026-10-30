@@ -27,7 +27,7 @@ for r in Projects-endeavours cloud-me-pub-shared cloud-me-pub-profiles-prf-prs c
 done
 
 # One-project repos (project at the repo root): overlaid at the path the project had before the move.
-for pair in cloud-me-pub-profiles-leaf.y:a_Companies/leafy cloud-me-pub-profiles-nexus.z:a_Companies/nexus cloud-me-pub-profiles-stark.x:a_Companies/stark Fin-CM-mqpm:a_Companies/mqpm Fin-CM-Blmbrg:a_Companies/blmbrg DeepSc-X:a_Companies/deepsc-x; do
+for pair in cloud-me-pub-profiles-leaf.y:a_Companies/leafy cloud-me-pub-profiles-nexus.z:a_Companies/nexus cloud-me-pub-profiles-stark.x:a_Companies/stark Capital-Macro-Central-Bank:a_Companies/mqpm Capital-Stack-Fin-Terminal:a_Companies/blmbrg HardTech-DeepXTech:a_Companies/deepsc-x; do
   r="${pair%%:*}"; d="${pair##*:}"
   git clone --depth 1 "https://github.com/diegonmarcos/$r.git" "$tmp/$r"
   mkdir -p "$d"

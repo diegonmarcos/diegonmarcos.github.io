@@ -99,14 +99,14 @@ describe('model route order: the container /v1 first, then the public source, th
   });
   it('a panel whose every route is CORS-closed is blocked without a request', async () => {
     const h = harness(() => '{}');
-    await expect(loadPanel(panel('market_monitor', 'equity'), dash('market_monitor'), h.ctx)).rejects.toMatchObject({ kind: 'blocked' });
+    await expect(loadPanel(panel('world_equity_indices', 'cboe'), dash('world_equity_indices'), h.ctx)).rejects.toMatchObject({ kind: 'blocked' });
     expect(h.asked).toEqual([]);
   });
   it('one request per item; a failing item is skipped; all failing keeps the block reason', async () => {
     const h = harness((u) => (u.includes('/BTC-USD/') ? JSON.stringify({ open: '100', last: '110' }) : null));
     const d = await loadPanel(panel('market_monitor', 'crypto'), dash('market_monitor'), h.ctx);
     expect(h.asked.length).toBe(3);
-    expect(d.rows).toEqual([['Bitcoin', '110.00', '+10.0000', '+10.00', '24h']]);
+    expect(d.rows).toEqual([['Bitcoin', '110.00', '+10.00', '+10.00', '24h']]);
     await expect(loadPanel(panel('market_monitor', 'crypto'), dash('market_monitor'), harness(() => null).ctx)).rejects.toMatchObject({ kind: 'blocked' });
   });
   it('the container route needs the declared /v1 path and an answering mesh', async () => {

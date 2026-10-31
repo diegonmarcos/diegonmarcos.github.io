@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import { FINTERM } from './catalog';
 import { FetchError, forwardRate, loadPanel, NA, sig, type Ctx, type Dashboard } from './engine';
-import { cell, coverage, gatedAverage, shortName, maxDrawdown1y, perfFormat, perfRow, PERF_COLUMNS, rebalanced, trailing, vol1y, weighted, type Close } from './tables';
+import { cell, coverage, emUsd, parseOne, reasons, gatedAverage, shortName, maxDrawdown1y, perfFormat, perfRow, PERF_COLUMNS, rebalanced, trailing, vol1y, weighted, type Close } from './tables';
 
 // #1370 the per-item tables (port of Performance.kt / Tables.kt): Performance.row, daily rebalancing, GDP weights, container first, CORS skip.
 const dash = (id: string) => FINTERM.dashboards.find((d) => d.id === id) as Dashboard;
@@ -118,3 +118,84 @@ describe('table panels end to end', () => {
     expect(d.rows[0][1]).toBe(sig(100 * (0.6 * 1.01 + 0.4 * 1.1)));
   });
 });
+
+describe('one /v1/curves/matrix call', () => {
+  const body = JSON.stringify({ fill: { rate: 0.25 }, rows: [
+    { country: 'US', gdp_usd: 30e12, tenors: [{ tenor: '3M', value: 4.1, date: '2026-10-30' }, { tenor: '10Y', value: 4.9, date: '2026-10-30' }] },
+    { country: 'FR', gdp_usd: 3.4e12, tenors: [{ tenor: '3M', value: null, date: null, method: 'no free source declared for this cell' }, { tenor: '10Y', value: 4.44, date: '2026-09' }] },
+    { country: 'EA', gdp_usd: null, tenors: [{ tenor: '10Y', value: 3.3, date: '2026-10-29' }] },
+  ] });
+  it('keeps the declared countries in order with the container GDP and every empty cell reason', () => {
+    const one = parseOne(body, ['US', 'FR', 'CN'], 'api')!;
+    expect(one.got.map((x) => x[0])).toEqual(['US', 'FR', 'CN']);
+    expect(one.got[1][1].got.points.map((p) => [p.key, p.x, p.value])).toEqual([['10Y', 10, 4.44]]);
+    expect(one.got[2][1].why).toBe('not in /v1/curves/matrix');
+    expect(one.gdp.FR).toBeCloseTo(3400);
+    expect(one.fill).toBe(0.25);
+    expect(reasons(one.why, ['3M', '10Y'])).toEqual(['no free source declared for this cell: FR 3M']);
+  });
+  it('is null when no declared country has a value (the per-country path runs)', () => {
+    expect(parseOne(JSON.stringify({ rows: [] }), ['US'], 'api')).toBeNull();
+  });
+});
+
+describe('EM government bonds in USD', () => {
+  it('one row per country, returns in %, each empty cell explained', () => {
+    const body = JSON.stringify({ method: 'm', rows: [
+      { country: 'BR', currency: 'BRL', yield_last: { month: '2026-09', value: 13.1 }, usd_return_annualised: { '1y': 0.0812, '10y': 0.031, '25y': null }, null_reason: null },
+      { country: 'SA', currency: null, yield_last: null, usd_return_annualised: { '1y': null, '10y': null, '25y': null }, null_reason: 'no free 10-year government yield series for this country' }] });
+    const d = emUsd(panel('yields_matrix', 'em_usd'), body, 'api');
+    expect(d.rows[0]).toEqual(['BR', 'BRL', '13.10', '+8.12%', '+3.10%', NA]);
+    expect(d.rows[1].slice(1).every((x) => x === NA)).toBe(true);
+    expect(d.note).toContain('BR (history shorter than 25Y)');
+    expect(d.asOf).toBe('2026-09');
+  });
+});
+
+describe('World Bonds merged table (#1370, spec 9 spreads vs Bund / UST)', () => {
+  it('the 10Y over the 2Y, the Bund and the UST in bp; a missing yield is a dash', async () => {
+    const { spreads, SPREAD_COLS } = await import('./tables');
+    const m = { columns: ['Country', 'Cov', '2Y', '10Y'], rows: [['United States', '52%', '4.56', '4.94'], ['Germany', '9%', '2.10', '2.60'], ['Italy', '4%', '\u2014', '3.75']], links: [], chart: [], asOf: '2026-10-30', note: '', servedBy: '' };
+    const d = spreads(m, { US: 'United States', DE: 'Germany', IT: 'Italy' });
+    expect(d.columns).toEqual(SPREAD_COLS);
+    expect(d.rows[0]).toEqual(['United States', '4.56', '4.94', '+38', '+234', '0']);
+    expect(d.rows[1]).toEqual(['Germany', '2.10', '2.60', '+50', '0', '-234']);
+    expect(d.rows[2]).toEqual(['Italy', '\u2014', '3.75', '\u2014', '+115', '-119']);
+  });
+});
+
+describe('60/40 vs 100/0 risk comparison (spec 9)', () => {
+  it('stacks each compared portfolio headline row on the same legs', async () => {
+    const { riskCompare } = await import('./tables');
+    const bars = (a: number, b: number) => ({ points: [], events: [], kv: [], rows: [], links: [], bars: [{ date: '2026-10-29', c: a }, { date: '2026-10-30', c: b }] });
+    const got = new Map([['Bonds', { got: bars(100, 101), by: 'api', why: '' }], ['Equity', { got: bars(100, 110), by: 'api', why: '' }]]) as never;
+    const p = { id: 'risk', title: '', source: 'cboe', view: 'table', derive: 'risk_compare', columns: ['Name', 'Last', '1Y'] } as never;
+    const d = riskCompare(p, { proxies: { Bonds: 'AGG', Equity: 'ACWI' } } as never, [[['Bonds', 40], ['Equity', 60]], [['Bonds', 0], ['Equity', 100]]], got);
+    expect(d.rows.map((r) => r[0])).toEqual(['Portfolio 40/60', 'Portfolio 0/100']);
+    expect(d.rows[1][1]).not.toBe(d.rows[0][1]);
+  });
+});
+
+describe('FX vs PPP (#1374): the same maths as /v1/fx/ppp', () => {
+  it('carries PPP by relative inflation and real-adjusts the year-ago window', async () => {
+    const { pppToday, realAdjust, pct, windowAvg, fxPppRow } = await import('./fxppp');
+    const { fxPppTable } = await import('./tables');
+    expect(pppToday(3.4, 100, 110, 200, 210)).toBeCloseTo((3.4 * 1.1) / 1.05, 12);
+    expect(realAdjust(7, 100, 104, 100, 102)).toBeCloseTo((7 * 1.04) / 1.02, 12);
+    const fx: [string, number][] = [['2025-10-01', 7.0], ['2025-10-30', 7.2], ['2026-10-01', 6.9], ['2026-10-30', 7.1]];
+    expect(windowAvg(fx, '2026-10-30', 30)).toBeCloseTo(7.0, 12);
+    const y = (v: [number, number][]) => v.map(([a, b]) => [String(a), b] as [string, number]);
+    const r = fxPppRow({ cc: 'CN', ccy: 'CNY' }, fx, y([[2023, 3.5]]), y([[2023, 100], [2024, 101], [2025, 103]]), y([[2023, 140], [2024, 143], [2025, 147]]), 30);
+    const ppp = pppToday(3.5, 100, 103, 140, 147);
+    expect(r.ppp).toBeCloseTo(ppp, 12);
+    expect(r.over_under_pct).toBeCloseTo(pct(ppp, 7.1), 12);
+    const ago = realAdjust(7.1, 101, 103, 143, 147);
+    expect(r.avg_window_year_ago_real).toBeCloseTo(ago, 12);
+    expect(r.real_change_pct).toBeCloseTo(pct(ago, 7.0), 12);
+    const sa = fxPppRow({ cc: 'SA', ccy: 'SAR', no_fx: 'pegged, no ECB rate' }, [], [], [], [], 30);
+    const t = fxPppTable({ id: 'ppp', columns: ['Currency'] } as never, [r, sa], 'test');
+    expect(t.rows[0].slice(0, 2)).toEqual(['CNY', '7.1000']);
+    expect(t.note).toContain('SAR spot: pegged, no ECB rate');
+  });
+});
+

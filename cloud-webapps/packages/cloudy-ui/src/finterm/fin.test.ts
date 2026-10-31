@@ -135,3 +135,53 @@ describe('trimBody (DBnomics cache)', () => {
     expect(trimBody(other)).toBe(other);
   });
 });
+
+describe('shortSource (#1370 shorter footers)', () => {
+  it('drops the parenthetical and the " / " detail, part by part', async () => {
+    const { shortSource } = await import('./fin');
+    expect(shortSource('Cloud-Fincept / fin_api (private mesh)')).toBe('Cloud-Fincept');
+    expect(shortSource('US Treasury par yield curve (XML)')).toBe('US Treasury par yield curve');
+    expect(shortSource('FRED (St. Louis Fed) + Cloud-Fincept / fin_api (private mesh)')).toBe('FRED + Cloud-Fincept');
+    expect(shortSource('Eurostat')).toBe('Eurostat');
+  });
+});
+
+describe('calendar window chips (#1370)', () => {
+  it('All keeps everything, Today the date, This week Monday to Sunday', async () => {
+    const { inCalWindow } = await import('./fin');
+    const today = '2026-10-29'; // a Thursday
+    expect(inCalWindow('2026-12-01 08:30', 0, today)).toBe(true);
+    expect(inCalWindow('2026-10-29 14:00', 1, today)).toBe(true);
+    expect(inCalWindow('2026-10-30 14:00', 1, today)).toBe(false);
+    expect(inCalWindow('2026-10-26', 2, today)).toBe(true);
+    expect(inCalWindow('2026-11-01 23:00', 2, today)).toBe(true);
+    expect(inCalWindow('2026-10-25 23:00', 2, today)).toBe(false);
+    expect(inCalWindow('2026-11-02 00:00', 2, today)).toBe(false);
+  });
+});
+
+describe('Credit/Macro better_when colouring (#1370)', () => {
+  it('flips the colour where lower is better; the declaration wins', async () => {
+    const { lowerBetter, tone } = await import('./fin');
+    expect(lowerBetter(undefined, 'US Unemployment rate')).toBe(true);
+    expect(lowerBetter(undefined, 'ICE BofA US HY OAS')).toBe(true);
+    expect(lowerBetter(undefined, 'S&P 500')).toBe(false);
+    expect(lowerBetter('lower', 'S&P 500')).toBe(true);
+    expect(lowerBetter('higher', 'CPI YoY')).toBe(false);
+    expect(tone('up', true)).toBe('down');
+    expect(tone('down', true)).toBe('up');
+    expect(tone('up', false)).toBe('up');
+    expect(tone('flat', true)).toBe('flat');
+  });
+});
+
+describe('central-bank next-decision tiles (#1370)', () => {
+  it('first upcoming decision per country, soonest first, with days to go', async () => {
+    const { nextDecisions } = await import('./fin');
+    const ev: [string, string][] = [['2026-10-29T18:00Z', 'US'], ['2026-12-09T19:00Z', 'US'], ['2027-01-27T19:00Z', 'US'], ['2026-11-05T12:00Z', 'GB'], ['2026-10-31T11:00Z', 'JP'], ['bad', 'EU']];
+    const n = nextDecisions(ev, '2026-10-31');
+    expect(n.map((x) => x.country)).toEqual(['JP', 'GB', 'US']);
+    expect(n.map((x) => x.days)).toEqual([0, 5, 39]);
+  });
+});
+

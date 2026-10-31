@@ -237,3 +237,45 @@ describe('quote change (real Cboe _DJX after the close, 2026-10-31)', () => {
     expect(decimals(0.92)).toBe(4);
   });
 });
+
+describe('a container-only panel off the mesh (EM USD) says mesh off, never its declared public source', () => {
+  it('failureFor names the mesh, not US Treasury', () => {
+    const p = { id: 'em_usd', source: 'treasury_xml' } as unknown as Parameters<typeof failureFor>[0];
+    const ph = failureFor(p, FINTERM.sources, new FetchError('blocked', 'mesh off: the EM USD bond table is served by the FinTerm container only'));
+    expect(ph.note.startsWith('Mesh off')).toBe(true);
+    expect(ph.note).not.toMatch(/Treasury/);
+    expect(failureFor(p, FINTERM.sources, new FetchError('blocked', 'Failed to fetch')).note).toMatch(/^Mesh only \/ CORS/);
+  });
+});
+
+describe('spec 9 forward table (Forward.table)', () => {
+  it('per tenor: the tenor, its spot and the forward over the same tenor', async () => {
+    const { forwardTable } = await import('./engine');
+    const t = forwardTable([[1, 2], [2, 3]], 1);
+    expect(t.map((r) => [r[0], r[1]])).toEqual([[1, 2], [2, 3]]);
+    expect(t[0][2]).toBeCloseTo(4.0098, 3);
+  });
+});
+
+describe('Coinbase daily candles per item: a quotes row with a 7-day sparkline (spec 9 crypto top-20)', () => {
+  it('last close, previous close and the last 7 closes; no item, bars only', async () => {
+    const { feedCoinbase } = await import('./engine');
+    const day = (i: number, c: number) => [Date.UTC(2026, 9, 20 + i) / 1000, c - 1, c + 1, c, c];
+    const body = JSON.stringify(Array.from({ length: 9 }, (_, i) => day(8 - i, 100 + (8 - i)))); // newest first, as Coinbase sends
+    const g = feedCoinbase(body, 'BTC-USD');
+    expect(g.points[0]).toMatchObject({ key: 'BTC-USD', value: 108, prev: 107, date: '2026-10-28' });
+    expect(g.points[0].hist).toEqual([102, 103, 104, 105, 106, 107, 108]);
+    expect(feedCoinbase(body, '').points).toEqual([]);
+  });
+});
+
+describe('CFTC COT (Feeds.cot)', () => {
+  it('net non-commercial this week and last', async () => {
+    const { feedCot } = await import('./engine');
+    const body = JSON.stringify([
+      { contract_market_name: 'GOLD', report_date_as_yyyy_mm_dd: '2026-10-27T00:00:00.000', noncomm_positions_long_all: '300000', noncomm_positions_short_all: '113549' },
+      { contract_market_name: 'GOLD', report_date_as_yyyy_mm_dd: '2026-10-20T00:00:00.000', noncomm_positions_long_all: '290000', noncomm_positions_short_all: '90135' }]);
+    expect(feedCot(body, '088691').points[0]).toMatchObject({ label: 'GOLD', value: 186451, prev: 199865, date: '2026-10-27' });
+  });
+});
+

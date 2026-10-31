@@ -4,11 +4,13 @@
 // GDP-weighted World / DM / EM averages. Each item routes the container's /v1 first, then the panel's own source and its fallbacks (a source
 // a browser cannot read is skipped); a route with `symbol_map` serves only the items it maps. A missing value is a dash with its reason in the note.
 import { FetchError, apiRoute, browserReadable, buildUrl, forwardRate, NA, paramsOf, parseFeed, sig, slotsOf, type Ctx, type Dashboard, type Fetch, type Got, type Panel, type PanelData, type Route, type Source } from './engine';
+import { parseNum, signedFmt } from './fin';
+import { fxPppRow, type FxRow, type S } from './fxppp';
 
 export const PERF_COLUMNS = ['WTD', 'MTD', 'YTD', '1M', '3M', '1Y', '3Y', '10Y'];
 export const COL_VOL = 'Vol 1Y';
 export const COL_MDD = 'MaxDD 1Y';
-export const TABLE_DERIVES = ['performance', 'portfolio_performance', 'yields_matrix'];
+export const TABLE_DERIVES = ['performance', 'portfolio_performance', 'yields_matrix', 'em_usd', 'world_bonds', 'risk_compare', 'fx_ppp'];
 
 export type Close = [string, number]; // [YYYY-MM-DD, close]
 
@@ -185,15 +187,67 @@ export function portfolio(panel: Panel, f: TFetch, legs: [string, number][], got
     details: [`${title}, daily rebalanced`, ...series.map(([n, w]) => `${n} ${w}% (${proxies[n] ?? ''})`)] };
 }
 
+/** 60/40 vs 100/0 risk comparison (spec 9; Tables.riskCompare): each compared portfolio's headline row, on the same proxies. */
+export function riskCompare(panel: Panel, f: TFetch, sets: [string, number][][], got: Map<string, ItemGot>): PanelData {
+  const parts = sets.map((s) => portfolio(panel, f, s, got));
+  const miss = parts[0]?.note.split(' — ')[1];
+  return { columns: panel.columns ?? [], rows: parts.map((p) => p.rows[0]), links: [], chart: [], asOf: parts[0]?.asOf ?? '',
+    note: `Same ETF proxies, each daily rebalanced; risk = Vol 1Y and MaxDD 1Y.${miss ? ` ${miss}` : ''}`, servedBy: parts[0]?.servedBy ?? '', details: parts.map((p) => p.details?.[0] ?? '') };
+}
+
+/** The /v1/fx/ppp rows as the table (Tables.fxPppTable): Currency | Spot | PPP | Over/under % | 30d avg | 30d 1y ago real | Real YoY %; reasons in the note. */
+export function fxPppTable(panel: Panel, rows: Record<string, unknown>[], by: string): PanelData {
+  const n = (o: Record<string, unknown>, k: string, d: number) => (typeof o[k] === 'number' ? (o[k] as number).toFixed(d) : NA);
+  const sp = (o: Record<string, unknown>, k: string) => (typeof o[k] === 'number' ? signedFmt(o[k] as number, 1) : NA);
+  const dg = (o: Record<string, unknown>) => (typeof o.spot === 'number' && (o.spot as number) >= 100 ? 1 : 4);
+  const why = rows.flatMap((o) => Object.entries((o.null_reason as Record<string, string>) ?? {}).map(([k, v]) => `${o.currency} ${k}: ${v}`));
+  return { columns: panel.columns ?? [], rows: rows.map((o) => [String(o.currency), n(o, 'spot', dg(o)), n(o, 'ppp', dg(o)), sp(o, 'over_under_pct'), n(o, 'avg_window', dg(o)), n(o, 'avg_window_year_ago_real', dg(o)), sp(o, 'real_change_pct')]),
+    links: [], chart: [], asOf: rows.map((o) => (o.spot_date as string) ?? '').filter(Boolean).sort().pop() ?? '',
+    note: `Local currency per USD. Over/under % = PPP / spot - 1 (negative: undervalued); real YoY % = the year-ago window in today's prices / today's window - 1 (positive: gained in real terms).${why.length ? ` — ${why.join(' · ')}` : ''}`,
+    servedBy: by, details: rows.map((o) => String(o.label ?? '')) };
+}
+
 export function curveOf(f: TFetch, g: Got): [number, number][] {
   const out = new Map<number, number>();
   for (const p of g.points) { const x = f.years && p.key in f.years ? f.years[p.key] : p.x; if (x > 0 && Number.isFinite(p.value) && !out.has(x)) out.set(x, p.value); }
   return [...out.entries()].sort((a, b) => a[0] - b[0]);
 }
 
-export function matrix(panel: Panel & { mode?: string }, f: TFetch, got: [string, ItemGot][]): PanelData {
+/** The container's one-call matrix (/v1/curves/matrix): values, its GDP (USD bn), each empty cell's reason (country -> tenor -> method), fill rate. */
+export type One = { got: [string, ItemGot][]; gdp: Record<string, number>; why: Record<string, Record<string, string>>; fill: number | null };
+
+/** Parse a /v1/curves/matrix body for the declared countries (declared order); null when none of them has a value. */
+export function parseOne(body: string, each: string[], by: string): One | null {
+  const o = JSON.parse(body) as { fill?: { rate?: number }; rows?: { country: string; gdp_usd?: number | null; tenors?: { tenor: string; value: number | null; date: string | null; method?: string }[] }[] };
+  const got = new Map<string, ItemGot>(); const gdp: Record<string, number> = {}; const why: Record<string, Record<string, string>> = {};
+  for (const r of o.rows ?? []) {
+    if (!each.includes(r.country)) continue;
+    if (r.gdp_usd && r.gdp_usd > 0) gdp[r.country] = r.gdp_usd / 1e9;
+    const g = empty(); const miss: Record<string, string> = {};
+    for (const t of r.tenors ?? []) {
+      const y = tenorYears(t.tenor); if (y == null) continue;
+      if (typeof t.value === 'number' && Number.isFinite(t.value)) g.points.push({ key: t.tenor, label: t.tenor, x: y, value: t.value, prev: null, date: t.date ?? '' } as Got['points'][number]);
+      else miss[t.tenor] = t.method || 'no value';
+    }
+    why[r.country] = miss;
+    got.set(r.country, g.points.length ? { got: g, by, why: '' } : { got: g, by: '', why: [...new Set(Object.values(miss))].join('; ') || 'no curve' });
+  }
+  if (![...got.values()].some((x) => !isEmpty(x.got))) return null;
+  return { got: each.map((c) => [c, got.get(c) ?? { got: empty(), by: '', why: 'not in /v1/curves/matrix' }]), gdp, why, fill: typeof o.fill?.rate === 'number' ? o.fill.rate : null };
+}
+
+const tenorYears = (t: string): number | null => { const m = /^(\d+(?:\.\d+)?)\s*([WMY])$/.exec(t.trim().toUpperCase()); if (!m) return null; const n = +m[1]; return m[2] === 'Y' ? n : m[2] === 'M' ? n / 12 : n / 52; };
+
+/** The empty cells' reasons grouped: "no free source declared for this cell: FR 3M/6M, IT 3M". */
+export function reasons(why: Record<string, Record<string, string>>, ts: string[]): string[] {
+  const by = new Map<string, Map<string, string[]>>();
+  for (const [cc, m] of Object.entries(why)) for (const t of ts) if (m[t]) { const r = by.get(m[t]) ?? new Map(); by.set(m[t], r); r.set(cc, [...(r.get(cc) ?? []), t]); }
+  return [...by].map(([r, ccs]) => `${r}: ${[...ccs].map(([cc, t]) => `${cc} ${t.join('/')}`).join(', ')}`);
+}
+
+export function matrix(panel: Panel & { mode?: string }, f: TFetch, got: [string, ItemGot][], one: One | null = null): PanelData {
   const forward = panel.mode === 'forward'; const start = f.forward_start_years ?? 1; const ts = f.tenors ?? [];
-  const labels = f.labels ?? {}; const gdp = f.gdp_usd_bn ?? {}; const dm = f.groups?.DM ?? []; const em = f.groups?.EM ?? [];
+  const labels = f.labels ?? {}; const gdp: Record<string, number> = { ...(f.gdp_usd_bn ?? {}), ...(one?.gdp ?? {}) }; const dm = f.groups?.DM ?? []; const em = f.groups?.EM ?? [];
   const curves = new Map(got.map(([k, ig]) => [k, curveOf(f, ig.got)]));
   const cells = new Map([...curves].map(([k, cv]) => [k, ts.map(([, y]) => cell(cv, y, forward, start))]));
   const min = f.min_coverage_gdp ?? MIN_COVERAGE; const hasCov = (panel.columns ?? [])[1] === COL_COV;
@@ -205,17 +259,47 @@ export function matrix(panel: Panel & { mode?: string }, f: TFetch, got: [string
   const avgs: [string, string[]][] = [['World avg', world], ['DM avg', dm], ['EM avg', em]];
   const thin = avgs.filter(([, m]) => avg(m).some((x) => x == null) && cov(m) + 1e-12 < min).map(([l, m]) => `${l} ${pct0(cov(m))}`);
   const noCurve = got.filter(([k]) => !curves.get(k)?.length).map(([k, ig]) => `${k} (${ig.why})`);
-  const gaps = got.filter(([k]) => curves.get(k)?.length).map(([k]) => [k, ts.filter((_, i) => cells.get(k)![i] == null).map((t) => t[0])] as [string, string[]]).filter((x) => x[1].length).map(([k, m]) => `${k} ${m.join('/')}`);
+  const gaps = one && !forward ? [] : got.filter(([k]) => curves.get(k)?.length).map(([k]) => [k, ts.filter((_, i) => cells.get(k)![i] == null).map((t) => t[0])] as [string, string[]]).filter((x) => x[1].length).map(([k, m]) => `${k} ${m.join('/')}`);
   const note = [forward ? `${start}y-forward curve from each spot curve (Forward.rate).` : null,
+    one?.fill != null ? `One call /v1/curves/matrix: ${pct0(one.fill)} of cells filled; GDP from the container (World Bank, USD).` : null,
     `Averages GDP-weighted (IMF, USD), shown only when the countries with a value hold ${pct0(min)} of the group's GDP; Cov = that share (country rows: share of World GDP).`,
     thin.length ? `— insufficient coverage: ${thin.join(', ')} < ${pct0(min)}.` : null,
-    noCurve.length ? `— no curve: ${noCurve.join(', ')}` : null, gaps.length ? `— no point at tenor: ${gaps.join(', ')}` : null].filter(Boolean).join(' ');
+    noCurve.length ? `— no curve: ${noCurve.join(', ')}` : null, gaps.length ? `— no point at tenor: ${gaps.join(', ')}` : null,
+    ...(one && !forward ? reasons(Object.fromEntries(Object.entries(one.why).filter(([k]) => curves.get(k)?.length)), ts.map((t) => t[0])).map((r) => `— ${r}.`) : [])].filter(Boolean).join(' ');
   const asOf = got.flatMap(([, ig]) => ig.got.points.map((p) => p.date)).reduce((m, d) => (d > m ? d : m), '');
   return { columns: panel.columns ?? [], rows: [...avgs.map(([l, m]) => row(l, pct0(cov(m)), avg(m))), ...got.map(([k]) => row(labels[k] || k, worldGdp > 0 ? pct0((gdp[k] ?? 0) / worldGdp) : NA, cells.get(k)!))],
     links: [], chart: [], asOf, note, servedBy: servedBy(got.map((x) => x[1])) };
 }
 
+/** /v1/bonds/em-usd as Country | Ccy | Yield | 1Y | 10Y | 25Y (returns are fractions, shown as %); each empty cell's reason goes to the note. */
+export function emUsd(panel: Panel, body: string, by: string): PanelData {
+  const o = JSON.parse(body) as { method?: string; rows?: { country: string; currency?: string | null; yield_last?: { month: string; value: number } | null; usd_return_annualised?: Record<string, number | null>; null_reason?: string | null }[] };
+  const cols = panel.columns ?? []; const hs = cols.slice(3); const why: string[] = []; let asOf = '';
+  const rows = (o.rows ?? []).map((r) => {
+    if (r.yield_last?.month && r.yield_last.month > asOf) asOf = r.yield_last.month;
+    const cells = hs.map((h) => { const v = r.usd_return_annualised?.[h.toLowerCase()]; return typeof v === 'number' && Number.isFinite(v) ? `${v >= 0 ? '+' : ''}${(v * 100).toFixed(2)}%` : NA; });
+    if (r.null_reason) why.push(`${r.country} (${r.null_reason})`);
+    else if (cells.includes(NA)) why.push(`${r.country} (history shorter than ${hs.filter((_, i) => cells[i] === NA).join('/')})`);
+    return [r.country, r.currency || NA, typeof r.yield_last?.value === 'number' ? r.yield_last.value.toFixed(2) : NA, ...cells];
+  });
+  if (!rows.length) throw new Error(`${by}: no EM bond row`);
+  return { columns: cols, rows, links: [], chart: [], asOf, note: [o.method || null, why.length ? `— ${why.join(', ')}` : null].filter(Boolean).join(' '), servedBy: by };
+}
+
 /** The table panel end to end: every item fetched on its own (in parallel), then rendered by its derive. */
+/** World Bonds merged table (#1370, spec 9; Tables.spreads): 2Y, 10Y and the 10Y spread over the 2Y, the Bund and the UST, in bp. */
+export const SPREAD_COLS = ['Country', '2Y', '10Y', '2s10s bp', 'vs Bund bp', 'vs UST bp'];
+export function spreads(m: PanelData, labels: Record<string, string>): PanelData {
+  const i2 = m.columns.indexOf('2Y'), i10 = m.columns.indexOf('10Y');
+  const cell = (r: string[], i: number) => (i < 0 ? NA : r[i] ?? NA);
+  const num = (r: string[] | undefined, i: number) => (r && cell(r, i) !== NA ? parseNum(cell(r, i)) : null);
+  const row = (cc: string) => m.rows.find((r) => r[0] === (labels[cc] || cc));
+  const bund = num(row('DE'), i10), ust = num(row('US'), i10);
+  const bp = (a: number | null, b: number | null) => (a === null || b === null ? NA : signedFmt((a - b) * 100, 0));
+  const rows = m.rows.map((r) => { const y10 = num(r, i10); return [r[0] ?? '', cell(r, i2), cell(r, i10), bp(y10, num(r, i2)), bp(y10, bund), bp(y10, ust)]; });
+  return { ...m, columns: SPREAD_COLS, rows, note: `${m.note} Spreads in bp: the 10Y minus the 2Y, minus Germany's 10Y (Bund), minus the US 10Y (UST).`.trim() };
+}
+
 export async function tablePanel(panel: Panel, dash: Dashboard, source: Source, f0: Fetch, ctx: Ctx): Promise<PanelData> {
   const f = f0 as TFetch; const api = await apiRoute(panel, dash, ctx);
   // nothing answered for any item: a CORS-only source off the mesh is the key-row pattern ("open on the mesh"), else an error state
@@ -236,7 +320,48 @@ export async function tablePanel(panel: Panel, dash: Dashboard, source: Source, 
       none([...got.values()]);
       return portfolio(panel, f, legs, got);
     }
-    case 'yields_matrix': return matrix(panel, f, await each(f.each ?? []));
+    case 'em_usd': {
+      if (!api) throw new FetchError('blocked', 'mesh off: the EM USD bond table is served by the FinTerm container only');
+      return emUsd(panel, await ctx.get(buildUrl(api.base, (f.primary as { api?: string } | undefined)?.api ?? '/v1/bonds/em-usd', [])), api.source.name);
+    }
+    case 'yields_matrix': {
+      const ma = (f.primary as { matrix_api?: string } | undefined)?.matrix_api;
+      if (ma && api) {
+        try { const one = parseOne(await ctx.get(buildUrl(api.base, ma, [])), f.each ?? [], api.source.name); if (one) return matrix(panel, f, one.got, one); } catch { /* the per-country path below */ }
+      }
+      return matrix(panel, f, await each(f.each ?? []));
+    }
+    case 'fx_ppp': {
+      const g = f as unknown as { primary?: { api?: string }; rows: FxRow[]; window_days?: number; fx_source: string; wb: { source: string; indicators: { ppp: string; cpi: string } } };
+      if (api) {
+        try { const rows = (JSON.parse(await ctx.get(buildUrl(api.base, g.primary?.api ?? '/v1/fx/ppp', []))) as { rows?: Record<string, unknown>[] }).rows ?? []; if (rows.length) return fxPppTable(panel, rows, api.source.name); } catch { /* the direct sources below */ }
+      }
+      const fxs = ctx.sources.find((x) => x.id === g.fx_source); const wbs = ctx.sources.find((x) => x.id === g.wb.source);
+      if (!fxs || !wbs) throw new Error('FX vs PPP: a declared source is missing');
+      const today = new Date().toISOString().slice(0, 10); const from = new Date(Date.now() - 400 * 864e5).toISOString().slice(0, 10);
+      const ccys = g.rows.filter((r) => !r.no_fx).map((r) => r.ccy).join(',');
+      const rates = (JSON.parse(await ctx.get(buildUrl(fxs.endpoint, `/v1/${from}..${today}`, [['base', 'USD'], ['symbols', ccys]]))) as { rates?: Record<string, Record<string, number>> }).rates ?? {};
+      const fx = new Map<string, S>();
+      for (const d of Object.keys(rates).sort()) for (const [k, v] of Object.entries(rates[d])) fx.set(k, [...(fx.get(k) ?? []), [d, v]]);
+      const wb = async (code: string) => {
+        const cc = [...g.rows.map((r) => r.cc), 'US'].join(';');
+        const a = JSON.parse(await ctx.get(buildUrl(wbs.endpoint, `/country/${cc}/indicator/${code}`, [['format', 'json'], ['per_page', '2000'], ['date', `2015:${today.slice(0, 4)}`]]))) as [unknown, { country: { id: string }; date: string; value: number | null }[] | null];
+        const m = new Map<string, S>();
+        for (const o of a[1] ?? []) if (o.value !== null) m.set(o.country.id, [...(m.get(o.country.id) ?? []), [o.date, o.value]]);
+        for (const [k, v] of m) m.set(k, v.sort((x, y) => (x[0] < y[0] ? -1 : 1)));
+        return m;
+      };
+      const ppp = await wb(g.wb.indicators.ppp); const cpi = await wb(g.wb.indicators.cpi); const us = cpi.get('US') ?? [];
+      return fxPppTable(panel, g.rows.map((r) => fxPppRow(r, fx.get(r.ccy) ?? [], ppp.get(r.cc) ?? [], cpi.get(r.cc) ?? [], us, g.window_days ?? 30)), `${fxs.name} + ${wbs.name}`);
+    }
+    case 'risk_compare': {
+      const sets = (f as { compare?: [string, number][][] }).compare ?? []; const proxies = f.proxies ?? {};
+      const names = [...new Set(sets.flat().map((l) => l[0]))];
+      const got = new Map(await Promise.all(names.map(async (n) => [n, proxies[n] ? await gather(proxies[n], source, f, api, ctx) : { got: empty(), by: '', why: 'no proxy declared' }] as [string, ItemGot])));
+      none([...got.values()]);
+      return riskCompare(panel, f, sets, got);
+    }
+    case 'world_bonds': return spreads(await tablePanel({ ...panel, derive: 'yields_matrix' }, dash, source, f0, ctx), f.labels ?? {});
     default: throw new Error(`unknown derive ${panel.derive}`);
   }
 }

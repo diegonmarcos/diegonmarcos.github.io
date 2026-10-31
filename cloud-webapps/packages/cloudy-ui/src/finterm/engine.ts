@@ -5,6 +5,7 @@
 // source or one a browser cannot reach is a dashed placeholder with its reason. A source declared `cors: false` (FRED and IMF send no
 // Access-Control-Allow-Origin) is never asked from the browser: the engine goes straight to the next source, so the page never waits on it.
 
+import { signedFmt } from './fin';
 import { TABLE_DERIVES, tablePanel } from './tables';
 
 export type Obs = { date: string; value: number };
@@ -22,7 +23,7 @@ export type Route = { source?: string; provider?: string; path?: string; params?
 export type Fetch = {
   provider: string; lookback_days?: number; path?: string; params?: Record<string, unknown>; countries?: string[]; country_names?: Record<string, string>; labels?: Record<string, string>;
   series?: { id: string; label: string; years?: number; ccy?: string; quote?: string; pair?: string; dbnomics?: string }[];
-  forward?: { grid: number[][]; curve_length?: number; curve_max_start?: number };
+  forward?: { grid?: number[][]; table_start?: number; curve_length?: number; curve_max_start?: number };
   primary?: { source: string; topic?: string; api?: string; params?: Record<string, unknown>; parse?: string };
   // model panels (Feeds): routes, items, labels, curve tenors, SDMX / JSON-stat key dimension, event filter
   fallbacks?: Route[]; merge?: boolean; each?: string[]; each_days?: number; each_user?: string; years?: Record<string, number>; key_dim?: string;
@@ -31,7 +32,7 @@ export type Fetch = {
   fallback?: { source: string };
 };
 export type Panel = {
-  id: string; title: string; source: string; view: string; derive?: string; fetch?: Fetch; columns?: string[]; unit?: string; chart_value?: string; change_unit?: string;
+  id: string; title: string; source: string; view: string; derive?: string; fetch?: Fetch; columns?: string[]; unit?: string; chart_value?: string; change_unit?: string; better_when?: string; next_tiles?: boolean;
   value_columns?: string; alerts?: string;
   /** A source with no key / connector yet: drawn as one key row (UI spec 2; the dashed columns/rows layout is gone, checklist 1). */
   placeholder?: { reason?: string; note?: string };
@@ -187,6 +188,8 @@ export function forwardRate(curve: [number, number][], start: number, length: nu
   const grownStart = start === 0 ? 1 : Math.pow(1 + yieldAt(curve, start) / 100, start);
   return (Math.pow(grownEnd / grownStart, 1 / length) - 1) * 100;
 }
+/** Spec 9 forward table (Forward.table): per curve tenor, [tenor, spot, the forward starting in `start` years over the same tenor]. */
+export const forwardTable = (curve: [number, number][], start: number): [number, number, number][] => curve.map(([t, y]) => [t, y, forwardRate(curve, start, t)]);
 export const forwardCurve = (curve: [number, number][], length: number, maxStart: number): [number, number][] =>
   Array.from({ length: maxStart + 1 }, (_, s) => [s, forwardRate(curve, s, length)] as [number, number]).filter((p) => Number.isFinite(p[1]));
 
@@ -316,7 +319,10 @@ function derived(panel: Panel, f: Fetch, series: FredSeries[], asOf: string, not
     case 'forward_grid': {
       const fw = f.forward!;
       const curve = series.map((s) => [s.spec.years ?? 0, s.last.value] as [number, number]).sort((a, b) => a[0] - b[0]);
-      const rows = fw.grid.map(([s, l]) => [`${years(s)}Y x ${years(l)}Y`, num(forwardRate(curve, s, l), 2)]);
+      // spec 9: TENOR | SPOT | FWD | DIFF (bp) when the panel declares table_start (Forward.table); else the declared grid
+      const rows = fw.table_start !== undefined
+        ? forwardTable(curve, fw.table_start).map(([t, y, r]) => [`${years(t)}Y`, num(y, 2), num(r, 2), Number.isFinite(r) ? signedFmt((r - y) * 100, 0) : NA])
+        : (fw.grid ?? []).map(([s, l]) => [`${years(s)}Y x ${years(l)}Y`, num(forwardRate(curve, s, l), 2)]);
       const pts = forwardCurve(curve, fw.curve_length ?? 1, fw.curve_max_start ?? 29).map(([s, r]) => ({ label: `${years(s)}Y`, x: s, y: r }));
       return mk(rows, pts);
     }
@@ -373,6 +379,7 @@ export function placeholderFor(panel: Panel, sources: Source[]): Placeholder {
 /** A fetch that failed: the browser could not read the source (CORS / off the mesh) or it answered an error. */
 export function failureFor(panel: Panel, sources: Source[], e: unknown): Placeholder {
   const s = sources.find((x) => x.id === panel.source);
+  if (e instanceof Error && e.message.startsWith('mesh off')) return { reason: 'blocked', note: 'Mesh off: served by the FinTerm container on the private mesh only.' }; // a container-only panel never names its public source
   if (e instanceof FetchError && e.kind === 'blocked') return { reason: 'blocked', note: `Mesh only / CORS: ${s?.name ?? 'the source'} does not allow browser requests; open this page on the mesh to read it through fin-api.` };
   return { reason: 'error', note: `${s?.name ?? 'The source'} is unavailable right now (${e instanceof Error ? e.message : 'error'}).` };
 }
@@ -381,7 +388,7 @@ export function failureFor(panel: Panel, sources: Source[], e: unknown): Placeho
 // The normalised model every connector parses into: points (series, quotes, curve tenors), events (calendars), bars, key/value rows,
 // rows with links. Only the browser-readable connectors are parsed here (a `cors: false` source is never asked from the browser; the
 // container's /v1 answer covers it on the mesh): nyfed_rates, treasury_xml, sdmx_json, jsonstat, bls_series, frankfurter_rates,
-// coinbase_exchange, polymarket_events, sec_submissions, declared_events, finterm_v1.
+// coinbase_exchange, cftc_cot, polymarket_events, sec_submissions, declared_events, finterm_v1.
 
 export type Pt = { key: string; label: string; x: number; value: number; prev: number | null; date: string; hist?: number[] };
 export type Ev = { ts: string; country: string; title: string; importance: number; consensus: string; actual: string; previous: string; kind: string };
@@ -408,6 +415,7 @@ export function parseFeed(connector: string, body: string, o: ParseOpt): Got {
       case 'bls_series': return feedBls(body);
       case 'frankfurter_rates': return feedFrankfurter(body);
       case 'coinbase_exchange': return feedCoinbase(body, o.each ?? '');
+      case 'cftc_cot': return feedCot(body, o.each ?? '');
       case 'polymarket_events': return feedPolymarket(body, o.spec.last ?? 12);
       case 'sec_submissions': return feedSec(body, o);
       case 'declared_events': return feedDeclared(body);
@@ -521,10 +529,21 @@ export function feedCoinbase(body: string, each: string): Got {
   if (t.startsWith('[')) {
     const bars = (JSON.parse(t) as unknown[]).filter((c): c is number[] => Array.isArray(c) && c.length >= 5)
       .map((c) => ({ date: new Date(c[0] * 1000).toISOString().slice(0, 10), o: c[3], h: c[2], l: c[1], c: c[4] })).sort((a, b) => (a.date < b.date ? -1 : 1));
-    return got({ bars });
+    // per item (a quotes row): the last daily close, the one before, and the last 7 closes as the row's sparkline (spec 9 crypto top-20)
+    const n = bars.length;
+    if (!each || !n) return got({ bars });
+    return got({ bars, points: [{ key: each, label: each, x: 0, value: bars[n - 1].c, prev: n > 1 ? bars[n - 2].c : null, date: bars[n - 1].date, hist: bars.slice(-7).map((b) => b.c) }] });
   }
   const o = JSON.parse(t); const last = fin(o.last);
   return last === null ? got() : got({ points: [{ key: each, label: each, x: 0, value: last, prev: fin(o.open), date: '24h' }] });
+}
+/** CFTC Commitments of Traders (legacy futures, Socrata; Feeds.cot): newest first; net non-commercial = long - short, this week and the one before. */
+export function feedCot(body: string, each: string): Got {
+  const a = JSON.parse(body) as Record<string, string>[];
+  const net = (i: number) => { const r = a[i]; const l = Number(r?.noncomm_positions_long_all), sh = Number(r?.noncomm_positions_short_all); return r && Number.isFinite(l) && Number.isFinite(sh) && r.noncomm_positions_long_all !== undefined && r.noncomm_positions_short_all !== undefined ? l - sh : null; };
+  const now = net(0);
+  if (now === null) return got();
+  return got({ points: [{ key: each, label: a[0].contract_market_name || each, x: 0, value: now, prev: net(1), date: (a[0].report_date_as_yyyy_mm_dd ?? '').slice(0, 10) }] });
 }
 export function feedPolymarket(body: string, last: number): Got {
   const out: Pt[] = [];

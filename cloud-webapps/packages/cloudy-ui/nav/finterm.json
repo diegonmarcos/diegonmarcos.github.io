@@ -764,7 +764,8 @@
           "entries": [
             "Market Monitor",
             "Yield Curves",
-            "Yields Matrix"
+            "Yields Matrix",
+            "World Bonds"
           ]
         }
       ],
@@ -1077,6 +1078,31 @@
       ],
       "schedule": {
         "ttl_s": 60
+      },
+      "auth": {
+        "type": "none"
+      }
+    },
+    {
+      "id": "cftc",
+      "name": "CFTC Commitments of Traders (public reporting)",
+      "category": "FI-Macro",
+      "priority": 10,
+      "coverage": "Weekly futures positioning by trader class (legacy report): non-commercial (speculative) long and short per market, every Tuesday, published Friday",
+      "endpoint": "https://publicreporting.cftc.gov",
+      "docs": "https://publicreporting.cftc.gov/stories/s/r4w3-av2u",
+      "cors": true,
+      "connector": "cftc_cot",
+      "feeds": [
+        {
+          "tab": "ex",
+          "entries": [
+            "Commodities"
+          ]
+        }
+      ],
+      "schedule": {
+        "ttl_s": 21600
       },
       "auth": {
         "type": "none"
@@ -1913,6 +1939,7 @@
             "primary": {
               "source": "cloud_fincept",
               "api": "/v1/curves/{each}",
+              "matrix_api": "/v1/curves/matrix",
               "parse": "finterm_v1"
             }
           },
@@ -2124,6 +2151,7 @@
             "primary": {
               "source": "cloud_fincept",
               "api": "/v1/curves/{each}",
+              "matrix_api": "/v1/curves/matrix",
               "parse": "finterm_v1"
             }
           },
@@ -2145,6 +2173,31 @@
           "mode": "forward",
           "segment_label": "Forward",
           "segment_of": "spot"
+        },
+        {
+          "id": "em_usd",
+          "title": "EM government bonds in USD (local 10Y, unhedged total return, annualised)",
+          "source": "treasury_xml",
+          "view": "table",
+          "derive": "em_usd",
+          "fetch": {
+            "provider": "treasury_xml",
+            "primary": {
+              "source": "cloud_fincept",
+              "api": "/v1/bonds/em-usd",
+              "parse": "finterm_v1"
+            }
+          },
+          "columns": [
+            "Country",
+            "Ccy",
+            "Yield",
+            "1Y",
+            "10Y",
+            "25Y"
+          ],
+          "unit": "%",
+          "segment_label": "EM USD"
         }
       ],
       "slug": "yields-matrix",
@@ -2307,44 +2360,7 @@
               }
             ],
             "forward": {
-              "grid": [
-                [
-                  0,
-                  1
-                ],
-                [
-                  1,
-                  1
-                ],
-                [
-                  2,
-                  1
-                ],
-                [
-                  5,
-                  1
-                ],
-                [
-                  1,
-                  2
-                ],
-                [
-                  2,
-                  3
-                ],
-                [
-                  5,
-                  5
-                ],
-                [
-                  10,
-                  10
-                ],
-                [
-                  10,
-                  20
-                ]
-              ],
+              "table_start": 1,
               "curve_length": 1,
               "curve_max_start": 29
             },
@@ -2358,8 +2374,10 @@
           },
           "unit": "%",
           "columns": [
-            "Forward (start x length)",
-            "Rate %"
+            "Tenor",
+            "Spot %",
+            "1Y fwd %",
+            "Diff bp"
           ]
         }
       ],
@@ -2463,6 +2481,225 @@
       "entry": "World Bonds",
       "tab": "fi",
       "panels": [
+        {
+          "id": "merged",
+          "title": "World government bonds: 2Y, 10Y and spreads (bp) vs the 2Y, Bund and UST, heatmap",
+          "source": "treasury_xml",
+          "view": "table",
+          "derive": "world_bonds",
+          "fetch": {
+            "provider": "treasury_xml",
+            "path": "/xml",
+            "params": {
+              "data": "daily_treasury_yield_curve",
+              "field_tdr_date_value_month": "{yyyymm}"
+            },
+            "symbol_map": {
+              "US": "US"
+            },
+            "fallbacks": [
+              {
+                "source": "treasury_xml",
+                "provider": "treasury_xml",
+                "path": "/xml",
+                "params": {
+                  "data": "daily_treasury_yield_curve",
+                  "field_tdr_date_value_month": "{prev_yyyymm}"
+                },
+                "symbol_map": {
+                  "US": "US"
+                }
+              }
+            ],
+            "each": [
+              "US",
+              "DE",
+              "FR",
+              "IT",
+              "ES",
+              "GB",
+              "JP",
+              "CA",
+              "AU",
+              "CH",
+              "NL",
+              "SE",
+              "CN",
+              "IN",
+              "BR",
+              "RU",
+              "MX",
+              "TR",
+              "ID",
+              "SA",
+              "PL",
+              "AR"
+            ],
+            "labels": {
+              "US": "United States",
+              "DE": "Germany",
+              "FR": "France",
+              "IT": "Italy",
+              "ES": "Spain",
+              "GB": "United Kingdom",
+              "JP": "Japan",
+              "CA": "Canada",
+              "AU": "Australia",
+              "CH": "Switzerland",
+              "NL": "Netherlands",
+              "SE": "Sweden",
+              "CN": "China",
+              "IN": "India",
+              "BR": "Brazil",
+              "RU": "Russia",
+              "MX": "Mexico",
+              "TR": "Turkey",
+              "ID": "Indonesia",
+              "SA": "Saudi Arabia",
+              "PL": "Poland",
+              "AR": "Argentina"
+            },
+            "groups": {
+              "DM": [
+                "US",
+                "DE",
+                "FR",
+                "IT",
+                "ES",
+                "GB",
+                "JP",
+                "CA",
+                "AU",
+                "CH",
+                "NL",
+                "SE"
+              ],
+              "EM": [
+                "CN",
+                "IN",
+                "BR",
+                "RU",
+                "MX",
+                "TR",
+                "ID",
+                "SA",
+                "PL",
+                "AR"
+              ]
+            },
+            "gdp_usd_bn": {
+              "US": 30507,
+              "DE": 4744,
+              "FR": 3211,
+              "IT": 2422,
+              "ES": 1799,
+              "GB": 3839,
+              "JP": 4186,
+              "CA": 2225,
+              "AU": 1771,
+              "CH": 947,
+              "NL": 1273,
+              "SE": 610,
+              "CN": 19232,
+              "IN": 4187,
+              "BR": 2126,
+              "RU": 2076,
+              "MX": 1863,
+              "TR": 1437,
+              "ID": 1430,
+              "SA": 1084,
+              "PL": 980,
+              "AR": 684
+            },
+            "gdp_source": "IMF WEO April 2025, nominal GDP USD bn",
+            "tenors": [
+              [
+                "3M",
+                0.25
+              ],
+              [
+                "6M",
+                0.5
+              ],
+              [
+                "1Y",
+                1
+              ],
+              [
+                "2Y",
+                2
+              ],
+              [
+                "3Y",
+                3
+              ],
+              [
+                "5Y",
+                5
+              ],
+              [
+                "7Y",
+                7
+              ],
+              [
+                "10Y",
+                10
+              ],
+              [
+                "20Y",
+                20
+              ],
+              [
+                "30Y",
+                30
+              ]
+            ],
+            "years": {
+              "BC_1MONTH": 0.083333,
+              "BC_3MONTH": 0.25,
+              "BC_6MONTH": 0.5,
+              "BC_1YEAR": 1,
+              "BC_2YEAR": 2,
+              "BC_3YEAR": 3,
+              "BC_5YEAR": 5,
+              "BC_7YEAR": 7,
+              "BC_10YEAR": 10,
+              "BC_20YEAR": 20,
+              "BC_30YEAR": 30
+            },
+            "forward_start_years": 1,
+            "min_coverage_gdp": 0.6,
+            "primary": {
+              "source": "cloud_fincept",
+              "api": "/v1/curves/{each}",
+              "matrix_api": "/v1/curves/matrix",
+              "parse": "finterm_v1"
+            }
+          },
+          "columns": [
+            "Country",
+            "Cov",
+            "3M",
+            "6M",
+            "1Y",
+            "2Y",
+            "3Y",
+            "5Y",
+            "7Y",
+            "10Y",
+            "20Y",
+            "30Y"
+          ],
+          "unit": "%",
+          "col_types": [
+            "text",
+            "num",
+            "num",
+            "heat",
+            "heat",
+            "heat"
+          ]
+        },
         {
           "id": "yields",
           "title": "Long-term government bond yields (OECD, monthly)",
@@ -2639,6 +2876,7 @@
         {
           "id": "oas",
           "title": "ICE BofA option-adjusted spreads",
+          "better_when": "lower",
           "source": "fred",
           "view": "bars",
           "derive": "level_change",
@@ -2677,6 +2915,61 @@
           "chart_value": "level",
           "unit": "%",
           "change_unit": "bp"
+        },
+        {
+          "id": "oas_rating",
+          "title": "ICE BofA US corporate OAS by rating (AAA to CCC)",
+          "source": "fred",
+          "view": "bars",
+          "derive": "level_change",
+          "fetch": {
+            "provider": "fred_series",
+            "lookback_days": 21,
+            "series": [
+              {
+                "id": "BAMLC0A1CAAA",
+                "label": "AAA"
+              },
+              {
+                "id": "BAMLC0A2CAA",
+                "label": "AA"
+              },
+              {
+                "id": "BAMLC0A3CA",
+                "label": "A"
+              },
+              {
+                "id": "BAMLC0A4CBBB",
+                "label": "BBB"
+              },
+              {
+                "id": "BAMLH0A1HYBB",
+                "label": "BB"
+              },
+              {
+                "id": "BAMLH0A2HYB",
+                "label": "B"
+              },
+              {
+                "id": "BAMLH0A3HYC",
+                "label": "CCC and below"
+              }
+            ],
+            "primary": {
+              "source": "cloud_fincept",
+              "topic": "econ:fred:{id}"
+            }
+          },
+          "columns": [
+            "Rating",
+            "OAS %",
+            "1d bp",
+            "Date"
+          ],
+          "chart_value": "level",
+          "unit": "%",
+          "change_unit": "bp",
+          "better_when": "lower"
         },
         {
           "id": "yields",
@@ -3867,6 +4160,170 @@
           "placeholder": {
             "reason": "needs a key or a connector"
           }
+        },
+        {
+          "id": "ppp",
+          "title": "FX vs PPP: major DM and EM currencies against USD (spot, PPP, real change)",
+          "source": "frankfurter",
+          "view": "table",
+          "derive": "fx_ppp",
+          "fetch": {
+            "provider": "frankfurter_rates",
+            "path": "/v1/latest",
+            "fx_source": "frankfurter",
+            "window_days": 30,
+            "wb": {
+              "source": "worldbank",
+              "indicators": {
+                "ppp": "PA.NUS.PPP",
+                "cpi": "FP.CPI.TOTL"
+              }
+            },
+            "rows": [
+              {
+                "cc": "DE",
+                "ccy": "EUR",
+                "label": "Euro (PPP and CPI of Germany)",
+                "group": "dm"
+              },
+              {
+                "cc": "JP",
+                "ccy": "JPY",
+                "label": "Japanese yen",
+                "group": "dm"
+              },
+              {
+                "cc": "GB",
+                "ccy": "GBP",
+                "label": "Pound sterling",
+                "group": "dm"
+              },
+              {
+                "cc": "CH",
+                "ccy": "CHF",
+                "label": "Swiss franc",
+                "group": "dm"
+              },
+              {
+                "cc": "CA",
+                "ccy": "CAD",
+                "label": "Canadian dollar",
+                "group": "dm"
+              },
+              {
+                "cc": "AU",
+                "ccy": "AUD",
+                "label": "Australian dollar",
+                "group": "dm"
+              },
+              {
+                "cc": "NZ",
+                "ccy": "NZD",
+                "label": "New Zealand dollar",
+                "group": "dm"
+              },
+              {
+                "cc": "SE",
+                "ccy": "SEK",
+                "label": "Swedish krona",
+                "group": "dm"
+              },
+              {
+                "cc": "NO",
+                "ccy": "NOK",
+                "label": "Norwegian krone",
+                "group": "dm"
+              },
+              {
+                "cc": "CN",
+                "ccy": "CNY",
+                "label": "Chinese yuan",
+                "group": "em"
+              },
+              {
+                "cc": "IN",
+                "ccy": "INR",
+                "label": "Indian rupee",
+                "group": "em"
+              },
+              {
+                "cc": "BR",
+                "ccy": "BRL",
+                "label": "Brazilian real",
+                "group": "em"
+              },
+              {
+                "cc": "MX",
+                "ccy": "MXN",
+                "label": "Mexican peso",
+                "group": "em"
+              },
+              {
+                "cc": "KR",
+                "ccy": "KRW",
+                "label": "Korean won",
+                "group": "em"
+              },
+              {
+                "cc": "ID",
+                "ccy": "IDR",
+                "label": "Indonesian rupiah",
+                "group": "em"
+              },
+              {
+                "cc": "TR",
+                "ccy": "TRY",
+                "label": "Turkish lira",
+                "group": "em"
+              },
+              {
+                "cc": "ZA",
+                "ccy": "ZAR",
+                "label": "South African rand",
+                "group": "em"
+              },
+              {
+                "cc": "RU",
+                "ccy": "RUB",
+                "label": "Russian rouble",
+                "group": "em",
+                "no_fx": "the ECB stopped the rouble reference rate in March 2022; no other free official daily USD rate"
+              },
+              {
+                "cc": "PL",
+                "ccy": "PLN",
+                "label": "Polish zloty",
+                "group": "em"
+              },
+              {
+                "cc": "TH",
+                "ccy": "THB",
+                "label": "Thai baht",
+                "group": "em"
+              },
+              {
+                "cc": "SA",
+                "ccy": "SAR",
+                "label": "Saudi riyal",
+                "group": "em",
+                "no_fx": "the ECB publishes no riyal reference rate (the riyal is pegged at 3.75 per USD); no free official daily series"
+              }
+            ],
+            "primary": {
+              "source": "cloud_fincept",
+              "api": "/v1/fx/ppp",
+              "parse": "finterm_v1"
+            }
+          },
+          "columns": [
+            "Currency",
+            "Spot",
+            "PPP",
+            "Over/under %",
+            "30d avg",
+            "30d 1y ago real",
+            "Real YoY %"
+          ]
         }
       ],
       "default": true,
@@ -4028,6 +4485,79 @@
             "As of"
           ],
           "tape": true
+        },
+        {
+          "id": "top20",
+          "title": "Crypto top 20 on Coinbase (USD, daily close, 7-day sparkline)",
+          "source": "coinbase",
+          "view": "quotes",
+          "derive": "points",
+          "fetch": {
+            "provider": "coinbase_exchange",
+            "path": "/products/{each}/candles",
+            "params": {
+              "granularity": "86400"
+            },
+            "each": [
+              "BTC-USD",
+              "ETH-USD",
+              "XRP-USD",
+              "SOL-USD",
+              "DOGE-USD",
+              "ADA-USD",
+              "LINK-USD",
+              "AVAX-USD",
+              "XLM-USD",
+              "LTC-USD",
+              "DOT-USD",
+              "BCH-USD",
+              "SHIB-USD",
+              "UNI-USD",
+              "HBAR-USD",
+              "SUI-USD",
+              "AAVE-USD",
+              "NEAR-USD",
+              "ICP-USD",
+              "ETC-USD"
+            ],
+            "labels": {
+              "BTC-USD": "Bitcoin",
+              "ETH-USD": "Ether",
+              "XRP-USD": "XRP",
+              "SOL-USD": "Solana",
+              "DOGE-USD": "Dogecoin",
+              "ADA-USD": "Cardano",
+              "LINK-USD": "Chainlink",
+              "AVAX-USD": "Avalanche",
+              "XLM-USD": "Stellar",
+              "LTC-USD": "Litecoin",
+              "DOT-USD": "Polkadot",
+              "BCH-USD": "Bitcoin Cash",
+              "SHIB-USD": "Shiba Inu",
+              "UNI-USD": "Uniswap",
+              "HBAR-USD": "Hedera",
+              "SUI-USD": "Sui",
+              "AAVE-USD": "Aave",
+              "NEAR-USD": "NEAR",
+              "ICP-USD": "Internet Computer",
+              "ETC-USD": "Ethereum Classic"
+            },
+            "primary": {
+              "source": "cloud_fincept",
+              "api": "/v1/quotes",
+              "params": {
+                "symbols": "BTC-USD,ETH-USD,XRP-USD,SOL-USD,DOGE-USD,ADA-USD,LINK-USD,AVAX-USD,XLM-USD,LTC-USD,DOT-USD,BCH-USD,SHIB-USD,UNI-USD,HBAR-USD,SUI-USD,AAVE-USD,NEAR-USD,ICP-USD,ETC-USD"
+              },
+              "parse": "finterm_v1"
+            }
+          },
+          "columns": [
+            "Name",
+            "Last",
+            "Chg",
+            "Chg %",
+            "As of"
+          ]
         },
         {
           "id": "btc",
@@ -4386,6 +4916,56 @@
           "placeholder": {
             "reason": "needs a key or a connector"
           }
+        },
+        {
+          "id": "cot",
+          "title": "CFTC positioning: net non-commercial futures (contracts, weekly)",
+          "source": "cftc",
+          "view": "quotes",
+          "derive": "points",
+          "fetch": {
+            "provider": "cftc_cot",
+            "path": "/resource/6dca-aqww.json?cftc_contract_market_code={each}",
+            "params": {
+              "$order": "report_date_as_yyyy_mm_dd DESC",
+              "$limit": "2"
+            },
+            "each": [
+              "13874A",
+              "043602",
+              "088691",
+              "067651",
+              "099741",
+              "097741",
+              "133741",
+              "085692"
+            ],
+            "labels": {
+              "133741": "Bitcoin (CME)",
+              "13874A": "E-mini S&P 500",
+              "043602": "UST 10Y note",
+              "088691": "Gold",
+              "067651": "WTI crude",
+              "099741": "Euro FX",
+              "097741": "Japanese yen",
+              "085692": "Copper"
+            },
+            "primary": {
+              "source": "cloud_fincept",
+              "api": "/v1/quotes",
+              "params": {
+                "symbols": "cot:13874A,cot:043602,cot:088691,cot:067651,cot:099741,cot:097741,cot:133741,cot:085692"
+              },
+              "parse": "finterm_v1"
+            }
+          },
+          "columns": [
+            "Market",
+            "Net",
+            "Chg",
+            "Chg %",
+            "Report"
+          ]
         }
       ],
       "slug": "commodities",
@@ -4608,6 +5188,7 @@
           "title": "Next policy decisions",
           "source": "central_banks",
           "view": "calendar",
+          "next_tiles": true,
           "derive": "events",
           "fetch": {
             "provider": "declared_events",
@@ -4817,6 +5398,68 @@
             "YTD",
             "1M",
             "3M",
+            "1Y",
+            "3Y",
+            "10Y",
+            "Vol 1Y",
+            "MaxDD 1Y"
+          ],
+          "unit": "%"
+        },
+        {
+          "id": "risk",
+          "title": "Risk: 60/40 vs 100/0 equity/bonds (same ETF proxies, daily rebalanced)",
+          "source": "cboe",
+          "view": "table",
+          "derive": "risk_compare",
+          "fetch": {
+            "provider": "cboe_quotes",
+            "path": "/charts/historical/{each}.json",
+            "last": 100000,
+            "proxies": {
+              "Bonds": "AGG",
+              "Equity": "ACWI"
+            },
+            "each": [
+              "AGG",
+              "ACWI"
+            ],
+            "primary": {
+              "source": "cloud_fincept",
+              "api": "/v1/history",
+              "params": {
+                "symbol": "{each}",
+                "interval": "1d",
+                "range": "max"
+              },
+              "parse": "finterm_v1"
+            },
+            "compare": [
+              [
+                [
+                  "Bonds",
+                  40
+                ],
+                [
+                  "Equity",
+                  60
+                ]
+              ],
+              [
+                [
+                  "Bonds",
+                  0
+                ],
+                [
+                  "Equity",
+                  100
+                ]
+              ]
+            ]
+          },
+          "columns": [
+            "Name",
+            "Last",
             "1Y",
             "3Y",
             "10Y",

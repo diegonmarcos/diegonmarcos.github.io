@@ -32,6 +32,14 @@ describe('gen-finterm (pure)', () => {
     expect(JSON.stringify(o)).not.toContain('prose');
     expect(o.app_id).toBe('the-app');
   });
+  it('embeds exactly the declared data files a panel reads through an asset: source, and fails loudly on a missing one (#1351)', () => {
+    const a = clone();
+    a.sources.sources.push({ id: 'cb', name: 'CB', priority: 10, endpoint: 'asset:', auth: { type: 'none' }, connector: 'declared_events', feeds: [{ tab: 'fi', entries: ['Yield Curves'] }] });
+    a.dashboards.dashboards[0].panels.push({ id: 'm', title: 'M', source: 'cb', view: 'calendar', derive: 'events', fetch: { provider: 'declared_events', path: 'banks.json' } });
+    expect(() => buildFinterm(a)).toThrow(/declared data file banks.json/);
+    const o = buildFinterm({ ...a, declared: { 'banks.json': { _doc: 'prose', banks: [] }, 'other.json': {} } });
+    expect(o.declared).toEqual({ 'banks.json': { banks: [] } });
+  });
   it('carries the per-source cors flag through (false = a browser cannot read it), and leaves it out when undeclared', () => {
     const a = clone(); a.sources.sources[1].cors = false;
     const o = buildFinterm(a);
@@ -74,10 +82,10 @@ describe('gen-finterm --check (the CI drift guard)', () => {
 });
 
 describe('the committed web FinTerm declarations', () => {
-  it('17 dashboards: FI 4, EQ 1, EX 2, NW 1, PM 9 (the APK entries), each with at least one panel', () => {
+  it('28 dashboards: FI 7, EQ 5, EX 4, NW 3, PM 9 (the APK entries), each with at least one panel', () => {
     const by = (t: string) => fin.dashboards.filter((d: { tab: string }) => d.tab === t).length;
-    expect([by('fi'), by('eq'), by('ex'), by('nw'), by('pm')]).toEqual([4, 1, 2, 1, 9]);
-    expect(fin.dashboards).toHaveLength(17);
+    expect([by('fi'), by('eq'), by('ex'), by('nw'), by('pm')]).toEqual([7, 5, 4, 3, 9]);
+    expect(fin.dashboards).toHaveLength(28);
     for (const d of fin.dashboards) expect(d.panels.length, d.id).toBeGreaterThan(0);
   });
   it('every panel is a live fetch, a dashed placeholder or a static allocation; every source named exists', () => {
@@ -88,9 +96,9 @@ describe('the committed web FinTerm declarations', () => {
     }
   });
   it('the mesh base is derived from the cloudy-u-containers declaration, never a public host', () => {
-    const svc = J('scripts/fallback-services.json').services.find((s: { slug: string }) => s.slug === 'fin-api');
-    expect(fin.mesh['fin-api']).toBe(`https://${svc.mesh}`);
-    expect(svc.hosts).not.toContain(new URL(fin.mesh['fin-api']).host);
+    const svc = J('scripts/fallback-services.json').services.find((s: { slug: string }) => s.slug === 'capital-stack-finterminal-api');
+    expect(fin.mesh['capital-stack-finterminal-api']).toBe(`https://${svc.mesh}`);
+    expect(svc.hosts).not.toContain(new URL(fin.mesh['capital-stack-finterminal-api']).host);
   });
   it('the Backend (mesh) link is derived too: lock badge data, no typed url in the mapping', () => {
     const map = J('data/app-links.json').links.find((l: { id: string }) => l.id === fin.app_id);
@@ -99,7 +107,7 @@ describe('the committed web FinTerm declarations', () => {
     const l = J('packages/cloudy-ui/nav/app-links.json').links.find((x: { id: string }) => x.id === fin.app_id);
     expect(l.kind).toBe('webapp');
     expect(l.href).toBe(`/cloud-webapps/${fin.app_id}/`);
-    expect(l.backend).toMatchObject({ label: 'Backend (mesh)', mesh: true, href: `${fin.mesh['fin-api']}/api/v1/info` });
+    expect(l.backend).toMatchObject({ label: 'Backend (mesh)', mesh: true, href: `${fin.mesh['capital-stack-finterminal-api']}/api/v1/info` });
     expect(l.alias_ids).toBeUndefined();
     expect(J('data/app-links.json').links.find((x: { id: string }) => x.id === fin.app_id).alias_ids).toContain('capital-finterm');
   });
@@ -120,7 +128,15 @@ describe('no hand-typed URLs in the web terminal code', () => {
     }
   });
   it('every endpoint in the declarations is https (or wss) and every request address is endpoint + path', () => {
-    for (const s of fin.sources) if (s.endpoint) expect(s.endpoint, s.id).toMatch(/^(https|wss):\/\//);
-    for (const d of fin.dashboards) for (const p of d.panels) if (p.fetch?.path) expect(p.fetch.path, `${d.id}/${p.id}`).toMatch(/^\//);
+    // 'asset:' is a data file declared in the app (declared_events, #1351), embedded under `declared`: never fetched over the network
+    const asset = new Set(fin.sources.filter((s: { endpoint: string; connector?: string }) => s.endpoint === 'asset:' && s.connector === 'declared_events').map((s: { id: string }) => s.id));
+    for (const s of fin.sources) if (s.endpoint && !asset.has(s.id)) expect(s.endpoint, s.id).toMatch(/^(https|wss):\/\//);
+    for (const d of fin.dashboards) for (const p of d.panels) {
+      const routes = p.fetch ? [{ source: p.source, path: p.fetch.path }, ...(p.fetch.fallbacks ?? [])] : [];
+      for (const r of routes) if (r.path) {
+        if (asset.has(r.source)) expect(Object.keys(fin.declared ?? {}), `${d.id}/${p.id}`).toContain(r.path);
+        else expect(r.path, `${d.id}/${p.id}`).toMatch(/^\//);
+      }
+    }
   });
 });

@@ -1462,13 +1462,13 @@
                 "id": "mystudy",
                 "label": "Me-Study",
                 "icon": "ic_file_stack",
-                "target": "extapp:cloud-me#page:study/cv"
+                "target": "extapp:cloud-me#page:experiences/study"
               },
               {
                 "id": "myachieves",
                 "label": "Me-Achieves",
                 "icon": "ic_map_pin",
-                "target": "extapp:cloud-me#page:achieves/personal"
+                "target": "extapp:cloud-me#page:experiences/achieves"
               },
               {
                 "id": "me-sep-2",
@@ -5750,8 +5750,8 @@
       "default_section": "lnktree",
       "bottom_nav": [
         "health",
-        "study",
-        "achieves",
+        "experiences",
+        "roadmap",
         "lnktree",
         "duties",
         "buro",
@@ -5964,6 +5964,11 @@
               "icon": "ic_gym"
             },
             {
+              "id": "tracked",
+              "label": "Tracked",
+              "icon": "monitor_heart"
+            },
+            {
               "id": "activities",
               "label": "Activities",
               "icon": "ic_p_health_activity"
@@ -6002,7 +6007,8 @@
                 "thermal",
                 "hemo",
                 "shop",
-                "dossier"
+                "dossier",
+                "workout"
               ]
             },
             {
@@ -6010,7 +6016,7 @@
               "label": "Trackers",
               "icon": "monitor_heart",
               "pages": [
-                "workout",
+                "tracked",
                 "activities",
                 "bodycomp",
                 "hr",
@@ -6020,51 +6026,102 @@
           ]
         },
         {
-          "id": "study",
-          "label": "Study",
-          "icon": "ic_nav_study",
+          "migration": {
+            "store": "experiences_user",
+            "legacy": {
+              "done": "_done",
+              "todo": "_todo"
+            },
+            "field": "category",
+            "by_value": {
+              "🌐 Travel": "geo"
+            },
+            "default": "endurance",
+            "rename": {
+              "geo": {
+                "place": "country"
+              }
+            }
+          },
+          "id": "experiences",
+          "label": "Experiences",
+          "icon": "ic_nav_achieves",
           "pages": [
             {
-              "id": "cv",
-              "label": "CV",
-              "icon": "ic_p_cv"
+              "id": "work",
+              "label": "Work",
+              "icon": "ic_nav_work"
             },
             {
-              "id": "roadmap",
-              "label": "Roadmap",
-              "icon": "ic_p_roadmap"
+              "id": "study",
+              "label": "Study",
+              "icon": "ic_nav_study",
+              "pages": [
+                {
+                  "id": "cv",
+                  "label": "CV",
+                  "icon": "ic_p_cv"
+                },
+                {
+                  "id": "roadmap",
+                  "label": "Roadmap",
+                  "icon": "ic_p_roadmap"
+                }
+              ]
+            },
+            {
+              "id": "achieves",
+              "label": "Personal Achieves",
+              "icon": "ic_nav_achieves",
+              "pages": [
+                {
+                  "id": "geo",
+                  "label": "Geo",
+                  "icon": "ic_world"
+                },
+                {
+                  "id": "endurance",
+                  "label": "Endurance",
+                  "icon": "ic_nav_trips"
+                },
+                {
+                  "id": "growth",
+                  "label": "Personal Growth",
+                  "icon": "ic_p_pursuits"
+                },
+                {
+                  "id": "community",
+                  "label": "Community",
+                  "icon": "ic_nav_me"
+                },
+                {
+                  "id": "by30",
+                  "label": "By 30",
+                  "icon": "ic_p_pursuits"
+                },
+                {
+                  "id": "by40",
+                  "label": "By 40",
+                  "icon": "ic_p_pursuits"
+                },
+                {
+                  "id": "by50",
+                  "label": "By 50",
+                  "icon": "ic_p_pursuits"
+                }
+              ]
             }
           ]
         },
         {
-          "id": "achieves",
-          "label": "Achieves",
-          "icon": "ic_nav_achieves",
+          "id": "roadmap",
+          "label": "RoadMap",
+          "icon": "ic_p_roadmap",
           "pages": [
             {
-              "id": "personal",
-              "label": "Personal",
-              "icon": "ic_nav_me"
-            },
-            {
-              "id": "pursuits",
-              "label": "Personal Pursuits",
-              "icon": "ic_p_pursuits"
-            },
-            {
-              "id": "international",
-              "label": "International Experience",
-              "icon": "ic_world"
-            },
-            {
-              "id": "trips",
-              "label": "Trips",
-              "icon": "ic_nav_trips"
-            },
-            {
-              "id": "experiences",
-              "label": "Experiences",
-              "icon": "ic_nav_trips"
+              "id": "folders",
+              "label": "Folders",
+              "icon": "ic_p_folder"
             }
           ]
         },

@@ -73,7 +73,9 @@
   .cfg { width: 100%; text-align: left; background: none; border: 0; cursor: pointer; }
   .ic { width: var(--fleet-top1-icon-target); height: var(--fleet-top1-icon-target); display: grid; place-items: center; color: var(--f-ink); }
   .scrim { position: fixed; inset: 0; z-index: 30; }
-  .dropdown { position: absolute; z-index: 31; top: calc(100% + 4px); left: 4px; width: var(--fleet-top1-dropdown-width); max-height: var(--fleet-top1-dropdown-max-height); overflow-y: auto;
+  /* grows to its list, capped at the room below it (navDropdown.ts dropdownCapCss: 100dvh = rotation and split screen) */
+  .dropdown { position: absolute; z-index: 31; top: calc(100% + 4px); left: 4px; width: var(--fleet-top1-dropdown-width); overflow-y: auto;
+    max-height: max(var(--nav-dropdown-min-height), calc(100dvh - calc(var(--fleet-top1-height) + 4px) - env(safe-area-inset-bottom, 0px) - var(--nav-dropdown-screen-margin)));
     background: var(--f-island); border-radius: 12px; box-shadow: 0 8px 24px #0008; color: var(--f-on-island); padding-bottom: 8px; }
   .crumbs { padding: 8px 16px; white-space: nowrap; overflow-x: auto; font: 400 13px var(--type-family-sans); }
   .crumbs a, .crumbs span { color: var(--f-on-island); text-decoration: none; }

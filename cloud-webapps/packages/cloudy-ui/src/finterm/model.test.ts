@@ -34,6 +34,7 @@ describe('model parsers (fixtures cut from the live answers)', () => {
     const day = (d: string, v: string) => `<m:properties><d:NEW_DATE m:type="Edm.DateTime">${d}T00:00:00</d:NEW_DATE><d:BC_10YEAR m:type="Edm.Double">${v}</d:BC_10YEAR></m:properties>`;
     const p = feedTreasury(day('2026-10-30', '4.15') + day('2026-10-29', '4.10')).points[0];
     expect(p).toMatchObject({ key: 'BC_10YEAR', value: 4.15, prev: 4.1, date: '2026-10-30' });
+    expect(p.hist).toEqual([4.1, 4.15]); // every day of the month, oldest first: the sparkline
   });
   it('SDMX-JSON top level (ECB) or under data (OECD): one point per key-dimension id', () => {
     const inner = { structure: { dimensions: { series: [{ id: 'FREQ', values: [{ id: 'B' }] }, { id: 'K', values: [{ id: 'A' }, { id: 'Z' }] }], observation: [{ values: [{ id: '2026-10-30' }, { id: '2026-10-29' }] }] } },
@@ -54,6 +55,7 @@ describe('model parsers (fixtures cut from the live answers)', () => {
   it('Frankfurter range: the last fix and the one before', () => {
     const p = feedFrankfurter(JSON.stringify({ rates: { '2026-10-30': { EUR: 0.9 }, '2026-10-28': { EUR: 0.88 }, '2026-10-29': { EUR: 0.89 } } })).points[0];
     expect(p).toMatchObject({ key: 'EUR', value: 0.9, prev: 0.89, date: '2026-10-30' });
+    expect(p.hist).toEqual([0.88, 0.89, 0.9]);
   });
   it('garbage is an empty model, never an error', () => {
     for (const c of ['nyfed_rates', 'treasury_xml', 'sdmx_json', 'jsonstat', 'bls_series', 'frankfurter_rates', 'coinbase_exchange', 'polymarket_events', 'finterm_v1'])
@@ -75,6 +77,17 @@ describe('model route order: the container /v1 first, then the public source, th
     expect(h.asked).toEqual(['asset:central-banks.json']);
     expect(d.servedBy).toBe(src('central_banks').name);
     expect(d.rows.some((r) => r[2].includes('European Central Bank'))).toBe(true);
+  });
+  it('merge: every public route that answers is combined (calendars); without merge the first answer wins', async () => {
+    const base = panel('central_bank_calendar', 'meetings');
+    const extra = JSON.stringify({ banks: [{ country: 'CH', events: [{ ts: '2026-11-02T08:30Z', title: 'SNB: rate decision' }] }] });
+    const mk = (merge: boolean) => ({ ...base, fetch: { ...base.fetch!, merge, fallbacks: [{ source: 'central_banks', provider: 'declared_events', path: 'extra.json' }] } });
+    const ctx = (): Ctx => ({ ...harness(() => null).ctx, get: async (u: string) => (u === 'asset:extra.json' ? extra : JSON.stringify((FINTERM as unknown as { declared: Record<string, unknown> }).declared[u.slice(6)])) });
+    const merged = await loadPanel(mk(true), dash('central_bank_calendar'), ctx());
+    expect(merged.rows.some((r) => r[2] === 'SNB: rate decision')).toBe(true);
+    expect(merged.rows.some((r) => r[2].startsWith('Bank of England'))).toBe(true);
+    const first = await loadPanel(mk(false), dash('central_bank_calendar'), ctx());
+    expect(first.rows.some((r) => r[2] === 'SNB: rate decision')).toBe(false);
   });
   it('the first public route that answers wins (no merge): last month only when this month is empty', async () => {
     const x = '<m:properties><d:NEW_DATE m:type="Edm.DateTime">2026-09-30T00:00:00</d:NEW_DATE><d:BC_2YEAR m:type="Edm.Double">3.5</d:BC_2YEAR><d:BC_10YEAR m:type="Edm.Double">4.1</d:BC_10YEAR><d:BC_30YEAR m:type="Edm.Double">4.7</d:BC_30YEAR></m:properties>';

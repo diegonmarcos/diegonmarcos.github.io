@@ -7429,6 +7429,33 @@
             ]
           },
           {
+            "id": "engine_all_files",
+            "label": "All files access for the git sync engine",
+            "why": "Git on repositories in shared storage (the vaults) runs in the git sync engine app, a separate uid: it needs its OWN All files access, Cloud Drive's grant does not cover it. Repositories in the store run in cld.termux and do not need it. The engine reports its grant itself.",
+            "permissions": [
+              "android.permission.MANAGE_EXTERNAL_STORAGE"
+            ],
+            "min_sdk": 30,
+            "requires_package": "{gitEnginePackage}",
+            "check": "engine_all_files",
+            "grant": "settings",
+            "intents": [
+              {
+                "action": "android.settings.MANAGE_APP_ALL_FILES_ACCESS_PERMISSION",
+                "package_uri": true,
+                "target": "{gitEnginePackage}"
+              },
+              {
+                "action": "android.settings.MANAGE_ALL_FILES_ACCESS_PERMISSION"
+              },
+              {
+                "action": "android.settings.APPLICATION_DETAILS_SETTINGS",
+                "package_uri": true,
+                "target": "{gitEnginePackage}"
+              }
+            ]
+          },
+          {
             "id": "termux_run_command",
             "label": "Run commands in cld.termux",
             "why": "Git sync store route: git runs inside the terminal app through its RunCommandService when the shared uid is not in effect (Sync > Git).",
@@ -7768,7 +7795,46 @@
           }
         ],
         "default_dual_pane": true,
-        "tabs_per_pane_max": 6
+        "tabs_per_pane_max": 6,
+        "search": {
+          "search_height_dp": 40,
+          "default_scope": "folders_here",
+          "debounce_ms": 250,
+          "result_ceiling": 300,
+          "scan_ceiling": 50000,
+          "depth_ceiling": 24,
+          "placeholder": "Search",
+          "scopes": [
+            {
+              "id": "folders_here",
+              "label": "Only Folders Here",
+              "recursive": false,
+              "from": "here",
+              "folders_only": true
+            },
+            {
+              "id": "folders_root",
+              "label": "Only Folders Root",
+              "recursive": true,
+              "from": "root",
+              "folders_only": true
+            },
+            {
+              "id": "all_here",
+              "label": "All From Here",
+              "recursive": true,
+              "from": "here",
+              "folders_only": false
+            },
+            {
+              "id": "all_root",
+              "label": "All From Root",
+              "recursive": true,
+              "from": "root",
+              "folders_only": false
+            }
+          ]
+        }
       },
       "icons": {},
       "volumes": {
@@ -8897,6 +8963,7 @@
           "top_bar": {
             "search": true,
             "search_placeholder": "Search repositories",
+            "search_height_dp": 40,
             "counters": [
               "cloned",
               "needs_you",
@@ -8935,19 +9002,73 @@
                 "icon": "sync",
                 "items": [
                   {
-                    "id": "check_light",
-                    "kind": "check_light",
-                    "label": "Light check",
-                    "hint": "refs only",
-                    "icon": "sync",
-                    "exclusive": false
-                  },
-                  {
                     "id": "check_full",
                     "kind": "check_full",
                     "label": "Full check",
                     "hint": "working tree",
                     "icon": "search",
+                    "exclusive": false
+                  }
+                ]
+              },
+              {
+                "id": "sync",
+                "label": "Sync",
+                "icon": "cloud_sync",
+                "items": [
+                  {
+                    "id": "sync_all",
+                    "kind": "compound",
+                    "op": "sync_no_winner",
+                    "label": "Sync all",
+                    "hint": "no winner",
+                    "icon": "cloud_sync",
+                    "scope": "filtered",
+                    "confirm": true
+                  }
+                ]
+              },
+              {
+                "id": "clone",
+                "label": "Clone",
+                "icon": "download",
+                "items": [
+                  {
+                    "id": "clone_missing",
+                    "kind": "depth",
+                    "action": "clone_all_depth1",
+                    "label": "Clone missing (depth 1)",
+                    "hint": "one clone per repository",
+                    "icon": "download"
+                  }
+                ]
+              },
+              {
+                "id": "logs",
+                "label": "Logs",
+                "icon": "history",
+                "items": [
+                  {
+                    "id": "logs",
+                    "kind": "open_logs",
+                    "label": "Logs",
+                    "hint": "Repos and App logs",
+                    "icon": "history",
+                    "exclusive": false
+                  }
+                ]
+              },
+              {
+                "id": "more",
+                "label": "More",
+                "icon": "list",
+                "items": [
+                  {
+                    "id": "check_light",
+                    "kind": "check_light",
+                    "label": "Light check",
+                    "hint": "refs only",
+                    "icon": "sync",
                     "exclusive": false
                   },
                   {
@@ -8981,23 +9102,6 @@
                     "hint": "stop the status reads",
                     "icon": "restore",
                     "exclusive": false
-                  }
-                ]
-              },
-              {
-                "id": "sync",
-                "label": "Sync",
-                "icon": "cloud_sync",
-                "items": [
-                  {
-                    "id": "sync_all",
-                    "kind": "compound",
-                    "op": "sync_no_winner",
-                    "label": "Sync all",
-                    "hint": "no winner",
-                    "icon": "cloud_sync",
-                    "scope": "filtered",
-                    "confirm": true
                   },
                   {
                     "id": "pull_all",
@@ -9036,21 +9140,6 @@
                     "label": "Fetch all",
                     "icon": "sync",
                     "scope": "filtered"
-                  }
-                ]
-              },
-              {
-                "id": "clone",
-                "label": "Clone",
-                "icon": "download",
-                "items": [
-                  {
-                    "id": "clone_missing",
-                    "kind": "depth",
-                    "action": "clone_all_depth1",
-                    "label": "Clone missing (depth 1)",
-                    "hint": "one clone per repository",
-                    "icon": "download"
                   },
                   {
                     "id": "mirror_all",
@@ -9068,20 +9157,6 @@
                     "icon": "storage",
                     "danger": true,
                     "confirm": true
-                  }
-                ]
-              },
-              {
-                "id": "more",
-                "label": "⋯",
-                "icon": "list",
-                "items": [
-                  {
-                    "id": "activity_logs",
-                    "kind": "open_activity",
-                    "label": "Activity Logs",
-                    "icon": "list",
-                    "exclusive": false
                   },
                   {
                     "id": "last_report",
@@ -9109,6 +9184,28 @@
                 ]
               }
             ]
+          },
+          "logs": {
+            "title": "Logs",
+            "tabs": [
+              {
+                "id": "repos",
+                "label": "Repos"
+              },
+              {
+                "id": "app",
+                "label": "App"
+              }
+            ],
+            "labels": {
+              "commits": "Commits",
+              "history": "History",
+              "ci": "CI runs",
+              "ci_load": "Load CI runs",
+              "no_repos": "No cloned repository yet",
+              "empty": "nothing yet",
+              "loading": "reading…"
+            }
           },
           "activity_logs": {
             "max_entries": 50

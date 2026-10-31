@@ -44,6 +44,41 @@ export function scrollHideStep(state: ChromeState, dy: number, scrollHide: boole
   return state;
 }
 
+/**
+ * Per-gesture scroll-hide (NavUi.kt chromeGestureStep): the touch that hid the bars is latched, and no upward scroll of that same
+ * gesture (finger still down, or the momentum it threw: a fling is part of its gesture) shows them again. Only a NEW gesture
+ * (touchend / pointerup, then touchstart / pointerdown) restores them, on its first upward scroll; a new downward gesture keeps
+ * them hidden. Without a touch ever seen (mouse wheel, keyboard) an upward scroll after the last one counts as a new gesture.
+ */
+export type ScrollHideMachine = { chrome: ChromeState; gesture: number; latch: number | null; touched: boolean; active: boolean };
+export const scrollHideStart = (): ScrollHideMachine => ({ chrome: 'shown', gesture: 0, latch: null, touched: false, active: false });
+
+/** touchstart / pointerdown (touch): a new gesture begins. */
+export const gestureDown = (m: ScrollHideMachine): ScrollHideMachine => (m.active ? m : { ...m, gesture: m.gesture + 1, touched: true, active: true });
+/** touchend / touchcancel / pointerup: the gesture ends; its momentum still belongs to it (the latch stays). */
+export const gestureUp = (m: ScrollHideMachine): ScrollHideMachine => ({ ...m, active: false });
+
+export function scrollHideGestureStep(m: ScrollHideMachine, dy: number, scrollHide: boolean): ScrollHideMachine {
+  if (!scrollHide) return { ...m, chrome: 'shown', latch: null };
+  const g = !m.touched && dy < 0 ? m.gesture + 1 : m.gesture;
+  if (dy < 0 && m.latch !== null && m.latch === g) return m;
+  const chrome = scrollHideStep(m.chrome, dy, true);
+  const latch = chrome === 'shown' ? null : dy > 0 ? g : m.latch;
+  return { ...m, gesture: g, chrome, latch };
+}
+
+/** THE one feed both shells spread on their scroller (`<main {...feed}>`): scroll, touchstart, touchend and touchcancel drive
+ *  the per-gesture machine; [hidden] is told every change. [enabled] reads scroll-hide in force (Configs > UI). */
+export function scrollFeed(enabled: () => boolean, hidden: (on: boolean) => void) {
+  let m = scrollHideStart(), last = 0;
+  const put = (n: ScrollHideMachine) => { m = n; hidden(n.chrome === 'hidden'); };
+  const up = () => put(gestureUp(m));
+  return {
+    onscroll: (e: Event) => { const y = (e.currentTarget as HTMLElement).scrollTop, d = y - last; last = y; put(scrollHideGestureStep(m, y <= 0 ? -1 : d, enabled())); },
+    ontouchstart: () => put(gestureDown(m)), ontouchend: up, ontouchcancel: up,
+  };
+}
+
 // ── persistence (the `nav_ui` store of the app): fail-soft like the Android prefs ──
 export const NAV_UI_KEY = (appId: string) => `nav_ui:${appId}`;
 

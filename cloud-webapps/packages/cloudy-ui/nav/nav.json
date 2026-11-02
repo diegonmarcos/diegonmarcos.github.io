@@ -1680,7 +1680,7 @@
                 "id": "configs-about",
                 "label": "About",
                 "icon": "ic_settings",
-                "target": "page:config/about"
+                "target": "page:config/app-about"
               }
             ]
           }
@@ -3206,7 +3206,6 @@
             "pages": [
               "profile",
               "store",
-              "perms",
               "controls",
               "onehand",
               "notify",
@@ -3255,13 +3254,11 @@
             "label": "Observability",
             "icon": "ic_monitor_heart",
             "pages": [
-              "agents",
-              "diagnostics",
+              "xray",
               "logcat",
-              "about",
-              "battery",
-              "agents-superapp",
-              "agents-fleet"
+              "perms",
+              "app-about",
+              "battery"
             ]
           }
         ],
@@ -3270,7 +3267,30 @@
             "controls",
             "onehand",
             "notify"
+          ],
+          "about": [
+            "xray",
+            "app-about"
+          ],
+          "diagnostics": [
+            "xray"
+          ],
+          "agents": [
+            "xray"
+          ],
+          "agents-superapp": [
+            "xray"
+          ],
+          "agents-fleet": [
+            "xray"
           ]
+        },
+        "page_aliases": {
+          "about": "xray",
+          "diagnostics": "xray",
+          "agents": "xray",
+          "agents-superapp": "xray",
+          "agents-fleet": "xray"
         },
         "removed_pages": {
           "apps-mesh": "Apps Mesh is Cloud Store > Access now; one Apps Access tile opens it",
@@ -3299,13 +3319,6 @@
             "label": "Store",
             "icon": "ic_storefront",
             "action": "extapp:cloud-store",
-            "group": "Setup",
-            "subgroup": "Apps"
-          },
-          {
-            "id": "perms",
-            "label": "Permissions",
-            "icon": "ic_key",
             "group": "Setup",
             "subgroup": "Apps"
           },
@@ -3424,29 +3437,25 @@
             "group": "Fleet"
           },
           {
-            "id": "agents",
-            "label": "Agents",
-            "icon": "ic_robot",
-            "tabs": [
-              "agents-superapp",
-              "agents-fleet"
-            ],
-            "group": "Observability"
-          },
-          {
-            "id": "diagnostics",
-            "label": "Diagnostics",
+            "id": "xray",
+            "label": "X-Ray",
             "icon": "ic_monitor_heart",
             "group": "Observability"
           },
           {
             "id": "logcat",
-            "label": "Logcat",
+            "label": "LogCat",
             "icon": "ic_subject",
             "group": "Observability"
           },
           {
-            "id": "about",
+            "id": "perms",
+            "label": "Permissions",
+            "icon": "ic_key",
+            "group": "Observability"
+          },
+          {
+            "id": "app-about",
             "label": "About",
             "icon": "ic_info",
             "group": "Observability"
@@ -3483,18 +3492,6 @@
             "id": "battery",
             "label": "Battery",
             "icon": "ic_settings",
-            "hidden": true
-          },
-          {
-            "id": "agents-superapp",
-            "label": "SuperApp agents",
-            "icon": "ic_robot",
-            "hidden": true
-          },
-          {
-            "id": "agents-fleet",
-            "label": "Fleet agents",
-            "icon": "ic_robot",
             "hidden": true
           },
           {
@@ -4758,8 +4755,7 @@
         "id": "cloud-c3",
         "folder": "sys_dev",
         "hub_package": "com.diegonmarcos.cloudc3",
-        "install_package": "com.diegonmarcos.cloudc3",
-        "site": "Cloud Portal"
+        "install_package": "com.diegonmarcos.cloudc3"
       },
       {
         "id": "cloud-c3-webserver",
@@ -6130,17 +6126,36 @@
         },
         {
           "id": "tasks",
+          "nav_mode": "horizontal_two_rows",
           "label": "Tasks",
           "icon": "checklist",
-          "pages": [
+          "groups": [
+            {
+              "id": "backlogs",
+              "label": "Backlogs",
+              "icon": "checklist",
+              "pages": [
+                "backlogs"
+              ]
+            },
             {
               "id": "roadmaps",
               "label": "RoadMaps",
+              "icon": "ic_p_roadmap",
+              "pages": [
+                "roadmaps"
+              ]
+            }
+          ],
+          "pages": [
+            {
+              "id": "roadmaps",
+              "label": "Tree",
               "icon": "ic_p_roadmap"
             },
             {
               "id": "backlogs",
-              "label": "Backlogs",
+              "label": "Due",
               "icon": "checklist"
             }
           ]
@@ -9180,7 +9195,7 @@
       ],
       "top_bar": null,
       "nav_ui": {
-        "mode": "clean",
+        "mode": "classic",
         "scroll_hide": true
       },
       "configs_ui": [
@@ -9191,37 +9206,241 @@
           "id": "fi",
           "label": "FI",
           "icon": "account_balance",
-          "pages": []
+          "nav_mode": "horizontal_one_row",
+          "pages": [
+            {
+              "id": "fi-home",
+              "label": "Home",
+              "icon": "home"
+            },
+            {
+              "id": "yield-curves",
+              "label": "Yield Curves",
+              "icon": "timeline"
+            },
+            {
+              "id": "yields-matrix",
+              "label": "Yields Matrix",
+              "icon": "table_chart"
+            },
+            {
+              "id": "bonds-market",
+              "label": "Bonds Market",
+              "icon": "bar_chart"
+            },
+            {
+              "id": "forward-rates",
+              "label": "Forward Rates",
+              "icon": "insights"
+            },
+            {
+              "id": "rate-probabilities",
+              "label": "World Interest Rate Probabilities",
+              "icon": "speed"
+            },
+            {
+              "id": "world-bonds",
+              "label": "World Bonds",
+              "icon": "public"
+            },
+            {
+              "id": "credit",
+              "label": "Credit",
+              "icon": "assessment"
+            },
+            {
+              "id": "macro",
+              "label": "Macro",
+              "icon": "language"
+            }
+          ]
         },
         {
           "id": "eq",
           "label": "EQ",
           "icon": "trending_up",
-          "pages": []
+          "nav_mode": "horizontal_one_row",
+          "pages": [
+            {
+              "id": "eq-home",
+              "label": "Home",
+              "icon": "home"
+            },
+            {
+              "id": "world-equity-indices",
+              "label": "World Equity Indices",
+              "icon": "public"
+            },
+            {
+              "id": "eq-dm-us",
+              "label": "DM Equity (US)",
+              "icon": "trending_up"
+            },
+            {
+              "id": "eq-em",
+              "label": "EM Equity",
+              "icon": "explore"
+            },
+            {
+              "id": "equity-quote",
+              "label": "Quotes & Charts",
+              "icon": "chart"
+            },
+            {
+              "id": "equity-fundamentals",
+              "label": "Fundamentals",
+              "icon": "description"
+            },
+            {
+              "id": "earnings-calendar",
+              "label": "Earnings Calendar",
+              "icon": "calendar_month"
+            },
+            {
+              "id": "watchlist",
+              "label": "Watchlist & Alerts",
+              "icon": "bookmark"
+            }
+          ]
         },
         {
           "id": "ex",
           "label": "EX",
           "icon": "payments",
-          "pages": []
+          "nav_mode": "horizontal_one_row",
+          "pages": [
+            {
+              "id": "ex-home",
+              "label": "Home",
+              "icon": "home"
+            },
+            {
+              "id": "fx",
+              "label": "FX",
+              "icon": "swap_horiz"
+            },
+            {
+              "id": "onshore-usd-rates",
+              "label": "Onshore USD Rates",
+              "icon": "account_balance"
+            },
+            {
+              "id": "crypto",
+              "label": "Crypto",
+              "icon": "token"
+            },
+            {
+              "id": "commodities",
+              "label": "Commodities",
+              "icon": "inventory_2"
+            }
+          ]
         },
         {
           "id": "nw",
           "label": "NW",
           "icon": "rss_feed",
-          "pages": []
+          "nav_mode": "horizontal_one_row",
+          "pages": [
+            {
+              "id": "nw-home",
+              "label": "Home",
+              "icon": "home"
+            },
+            {
+              "id": "economic-calendar",
+              "label": "Economic Calendar",
+              "icon": "event"
+            },
+            {
+              "id": "news",
+              "label": "News",
+              "icon": "rss_feed"
+            },
+            {
+              "id": "central-bank-calendar",
+              "label": "Central Bank Calendar",
+              "icon": "account_balance"
+            }
+          ]
         },
         {
           "id": "pm",
           "label": "PM",
           "icon": "pie_chart",
-          "pages": []
+          "nav_mode": "horizontal_one_row",
+          "pages": [
+            {
+              "id": "pm-home",
+              "label": "Home",
+              "icon": "home"
+            },
+            {
+              "id": "portfolio-risk",
+              "label": "Portfolio & Risk Analytics",
+              "icon": "insights"
+            },
+            {
+              "id": "mp-40-60",
+              "label": "40/60",
+              "icon": "pie_chart",
+              "separator_before": true
+            },
+            {
+              "id": "mp-70-30",
+              "label": "70/30",
+              "icon": "pie_chart"
+            },
+            {
+              "id": "mp-60-40",
+              "label": "60/40",
+              "icon": "pie_chart"
+            },
+            {
+              "id": "mp-30-70",
+              "label": "30/70",
+              "icon": "pie_chart"
+            },
+            {
+              "id": "mp-70-30-dm-em",
+              "label": "70/30 DM/EM",
+              "icon": "pie_chart",
+              "separator_before": true
+            },
+            {
+              "id": "mp-60-40-dm-em",
+              "label": "60/40 DM/EM",
+              "icon": "pie_chart"
+            },
+            {
+              "id": "mp-40-60-dm-em",
+              "label": "40/60 DM/EM",
+              "icon": "pie_chart"
+            },
+            {
+              "id": "mp-30-70-dm-em",
+              "label": "30/70 DM/EM",
+              "icon": "pie_chart"
+            }
+          ]
         },
         {
           "id": "my-pm",
           "label": "MY-PM",
           "icon": "wallet",
-          "pages": []
+          "nav_mode": "horizontal_one_row",
+          "pages": [
+            {
+              "id": "my-pm-home",
+              "label": "Home",
+              "icon": "home"
+            },
+            {
+              "id": "holdings",
+              "label": "Personal portfolio",
+              "icon": "wallet"
+            }
+          ]
         },
         {
           "id": "about",

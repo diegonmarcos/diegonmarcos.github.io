@@ -1503,10 +1503,10 @@
               },
               {
                 "id": "tools-account",
-                "label": "Account",
-                "icon": "ic_p_accounts",
-                "target": "page:config/profile",
-                "fleet_app": "account"
+                "label": "Profile",
+                "icon": "ic_p_identities",
+                "target": "extapp:cloud-me#page:profile/profile",
+                "fleet_app": "me"
               }
             ]
           },
@@ -4888,11 +4888,12 @@
       "wasm": "cloud-dialer",
       "default_section": "home",
       "bottom_nav": [
-        "home",
         "contacts",
-        "favorites",
+        "keypad",
+        "home",
         "recents",
-        "sms"
+        "sms",
+        "sims"
       ],
       "top_bar": null,
       "nav_ui": null,
@@ -4957,6 +4958,30 @@
               "id": "sms",
               "label": "SMS",
               "icon": "sms"
+            }
+          ]
+        },
+        {
+          "id": "keypad",
+          "label": "Keypad",
+          "icon": "dialpad",
+          "pages": [
+            {
+              "id": "keypad",
+              "label": "Keypad",
+              "icon": "dialpad"
+            }
+          ]
+        },
+        {
+          "id": "sims",
+          "label": "SIMs",
+          "icon": "sim_card",
+          "pages": [
+            {
+              "id": "sims",
+              "label": "SIMs",
+              "icon": "sim_card"
             }
           ]
         }
@@ -5426,6 +5451,21 @@
           "icon": "configs",
           "pages": [
             {
+              "id": "general",
+              "label": "General",
+              "icon": "settings"
+            },
+            {
+              "id": "perms",
+              "label": "Perms",
+              "icon": "security"
+            },
+            {
+              "id": "about",
+              "label": "About",
+              "icon": "info"
+            },
+            {
               "id": "tracker",
               "label": "Tracker",
               "icon": "my_location"
@@ -5451,9 +5491,9 @@
               "icon": "layers"
             },
             {
-              "id": "about",
-              "label": "About",
-              "icon": "info"
+              "id": "device",
+              "label": "Device",
+              "icon": "smartphone"
             }
           ]
         }
@@ -5635,9 +5675,24 @@
           "icon": "settings",
           "pages": [
             {
-              "id": "configs",
-              "label": "Configs",
+              "id": "general",
+              "label": "General",
               "icon": "settings"
+            },
+            {
+              "id": "perms",
+              "label": "Perms",
+              "icon": "security"
+            },
+            {
+              "id": "about",
+              "label": "About",
+              "icon": "info"
+            },
+            {
+              "id": "news",
+              "label": "News",
+              "icon": "rss_feed"
             }
           ]
         }
@@ -5905,6 +5960,31 @@
           ],
           "pages": [
             {
+              "id": "tracked",
+              "label": "Tracked",
+              "icon": "monitor_heart"
+            },
+            {
+              "id": "activities",
+              "label": "Activities",
+              "icon": "ic_p_health_activity"
+            },
+            {
+              "id": "bodycomp",
+              "label": "Body comp",
+              "icon": "ic_p_health_body"
+            },
+            {
+              "id": "hr",
+              "label": "HR & HRV",
+              "icon": "ic_p_health_vitals"
+            },
+            {
+              "id": "sleep",
+              "label": "Sleep",
+              "icon": "ic_p_health_sleep"
+            },
+            {
               "id": "home",
               "label": "Index",
               "icon": "home"
@@ -5973,34 +6053,21 @@
               "id": "workout",
               "label": "Workout plan",
               "icon": "ic_gym"
-            },
-            {
-              "id": "tracked",
-              "label": "Tracked",
-              "icon": "monitor_heart"
-            },
-            {
-              "id": "activities",
-              "label": "Activities",
-              "icon": "ic_p_health_activity"
-            },
-            {
-              "id": "bodycomp",
-              "label": "Body comp",
-              "icon": "ic_p_health_body"
-            },
-            {
-              "id": "hr",
-              "label": "HR & HRV",
-              "icon": "ic_p_health_vitals"
-            },
-            {
-              "id": "sleep",
-              "label": "Sleep",
-              "icon": "ic_p_health_sleep"
             }
           ],
           "groups": [
+            {
+              "id": "trackers",
+              "label": "Trackers",
+              "icon": "monitor_heart",
+              "pages": [
+                "tracked",
+                "activities",
+                "bodycomp",
+                "hr",
+                "sleep"
+              ]
+            },
             {
               "id": "plan",
               "label": "Plan",
@@ -6020,18 +6087,6 @@
                 "shop",
                 "dossier",
                 "workout"
-              ]
-            },
-            {
-              "id": "trackers",
-              "label": "Trackers",
-              "icon": "monitor_heart",
-              "pages": [
-                "tracked",
-                "activities",
-                "bodycomp",
-                "hr",
-                "sleep"
               ]
             }
           ]
@@ -6575,15 +6630,48 @@
           ]
         },
         {
+          "id": "profile",
+          "label": "Profile",
+          "icon": "account_circle",
+          "toolbar": true,
+          "pages": [
+            {
+              "id": "profile",
+              "label": "Profile",
+              "icon": "account_circle"
+            }
+          ]
+        },
+        {
           "id": "configs",
           "label": "Configs",
           "icon": "ic_nav_configs",
           "toolbar": true,
           "pages": [
             {
-              "id": "configs",
-              "label": "Configs",
-              "icon": "ic_nav_configs"
+              "id": "general",
+              "label": "General",
+              "icon": "settings"
+            },
+            {
+              "id": "perms",
+              "label": "Perms",
+              "icon": "security"
+            },
+            {
+              "id": "about",
+              "label": "About",
+              "icon": "info"
+            },
+            {
+              "id": "nav",
+              "label": "Navigation",
+              "icon": "navigation"
+            },
+            {
+              "id": "apps",
+              "label": "Apps",
+              "icon": "apps"
             }
           ]
         }
@@ -6607,7 +6695,7 @@
         "tabs",
         "browser",
         "search",
-        "configs"
+        "scrapers"
       ],
       "top_bar": null,
       "nav_ui": null,
@@ -6640,6 +6728,23 @@
           "pages": []
         },
         {
+          "id": "scrapers",
+          "label": "Scrapers",
+          "icon": "download",
+          "pages": [
+            {
+              "id": "site_files",
+              "label": "Site Files",
+              "icon": "folder_open"
+            },
+            {
+              "id": "scrap_tools",
+              "label": "Scrap Tools",
+              "icon": "build"
+            }
+          ]
+        },
+        {
           "id": "configs",
           "label": "Configs",
           "icon": "configs",
@@ -6650,19 +6755,24 @@
               "icon": "settings"
             },
             {
-              "id": "search",
-              "label": "Search",
-              "icon": "search"
-            },
-            {
-              "id": "privacy",
-              "label": "Privacy & Security",
+              "id": "perms",
+              "label": "Perms",
               "icon": "security"
             },
             {
-              "id": "site",
-              "label": "Site settings",
+              "id": "about",
+              "label": "About",
+              "icon": "info"
+            },
+            {
+              "id": "sites",
+              "label": "Sites",
               "icon": "public"
+            },
+            {
+              "id": "permissions",
+              "label": "Permissions",
+              "icon": "security"
             },
             {
               "id": "autocomplete",
@@ -6670,44 +6780,9 @@
               "icon": "edit_note"
             },
             {
-              "id": "passwords",
-              "label": "Passwords",
-              "icon": "key"
-            },
-            {
-              "id": "payment",
-              "label": "Payment",
-              "icon": "payments"
-            },
-            {
-              "id": "downloads",
-              "label": "Downloads",
-              "icon": "download"
-            },
-            {
-              "id": "appearance",
-              "label": "Appearance",
-              "icon": "palette"
-            },
-            {
-              "id": "tabs",
-              "label": "Tabs",
-              "icon": "tab"
-            },
-            {
-              "id": "sync",
-              "label": "Sync & Vault",
-              "icon": "sync"
-            },
-            {
-              "id": "advanced",
-              "label": "Advanced",
-              "icon": "build"
-            },
-            {
-              "id": "about",
-              "label": "About",
-              "icon": "info"
+              "id": "browsing",
+              "label": "Browser",
+              "icon": "language"
             }
           ]
         }
@@ -6856,6 +6931,40 @@
           "id": "infra",
           "label": "Infra",
           "icon": "ic_p_sol_cloud",
+          "nav_mode": "horizontal_two_rows",
+          "groups": [
+            {
+              "id": "bare",
+              "label": "Bare",
+              "icon": "ic_p_sol_cloud",
+              "pages": [
+                "providers",
+                "machines",
+                "serverless",
+                "node_python",
+                "storage"
+              ]
+            },
+            {
+              "id": "personal",
+              "label": "Personal",
+              "icon": "ic_wg",
+              "pages": [
+                "desktop",
+                "mobile",
+                "gadgets"
+              ]
+            },
+            {
+              "id": "domains_row",
+              "label": "Domains",
+              "icon": "ic_link_tile",
+              "pages": [
+                "domains",
+                "domains_public"
+              ]
+            }
+          ],
           "pages": [
             {
               "id": "providers",
@@ -6868,18 +6977,43 @@
               "icon": "ic_p_c3_vms"
             },
             {
+              "id": "serverless",
+              "label": "Containers-as-Service",
+              "icon": "ic_p_c3_vms"
+            },
+            {
+              "id": "node_python",
+              "label": "Containers-Node-Python",
+              "icon": "ic_p_c3_vms"
+            },
+            {
               "id": "storage",
               "label": "Storage",
               "icon": "ic_p_c3_stack"
             },
             {
-              "id": "electronics",
-              "label": "Electronics",
+              "id": "desktop",
+              "label": "Desktop",
+              "icon": "ic_wg"
+            },
+            {
+              "id": "mobile",
+              "label": "Mobile",
+              "icon": "ic_wg"
+            },
+            {
+              "id": "gadgets",
+              "label": "Gadgets",
               "icon": "ic_wg"
             },
             {
               "id": "domains",
-              "label": "Domains",
+              "label": "Private",
+              "icon": "ic_link_tile"
+            },
+            {
+              "id": "domains_public",
+              "label": "Public",
               "icon": "ic_link_tile"
             }
           ]
@@ -6976,9 +7110,24 @@
           "icon": "ic_settings",
           "pages": [
             {
+              "id": "general",
+              "label": "General",
+              "icon": "ic_settings"
+            },
+            {
+              "id": "perms",
+              "label": "Perms",
+              "icon": "security"
+            },
+            {
               "id": "about",
               "label": "About",
-              "icon": "ic_settings"
+              "icon": "info"
+            },
+            {
+              "id": "build",
+              "label": "Build",
+              "icon": "ic_code"
             }
           ]
         }
@@ -7359,12 +7508,13 @@
       "description": "Cloud Writer - the application the owner asked for: one place that owns Text Enhance, Translate, Grammar Check and Summary (Resume), with its own model choice for each of them separately. Type or paste a text, pick a tool, get the result back in an editable box.",
       "kind": "app",
       "wasm": "cloud-writer",
-      "default_section": "documents",
+      "default_section": "home",
       "bottom_nav": [
-        "documents",
-        "writer",
-        "tools",
-        "settings"
+        "enhancer",
+        "drafter",
+        "home",
+        "translator",
+        "grammar"
       ],
       "top_bar": null,
       "nav_ui": null,
@@ -7373,9 +7523,33 @@
       ],
       "sections": [
         {
-          "id": "documents",
-          "label": "Documents",
-          "icon": "documents",
+          "id": "enhancer",
+          "label": "Enhancer",
+          "icon": "auto_fix_high",
+          "pages": []
+        },
+        {
+          "id": "drafter",
+          "label": "Drafter",
+          "icon": "drafts",
+          "pages": []
+        },
+        {
+          "id": "home",
+          "label": "Home",
+          "icon": "home",
+          "pages": []
+        },
+        {
+          "id": "translator",
+          "label": "Translator",
+          "icon": "language",
+          "pages": []
+        },
+        {
+          "id": "grammar",
+          "label": "Grammar",
+          "icon": "edit_note",
           "pages": []
         },
         {
@@ -7455,6 +7629,31 @@
           "id": "calculator",
           "label": "Calc",
           "icon": "calculate",
+          "nav_mode": "horizontal_two_rows",
+          "groups": [
+            {
+              "id": "decimals",
+              "label": "Decimals",
+              "icon": "calculate",
+              "pages": [
+                "calc",
+                "latex",
+                "convert",
+                "history"
+              ]
+            },
+            {
+              "id": "others",
+              "label": "Others",
+              "icon": "apps",
+              "pages": [
+                "datetime",
+                "sound",
+                "finance",
+                "graph"
+              ]
+            }
+          ],
           "pages": [
             {
               "id": "calc",
@@ -7472,19 +7671,32 @@
               "icon": "swap"
             },
             {
-              "id": "graph",
-              "label": "Graph",
-              "icon": "chart"
-            },
-            {
-              "id": "tools",
-              "label": "Tools",
-              "icon": "tools"
-            },
-            {
               "id": "history",
               "label": "History",
               "icon": "history"
+            },
+            {
+              "id": "datetime",
+              "label": "Time & Date",
+              "icon": "event",
+              "redirect_from": [
+                "tools"
+              ]
+            },
+            {
+              "id": "sound",
+              "label": "Sound",
+              "icon": "graphic_eq"
+            },
+            {
+              "id": "finance",
+              "label": "Finance",
+              "icon": "payments"
+            },
+            {
+              "id": "graph",
+              "label": "Graph",
+              "icon": "chart"
             }
           ]
         },
@@ -7550,6 +7762,11 @@
             {
               "id": "nfc",
               "label": "NFC",
+              "icon": "nfc"
+            },
+            {
+              "id": "lfrfid",
+              "label": "LF-RFID-Tags",
               "icon": "nfc"
             }
           ]
@@ -8683,14 +8900,31 @@
           "background": "dark",
           "pages": [
             {
-              "id": "me",
-              "label": "Me",
-              "icon": "account_circle"
+              "id": "ids",
+              "label": "IDs",
+              "icon": "badge"
             },
             {
-              "id": "wallet",
-              "label": "Wallet",
-              "icon": "account_balance_wallet"
+              "id": "cards",
+              "label": "Pay Cards",
+              "icon": "payments"
+            },
+            {
+              "id": "others",
+              "label": "Others",
+              "icon": "edit_note",
+              "pages": [
+                {
+                  "id": "entries",
+                  "label": "Entries",
+                  "icon": "folder"
+                },
+                {
+                  "id": "me",
+                  "label": "Me",
+                  "icon": "account_circle"
+                }
+              ]
             },
             {
               "id": "autocomplete",
@@ -8723,34 +8957,39 @@
           "background": "dark",
           "pages": [
             {
+              "id": "general",
+              "label": "General",
+              "icon": "settings"
+            },
+            {
+              "id": "perms",
+              "label": "Perms",
+              "icon": "security"
+            },
+            {
+              "id": "about",
+              "label": "About",
+              "icon": "info"
+            },
+            {
               "id": "android",
               "label": "Android",
               "icon": "android",
               "pages": [
                 {
-                  "id": "runbook",
-                  "label": "Runbook",
-                  "icon": "menu_book"
-                },
-                {
-                  "id": "apps",
-                  "label": "Install",
+                  "id": "cloud-apps",
+                  "label": "Cloud Apps",
                   "icon": "apps"
                 },
                 {
-                  "id": "push",
-                  "label": "Push",
-                  "icon": "notifications"
+                  "id": "phone-apps",
+                  "label": "Phone Apps",
+                  "icon": "smartphone"
                 },
                 {
-                  "id": "perms",
-                  "label": "Perms",
-                  "icon": "admin_panel_settings"
-                },
-                {
-                  "id": "adb-shell",
-                  "label": "ADB Shell",
-                  "icon": "terminal"
+                  "id": "runbook",
+                  "label": "Runbook",
+                  "icon": "menu_book"
                 }
               ]
             },
@@ -8762,7 +9001,24 @@
             {
               "id": "c3",
               "label": "C3",
-              "icon": "cloud"
+              "icon": "cloud",
+              "pages": [
+                {
+                  "id": "infra",
+                  "label": "Infra",
+                  "icon": "dns"
+                },
+                {
+                  "id": "containers",
+                  "label": "Containers",
+                  "icon": "inventory_2"
+                }
+              ]
+            },
+            {
+              "id": "repos",
+              "label": "Repos",
+              "icon": "sync"
             }
           ]
         },
@@ -8914,6 +9170,21 @@
                   "id": "drive",
                   "label": "Drive",
                   "icon": "folder"
+                },
+                {
+                  "id": "push",
+                  "label": "Push",
+                  "icon": "notifications"
+                },
+                {
+                  "id": "perms",
+                  "label": "Perms",
+                  "icon": "admin_panel_settings"
+                },
+                {
+                  "id": "adb-shell",
+                  "label": "ADB Shell",
+                  "icon": "terminal"
                 }
               ]
             }
@@ -9097,6 +9368,21 @@
               "id": "general",
               "label": "General",
               "icon": "settings"
+            },
+            {
+              "id": "perms",
+              "label": "Perms",
+              "icon": "lock"
+            },
+            {
+              "id": "about",
+              "label": "About",
+              "icon": "info"
+            },
+            {
+              "id": "drive",
+              "label": "Drive",
+              "icon": "folder"
             },
             {
               "id": "git",
@@ -9379,6 +9665,40 @@
               "id": "portfolio-risk",
               "label": "Portfolio & Risk Analytics",
               "icon": "insights"
+            },
+            {
+              "id": "pm-a1-cash",
+              "label": "A1 Cash (DM - Cash)",
+              "icon": "payments",
+              "separator_before": true
+            },
+            {
+              "id": "pm-a2-low",
+              "label": "A2 Low Risk",
+              "icon": "pie_chart"
+            },
+            {
+              "id": "pm-b1-mid",
+              "label": "B1 Middle Risk",
+              "icon": "pie_chart",
+              "separator_before": true
+            },
+            {
+              "id": "pm-c1-risky",
+              "label": "C1 Risky",
+              "icon": "pie_chart",
+              "separator_before": true
+            },
+            {
+              "id": "pm-d1-em-bonds",
+              "label": "D1 EM Bonds",
+              "icon": "calculate",
+              "separator_before": true
+            },
+            {
+              "id": "pm-d0-carry",
+              "label": "D0 EM Carry Trade",
+              "icon": "trending_up"
             },
             {
               "id": "mp-40-60",

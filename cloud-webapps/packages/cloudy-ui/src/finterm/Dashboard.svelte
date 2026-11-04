@@ -16,6 +16,7 @@
   import FinHeat from './components/FinHeat.svelte';
   import FinTable from './components/FinTable.svelte';
   import FinChart from './components/FinChart.svelte';
+  import FinStack from './components/FinStack.svelte';
   import FinCalendar from './components/FinCalendar.svelte';
   import FinTape, { type TapeItem } from './components/FinTape.svelte';
   import type { Quote } from './components/FinQuote.svelte';
@@ -320,6 +321,8 @@
           {:else}
             {#if d.chart.length && (p.view === 'curve' || p.view === 'candles')}
               <FinChart points={d.chart} kind="line" title={p.title} prev={p.view === 'curve' ? curvePrev(d) : null} unit={p.unit === '%' ? '%' : ''} even={p.view === 'curve'} />
+            {:else if d.chart.length && p.stacked}
+              <FinStack points={d.chart} />
             {:else if d.chart.length && (p.view === 'bars' || p.view === 'alloc')}
               <FinChart points={d.chart} kind="bars" title={p.title} unit={p.view === 'alloc' ? '%' : ''} />
             {/if}
@@ -327,7 +330,7 @@
               {#if p.view === 'bars' || p.view === 'alloc'}
                 <details class="tbl"><summary class="cap">Table ({d.rows.length})</summary><FinTable columns={d.columns} rows={d.rows} links={d.links} limit={50} /></details>
               {:else}
-                <FinTable columns={d.columns} rows={d.rows} links={d.links} details={d.details ?? []} beat={actualBeat(p)} />
+                <FinTable columns={d.columns} rows={d.rows} links={d.links} details={d.details ?? []} beat={actualBeat(p)} heat={d.heat} bold={d.bold} limit={d.heat ? d.rows.length : 8} />
               {/if}
             {/if}
           {/if}

@@ -12,7 +12,7 @@ import { cpiYoY, g20Cells, g20Notes, g20Row, type GRow } from './g20bonds';
 export const PERF_COLUMNS = ['WTD', 'MTD', 'YTD', '1M', '3M', '1Y', '3Y', '10Y'];
 export const COL_VOL = 'Vol 1Y';
 export const COL_MDD = 'MaxDD 1Y';
-export const TABLE_DERIVES = ['performance', 'portfolio_performance', 'yields_matrix', 'em_usd', 'world_bonds', 'risk_compare', 'fx_ppp', 'fx_matrix', 'g20_bonds'];
+export const TABLE_DERIVES = ['performance', 'portfolio_performance', 'yields_matrix', 'em_usd', 'world_bonds', 'risk_compare', 'fx_ppp', 'fx_matrix', 'g20_bonds', 'em_calc', 'em_carry'];
 
 export type Close = [string, number]; // [YYYY-MM-DD, close]
 
@@ -423,7 +423,7 @@ export async function tablePanel(panel: Panel, dash: Dashboard, source: Source, 
     }
     case 'g20_bonds': {
       const g = f as unknown as { primary?: { api?: string }; rows: GRow[]; window_days?: number; min_daily?: number; fx_source: string; rub_source?: string; fred_source?: string; oecd_source?: string;
-        oecd?: { path: string; prefix: string; suffix: string }; fred?: { yield: string; cpi: string }; rub?: { path: string; code: string }; footer?: string; method?: string };
+        oecd?: { path: string; prefix: string; suffix: string; cpi_suffix?: string }; fred?: { yield: string; cpi: string; dbnomics_yield?: string }; rub?: { path: string; code: string }; footer?: string; method?: string };
       if (api) {
         try { const rows = (JSON.parse(await ctx.get(buildUrl(api.base, g.primary?.api ?? '/v1/bonds/g20-real', []))) as { rows?: Record<string, unknown>[] }).rows ?? []; if (rows.length) return g20Table(panel, g, rows, api.source.name); } catch { /* the direct sources below */ }
       }
@@ -438,11 +438,11 @@ export async function tablePanel(panel: Panel, dash: Dashboard, source: Source, 
         if (!browserReadable(s)) { fails.push(`${s.name} sends no CORS header (open on the mesh)`); return none; }
         try { const v = await go(s); used.push(s.name); return v; } catch (e) { first ??= e; fails.push(`${s.name}: ${(e as Error).message}`); return none; }
       };
-      const o = g.oecd;
+      const o = g.oecd; let oecdCpi = null as [number, string] | null;
       if (o) await read(src(g.oecd_source), async (s) => {
         const byA3 = new Map(g.rows.map((r) => [r.a3 ?? '', r.cc]));
-        const a = JSON.parse(await ctx.get(buildUrl(s.endpoint, o.path, [['series_ids', g.rows.map((r) => `${o.prefix}${r.a3}${o.suffix}`).join(',')], ['observations', '1'], ['limit', '100']]))) as { series?: { docs?: { series_code: string; period: string[]; value: (number | string | null)[] }[] } };
-        for (const d of a.series?.docs ?? []) { const cc = byA3.get(d.series_code.split('.')[0]); if (!cc) continue; d.period.forEach((p, i) => { const v = d.value[i]; if (typeof v === 'number' && Number.isFinite(v) && p.length === 7) add(ys, cc, [p, v]); }); }
+        const a = JSON.parse(await ctx.get(buildUrl(s.endpoint, o.path, [['series_ids', [...g.rows.map((r) => `${o.prefix}${r.a3}${o.suffix}`), ...(o.cpi_suffix ? [`${o.prefix}USA${o.cpi_suffix}`] : [])].join(',')], ['observations', '1'], ['limit', '100']]))) as { series?: { docs?: { series_code: string; period: string[]; value: (number | string | null)[] }[] } };
+        for (const d of a.series?.docs ?? []) { if (o.cpi_suffix && d.series_code.endsWith(o.cpi_suffix)) { oecdCpi = cpiYoY(d.period.flatMap((p, i) => (typeof d.value[i] === 'number' ? [[p, d.value[i] as number] as [string, number]] : []))); continue; } const cc = byA3.get(d.series_code.split('.')[0]); if (!cc) continue; d.period.forEach((p, i) => { const v = d.value[i]; if (typeof v === 'number' && Number.isFinite(v) && p.length === 7) add(ys, cc, [p, v]); }); }
       }, undefined);
       let cpi: [number, string] | null = null;
       const fr = g.fred;
@@ -450,6 +450,13 @@ export async function tablePanel(panel: Panel, dash: Dashboard, source: Source, 
         for (const x of parseFredCsv(await ctx.get(fredUrl(s.endpoint, fr.yield, today, back)))[fr.yield] ?? []) add(ys, 'US', [x.date, x.value]);
         cpi = cpiYoY((parseFredCsv(await ctx.get(fredUrl(s.endpoint, fr.cpi, today, 500)))[fr.cpi] ?? []).map((x) => [x.date, x.value] as [string, number]));
       }, undefined);
+      // FRED unreachable (it times out from some networks): the daily US 10Y from the Fed H.15 mirror on DBnomics, key-free
+      if (fr?.dbnomics_yield && !(ys.get('US') ?? []).some((q) => q[0].length === 10)) await read(src(g.oecd_source), async (s) => {
+        const a = JSON.parse(await ctx.get(buildUrl(s.endpoint, `/series/${fr.dbnomics_yield}`, [['observations', '1'], ['metadata', '0']]))) as { series?: { docs?: { period: string[]; value: (number | string | null)[] }[] } };
+        for (const d of a.series?.docs ?? []) d.period.forEach((p, i) => { const v = d.value[i]; if (typeof v === 'number' && Number.isFinite(v) && p.length === 10 && p >= from) add(ys, 'US', [p, v]); });
+        fails.push('FRED unavailable: US 10Y from the Fed H.15 mirror on DBnomics');
+      }, undefined);
+      if (!cpi && oecdCpi) { cpi = oecdCpi; fails.push('FRED CPIAUCSL unavailable: US CPI from the OECD monthly index (DBnomics)'); }
       await read(src(g.fx_source), async (s) => {
         const ccys = g.rows.filter((r) => !r.fx && r.ccy !== 'USD').map((r) => r.ccy).join(',');
         const rates = (JSON.parse(await ctx.get(buildUrl(s.endpoint, `/v1/${from}..${today}`, [['base', 'USD'], ['symbols', ccys]]))) as { rates?: Record<string, Record<string, number>> }).rates ?? {};
@@ -466,6 +473,7 @@ export async function tablePanel(panel: Panel, dash: Dashboard, source: Source, 
       const out = g.rows.map((r) => g20Row(r, (ys.get(r.cc) ?? []).sort((a, b) => (a[0] < b[0] ? -1 : 1)), fx.get(r.ccy) ?? [], cpi, today, win, minDaily));
       return g20Table(panel, g, out, [...new Set(used)].join(' + '), fails);
     }
+    case 'em_calc': case 'em_carry': return (await import('./emcalc')).emPanel(panel, f, ctx); // its own lazy chunk: the biggest chunk is at its gzip budget
     case 'risk_compare': {
       const sets = (f as { compare?: [string, number][][] }).compare ?? []; const proxies = f.proxies ?? {};
       const names = [...new Set(sets.flat().map((l) => l[0]))];

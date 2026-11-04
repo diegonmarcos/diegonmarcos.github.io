@@ -1,0 +1,6690 @@
+[
+  {
+    "model": "SM_Gen_Prop_Clock_01.gltf",
+    "position": [
+      -48.4,
+      0.0,
+      42.71
+    ],
+    "rotation": [
+      -0.0,
+      -0.0,
+      -0.0,
+      1.0
+    ],
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  {
+    "model": "SM_Gen_Bld_Beam_01.gltf",
+    "position": [
+      -42.16,
+      0.0,
+      63.83
+    ],
+    "rotation": [
+      -0.0,
+      -0.70710576,
+      -0.0,
+      0.70710784
+    ],
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  {
+    "model": "SM_Gen_Prop_Keypad_01.gltf",
+    "position": [
+      -44.11,
+      0.0,
+      37.809998
+    ],
+    "rotation": [
+      -0.0,
+      -0.0,
+      -0.0,
+      1.0
+    ],
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  {
+    "model": "SM_Gen_Prop_Aircon_Roof_01.gltf",
+    "position": [
+      -57.51484,
+      0.0,
+      42.14605
+    ],
+    "rotation": [
+      -0.0,
+      -0.0,
+      -0.0,
+      1.0
+    ],
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  {
+    "model": "SM_Gen_Prop_Coin_Pile_01.gltf",
+    "position": [
+      -60.198807,
+      0.0,
+      49.119823
+    ],
+    "rotation": [
+      -0.0,
+      -0.0,
+      -0.0,
+      1.0
+    ],
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  {
+    "model": "SM_Gen_Env_Tree_03.gltf",
+    "position": [
+      -201.9,
+      0.0,
+      4.5
+    ],
+    "rotation": [
+      -0.0,
+      0.70710576,
+      -0.0,
+      0.70710784
+    ],
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  {
+    "model": "SM_Bld_Base_Wall_Window_Half_01.gltf",
+    "position": [
+      -31.134838,
+      0.0,
+      79.54605
+    ],
+    "rotation": [
+      -0.0,
+      -0.0,
+      -0.0,
+      1.0
+    ],
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  {
+    "model": "SM_Gen_Prop_Aircon_02.gltf",
+    "position": [
+      -53.54,
+      0.0,
+      30.779999
+    ],
+    "rotation": [
+      -0.0,
+      -0.0,
+      -0.0,
+      1.0
+    ],
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  {
+    "model": "SM_Gen_Env_Rock_07.gltf",
+    "position": [
+      -252.3,
+      0.0,
+      -80.7
+    ],
+    "rotation": [
+      -0.0,
+      0.70710576,
+      -0.0,
+      0.7071078
+    ],
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  {
+    "model": "SM_Gen_Env_Background_Mountain_03.gltf",
+    "position": [
+      -68.9,
+      0.0,
+      -163.4
+    ],
+    "rotation": [
+      -0.0,
+      -0.24644315,
+      -0.0,
+      0.9691573
+    ],
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  {
+    "model": "SM_Bld_Base_Roof_Trim_01.gltf",
+    "position": [
+      -24.634861,
+      0.0,
+      71.41606
+    ],
+    "rotation": [
+      -0.0,
+      -0.0,
+      -0.0,
+      1.0
+    ],
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  {
+    "model": "SM_Gen_Prop_Barrel_Wood_02.gltf",
+    "position": [
+      -55.54963,
+      0.0,
+      46.795235
+    ],
+    "rotation": [
+      -0.0,
+      -0.0,
+      -0.0,
+      1.0
+    ],
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  {
+    "model": "SM_Gen_Env_Ground_Grass_Large_02.gltf",
+    "position": [
+      -158.2,
+      0.0,
+      1.3
+    ],
+    "rotation": [
+      -0.0,
+      -1.4901159e-08,
+      -0.0,
+      1.0
+    ],
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  {
+    "model": "SM_Bld_Base_Pillar_03.gltf",
+    "position": [
+      -52.26361,
+      0.0,
+      89.809006
+    ],
+    "rotation": [
+      -0.0,
+      -0.0,
+      -0.0,
+      1.0
+    ],
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  {
+    "model": "SM_Gen_Prop_Pot_02.gltf",
+    "position": [
+      -51.215584,
+      0.0,
+      38.13264
+    ],
+    "rotation": [
+      -0.0,
+      -0.0,
+      -0.0,
+      1.0
+    ],
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  {
+    "model": "SM_Gen_Env_Grass_02.gltf",
+    "position": [
+      -217.42,
+      0.0,
+      5.811512
+    ],
+    "rotation": [
+      -0.0,
+      0.70710576,
+      -0.0,
+      0.70710784
+    ],
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  {
+    "model": "SM_Gen_Env_Ground_River_Dirt_02.gltf",
+    "position": [
+      -213.99997,
+      0.0,
+      -28.199997
+    ],
+    "rotation": [
+      -0.0,
+      0.70710576,
+      -0.0,
+      0.7071078
+    ],
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  {
+    "model": "SM_Bld_Base_Door_Large_01.gltf",
+    "position": [
+      -51.70111,
+      0.0,
+      85.29231
+    ],
+    "rotation": [
+      -0.0,
+      -0.0,
+      -0.0,
+      1.0
+    ],
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  {
+    "model": "SM_Bld_Base_Pillar_01.gltf",
+    "position": [
+      -66.134865,
+      0.0,
+      85.29231
+    ],
+    "rotation": [
+      -0.0,
+      -0.0,
+      -0.0,
+      1.0
+    ],
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  {
+    "model": "SM_Gen_Wep_Pickaxe_01.gltf",
+    "position": [
+      -27.64,
+      0.0,
+      42.46
+    ],
+    "rotation": [
+      -0.0,
+      -0.0,
+      -0.0,
+      1.0
+    ],
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  {
+    "model": "SM_Gen_Env_Cloud_03.gltf",
+    "position": [
+      -258.38,
+      0.0,
+      56.9
+    ],
+    "rotation": [
+      -0.0,
+      0.065901406,
+      -0.0,
+      0.99782616
+    ],
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  {
+    "model": "SM_Gen_Env_Grass_06.gltf",
+    "position": [
+      -199.86,
+      0.0,
+      33.48
+    ],
+    "rotation": [
+      -0.0,
+      0.70710576,
+      -0.0,
+      0.70710784
+    ],
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  {
+    "model": "SM_Gen_Prop_Chest_02.gltf",
+    "position": [
+      -56.61,
+      0.0,
+      28.11
+    ],
+    "rotation": [
+      -0.0,
+      -0.0,
+      -0.0,
+      1.0
+    ],
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  {
+    "model": "SM_Bld_Base_Pillar_Half_02.gltf",
+    "position": [
+      -52.26362,
+      0.0,
+      94.53981
+    ],
+    "rotation": [
+      -0.0,
+      -0.0,
+      -0.0,
+      1.0
+    ],
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  {
+    "model": "SM_Gen_Env_Ground_Dirt_Large_03.gltf",
+    "position": [
+      -124.79999,
+      0.0,
+      -6.4
+    ],
+    "rotation": [
+      -0.0,
+      -0.0,
+      -0.0,
+      1.0
+    ],
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  {
+    "model": "SM_Gen_Env_Ivy_02.gltf",
+    "position": [
+      -251.84999,
+      0.0,
+      39.52
+    ],
+    "rotation": [
+      -0.0,
+      0.70710576,
+      -0.0,
+      0.70710784
+    ],
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  {
+    "model": "SM_Gen_Prop_Cardboard_Box_03.gltf",
+    "position": [
+      -58.927788,
+      0.0,
+      35.073074
+    ],
+    "rotation": [
+      -0.0,
+      -0.0,
+      -0.0,
+      1.0
+    ],
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  {
+    "model": "SM_Gen_Env_Rock_05.gltf",
+    "position": [
+      -242.29999,
+      0.0,
+      -80.69998
+    ],
+    "rotation": [
+      -0.0,
+      0.70710576,
+      -0.0,
+      0.7071078
+    ],
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  {
+    "model": "SM_Gen_Env_Bush_Part_06.gltf",
+    "position": [
+      -222.9389,
+      0.0,
+      29.282715
+    ],
+    "rotation": [
+      -0.0,
+      0.70710576,
+      -0.0,
+      0.70710784
+    ],
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  {
+    "model": "SM_Gen_Bld_Pipe_T_01.gltf",
+    "position": [
+      -36.58484,
+      0.0,
+      61.186058
+    ],
+    "rotation": [
+      -0.0,
+      -0.0,
+      -0.0,
+      1.0
+    ],
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  {
+    "model": "SM_Bld_Base_Roof_Cap_Half_01.gltf",
+    "position": [
+      -60.886116,
+      0.0,
+      80.66856
+    ],
+    "rotation": [
+      -0.0,
+      -0.0,
+      -0.0,
+      1.0
+    ],
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  {
+    "model": "SM_Gen_Env_Road_Gravel_Straight_02.gltf",
+    "position": [
+      -226.5,
+      0.0,
+      -37.391525
+    ],
+    "rotation": [
+      -0.0,
+      0.70710576,
+      -0.0,
+      0.7071078
+    ],
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  {
+    "model": "SM_Bld_Base_Roof_Cap_End_01.gltf",
+    "position": [
+      -61.511116,
+      0.0,
+      85.29231
+    ],
+    "rotation": [
+      -0.0,
+      -0.0,
+      -0.0,
+      1.0
+    ],
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  {
+    "model": "SM_Gen_Prop_Skull_01.gltf",
+    "position": [
+      -39.137794,
+      0.0,
+      44.422417
+    ],
+    "rotation": [
+      -0.0,
+      -0.0,
+      -0.0,
+      1.0
+    ],
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  {
+    "model": "SM_Gen_Env_Ground_River_Grass_05.gltf",
+    "position": [
+      -191.91,
+      0.0,
+      -94.671524
+    ],
+    "rotation": [
+      -0.0,
+      -0.0,
+      -0.0,
+      1.0
+    ],
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  {
+    "model": "SM_Bld_Base_Floor_Combined_01.gltf",
+    "position": [
+      -70.00988,
+      0.0,
+      78.01111
+    ],
+    "rotation": [
+      -0.0,
+      -0.0,
+      -0.0,
+      1.0
+    ],
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  {
+    "model": "SM_Gen_Prop_Chain_01.gltf",
+    "position": [
+      -39.145172,
+      0.0,
+      49.074097
+    ],
+    "rotation": [
+      -0.0,
+      -0.0,
+      -0.0,
+      1.0
+    ],
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  {
+    "model": "SM_Gen_Env_Fern_02.gltf",
+    "position": [
+      -236.44208,
+      0.0,
+      15.8394165
+    ],
+    "rotation": [
+      -0.0,
+      0.70710576,
+      -0.0,
+      0.70710784
+    ],
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  {
+    "model": "SM_Gen_Prop_Coin_Stack_01.gltf",
+    "position": [
+      -39.137794,
+      0.0,
+      46.746933
+    ],
+    "rotation": [
+      -0.0,
+      -0.0,
+      -0.0,
+      1.0
+    ],
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  {
+    "model": "SM_Gen_Prop_Potion_01.gltf",
+    "position": [
+      -46.11772,
+      0.0,
+      44.409187
+    ],
+    "rotation": [
+      -0.0,
+      -0.0,
+      -0.0,
+      1.0
+    ],
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  {
+    "model": "SM_Gen_Prop_Bottle_04.gltf",
+    "position": [
+      -39.34,
+      0.0,
+      40.289997
+    ],
+    "rotation": [
+      -0.0,
+      -0.0,
+      -0.0,
+      1.0
+    ],
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  {
+    "model": "SM_Gen_Prop_Food_Vegetable_04.gltf",
+    "position": [
+      -44.11337,
+      0.0,
+      40.216843
+    ],
+    "rotation": [
+      -0.0,
+      -0.0,
+      -0.0,
+      1.0
+    ],
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  {
+    "model": "SM_Gen_Prop_Button_02.gltf",
+    "position": [
+      -48.47,
+      0.0,
+      40.355465
+    ],
+    "rotation": [
+      -0.0,
+      -0.0,
+      -0.0,
+      1.0
+    ],
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  {
+    "model": "SM_Gen_Prop_Food_Meat_02.gltf",
+    "position": [
+      -58.925102,
+      0.0,
+      37.39659
+    ],
+    "rotation": [
+      -0.0,
+      -0.0,
+      -0.0,
+      1.0
+    ],
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  {
+    "model": "SM_Gen_Env_Leaves_01.gltf",
+    "position": [
+      -223.41501,
+      0.0,
+      40.138657
+    ],
+    "rotation": [
+      -0.0,
+      0.70710576,
+      -0.0,
+      0.70710784
+    ],
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  {
+    "model": "SM_Gen_Env_Twig_02.gltf",
+    "position": [
+      -217.42165,
+      0.0,
+      7.4725914
+    ],
+    "rotation": [
+      -0.0,
+      0.70710576,
+      -0.0,
+      0.70710784
+    ],
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  {
+    "model": "SM_Gen_Env_Ground_Dirt_Large_02.gltf",
+    "position": [
+      -157.79999,
+      0.0,
+      -14.9
+    ],
+    "rotation": [
+      -0.0,
+      -1.4901161e-08,
+      -0.0,
+      1.0
+    ],
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  {
+    "model": "SM_Bld_Base_Roof_Corner_In_01.gltf",
+    "position": [
+      -88.694855,
+      0.0,
+      84.636086
+    ],
+    "rotation": [
+      -0.0,
+      -0.0,
+      -0.0,
+      1.0
+    ],
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  {
+    "model": "SM_Gen_Env_Grass_Tall_02.gltf",
+    "position": [
+      -232.97235,
+      0.0,
+      15.794708
+    ],
+    "rotation": [
+      -0.0,
+      0.70710576,
+      -0.0,
+      0.70710784
+    ],
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  {
+    "model": "SM_Gen_Env_Ivy_10.gltf",
+    "position": [
+      -242.69409,
+      0.0,
+      39.386753
+    ],
+    "rotation": [
+      -0.0,
+      0.70710576,
+      -0.0,
+      0.70710784
+    ],
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  {
+    "model": "SM_Gen_Env_Ivy_Draped_01.gltf",
+    "position": [
+      -265.8593,
+      0.0,
+      34.813625
+    ],
+    "rotation": [
+      -0.0,
+      0.70710576,
+      -0.0,
+      0.70710784
+    ],
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  {
+    "model": "SM_Gen_Env_Background_Mountain_01.gltf",
+    "position": [
+      3.2,
+      0.0,
+      -95.5
+    ],
+    "rotation": [
+      -0.0,
+      -0.5279488,
+      -0.0,
+      0.84927624
+    ],
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  {
+    "model": "SM_Gen_Env_Flowers_01.gltf",
+    "position": [
+      -229.6883,
+      0.0,
+      29.281364
+    ],
+    "rotation": [
+      -0.0,
+      0.70710576,
+      -0.0,
+      0.70710784
+    ],
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  {
+    "model": "SM_Gen_Prop_Light_Roof_03.gltf",
+    "position": [
+      -44.04,
+      0.0,
+      42.54708
+    ],
+    "rotation": [
+      -0.0,
+      -0.0,
+      -0.0,
+      1.0
+    ],
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  {
+    "model": "SM_Gen_Env_Road_Gravel_Corner_Small_01.gltf",
+    "position": [
+      -226.5,
+      0.0,
+      -44.891525
+    ],
+    "rotation": [
+      -0.0,
+      0.70710576,
+      -0.0,
+      0.7071078
+    ],
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  {
+    "model": "SM_Gen_Env_Ground_River_Dirt_07.gltf",
+    "position": [
+      -225.99997,
+      0.0,
+      -59.39154
+    ],
+    "rotation": [
+      -0.0,
+      0.70710576,
+      -0.0,
+      0.7071078
+    ],
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  {
+    "model": "SM_Gen_Env_Ivy_11.gltf",
+    "position": [
+      -237.92633,
+      0.0,
+      39.925613
+    ],
+    "rotation": [
+      -0.0,
+      0.70710576,
+      -0.0,
+      0.70710784
+    ],
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  {
+    "model": "SM_Gen_Bld_Pipe_Straight_01.gltf",
+    "position": [
+      -23.905964,
+      0.0,
+      61.18606
+    ],
+    "rotation": [
+      -0.0,
+      -0.0,
+      -0.0,
+      1.0
+    ],
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  {
+    "model": "SM_Gen_Prop_Pot_01.gltf",
+    "position": [
+      -41.600002,
+      0.0,
+      42.729996
+    ],
+    "rotation": [
+      -0.0,
+      -0.0,
+      -0.0,
+      1.0
+    ],
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  {
+    "model": "SM_Gen_Prop_Pot_05.gltf",
+    "position": [
+      -53.53557,
+      0.0,
+      35.80375
+    ],
+    "rotation": [
+      -0.0,
+      -0.0,
+      -0.0,
+      1.0
+    ],
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  {
+    "model": "SM_Bld_Base_Pillar_Half_04.gltf",
+    "position": [
+      -56.98516,
+      0.0,
+      99.065765
+    ],
+    "rotation": [
+      -0.0,
+      -0.0,
+      -0.0,
+      1.0
+    ],
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  {
+    "model": "SM_Gen_Env_Ground_Grass_Large_01.gltf",
+    "position": [
+      -246.5,
+      0.0,
+      -92.391525
+    ],
+    "rotation": [
+      -0.0,
+      0.70710576,
+      -0.0,
+      0.7071078
+    ],
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  {
+    "model": "SM_Gen_Env_Road_Gravel_End_01.gltf",
+    "position": [
+      -199.0,
+      0.0,
+      -28.199978
+    ],
+    "rotation": [
+      -0.0,
+      0.70710576,
+      -0.0,
+      0.7071078
+    ],
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  {
+    "model": "SM_Gen_Prop_Statue_01.gltf",
+    "position": [
+      -50.859177,
+      0.0,
+      44.384514
+    ],
+    "rotation": [
+      -0.0,
+      -0.0,
+      -0.0,
+      1.0
+    ],
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  {
+    "model": "SM_Gen_Env_Ground_River_Grass_01.gltf",
+    "position": [
+      -190.55,
+      0.0,
+      -82.76153
+    ],
+    "rotation": [
+      -0.0,
+      -0.0,
+      -0.0,
+      1.0
+    ],
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  {
+    "model": "SM_Gen_Prop_Food_Bread_02.gltf",
+    "position": [
+      -46.420002,
+      0.0,
+      38.01
+    ],
+    "rotation": [
+      -0.0,
+      -0.0,
+      -0.0,
+      1.0
+    ],
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  {
+    "model": "SM_Bld_Base_Roof_Cap_Angle_Half_01.gltf",
+    "position": [
+      -66.134865,
+      0.0,
+      93.91481
+    ],
+    "rotation": [
+      -0.0,
+      -0.0,
+      -0.0,
+      1.0
+    ],
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  {
+    "model": "SM_Gen_Env_Ivy_05.gltf",
+    "position": [
+      -229.71033,
+      0.0,
+      15.753071
+    ],
+    "rotation": [
+      -0.0,
+      0.70710576,
+      -0.0,
+      0.70710784
+    ],
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  {
+    "model": "SM_Gen_Env_Grass_Tall_03.gltf",
+    "position": [
+      -223.66284,
+      0.0,
+      35.18694
+    ],
+    "rotation": [
+      -0.0,
+      0.70710576,
+      -0.0,
+      0.70710784
+    ],
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  {
+    "model": "SM_Bld_Base_45_Wall_01.gltf",
+    "position": [
+      -83.25485,
+      0.0,
+      71.63606
+    ],
+    "rotation": [
+      -0.0,
+      -0.0,
+      -0.0,
+      1.0
+    ],
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  {
+    "model": "SM_Gen_Env_Leaves_Pile_02.gltf",
+    "position": [
+      -228.86993,
+      0.0,
+      35.11242
+    ],
+    "rotation": [
+      -0.0,
+      0.70710576,
+      -0.0,
+      0.70710784
+    ],
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  {
+    "model": "SM_Gen_Prop_Coin_01.gltf",
+    "position": [
+      -41.671276,
+      0.0,
+      40.347534
+    ],
+    "rotation": [
+      -0.0,
+      -0.0,
+      -0.0,
+      1.0
+    ],
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  {
+    "model": "SM_Gen_Prop_Statue_05.gltf",
+    "position": [
+      -60.126366,
+      0.0,
+      46.827484
+    ],
+    "rotation": [
+      -0.0,
+      -0.0,
+      -0.0,
+      1.0
+    ],
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  {
+    "model": "SM_Gen_Prop_Food_Vegetable_05.gltf",
+    "position": [
+      -39.260914,
+      0.0,
+      42.673363
+    ],
+    "rotation": [
+      -0.0,
+      -0.0,
+      -0.0,
+      1.0
+    ],
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  {
+    "model": "SM_Gen_Env_Shrub_01.gltf",
+    "position": [
+      -222.3845,
+      0.0,
+      9.11198
+    ],
+    "rotation": [
+      -0.0,
+      0.70710576,
+      -0.0,
+      0.70710784
+    ],
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  {
+    "model": "SM_Gen_Env_Hill_03.gltf",
+    "position": [
+      -109.19999,
+      0.0,
+      27.2
+    ],
+    "rotation": [
+      -0.0,
+      -0.0,
+      -0.0,
+      1.0
+    ],
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  {
+    "model": "SM_Bld_Base_Floor_Half_01.gltf",
+    "position": [
+      -70.00988,
+      0.0,
+      85.13608
+    ],
+    "rotation": [
+      -0.0,
+      -0.0,
+      -0.0,
+      1.0
+    ],
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  {
+    "model": "SM_Bld_Base_Wall_Corner_01.gltf",
+    "position": [
+      -88.63861,
+      0.0,
+      71.692314
+    ],
+    "rotation": [
+      -0.0,
+      -0.0,
+      -0.0,
+      1.0
+    ],
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  {
+    "model": "SM_Gen_Env_Mountain_03.gltf",
+    "position": [
+      -269.0,
+      0.0,
+      -19.8
+    ],
+    "rotation": [
+      -0.0,
+      -0.21177936,
+      -0.0,
+      0.9773175
+    ],
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  {
+    "model": "SM_Gen_Prop_Aircon_01.gltf",
+    "position": [
+      -50.900444,
+      0.0,
+      46.469532
+    ],
+    "rotation": [
+      -0.0,
+      -0.0,
+      -0.0,
+      1.0
+    ],
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  {
+    "model": "SM_Gen_Prop_Bottle_02.gltf",
+    "position": [
+      -39.34,
+      0.0,
+      37.965405
+    ],
+    "rotation": [
+      -0.0,
+      -0.0,
+      -0.0,
+      1.0
+    ],
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  {
+    "model": "SM_Bld_Base_Floor_Quarter_Combined_01.gltf",
+    "position": [
+      -75.94486,
+      0.0,
+      91.63606
+    ],
+    "rotation": [
+      -0.0,
+      -0.0,
+      -0.0,
+      1.0
+    ],
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  {
+    "model": "SM_Gen_Prop_Food_Vegetable_01.gltf",
+    "position": [
+      -48.436157,
+      0.0,
+      46.746933
+    ],
+    "rotation": [
+      -0.0,
+      -0.0,
+      -0.0,
+      1.0
+    ],
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  {
+    "model": "SM_Gen_Bld_Pipe_Straight_02.gltf",
+    "position": [
+      -28.132256,
+      0.0,
+      61.18606
+    ],
+    "rotation": [
+      -0.0,
+      -0.0,
+      -0.0,
+      1.0
+    ],
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  {
+    "model": "SM_Gen_Env_Flowers_08.gltf",
+    "position": [
+      -222.38454,
+      0.0,
+      5.7798347
+    ],
+    "rotation": [
+      -0.0,
+      0.70710576,
+      -0.0,
+      0.70710784
+    ],
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  {
+    "model": "SM_Gen_Prop_Papers_06.gltf",
+    "position": [
+      -53.361946,
+      0.0,
+      39.74968
+    ],
+    "rotation": [
+      -0.0,
+      -0.0,
+      -0.0,
+      1.0
+    ],
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  {
+    "model": "SM_Gen_Bld_Pipe_Cap_02.gltf",
+    "position": [
+      -27.599998,
+      0.0,
+      63.82
+    ],
+    "rotation": [
+      -0.0,
+      -0.0,
+      -0.0,
+      1.0
+    ],
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  {
+    "model": "SM_Gen_Env_Ground_River_Dirt_06.gltf",
+    "position": [
+      -261.5,
+      0.0,
+      -79.891525
+    ],
+    "rotation": [
+      -0.0,
+      0.70710576,
+      -0.0,
+      0.7071078
+    ],
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  {
+    "model": "SM_Gen_Env_Bush_Large_02.gltf",
+    "position": [
+      -254.73,
+      0.0,
+      26.919998
+    ],
+    "rotation": [
+      -0.0,
+      0.70710576,
+      -0.0,
+      0.70710784
+    ],
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  {
+    "model": "SM_Gen_Env_Skyline_01.gltf",
+    "position": [
+      -137.5,
+      0.0,
+      -22.5
+    ],
+    "rotation": [
+      -0.0,
+      -0.0,
+      -0.0,
+      1.0
+    ],
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  {
+    "model": "SM_Gen_Env_Grass_01.gltf",
+    "position": [
+      -217.3698,
+      0.0,
+      4.0836906
+    ],
+    "rotation": [
+      -0.0,
+      0.70710576,
+      -0.0,
+      0.70710784
+    ],
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  {
+    "model": "SM_Gen_Prop_Switch_01.gltf",
+    "position": [
+      -44.11,
+      0.0,
+      35.51628
+    ],
+    "rotation": [
+      -0.0,
+      -0.0,
+      -0.0,
+      1.0
+    ],
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  {
+    "model": "SM_Gen_Prop_Bottle_01.gltf",
+    "position": [
+      -46.42001,
+      0.0,
+      40.33812
+    ],
+    "rotation": [
+      -0.0,
+      -0.0,
+      -0.0,
+      1.0
+    ],
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  {
+    "model": "SM_Bld_Base_Door_01.gltf",
+    "position": [
+      -56.387352,
+      0.0,
+      85.29231
+    ],
+    "rotation": [
+      -0.0,
+      -0.0,
+      -0.0,
+      1.0
+    ],
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  {
+    "model": "SM_Gen_Env_Cloud_01.gltf",
+    "position": [
+      -218.3,
+      0.0,
+      101.5
+    ],
+    "rotation": [
+      -0.0,
+      0.089200646,
+      -0.0,
+      0.99601364
+    ],
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  {
+    "model": "SM_Gen_Env_Twig_03.gltf",
+    "position": [
+      -219.10756,
+      0.0,
+      9.1394005
+    ],
+    "rotation": [
+      -0.0,
+      0.70710576,
+      -0.0,
+      0.70710784
+    ],
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  {
+    "model": "SM_Gen_Prop_Food_Vegetable_03.gltf",
+    "position": [
+      -46.111565,
+      0.0,
+      46.746933
+    ],
+    "rotation": [
+      -0.0,
+      -0.0,
+      -0.0,
+      1.0
+    ],
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  {
+    "model": "SM_Gen_Env_Ivy_Draped_03.gltf",
+    "position": [
+      -265.86487,
+      0.0,
+      39.468502
+    ],
+    "rotation": [
+      -0.0,
+      0.70710576,
+      -0.0,
+      0.70710784
+    ],
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  {
+    "model": "SM_Gen_Env_Flowers_03.gltf",
+    "position": [
+      -220.76808,
+      0.0,
+      4.0956078
+    ],
+    "rotation": [
+      -0.0,
+      0.70710576,
+      -0.0,
+      0.70710784
+    ],
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  {
+    "model": "SM_Gen_Env_Ivy_06.gltf",
+    "position": [
+      -236.4784,
+      0.0,
+      22.523617
+    ],
+    "rotation": [
+      -0.0,
+      0.70710576,
+      -0.0,
+      0.70710784
+    ],
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  {
+    "model": "SM_Bld_Base_Roof_Trim_Half_01.gltf",
+    "position": [
+      -65.509865,
+      0.0,
+      80.555466
+    ],
+    "rotation": [
+      -0.0,
+      -0.0,
+      -0.0,
+      1.0
+    ],
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  {
+    "model": "SM_Gen_Bld_Pipe_Corner_01.gltf",
+    "position": [
+      -24.269997,
+      0.0,
+      63.75
+    ],
+    "rotation": [
+      -0.0,
+      -0.0,
+      -0.0,
+      1.0
+    ],
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  {
+    "model": "SM_Gen_Env_Tree_Pine_03.gltf",
+    "position": [
+      -201.4,
+      0.0,
+      9.999989
+    ],
+    "rotation": [
+      -0.0,
+      0.70710576,
+      -0.0,
+      0.70710784
+    ],
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  {
+    "model": "SM_Gen_Env_Shrub_02.gltf",
+    "position": [
+      -239.82135,
+      0.0,
+      29.125916
+    ],
+    "rotation": [
+      -0.0,
+      0.70710576,
+      -0.0,
+      0.70710784
+    ],
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  {
+    "model": "SM_Bld_Base_Stairwell_Wall_01.gltf",
+    "position": [
+      -24.634861,
+      0.0,
+      87.25606
+    ],
+    "rotation": [
+      -0.0,
+      -0.0,
+      -0.0,
+      1.0
+    ],
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  {
+    "model": "SM_Gen_Prop_Papers_01.gltf",
+    "position": [
+      -61.308006,
+      0.0,
+      28.061478
+    ],
+    "rotation": [
+      -0.0,
+      -0.0,
+      -0.0,
+      1.0
+    ],
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  {
+    "model": "SM_Bld_Base_Wall_Half_01.gltf",
+    "position": [
+      -44.134785,
+      0.0,
+      83.58606
+    ],
+    "rotation": [
+      -0.0,
+      -0.0,
+      -0.0,
+      1.0
+    ],
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  {
+    "model": "SM_Gen_Env_Tree_01.gltf",
+    "position": [
+      -255.77998,
+      0.0,
+      20.3
+    ],
+    "rotation": [
+      -0.0,
+      0.70710576,
+      -0.0,
+      0.70710784
+    ],
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  {
+    "model": "SM_Gen_Env_Ivy_08.gltf",
+    "position": [
+      -233.20697,
+      0.0,
+      39.878494
+    ],
+    "rotation": [
+      -0.0,
+      0.70710576,
+      -0.0,
+      0.70710784
+    ],
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  {
+    "model": "SM_Bld_Base_Roof_Cap_01.gltf",
+    "position": [
+      -44.574837,
+      0.0,
+      71.529144
+    ],
+    "rotation": [
+      -0.0,
+      -0.0,
+      -0.0,
+      1.0
+    ],
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  {
+    "model": "SM_Gen_Env_Bush_Part_03.gltf",
+    "position": [
+      -233.0516,
+      0.0,
+      22.523659
+    ],
+    "rotation": [
+      -0.0,
+      0.70710576,
+      -0.0,
+      0.70710784
+    ],
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  {
+    "model": "SM_Gen_Env_Bush_Part_01.gltf",
+    "position": [
+      -210.08,
+      0.0,
+      4.119961
+    ],
+    "rotation": [
+      -0.0,
+      0.70710576,
+      -0.0,
+      0.70710784
+    ],
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  {
+    "model": "SM_Gen_Env_Stump_03.gltf",
+    "position": [
+      -226.28098,
+      0.0,
+      19.138393
+    ],
+    "rotation": [
+      -0.0,
+      0.70710576,
+      -0.0,
+      0.70710784
+    ],
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  {
+    "model": "SM_Bld_Base_Roof_Trim_Corner_01.gltf",
+    "position": [
+      -56.760338,
+      0.0,
+      94.415924
+    ],
+    "rotation": [
+      -0.0,
+      -0.0,
+      -0.0,
+      1.0
+    ],
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  {
+    "model": "SM_Gen_Env_Ivy_03.gltf",
+    "position": [
+      -236.47589,
+      0.0,
+      19.13837
+    ],
+    "rotation": [
+      -0.0,
+      0.70710576,
+      -0.0,
+      0.70710784
+    ],
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  {
+    "model": "SM_Gen_Prop_Crate_01.gltf",
+    "position": [
+      -53.36257,
+      0.0,
+      44.794563
+    ],
+    "rotation": [
+      -0.0,
+      -0.0,
+      -0.0,
+      1.0
+    ],
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  {
+    "model": "SM_Gen_Env_Stump_01.gltf",
+    "position": [
+      -216.03,
+      0.0,
+      35.6
+    ],
+    "rotation": [
+      -0.0,
+      0.70710576,
+      -0.0,
+      0.70710784
+    ],
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  {
+    "model": "SM_Gen_Env_Rock_06.gltf",
+    "position": [
+      -234.79999,
+      0.0,
+      -80.69997
+    ],
+    "rotation": [
+      -0.0,
+      0.70710576,
+      -0.0,
+      0.7071078
+    ],
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  {
+    "model": "SM_Gen_Env_Ground_Slope_Dirt_02.gltf",
+    "position": [
+      -37.9,
+      0.0,
+      -96.6
+    ],
+    "rotation": [
+      -0.0,
+      -0.0,
+      -0.0,
+      1.0
+    ],
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  {
+    "model": "SM_Bld_Base_Wall_Window_Double_01.gltf",
+    "position": [
+      -37.63481,
+      0.0,
+      79.54605
+    ],
+    "rotation": [
+      -0.0,
+      -0.0,
+      -0.0,
+      1.0
+    ],
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  {
+    "model": "SM_Gen_Prop_Rope_01.gltf",
+    "position": [
+      -48.436314,
+      0.0,
+      49.069023
+    ],
+    "rotation": [
+      -0.0,
+      -0.0,
+      -0.0,
+      1.0
+    ],
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  {
+    "model": "SM_Gen_Prop_Medkit_01.gltf",
+    "position": [
+      -55.54963,
+      0.0,
+      51.45612
+    ],
+    "rotation": [
+      -0.0,
+      -0.0,
+      -0.0,
+      1.0
+    ],
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  {
+    "model": "SM_Gen_Bld_Background_04.gltf",
+    "position": [
+      54.73,
+      0.0,
+      137.1
+    ],
+    "rotation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  {
+    "model": "SM_Gen_Env_Lilypads_02.gltf",
+    "position": [
+      -236.29886,
+      0.0,
+      29.251926
+    ],
+    "rotation": [
+      -0.0,
+      0.70710576,
+      -0.0,
+      0.70710784
+    ],
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  {
+    "model": "SM_Bld_Base_Roof_Corner_Out_01.gltf",
+    "position": [
+      -83.25493,
+      0.0,
+      78.136154
+    ],
+    "rotation": [
+      -0.0,
+      -0.0,
+      -0.0,
+      1.0
+    ],
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  {
+    "model": "SM_Gen_Prop_Statue_03.gltf",
+    "position": [
+      -61.2629,
+      0.0,
+      32.713486
+    ],
+    "rotation": [
+      -0.0,
+      -0.0,
+      -0.0,
+      1.0
+    ],
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  {
+    "model": "SM_Gen_Prop_Bottle_05.gltf",
+    "position": [
+      -41.46238,
+      0.0,
+      46.746933
+    ],
+    "rotation": [
+      -0.0,
+      -0.0,
+      -0.0,
+      1.0
+    ],
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  {
+    "model": "SM_Gen_Bld_Background_08.gltf",
+    "position": [
+      77.1,
+      0.0,
+      152.5
+    ],
+    "rotation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  {
+    "model": "SM_Gen_Env_Ground_Grass_Large_03.gltf",
+    "position": [
+      -234.49002,
+      0.0,
+      -125.22153
+    ],
+    "rotation": [
+      -0.0,
+      -0.0,
+      -0.0,
+      1.0
+    ],
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  {
+    "model": "SM_Gen_Prop_Sack_01.gltf",
+    "position": [
+      -48.367565,
+      0.0,
+      51.45174
+    ],
+    "rotation": [
+      -0.0,
+      -0.0,
+      -0.0,
+      1.0
+    ],
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  {
+    "model": "SM_Gen_Prop_Cardboard_Box_01.gltf",
+    "position": [
+      -46.041565,
+      0.0,
+      51.45314
+    ],
+    "rotation": [
+      -0.0,
+      -0.0,
+      -0.0,
+      1.0
+    ],
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  {
+    "model": "SM_Gen_Env_Rock_Pebbles_05.gltf",
+    "position": [
+      -246.91084,
+      0.0,
+      39.312557
+    ],
+    "rotation": [
+      -0.0,
+      0.70710576,
+      -0.0,
+      0.70710784
+    ],
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  {
+    "model": "SM_Gen_Env_Ground_River_Grass_Large_01.gltf",
+    "position": [
+      -51.69999,
+      0.0,
+      5.1
+    ],
+    "rotation": [
+      -0.0,
+      -0.0,
+      -0.0,
+      1.0
+    ],
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  {
+    "model": "SM_Gen_Env_Flowers_07.gltf",
+    "position": [
+      -220.73097,
+      0.0,
+      7.4334373
+    ],
+    "rotation": [
+      -0.0,
+      0.70710576,
+      -0.0,
+      0.70710784
+    ],
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  {
+    "model": "SM_Gen_Bld_Background_06.gltf",
+    "position": [
+      53.95,
+      0.0,
+      171.1
+    ],
+    "rotation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  {
+    "model": "SM_Gen_Prop_Sack_05.gltf",
+    "position": [
+      -56.5468,
+      0.0,
+      35.069855
+    ],
+    "rotation": [
+      -0.0,
+      -0.0,
+      -0.0,
+      1.0
+    ],
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  {
+    "model": "SM_Bld_Base_Wall_Half_Angle_01.gltf",
+    "position": [
+      -37.63481,
+      0.0,
+      83.58605
+    ],
+    "rotation": [
+      -0.0,
+      -0.0,
+      -0.0,
+      1.0
+    ],
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  {
+    "model": "SM_Gen_Prop_Sack_Stack_01.gltf",
+    "position": [
+      -57.874214,
+      0.0,
+      44.470642
+    ],
+    "rotation": [
+      -0.0,
+      -0.0,
+      -0.0,
+      1.0
+    ],
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  {
+    "model": "SM_Gen_Env_Ground_Grass_04.gltf",
+    "position": [
+      -204.92017,
+      0.0,
+      -70.7
+    ],
+    "rotation": [
+      -0.0,
+      0.70710576,
+      -0.0,
+      0.7071078
+    ],
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  {
+    "model": "SM_Gen_Env_Tree_Dead_02.gltf",
+    "position": [
+      -202.43,
+      0.0,
+      14.119968
+    ],
+    "rotation": [
+      -0.0,
+      0.70710576,
+      -0.0,
+      0.70710784
+    ],
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  {
+    "model": "SM_Gen_Env_Rock_08.gltf",
+    "position": [
+      -209.07994,
+      0.0,
+      10.619991
+    ],
+    "rotation": [
+      -0.0,
+      0.70710576,
+      -0.0,
+      0.70710784
+    ],
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  {
+    "model": "SM_Bld_Base_Wall_Door_Large_01.gltf",
+    "position": [
+      -31.134838,
+      0.0,
+      76.49606
+    ],
+    "rotation": [
+      -0.0,
+      -0.0,
+      -0.0,
+      1.0
+    ],
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  {
+    "model": "SM_Gen_Prop_Barrel_Metal_01.gltf",
+    "position": [
+      -53.226295,
+      0.0,
+      49.119164
+    ],
+    "rotation": [
+      -0.0,
+      -0.0,
+      -0.0,
+      1.0
+    ],
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  {
+    "model": "SM_Gen_Env_Water_Plane_01.gltf",
+    "position": [
+      -6.9,
+      0.0,
+      3.2
+    ],
+    "rotation": [
+      -0.0,
+      -0.0,
+      -0.0,
+      1.0
+    ],
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  {
+    "model": "SM_Gen_Env_Ivy_13.gltf",
+    "position": [
+      -242.66507,
+      0.0,
+      35.112373
+    ],
+    "rotation": [
+      -0.0,
+      0.70710576,
+      -0.0,
+      0.70710784
+    ],
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  {
+    "model": "SM_Gen_Env_Skydome_01.gltf",
+    "position": [
+      -137.5,
+      0.0,
+      -22.5
+    ],
+    "rotation": [
+      -0.0,
+      -0.0,
+      -0.0,
+      1.0
+    ],
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  {
+    "model": "SM_Gen_Env_Mountain_01.gltf",
+    "position": [
+      -158.3,
+      0.0,
+      85.9
+    ],
+    "rotation": [
+      -0.0,
+      -0.9923319,
+      -0.0,
+      -0.12360164
+    ],
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  {
+    "model": "SM_Gen_Env_Bush_Large_03.gltf",
+    "position": [
+      -262.24,
+      0.0,
+      26.289999
+    ],
+    "rotation": [
+      -0.0,
+      0.70710576,
+      -0.0,
+      0.70710784
+    ],
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  {
+    "model": "SM_Gen_Prop_Button_01.gltf",
+    "position": [
+      -41.462383,
+      0.0,
+      49.072197
+    ],
+    "rotation": [
+      -0.0,
+      -0.0,
+      -0.0,
+      1.0
+    ],
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  {
+    "model": "SM_Gen_Bld_Beam_02.gltf",
+    "position": [
+      -35.85,
+      0.0,
+      63.83
+    ],
+    "rotation": [
+      -0.0,
+      0.70710576,
+      -0.0,
+      0.70710784
+    ],
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  {
+    "model": "SM_Bld_Base_Floor_Hole_01.gltf",
+    "position": [
+      -70.00988,
+      0.0,
+      91.01106
+    ],
+    "rotation": [
+      -0.0,
+      -0.0,
+      -0.0,
+      1.0
+    ],
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  {
+    "model": "SM_Gen_Env_Log_02.gltf",
+    "position": [
+      -216.03,
+      0.0,
+      27.24
+    ],
+    "rotation": [
+      -0.0,
+      0.70710576,
+      -0.0,
+      0.70710784
+    ],
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  {
+    "model": "SM_Gen_Bld_Background_07.gltf",
+    "position": [
+      77.1,
+      0.0,
+      170.3
+    ],
+    "rotation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  {
+    "model": "SM_Gen_Env_Ivy_07.gltf",
+    "position": [
+      -229.6872,
+      0.0,
+      25.908958
+    ],
+    "rotation": [
+      -0.0,
+      0.70710576,
+      -0.0,
+      0.70710784
+    ],
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  {
+    "model": "SM_Gen_Prop_Sack_03.gltf",
+    "position": [
+      -46.41979,
+      0.0,
+      35.690212
+    ],
+    "rotation": [
+      -0.0,
+      -0.0,
+      -0.0,
+      1.0
+    ],
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  {
+    "model": "SM_Gen_Prop_Papers_02.gltf",
+    "position": [
+      -60.123558,
+      0.0,
+      44.460857
+    ],
+    "rotation": [
+      -0.0,
+      -0.0,
+      -0.0,
+      1.0
+    ],
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  {
+    "model": "SM_Gen_Prop_Plinth_02.gltf",
+    "position": [
+      -53.225037,
+      0.0,
+      46.795235
+    ],
+    "rotation": [
+      -0.0,
+      -0.0,
+      -0.0,
+      1.0
+    ],
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  {
+    "model": "SM_Gen_Env_Tree_Pine_02.gltf",
+    "position": [
+      -200.55,
+      0.0,
+      18.649998
+    ],
+    "rotation": [
+      -0.0,
+      0.70710576,
+      -0.0,
+      0.70710784
+    ],
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  {
+    "model": "SM_Gen_Env_Shrub_03.gltf",
+    "position": [
+      -233.05157,
+      0.0,
+      19.138412
+    ],
+    "rotation": [
+      -0.0,
+      0.70710576,
+      -0.0,
+      0.70710784
+    ],
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  {
+    "model": "SM_Gen_Env_Grass_03.gltf",
+    "position": [
+      -220.75685,
+      0.0,
+      9.242146
+    ],
+    "rotation": [
+      -0.0,
+      0.70710576,
+      -0.0,
+      0.70710784
+    ],
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  {
+    "model": "SM_Gen_Env_Road_Gravel_Corner_Large_02.gltf",
+    "position": [
+      -221.5,
+      0.0,
+      -20.700047
+    ],
+    "rotation": [
+      -0.0,
+      0.70710576,
+      -0.0,
+      0.7071078
+    ],
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  {
+    "model": "SM_Gen_Bld_Beam_03.gltf",
+    "position": [
+      -36.510002,
+      0.0,
+      63.85
+    ],
+    "rotation": [
+      -0.0,
+      -0.70710576,
+      -0.0,
+      0.7071078
+    ],
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  {
+    "model": "SM_Gen_Prop_Coin_Stack_02.gltf",
+    "position": [
+      -39.34,
+      0.0,
+      35.640816
+    ],
+    "rotation": [
+      -0.0,
+      -0.0,
+      -0.0,
+      1.0
+    ],
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  {
+    "model": "SM_Gen_Env_Ground_Dirt_02.gltf",
+    "position": [
+      -217.42023,
+      0.0,
+      -40.700012
+    ],
+    "rotation": [
+      -0.0,
+      0.70710576,
+      -0.0,
+      0.7071078
+    ],
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  {
+    "model": "SM_Gen_Env_Ground_Grass_02.gltf",
+    "position": [
+      -216.5,
+      0.0,
+      -79.891525
+    ],
+    "rotation": [
+      -0.0,
+      0.70710576,
+      -0.0,
+      0.7071078
+    ],
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  {
+    "model": "SM_Gen_Env_Rock_Pebbles_03.gltf",
+    "position": [
+      -222.83344,
+      0.0,
+      25.798923
+    ],
+    "rotation": [
+      -0.0,
+      0.70710576,
+      -0.0,
+      0.70710784
+    ],
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  {
+    "model": "SM_Gen_Env_Cloud_Ring_01.gltf",
+    "position": [
+      -137.5,
+      61.04,
+      -22.5
+    ],
+    "rotation": [
+      -0.0,
+      -0.0,
+      -0.0,
+      1.0
+    ],
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  {
+    "model": "SM_Gen_Prop_Bottle_03.gltf",
+    "position": [
+      -43.786976,
+      0.0,
+      46.74693
+    ],
+    "rotation": [
+      -0.0,
+      -0.0,
+      -0.0,
+      1.0
+    ],
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  {
+    "model": "SM_Gen_Bld_Pipe_Cross_01.gltf",
+    "position": [
+      -32.358547,
+      0.0,
+      61.18606
+    ],
+    "rotation": [
+      -0.0,
+      -0.0,
+      -0.0,
+      1.0
+    ],
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  {
+    "model": "SM_Gen_Env_Ground_River_Dirt_05.gltf",
+    "position": [
+      -229.0,
+      0.0,
+      -94.891525
+    ],
+    "rotation": [
+      -0.0,
+      -0.0,
+      -0.0,
+      1.0
+    ],
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  {
+    "model": "SM_Bld_Base_Roof_Half_02.gltf",
+    "position": [
+      -83.87961,
+      0.0,
+      91.13618
+    ],
+    "rotation": [
+      -0.0,
+      -0.0,
+      -0.0,
+      1.0
+    ],
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  {
+    "model": "SM_Gen_Env_Flowers_05.gltf",
+    "position": [
+      -224.04384,
+      0.0,
+      7.4373283
+    ],
+    "rotation": [
+      -0.0,
+      0.70710576,
+      -0.0,
+      0.70710784
+    ],
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  {
+    "model": "SM_Gen_Env_Twig_01.gltf",
+    "position": [
+      -217.42091,
+      0.0,
+      9.096104
+    ],
+    "rotation": [
+      -0.0,
+      0.70710576,
+      -0.0,
+      0.70710784
+    ],
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  {
+    "model": "SM_Gen_Env_Flowers_06.gltf",
+    "position": [
+      -219.03392,
+      0.0,
+      7.4721947
+    ],
+    "rotation": [
+      -0.0,
+      0.70710576,
+      -0.0,
+      0.70710784
+    ],
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  {
+    "model": "SM_Gen_Env_Mushroom_02.gltf",
+    "position": [
+      -219.07881,
+      0.0,
+      5.7822075
+    ],
+    "rotation": [
+      -0.0,
+      0.70710576,
+      -0.0,
+      0.70710784
+    ],
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  {
+    "model": "SM_Gen_Env_Ground_Dirt_03.gltf",
+    "position": [
+      -204.92026,
+      0.0,
+      -40.69999
+    ],
+    "rotation": [
+      -0.0,
+      0.70710576,
+      -0.0,
+      0.7071078
+    ],
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  {
+    "model": "SM_Bld_Base_Wall_Door_Double_01.gltf",
+    "position": [
+      -24.634861,
+      0.0,
+      76.49606
+    ],
+    "rotation": [
+      -0.0,
+      -0.0,
+      -0.0,
+      1.0
+    ],
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  {
+    "model": "SM_Gen_Prop_Crate_03.gltf",
+    "position": [
+      -51.2154,
+      0.0,
+      31.158997
+    ],
+    "rotation": [
+      -0.0,
+      -0.0,
+      -0.0,
+      1.0
+    ],
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  {
+    "model": "SM_Gen_Prop_Pot_04.gltf",
+    "position": [
+      -61.252693,
+      0.0,
+      37.3979
+    ],
+    "rotation": [
+      -0.0,
+      -0.0,
+      -0.0,
+      1.0
+    ],
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  {
+    "model": "SM_Gen_Env_Bush_03.gltf",
+    "position": [
+      -209.85,
+      0.0,
+      -6.3100014
+    ],
+    "rotation": [
+      -0.0,
+      0.70710576,
+      -0.0,
+      0.70710784
+    ],
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  {
+    "model": "SM_Gen_Env_Ground_Grass_03.gltf",
+    "position": [
+      -206.5,
+      0.0,
+      -82.391525
+    ],
+    "rotation": [
+      -0.0,
+      0.70710576,
+      -0.0,
+      0.7071078
+    ],
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  {
+    "model": "SM_Gen_Prop_Chain_02.gltf",
+    "position": [
+      -61.269997,
+      0.0,
+      21.609999
+    ],
+    "rotation": [
+      -0.0,
+      -0.0,
+      -0.0,
+      1.0
+    ],
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  {
+    "model": "SM_Gen_Env_Rock_Pebbles_04.gltf",
+    "position": [
+      -226.3699,
+      0.0,
+      22.612396
+    ],
+    "rotation": [
+      -0.0,
+      0.70710576,
+      -0.0,
+      0.70710784
+    ],
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  {
+    "model": "SM_Gen_Env_Flowers_02.gltf",
+    "position": [
+      -223.9999,
+      0.0,
+      9.11993
+    ],
+    "rotation": [
+      -0.0,
+      0.70710576,
+      -0.0,
+      0.70710784
+    ],
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  {
+    "model": "SM_Bld_Base_Pillar_05.gltf",
+    "position": [
+      -66.19111,
+      0.0,
+      99.1073
+    ],
+    "rotation": [
+      -0.0,
+      -0.0,
+      -0.0,
+      1.0
+    ],
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  {
+    "model": "SM_Gen_Env_Ground_Grass_01.gltf",
+    "position": [
+      -214.92023,
+      0.0,
+      -70.7
+    ],
+    "rotation": [
+      -0.0,
+      0.70710576,
+      -0.0,
+      0.7071078
+    ],
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  {
+    "model": "SM_Gen_Env_Ivy_12.gltf",
+    "position": [
+      -225.70883,
+      0.0,
+      29.65374
+    ],
+    "rotation": [
+      -0.0,
+      0.70710576,
+      -0.0,
+      0.70710784
+    ],
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  {
+    "model": "SM_Gen_Prop_Shelf_02.gltf",
+    "position": [
+      -53.54,
+      0.0,
+      24.157936
+    ],
+    "rotation": [
+      -0.0,
+      -0.0,
+      -0.0,
+      1.0
+    ],
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  {
+    "model": "SM_Gen_Env_Hill_02.gltf",
+    "position": [
+      -168.59999,
+      0.0,
+      20.6
+    ],
+    "rotation": [
+      -0.0,
+      -0.026113926,
+      -0.0,
+      0.999659
+    ],
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  {
+    "model": "SM_Gen_Env_Grass_Tall_04.gltf",
+    "position": [
+      -200.52994,
+      0.0,
+      24.759998
+    ],
+    "rotation": [
+      -0.0,
+      0.70710576,
+      -0.0,
+      0.70710784
+    ],
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  {
+    "model": "SM_Gen_Wep_Spade_01.gltf",
+    "position": [
+      -28.740002,
+      0.0,
+      42.44
+    ],
+    "rotation": [
+      -0.0,
+      -0.0,
+      -0.0,
+      1.0
+    ],
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  {
+    "model": "SM_Gen_Prop_Food_Bread_01.gltf",
+    "position": [
+      -48.436157,
+      0.0,
+      44.42682
+    ],
+    "rotation": [
+      -0.0,
+      -0.0,
+      -0.0,
+      1.0
+    ],
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  {
+    "model": "SM_Gen_Env_Ground_Dirt_Large_01.gltf",
+    "position": [
+      -259.0,
+      0.0,
+      -92.391525
+    ],
+    "rotation": [
+      -0.0,
+      0.70710576,
+      -0.0,
+      0.7071078
+    ],
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  {
+    "model": "SM_Bld_Base_Wall_01.gltf",
+    "position": [
+      -44.134785,
+      0.0,
+      79.54605
+    ],
+    "rotation": [
+      -0.0,
+      -0.0,
+      -0.0,
+      1.0
+    ],
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  {
+    "model": "SM_Gen_Prop_Light_Wall_01.gltf",
+    "position": [
+      -48.47,
+      0.0,
+      35.46767
+    ],
+    "rotation": [
+      -0.0,
+      -0.0,
+      -0.0,
+      1.0
+    ],
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  {
+    "model": "SM_Gen_Prop_Table_01.gltf",
+    "position": [
+      -50.900444,
+      0.0,
+      39.92134
+    ],
+    "rotation": [
+      -0.0,
+      -0.0,
+      -0.0,
+      1.0
+    ],
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  {
+    "model": "SM_Gen_Env_Rock_09.gltf",
+    "position": [
+      -261.4524,
+      0.0,
+      34.8197
+    ],
+    "rotation": [
+      -0.0,
+      0.70710576,
+      -0.0,
+      0.70710784
+    ],
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  {
+    "model": "SM_Bld_Base_Wall_Window_01.gltf",
+    "position": [
+      -24.634861,
+      0.0,
+      79.54605
+    ],
+    "rotation": [
+      -0.0,
+      -0.0,
+      -0.0,
+      1.0
+    ],
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  {
+    "model": "SM_Gen_Env_Hill_01.gltf",
+    "position": [
+      -74.19999,
+      0.0,
+      37.5
+    ],
+    "rotation": [
+      -0.0,
+      -0.0,
+      -0.0,
+      1.0
+    ],
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  {
+    "model": "SM_Bld_Base_Roof_Quarter_01.gltf",
+    "position": [
+      -89.319855,
+      0.0,
+      91.76109
+    ],
+    "rotation": [
+      -0.0,
+      -0.0,
+      -0.0,
+      1.0
+    ],
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  {
+    "model": "SM_Bld_Base_Wall_Door_Double_Large_01.gltf",
+    "position": [
+      -44.134785,
+      0.0,
+      76.49606
+    ],
+    "rotation": [
+      -0.0,
+      -0.0,
+      -0.0,
+      1.0
+    ],
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  {
+    "model": "SM_Bld_Base_Wall_Trim_01.gltf",
+    "position": [
+      -55.637367,
+      0.0,
+      80.53717
+    ],
+    "rotation": [
+      -0.0,
+      -0.0,
+      -0.0,
+      1.0
+    ],
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  {
+    "model": "SM_Bld_Base_Stairs_01.gltf",
+    "position": [
+      -37.69484,
+      0.0,
+      72.779144
+    ],
+    "rotation": [
+      -0.0,
+      -0.0,
+      -0.0,
+      1.0
+    ],
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  {
+    "model": "SM_Bld_Base_Wall_Half_02.gltf",
+    "position": [
+      -38.259808,
+      0.0,
+      87.25606
+    ],
+    "rotation": [
+      -0.0,
+      -0.0,
+      -0.0,
+      1.0
+    ],
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  {
+    "model": "SM_Gen_Env_Cloud_02.gltf",
+    "position": [
+      -238.5,
+      0.0,
+      82.4
+    ],
+    "rotation": [
+      -0.0,
+      0.093094505,
+      -0.0,
+      0.99565727
+    ],
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  {
+    "model": "SM_Gen_Env_Ground_River_Grass_02.gltf",
+    "position": [
+      -243.49997,
+      0.0,
+      -69.39157
+    ],
+    "rotation": [
+      -0.0,
+      0.70710576,
+      -0.0,
+      0.7071078
+    ],
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  {
+    "model": "SM_Gen_Env_Ground_River_Grass_Large_02.gltf",
+    "position": [
+      -49.69999,
+      0.0,
+      -31.4
+    ],
+    "rotation": [
+      -0.0,
+      -0.0,
+      -0.0,
+      1.0
+    ],
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  {
+    "model": "SM_Gen_Prop_Key_01.gltf",
+    "position": [
+      -43.792747,
+      0.0,
+      44.42234
+    ],
+    "rotation": [
+      -0.0,
+      -0.0,
+      -0.0,
+      1.0
+    ],
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  {
+    "model": "SM_Gen_Prop_Crate_Preset_01.gltf",
+    "position": [
+      -56.480003,
+      0.0,
+      24.05
+    ],
+    "rotation": [
+      -0.0,
+      -0.0,
+      -0.0,
+      1.0
+    ],
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  {
+    "model": "SM_Gen_Env_Bush_Part_04.gltf",
+    "position": [
+      -226.28098,
+      0.0,
+      25.908966
+    ],
+    "rotation": [
+      -0.0,
+      0.70710576,
+      -0.0,
+      0.70710784
+    ],
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  {
+    "model": "SM_Gen_Env_Bush_Large_04.gltf",
+    "position": [
+      -209.85004,
+      0.0,
+      -1.3099785
+    ],
+    "rotation": [
+      -0.0,
+      0.70710576,
+      -0.0,
+      0.70710784
+    ],
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  {
+    "model": "SM_Bld_Base_Pillar_02.gltf",
+    "position": [
+      -56.887367,
+      0.0,
+      89.91606
+    ],
+    "rotation": [
+      -0.0,
+      -0.0,
+      -0.0,
+      1.0
+    ],
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  {
+    "model": "SM_Gen_Prop_Barrel_Wood_03.gltf",
+    "position": [
+      -56.60372,
+      0.0,
+      32.748642
+    ],
+    "rotation": [
+      -0.0,
+      -0.0,
+      -0.0,
+      1.0
+    ],
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  {
+    "model": "SM_Gen_Prop_Sack_Stack_02.gltf",
+    "position": [
+      -57.85617,
+      0.0,
+      46.811897
+    ],
+    "rotation": [
+      -0.0,
+      -0.0,
+      -0.0,
+      1.0
+    ],
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  {
+    "model": "SM_Gen_Env_Ground_River_Grass_06.gltf",
+    "position": [
+      -235.99997,
+      0.0,
+      -69.391556
+    ],
+    "rotation": [
+      -0.0,
+      0.70710576,
+      -0.0,
+      0.7071078
+    ],
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  {
+    "model": "SM_Gen_Env_Road_Gravel_Corner_Small_02.gltf",
+    "position": [
+      -226.5,
+      0.0,
+      -52.39151
+    ],
+    "rotation": [
+      -0.0,
+      0.70710576,
+      -0.0,
+      0.7071078
+    ],
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  {
+    "model": "SM_Bld_Base_Pillar_04.gltf",
+    "position": [
+      -52.37066,
+      0.0,
+      99.0565
+    ],
+    "rotation": [
+      -0.0,
+      -0.0,
+      -0.0,
+      1.0
+    ],
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  {
+    "model": "SM_Gen_Env_Tree_Dead_03.gltf",
+    "position": [
+      -210.2,
+      0.0,
+      15.279999
+    ],
+    "rotation": [
+      -0.0,
+      0.70710576,
+      -0.0,
+      0.70710784
+    ],
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  {
+    "model": "SM_Gen_Env_Rock_Pebbles_02.gltf",
+    "position": [
+      -229.71936,
+      0.0,
+      22.513973
+    ],
+    "rotation": [
+      -0.0,
+      0.70710576,
+      -0.0,
+      0.70710784
+    ],
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  {
+    "model": "SM_Bld_Base_Wall_Door_01.gltf",
+    "position": [
+      -37.63481,
+      0.0,
+      76.49606
+    ],
+    "rotation": [
+      -0.0,
+      -0.0,
+      -0.0,
+      1.0
+    ],
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  {
+    "model": "SM_Gen_Prop_Rope_02.gltf",
+    "position": [
+      -58.928093,
+      0.0,
+      25.774734
+    ],
+    "rotation": [
+      -0.0,
+      -0.0,
+      -0.0,
+      1.0
+    ],
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  {
+    "model": "SM_Gen_Prop_Food_Meat_03.gltf",
+    "position": [
+      -41.671276,
+      0.0,
+      35.698353
+    ],
+    "rotation": [
+      -0.0,
+      -0.0,
+      -0.0,
+      1.0
+    ],
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  {
+    "model": "SM_Gen_Prop_Chair_01.gltf",
+    "position": [
+      -53.225037,
+      0.0,
+      51.444412
+    ],
+    "rotation": [
+      -0.0,
+      -0.0,
+      -0.0,
+      1.0
+    ],
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  {
+    "model": "SM_Bld_Base_Stair_Quarter_01.gltf",
+    "position": [
+      -52.15484,
+      0.0,
+      71.841644
+    ],
+    "rotation": [
+      -0.0,
+      -0.0,
+      -0.0,
+      1.0
+    ],
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  {
+    "model": "SM_Gen_Env_Ground_Slope_Dirt_01.gltf",
+    "position": [
+      -59.3,
+      0.0,
+      -102.5
+    ],
+    "rotation": [
+      -0.0,
+      -0.0,
+      -0.0,
+      1.0
+    ],
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  {
+    "model": "SM_Gen_Env_Root_02.gltf",
+    "position": [
+      -216.02234,
+      0.0,
+      31.655258
+    ],
+    "rotation": [
+      -0.0,
+      0.70710576,
+      -0.0,
+      0.70710784
+    ],
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  {
+    "model": "SM_Gen_Env_Flowers_04.gltf",
+    "position": [
+      -222.8758,
+      0.0,
+      19.172768
+    ],
+    "rotation": [
+      -0.0,
+      0.70710576,
+      -0.0,
+      0.70710784
+    ],
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  {
+    "model": "SM_Gen_Prop_Sack_04.gltf",
+    "position": [
+      -57.851128,
+      0.0,
+      49.119823
+    ],
+    "rotation": [
+      -0.0,
+      -0.0,
+      -0.0,
+      1.0
+    ],
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  {
+    "model": "SM_Gen_Bld_Pipe_Corner_02.gltf",
+    "position": [
+      -45.83741,
+      0.0,
+      61.18606
+    ],
+    "rotation": [
+      -0.0,
+      -0.0,
+      -0.0,
+      1.0
+    ],
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  {
+    "model": "SM_Gen_Env_Fern_01.gltf",
+    "position": [
+      -233.04434,
+      0.0,
+      25.936226
+    ],
+    "rotation": [
+      -0.0,
+      0.70710576,
+      -0.0,
+      0.70710784
+    ],
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  {
+    "model": "SM_Gen_Prop_Coin_Pile_02.gltf",
+    "position": [
+      -39.06179,
+      0.0,
+      51.437813
+    ],
+    "rotation": [
+      -0.0,
+      -0.0,
+      -0.0,
+      1.0
+    ],
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  {
+    "model": "SM_Gen_Prop_Lever_01.gltf",
+    "position": [
+      -41.671276,
+      0.0,
+      38.022945
+    ],
+    "rotation": [
+      -0.0,
+      -0.0,
+      -0.0,
+      1.0
+    ],
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  {
+    "model": "SM_Bld_Base_Floor_01.gltf",
+    "position": [
+      -75.31986,
+      0.0,
+      71.51112
+    ],
+    "rotation": [
+      -0.0,
+      -0.0,
+      -0.0,
+      1.0
+    ],
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  {
+    "model": "SM_Gen_Env_Ground_River_Grass_04.gltf",
+    "position": [
+      -204.5,
+      0.0,
+      -104.7
+    ],
+    "rotation": [
+      -0.0,
+      -0.0,
+      -0.0,
+      1.0
+    ],
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  {
+    "model": "SM_Bld_Base_Wall_Quarter_01.gltf",
+    "position": [
+      -44.759785,
+      0.0,
+      87.25606
+    ],
+    "rotation": [
+      -0.0,
+      -0.0,
+      -0.0,
+      1.0
+    ],
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  {
+    "model": "SM_Gen_Prop_Plank_01.gltf",
+    "position": [
+      -61.25425,
+      0.0,
+      25.773277
+    ],
+    "rotation": [
+      -0.0,
+      -0.0,
+      -0.0,
+      1.0
+    ],
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  {
+    "model": "SM_Gen_Env_Rock_10.gltf",
+    "position": [
+      -228.4198,
+      0.0,
+      39.842915
+    ],
+    "rotation": [
+      -0.0,
+      0.70710576,
+      -0.0,
+      0.70710784
+    ],
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  {
+    "model": "SM_Bld_Base_Wall_Angle_01.gltf",
+    "position": [
+      -24.634861,
+      0.0,
+      83.58605
+    ],
+    "rotation": [
+      -0.0,
+      -0.0,
+      -0.0,
+      1.0
+    ],
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  {
+    "model": "SM_Gen_Bld_Pipe_Cap_01.gltf",
+    "position": [
+      -26.239998,
+      0.0,
+      63.68
+    ],
+    "rotation": [
+      -0.0,
+      -0.0,
+      -0.0,
+      1.0
+    ],
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  {
+    "model": "SM_Gen_Bld_Ladder_01.gltf",
+    "position": [
+      -71.244835,
+      0.0,
+      43.446056
+    ],
+    "rotation": [
+      -0.0,
+      -0.0,
+      -0.0,
+      1.0
+    ],
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  {
+    "model": "SM_Gen_Env_Rock_03.gltf",
+    "position": [
+      -236.43677,
+      0.0,
+      25.904305
+    ],
+    "rotation": [
+      -0.0,
+      0.70710576,
+      -0.0,
+      0.70710784
+    ],
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  {
+    "model": "SM_Bld_Base_Stair_Half_01.gltf",
+    "position": [
+      -63.434837,
+      0.0,
+      72.154144
+    ],
+    "rotation": [
+      -0.0,
+      -0.0,
+      -0.0,
+      1.0
+    ],
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  {
+    "model": "SM_Gen_Prop_Papers_03.gltf",
+    "position": [
+      -55.597664,
+      0.0,
+      39.711983
+    ],
+    "rotation": [
+      -0.0,
+      -0.0,
+      -0.0,
+      1.0
+    ],
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  {
+    "model": "SM_Gen_Bld_Background_05.gltf",
+    "position": [
+      54.8,
+      0.0,
+      154.43
+    ],
+    "rotation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  {
+    "model": "SM_Gen_Env_Rock_Pebbles_01.gltf",
+    "position": [
+      -222.88208,
+      0.0,
+      22.516937
+    ],
+    "rotation": [
+      -0.0,
+      0.70710576,
+      -0.0,
+      0.70710784
+    ],
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  {
+    "model": "SM_Bld_Base_Roof_Half_01.gltf",
+    "position": [
+      -88.694855,
+      0.0,
+      78.761154
+    ],
+    "rotation": [
+      -0.0,
+      -0.0,
+      -0.0,
+      1.0
+    ],
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  {
+    "model": "SM_Bld_Base_Roof_Straight_01.gltf",
+    "position": [
+      -83.25485,
+      0.0,
+      84.631775
+    ],
+    "rotation": [
+      -0.0,
+      -0.0,
+      -0.0,
+      1.0
+    ],
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  {
+    "model": "SM_Gen_Prop_Cardboard_Box_Preset_01.gltf",
+    "position": [
+      -55.54963,
+      0.0,
+      44.470642
+    ],
+    "rotation": [
+      -0.0,
+      -0.0,
+      -0.0,
+      1.0
+    ],
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  {
+    "model": "SM_Bld_Base_Wall_Half_Angle_02.gltf",
+    "position": [
+      -31.7709,
+      0.0,
+      87.25606
+    ],
+    "rotation": [
+      -0.0,
+      -0.0,
+      -0.0,
+      1.0
+    ],
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  {
+    "model": "SM_Gen_Env_Leaves_03.gltf",
+    "position": [
+      -261.45917,
+      0.0,
+      39.009624
+    ],
+    "rotation": [
+      -0.0,
+      0.70710576,
+      -0.0,
+      0.70710784
+    ],
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  {
+    "model": "SM_Bld_Base_Roof_Cap_Angle_01.gltf",
+    "position": [
+      -61.511116,
+      0.0,
+      93.28981
+    ],
+    "rotation": [
+      -0.0,
+      -0.0,
+      -0.0,
+      1.0
+    ],
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  {
+    "model": "SM_Gen_Prop_Cardboard_Box_04.gltf",
+    "position": [
+      -43.716976,
+      0.0,
+      51.45314
+    ],
+    "rotation": [
+      -0.0,
+      -0.0,
+      -0.0,
+      1.0
+    ],
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  {
+    "model": "SM_Gen_Prop_Papers_04.gltf",
+    "position": [
+      -56.60398,
+      0.0,
+      30.441376
+    ],
+    "rotation": [
+      -0.0,
+      -0.0,
+      -0.0,
+      1.0
+    ],
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  {
+    "model": "SM_Gen_Env_Bush_Large_01.gltf",
+    "position": [
+      -245.90999,
+      0.0,
+      19.14
+    ],
+    "rotation": [
+      -0.0,
+      0.70710576,
+      -0.0,
+      0.70710784
+    ],
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  {
+    "model": "SM_Gen_Env_Stump_02.gltf",
+    "position": [
+      -204.47,
+      0.0,
+      19.119946
+    ],
+    "rotation": [
+      -0.0,
+      0.70710576,
+      -0.0,
+      0.70710784
+    ],
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  {
+    "model": "SM_Gen_Prop_Food_Meat_01.gltf",
+    "position": [
+      -56.600502,
+      0.0,
+      37.39659
+    ],
+    "rotation": [
+      -0.0,
+      -0.0,
+      -0.0,
+      1.0
+    ],
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  {
+    "model": "SM_Gen_Env_Leaves_Pile_01.gltf",
+    "position": [
+      -256.31964,
+      0.0,
+      34.690655
+    ],
+    "rotation": [
+      -0.0,
+      0.70710576,
+      -0.0,
+      0.70710784
+    ],
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  {
+    "model": "SM_Gen_Prop_Pot_03.gltf",
+    "position": [
+      -61.252693,
+      0.0,
+      35.078896
+    ],
+    "rotation": [
+      -0.0,
+      -0.0,
+      -0.0,
+      1.0
+    ],
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  {
+    "model": "SM_Gen_Env_Ground_River_Grass_07.gltf",
+    "position": [
+      -253.49995,
+      0.0,
+      -69.39159
+    ],
+    "rotation": [
+      -0.0,
+      0.70710576,
+      -0.0,
+      0.7071078
+    ],
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  {
+    "model": "SM_Gen_Prop_Chain_03.gltf",
+    "position": [
+      -61.246147,
+      0.0,
+      23.450699
+    ],
+    "rotation": [
+      -0.0,
+      -0.0,
+      -0.0,
+      1.0
+    ],
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  {
+    "model": "SM_Gen_Prop_Food_Vegetable_02.gltf",
+    "position": [
+      -41.462383,
+      0.0,
+      44.42234
+    ],
+    "rotation": [
+      -0.0,
+      -0.0,
+      -0.0,
+      1.0
+    ],
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  {
+    "model": "SM_Gen_Env_Grass_05.gltf",
+    "position": [
+      -233.14383,
+      0.0,
+      35.112373
+    ],
+    "rotation": [
+      -0.0,
+      0.70710576,
+      -0.0,
+      0.70710784
+    ],
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  {
+    "model": "SM_Gen_Env_Road_Gravel_Corner_Large_01.gltf",
+    "position": [
+      -206.5,
+      0.0,
+      -89.891525
+    ],
+    "rotation": [
+      -0.0,
+      -0.0,
+      -0.0,
+      1.0
+    ],
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  {
+    "model": "SM_Gen_Env_Ground_Slope_Grass_01.gltf",
+    "position": [
+      -76.6,
+      0.0,
+      -103.0
+    ],
+    "rotation": [
+      -0.0,
+      -0.0,
+      -0.0,
+      1.0
+    ],
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  {
+    "model": "SM_Gen_Prop_Sack_02.gltf",
+    "position": [
+      -46.35072,
+      0.0,
+      42.71182
+    ],
+    "rotation": [
+      -0.0,
+      -0.0,
+      -0.0,
+      1.0
+    ],
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  {
+    "model": "SM_Gen_Env_Ground_Dirt_01.gltf",
+    "position": [
+      -264.0,
+      0.0,
+      -69.891525
+    ],
+    "rotation": [
+      -0.0,
+      0.70710576,
+      -0.0,
+      0.7071078
+    ],
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  {
+    "model": "SM_Gen_Wep_Axe_01.gltf",
+    "position": [
+      -29.95,
+      0.0,
+      42.360004
+    ],
+    "rotation": [
+      -0.0,
+      -0.0,
+      -0.0,
+      1.0
+    ],
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  {
+    "model": "SM_Bld_Base_Ceiling_01.gltf",
+    "position": [
+      -57.894836,
+      0.0,
+      72.64606
+    ],
+    "rotation": [
+      1.0,
+      -0.0,
+      -0.0,
+      2.9802318e-06
+    ],
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  {
+    "model": "SM_Gen_Prop_Statue_02.gltf",
+    "position": [
+      -55.580376,
+      0.0,
+      49.073196
+    ],
+    "rotation": [
+      -0.0,
+      -0.0,
+      -0.0,
+      1.0
+    ],
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  {
+    "model": "SM_Bld_Base_Pillar_Half_05.gltf",
+    "position": [
+      -61.56736,
+      0.0,
+      99.1073
+    ],
+    "rotation": [
+      -0.0,
+      -0.0,
+      -0.0,
+      1.0
+    ],
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  {
+    "model": "SM_Gen_Prop_Lever_02.gltf",
+    "position": [
+      -48.47,
+      0.0,
+      38.030876
+    ],
+    "rotation": [
+      -0.0,
+      -0.0,
+      -0.0,
+      1.0
+    ],
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  {
+    "model": "SM_Gen_Bld_Pipe_Straight_03.gltf",
+    "position": [
+      -41.43613,
+      0.0,
+      61.18606
+    ],
+    "rotation": [
+      -0.0,
+      -0.0,
+      -0.0,
+      1.0
+    ],
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  {
+    "model": "SM_Bld_Base_Pillar_Half_03.gltf",
+    "position": [
+      -61.51111,
+      0.0,
+      89.81826
+    ],
+    "rotation": [
+      -0.0,
+      -0.0,
+      -0.0,
+      1.0
+    ],
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  {
+    "model": "SM_Gen_Prop_Chain_Anchor_01.gltf",
+    "position": [
+      -53.54,
+      0.0,
+      38.047123
+    ],
+    "rotation": [
+      -0.0,
+      -0.0,
+      -0.0,
+      1.0
+    ],
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  {
+    "model": "SM_Gen_Prop_Papers_05.gltf",
+    "position": [
+      -60.303352,
+      0.0,
+      42.05184
+    ],
+    "rotation": [
+      -0.0,
+      -0.0,
+      -0.0,
+      1.0
+    ],
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  {
+    "model": "SM_Gen_Env_Bush_04.gltf",
+    "position": [
+      -224.85004,
+      0.0,
+      -1.3100395
+    ],
+    "rotation": [
+      -0.0,
+      0.70710576,
+      -0.0,
+      0.70710784
+    ],
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  {
+    "model": "SM_Gen_Prop_Barrel_Metal_02.gltf",
+    "position": [
+      -58.928093,
+      0.0,
+      32.748512
+    ],
+    "rotation": [
+      -0.0,
+      -0.0,
+      -0.0,
+      1.0
+    ],
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  {
+    "model": "SM_Gen_Env_Twig_04.gltf",
+    "position": [
+      -219.0843,
+      0.0,
+      4.1676216
+    ],
+    "rotation": [
+      -0.0,
+      0.70710576,
+      -0.0,
+      0.70710784
+    ],
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  {
+    "model": "SM_Gen_Env_Lilypads_01.gltf",
+    "position": [
+      -222.38454,
+      0.0,
+      4.126232
+    ],
+    "rotation": [
+      -0.0,
+      0.70710576,
+      -0.0,
+      0.70710784
+    ],
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  {
+    "model": "SM_Gen_Prop_Barrel_Metal_03.gltf",
+    "position": [
+      -50.901703,
+      0.0,
+      49.119164
+    ],
+    "rotation": [
+      -0.0,
+      -0.0,
+      -0.0,
+      1.0
+    ],
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  {
+    "model": "SM_Gen_Prop_Screen_01.gltf",
+    "position": [
+      -53.54,
+      0.0,
+      33.48359
+    ],
+    "rotation": [
+      -0.0,
+      -0.0,
+      -0.0,
+      1.0
+    ],
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  {
+    "model": "SM_Gen_Env_Lilypads_03.gltf",
+    "position": [
+      -202.53,
+      0.0,
+      -5.170001
+    ],
+    "rotation": [
+      -0.0,
+      0.70710576,
+      -0.0,
+      0.70710784
+    ],
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  {
+    "model": "SM_Gen_Env_Tree_02.gltf",
+    "position": [
+      -248.11,
+      0.0,
+      28.15
+    ],
+    "rotation": [
+      -0.0,
+      0.70710576,
+      -0.0,
+      0.70710784
+    ],
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  {
+    "model": "SM_Gen_Prop_Statue_04.gltf",
+    "position": [
+      -53.592003,
+      0.0,
+      28.768814
+    ],
+    "rotation": [
+      -0.0,
+      -0.0,
+      -0.0,
+      1.0
+    ],
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  {
+    "model": "SM_Gen_Env_Ivy_04.gltf",
+    "position": [
+      -233.08517,
+      0.0,
+      29.294289
+    ],
+    "rotation": [
+      -0.0,
+      0.70710576,
+      -0.0,
+      0.70710784
+    ],
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  {
+    "model": "SM_Gen_Env_Ground_River_Grass_03.gltf",
+    "position": [
+      -225.99994,
+      0.0,
+      -69.391525
+    ],
+    "rotation": [
+      -0.0,
+      0.70710576,
+      -0.0,
+      0.7071078
+    ],
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  {
+    "model": "SM_Gen_Env_Ground_River_Dirt_Large_02.gltf",
+    "position": [
+      -83.499985,
+      0.0,
+      -31.9
+    ],
+    "rotation": [
+      -0.0,
+      -0.0,
+      -0.0,
+      1.0
+    ],
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  {
+    "model": "SM_Gen_Env_Road_Gravel_Straight_01.gltf",
+    "position": [
+      -214.0,
+      0.0,
+      -18.200024
+    ],
+    "rotation": [
+      -0.0,
+      0.70710576,
+      -0.0,
+      0.7071078
+    ],
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  {
+    "model": "SM_Gen_Env_Mushroom_01.gltf",
+    "position": [
+      -222.4095,
+      0.0,
+      7.442486
+    ],
+    "rotation": [
+      -0.0,
+      0.70710576,
+      -0.0,
+      0.70710784
+    ],
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  {
+    "model": "SM_Gen_Prop_Cardboard_Box_02.gltf",
+    "position": [
+      -50.900444,
+      0.0,
+      51.444412
+    ],
+    "rotation": [
+      -0.0,
+      -0.0,
+      -0.0,
+      1.0
+    ],
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  {
+    "model": "SM_Gen_Prop_Light_Roof_01.gltf",
+    "position": [
+      -53.54,
+      0.0,
+      26.509811
+    ],
+    "rotation": [
+      -0.0,
+      -0.0,
+      -0.0,
+      1.0
+    ],
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  {
+    "model": "SM_Gen_Bld_Pipe_Valve_01.gltf",
+    "position": [
+      -29.446285,
+      0.0,
+      63.72396
+    ],
+    "rotation": [
+      -0.0,
+      -0.0,
+      -0.0,
+      1.0
+    ],
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  {
+    "model": "SM_Gen_Prop_Cardboard_Box_05.gltf",
+    "position": [
+      -41.392387,
+      0.0,
+      51.45314
+    ],
+    "rotation": [
+      -0.0,
+      -0.0,
+      -0.0,
+      1.0
+    ],
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  {
+    "model": "SM_Gen_Env_Rock_02.gltf",
+    "position": [
+      -251.79805,
+      0.0,
+      34.769985
+    ],
+    "rotation": [
+      -0.0,
+      0.70710576,
+      -0.0,
+      0.70710784
+    ],
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  {
+    "model": "SM_Gen_Env_Tree_Dead_01.gltf",
+    "position": [
+      -202.39996,
+      0.0,
+      -0.5
+    ],
+    "rotation": [
+      -0.0,
+      0.70710576,
+      -0.0,
+      0.70710784
+    ],
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  {
+    "model": "SM_Bld_Base_Stairs_02.gltf",
+    "position": [
+      -31.494839,
+      0.0,
+      72.779144
+    ],
+    "rotation": [
+      -0.0,
+      -0.0,
+      -0.0,
+      1.0
+    ],
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  {
+    "model": "SM_Gen_Prop_Rope_Knot_01.gltf",
+    "position": [
+      -43.786976,
+      0.0,
+      49.07152
+    ],
+    "rotation": [
+      -0.0,
+      -0.0,
+      -0.0,
+      1.0
+    ],
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  {
+    "model": "SM_Bld_Base_45_Floor_01.gltf",
+    "position": [
+      -75.31986,
+      0.0,
+      84.51108
+    ],
+    "rotation": [
+      -0.0,
+      -0.0,
+      -0.0,
+      1.0
+    ],
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  {
+    "model": "SM_Gen_Env_Fern_03.gltf",
+    "position": [
+      -239.79965,
+      0.0,
+      25.867943
+    ],
+    "rotation": [
+      -0.0,
+      0.70710576,
+      -0.0,
+      0.70710784
+    ],
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  {
+    "model": "SM_Gen_Env_Ground_River_Dirt_Large_03.gltf",
+    "position": [
+      -51.6,
+      0.0,
+      -68.7
+    ],
+    "rotation": [
+      -0.0,
+      -0.0,
+      -0.0,
+      1.0
+    ],
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  {
+    "model": "SM_Gen_Prop_Rope_03.gltf",
+    "position": [
+      -58.928093,
+      0.0,
+      28.099327
+    ],
+    "rotation": [
+      -0.0,
+      -0.0,
+      -0.0,
+      1.0
+    ],
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  {
+    "model": "SM_Gen_Env_Ground_River_Dirt_01.gltf",
+    "position": [
+      -204.92023,
+      0.0,
+      -55.699986
+    ],
+    "rotation": [
+      -0.0,
+      0.70710576,
+      -0.0,
+      0.7071078
+    ],
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  {
+    "model": "SM_Gen_Env_Ivy_Draped_02.gltf",
+    "position": [
+      -222.76501,
+      0.0,
+      15.748367
+    ],
+    "rotation": [
+      -0.0,
+      0.70710576,
+      -0.0,
+      0.70710784
+    ],
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  {
+    "model": "SM_Gen_Prop_Plinth_01.gltf",
+    "position": [
+      -51.2154,
+      0.0,
+      28.834404
+    ],
+    "rotation": [
+      -0.0,
+      -0.0,
+      -0.0,
+      1.0
+    ],
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  {
+    "model": "SM_Gen_Prop_Food_Vegetable_06.gltf",
+    "position": [
+      -46.10729,
+      0.0,
+      49.040813
+    ],
+    "rotation": [
+      -0.0,
+      -0.0,
+      -0.0,
+      1.0
+    ],
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  {
+    "model": "SM_Gen_Env_Tree_Pine_01.gltf",
+    "position": [
+      -209.2,
+      0.0,
+      25.079998
+    ],
+    "rotation": [
+      -0.0,
+      0.70710576,
+      -0.0,
+      0.70710784
+    ],
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  {
+    "model": "SM_Gen_Prop_Plank_02.gltf",
+    "position": [
+      -60.198807,
+      0.0,
+      39.821457
+    ],
+    "rotation": [
+      -0.0,
+      -0.0,
+      -0.0,
+      1.0
+    ],
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  {
+    "model": "SM_Gen_Prop_Light_Roof_02.gltf",
+    "position": [
+      -51.214996,
+      0.0,
+      26.513763
+    ],
+    "rotation": [
+      -0.0,
+      -0.0,
+      -0.0,
+      1.0
+    ],
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  {
+    "model": "SM_Gen_Env_Ground_Slope_Grass_02.gltf",
+    "position": [
+      -24.2,
+      0.0,
+      -67.3
+    ],
+    "rotation": [
+      -0.0,
+      -0.0,
+      -0.0,
+      1.0
+    ],
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  {
+    "model": "SM_Gen_Env_Bush_01.gltf",
+    "position": [
+      -217.35004,
+      0.0,
+      -6.3099785
+    ],
+    "rotation": [
+      -0.0,
+      0.70710576,
+      -0.0,
+      0.70710784
+    ],
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  {
+    "model": "SM_Gen_Env_Ground_River_Dirt_Large_01.gltf",
+    "position": [
+      -84.29999,
+      0.0,
+      2.7
+    ],
+    "rotation": [
+      -0.0,
+      -0.0,
+      -0.0,
+      1.0
+    ],
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  {
+    "model": "SM_Gen_Bld_Background_02.gltf",
+    "position": [
+      35.24,
+      0.0,
+      153.4
+    ],
+    "rotation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  {
+    "model": "SM_Gen_Prop_Chest_01.gltf",
+    "position": [
+      -58.930656,
+      0.0,
+      30.42392
+    ],
+    "rotation": [
+      -0.0,
+      -0.0,
+      -0.0,
+      1.0
+    ],
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  {
+    "model": "SM_Gen_Prop_Food_Meat_04.gltf",
+    "position": [
+      -60.198807,
+      0.0,
+      51.444412
+    ],
+    "rotation": [
+      -0.0,
+      -0.0,
+      -0.0,
+      1.0
+    ],
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  {
+    "model": "SM_Gen_Env_Bush_Part_05.gltf",
+    "position": [
+      -220.82002,
+      0.0,
+      -6.3100166
+    ],
+    "rotation": [
+      -0.0,
+      0.70710576,
+      -0.0,
+      0.70710784
+    ],
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  {
+    "model": "SM_Gen_Prop_Aircon_Roof_03.gltf",
+    "position": [
+      -55.28025,
+      0.0,
+      42.14605
+    ],
+    "rotation": [
+      -0.0,
+      -0.0,
+      -0.0,
+      1.0
+    ],
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  {
+    "model": "SM_Gen_Prop_Aircon_Roof_02.gltf",
+    "position": [
+      -53.420494,
+      0.0,
+      42.14605
+    ],
+    "rotation": [
+      -0.0,
+      -0.0,
+      -0.0,
+      1.0
+    ],
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  {
+    "model": "SM_Gen_Env_Ivy_01.gltf",
+    "position": [
+      -256.56958,
+      0.0,
+      39.501003
+    ],
+    "rotation": [
+      -0.0,
+      0.70710576,
+      -0.0,
+      0.70710784
+    ],
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  {
+    "model": "SM_Gen_Prop_Barrel_Wood_01.gltf",
+    "position": [
+      -51.2154,
+      0.0,
+      33.48359
+    ],
+    "rotation": [
+      -0.0,
+      -0.0,
+      -0.0,
+      1.0
+    ],
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  {
+    "model": "SM_Gen_Prop_Food_Meat_05.gltf",
+    "position": [
+      -51.172676,
+      0.0,
+      35.80485
+    ],
+    "rotation": [
+      -0.0,
+      -0.0,
+      -0.0,
+      1.0
+    ],
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  {
+    "model": "SM_Gen_Env_Root_01.gltf",
+    "position": [
+      -216.03,
+      0.0,
+      38.78001
+    ],
+    "rotation": [
+      -0.0,
+      0.70710576,
+      -0.0,
+      0.70710784
+    ],
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  {
+    "model": "SM_Gen_Env_Ground_River_Dirt_03.gltf",
+    "position": [
+      -214.92023,
+      0.0,
+      -55.70001
+    ],
+    "rotation": [
+      -0.0,
+      0.70710576,
+      -0.0,
+      0.7071078
+    ],
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  {
+    "model": "SM_Gen_Bld_Background_01.gltf",
+    "position": [
+      77.1,
+      0.0,
+      137.1
+    ],
+    "rotation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  {
+    "model": "SM_Gen_Prop_Food_Meat_06.gltf",
+    "position": [
+      -57.874214,
+      0.0,
+      51.444412
+    ],
+    "rotation": [
+      -0.0,
+      -0.0,
+      -0.0,
+      1.0
+    ],
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  {
+    "model": "SM_Gen_Env_Ground_Dirt_04.gltf",
+    "position": [
+      -224.0,
+      0.0,
+      -28.200016
+    ],
+    "rotation": [
+      -0.0,
+      0.70710576,
+      -0.0,
+      0.7071078
+    ],
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  {
+    "model": "SM_Gen_Env_Rock_01.gltf",
+    "position": [
+      -247.29999,
+      0.0,
+      -80.7
+    ],
+    "rotation": [
+      -0.0,
+      0.70710576,
+      -0.0,
+      0.7071078
+    ],
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  {
+    "model": "SM_Gen_Env_Mountain_02.gltf",
+    "position": [
+      -137.5,
+      0.0,
+      -120.0
+    ],
+    "rotation": [
+      -0.0,
+      -0.6346045,
+      -0.0,
+      0.7728371
+    ],
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  {
+    "model": "SM_Gen_Env_Grass_Tall_01.gltf",
+    "position": [
+      -226.28098,
+      0.0,
+      15.749409
+    ],
+    "rotation": [
+      -0.0,
+      0.70710576,
+      -0.0,
+      0.70710784
+    ],
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  {
+    "model": "SM_Gen_Env_Road_Gravel_Straight_03.gltf",
+    "position": [
+      -191.80002,
+      0.0,
+      -18.199951
+    ],
+    "rotation": [
+      -0.0,
+      0.70710576,
+      -0.0,
+      0.7071078
+    ],
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  {
+    "model": "SM_Gen_Env_Grass_07.gltf",
+    "position": [
+      -208.22,
+      0.0,
+      34.25
+    ],
+    "rotation": [
+      -0.0,
+      0.70710576,
+      -0.0,
+      0.70710784
+    ],
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  {
+    "model": "SM_Gen_Env_Ground_River_Grass_Large_03.gltf",
+    "position": [
+      -84.7,
+      0.0,
+      -67.2
+    ],
+    "rotation": [
+      -0.0,
+      -0.0,
+      -0.0,
+      1.0
+    ],
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  {
+    "model": "SM_Gen_Env_Rock_04.gltf",
+    "position": [
+      -227.29999,
+      0.0,
+      -79.69995
+    ],
+    "rotation": [
+      -0.0,
+      0.70710576,
+      -0.0,
+      0.7071078
+    ],
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  {
+    "model": "SM_Gen_Prop_Shelf_03.gltf",
+    "position": [
+      -57.88572,
+      0.0,
+      39.82125
+    ],
+    "rotation": [
+      -0.0,
+      -0.0,
+      -0.0,
+      1.0
+    ],
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  {
+    "model": "SM_Gen_Env_Log_01.gltf",
+    "position": [
+      -216.52997,
+      0.0,
+      22.689999
+    ],
+    "rotation": [
+      -0.0,
+      0.70710576,
+      -0.0,
+      0.70710784
+    ],
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  {
+    "model": "SM_Gen_Env_Grass_04.gltf",
+    "position": [
+      -229.66629,
+      0.0,
+      19.138409
+    ],
+    "rotation": [
+      -0.0,
+      0.70710576,
+      -0.0,
+      0.70710784
+    ],
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  {
+    "model": "SM_Gen_Env_Mushroom_03.gltf",
+    "position": [
+      -220.73927,
+      0.0,
+      5.8034782
+    ],
+    "rotation": [
+      -0.0,
+      0.70710576,
+      -0.0,
+      0.70710784
+    ],
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  {
+    "model": "SM_Bld_Base_45_Floor_Combined_01.gltf",
+    "position": [
+      -75.31986,
+      0.0,
+      78.011
+    ],
+    "rotation": [
+      -0.0,
+      -0.0,
+      -0.0,
+      1.0
+    ],
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  {
+    "model": "SM_Gen_Prop_Crate_02.gltf",
+    "position": [
+      -61.256065,
+      0.0,
+      30.42392
+    ],
+    "rotation": [
+      -0.0,
+      -0.0,
+      -0.0,
+      1.0
+    ],
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  {
+    "model": "SM_Gen_Env_Background_Mountain_02.gltf",
+    "position": [
+      -174.4,
+      0.0,
+      -175.0
+    ],
+    "rotation": [
+      -0.0,
+      0.058494035,
+      -0.0,
+      0.9982878
+    ],
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  {
+    "model": "SM_Bld_Base_Wall_Angle_02.gltf",
+    "position": [
+      -31.134838,
+      0.0,
+      83.58605
+    ],
+    "rotation": [
+      -0.0,
+      -0.0,
+      -0.0,
+      1.0
+    ],
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  {
+    "model": "SM_Gen_Env_Bush_02.gltf",
+    "position": [
+      -217.35007,
+      0.0,
+      -1.3099937
+    ],
+    "rotation": [
+      -0.0,
+      0.70710576,
+      -0.0,
+      0.70710784
+    ],
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  {
+    "model": "SM_Gen_Env_Ground_River_Dirt_04.gltf",
+    "position": [
+      -190.78,
+      0.0,
+      -70.79153
+    ],
+    "rotation": [
+      -0.0,
+      -0.0,
+      -0.0,
+      1.0
+    ],
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  {
+    "model": "SM_Gen_Env_Leaves_02.gltf",
+    "position": [
+      -247.09737,
+      0.0,
+      34.876873
+    ],
+    "rotation": [
+      -0.0,
+      0.70710576,
+      -0.0,
+      0.70710784
+    ],
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  {
+    "model": "SM_Bld_Base_Pillar_Half_01.gltf",
+    "position": [
+      -66.134865,
+      0.0,
+      89.91606
+    ],
+    "rotation": [
+      -0.0,
+      -0.0,
+      -0.0,
+      1.0
+    ],
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  {
+    "model": "SM_Gen_Prop_Shelf_01.gltf",
+    "position": [
+      -50.901897,
+      0.0,
+      41.927322
+    ],
+    "rotation": [
+      -0.0,
+      -0.0,
+      -0.0,
+      1.0
+    ],
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  {
+    "model": "SM_Gen_Env_Bush_Part_02.gltf",
+    "position": [
+      -204.97006,
+      0.0,
+      25.11996
+    ],
+    "rotation": [
+      -0.0,
+      0.70710576,
+      -0.0,
+      0.70710784
+    ],
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  {
+    "model": "SM_Gen_Env_Ivy_09.gltf",
+    "position": [
+      -237.93793,
+      0.0,
+      35.03465
+    ],
+    "rotation": [
+      -0.0,
+      0.70710576,
+      -0.0,
+      0.70710784
+    ],
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  {
+    "model": "SM_Gen_Bld_Background_03.gltf",
+    "position": [
+      35.8,
+      0.0,
+      171.3
+    ],
+    "rotation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  {
+    "model": "SM_Gen_Bld_Background_11.gltf",
+    "position": [
+      72.6,
+      0.0,
+      112.7
+    ],
+    "rotation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  {
+    "model": "SM_Gen_Bld_Background_09.gltf",
+    "position": [
+      108.91,
+      0.0,
+      112.7
+    ],
+    "rotation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  {
+    "model": "SM_Gen_Bld_Background_10.gltf",
+    "position": [
+      86.01,
+      0.0,
+      112.7
+    ],
+    "rotation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  {
+    "model": "SM_Gen_Prop_Hook_01.gltf",
+    "position": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "rotation": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ]
+  }
+]

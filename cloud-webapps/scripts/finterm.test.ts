@@ -32,6 +32,13 @@ describe('gen-finterm (pure)', () => {
     expect(JSON.stringify(o)).not.toContain('prose');
     expect(o.app_id).toBe('the-app');
   });
+  it('#1478 a pm_table entry needs its table in data/pm.json and is emitted with it', () => {
+    const a = clone(); a.build.ui.stacks.pm = [{ kind: 'pm_table', title: 'Vol', subtitle: 's', page: 'pm-vol', table: 'vol' }];
+    expect(() => buildFinterm(a)).toThrow(/no table vol/);
+    const o = buildFinterm({ ...a, pm: { _doc: 'prose', vol: { columns: ['A'] } } });
+    expect(o.stacks.pm[0]).toMatchObject({ kind: 'pm_table', page: 'pm-vol', table: 'vol' });
+    expect(o.pm).toEqual({ vol: { columns: ['A'] } });
+  });
   it('embeds exactly the declared data files a panel reads through an asset: source, and fails loudly on a missing one (#1351)', () => {
     const a = clone();
     a.sources.sources.push({ id: 'cb', name: 'CB', priority: 10, endpoint: 'asset:', auth: { type: 'none' }, connector: 'declared_events', feeds: [{ tab: 'fi', entries: ['Yield Curves'] }] });
@@ -52,6 +59,20 @@ describe('gen-finterm (pure)', () => {
     a = clone(); a.dashboards.dashboards.push({ id: 'extra', entry: 'E', tab: 'eq', panels: [] }); expect(() => buildFinterm(a)).toThrow(/maps 1/);
     a = clone(); a.dashboards.dashboards[0].panels[0].source = 'ghost'; expect(() => buildFinterm(a)).toThrow(/unknown source ghost/);
     a = clone(); a.services.services = []; expect(() => buildFinterm(a)).toThrow(/not declared in cloudy-u-containers/);
+  });
+  it('fails when a PM portfolio has no market, no tier, or a tier its market and equity share do not take (#1462)', () => {
+    const a = clone();
+    a.dashboards.pm_risk_tabs = { tabs: [{ id: 'all', label: 'All' }, { id: 'dm_low', label: 'DM Low', header: 'DM Low risk', market: 'DM', equity_max: 30 },
+      { id: 'dm_mid', label: 'DM Mid', header: 'DM Middle risk', market: 'DM', equity_max: 100 }, { id: 'em', label: 'EM', header: 'EM risk', market: 'EM', equity_max: 100 }] };
+    a.dashboards.dashboards.push({ id: 'p1', entry: 'P1', tab: 'pm', market: 'DM', equity_pct: 40, em_pct: 0, risk: 'dm_mid', panels: [] });
+    a.build.ui.stacks.pm.push({ kind: 'dashboard', title: 'P1', subtitle: 's', dashboard: 'p1' });
+    const ok = buildFinterm(a);
+    expect(ok.risk_tabs.map((t: { id: string }) => t.id)).toEqual(['all', 'dm_low', 'dm_mid', 'em']);
+    const bad = (f: (d: Record<string, unknown>) => void, re: RegExp) => { const b = JSON.parse(JSON.stringify(a)); f(b.dashboards.dashboards[1]); expect(() => buildFinterm(b)).toThrow(re); };
+    bad((d) => { delete d.market; }, /no market/);
+    bad((d) => { delete d.risk; }, /no risk tier/);
+    bad((d) => { d.risk = 'dm_low'; }, /does not follow its market DM and equity share 40/);
+    bad((d) => { d.market = 'EM'; }, /does not follow its market EM/);
   });
   it('slug: lower-case, underscores to dashes', () => { expect(slugOf('mp_70_30_DM_EM')).toBe('mp-70-30-dm-em'); });
 });
@@ -79,7 +100,7 @@ describe('FinTerm nav: Homepages, one row, Market Monitor redirect (#1399)', () 
   });
   it('the committed declarations: every tab opens on Home listing all its dashboards; Market Monitor is gone and redirected', () => {
     for (const tab of fin.tabs) {
-      const dash = fin.stacks[tab].filter((e: { kind: string }) => e.kind === 'dashboard').map((e: { dashboard: string }) => slugOf(e.dashboard));
+      const dash = fin.stacks[tab].filter((e: { kind: string; detail?: boolean }) => e.kind === 'pm_table' || (e.kind === 'dashboard' && !e.detail)).map((e: { dashboard: string; page?: string }) => e.page ?? slugOf(e.dashboard));
       expect(fin.homes[tab].map((c: { slug: string }) => c.slug), tab).toEqual(dash);
       for (const c of fin.homes[tab]) expect(c.icon && c.title && c.subtitle, `${tab}/${c.slug}`).toBeTruthy();
     }
@@ -114,10 +135,10 @@ describe('gen-finterm --check (the CI drift guard)', () => {
 });
 
 describe('the committed web FinTerm declarations', () => {
-  it('37 dashboards: FI 8, EQ 7, EX 4, NW 3, PM 15 (the APK entries; #1399 FI Market Monitor removed; #1447 PM A1, A2, B1, C1, D1, D0), each with at least one panel', () => {
+  it('36 dashboards: FI 8, EQ 7, EX 4, NW 3, PM 14 (the APK entries; #1399 FI Market Monitor removed; #1447 PM A1, B1, C1, D1, D0; #1478 A2 dropped), each with at least one panel', () => {
     const by = (t: string) => fin.dashboards.filter((d: { tab: string }) => d.tab === t).length;
-    expect([by('fi'), by('eq'), by('ex'), by('nw'), by('pm')]).toEqual([8, 7, 4, 3, 15]);
-    expect(fin.dashboards).toHaveLength(37);
+    expect([by('fi'), by('eq'), by('ex'), by('nw'), by('pm')]).toEqual([8, 7, 4, 3, 14]);
+    expect(fin.dashboards).toHaveLength(36);
     for (const d of fin.dashboards) expect(d.panels.length, d.id).toBeGreaterThan(0);
   });
   it('every panel is a live fetch, a dashed placeholder or a static allocation; every source named exists', () => {

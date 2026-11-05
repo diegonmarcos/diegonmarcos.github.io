@@ -1423,12 +1423,6 @@
                 "target": "extapp:cloud-media-center"
               },
               {
-                "id": "news",
-                "label": "News",
-                "icon": "ic_rss",
-                "target": "extapp:cloud-news"
-              },
-              {
                 "id": "data-apps-sep-3",
                 "label": "|",
                 "separator": true
@@ -1511,6 +1505,81 @@
             ]
           },
           {
+            "title": "Weby Services",
+            "tiles": [
+              {
+                "id": "search",
+                "label": "Search",
+                "icon": "ic_cloud_search",
+                "tint": false,
+                "target": "extapp:cloud-search"
+              },
+              {
+                "id": "weby-sep-1",
+                "label": "|",
+                "separator": true
+              },
+              {
+                "id": "news",
+                "label": "News",
+                "icon": "ic_rss",
+                "target": "extapp:cloud-news"
+              },
+              {
+                "id": "events",
+                "label": "Events",
+                "icon": "ic_p_cal_month",
+                "coming_soon": true
+              },
+              {
+                "id": "weby-sep-2",
+                "label": "|",
+                "separator": true
+              },
+              {
+                "id": "shopping",
+                "label": "Shopping",
+                "icon": "ic_shopping",
+                "target": "extapp:cloud-shopping"
+              },
+              {
+                "id": "mobility",
+                "label": "Mobility & Travel",
+                "icon": "ic_ctl_airplane",
+                "coming_soon": true
+              },
+              {
+                "id": "jobs",
+                "label": "Jobs & Business",
+                "icon": "ic_suite",
+                "coming_soon": true
+              },
+              {
+                "id": "real-estate",
+                "label": "Real Estate",
+                "icon": "ic_map_pin",
+                "coming_soon": true
+              },
+              {
+                "id": "money",
+                "label": "Money",
+                "icon": "ic_storefront",
+                "coming_soon": true
+              },
+              {
+                "id": "weby-sep-3",
+                "label": "|",
+                "separator": true
+              },
+              {
+                "id": "kg-store",
+                "label": "KG Store",
+                "icon": "ic_kgs",
+                "target": "extapp:cloud-kg-store"
+              }
+            ]
+          },
+          {
             "title": "AGI",
             "tiles": [
               {
@@ -1531,28 +1600,10 @@
                 "separator": true
               },
               {
-                "id": "search",
-                "label": "Search",
-                "icon": "ic_cloud_search",
-                "tint": false,
-                "target": "extapp:cloud-search"
-              },
-              {
                 "id": "code",
                 "label": "Code",
                 "icon": "ic_ide",
                 "target": "extapp:cloud-code"
-              },
-              {
-                "id": "agi-sep-2",
-                "label": "|",
-                "separator": true
-              },
-              {
-                "id": "kg-store",
-                "label": "KG Store",
-                "icon": "ic_kgs",
-                "target": "extapp:cloud-kg-store"
               },
               {
                 "id": "tools-small-llms",
@@ -1561,7 +1612,7 @@
                 "target": "extapp:cloud-tools-small-llms"
               },
               {
-                "id": "agi-sep-3",
+                "id": "agi-sep-2",
                 "label": "|",
                 "separator": true
               },
@@ -1734,6 +1785,13 @@
             "id": "apps",
             "label": "Apps",
             "icon": "ic_p_dialer"
+          },
+          {
+            "id": "webapps",
+            "label": "WebApps",
+            "icon": "ic_world",
+            "webapps_base": "https://diegonmarcos.github.io/cloud-webapps",
+            "webapps_path": "phone/webapps/?embed=1"
           },
           {
             "id": "configs",
@@ -4698,6 +4756,12 @@
         "install_package": "com.diegonmarcos.cloudagenda"
       },
       {
+        "id": "cloud-shopping",
+        "folder": "svc_shopping",
+        "hub_package": "com.diegonmarcos.cloudshopping",
+        "install_package": "com.diegonmarcos.cloudshopping"
+      },
+      {
         "id": "cloud-news",
         "folder": "hlth_news",
         "hub_package": "com.diegonmarcos.cloudnews",
@@ -5508,13 +5572,16 @@
       "icon": "ic_calendar",
       "group": "Data Apps",
       "category": "android",
-      "description": "Diego's Cloud Tasks (formerly Cloud Agenda, before that Cloud Calendar) — standalone Android task, calendar and event app. The applicationId stays com.diegonmarcos.cloudagenda so installed phones update in place. Jetpack Compose chrome (CloudKitTheme light/dark/system, libs:bottomnav island + page tabs, a page-managed hamburger drawer, AI and Profile buttons in the top row, libs:ai chat with persistent history) over a local tasks database (projects > lists > tasks > subtasks, statuses, tags, links to Cloud Mail / Cloud Drive items) and a mail agent that proposes tasks for review. The Events, Calendar and Invites pages are still the legacy tasks.html WebView (public-ICS feed sync, CalDAV against a self-hosted Radicale). Build via Nix devShell, one APK out.",
+      "description": "Diego's Cloud Tasks (formerly Cloud Agenda, before that Cloud Calendar) — standalone Android task, calendar and event app. The applicationId stays com.diegonmarcos.cloudagenda so installed phones update in place. Jetpack Compose chrome (CloudKitTheme light/dark/system, libs:bottomnav island + page tabs, a page-managed hamburger drawer, AI and Profile buttons in the top row, libs:ai chat with persistent history) over a local tasks database (projects > lists > tasks > subtasks, statuses, tags, links to Cloud Mail / Cloud Drive items) and a mail agent that proposes tasks for review. The Feeds page is still the legacy tasks.html WebView (public-ICS feed sync, CalDAV against a self-hosted Radicale). Build via Nix devShell, one APK out.",
       "kind": "app",
       "wasm": null,
       "default_section": "tasks",
       "bottom_nav": [
+        "inboxes",
+        "backlogs",
         "tasks",
-        "calendar"
+        "library",
+        "projects"
       ],
       "top_bar": {
         "drawer": true,
@@ -5530,38 +5597,87 @@
       ],
       "sections": [
         {
+          "id": "inboxes",
+          "label": "Inboxes",
+          "icon": "inbox",
+          "background": "theme",
+          "pages": [
+            {
+              "id": "inboxes",
+              "label": "Inboxes",
+              "icon": "inbox"
+            }
+          ]
+        },
+        {
+          "id": "backlogs",
+          "label": "Backlogs",
+          "icon": "bookmark",
+          "background": "theme",
+          "pages": [
+            {
+              "id": "backlogs",
+              "label": "Backlogs",
+              "icon": "bookmark"
+            }
+          ]
+        },
+        {
           "id": "tasks",
           "label": "Tasks",
           "icon": "tasks",
           "background": "theme",
           "pages": [
             {
-              "id": "tasks",
-              "label": "Tasks",
-              "icon": "checklist"
-            }
-          ]
-        },
-        {
-          "id": "calendar",
-          "label": "Calendar",
-          "icon": "calendar",
-          "background": "theme",
-          "pages": [
-            {
-              "id": "events",
-              "label": "Events",
-              "icon": "event"
-            },
-            {
               "id": "calendar",
               "label": "Calendar",
               "icon": "calendar_month"
             },
             {
-              "id": "invites",
-              "label": "Invites",
-              "icon": "mark_email_unread"
+              "id": "list",
+              "label": "List",
+              "icon": "checklist"
+            },
+            {
+              "id": "gantt",
+              "label": "Gantt",
+              "icon": "timeline"
+            },
+            {
+              "id": "kanban",
+              "label": "Kanban",
+              "icon": "table_chart"
+            },
+            {
+              "id": "mindmap",
+              "label": "Mindmap",
+              "icon": "account_tree"
+            }
+          ]
+        },
+        {
+          "id": "library",
+          "label": "Library",
+          "icon": "folder_open",
+          "background": "theme",
+          "pages": [
+            {
+              "id": "library",
+              "label": "Library",
+              "icon": "folder_open"
+            }
+          ]
+        },
+        {
+          "id": "projects",
+          "label": "Projects",
+          "icon": "folder",
+          "background": "theme",
+          "pages": [
+            {
+              "id": "projects",
+              "label": "Projects",
+              "icon": "folder"
             }
           ]
         },
@@ -5571,6 +5687,21 @@
           "icon": "settings",
           "background": "theme",
           "pages": [
+            {
+              "id": "general",
+              "label": "General",
+              "icon": "settings"
+            },
+            {
+              "id": "perms",
+              "label": "Perms",
+              "icon": "security"
+            },
+            {
+              "id": "about",
+              "label": "About",
+              "icon": "info"
+            },
             {
               "id": "appearance",
               "label": "Appearance",
@@ -5583,7 +5714,7 @@
             },
             {
               "id": "inbox",
-              "label": "Inbox",
+              "label": "Proposals",
               "icon": "inbox"
             },
             {
@@ -5596,13 +5727,148 @@
       ]
     },
     {
+      "id": "cloud-shopping",
+      "dir": "ac_cloud-shopping",
+      "package": "com.diegonmarcos.cloudshopping",
+      "name": "Cloud Shopping",
+      "label": "Shopping",
+      "icon": "ic_shopping",
+      "group": "Weby Services",
+      "category": "android",
+      "description": "Cloud Shopping (#1473): a deals and listings browser over mock data. Navigation is ONE collapsed left side menu (libs:ui-nav-bars vertical_side_menu: the rail on a phone, the full menu on a wide screen) in five groups, Feed (Home: the deals of every page), Things (Groceries, Electronics, Clothing), Services (Transport, Hotels), Assets (Real Estate, Business, Jobs) and Entertainment (Events); the bottom nav holds exactly one item, a search icon with no label, which searches every page. Every page has its own top filter tabs and its rows, both declared in app/src/main/assets/shop/shop.json (mock data, nothing is fetched and no shop is contacted); a row is the ui-kit KitStoreRow (the Cloud Store's dense row) in the shared type ramp. Configs are the fleet's General | Perms | About. Offline, declares no network permission of its own.",
+      "kind": "app",
+      "wasm": null,
+      "default_section": "shop",
+      "bottom_nav": [
+        "search"
+      ],
+      "top_bar": null,
+      "nav_ui": null,
+      "configs_ui": [
+        "nav_ui"
+      ],
+      "sections": [
+        {
+          "id": "shop",
+          "label": "Shopping",
+          "icon": "inventory_2",
+          "nav_mode": "vertical_side_menu",
+          "pages": [
+            {
+              "id": "home",
+              "label": "Home",
+              "icon": "home"
+            },
+            {
+              "id": "groceries",
+              "label": "Groceries",
+              "icon": "restaurant"
+            },
+            {
+              "id": "electronics",
+              "label": "Electronics",
+              "icon": "devices"
+            },
+            {
+              "id": "clothing",
+              "label": "Clothing",
+              "icon": "label"
+            },
+            {
+              "id": "transport",
+              "label": "Transport",
+              "icon": "route"
+            },
+            {
+              "id": "hotels",
+              "label": "Hotels",
+              "icon": "luggage"
+            },
+            {
+              "id": "real_estate",
+              "label": "Real Estate",
+              "icon": "place"
+            },
+            {
+              "id": "business",
+              "label": "Business",
+              "icon": "payments"
+            },
+            {
+              "id": "jobs",
+              "label": "Jobs",
+              "icon": "work"
+            },
+            {
+              "id": "events",
+              "label": "Events",
+              "icon": "event"
+            }
+          ],
+          "groups": [
+            {
+              "id": "feed",
+              "label": "Feed",
+              "icon": "rss_feed",
+              "pages": [
+                "home"
+              ]
+            },
+            {
+              "id": "things",
+              "label": "Things",
+              "icon": "inventory_2",
+              "pages": [
+                "groceries",
+                "electronics",
+                "clothing"
+              ]
+            },
+            {
+              "id": "services",
+              "label": "Services",
+              "icon": "miscellaneous_services",
+              "pages": [
+                "transport",
+                "hotels"
+              ]
+            },
+            {
+              "id": "assets",
+              "label": "Assets",
+              "icon": "account_balance",
+              "pages": [
+                "real_estate",
+                "business",
+                "jobs"
+              ]
+            },
+            {
+              "id": "entertainment",
+              "label": "Entertainment",
+              "icon": "emoji_events",
+              "pages": [
+                "events"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "search",
+          "label": "Search",
+          "icon": "search",
+          "pages": []
+        }
+      ]
+    },
+    {
       "id": "cloud-news",
       "dir": "ac_cloud-news",
       "package": "com.diegonmarcos.cloudnews",
       "name": "Cloud News",
       "label": "News",
       "icon": "ic_rss",
-      "group": "Data Apps",
+      "group": "Weby Services",
       "category": "android",
       "description": "Diego's Cloud News — standalone Android news app. WebView UI over GDELT-backed topic feeds (economy, technology, geopolitics, climate, finance, AI, energy, health): per-topic article lists, tone/sentiment timelines, and rolling topic summaries against a self-hosted GDELT proxy. Build via Nix devShell, one APK out.",
       "kind": "app",
@@ -5647,12 +5913,12 @@
         },
         {
           "id": "feed",
-          "label": "Feed",
+          "label": "News",
           "icon": "rss_feed",
           "pages": [
             {
               "id": "feed",
-              "label": "Feed",
+              "label": "News",
               "icon": "rss_feed"
             }
           ]
@@ -5675,6 +5941,26 @@
           "icon": "settings",
           "pages": [
             {
+              "id": "media",
+              "label": "Media",
+              "icon": "play_circle"
+            },
+            {
+              "id": "events",
+              "label": "Events",
+              "icon": "event"
+            },
+            {
+              "id": "news",
+              "label": "News",
+              "icon": "rss_feed"
+            },
+            {
+              "id": "apify",
+              "label": "Apify",
+              "icon": "cloud"
+            },
+            {
               "id": "general",
               "label": "General",
               "icon": "settings"
@@ -5688,11 +5974,6 @@
               "id": "about",
               "label": "About",
               "icon": "info"
-            },
-            {
-              "id": "news",
-              "label": "News",
-              "icon": "rss_feed"
             }
           ]
         }
@@ -6738,9 +7019,19 @@
               "icon": "folder_open"
             },
             {
-              "id": "scrap_tools",
-              "label": "Scrap Tools",
+              "id": "apify",
+              "label": "Apify",
               "icon": "build"
+            },
+            {
+              "id": "cloudflare",
+              "label": "Cloudflare",
+              "icon": "public"
+            },
+            {
+              "id": "self_hosted",
+              "label": "SelfHosted",
+              "icon": "music_note"
             }
           ]
         },
@@ -6946,6 +7237,15 @@
               ]
             },
             {
+              "id": "apis",
+              "label": "APIs",
+              "icon": "ic_robot",
+              "pages": [
+                "api_ai",
+                "api_scraper"
+              ]
+            },
+            {
               "id": "personal",
               "label": "Personal",
               "icon": "ic_wg",
@@ -6992,6 +7292,16 @@
               "icon": "ic_p_c3_stack"
             },
             {
+              "id": "api_ai",
+              "label": "AI",
+              "icon": "ic_robot"
+            },
+            {
+              "id": "api_scraper",
+              "label": "Scraper",
+              "icon": "ic_robot"
+            },
+            {
               "id": "desktop",
               "label": "Desktop",
               "icon": "ic_wg"
@@ -7024,19 +7334,123 @@
           "icon": "ic_p_c3_stack",
           "pages": [
             {
-              "id": "topology",
-              "label": "Topology",
-              "icon": "ic_p_c3_stack"
+              "id": "all",
+              "label": "All",
+              "icon": "ic_p_c3_stack",
+              "pages": [
+                {
+                  "id": "all_topology",
+                  "label": "Topology",
+                  "icon": "ic_p_c3_stack"
+                },
+                {
+                  "id": "all_table",
+                  "label": "Table",
+                  "icon": "ic_link_tile"
+                }
+              ]
             },
             {
-              "id": "table",
-              "label": "Table",
-              "icon": "ic_link_tile"
+              "id": "cloudy",
+              "label": "Cloudy",
+              "icon": "ic_p_c3_stack",
+              "pages": [
+                {
+                  "id": "cloudy_topology",
+                  "label": "Topology",
+                  "icon": "ic_p_c3_stack"
+                },
+                {
+                  "id": "cloudy_table",
+                  "label": "Table",
+                  "icon": "ic_link_tile"
+                }
+              ]
             },
             {
-              "id": "agents",
-              "label": "Agents",
-              "icon": "ic_robot"
+              "id": "cloud_me",
+              "label": "Cloud-me",
+              "icon": "ic_p_c3_stack",
+              "pages": [
+                {
+                  "id": "cloud_me_topology",
+                  "label": "Topology",
+                  "icon": "ic_p_c3_stack"
+                },
+                {
+                  "id": "cloud_me_table",
+                  "label": "Table",
+                  "icon": "ic_link_tile"
+                }
+              ]
+            },
+            {
+              "id": "cg",
+              "label": "CG",
+              "icon": "ic_p_c3_stack",
+              "pages": [
+                {
+                  "id": "cg_topology",
+                  "label": "Topology",
+                  "icon": "ic_p_c3_stack"
+                },
+                {
+                  "id": "cg_table",
+                  "label": "Table",
+                  "icon": "ic_link_tile"
+                }
+              ]
+            },
+            {
+              "id": "capital",
+              "label": "Capital",
+              "icon": "ic_p_c3_stack",
+              "pages": [
+                {
+                  "id": "capital_topology",
+                  "label": "Topology",
+                  "icon": "ic_p_c3_stack"
+                },
+                {
+                  "id": "capital_table",
+                  "label": "Table",
+                  "icon": "ic_link_tile"
+                }
+              ]
+            },
+            {
+              "id": "hardtech",
+              "label": "Hardtech",
+              "icon": "ic_p_c3_stack",
+              "pages": [
+                {
+                  "id": "hardtech_topology",
+                  "label": "Topology",
+                  "icon": "ic_p_c3_stack"
+                },
+                {
+                  "id": "hardtech_table",
+                  "label": "Table",
+                  "icon": "ic_link_tile"
+                }
+              ]
+            },
+            {
+              "id": "others",
+              "label": "Others",
+              "icon": "ic_p_c3_stack",
+              "pages": [
+                {
+                  "id": "others_topology",
+                  "label": "Topology",
+                  "icon": "ic_p_c3_stack"
+                },
+                {
+                  "id": "others_table",
+                  "label": "Table",
+                  "icon": "ic_link_tile"
+                }
+              ]
             }
           ]
         },
@@ -7051,29 +7465,106 @@
           "icon": "ic_robot",
           "pages": [
             {
-              "id": "service",
-              "label": "Service",
-              "icon": "ic_p_c3_workflows"
-            },
-            {
-              "id": "infrastructure",
-              "label": "Infrastructure",
-              "icon": "ic_p_c3_vms"
-            },
-            {
-              "id": "orchestration",
-              "label": "Orchestration",
-              "icon": "ic_p_c3_stack"
-            },
-            {
-              "id": "network",
+              "id": "net",
               "label": "Network",
-              "icon": "ic_wg"
+              "icon": "ic_wg",
+              "pages": [
+                {
+                  "id": "net_wg",
+                  "label": "WireGuard",
+                  "icon": "ic_wg"
+                },
+                {
+                  "id": "net_auth",
+                  "label": "Auth",
+                  "icon": "security"
+                },
+                {
+                  "id": "net_dns",
+                  "label": "DNS & Caddy",
+                  "icon": "ic_link_tile"
+                },
+                {
+                  "id": "net_network",
+                  "label": "Routes",
+                  "icon": "ic_wg"
+                }
+              ]
             },
             {
-              "id": "release",
-              "label": "Release",
-              "icon": "ic_code"
+              "id": "mail",
+              "label": "Mail",
+              "icon": "mail",
+              "pages": [
+                {
+                  "id": "mail_map",
+                  "label": "Mail",
+                  "icon": "mail"
+                }
+              ]
+            },
+            {
+              "id": "orch",
+              "label": "Orchestration",
+              "icon": "ic_p_c3_stack",
+              "separator_before": true,
+              "pages": [
+                {
+                  "id": "orch_flow",
+                  "label": "Flow",
+                  "icon": "ic_p_c3_workflows"
+                },
+                {
+                  "id": "orch_service",
+                  "label": "Service",
+                  "icon": "ic_p_c3_workflows"
+                },
+                {
+                  "id": "orch_infrastructure",
+                  "label": "Infrastructure",
+                  "icon": "ic_p_c3_vms"
+                },
+                {
+                  "id": "orch_orchestration",
+                  "label": "Declared",
+                  "icon": "ic_p_c3_stack"
+                },
+                {
+                  "id": "orch_release",
+                  "label": "Release",
+                  "icon": "ic_code"
+                },
+                {
+                  "id": "orch_agents",
+                  "label": "Agents",
+                  "icon": "ic_robot"
+                }
+              ]
+            },
+            {
+              "id": "ops_health",
+              "label": "Health",
+              "icon": "ic_p_c3_health",
+              "separator_before": true,
+              "pages": [
+                {
+                  "id": "ops_health_uptime",
+                  "label": "Uptime",
+                  "icon": "ic_p_c3_health"
+                }
+              ]
+            },
+            {
+              "id": "obs",
+              "label": "Observability",
+              "icon": "ic_p_logs",
+              "pages": [
+                {
+                  "id": "obs_logs",
+                  "label": "Logs",
+                  "icon": "ic_p_logs"
+                }
+              ]
             }
           ]
         },
@@ -7595,7 +8086,39 @@
           "id": "settings",
           "label": "Settings",
           "icon": "settings",
-          "pages": []
+          "background": "theme",
+          "pages": [
+            {
+              "id": "general",
+              "label": "General",
+              "icon": "settings"
+            },
+            {
+              "id": "perms",
+              "label": "Perms",
+              "icon": "security"
+            },
+            {
+              "id": "about",
+              "label": "About",
+              "icon": "info"
+            },
+            {
+              "id": "appearance",
+              "label": "Appearance",
+              "icon": "palette"
+            },
+            {
+              "id": "models",
+              "label": "Models",
+              "icon": "smart_toy"
+            },
+            {
+              "id": "ocr",
+              "label": "OCR",
+              "icon": "visibility"
+            }
+          ]
         }
       ]
     },
@@ -7819,20 +8342,19 @@
       "name": "Cloud Search",
       "label": "Search",
       "icon": "ic_cloud_search",
-      "group": "AGI",
+      "group": "Weby Services",
       "category": "android",
-      "description": "Diego's Cloud Search (#779; renamed Cloud Research in #1162, back to Cloud Search in #1197) - one app for searching, on the shared bottom nav (#1184): News (the fleet news service, YouTube channel feeds, Google News topic feeds and the German RSS feeds), Research (Reports of what agents published, the Model catalogue and Agents: #913 draft-only Buy-Side and Sell-Side agents that read your alert mails and pages and write drafts you send yourself), CGC (Cloud CGC and Me CGC, each with Semantic and Graph RAG over the public and the private code index), Search (the AI chat over OpenRouter and the major web and AI search engines, plus the fleet's Apps, Messages and Code), Media (Image, Video, Movies, Books), Shopping (Groceries, Electronics, Clothing and Compare, the price comparison) and Brokers (Job Placement, Real Estate, Business). House and Jobs keep their Listing, Analysis, Feed and Calculators subpages. REAL DATA ONLY: every in-app listing or feed comes from a public API or feed this app is allowed to read (build.json::search.sources, search.feeds), cached on the phone so the last results stay readable offline; a portal whose terms forbid automated access is never fetched - its own search page opens in cloud-browser - and a source that cannot be used says why. The German payslip runs the BMF's own Lohnsteuer PAP 2026 (core/pap, generated into Kotlin by core/tools/pap2kt.py) with the 2026 social-insurance rules, golden-tested against the BMF's calculator. English is the base language (#299); dark is the default theme (#336).",
+      "description": "Diego's Cloud Search (#779; renamed Cloud Research in #1162, back to Cloud Search in #1197) - one app for searching, on the shared bottom nav: Scrappers (Site Files, Apify, Cloudflare, SelfHosted; sample rows), Research (Reports of what agents published, the Model catalogue and Agents: #913 draft-only Buy-Side and Sell-Side agents that read your alert mails and pages and write drafts you send yourself), CGC Search (Cloud CGC and Me CGC, each with Semantic and Graph RAG over the public and the private code index), Image, Videos and 3D Models (sample rows); the AI chat over OpenRouter with the major web and AI search engines, plus the fleet's Apps, Messages and Code, is reached from the top bar. News, Shopping and Brokers are gone from the app (#1472; their declaration stays for Cloud KG Store). REAL DATA ONLY: every in-app listing or feed comes from a public API or feed this app is allowed to read (build.json::search.sources, search.feeds), cached on the phone so the last results stay readable offline; a portal whose terms forbid automated access is never fetched - its own search page opens in cloud-browser - and a source that cannot be used says why. The German payslip runs the BMF's own Lohnsteuer PAP 2026 (core/pap, generated into Kotlin by core/tools/pap2kt.py) with the 2026 social-insurance rules, golden-tested against the BMF's calculator. English is the base language (#299); dark is the default theme (#336).",
       "kind": "app",
       "wasm": "cloud-search",
-      "default_section": "chat",
+      "default_section": "scrapers",
       "bottom_nav": [
-        "news",
+        "scrapers",
         "research",
         "cgc",
-        "chat",
-        "media",
-        "shopping",
-        "brokers"
+        "image",
+        "video",
+        "models3d"
       ],
       "top_bar": null,
       "nav_ui": null,
@@ -7841,30 +8363,30 @@
       ],
       "sections": [
         {
-          "id": "news",
-          "label": "News",
-          "icon": "rss_feed",
+          "id": "scrapers",
+          "label": "Scrappers",
+          "icon": "dns",
           "background": "theme",
           "pages": [
             {
-              "id": "news",
-              "label": "News",
-              "icon": "rss_feed"
+              "id": "sitefiles",
+              "label": "Site Files",
+              "icon": "storage"
             },
             {
-              "id": "youtube",
-              "label": "YouTube Feed",
-              "icon": "play_circle"
+              "id": "apify",
+              "label": "Apify",
+              "icon": "hub"
             },
             {
-              "id": "gnews",
-              "label": "Google News Feed",
+              "id": "cloudflare",
+              "label": "Cloudflare",
               "icon": "public"
             },
             {
-              "id": "rss",
-              "label": "RSS",
-              "icon": "feed"
+              "id": "selfhosted",
+              "label": "SelfHosted",
+              "icon": "dns"
             }
           ]
         },
@@ -7915,7 +8437,7 @@
         },
         {
           "id": "cgc",
-          "label": "CGC",
+          "label": "CGC Search",
           "icon": "code",
           "background": "theme",
           "nav_mode": "horizontal_two_rows",
@@ -7963,6 +8485,45 @@
           ]
         },
         {
+          "id": "image",
+          "label": "Image",
+          "icon": "palette",
+          "background": "theme",
+          "pages": [
+            {
+              "id": "image",
+              "label": "Image",
+              "icon": "palette"
+            }
+          ]
+        },
+        {
+          "id": "video",
+          "label": "Videos",
+          "icon": "video",
+          "background": "theme",
+          "pages": [
+            {
+              "id": "video",
+              "label": "Videos",
+              "icon": "video"
+            }
+          ]
+        },
+        {
+          "id": "models3d",
+          "label": "3D Models",
+          "icon": "inventory_2",
+          "background": "theme",
+          "pages": [
+            {
+              "id": "models3d",
+              "label": "3D Models",
+              "icon": "inventory_2"
+            }
+          ]
+        },
+        {
           "id": "chat",
           "label": "Search",
           "icon": "assistant",
@@ -8002,16 +8563,6 @@
           "background": "theme",
           "pages": [
             {
-              "id": "image",
-              "label": "Image",
-              "icon": "palette"
-            },
-            {
-              "id": "video",
-              "label": "Video",
-              "icon": "video"
-            },
-            {
               "id": "movies",
               "label": "Movies",
               "icon": "play_circle"
@@ -8020,146 +8571,6 @@
               "id": "books",
               "label": "Books",
               "icon": "menu_book"
-            }
-          ]
-        },
-        {
-          "id": "shopping",
-          "label": "Shopping",
-          "icon": "inventory_2",
-          "background": "theme",
-          "pages": [
-            {
-              "id": "groceries",
-              "label": "Groceries",
-              "icon": "restaurant"
-            },
-            {
-              "id": "electronics",
-              "label": "Electronics",
-              "icon": "devices"
-            },
-            {
-              "id": "clothing",
-              "label": "Clothing",
-              "icon": "accessibility_new"
-            },
-            {
-              "id": "things",
-              "label": "Compare",
-              "icon": "compare_arrows"
-            }
-          ]
-        },
-        {
-          "id": "brokers",
-          "label": "Brokers",
-          "icon": "work",
-          "background": "theme",
-          "nav_mode": "horizontal_two_rows",
-          "groups": [
-            {
-              "id": "job_placement",
-              "label": "Job Placement",
-              "icon": "work",
-              "pages": [
-                "jobs"
-              ]
-            },
-            {
-              "id": "real_estate",
-              "label": "Real Estate",
-              "icon": "home",
-              "pages": [
-                "house",
-                "commercial"
-              ]
-            },
-            {
-              "id": "business_group",
-              "label": "Business",
-              "icon": "rocket_launch",
-              "pages": [
-                "business",
-                "suppliers",
-                "services"
-              ]
-            }
-          ],
-          "pages": [
-            {
-              "id": "jobs",
-              "label": "Jobs",
-              "icon": "work",
-              "pages": [
-                {
-                  "id": "jobs-listing",
-                  "label": "Listing",
-                  "icon": "description"
-                },
-                {
-                  "id": "jobs-analysis",
-                  "label": "Analysis",
-                  "icon": "insights"
-                },
-                {
-                  "id": "jobs-feed",
-                  "label": "Feed",
-                  "icon": "rss_feed"
-                },
-                {
-                  "id": "jobs-calculators",
-                  "label": "Calculators",
-                  "icon": "table_chart"
-                }
-              ]
-            },
-            {
-              "id": "house",
-              "label": "House",
-              "icon": "home",
-              "pages": [
-                {
-                  "id": "house-listing",
-                  "label": "Listing",
-                  "icon": "description"
-                },
-                {
-                  "id": "house-analysis",
-                  "label": "Analysis",
-                  "icon": "insights"
-                },
-                {
-                  "id": "house-feed",
-                  "label": "Feed",
-                  "icon": "rss_feed"
-                },
-                {
-                  "id": "house-calculators",
-                  "label": "Calculators",
-                  "icon": "table_chart"
-                }
-              ]
-            },
-            {
-              "id": "commercial",
-              "label": "Commercial",
-              "icon": "account_balance"
-            },
-            {
-              "id": "business",
-              "label": "Business",
-              "icon": "rocket_launch"
-            },
-            {
-              "id": "suppliers",
-              "label": "Suppliers",
-              "icon": "inventory_2"
-            },
-            {
-              "id": "services",
-              "label": "Services",
-              "icon": "build"
             }
           ]
         }
@@ -8403,7 +8814,7 @@
       "name": "Cloud KG Store",
       "label": "KG Store",
       "icon": "ic_kgs",
-      "group": "AGI",
+      "group": "Weby Services",
       "category": "android",
       "description": "Cloud KG Store (#1207) - the fleet's knowledge-graph store and browser, three sections on the bottom nav: Cloud (two rows of groups: Application = Binary, Web/Debug, MCP search tools, API Data and API Debug with GET and POST; Repo = Code, CGC, MCP search tools, API Semantic and GraphRAG; every page is backed by the fleet endpoints declared in ac_cloud-account/build.json::fleet_endpoints - c3-infra-api, cloud-me-api, c3-public-api, the two CGC MCP services and embeddings-api - and says plainly when an endpoint is missing or does not answer), Phone (the installed Android apps index through PackageManager: package, version, permissions and components) and Web (News, Media, Shopping, Real Estate, Jobs, Business, on the sources and parsers Cloud Search declares: its build.json::search is baked by reference and its plain-JVM search-core is linked by reference, nothing is copied). The assistant behind the top bar's AI icon is libs:ai's chat over the fleet agent gateway (mesh only); no token is held or read by this app for it (decisions-use guard D5), and the fleet bearer for the public fallback route is read from Cloud Account on use and never kept. Dark is the default theme (#336); English is the base language (#299).",
       "kind": "app",
@@ -8879,12 +9290,12 @@
       "description": "Diego's Cloud Account — turns an empty phone into the owner's phone and keeps it that way: the account and its sign-in ways, the per-device profile backed up to and restored from the private vault repo, setup, and the fleet secrets (a0_docs/eng-specs/cloud-account-redesign.md). Hosts libs:account, the same code SuperApp links.",
       "kind": "app",
       "wasm": "cloud-account",
-      "default_section": "personal",
+      "default_section": "vault",
       "bottom_nav": [
-        "personal",
-        "configs",
-        "data",
+        "vault",
+        "config",
         "connect",
+        "devices",
         "activity"
       ],
       "top_bar": null,
@@ -8894,9 +9305,9 @@
       ],
       "sections": [
         {
-          "id": "personal",
-          "label": "Personal Info",
-          "icon": "personal",
+          "id": "vault",
+          "label": "Vault",
+          "icon": "key",
           "background": "dark",
           "pages": [
             {
@@ -8906,23 +9317,43 @@
             },
             {
               "id": "cards",
-              "label": "Pay Cards",
+              "label": "PayCards",
               "icon": "payments"
             },
             {
-              "id": "others",
-              "label": "Others",
-              "icon": "edit_note",
+              "id": "secrets",
+              "label": "Secrets",
+              "icon": "key",
               "pages": [
+                {
+                  "id": "providers",
+                  "label": "Providers",
+                  "icon": "hub"
+                },
+                {
+                  "id": "keys",
+                  "label": "Fleet keys",
+                  "icon": "vpn_key"
+                },
+                {
+                  "id": "tokens",
+                  "label": "Tokens",
+                  "icon": "token"
+                },
+                {
+                  "id": "grants",
+                  "label": "Grants",
+                  "icon": "verified_user"
+                },
+                {
+                  "id": "import",
+                  "label": "Import",
+                  "icon": "file_upload"
+                },
                 {
                   "id": "entries",
                   "label": "Entries",
                   "icon": "folder"
-                },
-                {
-                  "id": "me",
-                  "label": "Me",
-                  "icon": "account_circle"
                 }
               ]
             },
@@ -8951,26 +9382,11 @@
           ]
         },
         {
-          "id": "configs",
-          "label": "Configs",
+          "id": "config",
+          "label": "Config",
           "icon": "configs",
           "background": "dark",
           "pages": [
-            {
-              "id": "general",
-              "label": "General",
-              "icon": "settings"
-            },
-            {
-              "id": "perms",
-              "label": "Perms",
-              "icon": "security"
-            },
-            {
-              "id": "about",
-              "label": "About",
-              "icon": "info"
-            },
             {
               "id": "android",
               "label": "Android",
@@ -9019,90 +9435,6 @@
               "id": "repos",
               "label": "Repos",
               "icon": "sync"
-            }
-          ]
-        },
-        {
-          "id": "data",
-          "label": "Data",
-          "icon": "data",
-          "background": "dark",
-          "pages": [
-            {
-              "id": "secrets",
-              "label": "Secrets",
-              "icon": "key",
-              "pages": [
-                {
-                  "id": "providers",
-                  "label": "Providers",
-                  "icon": "hub"
-                },
-                {
-                  "id": "keys",
-                  "label": "Fleet keys",
-                  "icon": "vpn_key"
-                },
-                {
-                  "id": "tokens",
-                  "label": "Tokens",
-                  "icon": "token"
-                },
-                {
-                  "id": "grants",
-                  "label": "Grants",
-                  "icon": "verified_user"
-                },
-                {
-                  "id": "import",
-                  "label": "Import",
-                  "icon": "file_upload"
-                }
-              ]
-            },
-            {
-              "id": "backups",
-              "label": "Backups",
-              "icon": "backup",
-              "pages": [
-                {
-                  "id": "databases",
-                  "label": "Databases",
-                  "icon": "storage"
-                },
-                {
-                  "id": "bundle",
-                  "label": "Bundle",
-                  "icon": "inventory_2"
-                }
-              ]
-            },
-            {
-              "id": "devices",
-              "label": "Devices",
-              "icon": "devices",
-              "pages": [
-                {
-                  "id": "mesh",
-                  "label": "Mesh",
-                  "icon": "lan"
-                },
-                {
-                  "id": "files",
-                  "label": "Files",
-                  "icon": "folder"
-                },
-                {
-                  "id": "working",
-                  "label": "Working",
-                  "icon": "edit_note"
-                },
-                {
-                  "id": "diff",
-                  "label": "Diff",
-                  "icon": "compare_arrows"
-                }
-              ]
             }
           ]
         },
@@ -9191,6 +9523,80 @@
           ]
         },
         {
+          "id": "devices",
+          "label": "Devices",
+          "icon": "devices",
+          "background": "dark",
+          "pages": [
+            {
+              "id": "mesh",
+              "label": "Mesh",
+              "icon": "lan"
+            },
+            {
+              "id": "peer-control",
+              "label": "Peer Control",
+              "icon": "hub",
+              "sample": {
+                "rows": [
+                  {
+                    "title": "Sample peer A",
+                    "caption": "reachable over the mesh",
+                    "state": "ok"
+                  },
+                  {
+                    "title": "Sample peer B",
+                    "caption": "asleep, wake-on-LAN offered",
+                    "state": "warn"
+                  },
+                  {
+                    "title": "Sample peer C",
+                    "caption": "unreachable",
+                    "state": "bad"
+                  }
+                ]
+              }
+            },
+            {
+              "id": "backup",
+              "label": "Backup",
+              "icon": "backup",
+              "pages": [
+                {
+                  "id": "databases",
+                  "label": "Databases",
+                  "icon": "storage"
+                },
+                {
+                  "id": "bundle",
+                  "label": "Bundle",
+                  "icon": "inventory_2"
+                },
+                {
+                  "id": "me",
+                  "label": "Me",
+                  "icon": "account_circle"
+                }
+              ]
+            },
+            {
+              "id": "files",
+              "label": "Files",
+              "icon": "folder"
+            },
+            {
+              "id": "working",
+              "label": "Working",
+              "icon": "edit_note"
+            },
+            {
+              "id": "diff",
+              "label": "Diff",
+              "icon": "compare_arrows"
+            }
+          ]
+        },
+        {
           "id": "activity",
           "label": "Activity",
           "icon": "activity",
@@ -9200,6 +9606,29 @@
               "id": "activity",
               "label": "Activity",
               "icon": "history"
+            }
+          ]
+        },
+        {
+          "id": "configs",
+          "label": "Configs",
+          "icon": "configs",
+          "background": "dark",
+          "pages": [
+            {
+              "id": "general",
+              "label": "General",
+              "icon": "settings"
+            },
+            {
+              "id": "perms",
+              "label": "Perms",
+              "icon": "security"
+            },
+            {
+              "id": "about",
+              "label": "About",
+              "icon": "info"
             }
           ]
         }
@@ -9220,8 +9649,7 @@
       "default_section": "git",
       "bottom_nav": [
         "explorer",
-        "manage",
-        "agents",
+        "editor",
         "home",
         "git",
         "fsync",
@@ -9281,28 +9709,10 @@
           ]
         },
         {
-          "id": "manage",
-          "label": "Manage",
+          "id": "editor",
+          "label": "Editor",
           "title_row": false,
-          "icon": "storage",
-          "pages": [
-            {
-              "id": "apps",
-              "label": "Apps",
-              "icon": "apps"
-            },
-            {
-              "id": "data",
-              "label": "Data",
-              "icon": "bar_chart"
-            }
-          ]
-        },
-        {
-          "id": "agents",
-          "label": "Agents",
-          "title_row": false,
-          "icon": "smart_toy"
+          "icon": "edit_note"
         },
         {
           "id": "ai",
@@ -9314,7 +9724,31 @@
           "id": "home",
           "label": "Home",
           "title_row": false,
-          "icon": "home"
+          "icon": "home",
+          "pages": [
+            {
+              "id": "home_apps",
+              "label": "Apps",
+              "icon": "apps"
+            },
+            {
+              "id": "manage",
+              "label": "Manage",
+              "icon": "storage",
+              "pages": [
+                {
+                  "id": "apps",
+                  "label": "Apps",
+                  "icon": "apps"
+                },
+                {
+                  "id": "data",
+                  "label": "Data",
+                  "icon": "bar_chart"
+                }
+              ]
+            }
+          ]
         },
         {
           "id": "git",
@@ -9338,7 +9772,24 @@
           "id": "fsync",
           "label": "Fsync",
           "title_row": false,
-          "icon": "sync"
+          "icon": "sync",
+          "pages": [
+            {
+              "id": "folders",
+              "label": "Folders",
+              "icon": "sync"
+            },
+            {
+              "id": "agents",
+              "label": "Agents",
+              "icon": "smart_toy"
+            },
+            {
+              "id": "projects",
+              "label": "Projects",
+              "icon": "folder"
+            }
+          ]
         },
         {
           "id": "mounts",
@@ -9662,85 +10113,19 @@
               "icon": "home"
             },
             {
-              "id": "portfolio-risk",
-              "label": "Portfolio & Risk Analytics",
-              "icon": "insights"
+              "id": "pm-vol",
+              "label": "Vol",
+              "icon": "table_chart"
             },
             {
-              "id": "pm-a1-cash",
-              "label": "A1 Cash (DM - Cash)",
-              "icon": "payments",
-              "separator_before": true
+              "id": "pm-commodities",
+              "label": "Commodities",
+              "icon": "inventory_2"
             },
             {
-              "id": "pm-a2-low",
-              "label": "A2 Low Risk",
-              "icon": "pie_chart"
-            },
-            {
-              "id": "pm-b1-mid",
-              "label": "B1 Middle Risk",
-              "icon": "pie_chart",
-              "separator_before": true
-            },
-            {
-              "id": "pm-c1-risky",
-              "label": "C1 Risky",
-              "icon": "pie_chart",
-              "separator_before": true
-            },
-            {
-              "id": "pm-d1-em-bonds",
-              "label": "D1 EM Bonds",
-              "icon": "calculate",
-              "separator_before": true
-            },
-            {
-              "id": "pm-d0-carry",
-              "label": "D0 EM Carry Trade",
-              "icon": "trending_up"
-            },
-            {
-              "id": "mp-40-60",
-              "label": "40/60",
-              "icon": "pie_chart",
-              "separator_before": true
-            },
-            {
-              "id": "mp-70-30",
-              "label": "70/30",
-              "icon": "pie_chart"
-            },
-            {
-              "id": "mp-60-40",
-              "label": "60/40",
-              "icon": "pie_chart"
-            },
-            {
-              "id": "mp-30-70",
-              "label": "30/70",
-              "icon": "pie_chart"
-            },
-            {
-              "id": "mp-70-30-dm-em",
-              "label": "70/30 DM/EM",
-              "icon": "pie_chart",
-              "separator_before": true
-            },
-            {
-              "id": "mp-60-40-dm-em",
-              "label": "60/40 DM/EM",
-              "icon": "pie_chart"
-            },
-            {
-              "id": "mp-40-60-dm-em",
-              "label": "40/60 DM/EM",
-              "icon": "pie_chart"
-            },
-            {
-              "id": "mp-30-70-dm-em",
-              "label": "30/70 DM/EM",
-              "icon": "pie_chart"
+              "id": "pm-profiles",
+              "label": "Profiles",
+              "icon": "groups"
             }
           ]
         },

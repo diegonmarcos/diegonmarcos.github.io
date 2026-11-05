@@ -6,16 +6,19 @@
 </script>
 
 <section class="home" data-testid="finterm-home" data-tab={tab}>
-  {#each cards as c (c.slug)}
-    <a class="card" href={c.href} data-testid="home-card" data-page={c.slug}>
-      <span class="head"><Icon name={c.icon} set="fleet" size={20} /><span class="name">{c.title}</span></span>
-      <span class="sub">{c.subtitle}</span>
-    </a>
-  {/each}
+  <div class="grid">
+    {#each cards as c (c.slug)}
+      <a class="card" href={c.href} data-testid="home-card" data-page={c.slug}>
+        <span class="head"><Icon name={c.icon} set="fleet" size={20} /><span class="name">{c.title}</span></span>
+        <span class="sub">{c.subtitle}</span>
+      </a>
+    {/each}
+  </div>
 </section>
 
 <style>
-  .home { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 12px; padding: 12px 16px 96px; }
+  .home { padding: 12px 16px 96px; display: flex; flex-direction: column; gap: 12px; }
+  .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 12px; }
   .card { display: flex; flex-direction: column; gap: 6px; min-height: 96px; padding: 12px; border-radius: 12px; text-decoration: none;
     background: var(--fin-surface, #121A23); border: 1px solid var(--fin-hairline, #243040); color: var(--fin-text, #E6EDF3); }
   .card:hover, .card:focus-visible { border-color: var(--fin-accent, #5AA7FF); }

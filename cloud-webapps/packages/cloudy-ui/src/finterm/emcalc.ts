@@ -38,12 +38,13 @@ const joinFails = (l: EmLive) => (l.fails.length ? ` — ${l.fails.join(' · ')}
 export function emMatrix(panel: Panel, live: EmLive, i: EmInputs, by: string, asOf: string): PanelData {
   const g = grid(live, i); const h = heat(g.cells); const c = i.n;
   const none = Array(g.yields.length + 2).fill(null) as null[];
-  const rows = [['', 'Inflation', ...g.yields.map(() => pct(live.infl))], ['', 'EUR - infl', ...g.yields.map((y) => pct(real(y, live.infl)))],
+  // the owner's image (#1462): Gross Yield and the yields ascend left to right, then Inflation, then USD / "EUR / (-Infl) Yield" and the real yields; the FX levels ascend top to bottom
+  const rows = [['', 'Inflation', ...g.yields.map(() => pct(live.infl))], ['USD', 'EUR / (-Infl) Yield', ...g.yields.map((y) => pct(real(y, live.infl)))],
     ...g.cells.map((row, r) => [fxs(g.fxUsd[r]), fxs(g.fxEur[r]), ...row.map(money)])];
   const note = `Monthly EUR net return on a ${money(i.navEur)} NAV after ${pct(i.cg, 0)} capital-gains tax and ${pct(i.spread, 0)} exchange spread${i.round > 0 ? `, rounded to ${i.round}` : ''}. ` +
-    `Real yield = (1 + gross) / (1 + inflation) - 1; rows move the BRL level by ${pct(i.exchStep, 1)}, columns the gross yield by ${pct(i.yieldStep)}.${live.basis ? ` ${live.basis}.` : ''}${joinFails(live)}`;
-  return { columns: ['BRL/USD', 'BRL/EUR', ...g.yields.map((y) => pct(y))], rows, links: [], chart: [], asOf, note, servedBy: by, heat: [none, none, ...h.map((r) => [null, null, ...r])],
-    bold: [[c + 2, c + 2], [1, c + 2], [0, c + 2], [c + 2, 0], [c + 2, 1]] };
+    `Real yield = (1 + gross) / (1 + inflation) - 1; rows (down) move the BRL level up by ${pct(i.exchStep, 1)}, columns (right) the gross yield up by ${pct(i.yieldStep)}.${live.basis ? ` ${live.basis}.` : ''}${joinFails(live)}`;
+  return { columns: ['', 'Gross Yield', ...g.yields.map((y) => pct(y))], rows, links: [], chart: [], asOf, note, servedBy: by, heat: [none, none, ...h.map((r) => [null, null, ...r])],
+    bold: [[-1, c + 2], [0, c + 2], [1, c + 2], [c + 2, 0], [c + 2, 1], [c + 2, c + 2]] }; // row -1 = the column header
 }
 
 export function emInputs(panel: Panel, live: EmLive, i: EmInputs, by: string, asOf: string): PanelData {
@@ -107,12 +108,22 @@ export async function emLive(f: Fetch, i: EmInputs, ctx: Ctx): Promise<{ live: E
     const rates = (JSON.parse(await ctx.get(buildUrl(s.endpoint, `/v1/${from}..${to}`, [['base', 'USD'], ['symbols', 'BRL,EUR']]))) as { rates?: Record<string, Record<string, number>> }).rates ?? {};
     for (const d of Object.keys(rates).sort()) for (const [k, v] of Object.entries(rates[d])) fx.set(k, [...(fx.get(k) ?? []), [d, v]]);
   });
+  // Frankfurter unreachable (a 5xx from some networks): the ECB reference rates on DBnomics, key-free (BRL and USD per EUR -> BRL and EUR per USD)
+  const e = (g as O).ecb_fx as { path: string; prefix: string; brl: string; usd: string } | undefined;
+  if (e && (!(fx.get('BRL') ?? []).length || !(fx.get('EUR') ?? []).length)) await read(src(g.oecd_source), async (s) => {
+    const a = JSON.parse(await ctx.get(buildUrl(s.endpoint, e.path, [['series_ids', `${e.prefix}${e.brl},${e.prefix}${e.usd}`], ['observations', '1'], ['metadata', '0']]))) as { series?: { docs?: { series_code: string; period: string[]; value: (number | string | null)[] }[] } };
+    const ser = (c: string) => { const d = a.series?.docs?.find((x) => x.series_code === c); return new Map((d?.period ?? []).flatMap((p, k) => (typeof d!.value[k] === 'number' ? [[p, d!.value[k] as number] as [string, number]] : []))); };
+    const u = ser(e.usd); const from = new Date(Date.parse(`${ctx.today}T00:00:00Z`) - 30 * 864e5).toISOString().slice(0, 10);
+    const bl = [...ser(e.brl)].filter(([p]) => p >= from && u.has(p)).sort((x, y) => (x[0] < y[0] ? -1 : 1));
+    fx.set('BRL', bl.map(([p, b]) => [p, b / u.get(p)!] as [string, number])); fx.set('EUR', bl.map(([p]) => [p, 1 / u.get(p)!] as [string, number]));
+    fails.push('Frankfurter unavailable: BRL and EUR from the ECB reference rates on DBnomics');
+  });
   const yh = pick(y.get(hi) ?? [], i.ma, 7); const yf = pick(y.get(fu) ?? [], i.ma, 7); const brl = pick(fx.get('BRL') ?? [], i.ma, 7); const eur = pick(fx.get('EUR') ?? [], i.ma, 7);
   const missing = [!yh && 'no Brazil 10Y yield', !cpi && 'no Germany CPI a year apart', (!brl || !eur) && 'no BRL / EUR rate'].filter(Boolean) as string[];
   if (missing.length) { const m = [...missing, ...fails].join(' · '); throw first instanceof FetchError && !used.length ? new FetchError('blocked', m) : new Error(m); }
   const c = cpi as unknown as [number, string];
   return { live: { yHigh: yh![0] / 100, yFund: yf ? yf[0] / 100 : null, infl: c[0] / 100, brlUsd: brl![0], brlEur: brl![0] / eur![0], basis: `Yield ${yh![1]}, CPI ${c[1]}, FX ${brl![1]}`, fails },
-    by: used.join(' + '), asOf: (fx.get('BRL') ?? []).map((x) => x[0]).sort().pop() ?? '' };
+    by: [...new Set(used)].join(' + '), asOf: (fx.get('BRL') ?? []).map((x) => x[0]).sort().pop() ?? '' };
 }
 
 export async function emPanel(panel: Panel, f: Fetch, ctx: Ctx): Promise<PanelData> {

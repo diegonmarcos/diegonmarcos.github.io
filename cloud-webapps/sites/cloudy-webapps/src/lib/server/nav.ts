@@ -164,7 +164,7 @@ function stackCards(base: string, declared: { kind?: string; title: string; subt
 type AppEntry = { kind?: string; title?: string; subtitle?: string; url?: string; planned?: boolean; note?: string; page?: string };
 /** #1539 FinTerm page kinds: drawn on the web (a page of its own) or only in the APK (live delayed quotes; the web page says so). */
 const WEB_PAGE_KINDS = ['pm_table', 'cb_table'];
-const APP_ONLY_KINDS = ['quote_board', 'futures_board', 'hedge_calc'];
+const APP_ONLY_KINDS = ['quote_board', 'futures_board', 'hedge_calc', 'perf_portfolio'];
 /**
  * The page body of a Lnktree app section (#1335): the app's own ui.stacks[<section>] entries (apps-ui.json, GENERATED), each a card with ONE target.
  * An `entry` opens the URL gen-navdata resolved from its declared source (greyed "planned" when it has none). When the app's link says
@@ -201,7 +201,7 @@ export function appStack(appId: string, sectionId: string | null): StackCardData
     return null; // sources and other device-only kinds: the generic body
   }
   // the declared backend of the app's webapp link (FinTerm: fin-api, private mesh): its own card with the lock badge, new tab
-  if (own?.backend && cards.some((c) => c.href)) cards.push({ title: own.backend.label, subtitle: 'The FinceptTerminal backend (fin-api): REST and WebSocket, reachable on the private mesh only', rows: [], caption: '', href: own.backend.href, mesh: own.backend.mesh, external: true });
+  if (own?.backend && (cards.some((c) => c.href) || list.some((e) => e.kind && APP_ONLY_KINDS.includes(e.kind)))) cards.push({ title: own.backend.label, subtitle: 'The FinceptTerminal backend (fin-api): REST and WebSocket, reachable on the private mesh only', rows: [], caption: '', href: own.backend.href, mesh: own.backend.mesh, external: true });
   return cards;
 }
 

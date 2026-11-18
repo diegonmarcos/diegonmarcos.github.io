@@ -10,6 +10,7 @@
   "cloud-c3-webserver",
   "cloud-calc",
   "cloud-camera",
+  "cloud-canvas",
   "cloud-chat",
   "cloud-code",
   "cloud-contacts",
@@ -37,6 +38,7 @@
   "cloud-tools-small-llms",
   "cloud-vault",
   "cloud-wallet",
-  "hardtech-cad",
-  "hardtech-sim2real"
+  "cloud-wiki",
+  "hardtech-biomed",
+  "hardtech-cad"
 ]

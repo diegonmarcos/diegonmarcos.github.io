@@ -110,9 +110,18 @@ describe('FinTerm nav: Homepages, one row, Market Monitor redirect (#1399)', () 
     a.build.ui.redirects[0].to = 'no-such-page';
     expect(() => buildFinterm(a)).toThrow(/Homepage or one of its sub-pages/);
   });
+  it('#1786 the PM Index (home_grid) is an app-only sub-page and the home_page pointer is ignored', () => {
+    const a = withNav();
+    a.build.ui.stacks.eq = [{ kind: 'home_page', home: 'eq-index', title: 'Home', subtitle: 'h' }, { kind: 'home_grid', title: 'Index', subtitle: 'cards', page: 'eq-index' }];
+    a.build.ui.sections.find((s: { id: string }) => s.id === 'eq').pages.push({ id: 'eq-index', label: 'Index', icon: 'apps' });
+    const o = buildFinterm(a);
+    expect(o.stacks.eq).toHaveLength(1);
+    expect(o.stacks.eq[0]).toMatchObject({ kind: 'home_grid', page: 'eq-index' });
+    expect(o.homes.eq).toEqual([{ slug: 'eq-index', title: 'Index', icon: 'apps', subtitle: 'cards' }]);
+  });
   it('the committed declarations: every tab opens on Home listing all its dashboards; Market Monitor is gone and redirected', () => {
     for (const tab of fin.tabs) {
-      const dash = fin.stacks[tab].filter((e: { kind: string; detail?: boolean }) => e.kind === 'pm_table' || e.kind === 'cb_table' || ['quote_board', 'futures_board', 'hedge_calc', 'perf_portfolio'].includes(e.kind) || (e.kind === 'dashboard' && !e.detail)).map((e: { dashboard: string; page?: string }) => e.page ?? slugOf(e.dashboard));
+      const dash = fin.stacks[tab].filter((e: { kind: string; detail?: boolean }) => e.kind === 'pm_table' || e.kind === 'cb_table' || ['quote_board', 'futures_board', 'hedge_calc', 'perf_portfolio', 'home_grid'].includes(e.kind) || (e.kind === 'dashboard' && !e.detail)).map((e: { dashboard: string; page?: string }) => e.page ?? slugOf(e.dashboard));
       expect(fin.homes[tab].map((c: { slug: string }) => c.slug), tab).toEqual(dash);
       for (const c of fin.homes[tab]) expect(c.icon && c.title && c.subtitle, `${tab}/${c.slug}`).toBeTruthy();
     }
@@ -149,7 +158,8 @@ describe('gen-finterm --check (the CI drift guard)', () => {
 describe('the committed web FinTerm declarations', () => {
   it('34 dashboards: CB 8, EQ 6, HG 3, NW 3, PM 14, FI none (the APK entries; #1756 the eight bond dashboards moved from FI to CB and FI holds only app-only perf_portfolio pages; #1539 the Commodities dashboard moved from EX to EQ; #1399 FI Market Monitor removed; #1447 PM A1, B1, C1, D1, D0; #1478 A2 dropped; #1612 EQ DM US / EM / Quotes merged into World Indices Equity, Equity Quote and Watchlist), each with at least one panel', () => {
     const by = (t: string) => fin.dashboards.filter((d: { tab: string }) => d.tab === t).length;
-    expect([by('fi'), by('eq'), by('hg'), by('nw'), by('pm'), by('cb')]).toEqual([0, 6, 3, 3, 14, 8]);
+    // the launcher moved the Commodities dashboard from EQ to HG (EQ 5, HG 4); nothing was removed
+    expect([by('fi'), by('eq'), by('hg'), by('nw'), by('pm'), by('cb')]).toEqual([0, 5, 4, 3, 14, 8]);
     expect(fin.dashboards).toHaveLength(34);
     for (const d of fin.dashboards) expect(d.panels.length, d.id).toBeGreaterThan(0);
   });

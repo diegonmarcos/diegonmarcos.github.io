@@ -164,7 +164,7 @@ function stackCards(base: string, declared: { kind?: string; title: string; subt
 type AppEntry = { kind?: string; title?: string; subtitle?: string; url?: string; planned?: boolean; note?: string; page?: string; section?: string };
 /** #1539 FinTerm page kinds: drawn on the web (a page of its own) or only in the APK (live delayed quotes; the web page says so). */
 const WEB_PAGE_KINDS = ['pm_table', 'cb_table'];
-const APP_ONLY_KINDS = ['quote_board', 'futures_board', 'hedge_calc', 'perf_portfolio'];
+const APP_ONLY_KINDS = ['quote_board', 'futures_board', 'hedge_calc', 'perf_portfolio', 'home_grid'];
 /**
  * The page body of a Lnktree app section (#1335): the app's own ui.stacks[<section>] entries (apps-ui.json, GENERATED), each a card with ONE target.
  * An `entry` opens the URL gen-navdata resolved from its declared source (greyed "planned" when it has none). When the app's link says
@@ -179,6 +179,8 @@ export function appStack(appId: string, sectionId: string | null, base = ''): St
   const own = l?.entries_open_app && l.href ? l : null;
   const cards: StackCardData[] = [];
   for (const e of list) {
+    // #1786 `home_page` is the pointer to the section's home page (PM: Performance), not a card; `home_grid` (the PM Index) is the app-only grid below
+    if (e.kind === 'home_page') continue;
     if (e.kind === 'section_title') { cards.push({ title: e.title ?? '', subtitle: '', rows: [], caption: '', href: null }); continue; }
     // #1777 Hardtech-CAD: `info` is a card with a description (nothing to open, not planned); `nav` opens another section / sub-page of the same app
     if (e.kind === 'info') { cards.push({ title: e.title ?? '', subtitle: e.subtitle ?? '', rows: [], caption: '', href: null }); continue; }
@@ -199,7 +201,7 @@ export function appStack(appId: string, sectionId: string | null, base = ''): St
     }
     // #1539 a FinTerm table page (CB, PM) opens its own web page; a live-quote page (HG boards, hedge calculator, EQ price boards) is greyed: the APK draws it
     if (e.kind && WEB_PAGE_KINDS.includes(e.kind) && e.page && own?.kind === 'webapp') { cards.push({ title: e.title ?? '', subtitle: e.subtitle ?? '', rows: [], caption: '', href: `${own.href}${sectionId}/${e.page}/`, mesh: false, external: false }); continue; }
-    if (e.kind && APP_ONLY_KINDS.includes(e.kind)) { cards.push({ title: e.title ?? '', subtitle: e.subtitle ?? '', rows: [], caption: 'Live delayed quotes: drawn in the Android app.', href: null, planned: true }); continue; }
+    if (e.kind && APP_ONLY_KINDS.includes(e.kind)) { cards.push({ title: e.title ?? '', subtitle: e.subtitle ?? '', rows: [], caption: e.kind === 'home_grid' ? 'The card grid of every page: drawn in the Android app (this Homepage lists the same cards).' : 'Live delayed quotes: drawn in the Android app.', href: null, planned: true }); continue; }
     if (e.kind === 'holdings') { cards.push({ title: e.title ?? '', subtitle: e.subtitle ?? '', rows: [], caption: 'Kept on the phone: a browser cannot reach it.', href: null, planned: true }); continue; }
     return null; // sources and other device-only kinds: the generic body
   }

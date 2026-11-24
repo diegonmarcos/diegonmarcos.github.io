@@ -500,6 +500,15 @@
       "bearer": false
     },
     {
+      "slug": "c3bot-relay-go",
+      "dir": "infra-ops_c3bot-relay-go",
+      "description": "Go port of c3bot-relay (Telegram <-> c3 relay: WebSocket /ws, SSE /events, long-poll /poll, POST /send, /claim lease, webhook + getUpdates failover), shadow stage: runs next to the Node container on its own port, own container and own state",
+      "mesh": null,
+      "hosts": [],
+      "signin": false,
+      "bearer": false
+    },
+    {
       "slug": "disk-janitor",
       "dir": "infra-ops_disk-janitor",
       "description": "oci-apps disk janitor (#811) — declared, scheduled cleanup so agents and ships never hit disk-full: unused images older than N hours (keeping every image a container references and the newest K per repository), build cache, ANONYMOUS dangli",
@@ -582,6 +591,15 @@
       "dir": "infra-sec_introspect-proxy",
       "description": "OIDC token introspection sidecar for Caddy Bearer auth",
       "mesh": "introspect-proxy.mesh.diegonmarcos.com",
+      "hosts": [],
+      "signin": false,
+      "bearer": false
+    },
+    {
+      "slug": "introspect-proxy-go",
+      "dir": "infra-sec_introspect-proxy-go",
+      "description": "Go port of introspect-proxy (Caddy forward_auth Bearer check), shadow stage: runs next to the Python container on its own port, outside the request path, and logs a periodic decision comparison against it (ticket #1872)",
+      "mesh": null,
       "hosts": [],
       "signin": false,
       "bearer": false

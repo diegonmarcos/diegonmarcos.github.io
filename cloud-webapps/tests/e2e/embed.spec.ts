@@ -37,7 +37,16 @@ test('?embed=1 home is the Cloud > Apps grid, and the flag survives a tile click
   await page.goto(`${BASE}/?embed=1`);
   await expect(page.locator(`.embed-apps [data-group="${cloudGroups[0].title}"]`)).toBeVisible();
   await expect(page.getByTestId('home-cube')).toBeHidden();
-  await page.locator('.embed-apps a.tile').first().click();
+  // the first tile that stays inside this site (Navigation now lives in the desktop site, a mesh container opens a new tab)
+  await page.locator(`.embed-apps a.tile[href^="${BASE}/"]:not([target="_blank"])`).first().click();
   await page.waitForLoadState('load');
   expect(await page.evaluate(() => document.documentElement.classList.contains('embed'))).toBe(true);
+});
+
+// #1958 parity on the drawn page: every group and every tile Cloud > App declares is drawn, in order, then the Actions row.
+test('?embed=1 home draws every declared group and tile in order, then Actions', async ({ page }) => {
+  await page.goto(`${BASE}/?embed=1`);
+  const drawn = await page.locator('.embed-apps [data-group]').evaluateAll((els) => els.map((e) => ({ title: e.getAttribute('data-group'), tiles: [...e.querySelectorAll('.tile__label')].map((l) => l.textContent?.trim()) })));
+  expect(drawn.map((g) => g.title)).toEqual([...cloudGroups.map((g) => g.title), 'Actions']);
+  cloudGroups.forEach((g, i) => expect(drawn[i].tiles).toEqual(g.tiles.filter((t) => !t.separator).map((t) => t.label)));
 });
